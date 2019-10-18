@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>E2E Test | ForgeRock JavaScript SDK Samples</title>
+</head>
+
+<body>
+
+  <div id="sdk-target">SDK TARGET</div>
+
+  <script src="fr-sdk.js"></script>
+  <script>
+    const targetId = 'sdk-target';
+
+    const url = new URL(window.location.href);
+    const clientId = url.searchParams.get('clientId');
+    const scope = url.searchParams.get('scope');
+    const tenant = url.searchParams.get('tenant');
+    const tree = url.searchParams.get('tree');
+
+    forgerock.Config.set({
+      authServerConfig: { baseUrl: `https://openam-${tenant}.forgeblocks.com/am/` },
+      clientId,
+      redirectUri: 'https://www.forgerock-sdk-samples.com:3001/callback',
+      scope,
+      tree,
+      userServerConfig: { baseUrl: `https://api-${tenant}.forgeblocks.com` },
+    });
+
+    async function init() {
+      const ui = new forgerock.ExpressLogin({ targetId });
+      const user = await forgerock.FRUser.loginWithUI(ui);
+      await forgerock.FRUser.logout();
+
+      const json = document.createElement('div');
+      json.id = 'sdk-json';
+      json.innerHTML = JSON.stringify(user);
+      document.body.append(json);
+
+      document.getElementById(targetId).remove();
+    }
+
+    init();
+  </script>
+</body>
+
+</html>

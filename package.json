@@ -1,0 +1,80 @@
+{
+  "name": "@forgerock/javascript-sdk",
+  "version": "0.9.0",
+  "description": "ForgeRock JavaScript SDK",
+  "main": "./lib/",
+  "module": "./lib-esm/",
+  "files": [
+    "/bundles/**/*",
+    "/lib/**/*",
+    "/lib-esm/**/*",
+    "package.json",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "npm run clean && tsc && tsc -m es6 --outDir lib-esm && webpack --env.DEV=no",
+    "clean": "shx rm -rf bundles lib lib-esm",
+    "start": "webpack --env.DEV=yes",
+    "test": "./node_modules/.bin/jest",
+    "make_certs": "sh ./create_certs.sh",
+    "trust_cert_ca": "security add-trusted-cert -d -r trustRoot -k '/Library/Keychains/System.keychain' certs/ca.crt",
+    "trust_cert_site": "security add-trusted-cert -d -r trustAsRoot -k '/Library/Keychains/System.keychain' certs/samples.crt",
+    "trust_certs": "npm run trust_cert_ca && npm run trust_cert_site",
+    "untrust_cert": "security delete-certificate -c forgerock-sdk-samples.com",
+    "samples": "http-server samples -c1 -p 3000 --ssl --cert certs/samples.crt --key certs/samples.key",
+    "e2e_server": "http-server e2e/site -c1 -p 3001 --ssl --cert certs/samples.crt --key certs/samples.key",
+    "e2e_tests": "ts-node e2e/index.ts",
+    "docs": "typedoc",
+    "docs:watch": "watch 'npm run docs' ./src"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "ts",
+      "js"
+    ],
+    "testEnvironment": "node",
+    "testRegex": "/__tests__/.*\\.ts$",
+    "testURL": "http://localhost/",
+    "transform": {
+      ".ts": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ForgeRock/forgerock-javascript-sdk.git"
+  },
+  "author": "ForgeRock",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ForgeRock/forgerock-javascript-sdk/issues"
+  },
+  "homepage": "https://github.com/ForgeRock/forgerock-javascript-sdk#readme",
+  "devDependencies": {
+    "@types/chai": "^4.1.7",
+    "@types/dotenv": "^6.1.1",
+    "@types/jest": "^24.0.15",
+    "@types/puppeteer-core": "^1.9.0",
+    "awesome-typescript-loader": "^5.2.1",
+    "chai": "^4.2.0",
+    "copyfiles": "^2.1.1",
+    "cpy-cli": "^2.0.0",
+    "crypto": "^1.0.1",
+    "crypto-browserify": "^3.12.0",
+    "dotenv": "^8.0.0",
+    "http-server": "^0.11.1",
+    "jest": "^24.8.0",
+    "puppeteer-core": "^1.19.0",
+    "shx": "^0.3.2",
+    "ts-jest": "^24.0.2",
+    "ts-node": "^8.3.0",
+    "tsconfig-paths-webpack-plugin": "^3.2.0",
+    "tslint": "^5.18.0",
+    "tslint-no-circular-imports": "^0.7.0",
+    "tslint-webpack-plugin": "^2.1.0",
+    "typedoc": "^0.15.0",
+    "typescript": "^3.5.2",
+    "watch": "^1.0.2",
+    "webpack": "^4.40.2",
+    "webpack-cli": "^3.3.5"
+  }
+}
