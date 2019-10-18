@@ -1,0 +1,14 @@
+{
+  "exclude": "**/util/**/*.ts",
+  "excludeExternals": true,
+  "excludePrivate": true,
+  "excludeProtected": true,
+  "hideGenerator": true,
+  "includeDeclarations": false,
+  "ignoreCompilerErrors": true,
+  "mode": "file",
+  "name": "ForgeRock JavaScript SDK",
+  "out": "./docs",
+  "readme": "none",
+  "theme": "default"
+}

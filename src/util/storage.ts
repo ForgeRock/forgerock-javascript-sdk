@@ -1,0 +1,25 @@
+class LocalStorage {
+  private storage: Storage;
+  constructor(persist: boolean = false) {
+    this.storage = persist ? window.localStorage : window.sessionStorage;
+  }
+
+  public get<T>(key: string): T | undefined {
+    const value = this.storage.getItem(key);
+    if (!value) {
+      return undefined;
+    }
+
+    return JSON.parse(value);
+  }
+
+  public set<T>(key: string, value: T) {
+    this.storage.setItem(key, JSON.stringify(value));
+  }
+
+  public remove(key: string) {
+    this.storage.removeItem(key);
+  }
+}
+
+export default LocalStorage;

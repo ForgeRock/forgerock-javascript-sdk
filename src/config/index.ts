@@ -1,0 +1,69 @@
+import { DEFAULT_TIMEOUT } from './constants';
+import { ConfigOptions, ServerConfig, ValidConfigOptions } from './interfaces';
+
+/**
+ * Utility for merging configuration defaults with one-off options.
+ *
+ * Example:
+ *
+ * ```js
+ * // Establish configuration defaults
+ * Config.set({
+ *   clientId: 'myApp',
+ *   serverConfig: { baseUrl: 'https://openam-domain.com/am' },
+ *   tree: 'UsernamePassword'
+ * });
+ *
+ * // Specify overrides as needed
+ * const configOverrides = { tree: 'PasswordlessWebAuthn' };
+ * const step = await FRAuth.next(undefined, configOverrides);
+ */
+abstract class Config {
+  private static options: ConfigOptions;
+
+  /**
+   * Sets the default options.
+   *
+   * @param options The options to use as defaults
+   */
+  public static set(options: ConfigOptions) {
+    if (!this.isValid(options)) {
+      throw new Error('Configuration is invalid');
+    }
+    if (options.serverConfig) {
+      this.setTimeout(options.serverConfig);
+    }
+    this.options = { ...options };
+  }
+
+  /**
+   * Merges the provided options with the default options.  Ensures a server configuration exists.
+   *
+   * @param options The options to merge with defaults
+   */
+  public static get(options?: ConfigOptions): ValidConfigOptions {
+    if (!this.options && !options) {
+      throw new Error('Configuration has not been set');
+    }
+
+    const merged = { ...this.options, ...options };
+    if (!merged.serverConfig || !merged.serverConfig.baseUrl) {
+      throw new Error('Server configuration has not been set');
+    }
+
+    return merged as ValidConfigOptions;
+  }
+
+  private static isValid(options: ConfigOptions) {
+    return options && options.serverConfig;
+  }
+
+  private static setTimeout(serverConfig: ServerConfig) {
+    if (serverConfig && !serverConfig.timeout) {
+      serverConfig.timeout = DEFAULT_TIMEOUT;
+    }
+  }
+}
+
+export default Config;
+export { DEFAULT_TIMEOUT, ConfigOptions, ServerConfig, ValidConfigOptions };

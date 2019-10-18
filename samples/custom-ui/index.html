@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Custom UI | ForgeRock JavaScript SDK Samples</title>
+  <link rel="shortcut icon" href="../fr-ico.png" type="image/png">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <style>
+    body {
+      padding: 2rem;
+    }
+
+    #steps {
+      position: relative;
+    }
+
+    #steps>div {
+      left: -20000px;
+      position: absolute;
+    }
+
+    #steps>div.active {
+      left: 0;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="steps">
+    <div id="loader" class="active">Loading...</div>
+    <div id="UsernamePassword">
+      <input class="form-control" type="text" placeholder="Username" />
+      <input class="form-control" type="password" placeholder="Password" />
+      <button class="btn btn-primary">Sign In</button>
+    </div>
+    <div id="User">
+      <p>Your user information:
+        <pre></pre>
+      </p>
+    </div>
+    <div id="Error">
+      <p>Error code: <span></span></p>
+      <p><a href="javascript:nextStep()">Start over</a></p>
+    </div>
+    <div id="Fatal">
+      <p>Something unexpected happened. Check the console for details.</p>
+      <p><a href="javascript:nextStep()">Start over</a></p>
+    </div>
+  </div>
+
+  <script src="../js/index.js"></script>
+  <script src="../js/config.js"></script>
+  <script>
+    const FATAL = 'Fatal';
+
+    // Define custom handlers to render and submit each expected step
+    const handlers = {
+      UsernamePassword: (step) => {
+        const panel = document.querySelector('#UsernamePassword');
+        panel.querySelector('.btn').addEventListener('click', () => {
+          const nameCallback = step.getCallbackOfType('NameCallback');
+          const passwordCallback = step.getCallbackOfType('PasswordCallback');
+          nameCallback.setName(panel.querySelector('input[type=text]').value);
+          passwordCallback.setPassword(panel.querySelector('input[type=password]').value);
+          nextStep(step);
+        })
+      },
+      Error: (step) => {
+        document.querySelector('#Error span').innerHTML = step.getCode();
+      },
+      [FATAL]: (step) => { }
+    }
+
+    // Show only the view for this handler
+    const showStep = (handler) => {
+      document.querySelectorAll('#steps > div').forEach(x => x.classList.remove('active'));
+      const panel = document.getElementById(handler);
+      if (!panel) {
+        console.error(`No panel with ID "${handler}"" found`);
+        return false;
+      }
+      document.getElementById(handler).classList.add('active');
+      return true;
+    }
+
+    const showUser = (user) => {
+      document.querySelector('#User pre').innerHTML = JSON.stringify(user, null, 2);
+      showStep('User')
+    }
+
+    // Display and bind the handler for this stage
+    const handleStep = async (step) => {
+      switch (step.type) {
+        case 'LoginSuccess':
+          // If we have a session token, get user information
+          const sessionToken = step.getSessionToken();
+          const tokens = await forgerock.TokenManager.getTokens({ forceRenew: true });
+          const user = await forgerock.UserManager.getCurrentUser();
+          return showUser(user);
+
+        case 'LoginFailure':
+          showStep('Error');
+          handlers['Error'](step);
+          return;
+
+        default:
+          const stage = step.getStage() || FATAL;
+          if (!showStep(stage)) {
+            showStep(FATAL);
+            handlers[FATAL](step);
+          } else {
+            handlers[stage](step);
+          }
+      }
+    }
+
+    const handleFatalError = (err) => {
+      console.error('Fatal error', err);
+      showStep(FATAL);
+    }
+
+    // Get the next step using the FRAuth API
+    const nextStep = (step) => {
+      forgerock.FRAuth.next(step).then(handleStep).catch(handleFatalError);
+    }
+
+    // Begin the login flow
+    nextStep();
+  </script>
+</body>
+
+</html>
