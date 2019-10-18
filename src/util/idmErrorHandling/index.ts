@@ -15,6 +15,10 @@
 
 import { plural } from '../strings';
 
+// turn into enum for the policy names
+// export at the bottom
+// make into class - static
+// fr-policy
 export function parseErrors(err: ErrorResponse): object[] {
   let errors: object[] = [];
   if (err.detail && err.detail.failedPolicyRequirements) {
