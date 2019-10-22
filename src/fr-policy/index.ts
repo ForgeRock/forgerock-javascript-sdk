@@ -20,7 +20,7 @@ import {
   PolicyRequirement,
   } from './interfaces';
 
-abstract class FRPOLICY {
+abstract class FRPolicy {
 
   public static parseErrors(err: ErrorResponse): object[] {
     let errors: object[] = [];
@@ -108,6 +108,4 @@ abstract class FRPOLICY {
   }
 }
 
-FRPOLICY.parsePolicyRequirement('username', { policyRequirement: 'UNIQUE'});
-
-export default FRPOLICY;
+export default FRPolicy;
