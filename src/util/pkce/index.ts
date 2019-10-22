@@ -32,11 +32,12 @@ abstract class PKCE {
    */
   public static base64UrlEncode(array: Uint8Array): string {
     const numbers = Array.prototype.slice.call(array);
-    const encoded = btoa(String.fromCharCode.apply(null, numbers))
+    const ascii = window.btoa(String.fromCharCode.apply(null, numbers));
+    const urlEncoded = ascii
       .replace(/\+/g, '-')
       .replace(/\//g, '_')
       .replace(/=/g, '');
-    return encoded;
+    return urlEncoded;
   }
 
   /**

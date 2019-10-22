@@ -32,7 +32,7 @@
       "ts",
       "js"
     ],
-    "testEnvironment": "node",
+    "testEnvironment": "jsdom",
     "testRegex": "/__tests__/.*\\.ts$",
     "testURL": "http://localhost/",
     "transform": {
