@@ -1,4 +1,4 @@
-import FRPOLICY from '..';
+import FRPolicy from '..';
 
 describe('The IDM error handling', () => {
   it('returns a human readable error message', () => {
@@ -30,7 +30,7 @@ describe('The IDM error handling', () => {
     ];
 
     policyRequirementsTests.forEach((test) => {
-      const message = FRPOLICY.parsePolicyRequirement(property, test.policy);
+      const message = FRPolicy.parsePolicyRequirement(property, test.policy);
       expect(message).toBe(test.expectedString);
     });
   });
@@ -51,7 +51,7 @@ describe('The IDM error handling', () => {
       property: 'userName',
     };
 
-    const messageArray = FRPOLICY.parseFailedPolicyRequirement(policy);
+    const messageArray = FRPolicy.parseFailedPolicyRequirement(policy);
     expect(messageArray).toEqual(
       ['userName must be unique', 'userName must be at least 6 characters'],
     );
@@ -119,7 +119,7 @@ describe('The IDM error handling', () => {
       },
     ];
 
-    const errorObjArr = FRPOLICY.parseErrors(errorResponse);
+    const errorObjArr = FRPolicy.parseErrors(errorResponse);
     expect(errorObjArr).toEqual(expected);
   });
 });
