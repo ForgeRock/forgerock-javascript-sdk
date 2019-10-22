@@ -24,7 +24,23 @@ interface Step {
 interface StepDetail {
   failureUrl?: string;
   result?: boolean;
-  failedPolicyRequirements?: object[];
+  failedPolicyRequirements?: FailedPolicyRequirement[];
+}
+
+/**
+ * Represents failed policies for a matching property.
+ */
+interface FailedPolicyRequirement {
+  policyRequirements: PolicyRequirement[];
+  property: string;
+}
+
+/**
+ * Represents a failed policy policy and failed policy params.
+ */
+interface PolicyRequirement {
+  params?: any;
+  policyRequirement: string;
 }
 
 /**
@@ -45,4 +61,4 @@ interface NameValue {
   value: any;
 }
 
-export { Callback, NameValue, Step, StepDetail };
+export { Callback, NameValue, Step, StepDetail, FailedPolicyRequirement, PolicyRequirement };

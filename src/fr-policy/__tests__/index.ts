@@ -77,6 +77,9 @@ describe('The IDM error handling', () => {
             property: 'userName',
           },          {
             policyRequirements: [{
+              params: {
+                numCaps: 1,
+              },
               policyRequirement: 'AT_LEAST_X_CAPITAL_LETTERS',
             }, {
               params: {
@@ -106,12 +109,12 @@ describe('The IDM error handling', () => {
       },
       {
         messages: [
-          'password: Unknown policy requirement "MIN_CAPS"',
+          'password must contain at least 1 capital letter',
           'password must be at least 6 characters',
         ],
         detail: {
           policyRequirements: [
-            { policyRequirement: 'MIN_CAPS' },
+            { params: { numCaps: 1 }, policyRequirement: 'AT_LEAST_X_CAPITAL_LETTERS' },
             { params: { minLength: 6 }, policyRequirement: 'MIN_LENGTH' },
           ],
           property: 'password',
