@@ -1,3 +1,5 @@
+import FRPolicy from 'fr-policy';
+import { ProcessedPropertyError } from 'fr-policy/interfaces';
 import { Step } from '../auth/interfaces';
 import { StepType } from './enums';
 import { AuthResponse, FailureDetail } from './interfaces';
@@ -34,6 +36,13 @@ class FRLoginFailure implements AuthResponse {
    */
   public getMessage(): string | undefined {
     return this.payload.message;
+  }
+
+  /**
+   * Gets processed failure message.
+   */
+  public getProcessedMessage(): ProcessedPropertyError[] | undefined {
+    return FRPolicy.parseErrors(this.payload);
   }
 
   /**

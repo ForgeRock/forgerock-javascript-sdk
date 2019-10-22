@@ -13,17 +13,15 @@
 //   }
 // }
 
+import { Step } from 'auth/interfaces';
+import { FailedPolicyRequirement, PolicyRequirement } from '../auth/interfaces';
 import { PolicyMessage, PolicyName } from './enums';
-import {
-  ErrorResponse,
-  FailedPolicyRequirement,
-  PolicyRequirement,
-  } from './interfaces';
+import { ProcessedPropertyError } from './interfaces';
 
 abstract class FRPolicy {
 
-  public static parseErrors(err: ErrorResponse): object[] {
-    let errors: object[] = [];
+  public static parseErrors(err: Partial<Step>): ProcessedPropertyError[] {
+    let errors: ProcessedPropertyError[] = [];
     if (err.detail && err.detail.failedPolicyRequirements) {
       errors = [];
       err.detail.failedPolicyRequirements.map((x) => {
