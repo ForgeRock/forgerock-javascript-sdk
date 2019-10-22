@@ -1,28 +1,55 @@
-import * as crypto from 'crypto';
+/**
+ * PKCE helper class for generating verifier and challenge.
+ */
+abstract class PKCE {
+  /**
+   * Creates a random verifier.
+   *
+   * @param size The length of the verifier (default 32 characters)
+   */
+  public static createVerifier(size: number = 32): string {
+    const array = new Uint8Array(size);
+    window.crypto.getRandomValues(array);
+    const verifier = this.base64UrlEncode(array);
+    return verifier;
+  }
 
-function createVerifier(size: number = 32): string {
-  const verifier = base64URLEncode(crypto.randomBytes(size));
-  return verifier;
+  /**
+   * Creates a SDH-256 hash of the verifier.
+   *
+   * @param verifier The verifier to hash
+   */
+  public static async createChallenge(verifier: string): Promise<string> {
+    const sha256 = await this.sha256(verifier);
+    const challenge = this.base64UrlEncode(sha256);
+    return challenge;
+  }
+
+  /**
+   * Creates a base-64 encoded url-friendly version of the specified array.
+   *
+   * @param array The array of numbers to encode
+   */
+  public static base64UrlEncode(array: Uint8Array): string {
+    const numbers = Array.prototype.slice.call(array);
+    const encoded = btoa(String.fromCharCode.apply(null, numbers))
+      .replace(/\+/g, '-')
+      .replace(/\//g, '_')
+      .replace(/=/g, '');
+    return encoded;
+  }
+
+  /**
+   * Creates a SHA-256 hash of the specified string.
+   *
+   * @param s The string to hash
+   */
+  public static async sha256(s: string): Promise<Uint8Array> {
+    const uint8Array = new TextEncoder().encode(s);
+    const hashBuffer = await window.crypto.subtle.digest('SHA-256', uint8Array);
+    const hashArray = new Uint8Array(hashBuffer);
+    return hashArray;
+  }
 }
 
-function createChallenge(verifier: string): string {
-  const challenge = base64URLEncode(sha256(verifier));
-  return challenge;
-}
-
-function base64URLEncode(b: Buffer): string {
-  return b
-    .toString('base64')
-    .replace(/\+/g, '-')
-    .replace(/\//g, '_')
-    .replace(/=/g, '');
-}
-
-function sha256(b: string): Buffer {
-  return crypto
-    .createHash('sha256')
-    .update(b)
-    .digest();
-}
-
-export { createVerifier, createChallenge };
+export default PKCE;

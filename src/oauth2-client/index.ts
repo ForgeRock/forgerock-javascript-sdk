@@ -3,7 +3,7 @@ import { resolve } from 'url';
 import Config, { ConfigOptions } from '../config/index';
 import TokenStorage from '../token-storage';
 import { isOkOr4xx } from '../util/http';
-import { createChallenge } from '../util/pkce';
+import PKCE from '../util/pkce';
 import { withTimeout } from '../util/timeout';
 import { ResponseType } from './enums';
 import { GetAuthorizationUrlOptions, GetOAuth2TokensOptions, OAuth2Tokens } from './interfaces';
@@ -27,7 +27,7 @@ abstract class OAuth2Client {
     };
 
     if (options.verifier) {
-      const challenge = createChallenge(options.verifier);
+      const challenge = await PKCE.createChallenge(options.verifier);
       requestParams.code_challenge = challenge;
       requestParams.code_challenge_method = 'S256';
     }

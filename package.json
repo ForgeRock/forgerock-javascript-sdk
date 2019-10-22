@@ -1,6 +1,6 @@
 {
   "name": "@forgerock/javascript-sdk",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "description": "ForgeRock JavaScript SDK",
   "main": "./lib/",
   "module": "./lib-esm/",
@@ -58,8 +58,6 @@
     "chai": "^4.2.0",
     "copyfiles": "^2.1.1",
     "cpy-cli": "^2.0.0",
-    "crypto": "^1.0.1",
-    "crypto-browserify": "^3.12.0",
     "dotenv": "^8.0.0",
     "http-server": "^0.11.1",
     "jest": "^24.8.0",
