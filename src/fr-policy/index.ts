@@ -1,124 +1,113 @@
-import { parseErrors, parseFailedPolicyRequirement, parsePolicyRequirement } from '..';
+// {
+//   "code": 403,
+//   "reason": "Forbidden",
+//   "message": "Policy validation failed",
+//   "detail": {
+//     "result": false,
+//     "failedPolicyRequirements": [
+//       {
+//         "policyRequirements": [{ "policyRequirement": "UNIQUE" }],
+//         "property": "userName"
+//       }
+//     ]
+//   }
+// }
 
-describe('The IDM error handling', () => {
-  it('returns a human readable error message', () => {
+import { PolicyMessage, PolicyName } from './enums';
+import {
+  ErrorResponse,
+  FailedPolicyRequirement,
+  PolicyRequirement,
+  } from './interfaces';
 
-    const property = 'userName';
-    const policyRequirementsTests = [
-      {
-        expectedString: `${property} must be at least 6 characters`,        policy: {
-          params: {
-            minLength: 6,
-          },
-          policyRequirement: 'MIN_LENGTH',
-        },
-      }, {
-        expectedString: `${property} must be unique`,
-        policy: {
-          policyRequirement: 'UNIQUE',
-        },
-      }, {
-        expectedString: `${property}: Unknown policy requirement "CUSTOM_POLICY"`,
-        policy: {
-          params: {
-            minLowerCase: 6,
-          },
-          policyRequirement: 'CUSTOM_POLICY',
-        },
-      },
-    ];
+abstract class FRPOLICY {
 
-    policyRequirementsTests.forEach((test) => {
-      const message = parsePolicyRequirement(property, test.policy);
-      expect(message).toBe(test.expectedString);
+  public static parseErrors(err: ErrorResponse): object[] {
+    let errors: object[] = [];
+    if (err.detail && err.detail.failedPolicyRequirements) {
+      errors = [];
+      err.detail.failedPolicyRequirements.map((x) => {
+        errors.push.apply(errors, [{ messages: this.parseFailedPolicyRequirement(x), detail: x}]);
+      });
+    }
+    return errors;
+  }
+
+ public static parseFailedPolicyRequirement(policy: FailedPolicyRequirement): string[] {
+    const errors: string[] = [];
+    policy.policyRequirements.map((x) => {
+      errors.push(this.parsePolicyRequirement(policy.property, x));
     });
-  });
+    return errors;
+  }
 
-  it('groups failed policies for one property', () => {
+  public static parsePolicyRequirement(property: string, policy: PolicyRequirement): string {
 
-    const policy = {
-      policyRequirements: [
-        {
-          policyRequirement: 'UNIQUE',
-        }, {
-          params: {
-            minLength: 6,
-          },
-          policyRequirement: 'MIN_LENGTH',
-        },
-      ],
-      property: 'userName',
-    };
+    // Object.keys(PolicyName).forEach((name) => {
+    //   if (PolicyName[name] === policy.policyRequirement) {
 
-    const messageArray = parseFailedPolicyRequirement(policy);
-    expect(messageArray).toEqual(
-      ['userName must be unique', 'userName must be at least 6 characters'],
-    );
-  });
+    //   }
+    // });
 
-  it('returns an object array with a human readable error and the server error', () => {
+    // for (const key in PolicyName) {
+    //   if ( PolicyName[key as PolicyName]  === policy.policyRequirement) {
 
-    const errorResponse = {
-      code: 403,
-      reason: 'Forbidden',
-      message: 'Policy validation failed',
-      detail: {
-        failedPolicyRequirements: [
-          {
-            policyRequirements: [{
-              policyRequirement: 'UNIQUE',
-            }, {
-              params: {
-                minLength: 6,
-              },
-              policyRequirement: 'MIN_LENGTH',
-            }],
-            property: 'userName',
-          },          {
-            policyRequirements: [{
-              policyRequirement: 'MIN_CAPS',
-            }, {
-              params: {
-                minLength: 6,
-              },
-              policyRequirement: 'MIN_LENGTH',
-            }],
-            property: 'password',
-          },
-        ],
-        result: false,
-      },
-    };
-    const expected =   [
-      {
-        policyMessages: [
-          'userName must be unique',
-          'userName must be at least 6 characters',
-        ],
-        rawError: {
-          policyRequirements: [
-            { policyRequirement: 'UNIQUE' },
-            { params: { minLength: 6 }, policyRequirement: 'MIN_LENGTH' },
-          ],
-          property: 'userName',
-        },
-      },
-      {
-        policyMessages: [
-          'password: Unknown policy requirement "MIN_CAPS"',
-          'password must be at least 6 characters',
-        ],
-        rawError: {
-          policyRequirements: [
-            { policyRequirement: 'MIN_CAPS' },
-            { params: { minLength: 6 }, policyRequirement: 'MIN_LENGTH' },
-          ],
-          property: 'password',
-        },
-      },
-    ];
+    //   }
+    // }
+    switch (policy.policyRequirement) {
+      case PolicyName.required:
+        return PolicyMessage.required(property);
+      case PolicyName.unique:
+        return PolicyMessage.unique(property);
+      case PolicyName.matchRegexp:
+        return PolicyMessage.matchRegexp(property);
+      case PolicyName.validType:
+        return PolicyMessage.validType(property);
+      case PolicyName.validQueryFilter:
+        return PolicyMessage.validQueryFilter(property);
+      case PolicyName.validArrayItems:
+        return PolicyMessage.validArrayItems(property);
+      case PolicyName.validDate:
+        return PolicyMessage.validDate(property);
+      case PolicyName.validEmailAddress:
+        return PolicyMessage.validEmailAddress(property);
+      case PolicyName.validNameFormat:
+        return PolicyMessage.validNameFormat(property);
+      case PolicyName.validPhoneFormat:
+        return PolicyMessage.validPhoneFormat(property);
+      case PolicyName.leastCapitalLetters:
+        const numCaps: number = policy.params.numCaps;
+        return PolicyMessage.leastCapitalLetters(property, numCaps);
+      case PolicyName.leastNumbers:
+        const numNums: number = policy.params.numNums;
+        return PolicyMessage.leastNumbers(property, numNums);
+      case PolicyName.validNumber:
+        return PolicyMessage.validNumber(property);
+      case PolicyName.minimumNumber:
+        return PolicyMessage.minimumNumber(property);
+      case PolicyName.maximumNumber:
+        return PolicyMessage.maximumNumber(property);
+      case PolicyName.minLenght:
+        const minLength: number = policy.params.minLength;
+        return PolicyMessage.minLength(property, minLength);
+      case PolicyName.maxLength:
+        const maxLength = policy.params.maxLength;
+        return PolicyMessage.maxLength(property, maxLength);
+      case PolicyName.noOthers:
+        const disallowed: string = policy.params.minLength;
+        return PolicyMessage.noOthers(property, disallowed);
+      case PolicyName.noCharacters:
+        const characters: string = policy.params.minLength;
+        return PolicyMessage.noCharacters(property, characters);
+      case PolicyName.noDuplicates:
+        const duplicates: string = policy.params.minLength;
+        return PolicyMessage.noDuplicates(property, duplicates);
+      default:
+        return `${property}: Unknown policy requirement "${policy.policyRequirement}"`;
+    }
+  }
+}
 
-    const errorObjArr = parseErrors(errorResponse);
-    expect(errorObjArr).toEqual(expected);
-  });
-});
+FRPOLICY.parsePolicyRequirement('username', { policyRequirement: 'UNIQUE'});
+
+export default FRPOLICY;

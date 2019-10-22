@@ -2,6 +2,8 @@ import { Step } from '../auth/interfaces';
 import { StepType } from './enums';
 import { AuthResponse, FailureDetail } from './interfaces';
 
+// add method to detect policy failure
+// usage of that method and the fr-policy integration will fall on the developer
 class FRLoginFailure implements AuthResponse {
   /**
    * The type of step.
