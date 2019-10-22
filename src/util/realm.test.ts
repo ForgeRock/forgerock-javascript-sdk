@@ -1,4 +1,4 @@
-import { getRealmUrlPath } from '..';
+import { getRealmUrlPath } from './realm';
 
 describe('The realm utility', () => {
   it('creates the correct paths', () => {

@@ -1,5 +1,5 @@
-function nonce(length: number = 15): () => number {
-  let last: number = -1;
+function nonce(length = 15): () => number {
+  let last = -1;
   let repeat = 0;
 
   if (length < 4 || length > 15) {

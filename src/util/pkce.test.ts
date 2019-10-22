@@ -1,6 +1,12 @@
+/**
+ * @jest-environment jsdom
+ */
+
 import crypto from 'crypto';
 import { TextEncoder } from 'util';
-import PKCE from '..';
+import PKCE from './pkce';
+
+declare let window: any;
 
 Object.defineProperty(window, 'crypto', {
   value: {

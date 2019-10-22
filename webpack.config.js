@@ -2,21 +2,17 @@ const { exec } = require('child_process');
 const path = require('path');
 const webpack = require('webpack');
 const TsConfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
-const TSLintPlugin = require('tslint-webpack-plugin');
 
 module.exports = (env) => {
   const isDev = env.DEV === 'yes';
 
   const plugins = [
     new webpack.WatchIgnorePlugin([/css\.d\.ts$/, /bundles|docs|lib|lib\-esm|samples/]),
-    new TSLintPlugin({
-      files: ['./src/**/*.ts'],
-    }),
     {
       apply: (compiler) => {
         compiler.hooks.afterEmit.tap('AfterEmitPlugin', (compilation) => {
           const cmds = [
-            'cpy ./bundles/index.js ./e2e/site --rename=fr-sdk.js',
+            'cpy ./bundles/index.js ./tests/e2e/test-site',
             'copyup ./bundles/index.js* ./samples/js/',
             'copyup ./src/**/*.{html,scss} lib',
             'copyup ./src/**/*.{html,scss} lib-esm',

@@ -1,5 +1,5 @@
-import Dispatcher from '..';
-import { FREvent } from '../interfaces';
+import { FREvent } from './interfaces';
+import Dispatcher from '.';
 
 describe('The event dispatcher', () => {
   const dispatcher = new Dispatcher();
@@ -7,7 +7,7 @@ describe('The event dispatcher', () => {
   it('registers and deregisters listeners', () => {
     const type = 'test';
     const event: FREvent = { type };
-    const listener = jest.fn(() => {});
+    const listener = jest.fn();
 
     dispatcher.addEventListener(type, listener);
     dispatcher.dispatchEvent(event);
@@ -20,9 +20,7 @@ describe('The event dispatcher', () => {
 
   it('only calls listeners for the correct type', () => {
     const event: FREvent = { type: 'foo' };
-    const listener = jest.fn(() => {
-      console.log('This listener should not be called');
-    });
+    const listener = jest.fn();
 
     dispatcher.addEventListener('bar', listener);
     dispatcher.dispatchEvent(event);
@@ -32,7 +30,7 @@ describe('The event dispatcher', () => {
   it('clears all listeners', () => {
     const event1: FREvent = { type: 'foo' };
     const event2: FREvent = { type: 'bar' };
-    const listener = jest.fn(() => {});
+    const listener = jest.fn();
 
     dispatcher.addEventListener('foo', listener);
     dispatcher.addEventListener('bar', listener);
@@ -52,7 +50,7 @@ describe('The event dispatcher', () => {
     const dispatcher2 = new Dispatcher();
     const eventType = 'foo';
     const event: FREvent = { type: eventType };
-    const listener = jest.fn(() => {});
+    const listener = jest.fn();
     dispatcher.addEventListener(eventType, listener);
     dispatcher2.addEventListener(eventType, listener);
 
