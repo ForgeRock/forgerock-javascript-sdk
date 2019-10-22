@@ -23,6 +23,8 @@ interface Step {
  */
 interface StepDetail {
   failureUrl?: string;
+  result?: boolean;
+  failedPolicyRequirements?: object[];
 }
 
 /**

@@ -1,4 +1,4 @@
-import { parseErrors, parseFailedPolicyRequirement, parsePolicyRequirement } from '..';
+import FRPOLICY from '..';
 
 describe('The IDM error handling', () => {
   it('returns a human readable error message', () => {
@@ -6,7 +6,8 @@ describe('The IDM error handling', () => {
     const property = 'userName';
     const policyRequirementsTests = [
       {
-        expectedString: `${property} must be at least 6 characters`,        policy: {
+        expectedString: `${property} must be at least 6 characters`,
+        policy: {
           params: {
             minLength: 6,
           },
@@ -29,7 +30,7 @@ describe('The IDM error handling', () => {
     ];
 
     policyRequirementsTests.forEach((test) => {
-      const message = parsePolicyRequirement(property, test.policy);
+      const message = FRPOLICY.parsePolicyRequirement(property, test.policy);
       expect(message).toBe(test.expectedString);
     });
   });
@@ -50,7 +51,7 @@ describe('The IDM error handling', () => {
       property: 'userName',
     };
 
-    const messageArray = parseFailedPolicyRequirement(policy);
+    const messageArray = FRPOLICY.parseFailedPolicyRequirement(policy);
     expect(messageArray).toEqual(
       ['userName must be unique', 'userName must be at least 6 characters'],
     );
@@ -76,7 +77,7 @@ describe('The IDM error handling', () => {
             property: 'userName',
           },          {
             policyRequirements: [{
-              policyRequirement: 'MIN_CAPS',
+              policyRequirement: 'AT_LEAST_X_CAPITAL_LETTERS',
             }, {
               params: {
                 minLength: 6,
@@ -91,11 +92,11 @@ describe('The IDM error handling', () => {
     };
     const expected =   [
       {
-        policyMessages: [
+        messages: [
           'userName must be unique',
           'userName must be at least 6 characters',
         ],
-        rawError: {
+        detail: {
           policyRequirements: [
             { policyRequirement: 'UNIQUE' },
             { params: { minLength: 6 }, policyRequirement: 'MIN_LENGTH' },
@@ -104,11 +105,11 @@ describe('The IDM error handling', () => {
         },
       },
       {
-        policyMessages: [
+        messages: [
           'password: Unknown policy requirement "MIN_CAPS"',
           'password must be at least 6 characters',
         ],
-        rawError: {
+        detail: {
           policyRequirements: [
             { policyRequirement: 'MIN_CAPS' },
             { params: { minLength: 6 }, policyRequirement: 'MIN_LENGTH' },
@@ -118,7 +119,7 @@ describe('The IDM error handling', () => {
       },
     ];
 
-    const errorObjArr = parseErrors(errorResponse);
+    const errorObjArr = FRPOLICY.parseErrors(errorResponse);
     expect(errorObjArr).toEqual(expected);
   });
 });
