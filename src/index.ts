@@ -37,6 +37,7 @@ import { Tokens } from './shared/interfaces';
 import TokenManager, { GetTokensOptions } from './token-manager';
 import TokenStorage from './token-storage';
 import UserManager from './user-manager';
+import PKCE from './util/pkce';
 import LocalStorage from './util/storage';
 
 export {
@@ -76,6 +77,7 @@ export {
   OAuth2Client,
   OAuth2Tokens,
   PasswordCallback,
+  PKCE,
   PollingWaitCallback,
   ReCaptchaCallback,
   ResponseType,
