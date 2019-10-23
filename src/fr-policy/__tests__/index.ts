@@ -62,7 +62,7 @@ describe('The IDM error handling', () => {
   it('error handling is overwritable by customer', () => {
     const test = {
       customMessage: {
-        [PolicyKey.unique]: (property: string) => (
+        [PolicyKey.Unique]: (property: string) => (
           `this is a custom message for "UNIQUE" policy of ${property}`
         ),
       },
@@ -136,7 +136,7 @@ describe('The IDM error handling', () => {
       },
     };
     const customMessage = {
-      [PolicyKey.unique]: (property: string) => (
+      [PolicyKey.Unique]: (property: string) => (
         `this is a custom message for "UNIQUE" policy of ${property}`
       ),
       CUSTOM_POLICY: (property: string, params: any) => (
