@@ -1,48 +1,78 @@
 import FRPolicy from '..';
+import { PolicyKey } from '../enums';
 
 describe('The IDM error handling', () => {
+  const property = 'userName';
+
   it('returns a human readable error message', () => {
+    const test = {
+      expectedString: `${property} must be unique`,
+      policy: {
+        policyRequirement: 'UNIQUE',
+      },
+    };
+    const message = FRPolicy.parsePolicyRequirement(property, test.policy);
+    expect(message).toBe(test.expectedString);
+  });
 
-    const property = 'userName';
-    const policyRequirementsTests = [
-      {
-        expectedString: `${property} must be at least 6 characters`,
-        policy: {
-          params: {
-            minLength: 6,
-          },
-          policyRequirement: 'MIN_LENGTH',
+  it('returns a human readable error message with param data', () => {
+    const test = {
+      expectedString: `${property} must be at least 6 characters`,
+      policy: {
+        params: {
+          minLength: 6,
         },
-      }, {
-        expectedString: `${property} must be unique`,
-        policy: {
-          policyRequirement: 'UNIQUE',
-        },
-      }, {
-        expectedString: `${property}: Unknown policy requirement "CUSTOM_POLICY"`,
-        policy: {
-          params: {
-            minLowerCase: 6,
-          },
-          policyRequirement: 'CUSTOM_POLICY',
-        },
-      }, {
-        customMessage: {
-          unique: (property: string) => (
-            `this is a custom message for unique policy of ${property}`
-          ),
-        },
-        expectedString: `this is a custom message for unique policy of ${property}`,
-        policy: {
-          policyRequirement: 'UNIQUE',
-        },
-      }
-    ];
+        policyRequirement: 'MIN_LENGTH',
+      },
+    };
+    const message = FRPolicy.parsePolicyRequirement(property, test.policy);
+    expect(message).toBe(test.expectedString);
+  });
 
-    policyRequirementsTests.forEach((test) => {
-      const message = FRPolicy.parsePolicyRequirement(property, test.policy, test.customMessage);
-      expect(message).toBe(test.expectedString);
-    });
+  it('returns a human readable generic message for unknown error', () => {
+    const test = {
+      expectedString: `${property}: Unknown policy requirement "SOME_UNKNOWN_POLICY"`,
+      policy: {
+        params: {
+          unknownParam: 6,
+        },
+        policyRequirement: 'SOME_UNKNOWN_POLICY',
+      },
+    };
+    const message = FRPolicy.parsePolicyRequirement(property, test.policy);
+    expect(message).toBe(test.expectedString);
+  });
+
+  it('error handling is extensible by customer', () => {
+    const test = {
+      customMessage: {
+        CUSTOM_POLICY: (property: string, params: any) => (
+          `this is a custom message for "${params.policyRequirement}" policy of ${property}`
+        ),
+      },
+      expectedString: `this is a custom message for "CUSTOM_POLICY" policy of ${property}`,
+      policy: {
+        policyRequirement: 'CUSTOM_POLICY',
+      },
+    };
+    const message = FRPolicy.parsePolicyRequirement(property, test.policy, test.customMessage);
+    expect(message).toBe(test.expectedString);
+  });
+
+  it('error handling is overwritable by customer', () => {
+    const test = {
+      customMessage: {
+        [PolicyKey.unique]: (property: string) => (
+          `this is a custom message for "UNIQUE" policy of ${property}`
+        ),
+      },
+      expectedString: `this is a custom message for "UNIQUE" policy of ${property}`,
+      policy: {
+        policyRequirement: 'UNIQUE',
+      },
+    };
+    const message = FRPolicy.parsePolicyRequirement(property, test.policy, test.customMessage);
+    expect(message).toBe(test.expectedString);
   });
 
   it('groups failed policies for one property', () => {
@@ -83,6 +113,8 @@ describe('The IDM error handling', () => {
                 minLength: 6,
               },
               policyRequirement: 'MIN_LENGTH',
+            }, {
+              policyRequirement: 'CUSTOM_POLICY',
             }],
             property: 'userName',
           },          {
@@ -104,20 +136,25 @@ describe('The IDM error handling', () => {
       },
     };
     const customMessage = {
-      unique: (property: string) => (
-        `this is a custom message for unique policy of ${property}`
+      [PolicyKey.unique]: (property: string) => (
+        `this is a custom message for "UNIQUE" policy of ${property}`
+      ),
+      CUSTOM_POLICY: (property: string, params: any) => (
+        `this is a custom message for "${params.policyRequirement}" policy of ${property}`
       ),
     };
     const expected =   [
       {
         messages: [
-          'this is a custom message for unique policy of userName',
+          'this is a custom message for "UNIQUE" policy of userName',
           'userName must be at least 6 characters',
+          'this is a custom message for "CUSTOM_POLICY" policy of userName',
         ],
         detail: {
           policyRequirements: [
             { policyRequirement: 'UNIQUE' },
             { params: { minLength: 6 }, policyRequirement: 'MIN_LENGTH' },
+            { policyRequirement: 'CUSTOM_POLICY' },
           ],
           property: 'userName',
         },

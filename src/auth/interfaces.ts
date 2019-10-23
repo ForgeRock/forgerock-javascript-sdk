@@ -52,6 +52,7 @@ interface PolicyParams {
   disallowedFields: string;
   duplicateValue: string;
   policyRequirement: string;
+  [key: string]: any;
 }
 
 /**

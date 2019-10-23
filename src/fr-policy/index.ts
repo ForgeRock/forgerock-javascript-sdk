@@ -1,6 +1,6 @@
 import { Step } from 'auth/interfaces';
 import { FailedPolicyRequirement, PolicyRequirement } from '../auth/interfaces';
-import { PolicyMessage, PolicyName } from './enums';
+import { PolicyKey, policyMessage } from './enums';
 import { MessageCreator, ProcessedPropertyError } from './interfaces';
 
 abstract class FRPolicy {
@@ -41,19 +41,17 @@ abstract class FRPolicy {
     policy: PolicyRequirement,
     customMessage: MessageCreator = {},
   ): string {
-    const policyName: { [key: string]: string } = PolicyName;
-    const policyMessage: MessageCreator = { ...PolicyMessage, ...customMessage };
-    const policyRequirement: string = policy.policyRequirement;
-    let message = policyMessage.unknownPolicy(property, { policyRequirement });
+    const policyRequirement = policy.policyRequirement;
+    const params = policy.params ? { ...policy.params, policyRequirement } : { policyRequirement };
+    const message = (
+      customMessage[policyRequirement]
+      || policyMessage[policyRequirement]
+      || policyMessage[PolicyKey.unknownPolicy]
+    )(property, params);
 
-    Object.keys(policyName).forEach((name) => {
-      if (policyName[name] === policyRequirement) {
-        const params = policy.params || {};
-        message = policyMessage[name](property, params);
-      }
-    });
     return message;
   }
 }
 
 export default FRPolicy;
+export { PolicyKey };

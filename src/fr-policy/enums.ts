@@ -1,7 +1,8 @@
 import { PolicyParams } from 'auth/interfaces';
 import { plural } from '../util/strings';
+import { MessageCreator } from './interfaces';
 
-enum PolicyName {
+enum PolicyKey {
   required = 'REQUIRED',
   unique = 'UNIQUE',
   matchRegexp = 'MATCH_REGEXP',
@@ -22,88 +23,89 @@ enum PolicyName {
   noOthers = 'CANNOT_CONTAIN_OTHERS',
   noCharacters = 'CANNOT_CONTAIN_CHARACTERS',
   noDuplicates = 'CANNOT_CONTAIN_DUPLICATES',
+  unknownPolicy = 'UNKNOWN_POLICY',
 }
 
-namespace PolicyMessage {
-  export const required = (property: string) => (
+const policyMessage: MessageCreator = {
+  [PolicyKey.required]: (property: string) => (
     `${property} is required`
-  );
-  export const unique = (property: string) => (
+  ),
+  [PolicyKey.unique] : (property: string) => (
     `${property} must be unique`
-  );
-  export const matchRegexp = (property: string) => (
+  ),
+  [PolicyKey.matchRegexp]: (property: string) => (
     `${property} has failed the "MATCH_REGEXP" policy`
-  );
-  export const validType = (property: string) => (
+  ),
+  [PolicyKey.validType]: (property: string) => (
     `${property} has failed the "VALID_TYPE" policy`
-  );
-  export const validQueryFilter = (property: string) => (
+  ),
+  [PolicyKey.validQueryFilter]: (property: string) => (
     `${property} has failed the "VALID_QUERY_FILTER" policy`
-  );
-  export const validArrayItems = (property: string) => (
+  ),
+  [PolicyKey.validArrayItems]: (property: string) => (
     `${property} has failed the "VALID_ARRAY_ITEMS" policy`
-  );
-  export const validDate = (property: string) => (
+  ),
+  [PolicyKey.validDate]: (property: string) => (
     `${property} has an invalid date`
-  );
-  export const validEmailAddress = (property: string) => (
+  ),
+  [PolicyKey.validEmailAddress]: (property: string) => (
     `${property} has an invalid email address`
-  );
-  export const validNameFormat = (property: string) => (
+  ),
+  [PolicyKey.validNameFormat]: (property: string) => (
     `${property} has an invalid name format`
-  );
-  export const validPhoneFormat = (property: string) => (
+  ),
+  [PolicyKey.validPhoneFormat]: (property: string) => (
     `${property} has an invalid phone number`
-  );
-  export const leastCapitalLetters = (
+  ),
+  [PolicyKey.leastCapitalLetters]: (
     property: string, params: Pick<PolicyParams, 'numCaps'>) => {
     const numCaps: number = params.numCaps;
     return `${property} must contain at least ${numCaps} capital ${plural(numCaps, 'letter')}`;
-  };
-  export const leastNumbers = (property: string, params: Pick<PolicyParams, 'numNums'>) => {
+  },
+  [PolicyKey.leastNumbers]: (property: string, params: Pick<PolicyParams, 'numNums'>) => {
     const numNums: number = params.numNums;
     return `${property} must contain at least ${numNums} numeric ${plural(numNums, 'value')}`;
-  };
-  export const validNumber = (property: string) => (
+  },
+  [PolicyKey.validNumber]: (property: string) => (
     `${property} has an invalid number`
-  );
-  export const minimumNumber = (property: string) => (
+  ),
+  [PolicyKey.minimumNumber]: (property: string) => (
     `${property} has failed the "MINIMUM_NUMBER_VALUE" policy`
-  );
-  export const maximumNumber = (property: string) => (
+  ),
+  [PolicyKey.maximumNumber]: (property: string) => (
     `${property} has failed the "MAXIMUM_NUMBER_VALUE" policy`
-  );
-  export const minLength = (property: string, params: Pick<PolicyParams, 'minLength'>) => {
+  ),
+  [PolicyKey.minLength]: (property: string, params: Pick<PolicyParams, 'minLength'>) => {
     const minLength: number = params.minLength;
     return `${property} must be at least ${minLength} ${plural(minLength, 'character')}`;
-  };
-  export const maxLength = (property: string, params: Pick<PolicyParams, 'maxLength'>) => {
+  },
+  [PolicyKey.maxLength]: (property: string, params: Pick<PolicyParams, 'maxLength'>) => {
     const maxLength: number = params.maxLength;
     return `${property} must be at most ${maxLength} ${plural(maxLength, 'character')}`;
-  };
-  export const noOthers = (
+  },
+  [PolicyKey.noOthers]: (
     property: string, params: Pick<PolicyParams, 'disallowedFields'>,
   ) => {
     const disallowedFields: string = params.disallowedFields;
     return `${property} must not contain: "${disallowedFields}"`;
-  };
-  export const noCharacters = (
+  },
+  [PolicyKey.noCharacters]: (
     property: string, params: Pick<PolicyParams, 'forbiddenChars'>,
   ) => {
     const forbiddenChars: string = params.forbiddenChars;
     return `${property} must not contain following characters: "${forbiddenChars}"`;
-  };
-  export const noDuplicates = (
+  },
+  [PolicyKey.noDuplicates]: (
     property: string, params: Pick<PolicyParams, 'duplicateValue'>,
   ) => {
     const duplicateValue: string = params.duplicateValue;
     return `${property}  must not contain duplicates: "${duplicateValue}"`;
-  };
-  export const unknownPolicy = (
+  },
+  [PolicyKey.unknownPolicy]: (
     property: string, params: Pick<PolicyParams, 'policyRequirement'>,
   ) => (
     `${property}: Unknown policy requirement "${params.policyRequirement}"`
-  );
-}
+  ),
+};
 
-export { PolicyName, PolicyMessage };
+export { PolicyKey, policyMessage };
