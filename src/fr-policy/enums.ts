@@ -32,24 +32,16 @@ namespace PolicyMessage {
     `${property} must be unique`
   );
   export const matchRegexp = (property: string) => (
-    /* no current error message */
     `${property} has failed the "MATCH_REGEXP" policy`
-    /* no current error message */
   );
   export const validType = (property: string) => (
-    /* no current error message */
     `${property} has failed the "VALID_TYPE" policy`
-    /* no current error message */
   );
   export const validQueryFilter = (property: string) => (
-    /* no current error message */
     `${property} has failed the "VALID_QUERY_FILTER" policy`
-    /* no current error message */
   );
   export const validArrayItems = (property: string) => (
-    /* no current error message */
     `${property} has failed the "VALID_ARRAY_ITEMS" policy`
-    /* no current error message */
   );
   export const validDate = (property: string) => (
     `${property} has an invalid date`
@@ -76,14 +68,10 @@ namespace PolicyMessage {
     `${property} has an invalid number`
   );
   export const minimumNumber = (property: string) => (
-    /* no current error message */
     `${property} has failed the "MINIMUM_NUMBER_VALUE" policy`
-    /* no current error message */
   );
   export const maximumNumber = (property: string) => (
-    /* no current error message */
     `${property} has failed the "MAXIMUM_NUMBER_VALUE" policy`
-    /* no current error message */
   );
   export const minLength = (property: string, params: Pick<PolicyParams, 'minLength'>) => {
     const minLength: number = params.minLength;
