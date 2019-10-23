@@ -39,8 +39,15 @@ interface FailedPolicyRequirement {
  * Represents a failed policy policy and failed policy params.
  */
 interface PolicyRequirement {
-  params?: any;
+  params?: Partial<PolicyParams>;
   policyRequirement: string;
+}
+
+interface PolicyParams {
+  numCaps: number;
+  numNums: number;
+  minLength: number;
+  maxLength: number;
 }
 
 /**
@@ -61,4 +68,4 @@ interface NameValue {
   value: any;
 }
 
-export { Callback, NameValue, Step, StepDetail, FailedPolicyRequirement, PolicyRequirement };
+export { Callback, NameValue, Step, StepDetail, FailedPolicyRequirement, PolicyRequirement, PolicyParams };
