@@ -39,8 +39,8 @@ class FRLoginFailure implements AuthResponse {
   /**
    * Gets processed failure message.
    */
-  public getProcessedMessage(messagingOverride?: MessageCreator): ProcessedPropertyError[] {
-    return FRPolicy.parseErrors(this.payload, messagingOverride);
+  public getProcessedMessage(messageCreator?: MessageCreator): ProcessedPropertyError[] {
+    return FRPolicy.parseErrors(this.payload, messageCreator);
   }
 
   /**

@@ -3,108 +3,108 @@ import { plural } from '../util/strings';
 import { MessageCreator } from './interfaces';
 
 enum PolicyKey {
-  required = 'REQUIRED',
-  unique = 'UNIQUE',
-  matchRegexp = 'MATCH_REGEXP',
-  validType = 'VALID_TYPE',
-  validQueryFilter = 'VALID_QUERY_FILTER',
-  validArrayItems = 'VALID_ARRAY_ITEMS',
-  validDate = 'VALID_DATE',
-  validEmailAddress = 'VALID_EMAIL_ADDRESS_FORMAT',
-  validNameFormat = 'VALID_NAME_FORMAT',
-  validPhoneFormat = 'VALID_PHONE_FORMAT',
-  leastCapitalLetters = 'AT_LEAST_X_CAPITAL_LETTERS',
-  leastNumbers = 'AT_LEAST_X_NUMBERS',
-  validNumber = 'VALID_NUMBER',
-  minimumNumber = 'MINIMUM_NUMBER_VALUE',
-  maximumNumber = 'MAXIMUM_NUMBER_VALUE',
-  minLength = 'MIN_LENGTH',
-  maxLength = 'MAX_LENGTH',
-  noOthers = 'CANNOT_CONTAIN_OTHERS',
-  noCharacters = 'CANNOT_CONTAIN_CHARACTERS',
-  noDuplicates = 'CANNOT_CONTAIN_DUPLICATES',
-  unknownPolicy = 'UNKNOWN_POLICY',
+  CannotContainCharacters = 'CANNOT_CONTAIN_CHARACTERS',
+  CannotContainDuplicates = 'CANNOT_CONTAIN_DUPLICATES',
+  CannotContainOthers = 'CANNOT_CONTAIN_OTHERS',
+  LeastCapitalLetters = 'AT_LEAST_X_CAPITAL_LETTERS',
+  LeastNumbers = 'AT_LEAST_X_NUMBERS',
+  MatchRegexp = 'MATCH_REGEXP',
+  MaximumNumber = 'MAXIMUM_NUMBER_VALUE',
+  MaxLength = 'MAX_LENGTH',
+  MinimumNumber = 'MINIMUM_NUMBER_VALUE',
+  MinLength = 'MIN_LENGTH',
+  Required = 'REQUIRED',
+  Unique = 'UNIQUE',
+  UnknownPolicy = 'UNKNOWN_POLICY',
+  ValidArrayItems = 'VALID_ARRAY_ITEMS',
+  ValidDate = 'VALID_DATE',
+  ValidEmailAddress = 'VALID_EMAIL_ADDRESS_FORMAT',
+  ValidNameFormat = 'VALID_NAME_FORMAT',
+  ValidNumber = 'VALID_NUMBER',
+  ValidPhoneFormat = 'VALID_PHONE_FORMAT',
+  ValidQueryFilter = 'VALID_QUERY_FILTER',
+  ValidType = 'VALID_TYPE',
 }
 
 const policyMessage: MessageCreator = {
-  [PolicyKey.required]: (property: string) => (
-    `${property} is required`
-  ),
-  [PolicyKey.unique] : (property: string) => (
-    `${property} must be unique`
-  ),
-  [PolicyKey.matchRegexp]: (property: string) => (
-    `${property} has failed the "MATCH_REGEXP" policy`
-  ),
-  [PolicyKey.validType]: (property: string) => (
-    `${property} has failed the "VALID_TYPE" policy`
-  ),
-  [PolicyKey.validQueryFilter]: (property: string) => (
-    `${property} has failed the "VALID_QUERY_FILTER" policy`
-  ),
-  [PolicyKey.validArrayItems]: (property: string) => (
-    `${property} has failed the "VALID_ARRAY_ITEMS" policy`
-  ),
-  [PolicyKey.validDate]: (property: string) => (
-    `${property} has an invalid date`
-  ),
-  [PolicyKey.validEmailAddress]: (property: string) => (
-    `${property} has an invalid email address`
-  ),
-  [PolicyKey.validNameFormat]: (property: string) => (
-    `${property} has an invalid name format`
-  ),
-  [PolicyKey.validPhoneFormat]: (property: string) => (
-    `${property} has an invalid phone number`
-  ),
-  [PolicyKey.leastCapitalLetters]: (
-    property: string, params: Pick<PolicyParams, 'numCaps'>) => {
-    const numCaps: number = params.numCaps;
-    return `${property} must contain at least ${numCaps} capital ${plural(numCaps, 'letter')}`;
-  },
-  [PolicyKey.leastNumbers]: (property: string, params: Pick<PolicyParams, 'numNums'>) => {
-    const numNums: number = params.numNums;
-    return `${property} must contain at least ${numNums} numeric ${plural(numNums, 'value')}`;
-  },
-  [PolicyKey.validNumber]: (property: string) => (
-    `${property} has an invalid number`
-  ),
-  [PolicyKey.minimumNumber]: (property: string) => (
-    `${property} has failed the "MINIMUM_NUMBER_VALUE" policy`
-  ),
-  [PolicyKey.maximumNumber]: (property: string) => (
-    `${property} has failed the "MAXIMUM_NUMBER_VALUE" policy`
-  ),
-  [PolicyKey.minLength]: (property: string, params: Pick<PolicyParams, 'minLength'>) => {
-    const minLength: number = params.minLength;
-    return `${property} must be at least ${minLength} ${plural(minLength, 'character')}`;
-  },
-  [PolicyKey.maxLength]: (property: string, params: Pick<PolicyParams, 'maxLength'>) => {
-    const maxLength: number = params.maxLength;
-    return `${property} must be at most ${maxLength} ${plural(maxLength, 'character')}`;
-  },
-  [PolicyKey.noOthers]: (
-    property: string, params: Pick<PolicyParams, 'disallowedFields'>,
-  ) => {
-    const disallowedFields: string = params.disallowedFields;
-    return `${property} must not contain: "${disallowedFields}"`;
-  },
-  [PolicyKey.noCharacters]: (
+  [PolicyKey.CannotContainCharacters]: (
     property: string, params: Pick<PolicyParams, 'forbiddenChars'>,
   ) => {
     const forbiddenChars: string = params.forbiddenChars;
     return `${property} must not contain following characters: "${forbiddenChars}"`;
   },
-  [PolicyKey.noDuplicates]: (
+  [PolicyKey.CannotContainDuplicates]: (
     property: string, params: Pick<PolicyParams, 'duplicateValue'>,
   ) => {
     const duplicateValue: string = params.duplicateValue;
     return `${property}  must not contain duplicates: "${duplicateValue}"`;
   },
-  [PolicyKey.unknownPolicy]: (
-    property: string, params: Pick<PolicyParams, 'policyRequirement'>,
+  [PolicyKey.CannotContainOthers]: (
+    property: string, params: Pick<PolicyParams, 'disallowedFields'>,
+  ) => {
+    const disallowedFields: string = params.disallowedFields;
+    return `${property} must not contain: "${disallowedFields}"`;
+  },
+  [PolicyKey.LeastCapitalLetters]: (
+    property: string, params: Pick<PolicyParams, 'numCaps'>) => {
+    const numCaps: number = params.numCaps;
+    return `${property} must contain at least ${numCaps} capital ${plural(numCaps, 'letter')}`;
+  },
+  [PolicyKey.LeastNumbers]: (property: string, params: Pick<PolicyParams, 'numNums'>) => {
+    const numNums: number = params.numNums;
+    return `${property} must contain at least ${numNums} numeric ${plural(numNums, 'value')}`;
+  },
+  [PolicyKey.MatchRegexp]: (property: string) => (
+    `${property} has failed the "MATCH_REGEXP" policy`
+  ),
+  [PolicyKey.MaximumNumber]: (property: string) => (
+    `${property} has failed the "MAXIMUM_NUMBER_VALUE" policy`
+  ),
+  [PolicyKey.MaxLength]: (property: string, params: Pick<PolicyParams, 'maxLength'>) => {
+    const maxLength: number = params.maxLength;
+    return `${property} must be at most ${maxLength} ${plural(maxLength, 'character')}`;
+  },
+  [PolicyKey.MinimumNumber]: (property: string) => (
+    `${property} has failed the "MINIMUM_NUMBER_VALUE" policy`
+  ),
+  [PolicyKey.MinLength]: (property: string, params: Pick<PolicyParams, 'minLength'>) => {
+    const minLength: number = params.minLength;
+    return `${property} must be at least ${minLength} ${plural(minLength, 'character')}`;
+  },
+  [PolicyKey.Required]: (property: string) => (
+    `${property} is required`
+  ),
+  [PolicyKey.Unique] : (property: string) => (
+    `${property} must be unique`
+  ),  [
+  PolicyKey.UnknownPolicy]: (
+    property: string, params: { policyRequirement: string },
   ) => (
     `${property}: Unknown policy requirement "${params.policyRequirement}"`
+  ),
+  [PolicyKey.ValidArrayItems]: (property: string) => (
+    `${property} has failed the "VALID_ARRAY_ITEMS" policy`
+  ),
+  [PolicyKey.ValidDate]: (property: string) => (
+    `${property} has an invalid date`
+  ),
+  [PolicyKey.ValidEmailAddress]: (property: string) => (
+    `${property} has an invalid email address`
+  ),
+  [PolicyKey.ValidNameFormat]: (property: string) => (
+    `${property} has an invalid name format`
+  ),
+  [PolicyKey.ValidNumber]: (property: string) => (
+    `${property} has an invalid number`
+  ),
+  [PolicyKey.ValidPhoneFormat]: (property: string) => (
+    `${property} has an invalid phone number`
+  ),
+  [PolicyKey.ValidQueryFilter]: (property: string) => (
+    `${property} has failed the "VALID_QUERY_FILTER" policy`
+  ),
+  [PolicyKey.ValidType]: (property: string) => (
+    `${property} has failed the "VALID_TYPE" policy`
   ),
 };
 

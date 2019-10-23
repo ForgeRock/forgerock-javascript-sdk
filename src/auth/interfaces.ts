@@ -51,7 +51,6 @@ interface PolicyParams {
   forbiddenChars: string;
   disallowedFields: string;
   duplicateValue: string;
-  policyRequirement: string;
   [key: string]: any;
 }
 
