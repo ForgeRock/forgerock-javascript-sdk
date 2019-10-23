@@ -1,3 +1,4 @@
+import { PolicyParams } from 'auth/interfaces';
 import { plural } from '../util/strings';
 
 enum PolicyName {
@@ -16,7 +17,7 @@ enum PolicyName {
   validNumber = 'VALID_NUMBER',
   minimumNumber = 'MINIMUM_NUMBER_VALUE',
   maximumNumber = 'MAXIMUM_NUMBER_VALUE',
-  minLenght = 'MIN_LENGTH',
+  minLength = 'MIN_LENGTH',
   maxLength = 'MAX_LENGTH',
   noOthers = 'CANNOT_CONTAIN_OTHERS',
   noCharacters = 'CANNOT_CONTAIN_CHARACTERS',
@@ -62,12 +63,15 @@ namespace PolicyMessage {
   export const validPhoneFormat = (propertyName: string) => (
     `${propertyName} has an invalid phone number`
   );
-  export const leastCapitalLetters = (propertyName: string, numCaps: number) => (
-    `${propertyName} must contain at least ${numCaps} capital ${plural(numCaps, 'letter')}`
-  );
-  export const leastNumbers = (propertyName: string, numNums: number) => (
-    `${propertyName} must contain at least ${numNums} numeric ${plural(numNums, 'value')}`
-  );
+  export const leastCapitalLetters = (
+    propertyName: string, params: Pick<PolicyParams, 'numCaps'>) => {
+    const numCaps: number = params.numCaps;
+    return `${propertyName} must contain at least ${numCaps} capital ${plural(numCaps, 'letter')}`;
+  };
+  export const leastNumbers = (propertyName: string, params: Pick<PolicyParams, 'numNums'>) => {
+    const numNums: number = params.numNums;
+    return `${propertyName} must contain at least ${numNums} numeric ${plural(numNums, 'value')}`;
+  };
   export const validNumber = (propertyName: string) => (
     `${propertyName} has an invalid number`
   );
@@ -81,21 +85,23 @@ namespace PolicyMessage {
     `${propertyName}`
     /* no current error message */
   );
-  export const minLength = (propertyName: string, minLength: number) => (
-    `${propertyName} must be at least ${minLength} ${plural(minLength, 'character')}`
-  );
-  export const maxLength = (propertyName: string, maxLength: number) => (
-    `${propertyName} must be at most ${maxLength} ${plural(maxLength, 'character')}`
-  );
-  export const noOthers = (propertyName: string, disallowedFields: string) => (
-    `${propertyName} must not contain: ${disallowedFields}`
-  );
-  export const noCharacters = (propertyName: string, forbiddenChars: string) => (
-    `${propertyName} must not contain following characters: ${forbiddenChars}`
-  );
-  export const noDuplicates = (propertyName: string, duplicateValue: string) => (
-    `${propertyName}  must not contain duplicates: ${duplicateValue}`
-  );
+  export const minLength = (propertyName: string, params: Pick<PolicyParams, 'minLength'>) => {
+    const minLength: number = params.minLength;
+    return `${propertyName} must be at least ${minLength} ${plural(minLength, 'character')}`;
+  };
+  export const maxLength = (propertyName: string, params: Pick<PolicyParams, 'maxLength'>) => {
+    const maxLength: number = params.maxLength;
+    return `${propertyName} must be at most ${maxLength} ${plural(maxLength, 'character')}`;
+  };
+  // export const noOthers = (propertyName: string, disallowedFields: string) => (
+  //   `${propertyName} must not contain: ${disallowedFields}`
+  // );
+  // export const noCharacters = (propertyName: string, forbiddenChars: string) => (
+  //   `${propertyName} must not contain following characters: ${forbiddenChars}`
+  // );
+  // export const noDuplicates = (propertyName: string, duplicateValue: string) => (
+  //   `${propertyName}  must not contain duplicates: ${duplicateValue}`
+  // )
 }
 
 export { PolicyName, PolicyMessage };

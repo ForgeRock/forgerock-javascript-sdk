@@ -26,11 +26,21 @@ describe('The IDM error handling', () => {
           },
           policyRequirement: 'CUSTOM_POLICY',
         },
-      },
+      }, {
+        customMessage: {
+          unique: (property: string) => (
+            `this is a custom message for unique policy of ${property}`
+          ),
+        },
+        expectedString: `this is a custom message for unique policy of ${property}`,
+        policy: {
+          policyRequirement: 'UNIQUE',
+        },
+      }
     ];
 
     policyRequirementsTests.forEach((test) => {
-      const message = FRPolicy.parsePolicyRequirement(property, test.policy);
+      const message = FRPolicy.parsePolicyRequirement(property, test.policy, test.customMessage);
       expect(message).toBe(test.expectedString);
     });
   });
@@ -93,10 +103,15 @@ describe('The IDM error handling', () => {
         result: false,
       },
     };
+    const customMessage = {
+      unique: (property: string) => (
+        `this is a custom message for unique policy of ${property}`
+      ),
+    };
     const expected =   [
       {
         messages: [
-          'userName must be unique',
+          'this is a custom message for unique policy of userName',
           'userName must be at least 6 characters',
         ],
         detail: {
@@ -122,7 +137,7 @@ describe('The IDM error handling', () => {
       },
     ];
 
-    const errorObjArr = FRPolicy.parseErrors(errorResponse);
+    const errorObjArr = FRPolicy.parseErrors(errorResponse, customMessage);
     expect(errorObjArr).toEqual(expected);
   });
 });

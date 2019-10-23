@@ -16,93 +16,53 @@
 import { Step } from 'auth/interfaces';
 import { FailedPolicyRequirement, PolicyRequirement } from '../auth/interfaces';
 import { PolicyMessage, PolicyName } from './enums';
-import { ProcessedPropertyError } from './interfaces';
+import { MessageCreator, ProcessedPropertyError } from './interfaces';
 
 abstract class FRPolicy {
 
-  public static parseErrors(err: Partial<Step>): ProcessedPropertyError[] {
+  public static parseErrors(
+    err: Partial<Step>, customMessage?: MessageCreator,
+  ): ProcessedPropertyError[] {
     let errors: ProcessedPropertyError[] = [];
     if (err.detail && err.detail.failedPolicyRequirements) {
       errors = [];
       err.detail.failedPolicyRequirements.map((x) => {
-        errors.push.apply(errors, [{ messages: this.parseFailedPolicyRequirement(x), detail: x}]);
+        errors.push.apply(errors, [{
+          detail: x,
+          messages: this.parseFailedPolicyRequirement(x, customMessage),
+        }]);
       });
     }
     return errors;
   }
 
- public static parseFailedPolicyRequirement(policy: FailedPolicyRequirement): string[] {
+  public static parseFailedPolicyRequirement(
+    failePolicy: FailedPolicyRequirement, customMessage?: MessageCreator,
+  ): string[] {
     const errors: string[] = [];
-    policy.policyRequirements.map((x) => {
-      errors.push(this.parsePolicyRequirement(policy.property, x));
+    failePolicy.policyRequirements.map((policyRequirement) => {
+      errors.push(
+        this.parsePolicyRequirement(failePolicy.property, policyRequirement, customMessage),
+      );
     });
     return errors;
   }
 
-  public static parsePolicyRequirement(property: string, policy: PolicyRequirement): string {
+  public static parsePolicyRequirement(
+    property: string, policy: PolicyRequirement, customMessage: MessageCreator = {},
+  ): string {
 
-    // Object.keys(PolicyName).forEach((name) => {
-    //   if (PolicyName[name] === policy.policyRequirement) {
+    const policyName: { [key: string]: string; } = PolicyName;
+    const policyMessage: MessageCreator  = { ...PolicyMessage, ...customMessage };
+    let message = `${property}: Unknown policy requirement "${policy.policyRequirement}"`;
 
-    //   }
-    // });
-
-    // for (const key in PolicyName) {
-    //   if ( PolicyName[key as PolicyName]  === policy.policyRequirement) {
-
-    //   }
-    // }
-    switch (policy.policyRequirement) {
-      case PolicyName.required:
-        return PolicyMessage.required(property);
-      case PolicyName.unique:
-        return PolicyMessage.unique(property);
-      case PolicyName.matchRegexp:
-        return PolicyMessage.matchRegexp(property);
-      case PolicyName.validType:
-        return PolicyMessage.validType(property);
-      case PolicyName.validQueryFilter:
-        return PolicyMessage.validQueryFilter(property);
-      case PolicyName.validArrayItems:
-        return PolicyMessage.validArrayItems(property);
-      case PolicyName.validDate:
-        return PolicyMessage.validDate(property);
-      case PolicyName.validEmailAddress:
-        return PolicyMessage.validEmailAddress(property);
-      case PolicyName.validNameFormat:
-        return PolicyMessage.validNameFormat(property);
-      case PolicyName.validPhoneFormat:
-        return PolicyMessage.validPhoneFormat(property);
-      case PolicyName.leastCapitalLetters:
-        const numCaps: number = policy.params.numCaps;
-        return PolicyMessage.leastCapitalLetters(property, numCaps);
-      case PolicyName.leastNumbers:
-        const numNums: number = policy.params.numNums;
-        return PolicyMessage.leastNumbers(property, numNums);
-      case PolicyName.validNumber:
-        return PolicyMessage.validNumber(property);
-      case PolicyName.minimumNumber:
-        return PolicyMessage.minimumNumber(property);
-      case PolicyName.maximumNumber:
-        return PolicyMessage.maximumNumber(property);
-      case PolicyName.minLenght:
-        const minLength: number = policy.params.minLength;
-        return PolicyMessage.minLength(property, minLength);
-      case PolicyName.maxLength:
-        const maxLength = policy.params.maxLength;
-        return PolicyMessage.maxLength(property, maxLength);
-      case PolicyName.noOthers:
-        const disallowed: string = policy.params.minLength;
-        return PolicyMessage.noOthers(property, disallowed);
-      case PolicyName.noCharacters:
-        const characters: string = policy.params.minLength;
-        return PolicyMessage.noCharacters(property, characters);
-      case PolicyName.noDuplicates:
-        const duplicates: string = policy.params.minLength;
-        return PolicyMessage.noDuplicates(property, duplicates);
-      default:
-        return `${property}: Unknown policy requirement "${policy.policyRequirement}"`;
-    }
+    Object.keys(policyName).forEach((name) => {
+      if (policyName[name] === policy.policyRequirement) {
+        const params = policy.params || {};
+        message = policyMessage[name](property, params);
+      }
+    });
+    return message;
   }
 }
 
