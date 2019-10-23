@@ -33,22 +33,22 @@ namespace PolicyMessage {
   );
   export const matchRegexp = (property: string) => (
     /* no current error message */
-    `${property}`
+    `${property} has failed the "MATCH_REGEXP" policy`
     /* no current error message */
   );
   export const validType = (property: string) => (
     /* no current error message */
-    `${property}`
+    `${property} has failed the "VALID_TYPE" policy`
     /* no current error message */
   );
   export const validQueryFilter = (property: string) => (
     /* no current error message */
-    `${property}`
+    `${property} has failed the "VALID_QUERY_FILTER" policy`
     /* no current error message */
   );
   export const validArrayItems = (property: string) => (
     /* no current error message */
-    `${property}`
+    `${property} has failed the "VALID_ARRAY_ITEMS" policy`
     /* no current error message */
   );
   export const validDate = (property: string) => (
@@ -77,12 +77,12 @@ namespace PolicyMessage {
   );
   export const minimumNumber = (property: string) => (
     /* no current error message */
-    `${property}`
+    `${property} has failed the "MINIMUM_NUMBER_VALUE" policy`
     /* no current error message */
   );
   export const maximumNumber = (property: string) => (
     /* no current error message */
-    `${property}`
+    `${property} has failed the "MAXIMUM_NUMBER_VALUE" policy`
     /* no current error message */
   );
   export const minLength = (property: string, params: Pick<PolicyParams, 'minLength'>) => {
@@ -97,7 +97,7 @@ namespace PolicyMessage {
     property: string, params: Pick<PolicyParams, 'disallowedFields'>,
   ) => {
     const disallowedFields: string = params.disallowedFields;
-    return `${property} must not contain: ${disallowedFields}`;
+    return `${property} must not contain: "${disallowedFields}"`;
   };
   export const noCharacters = (
     property: string, params: Pick<PolicyParams, 'forbiddenChars'>,
@@ -109,7 +109,7 @@ namespace PolicyMessage {
     property: string, params: Pick<PolicyParams, 'duplicateValue'>,
   ) => {
     const duplicateValue: string = params.duplicateValue;
-    return `${property}  must not contain duplicates: ${duplicateValue}`;
+    return `${property}  must not contain duplicates: "${duplicateValue}"`;
   };
   export const unknownPolicy = (
     property: string, params: Pick<PolicyParams, 'policyRequirement'>,
