@@ -25,83 +25,97 @@ enum PolicyName {
 }
 
 namespace PolicyMessage {
-  export const required = (propertyName: string) => (
-    `${propertyName} is required`
+  export const required = (property: string) => (
+    `${property} is required`
   );
-  export const unique = (propertyName: string) => (
-    `${propertyName} must be unique`
+  export const unique = (property: string) => (
+    `${property} must be unique`
   );
-  export const matchRegexp = (propertyName: string) => (
+  export const matchRegexp = (property: string) => (
     /* no current error message */
-    `${propertyName}`
-    /* no current error message */
-  );
-  export const validType = (propertyName: string) => (
-    /* no current error message */
-    `${propertyName}`
+    `${property}`
     /* no current error message */
   );
-  export const validQueryFilter = (propertyName: string) => (
+  export const validType = (property: string) => (
     /* no current error message */
-    `${propertyName}`
-    /* no current error message */
-  );
-  export const validArrayItems = (propertyName: string) => (
-    /* no current error message */
-    `${propertyName}`
+    `${property}`
     /* no current error message */
   );
-  export const validDate = (propertyName: string) => (
-    `${propertyName} has an invalid date`
+  export const validQueryFilter = (property: string) => (
+    /* no current error message */
+    `${property}`
+    /* no current error message */
   );
-  export const validEmailAddress = (propertyName: string) => (
-    `${propertyName} has an invalid email address`
+  export const validArrayItems = (property: string) => (
+    /* no current error message */
+    `${property}`
+    /* no current error message */
   );
-  export const validNameFormat = (propertyName: string) => (
-    `${propertyName} has an invalid name format`
+  export const validDate = (property: string) => (
+    `${property} has an invalid date`
   );
-  export const validPhoneFormat = (propertyName: string) => (
-    `${propertyName} has an invalid phone number`
+  export const validEmailAddress = (property: string) => (
+    `${property} has an invalid email address`
+  );
+  export const validNameFormat = (property: string) => (
+    `${property} has an invalid name format`
+  );
+  export const validPhoneFormat = (property: string) => (
+    `${property} has an invalid phone number`
   );
   export const leastCapitalLetters = (
-    propertyName: string, params: Pick<PolicyParams, 'numCaps'>) => {
+    property: string, params: Pick<PolicyParams, 'numCaps'>) => {
     const numCaps: number = params.numCaps;
-    return `${propertyName} must contain at least ${numCaps} capital ${plural(numCaps, 'letter')}`;
+    return `${property} must contain at least ${numCaps} capital ${plural(numCaps, 'letter')}`;
   };
-  export const leastNumbers = (propertyName: string, params: Pick<PolicyParams, 'numNums'>) => {
+  export const leastNumbers = (property: string, params: Pick<PolicyParams, 'numNums'>) => {
     const numNums: number = params.numNums;
-    return `${propertyName} must contain at least ${numNums} numeric ${plural(numNums, 'value')}`;
+    return `${property} must contain at least ${numNums} numeric ${plural(numNums, 'value')}`;
   };
-  export const validNumber = (propertyName: string) => (
-    `${propertyName} has an invalid number`
+  export const validNumber = (property: string) => (
+    `${property} has an invalid number`
   );
-  export const minimumNumber = (propertyName: string) => (
+  export const minimumNumber = (property: string) => (
     /* no current error message */
-    `${propertyName}`
-    /* no current error message */
-  );
-  export const maximumNumber = (propertyName: string) => (
-    /* no current error message */
-    `${propertyName}`
+    `${property}`
     /* no current error message */
   );
-  export const minLength = (propertyName: string, params: Pick<PolicyParams, 'minLength'>) => {
+  export const maximumNumber = (property: string) => (
+    /* no current error message */
+    `${property}`
+    /* no current error message */
+  );
+  export const minLength = (property: string, params: Pick<PolicyParams, 'minLength'>) => {
     const minLength: number = params.minLength;
-    return `${propertyName} must be at least ${minLength} ${plural(minLength, 'character')}`;
+    return `${property} must be at least ${minLength} ${plural(minLength, 'character')}`;
   };
-  export const maxLength = (propertyName: string, params: Pick<PolicyParams, 'maxLength'>) => {
+  export const maxLength = (property: string, params: Pick<PolicyParams, 'maxLength'>) => {
     const maxLength: number = params.maxLength;
-    return `${propertyName} must be at most ${maxLength} ${plural(maxLength, 'character')}`;
+    return `${property} must be at most ${maxLength} ${plural(maxLength, 'character')}`;
   };
-  // export const noOthers = (propertyName: string, disallowedFields: string) => (
-  //   `${propertyName} must not contain: ${disallowedFields}`
-  // );
-  // export const noCharacters = (propertyName: string, forbiddenChars: string) => (
-  //   `${propertyName} must not contain following characters: ${forbiddenChars}`
-  // );
-  // export const noDuplicates = (propertyName: string, duplicateValue: string) => (
-  //   `${propertyName}  must not contain duplicates: ${duplicateValue}`
-  // )
+  export const noOthers = (
+    property: string, params: Pick<PolicyParams, 'disallowedFields'>,
+  ) => {
+    const disallowedFields: string = params.disallowedFields;
+    return `${property} must not contain: ${disallowedFields}`;
+  };
+  export const noCharacters = (
+    property: string, params: Pick<PolicyParams, 'forbiddenChars'>,
+  ) => {
+    const forbiddenChars: string = params.forbiddenChars;
+    return `${property} must not contain following characters: "${forbiddenChars}"`;
+  };
+  export const noDuplicates = (
+    property: string, params: Pick<PolicyParams, 'duplicateValue'>,
+  ) => {
+    const duplicateValue: string = params.duplicateValue;
+    return `${property}  must not contain duplicates: ${duplicateValue}`;
+  };
+  export const unknownPolicy = (
+    property: string, params: Pick<PolicyParams, 'policyRequirement'>,
+  ) => (
+    `${property}: Unknown policy requirement "${params.policyRequirement}"`
+  );
 }
 
 export { PolicyName, PolicyMessage };

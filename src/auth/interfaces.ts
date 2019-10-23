@@ -48,6 +48,10 @@ interface PolicyParams {
   numNums: number;
   minLength: number;
   maxLength: number;
+  forbiddenChars: string;
+  disallowedFields: string;
+  duplicateValue: string;
+  policyRequirement: string;
 }
 
 /**
