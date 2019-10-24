@@ -17,7 +17,9 @@ import PollingWaitCallback from './fr-auth/callbacks/polling-wait-callback';
 import ReCaptchaCallback from './fr-auth/callbacks/recaptcha-callback';
 import TermsAndConditionsCallback from './fr-auth/callbacks/terms-and-conditions-callback';
 import TextOutputCallback from './fr-auth/callbacks/text-output-callback';
+// eslint-disable-next-line max-len
 import ValidatedCreatePasswordCallback from './fr-auth/callbacks/validated-create-password-callback';
+// eslint-disable-next-line max-len
 import ValidatedCreateUsernameCallback from './fr-auth/callbacks/validated-create-username-callback';
 import { StepType } from './fr-auth/enums';
 import FRLoginFailure from './fr-auth/fr-login-failure';

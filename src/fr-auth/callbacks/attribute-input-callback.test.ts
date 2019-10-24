@@ -1,6 +1,6 @@
-import AttributeInputCallback from '..';
-import { CallbackType } from '../../../../auth/enums';
-import { Callback } from '../../../../auth/interfaces';
+import AttributeInputCallback from './attribute-input-callback';
+import { CallbackType } from '../../auth/enums';
+import { Callback } from '../../auth/interfaces';
 
 describe('AttributeInputCallback', () => {
   const payload: Callback = {

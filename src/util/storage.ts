@@ -1,6 +1,6 @@
 class LocalStorage {
   private storage: Storage;
-  constructor(persist: boolean = false) {
+  constructor(persist = false) {
     this.storage = persist ? window.localStorage : window.sessionStorage;
   }
 

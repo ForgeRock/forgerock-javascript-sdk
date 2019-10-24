@@ -7,7 +7,7 @@ abstract class PKCE {
    *
    * @param size The length of the verifier (default 32 characters)
    */
-  public static createVerifier(size: number = 32): string {
+  public static createVerifier(size = 32): string {
     const array = new Uint8Array(size);
     window.crypto.getRandomValues(array);
     const verifier = this.base64UrlEncode(array);
