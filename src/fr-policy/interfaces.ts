@@ -5,8 +5,8 @@ interface MessageCreator {
 }
 
 interface ProcessedPropertyError {
-  messages: string[];
   detail: FailedPolicyRequirement;
+  messages: string[];
 }
 
 export { MessageCreator, ProcessedPropertyError };

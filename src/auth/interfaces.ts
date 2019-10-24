@@ -22,9 +22,9 @@ interface Step {
  * Represents details of a failure in an authentication step.
  */
 interface StepDetail {
+  failedPolicyRequirements?: FailedPolicyRequirement[];
   failureUrl?: string;
   result?: boolean;
-  failedPolicyRequirements?: FailedPolicyRequirement[];
 }
 
 /**
@@ -44,14 +44,14 @@ interface PolicyRequirement {
 }
 
 interface PolicyParams {
-  numCaps: number;
-  numNums: number;
-  minLength: number;
-  maxLength: number;
-  forbiddenChars: string;
+  [key: string]: any;
   disallowedFields: string;
   duplicateValue: string;
-  [key: string]: any;
+  forbiddenChars: string;
+  maxLength: number;
+  minLength: number;
+  numCaps: number;
+  numNums: number;
 }
 
 /**
@@ -74,10 +74,10 @@ interface NameValue {
 
 export {
   Callback,
+  FailedPolicyRequirement,
   NameValue,
+  PolicyParams,
+  PolicyRequirement,
   Step,
   StepDetail,
-  FailedPolicyRequirement,
-  PolicyRequirement,
-  PolicyParams,
 };
