@@ -1,5 +1,5 @@
-import FRPolicy from 'fr-policy';
-import { MessageCreator, ProcessedPropertyError } from 'fr-policy/interfaces';
+import FRPolicy from '../fr-policy';
+import { MessageCreator, ProcessedPropertyError } from '../fr-policy/interfaces';
 import { Step } from '../auth/interfaces';
 import { StepType } from './enums';
 import { AuthResponse, FailureDetail } from './interfaces';
