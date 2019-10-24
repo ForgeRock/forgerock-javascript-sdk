@@ -46,9 +46,8 @@ describe('The IDM error handling', () => {
   it('error handling is extensible by customer', () => {
     const test = {
       customMessage: {
-        CUSTOM_POLICY: (property: string, params: any) => (
-          `this is a custom message for "${params.policyRequirement}" policy of ${property}`
-        ),
+        CUSTOM_POLICY: (property: string, params: any) =>
+          `this is a custom message for "${params.policyRequirement}" policy of ${property}`,
       },
       expectedString: `this is a custom message for "CUSTOM_POLICY" policy of ${property}`,
       policy: {
@@ -62,9 +61,8 @@ describe('The IDM error handling', () => {
   it('error handling is overwritable by customer', () => {
     const test = {
       customMessage: {
-        [PolicyKey.Unique]: (property: string) => (
-          `this is a custom message for "UNIQUE" policy of ${property}`
-        ),
+        [PolicyKey.Unique]: (property: string) =>
+          `this is a custom message for "UNIQUE" policy of ${property}`,
       },
       expectedString: `this is a custom message for "UNIQUE" policy of ${property}`,
       policy: {
@@ -76,12 +74,12 @@ describe('The IDM error handling', () => {
   });
 
   it('groups failed policies for one property', () => {
-
     const policy = {
       policyRequirements: [
         {
           policyRequirement: 'UNIQUE',
-        }, {
+        },
+        {
           params: {
             minLength: 6,
           },
@@ -92,13 +90,13 @@ describe('The IDM error handling', () => {
     };
 
     const messageArray = FRPolicy.parseFailedPolicyRequirement(policy);
-    expect(messageArray).toEqual(
-      ['userName must be unique', 'userName must be at least 6 characters'],
-    );
+    expect(messageArray).toEqual([
+      'userName must be unique',
+      'userName must be at least 6 characters',
+    ]);
   });
 
   it('returns an object array with a human readable error and the server error', () => {
-
     const errorResponse = {
       code: 403,
       reason: 'Forbidden',
@@ -106,29 +104,37 @@ describe('The IDM error handling', () => {
       detail: {
         failedPolicyRequirements: [
           {
-            policyRequirements: [{
-              policyRequirement: 'UNIQUE',
-            }, {
-              params: {
-                minLength: 6,
+            policyRequirements: [
+              {
+                policyRequirement: 'UNIQUE',
               },
-              policyRequirement: 'MIN_LENGTH',
-            }, {
-              policyRequirement: 'CUSTOM_POLICY',
-            }],
+              {
+                params: {
+                  minLength: 6,
+                },
+                policyRequirement: 'MIN_LENGTH',
+              },
+              {
+                policyRequirement: 'CUSTOM_POLICY',
+              },
+            ],
             property: 'userName',
-          },          {
-            policyRequirements: [{
-              params: {
-                numCaps: 1,
+          },
+          {
+            policyRequirements: [
+              {
+                params: {
+                  numCaps: 1,
+                },
+                policyRequirement: 'AT_LEAST_X_CAPITAL_LETTERS',
               },
-              policyRequirement: 'AT_LEAST_X_CAPITAL_LETTERS',
-            }, {
-              params: {
-                minLength: 6,
+              {
+                params: {
+                  minLength: 6,
+                },
+                policyRequirement: 'MIN_LENGTH',
               },
-              policyRequirement: 'MIN_LENGTH',
-            }],
+            ],
             property: 'password',
           },
         ],
@@ -136,14 +142,12 @@ describe('The IDM error handling', () => {
       },
     };
     const customMessage = {
-      [PolicyKey.Unique]: (property: string) => (
-        `this is a custom message for "UNIQUE" policy of ${property}`
-      ),
-      CUSTOM_POLICY: (property: string, params: any) => (
-        `this is a custom message for "${params.policyRequirement}" policy of ${property}`
-      ),
+      [PolicyKey.Unique]: (property: string) =>
+        `this is a custom message for "UNIQUE" policy of ${property}`,
+      CUSTOM_POLICY: (property: string, params: any) =>
+        `this is a custom message for "${params.policyRequirement}" policy of ${property}`,
     };
-    const expected =   [
+    const expected = [
       {
         messages: [
           'this is a custom message for "UNIQUE" policy of userName',

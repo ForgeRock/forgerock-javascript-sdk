@@ -1,7 +1,7 @@
 import { FailedPolicyRequirement } from '../auth/interfaces';
 
 interface MessageCreator {
-  [key: string]: (propertyName: string, params?: any ) => string;
+  [key: string]: (propertyName: string, params?: any) => string;
 }
 
 interface ProcessedPropertyError {
@@ -9,7 +9,4 @@ interface ProcessedPropertyError {
   detail: FailedPolicyRequirement;
 }
 
-export {
-  MessageCreator,
-  ProcessedPropertyError,
-};
+export { MessageCreator, ProcessedPropertyError };

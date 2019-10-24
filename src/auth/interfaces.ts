@@ -72,4 +72,12 @@ interface NameValue {
   value: any;
 }
 
-export { Callback, NameValue, Step, StepDetail, FailedPolicyRequirement, PolicyRequirement, PolicyParams };
+export {
+  Callback,
+  NameValue,
+  Step,
+  StepDetail,
+  FailedPolicyRequirement,
+  PolicyRequirement,
+  PolicyParams,
+};
