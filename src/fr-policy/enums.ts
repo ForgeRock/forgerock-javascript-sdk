@@ -1,4 +1,4 @@
-import { PolicyParams } from 'auth/interfaces';
+import { PolicyParams } from '../auth/interfaces';
 import { plural } from '../util/strings';
 import { MessageCreator } from './interfaces';
 
@@ -9,10 +9,10 @@ enum PolicyKey {
   LeastCapitalLetters = 'AT_LEAST_X_CAPITAL_LETTERS',
   LeastNumbers = 'AT_LEAST_X_NUMBERS',
   MatchRegexp = 'MATCH_REGEXP',
+  MaximumLength = 'MAX_LENGTH',
   MaximumNumber = 'MAXIMUM_NUMBER_VALUE',
-  MaxLength = 'MAX_LENGTH',
+  MinimumLength = 'MIN_LENGTH',
   MinimumNumber = 'MINIMUM_NUMBER_VALUE',
-  MinLength = 'MIN_LENGTH',
   Required = 'REQUIRED',
   Unique = 'UNIQUE',
   UnknownPolicy = 'UNKNOWN_POLICY',
@@ -57,20 +57,20 @@ const policyMessage: MessageCreator = {
   [PolicyKey.MatchRegexp]: (property: string) => (
     `${property} has failed the "MATCH_REGEXP" policy`
   ),
+  [PolicyKey.MaximumLength]: (property: string, params: Pick<PolicyParams, 'maxLength'>) => {
+    const maxLength: number = params.maxLength;
+    return `${property} must be at most ${maxLength} ${plural(maxLength, 'character')}`;
+  },
   [PolicyKey.MaximumNumber]: (property: string) => (
     `${property} has failed the "MAXIMUM_NUMBER_VALUE" policy`
   ),
-  [PolicyKey.MaxLength]: (property: string, params: Pick<PolicyParams, 'maxLength'>) => {
-    const maxLength: number = params.maxLength;
-    return `${property} must be at most ${maxLength} ${plural(maxLength, 'character')}`;
+  [PolicyKey.MinimumLength]: (property: string, params: Pick<PolicyParams, 'minLength'>) => {
+    const minLength: number = params.minLength;
+    return `${property} must be at least ${minLength} ${plural(minLength, 'character')}`;
   },
   [PolicyKey.MinimumNumber]: (property: string) => (
     `${property} has failed the "MINIMUM_NUMBER_VALUE" policy`
   ),
-  [PolicyKey.MinLength]: (property: string, params: Pick<PolicyParams, 'minLength'>) => {
-    const minLength: number = params.minLength;
-    return `${property} must be at least ${minLength} ${plural(minLength, 'character')}`;
-  },
   [PolicyKey.Required]: (property: string) => (
     `${property} is required`
   ),

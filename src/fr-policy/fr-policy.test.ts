@@ -1,5 +1,5 @@
-import FRPolicy from '..';
-import { PolicyKey } from '../enums';
+import FRPolicy from '.';
+import { PolicyKey } from './enums';
 
 describe('The IDM error handling', () => {
   const property = 'userName';

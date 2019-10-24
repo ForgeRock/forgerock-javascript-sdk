@@ -1,4 +1,4 @@
-import { Step } from 'auth/interfaces';
+import { Step } from '../auth/interfaces';
 import { FailedPolicyRequirement, PolicyRequirement } from '../auth/interfaces';
 import { PolicyKey, policyMessage } from './enums';
 import { MessageCreator, ProcessedPropertyError } from './interfaces';
