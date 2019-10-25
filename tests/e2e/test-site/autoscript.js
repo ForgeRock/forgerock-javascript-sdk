@@ -14,7 +14,7 @@
 
   forgerock.Config.set({
     clientId,
-    redirectUri: `${url.origin}/logged-in`,
+    redirectUri: `${url.origin}/callback`,
     scope,
     tree,
     serverConfig: {
@@ -32,6 +32,8 @@
           .setPassword(pw);
         return forgerock.FRAuth.next(step);
       }),
+      // Uncomment the below operators to delay the steps for debugging purposes
+      // rxjs.operators.delay(2000),
       rxFlatMap(
         (step) => {
           if (step.payload.code === 401) { throw new Error('Auth_Error'); }
@@ -39,6 +41,7 @@
         },
         (step) => step
       ),
+      // rxjs.operators.delay(2000),
       rxMap((step) => {
         if (step.getSessionToken()) {
           console.log('Login successful');
@@ -48,6 +51,7 @@
           throw new Error('Session_Error');
         }
       }),
+      // rxjs.operators.delay(2000),
       rxFlatMap(
         (step) => forgerock.UserManager.getCurrentUser(),
         (step, user) => {
@@ -55,6 +59,7 @@
           return step;
         }
       ),
+      // rxjs.operators.delay(2000),
       rxFlatMap(
         (step) => {
           console.log('Initiate logout')
@@ -62,6 +67,7 @@
         },
         (step) => step,
       ),
+      // rxjs.operators.delay(2000),
       rxFlatMap(
         (step) => {
           return forgerock.TokenStorage.get();
@@ -76,6 +82,7 @@
           return step;
         }
       ),
+      // rxjs.operators.delay(2000),
       rxTap(
         () => {},
         (err) => {
