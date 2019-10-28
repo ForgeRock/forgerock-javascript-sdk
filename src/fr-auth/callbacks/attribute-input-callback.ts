@@ -1,5 +1,5 @@
-import FRCallback from '..';
-import { Callback } from '../../../auth/interfaces';
+import FRCallback from '.';
+import { Callback } from '../../auth/interfaces';
 
 /**
  * Represents a callback used to collect attributes.

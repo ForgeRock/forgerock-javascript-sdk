@@ -31,7 +31,7 @@ abstract class Config {
       throw new Error('Configuration is invalid');
     }
     if (options.serverConfig) {
-      this.setTimeout(options.serverConfig);
+      this.validateServerConfig(options.serverConfig);
     }
     this.options = { ...options };
   }
@@ -58,9 +58,14 @@ abstract class Config {
     return options && options.serverConfig;
   }
 
-  private static setTimeout(serverConfig: ServerConfig) {
-    if (serverConfig && !serverConfig.timeout) {
+  private static validateServerConfig(serverConfig: ServerConfig) {
+    if (!serverConfig.timeout) {
       serverConfig.timeout = DEFAULT_TIMEOUT;
+    }
+
+    const url = serverConfig.baseUrl;
+    if (url && url.charAt(url.length - 1) !== '/') {
+      serverConfig.baseUrl = url + '/';
     }
   }
 }
