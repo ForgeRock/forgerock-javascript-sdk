@@ -1,7 +1,7 @@
 import { resolve } from 'url';
-import { getRealmUrlPath } from 'util/realm';
 import Config, { ConfigOptions } from '../config/index';
 import { isOkOr4xx } from '../util/http';
+import { getRealmUrlPath } from '../util/realm';
 import { withTimeout } from '../util/timeout';
 
 /**

@@ -35,6 +35,7 @@ import OAuth2Client, {
   OAuth2Tokens,
   ResponseType,
 } from './oauth2-client';
+import SessionManager from './session-manager';
 import { Tokens } from './shared/interfaces';
 import TokenManager, { GetTokensOptions } from './token-manager';
 import TokenStorage from './token-storage';
@@ -83,6 +84,7 @@ export {
   PollingWaitCallback,
   ReCaptchaCallback,
   ResponseType,
+  SessionManager,
   Step,
   StepDetail,
   StepType,
