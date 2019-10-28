@@ -10,7 +10,7 @@
 
 - FRPolicy module allows easy consumption and customization of policy-related errors
 - Export `SessionManager` module
-- Added `FRStep.type` property to simplify conditional handling of tree responses
+- `FRStep.type` property to simplify conditional handling of tree responses
 - Overhaul and expansion of tests to include unit, integration, and e2e testing
 
 ## [0.9.0] - 2019-10-17
