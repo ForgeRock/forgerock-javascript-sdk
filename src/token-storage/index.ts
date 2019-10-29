@@ -54,6 +54,7 @@ abstract class TokenStorage {
 
     return new Promise((resolve, reject) => {
       const onSetSuccess = () => {
+        openReq.result.close();
         resolve();
       };
 
