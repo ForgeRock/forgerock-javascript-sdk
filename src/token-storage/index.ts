@@ -81,14 +81,9 @@ abstract class TokenStorage {
         const txnReq = openReq.result.transaction(clientId, 'readwrite');
         txnReq.onerror = onError;
         const objectStore = txnReq.objectStore(clientId);
-
-        const addReq = objectStore.add(tokens, TOKEN_KEY);
-        addReq.onsuccess = onSetSuccess;
-        addReq.onerror = () => {
-          const putReq = objectStore.put(tokens, TOKEN_KEY);
-          putReq.onsuccess = onSetSuccess;
-          putReq.onerror = onError;
-        };
+        const putReq = objectStore.put(tokens, TOKEN_KEY);
+        putReq.onsuccess = onSetSuccess;
+        putReq.onerror = onError;
       };
 
       let openReq = window.indexedDB.open(DB_NAME);
