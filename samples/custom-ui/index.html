@@ -36,6 +36,7 @@
     </div>
     <div id="User">
       <p>Your user information:
+          <p><a href="javascript:logout()">log out</a></p>
         <pre></pre>
       </p>
     </div>
@@ -123,6 +124,15 @@
     // Get the next step using the FRAuth API
     const nextStep = (step) => {
       forgerock.FRAuth.next(step).then(handleStep).catch(handleFatalError);
+    }
+
+    const logout = async () => {
+      try {
+        await forgerock.FRUser.logout();
+        location.reload(true);
+      } catch (error) {
+        console.error(error)
+      }
     }
 
     // Begin the login flow
