@@ -136,7 +136,7 @@ npm run make_certs
 npm start
 
 # Start the sample webserver
-npm run samples
+npm run server:samples
 
 # Follow the next section to trust certificate
 ```
