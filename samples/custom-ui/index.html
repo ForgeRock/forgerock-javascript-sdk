@@ -36,9 +36,9 @@
     </div>
     <div id="User">
       <p>Your user information:
-          <p><a href="javascript:logout()">log out</a></p>
         <pre></pre>
       </p>
+      <button class="btn btn-primary">Sign Out</button>
     </div>
     <div id="Error">
       <p>Error code: <span></span></p>
@@ -87,6 +87,10 @@
 
     const showUser = (user) => {
       document.querySelector('#User pre').innerHTML = JSON.stringify(user, null, 2);
+      const panel = document.querySelector('#User');
+      panel.querySelector('.btn').addEventListener('click', () => {
+        logout();
+      });
       showStep('User')
     }
 
