@@ -22,6 +22,7 @@ abstract class TokenStorage {
 
       openReq.onsuccess = () => {
         if (!openReq.result.objectStoreNames.contains(clientId)) {
+          openReq.result.close();
           return resolve(undefined);
         }
 
@@ -32,6 +33,7 @@ abstract class TokenStorage {
 
         getReq.onsuccess = (event: Event) => {
           const tokens = this.getResult<Tokens>(event);
+          openReq.result.close();
           resolve(tokens);
         };
 
@@ -39,6 +41,7 @@ abstract class TokenStorage {
       };
 
       openReq.onupgradeneeded = () => {
+        openReq.result.close();
         resolve(undefined);
       };
 

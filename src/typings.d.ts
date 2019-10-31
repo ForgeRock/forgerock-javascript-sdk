@@ -13,7 +13,7 @@ declare module '*.scss' {
   export = content;
 }
 
-declare module 'fake-indexeddb/auto'
+declare module 'fake-indexeddb/auto';
 
 interface Window {
   PublicKeyCredential: any;
