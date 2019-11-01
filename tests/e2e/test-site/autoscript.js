@@ -14,7 +14,7 @@
 
   forgerock.Config.set({
     clientId,
-    redirectUri: `${url.origin}/logged-in`,
+    redirectUri: `${url.origin}/callback`,
     scope,
     tree,
     serverConfig: {
@@ -77,17 +77,17 @@
         }
       ),
       rxTap(
-        () => {},
+        () => { },
         (err) => {
           console.log(`Error: ${err.message}`);
           document.body.innerHTML = `<p class="${err.message}">${err.message}</p>`;
         },
-        () => {}
+        () => { }
       )
     )
     .subscribe(
-      (data) => {},
-      (err) => {},
+      (data) => { },
+      (err) => { },
       () => { console.log('Test script complete'); }
     );
 }());
