@@ -7,7 +7,7 @@ module.exports = (env) => {
   const isDev = env.DEV === 'yes';
 
   const plugins = [
-    new webpack.WatchIgnorePlugin([/css\.d\.ts$/, /bundles|docs|lib|lib\-esm|samples/]),
+    new webpack.WatchIgnorePlugin([/bundles|docs|lib|lib\-esm|samples/]),
     {
       apply: (compiler) => {
         compiler.hooks.afterEmit.tap('AfterEmitPlugin', (compilation) => {
