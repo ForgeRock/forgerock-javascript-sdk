@@ -22,6 +22,7 @@ abstract class TokenStorage {
 
       openReq.onsuccess = () => {
         if (!openReq.result.objectStoreNames.contains(clientId)) {
+          openReq.result.close();
           return resolve(undefined);
         }
 
@@ -32,6 +33,7 @@ abstract class TokenStorage {
 
         getReq.onsuccess = (event: Event) => {
           const tokens = this.getResult<Tokens>(event);
+          openReq.result.close();
           resolve(tokens);
         };
 
@@ -39,6 +41,7 @@ abstract class TokenStorage {
       };
 
       openReq.onupgradeneeded = () => {
+        openReq.result.close();
         resolve(undefined);
       };
 
@@ -54,6 +57,7 @@ abstract class TokenStorage {
 
     return new Promise((resolve, reject) => {
       const onSetSuccess = () => {
+        openReq.result.close();
         resolve();
       };
 
@@ -81,14 +85,9 @@ abstract class TokenStorage {
         const txnReq = openReq.result.transaction(clientId, 'readwrite');
         txnReq.onerror = onError;
         const objectStore = txnReq.objectStore(clientId);
-
-        const addReq = objectStore.add(tokens, TOKEN_KEY);
-        addReq.onsuccess = onSetSuccess;
-        addReq.onerror = () => {
-          const putReq = objectStore.put(tokens, TOKEN_KEY);
-          putReq.onsuccess = onSetSuccess;
-          putReq.onerror = onError;
-        };
+        const putReq = objectStore.put(tokens, TOKEN_KEY);
+        putReq.onsuccess = onSetSuccess;
+        putReq.onerror = onError;
       };
 
       let openReq = window.indexedDB.open(DB_NAME);
