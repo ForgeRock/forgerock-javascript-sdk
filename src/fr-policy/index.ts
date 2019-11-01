@@ -90,11 +90,9 @@ abstract class FRPolicy {
   ): string {
     const policyRequirement = policy.policyRequirement;
     const params = policy.params ? { ...policy.params, policyRequirement } : { policyRequirement };
-    const message = (
-      messageCreator[policyRequirement] ||
+    const message = (messageCreator[policyRequirement] ||
       policyMessage[policyRequirement] ||
-      policyMessage[PolicyKey.UnknownPolicy]
-      )(property, params);
+      policyMessage[PolicyKey.UnknownPolicy])(property, params);
 
     return message;
   }
