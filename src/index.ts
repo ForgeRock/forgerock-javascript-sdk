@@ -45,6 +45,7 @@ import TokenStorage from './token-storage';
 import UserManager from './user-manager';
 import PKCE from './util/pkce';
 import LocalStorage from './util/storage';
+import WebAuthn from './browser';
 
 export {
   defaultMessageCreator,
@@ -107,4 +108,5 @@ export {
   ValidatedCreatePasswordCallback,
   ValidatedCreateUsernameCallback,
   ValidConfigOptions,
+  WebAuthn,
 };
