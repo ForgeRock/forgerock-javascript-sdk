@@ -4,6 +4,7 @@ import Config, { ConfigOptions } from '../config/index';
 import TokenStorage from '../token-storage';
 import { isOkOr4xx } from '../util/http';
 import PKCE from '../util/pkce';
+import { getRealmUrlPath } from '../util/realm';
 import { withTimeout } from '../util/timeout';
 import { ResponseType } from './enums';
 import { GetAuthorizationUrlOptions, GetOAuth2TokensOptions, OAuth2Tokens } from './interfaces';
@@ -217,8 +218,9 @@ abstract class OAuth2Client {
   }
 
   private static getUrl(path: string, query?: any, options?: ConfigOptions): string {
-    const { serverConfig } = Config.get(options);
-    let url = resolve(serverConfig.baseUrl, `oauth2/${path}`);
+    const { realmPath, serverConfig } = Config.get(options);
+    const realmUrlPath = getRealmUrlPath(realmPath);
+    let url = resolve(serverConfig.baseUrl, `oauth2/${realmUrlPath}/${path}`);
     if (query) {
       url += `?${stringify(query)}`;
     }
