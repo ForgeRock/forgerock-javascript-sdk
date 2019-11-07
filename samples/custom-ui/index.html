@@ -38,6 +38,7 @@
       <p>Your user information:
         <pre></pre>
       </p>
+      <button class="btn btn-primary">Sign Out</button>
     </div>
     <div id="Error">
       <p>Error code: <span></span></p>
@@ -86,6 +87,10 @@
 
     const showUser = (user) => {
       document.querySelector('#User pre').innerHTML = JSON.stringify(user, null, 2);
+      const panel = document.querySelector('#User');
+      panel.querySelector('.btn').addEventListener('click', () => {
+        logout();
+      });
       showStep('User')
     }
 
@@ -123,6 +128,15 @@
     // Get the next step using the FRAuth API
     const nextStep = (step) => {
       forgerock.FRAuth.next(step).then(handleStep).catch(handleFatalError);
+    }
+
+    const logout = async () => {
+      try {
+        await forgerock.FRUser.logout();
+        location.reload(true);
+      } catch (error) {
+        console.error(error)
+      }
     }
 
     // Begin the login flow

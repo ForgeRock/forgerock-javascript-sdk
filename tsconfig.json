@@ -18,10 +18,5 @@
     "strict": true,
     "target": "es5"
   },
-  "exclude": [
-    "tests",
-    "**/*.test.ts",
-    "lib",
-    "lib-esm"
-  ]
+  "exclude": ["tests", "**/*.test.ts", "**/*.test.d.ts", "lib", "lib-esm"]
 }

@@ -4,6 +4,12 @@
 
 - WebAuthn module that can be used in custom UIs
 
+## [0.9.2] - 2019-11-06
+
+### Added
+
+- OAuth2Client obeys `realmPath` configuration setting
+
 ## [0.9.1] - 2019-10-28
 
 ### Added

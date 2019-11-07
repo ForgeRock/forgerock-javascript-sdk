@@ -136,7 +136,7 @@ npm run make_certs
 npm start
 
 # Start the sample webserver
-npm run samples
+npm run server:samples
 
 # Follow the next section to trust certificate
 ```
@@ -167,16 +167,40 @@ Import the certificate to Firefox:
 1. Select `certs/ca.crt` and enable option to "Trust this CA to identify websites"
 1. Restart Firefox
 
-## E2E Tests
+## Tests
 
-Preliminary E2E tests are implemented with [Puppeteer](https://github.com/GoogleChrome/puppeteer). They utilize an HTML page that allows configuration of the SDK via querystring parameters at the beginning of each test scenario.
+This project is configured for multiple forms of tests: unit, integration, and e2e. Compilation and linting occurs as a pre-commit hook, and all tests are run as a pre-push hook.
+
+Some tests require an OpenAM instance with a public OAuth client configured. Specify your environment details in an `.env` file:
+
+| Variable    | Purpose                                                |
+| ----------- | ------------------------------------------------------ |
+| `AM_URL`    | Full URL to your OpenAM instance                       |
+| `BASE_URL`  | Base URL for your application                          |
+| `CLIENT_ID` | Your OAuth client ID                                   |
+| `SCOPE`     | The scopes to request when getting access tokens       |
+| `TREE`      | The authentication tree name to use for authentication |
+| `USERNAME`  | The username to use when authenticating                |
+| `PASSWORD`  | The password to use when authenticating                |
+
+### Troubleshooting
+
+**DOMException: Blocked a frame with origin "{url}" from accessing a cross-origin frame** (in browser console)
+
+This occurs when OpenAM returns the authorization code, but the `redirect_uri` doesn't match what's configured for the OAuth client. Tests use a path of `/callback`, so your OAuth client should be configured with a `redirect_uri` of `{BASE_URL}/callback` (e.g. https://forgerock-sdk-samples.com:3000/callback).
+
+**Manually view test site**
+
+To replicate the e2e environment for troubleshooting, run:
 
 ```bash
-# Start the test web server
-npm run e2e_server
+npm run server:e2e
+```
 
-# Run test scenarios
-npm run e2e_tests
+Now browse to the following URL, replacing relevant tokens with values from your `.env` file:
+
+```
+{BASE_URL}?amUrl={AM_URL}&clientId={CLIENT_ID}&scope={SCOPE}&un={USERNAME}&pw={PASSWORD}
 ```
 
 ## License
