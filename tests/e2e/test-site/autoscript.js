@@ -6,6 +6,7 @@
   const url = new URL(window.location.href);
   const amUrl = url.searchParams.get('amUrl');
   const clientId = url.searchParams.get('clientId');
+  const realmPath = url.searchParams.get('realmPath');
   const scope = url.searchParams.get('scope');
   const un = url.searchParams.get('un');
   const pw = url.searchParams.get('pw');
@@ -15,10 +16,11 @@
   forgerock.Config.set({
     clientId,
     redirectUri: `${url.origin}/callback`,
+    realmPath,
     scope,
     tree,
     serverConfig: {
-      baseUrl: amUrl
+      baseUrl: amUrl,
     },
   });
 
