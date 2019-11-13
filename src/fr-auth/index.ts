@@ -1,5 +1,5 @@
-import { ConfigOptions } from 'config';
 import Auth from '../auth/index';
+import { ConfigOptions } from '../config';
 import FRLoginFailure from './fr-login-failure';
 import FRLoginSuccess from './fr-login-success';
 import FRStep from './fr-step';
