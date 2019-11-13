@@ -4,6 +4,12 @@
 
 - WebAuthn module that can be used in custom UIs
 
+## [0.9.3] - 2019-11-13
+
+### Fixed
+
+- Non-relative import in FRAuth module
+
 ## [0.9.2] - 2019-11-06
 
 ### Added
