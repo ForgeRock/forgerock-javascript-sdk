@@ -1,7 +1,7 @@
-import { Step } from '../auth/interfaces';
-import { FailedPolicyRequirement, PolicyRequirement } from '../auth/interfaces';
-import { PolicyKey, policyMessage } from './enums';
+import { FailedPolicyRequirement, PolicyRequirement, Step } from '../auth/interfaces';
+import { PolicyKey } from './enums';
 import { MessageCreator, ProcessedPropertyError } from './interfaces';
+import defaultMessageCreator from './message-creator';
 
 /**
  * Utility for processing policy failures into human readable messages.
@@ -88,11 +88,22 @@ abstract class FRPolicy {
     policy: PolicyRequirement,
     messageCreator: MessageCreator = {},
   ): string {
-    const policyRequirement = policy.policyRequirement;
-    const params = policy.params ? { ...policy.params, policyRequirement } : { policyRequirement };
-    const message = (messageCreator[policyRequirement] ||
-      policyMessage[policyRequirement] ||
-      policyMessage[PolicyKey.UnknownPolicy])(property, params);
+    // AM is returning policy requirement failures as JSON strings
+    const policyObject = typeof policy === 'string' ? JSON.parse(policy) : { ...policy };
+
+    const policyRequirement = policyObject.policyRequirement;
+
+    // Determine which message creator function to use
+    const effectiveMessageCreator =
+      messageCreator[policyRequirement] ||
+      defaultMessageCreator[policyRequirement] ||
+      defaultMessageCreator[PolicyKey.UnknownPolicy];
+
+    // Flatten the parameters and create the message
+    const params = policyObject.params
+      ? { ...policyObject.params, policyRequirement }
+      : { policyRequirement };
+    const message = effectiveMessageCreator(property, params);
 
     return message;
   }

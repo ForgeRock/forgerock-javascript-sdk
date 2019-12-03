@@ -47,17 +47,13 @@ class FRCallback {
   }
 
   /**
-   * Gets the first output element with the specified name.
+   * Gets the value of the first output element with the specified name or the specified default value.
    *
-   * @deprecated Use `getOutputValue(name)` instead
    * @param name The name of the desired element
    */
-  public getOutputByName(name: string): NameValue {
-    const entry = this.payload.output.find((x) => x.name === name);
-    if (!entry) {
-      throw new Error(`Missing callback output entry "${name}"`);
-    }
-    return entry;
+  public getOutputByName<T>(name: string, defaultValue: T): T {
+    const output = this.payload.output.find((x) => x.name === name);
+    return output ? output.value : defaultValue;
   }
 
   private getArrayElement(array: NameValue[], selector: number | string = 0) {

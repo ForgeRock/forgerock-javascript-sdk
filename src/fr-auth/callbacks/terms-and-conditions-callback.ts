@@ -34,10 +34,10 @@ class TermsAndConditionsCallback extends FRCallback {
   }
 
   /**
-   * Sets the callback's acceptance to `true`.
+   * Sets the callback's acceptance.
    */
-  public setAccepted() {
-    this.setInputValue(true);
+  public setAccepted(accepted = true) {
+    this.setInputValue(accepted);
   }
 }
 

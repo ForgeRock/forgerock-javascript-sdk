@@ -1,5 +1,5 @@
 import FRCallback from '.';
-import { Callback } from '../../auth/interfaces';
+import { Callback, PolicyRequirement } from '../../auth/interfaces';
 
 /**
  * Represents a callback used to collect attributes.
@@ -36,17 +36,17 @@ class AttributeInputCallback<T extends string | boolean> extends FRCallback {
   }
 
   /**
-   * Gets the attribute policy keys.
+   * Gets the callback's failed policies.
    */
-  public getPolicyKeys(): string[] {
-    return this.getOutputValue('policies');
+  public getFailedPolicies(): PolicyRequirement[] {
+    return this.getOutputByName<PolicyRequirement[]>('failedPolicies', []);
   }
 
   /**
-   * Gets the attribute policy keys that are not satisfied.
+   * Gets the callback's applicable policies.
    */
-  public getFailedPolicyKeys(): string[] {
-    return this.getOutputValue('failedPolicies');
+  public getPolicies(): string[] {
+    return this.getOutputValue('policies');
   }
 
   /**
