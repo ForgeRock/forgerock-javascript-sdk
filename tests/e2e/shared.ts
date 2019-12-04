@@ -1,7 +1,7 @@
 const page = {
-  goto: (url: string) => Promise.resolve(),
-  on: (e: string, params: unknown) => Promise.resolve(),
-  waitForSelector: (selector: string, params: unknown) => Promise.resolve(),
+  goto: (): Promise<void> => Promise.resolve(),
+  on: (): Promise<void> => Promise.resolve(),
+  waitForSelector: (): Promise<void> => Promise.resolve(),
 };
 
 export { page };

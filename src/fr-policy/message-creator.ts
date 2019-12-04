@@ -1,5 +1,6 @@
 import { plural } from '../util/strings';
 import { PolicyKey } from './enums';
+import { getProp } from './helpers';
 import { MessageCreator } from './interfaces';
 
 const defaultMessageCreator: MessageCreator = {
@@ -53,12 +54,5 @@ const defaultMessageCreator: MessageCreator = {
     `${property} has failed the "VALID_QUERY_FILTER" policy`,
   [PolicyKey.ValidType]: (property: string) => `${property} has failed the "VALID_TYPE" policy`,
 };
-
-function getProp<T>(obj: { [key: string]: unknown } | undefined, prop: string, defaultValue: T): T {
-  if (!obj || obj[prop] === undefined) {
-    return defaultValue;
-  }
-  return obj[prop] as T;
-}
 
 export default defaultMessageCreator;
