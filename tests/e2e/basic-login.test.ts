@@ -1,5 +1,4 @@
 import { AM_URL, BASE_URL, CLIENT_ID, PASSWORD, REALM_PATH, SCOPE, USERNAME } from './config';
-import { page } from './shared';
 
 describe('Test basic login flow', () => {
   beforeAll(async () => {
