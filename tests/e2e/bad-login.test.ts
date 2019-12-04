@@ -1,5 +1,4 @@
 import { AM_URL, BASE_URL, CLIENT_ID, PASSWORD, REALM_PATH, SCOPE, USERNAME } from './config';
-import { page } from './shared';
 
 describe('Test bad login flow', () => {
   beforeAll(async () => {
@@ -23,7 +22,7 @@ describe('Test bad login flow', () => {
     const messageArray = [];
 
     try {
-      page.on('console', (message) => {
+      page.on('console', (message: { _text: string }) => {
         messageArray.push(message._text);
       });
 
