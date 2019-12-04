@@ -2,16 +2,13 @@
  * @jest-environment jsdom
  */
 
+import 'fake-indexeddb/auto';
 import TokenStorage from '.';
+import { ConfigOptions } from '../config';
 import { Tokens } from '../shared/interfaces';
 import { DB_NAME, TOKEN_KEY } from './constants';
-import 'fake-indexeddb/auto';
 
-jest.mock('../config/index', () => ({
-  get: () => config,
-}));
-
-const config = {
+const config: ConfigOptions = {
   clientId: 'mockClientId',
 };
 
@@ -27,16 +24,19 @@ const testTokensTwo: Tokens = {
   refreshToken: 'testRefreshTokenTwo',
 };
 
-const initTokenIndexedDB = async (initToken?: Tokens) => {
+const initTokenIndexedDB = async (initToken?: Tokens): Promise<unknown> => {
   return new Promise((resolve) => {
-    const onUpgradeNeeded = () => {
+    let setup = indexedDB.open(DB_NAME);
+
+    const onUpgradeNeeded = (): void => {
       const db = setup.result;
       const store = db.createObjectStore(config.clientId);
       if (initToken) store.put(initToken, TOKEN_KEY);
       db.close();
       resolve();
     };
-    const onSuccess = () => {
+
+    const onSuccess = (): void => {
       const db = setup.result;
       if (!setup.result.objectStoreNames.contains(config.clientId)) {
         const version = db.version + 1;
@@ -54,7 +54,7 @@ const initTokenIndexedDB = async (initToken?: Tokens) => {
       db.close();
       resolve();
     };
-    let setup = indexedDB.open(DB_NAME);
+
     setup.onupgradeneeded = onUpgradeNeeded;
     setup.onsuccess = onSuccess;
   });
@@ -73,19 +73,23 @@ const getTestToken = async (): Promise<Tokens | undefined | string> => {
   return token;
 };
 
+jest.mock('../config/index', () => ({
+  get: (): ConfigOptions => config,
+}));
+
 describe('The TokenStorage module', () => {
   beforeEach(async (done) => {
-    const deleteDatabase = await indexedDB.deleteDatabase(DB_NAME);
-    deleteDatabase.onsuccess = () => {
+    const deleteDatabase = indexedDB.deleteDatabase(DB_NAME);
+    deleteDatabase.onsuccess = (): void => {
       done();
     };
-    deleteDatabase.onerror = () => {
+    deleteDatabase.onerror = (): void => {
       console.log('failed to delete database');
     };
   });
 
   afterEach(async (done) => {
-    await indexedDB.deleteDatabase(DB_NAME);
+    indexedDB.deleteDatabase(DB_NAME);
     done();
   });
 

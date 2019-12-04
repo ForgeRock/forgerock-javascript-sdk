@@ -34,7 +34,7 @@ abstract class HttpClient extends Dispatcher {
     return await withTimeout(fetch(url, init), timeout);
   }
 
-  private static newTokenRequired(res: Response, requiresNewToken?: RequiresNewTokenFn) {
+  private static newTokenRequired(res: Response, requiresNewToken?: RequiresNewTokenFn): boolean {
     if (typeof requiresNewToken === 'function') {
       return requiresNewToken(res);
     }

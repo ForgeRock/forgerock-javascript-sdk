@@ -1,13 +1,19 @@
 import { stringify } from 'querystring';
 import { resolve } from 'url';
 import Config, { ConfigOptions } from '../config/index';
+import { AnyObject } from '../shared/interfaces';
 import TokenStorage from '../token-storage';
 import { isOkOr4xx } from '../util/http';
 import PKCE from '../util/pkce';
 import { getRealmUrlPath } from '../util/realm';
 import { withTimeout } from '../util/timeout';
 import { ResponseType } from './enums';
-import { GetAuthorizationUrlOptions, GetOAuth2TokensOptions, OAuth2Tokens } from './interfaces';
+import {
+  AccessTokenResponse,
+  GetAuthorizationUrlOptions,
+  GetOAuth2TokensOptions,
+  OAuth2Tokens,
+} from './interfaces';
 
 /**
  * OAuth 2.0 client.
@@ -20,7 +26,7 @@ abstract class OAuth2Client {
     const { serverConfig, clientId, redirectUri, scope } = Config.get(options);
 
     /* eslint-disable @typescript-eslint/camelcase */
-    const requestParams: any = {
+    const requestParams: AnyObject = {
       client_id: clientId,
       redirect_uri: redirectUri,
       response_type: options.responseType,
@@ -41,8 +47,17 @@ abstract class OAuth2Client {
 
     return new Promise((resolve, reject) => {
       const iframe = document.createElement('iframe');
+      let onLoad: () => void = () => {};
+      let cleanUp: () => void = () => {};
+      let timeout = 0;
 
-      const onLoad = () => {
+      cleanUp = (): void => {
+        window.clearTimeout(timeout);
+        iframe.removeEventListener('load', onLoad);
+        iframe.remove();
+      };
+
+      onLoad = (): void => {
         if (iframe.contentWindow) {
           const newHref = iframe.contentWindow.location.href;
           if (this.containsAuthCode(newHref)) {
@@ -52,13 +67,7 @@ abstract class OAuth2Client {
         }
       };
 
-      const cleanUp = () => {
-        clearTimeout(timeout);
-        iframe.removeEventListener('load', onLoad);
-        iframe.remove();
-      };
-
-      const timeout = setTimeout(() => {
+      timeout = window.setTimeout(() => {
         cleanUp();
         reject('Timeout');
       }, serverConfig.timeout);
@@ -77,7 +86,7 @@ abstract class OAuth2Client {
     const { clientId, redirectUri } = Config.get(options);
 
     /* eslint-disable @typescript-eslint/camelcase */
-    const requestParams: any = {
+    const requestParams: AnyObject = {
       client_id: clientId,
       code: options.authorizationCode,
       grant_type: 'authorization_code',
@@ -101,28 +110,32 @@ abstract class OAuth2Client {
     };
 
     const response = await this.request('access_token', undefined, false, init, options);
-    const responseBody = await this.getBody(response);
+    const responseBody = await this.getBody<unknown>(response);
 
     if (response.status !== 200) {
-      const message = this.parseError(responseBody) || `Expected 200, received ${response.status}`;
+      const message =
+        typeof responseBody === 'string'
+          ? `Expected 200, received ${response.status}`
+          : this.parseError(responseBody as AnyObject);
       throw new Error(message);
     }
 
-    if (!responseBody.access_token) {
+    const responseObject = responseBody as AccessTokenResponse;
+    if (!responseObject.access_token) {
       throw new Error('Access token not found in response');
     }
 
     return {
-      accessToken: responseBody.access_token,
-      idToken: responseBody.id_token,
-      refreshToken: responseBody.refresh_token,
+      accessToken: responseObject.access_token,
+      idToken: responseObject.id_token,
+      refreshToken: responseObject.refresh_token,
     };
   }
 
   /**
    * Gets OIDC user information.
    */
-  public static async getUserInfo(options?: ConfigOptions) {
+  public static async getUserInfo(options?: ConfigOptions): Promise<unknown> {
     const response = await this.request('userinfo', undefined, true, undefined, options);
     if (response.status !== 200) {
       throw new Error(`Failed to get user info; received ${response.status}`);
@@ -135,10 +148,10 @@ abstract class OAuth2Client {
   /**
    * Invokes the OIDC end session endpoint.
    */
-  public static async endSession(options?: ConfigOptions) {
+  public static async endSession(options?: ConfigOptions): Promise<void> {
     const { idToken } = await TokenStorage.get();
 
-    const query: any = {};
+    const query: AnyObject = {};
     if (idToken) {
       // eslint-disable-next-line @typescript-eslint/camelcase
       query.id_token_hint = idToken;
@@ -153,7 +166,7 @@ abstract class OAuth2Client {
   /**
    * Immediately revokes the stored access token.
    */
-  public static async revokeToken(options?: ConfigOptions) {
+  public static async revokeToken(options?: ConfigOptions): Promise<void> {
     const { clientId } = Config.get(options);
     const { accessToken } = await TokenStorage.get();
 
@@ -173,11 +186,11 @@ abstract class OAuth2Client {
 
   private static async request(
     path: string,
-    query?: any,
+    query?: AnyObject,
     includeToken?: boolean,
     init?: RequestInit,
     options?: ConfigOptions,
-  ) {
+  ): Promise<Response> {
     const { serverConfig } = Config.get(options);
     const url = this.getUrl(path, query, options);
 
@@ -193,11 +206,11 @@ abstract class OAuth2Client {
     return await withTimeout(fetch(url, init), serverConfig.timeout);
   }
 
-  private static containsAuthCode(url: string | null) {
-    return url && /code=([^&]+)/.test(url);
+  private static containsAuthCode(url: string | null): boolean {
+    return !!url && /code=([^&]+)/.test(url);
   }
 
-  private static async getBody(response: Response) {
+  private static async getBody<T>(response: Response): Promise<T | string> {
     const contentType = response.headers.get('content-type');
     if (contentType && contentType.indexOf('application/json') > -1) {
       return await response.json();
@@ -205,7 +218,7 @@ abstract class OAuth2Client {
     return await response.text();
   }
 
-  private static parseError(json: any): string | undefined {
+  private static parseError(json: AnyObject): string | undefined {
     if (json) {
       if (json.error && json.error_description) {
         return `${json.error}: ${json.error_description}`;
@@ -217,7 +230,7 @@ abstract class OAuth2Client {
     return undefined;
   }
 
-  private static getUrl(path: string, query?: any, options?: ConfigOptions): string {
+  private static getUrl(path: string, query?: AnyObject, options?: ConfigOptions): string {
     const { realmPath, serverConfig } = Config.get(options);
     const realmUrlPath = getRealmUrlPath(realmPath);
     let url = resolve(serverConfig.baseUrl, `oauth2/${realmUrlPath}/${path}`);

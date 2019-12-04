@@ -7,7 +7,7 @@ abstract class UserManager {
   /**
    * Gets the current user's profile.
    */
-  public static getCurrentUser() {
+  public static getCurrentUser(): Promise<unknown> {
     return OAuth2Client.getUserInfo();
   }
 }

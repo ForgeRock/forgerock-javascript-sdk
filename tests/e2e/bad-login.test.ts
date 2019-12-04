@@ -1,16 +1,14 @@
 import { AM_URL, BASE_URL, CLIENT_ID, PASSWORD, REALM_PATH, SCOPE, USERNAME } from './config';
-
-// Have TS ignore the `page` Puppeteer object
-declare const page: any;
+import { page } from './shared';
 
 describe('Test bad login flow', () => {
   beforeAll(async () => {
     try {
       const url = new URL(BASE_URL);
-      url.searchParams.set('amUrl', AM_URL!);
-      url.searchParams.set('clientId', CLIENT_ID!);
-      url.searchParams.set('realmPath', REALM_PATH!);
-      url.searchParams.set('scope', SCOPE!);
+      url.searchParams.set('amUrl', AM_URL || '');
+      url.searchParams.set('clientId', CLIENT_ID || '');
+      url.searchParams.set('realmPath', REALM_PATH || '');
+      url.searchParams.set('scope', SCOPE || '');
       url.searchParams.set('un', USERNAME);
       url.searchParams.set('pw', `sad_${PASSWORD}_panda`);
 

@@ -6,13 +6,13 @@ import crypto from 'crypto';
 import { TextEncoder } from 'util';
 import PKCE from './pkce';
 
-declare let window: any;
+declare let window: unknown;
 
 Object.defineProperty(window, 'crypto', {
   value: {
-    getRandomValues: (array: Uint8Array) => crypto.randomBytes(array.length),
+    getRandomValues: (array: Uint8Array): Buffer => crypto.randomBytes(array.length),
     subtle: {
-      digest: (alg: string, array: Uint8Array) => {
+      digest: (alg: string, array: Uint8Array): Buffer => {
         if (alg === 'SHA-256') {
           return crypto
             .createHash('sha256')

@@ -1,3 +1,4 @@
+import { add, clear, remove } from './helpers';
 import { CallbackContainer, FREvent, Listener } from './interfaces';
 
 /**
@@ -12,7 +13,7 @@ class Dispatcher {
    * @param type The event type
    * @param listener The function to subscribe to events of this type
    */
-  public addEventListener(type: string, listener: Listener) {
+  public addEventListener(type: string, listener: Listener): void {
     add(this.callbacks, type, listener);
   }
 
@@ -22,7 +23,7 @@ class Dispatcher {
    * @param type The event type
    * @param listener The function to unsubscribe from events of this type
    */
-  public removeEventListener(type: string, listener: Listener) {
+  public removeEventListener(type: string, listener: Listener): void {
     remove(this.callbacks, type, listener);
   }
 
@@ -31,7 +32,7 @@ class Dispatcher {
    *
    * @param type The event type, or all event types if not specified
    */
-  public clearEventListeners(type?: string) {
+  public clearEventListeners(type?: string): void {
     clear(this.callbacks, type);
   }
 
@@ -40,7 +41,7 @@ class Dispatcher {
    *
    * @param event The event object to publish
    */
-  public dispatchEvent<T extends FREvent>(event: T) {
+  public dispatchEvent<T extends FREvent>(event: T): void {
     if (!this.callbacks[event.type]) {
       return;
     }
@@ -48,34 +49,6 @@ class Dispatcher {
       listener(event);
     }
   }
-}
-
-/** @hidden */
-function add(container: CallbackContainer, type: string, listener: Listener) {
-  container[type] = container[type] || [];
-  if (container[type].indexOf(listener) < 0) {
-    container[type].push(listener);
-  }
-}
-
-/** @hidden */
-function remove(container: CallbackContainer, type: string, listener: Listener) {
-  if (!container[type]) {
-    return;
-  }
-  const index = container[type].indexOf(listener);
-  if (index >= 0) {
-    container[type].splice(index, 1);
-  }
-}
-
-/** @hidden */
-function clear(container: CallbackContainer, type?: string) {
-  Object.keys(container).forEach((k: string) => {
-    if (!type || k === type) {
-      delete container[k];
-    }
-  });
 }
 
 export default Dispatcher;

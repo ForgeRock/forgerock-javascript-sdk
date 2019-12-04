@@ -1,3 +1,3 @@
 interface Window {
-  PublicKeyCredential: any;
+  PublicKeyCredential: unknown;
 }

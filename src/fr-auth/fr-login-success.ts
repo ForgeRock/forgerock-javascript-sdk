@@ -16,21 +16,21 @@ class FRLoginSuccess implements AuthResponse {
   /**
    * Gets the step's realm.
    */
-  public getRealm() {
+  public getRealm(): string | undefined {
     return this.payload.realm;
   }
 
   /**
    * Gets the step's session token.
    */
-  public getSessionToken() {
+  public getSessionToken(): string | undefined {
     return this.payload.tokenId;
   }
 
   /**
    * Gets the step's success URL.
    */
-  public getSuccessUrl() {
+  public getSuccessUrl(): string | undefined {
     return this.payload.successUrl;
   }
 }

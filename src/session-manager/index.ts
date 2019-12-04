@@ -11,7 +11,7 @@ abstract class SessionManager {
   /**
    * Ends the current session.
    */
-  public static async logout(options?: ConfigOptions) {
+  public static async logout(options?: ConfigOptions): Promise<void> {
     const { realmPath, serverConfig } = Config.get(options);
     const init: RequestInit = {
       credentials: 'include',

@@ -48,7 +48,7 @@ abstract class FRUser {
    *
    * @param options Configuration overrides
    */
-  public static async logout(options?: ConfigOptions) {
+  public static async logout(options?: ConfigOptions): Promise<void> {
     try {
       // TODO: Determine if we're using logout() or endSession(). logout() removes
       //       the cookie, but fails with CORS issues currently.

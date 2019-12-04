@@ -22,7 +22,7 @@ class FRCallback {
    *
    * @param selector The index position or name of the desired element
    */
-  public getInputValue(selector: number | string = 0) {
+  public getInputValue(selector: number | string = 0): unknown {
     return this.getArrayElement(this.payload.input, selector).value;
   }
 
@@ -32,31 +32,32 @@ class FRCallback {
    *
    * @param selector The index position or name of the desired element
    */
-  public setInputValue(value: any, selector: number | string = 0) {
+  public setInputValue(value: unknown, selector: number | string = 0): void {
     this.getArrayElement(this.payload.input, selector).value = value;
   }
 
   /**
-   * Gets the value of the specified output element, or the first element if `selector` is not
-   * provided.
+   * Gets the value of the specified output element, or the first element if `selector`
+   * is not provided.
    *
    * @param selector The index position or name of the desired element
    */
-  public getOutputValue(selector: number | string = 0) {
+  public getOutputValue(selector: number | string = 0): unknown {
     return this.getArrayElement(this.payload.output, selector).value;
   }
 
   /**
-   * Gets the value of the first output element with the specified name or the specified default value.
+   * Gets the value of the first output element with the specified name or the
+   * specified default value.
    *
    * @param name The name of the desired element
    */
   public getOutputByName<T>(name: string, defaultValue: T): T {
     const output = this.payload.output.find((x) => x.name === name);
-    return output ? output.value : defaultValue;
+    return output ? (output.value as T) : defaultValue;
   }
 
-  private getArrayElement(array: NameValue[], selector: number | string = 0) {
+  private getArrayElement(array: NameValue[], selector: number | string = 0): NameValue {
     if (typeof selector === 'number') {
       if (selector < 0 || selector > array.length - 1) {
         throw new Error(`Selector index ${selector} is out of range`);

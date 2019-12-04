@@ -11,6 +11,15 @@ interface OAuth2Tokens {
 }
 
 /**
+ * Response from access_token endpoint.
+ */
+interface AccessTokenResponse {
+  access_token: string;
+  id_token: string;
+  refresh_token: string;
+}
+
+/**
  * Options used when requesting the authorization URL.
  */
 interface GetAuthorizationUrlOptions extends ConfigOptions {
@@ -27,4 +36,4 @@ interface GetOAuth2TokensOptions extends ConfigOptions {
   verifier?: string;
 }
 
-export { GetAuthorizationUrlOptions, GetOAuth2TokensOptions, OAuth2Tokens };
+export { AccessTokenResponse, GetAuthorizationUrlOptions, GetOAuth2TokensOptions, OAuth2Tokens };

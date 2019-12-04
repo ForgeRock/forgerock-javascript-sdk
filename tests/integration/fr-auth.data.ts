@@ -1,14 +1,17 @@
-export const jsonResponse = {
+import { CallbackType } from '../../src/auth/enums';
+import { Step } from '../../src/auth/interfaces';
+
+export const jsonResponse: Step = {
   authId: 'unused',
   callbacks: [
     {
-      type: 'NameCallback',
+      type: CallbackType.NameCallback,
       output: [{ name: 'prompt', value: 'User Name' }],
       input: [{ name: 'IDToken1', value: '' }],
       _id: 0,
     },
     {
-      type: 'PasswordCallback',
+      type: CallbackType.PasswordCallback,
       output: [{ name: 'prompt', value: 'Password' }],
       input: [{ name: 'IDToken2', value: '' }],
       _id: 1,
@@ -16,15 +19,16 @@ export const jsonResponse = {
   ],
   stage: 'UsernamePassword',
 };
+
 export const rawResponse = {
   body: {},
   bodyUsed: true,
   headers: {
-    get() {
+    get(): string {
       return 'application/json';
     },
   },
-  json() {
+  json(): Step {
     return jsonResponse;
   },
   ok: true,
@@ -36,6 +40,7 @@ export const rawResponse = {
     // eslint-disable-next-line max-len
     'https://openam-devjustin2.forgeblocks.com/am/json/realms/root/authenticate?authIndexType=service&authIndexValue=UsernamePassword',
 };
+
 export const loginSubmission = {
   payload: {
     authId: 'unused',

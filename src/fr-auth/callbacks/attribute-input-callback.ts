@@ -18,21 +18,21 @@ class AttributeInputCallback<T extends string | boolean> extends FRCallback {
    * Gets the attribute name.
    */
   public getName(): string {
-    return this.getOutputValue('name');
+    return this.getOutputByName<string>('name', '');
   }
 
   /**
    * Gets the attribute prompt.
    */
   public getPrompt(): string {
-    return this.getOutputValue('prompt');
+    return this.getOutputByName<string>('prompt', '');
   }
 
   /**
    * Gets whether the attribute is required.
    */
   public isRequired(): boolean {
-    return this.getOutputValue('required');
+    return this.getOutputByName<boolean>('required', false);
   }
 
   /**
@@ -46,13 +46,13 @@ class AttributeInputCallback<T extends string | boolean> extends FRCallback {
    * Gets the callback's applicable policies.
    */
   public getPolicies(): string[] {
-    return this.getOutputValue('policies');
+    return this.getOutputByName<string[]>('policies', []);
   }
 
   /**
    * Sets the attribute's value.
    */
-  public setValue(value: T) {
+  public setValue(value: T): void {
     this.setInputValue(value);
   }
 }

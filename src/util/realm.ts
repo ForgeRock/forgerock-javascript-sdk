@@ -1,4 +1,4 @@
-function getRealmUrlPath(realmPath?: string) {
+function getRealmUrlPath(realmPath?: string): string {
   // Split the path and scrub segments
   const names = (realmPath || '')
     .split('/')

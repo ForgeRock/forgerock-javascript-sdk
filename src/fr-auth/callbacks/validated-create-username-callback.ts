@@ -16,14 +16,7 @@ class ValidatedCreateUsernameCallback extends FRCallback {
    * Gets the callback's prompt.
    */
   public getPrompt(): string {
-    return this.getOutputValue('prompt');
-  }
-
-  /**
-   * Gets whether the username is required.
-   */
-  public isRequired(): boolean {
-    return this.getOutputValue('required');
+    return this.getOutputByName<string>('prompt', '');
   }
 
   /**
@@ -37,13 +30,20 @@ class ValidatedCreateUsernameCallback extends FRCallback {
    * Gets the callback's applicable policies.
    */
   public getPolicies(): string[] {
-    return this.getOutputValue('policies');
+    return this.getOutputByName<string[]>('policies', []);
+  }
+
+  /**
+   * Gets whether the username is required.
+   */
+  public isRequired(): boolean {
+    return this.getOutputByName<boolean>('required', false);
   }
 
   /**
    * Sets the callback's username.
    */
-  public setName(name: string) {
+  public setName(name: string): void {
     this.setInputValue(name);
   }
 }

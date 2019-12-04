@@ -16,13 +16,13 @@ class ReCaptchaCallback extends FRCallback {
    * Gets the reCAPTCHA site key.
    */
   public getSiteKey(): string {
-    return this.getOutputValue('recaptchaSiteKey');
+    return this.getOutputByName<string>('recaptchaSiteKey', '');
   }
 
   /**
    * Sets the reCAPTCHA result.
    */
-  public setResult(result: string) {
+  public setResult(result: string): void {
     this.setInputValue(result);
   }
 }
