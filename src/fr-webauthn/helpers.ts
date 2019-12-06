@@ -1,9 +1,9 @@
-function parsePubKeyArray(s: string | any[]) {
+function parsePubKeyArray(s: string | unknown[]): PublicKeyCredentialParameters[] | undefined {
   if (!s) {
     return undefined;
   }
   if (Array.isArray(s)) {
-    return s;
+    return s as PublicKeyCredentialParameters[];
   }
   if (typeof s !== 'string') {
     return undefined;

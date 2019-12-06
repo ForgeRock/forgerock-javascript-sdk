@@ -137,11 +137,17 @@ abstract class FRWebAuthn {
   public static createRegistrationPublicKey(
     outputValue: WebAuthnRegistrationMetadata,
   ): PublicKeyCredentialCreationOptions {
+    const { pubKeyCredParams: pubKeyCredParamsString } = outputValue;
+    const pubKeyCredParams = parsePubKeyArray(pubKeyCredParamsString);
+    if (!pubKeyCredParams) {
+      throw new Error('No public key credentials were found');
+    }
+
     const {
       attestationPreference,
       authenticatorSelection,
       challenge,
-      pubKeyCredParams,
+
       relyingPartyId,
       relyingPartyName,
       timeout,
@@ -158,7 +164,7 @@ abstract class FRWebAuthn {
       attestation: attestationPreference,
       authenticatorSelection: JSON.parse(authenticatorSelection),
       challenge: Uint8Array.from(atob(challenge), (c) => c.charCodeAt(0)).buffer,
-      pubKeyCredParams: parsePubKeyArray(pubKeyCredParams),
+      pubKeyCredParams,
       rp,
       timeout,
       user: {
