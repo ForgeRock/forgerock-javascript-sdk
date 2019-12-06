@@ -31,6 +31,7 @@ import FRPolicy, { MessageCreator, PolicyKey, ProcessedPropertyError } from './f
 import defaultMessageCreator from './fr-policy/message-creator';
 import FRUI from './fr-ui';
 import FRUser from './fr-user';
+import FRWebAuthn, { Outcome, WebAuthnStepType } from './fr-webauthn';
 import HttpClient from './http-client';
 import OAuth2Client, {
   GetAuthorizationUrlOptions,
@@ -45,7 +46,6 @@ import TokenStorage from './token-storage';
 import UserManager from './user-manager';
 import PKCE from './util/pkce';
 import LocalStorage from './util/storage';
-import WebAuthn from './browser';
 
 export {
   defaultMessageCreator,
@@ -73,6 +73,7 @@ export {
   FRStepHandler,
   FRUI,
   FRUser,
+  FRWebAuthn,
   GetAuthorizationUrlOptions,
   GetOAuth2TokensOptions,
   GetTokensOptions,
@@ -87,6 +88,7 @@ export {
   NameValue,
   OAuth2Client,
   OAuth2Tokens,
+  Outcome,
   PasswordCallback,
   PKCE,
   PolicyKey,
@@ -108,5 +110,5 @@ export {
   ValidatedCreatePasswordCallback,
   ValidatedCreateUsernameCallback,
   ValidConfigOptions,
-  WebAuthn,
+  WebAuthnStepType,
 };
