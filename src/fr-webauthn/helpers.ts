@@ -1,3 +1,5 @@
+import { ParsedCredential } from './interfaces';
+
 function parsePubKeyArray(s: string | unknown[]): PublicKeyCredentialParameters[] | undefined {
   if (!s) {
     return undefined;
@@ -15,4 +17,31 @@ function parsePubKeyArray(s: string | unknown[]): PublicKeyCredentialParameters[
   return JSON.parse(`[${s}]`);
 }
 
-export { parsePubKeyArray };
+function parseNumberArray(s: string): number[] {
+  const matches = /new Int8Array\((.+)\)/.exec(s);
+  if (matches === null || matches.length < 2) {
+    return [];
+  }
+  return JSON.parse(matches[1]);
+}
+
+// TODO: Remove this once AM is providing fully-serialized JSON
+function parseCredentials(s: string): ParsedCredential[] {
+  try {
+    const creds = s
+      .split('}')
+      .filter((x) => !!x)
+      .map((x) => {
+        const idArray = parseNumberArray(x);
+        return {
+          id: new Int8Array(idArray).buffer,
+          type: 'public-key' as PublicKeyCredentialType,
+        };
+      });
+    return creds;
+  } catch (error) {
+    throw new Error('Failed to parse credentials');
+  }
+}
+
+export { parsePubKeyArray, parseCredentials, parseNumberArray };

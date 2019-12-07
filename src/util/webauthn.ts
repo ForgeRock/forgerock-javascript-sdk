@@ -1,9 +1,9 @@
-// interface Credential {
-//   response: { clientDataJSON: ArrayBuffer };
-// }
+interface Credential {
+  response: { clientDataJSON: ArrayBuffer };
+}
 
 // TODO: Test webauthn and find out what type def for Credential is correct
-function getClientDataJson(credential: any) {
+function getClientDataJson(credential: Credential): string {
   // https://goo.gl/yabPex - To future-proof, we'll pass along whatever the browser
   // gives us and let AM disregard randomly-injected properties
   const uint8Array = new Uint8Array(credential.response.clientDataJSON);
@@ -16,7 +16,7 @@ function getClientDataJson(credential: any) {
 //   "relyingPartyId":""
 //   "relyingPartyId":"rpId: \"foo\","
 // This regex handles both formats, but should be removed once AM is fixed.
-function parseRelyingPartyId(relyingPartyId: string) {
+function parseRelyingPartyId(relyingPartyId: string): string {
   return relyingPartyId.replace(/rpId: "(.+)",/, '$1');
 }
 

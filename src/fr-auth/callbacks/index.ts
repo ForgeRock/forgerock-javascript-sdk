@@ -58,6 +58,10 @@ class FRCallback {
   }
 
   private getArrayElement(array: NameValue[], selector: number | string = 0): NameValue {
+    if (array === undefined) {
+      throw new Error(`No NameValue array was provided to search (selector ${selector})`);
+    }
+
     if (typeof selector === 'number') {
       if (selector < 0 || selector > array.length - 1) {
         throw new Error(`Selector index ${selector} is out of range`);

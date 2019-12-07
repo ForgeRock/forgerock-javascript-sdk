@@ -4,28 +4,26 @@ import MetadataCallback from '../fr-auth/callbacks/metadata-callback';
 import FRStep from '../fr-auth/fr-step';
 import { getClientDataJson, parseRelyingPartyId } from '../util/webauthn';
 import { Outcome, WebAuthnStepType } from './enums';
-import { parsePubKeyArray } from './helpers';
-import { WebAuthnAuthenticationMetadata, WebAuthnRegistrationMetadata } from './interfaces';
+import { parseCredentials, parsePubKeyArray } from './helpers';
+import {
+  WebAuthnAuthenticationMetadata,
+  WebAuthnCallbacks,
+  WebAuthnRegistrationMetadata,
+} from './interfaces';
+
+type WebAuthnMetadata = WebAuthnAuthenticationMetadata | WebAuthnRegistrationMetadata;
 
 abstract class FRWebAuthn {
   public static getWebAuthStepType(step: FRStep): WebAuthnStepType {
-    const outcomeCallback = step
-      .getCallbacksOfType<HiddenValueCallback>(CallbackType.HiddenValueCallback)
-      .find((x) => x.getOutputByName('id').value === 'webAuthnOutcome');
-    if (!outcomeCallback) {
+    const outcomeCallback = this.getOutcomeCallback(step);
+    const metadataCallback = this.getMetadataCallback(step);
+
+    if (!outcomeCallback || !metadataCallback) {
       return WebAuthnStepType.None;
     }
 
-    const metadataCallback = step
-      .getCallbacksOfType<MetadataCallback>(CallbackType.HiddenValueCallback)
-      .find((x) => x.getOutputByName('data').value._type === 'WebAuthn');
-    if (!metadataCallback) {
-      return WebAuthnStepType.None;
-    }
-
-    const metadata = metadataCallback.getOutputByName('data').value;
-    const authenticationData = metadata as WebAuthnAuthenticationMetadata;
-    if (authenticationData.acceptableCredentials) {
+    const metadata = metadataCallback.getOutputValue('data') as WebAuthnAuthenticationMetadata;
+    if (metadata.acceptableCredentials) {
       return WebAuthnStepType.Authentication;
     }
 
@@ -34,9 +32,14 @@ abstract class FRWebAuthn {
 
   public static async authenticate(step: FRStep): Promise<FRStep> {
     const { hiddenCallback, metadataCallback } = this.getCallbacks(step);
+    if (!hiddenCallback || !metadataCallback) {
+      throw new Error('Invalid webauthn payload');
+    }
+
     let outcome: string;
     try {
-      const publicKey = this.createAuthenticationPublicKey(metadataCallback.getOutputValue());
+      const metadata = metadataCallback.getOutputValue('data') as WebAuthnAuthenticationMetadata;
+      const publicKey = this.createAuthenticationPublicKey(metadata);
       const credential = await this.getAuthenticationCredential(publicKey);
       outcome = this.getAuthenticationOutcome(credential);
     } catch (error) {
@@ -48,9 +51,14 @@ abstract class FRWebAuthn {
 
   public static async register(step: FRStep): Promise<FRStep> {
     const { hiddenCallback, metadataCallback } = this.getCallbacks(step);
+    if (!hiddenCallback || !metadataCallback) {
+      throw new Error('Invalid webauthn payload');
+    }
+
     let outcome: string;
     try {
-      const publicKey = this.createRegistrationPublicKey(metadataCallback.getOutputValue());
+      const metadata = metadataCallback.getOutputValue('data') as WebAuthnRegistrationMetadata;
+      const publicKey = this.createRegistrationPublicKey(metadata);
       const credential = await this.getRegistrationCredential(publicKey);
       outcome = this.getRegistrationOutcome(credential);
     } catch (error) {
@@ -60,10 +68,24 @@ abstract class FRWebAuthn {
     return step;
   }
 
-  public static getCallbacks(step: FRStep) {
-    const hiddenCallback = step.getCallbackOfType(CallbackType.HiddenValueCallback);
-    const metadataCallback = step.getCallbackOfType(CallbackType.MetadataCallback);
-    return { hiddenCallback, metadataCallback };
+  public static getCallbacks(step: FRStep): WebAuthnCallbacks {
+    return {
+      hiddenCallback: this.getOutcomeCallback(step),
+      metadataCallback: this.getMetadataCallback(step),
+    };
+  }
+
+  public static getMetadataCallback(step: FRStep): MetadataCallback | undefined {
+    return step.getCallbacksOfType<MetadataCallback>(CallbackType.MetadataCallback).find((x) => {
+      const cb = x.getOutputByName<WebAuthnMetadata | undefined>('data', undefined);
+      return cb && cb.hasOwnProperty('relyingPartyId');
+    });
+  }
+
+  public static getOutcomeCallback(step: FRStep): HiddenValueCallback | undefined {
+    return step
+      .getCallbacksOfType<HiddenValueCallback>(CallbackType.HiddenValueCallback)
+      .find((x) => x.getOutputByName<string>('id', '') === 'webAuthnOutcome');
   }
 
   public static async getAuthenticationCredential(
@@ -127,7 +149,7 @@ abstract class FRWebAuthn {
     const rpId = parseRelyingPartyId(relyingPartyId);
 
     return {
-      allowCredentials: this.parseCredentials(acceptableCredentials),
+      allowCredentials: parseCredentials(acceptableCredentials),
       challenge: Uint8Array.from(atob(challenge), (c) => c.charCodeAt(0)).buffer,
       timeout,
       ...(rpId && { rpId }),
@@ -140,14 +162,13 @@ abstract class FRWebAuthn {
     const { pubKeyCredParams: pubKeyCredParamsString } = outputValue;
     const pubKeyCredParams = parsePubKeyArray(pubKeyCredParamsString);
     if (!pubKeyCredParams) {
-      throw new Error('No public key credentials were found');
+      throw new Error('Missing pubKeyCredParams');
     }
 
     const {
       attestationPreference,
       authenticatorSelection,
       challenge,
-
       relyingPartyId,
       relyingPartyName,
       timeout,
@@ -175,26 +196,7 @@ abstract class FRWebAuthn {
     };
   }
 
-  // TODO: Remove this once AM is providing fully-serialized JSON
-  public static parseCredentials(s: string) {
-    try {
-      const creds = s
-        .split('}')
-        .filter((x) => !!x)
-        .map((x) => {
-          const idArray: number[] = JSON.parse(/new Int8Array\((.+)\)/.exec(x)![1]);
-          return {
-            id: new Int8Array(idArray).buffer,
-            type: 'public-key' as PublicKeyCredentialType,
-          };
-        });
-      return creds;
-    } catch (error) {
-      throw new Error('Failed to parse credentials');
-    }
-  }
-
-  private static getErrorOutcome(error: Error) {
+  private static getErrorOutcome(error: Error): string {
     const name = error.name ? `${error.name}:` : '';
     return `${Outcome.Error}::${name}${error.message}`;
   }
