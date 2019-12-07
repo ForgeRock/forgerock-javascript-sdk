@@ -3,9 +3,10 @@ import HiddenValueCallback from '../fr-auth/callbacks/hidden-value-callback';
 import MetadataCallback from '../fr-auth/callbacks/metadata-callback';
 import FRStep from '../fr-auth/fr-step';
 import { getClientDataJson, parseRelyingPartyId } from '../util/webauthn';
-import { Outcome, WebAuthnStepType } from './enums';
+import { WebAuthnOutcome, WebAuthnStepType } from './enums';
 import { parseCredentials, parsePubKeyArray } from './helpers';
 import {
+  RelyingParty,
   WebAuthnAuthenticationMetadata,
   WebAuthnCallbacks,
   WebAuthnRegistrationMetadata,
@@ -13,7 +14,29 @@ import {
 
 type WebAuthnMetadata = WebAuthnAuthenticationMetadata | WebAuthnRegistrationMetadata;
 
+/**
+ * Utility for integrating a web browser's WebAuthn API.
+ *
+ * Example:
+ *
+ * ```js
+ * // Determine if a step is a WebAuthn step
+ * const stepType = FRWebAuthn.getWebAuthStepType(step);
+ * if (stepType === WebAuthnStepType.Registration) {
+ *   // Register a new device
+ *   const registeredStep = await FRWebAuthn.register(registrationStep);
+ * } else if (stepType === WebAuthnStepType.Authentication) {
+ *   // Authenticate with a device
+ *   const authenticatedStep = await FRWebAuthn.authenticate(authentiationStep);
+ * }
+ */
 abstract class FRWebAuthn {
+  /**
+   * Determines if the given step is a WebAuthn step.
+   *
+   * @param step The step to evaluate
+   * @return A WebAuthnStepType value
+   */
   public static getWebAuthStepType(step: FRStep): WebAuthnStepType {
     const outcomeCallback = this.getOutcomeCallback(step);
     const metadataCallback = this.getMetadataCallback(step);
@@ -30,6 +53,12 @@ abstract class FRWebAuthn {
     return WebAuthnStepType.Registration;
   }
 
+  /**
+   * Populates the step with the necessary authentication outcome.
+   *
+   * @param step The step that contains WebAuthn authentication data
+   * @return The populated step
+   */
   public static async authenticate(step: FRStep): Promise<FRStep> {
     const { hiddenCallback, metadataCallback } = this.getCallbacks(step);
     if (!hiddenCallback || !metadataCallback) {
@@ -49,6 +78,12 @@ abstract class FRWebAuthn {
     return step;
   }
 
+  /**
+   * Populates the step with the necessary registration outcome.
+   *
+   * @param step The step that contains WebAuthn registration data
+   * @return The populated step
+   */
   public static async register(step: FRStep): Promise<FRStep> {
     const { hiddenCallback, metadataCallback } = this.getCallbacks(step);
     if (!hiddenCallback || !metadataCallback) {
@@ -68,6 +103,12 @@ abstract class FRWebAuthn {
     return step;
   }
 
+  /**
+   * Returns an object containing the two WebAuthn callbacks.
+   *
+   * @param step The step that contains WebAuthn callbacks
+   * @return The WebAuthn callbacks
+   */
   public static getCallbacks(step: FRStep): WebAuthnCallbacks {
     return {
       hiddenCallback: this.getOutcomeCallback(step),
@@ -75,6 +116,13 @@ abstract class FRWebAuthn {
     };
   }
 
+  /**
+   * Returns the WebAuthn metadata callback containing data to pass to the browser
+   * Web Authentication API.
+   *
+   * @param step The step that contains WebAuthn callbacks
+   * @return The metadata callback
+   */
   public static getMetadataCallback(step: FRStep): MetadataCallback | undefined {
     return step.getCallbacksOfType<MetadataCallback>(CallbackType.MetadataCallback).find((x) => {
       const cb = x.getOutputByName<WebAuthnMetadata | undefined>('data', undefined);
@@ -82,22 +130,40 @@ abstract class FRWebAuthn {
     });
   }
 
+  /**
+   * Returns the WebAuthn hidden value callback where the outcome should be populated.
+   *
+   * @param step The step that contains WebAuthn callbacks
+   * @return The hidden value callback
+   */
   public static getOutcomeCallback(step: FRStep): HiddenValueCallback | undefined {
     return step
       .getCallbacksOfType<HiddenValueCallback>(CallbackType.HiddenValueCallback)
       .find((x) => x.getOutputByName<string>('id', '') === 'webAuthnOutcome');
   }
 
+  /**
+   * Retrieves the credential from the browser Web Authentication API.
+   *
+   * @param options The public key options associated with the request
+   * @return The credential
+   */
   public static async getAuthenticationCredential(
-    publicKey: PublicKeyCredentialRequestOptions,
+    options: PublicKeyCredentialRequestOptions,
   ): Promise<PublicKeyCredential | null> {
-    const credential = await navigator.credentials.get({ publicKey });
+    const credential = await navigator.credentials.get({ publicKey: options });
     return credential as PublicKeyCredential;
   }
 
+  /**
+   * Converts an authentication credential into the outcome expected by OpenAM.
+   *
+   * @param credential The credential to convert
+   * @return The outcome string
+   */
   public static getAuthenticationOutcome(credential: PublicKeyCredential | null): string {
     if (!window.PublicKeyCredential) {
-      return Outcome.Unsupported;
+      return WebAuthnOutcome.Unsupported;
     }
 
     try {
@@ -116,16 +182,28 @@ abstract class FRWebAuthn {
     }
   }
 
+  /**
+   * Retrieves the credential from the browser Web Authentication API.
+   *
+   * @param options The public key options associated with the request
+   * @return The credential
+   */
   public static async getRegistrationCredential(
-    publicKey: PublicKeyCredentialCreationOptions,
+    options: PublicKeyCredentialCreationOptions,
   ): Promise<PublicKeyCredential | null> {
-    const credential = await navigator.credentials.create({ publicKey });
+    const credential = await navigator.credentials.create({ publicKey: options });
     return credential as PublicKeyCredential;
   }
 
+  /**
+   * Converts a registration credential into the outcome expected by OpenAM.
+   *
+   * @param credential The credential to convert
+   * @return The outcome string
+   */
   public static getRegistrationOutcome(credential: PublicKeyCredential | null): string {
     if (!window.PublicKeyCredential) {
-      return Outcome.Unsupported;
+      return WebAuthnOutcome.Unsupported;
     }
 
     try {
@@ -142,10 +220,17 @@ abstract class FRWebAuthn {
     }
   }
 
+  /**
+   * Converts authentication tree metadata into options required by the browser
+   * Web Authentication API.
+   *
+   * @param metadata The metadata provided in the authentication tree MetadataCallback
+   * @return The Web Authentication API request options
+   */
   public static createAuthenticationPublicKey(
-    outputValue: WebAuthnAuthenticationMetadata,
+    metadata: WebAuthnAuthenticationMetadata,
   ): PublicKeyCredentialRequestOptions {
-    const { acceptableCredentials, challenge, relyingPartyId, timeout } = outputValue;
+    const { acceptableCredentials, challenge, relyingPartyId, timeout } = metadata;
     const rpId = parseRelyingPartyId(relyingPartyId);
 
     return {
@@ -156,10 +241,17 @@ abstract class FRWebAuthn {
     };
   }
 
+  /**
+   * Converts authentication tree metadata into options required by the browser
+   * Web Authentication API.
+   *
+   * @param metadata The metadata provided in the authentication tree MetadataCallback
+   * @return The Web Authentication API request options
+   */
   public static createRegistrationPublicKey(
-    outputValue: WebAuthnRegistrationMetadata,
+    metadata: WebAuthnRegistrationMetadata,
   ): PublicKeyCredentialCreationOptions {
-    const { pubKeyCredParams: pubKeyCredParamsString } = outputValue;
+    const { pubKeyCredParams: pubKeyCredParamsString } = metadata;
     const pubKeyCredParams = parsePubKeyArray(pubKeyCredParamsString);
     if (!pubKeyCredParams) {
       throw new Error('Missing pubKeyCredParams');
@@ -174,7 +266,7 @@ abstract class FRWebAuthn {
       timeout,
       userId,
       userName,
-    } = outputValue;
+    } = metadata;
     const rpId = parseRelyingPartyId(relyingPartyId);
     const rp: RelyingParty = {
       name: relyingPartyName,
@@ -198,14 +290,16 @@ abstract class FRWebAuthn {
 
   private static getErrorOutcome(error: Error): string {
     const name = error.name ? `${error.name}:` : '';
-    return `${Outcome.Error}::${name}${error.message}`;
+    return `${WebAuthnOutcome.Error}::${name}${error.message}`;
   }
 }
 
-interface RelyingParty {
-  name: string;
-  id?: string;
-}
-
 export default FRWebAuthn;
-export { Outcome, WebAuthnStepType };
+export {
+  RelyingParty,
+  WebAuthnAuthenticationMetadata,
+  WebAuthnCallbacks,
+  WebAuthnOutcome,
+  WebAuthnRegistrationMetadata,
+  WebAuthnStepType,
+};

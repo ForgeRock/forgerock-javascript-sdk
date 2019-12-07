@@ -1,4 +1,4 @@
-enum Outcome {
+enum WebAuthnOutcome {
   Error = 'ERROR',
   Unsupported = 'unsupported',
 }
@@ -9,4 +9,4 @@ enum WebAuthnStepType {
   Registration = 2,
 }
 
-export { Outcome, WebAuthnStepType };
+export { WebAuthnOutcome, WebAuthnStepType };

@@ -1,6 +1,11 @@
 import HiddenValueCallback from '../fr-auth/callbacks/hidden-value-callback';
 import MetadataCallback from '../fr-auth/callbacks/metadata-callback';
 
+interface RelyingParty {
+  name: string;
+  id?: string;
+}
+
 interface WebAuthnRegistrationMetadata {
   attestationPreference: 'none' | 'indirect' | 'direct';
   authenticatorSelection: string;
@@ -32,6 +37,7 @@ interface ParsedCredential {
 
 export {
   ParsedCredential,
+  RelyingParty,
   WebAuthnCallbacks,
   WebAuthnAuthenticationMetadata,
   WebAuthnRegistrationMetadata,

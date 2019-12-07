@@ -31,7 +31,14 @@ import FRPolicy, { MessageCreator, PolicyKey, ProcessedPropertyError } from './f
 import defaultMessageCreator from './fr-policy/message-creator';
 import FRUI from './fr-ui';
 import FRUser from './fr-user';
-import FRWebAuthn, { Outcome, WebAuthnStepType } from './fr-webauthn';
+import FRWebAuthn, {
+  RelyingParty,
+  WebAuthnAuthenticationMetadata,
+  WebAuthnCallbacks,
+  WebAuthnOutcome,
+  WebAuthnRegistrationMetadata,
+  WebAuthnStepType,
+} from './fr-webauthn';
 import HttpClient from './http-client';
 import OAuth2Client, {
   GetAuthorizationUrlOptions,
@@ -88,7 +95,6 @@ export {
   NameValue,
   OAuth2Client,
   OAuth2Tokens,
-  Outcome,
   PasswordCallback,
   PKCE,
   PolicyKey,
@@ -96,6 +102,7 @@ export {
   PollingWaitCallback,
   ProcessedPropertyError,
   ReCaptchaCallback,
+  RelyingParty,
   ResponseType,
   SessionManager,
   Step,
@@ -110,5 +117,9 @@ export {
   ValidatedCreatePasswordCallback,
   ValidatedCreateUsernameCallback,
   ValidConfigOptions,
+  WebAuthnAuthenticationMetadata,
+  WebAuthnCallbacks,
+  WebAuthnOutcome,
+  WebAuthnRegistrationMetadata,
   WebAuthnStepType,
 };
