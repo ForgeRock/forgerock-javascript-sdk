@@ -28,9 +28,9 @@
     .pipe(
       rxFlatMap((step) => {
         console.log('Initiate first step with `undefined`');
-        step.getCallbackOfType('NameCallback')
+        step.getCallbackOfType('ValidatedCreateUsernameCallback')
           .setName(un);
-        step.getCallbackOfType('PasswordCallback')
+        step.getCallbackOfType('ValidatedCreatePasswordCallback')
           .setPassword(pw);
         return forgerock.FRAuth.next(step);
       }),
