@@ -1,7 +1,7 @@
-import { stringify } from 'querystring';
+import { ParsedUrlQueryInput, stringify } from 'querystring';
 import { resolve } from 'url';
 import Config, { ConfigOptions } from '../config/index';
-import { AnyObject } from '../shared/interfaces';
+import { NameValue } from '../shared/interfaces';
 import TokenStorage from '../token-storage';
 import { isOkOr4xx } from '../util/http';
 import PKCE from '../util/pkce';
@@ -26,7 +26,7 @@ abstract class OAuth2Client {
     const { serverConfig, clientId, redirectUri, scope } = Config.get(options);
 
     /* eslint-disable @typescript-eslint/camelcase */
-    const requestParams: AnyObject = {
+    const requestParams: ParsedUrlQueryInput = {
       client_id: clientId,
       redirect_uri: redirectUri,
       response_type: options.responseType,
@@ -86,7 +86,7 @@ abstract class OAuth2Client {
     const { clientId, redirectUri } = Config.get(options);
 
     /* eslint-disable @typescript-eslint/camelcase */
-    const requestParams: AnyObject = {
+    const requestParams: ParsedUrlQueryInput = {
       client_id: clientId,
       code: options.authorizationCode,
       grant_type: 'authorization_code',
@@ -116,7 +116,7 @@ abstract class OAuth2Client {
       const message =
         typeof responseBody === 'string'
           ? `Expected 200, received ${response.status}`
-          : this.parseError(responseBody as AnyObject);
+          : this.parseError(responseBody as NameValue<unknown>);
       throw new Error(message);
     }
 
@@ -151,7 +151,7 @@ abstract class OAuth2Client {
   public static async endSession(options?: ConfigOptions): Promise<void> {
     const { idToken } = await TokenStorage.get();
 
-    const query: AnyObject = {};
+    const query: ParsedUrlQueryInput = {};
     if (idToken) {
       // eslint-disable-next-line @typescript-eslint/camelcase
       query.id_token_hint = idToken;
@@ -186,7 +186,7 @@ abstract class OAuth2Client {
 
   private static async request(
     path: string,
-    query?: AnyObject,
+    query?: ParsedUrlQueryInput,
     includeToken?: boolean,
     init?: RequestInit,
     options?: ConfigOptions,
@@ -218,7 +218,7 @@ abstract class OAuth2Client {
     return await response.text();
   }
 
-  private static parseError(json: AnyObject): string | undefined {
+  private static parseError(json: NameValue<unknown>): string | undefined {
     if (json) {
       if (json.error && json.error_description) {
         return `${json.error}: ${json.error_description}`;
@@ -230,7 +230,11 @@ abstract class OAuth2Client {
     return undefined;
   }
 
-  private static getUrl(path: string, query?: AnyObject, options?: ConfigOptions): string {
+  private static getUrl(
+    path: string,
+    query?: ParsedUrlQueryInput,
+    options?: ConfigOptions,
+  ): string {
     const { realmPath, serverConfig } = Config.get(options);
     const realmUrlPath = getRealmUrlPath(realmPath);
     let url = resolve(serverConfig.baseUrl, `oauth2/${realmUrlPath}/${path}`);

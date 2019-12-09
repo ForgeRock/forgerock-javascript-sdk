@@ -1,5 +1,5 @@
-interface AnyObject {
-  [key: string]: {} | null | undefined;
+interface NameValue<T> {
+  [name: string]: T;
 }
 
 interface Tokens {
@@ -8,4 +8,4 @@ interface Tokens {
   refreshToken?: string;
 }
 
-export { AnyObject, Tokens };
+export { NameValue, Tokens };
