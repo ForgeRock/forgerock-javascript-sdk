@@ -35,9 +35,14 @@ interface ParsedCredential {
   type: 'public-key';
 }
 
+interface ResponseCredential {
+  response: { clientDataJSON: ArrayBuffer };
+}
+
 export {
   ParsedCredential,
   RelyingParty,
+  ResponseCredential,
   WebAuthnCallbacks,
   WebAuthnAuthenticationMetadata,
   WebAuthnRegistrationMetadata,

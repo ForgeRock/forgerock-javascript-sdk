@@ -2,9 +2,13 @@ import { CallbackType } from '../auth/enums';
 import HiddenValueCallback from '../fr-auth/callbacks/hidden-value-callback';
 import MetadataCallback from '../fr-auth/callbacks/metadata-callback';
 import FRStep from '../fr-auth/fr-step';
-import { getClientDataJson, parseRelyingPartyId } from '../util/webauthn';
 import { WebAuthnOutcome, WebAuthnStepType } from './enums';
-import { parseCredentials, parsePubKeyArray } from './helpers';
+import {
+  getClientDataJson,
+  parseCredentials,
+  parsePubKeyArray,
+  parseRelyingPartyId,
+} from './helpers';
 import {
   RelyingParty,
   WebAuthnAuthenticationMetadata,
