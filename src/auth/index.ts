@@ -20,11 +20,15 @@ abstract class Auth {
     const url = this.constructUrl(serverConfig, realmPath, tree);
     const init = this.configureRequest(previousStep);
     const res = await withTimeout(fetch(url, init), serverConfig.timeout);
-    const json = await this.getResponseJson(res);
+    const json = await this.getResponseJson<Step>(res);
     return json;
   }
 
-  private static constructUrl(serverConfig: ServerConfig, realmPath?: string, tree?: string) {
+  private static constructUrl(
+    serverConfig: ServerConfig,
+    realmPath?: string,
+    tree?: string,
+  ): string {
     const realmUrlPath = getRealmUrlPath(realmPath);
     const query = tree ? `?authIndexType=service&authIndexValue=${tree}` : '';
     const path = `json/${realmUrlPath}/authenticate${query}`;
@@ -32,7 +36,7 @@ abstract class Auth {
     return url;
   }
 
-  private static configureRequest(step?: Step) {
+  private static configureRequest(step?: Step): RequestInit {
     const init: RequestInit = {
       body: step ? JSON.stringify(step) : undefined,
       credentials: 'include',
@@ -46,7 +50,7 @@ abstract class Auth {
     return init;
   }
 
-  private static async getResponseJson(res: Response) {
+  private static async getResponseJson<T>(res: Response): Promise<T> {
     const contentType = res.headers.get('content-type');
     const isJson = contentType && contentType.indexOf('application/json') > -1;
     const json = isJson ? await res.json() : undefined;

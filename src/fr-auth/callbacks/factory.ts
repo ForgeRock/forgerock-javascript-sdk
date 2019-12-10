@@ -21,7 +21,7 @@ type FRCallbackFactory = (callback: Callback) => FRCallback;
 /**
  * @hidden
  */
-function createCallback(callback: Callback) {
+function createCallback(callback: Callback): FRCallback {
   switch (callback.type) {
     case CallbackType.BooleanAttributeInputCallback:
       return new AttributeInputCallback<boolean>(callback);

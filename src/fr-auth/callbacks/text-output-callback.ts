@@ -16,14 +16,14 @@ class TextOutputCallback extends FRCallback {
    * Gets the message content.
    */
   public getMessage(): string {
-    return this.getOutputValue('message');
+    return this.getOutputByName<string>('message', '');
   }
 
   /**
    * Gets the message type.
    */
   public getMessageType(): string {
-    return this.getOutputValue('messageType');
+    return this.getOutputByName<string>('messageType', '');
   }
 }
 

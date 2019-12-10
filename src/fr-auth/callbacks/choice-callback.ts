@@ -16,27 +16,27 @@ class ChoiceCallback extends FRCallback {
    * Gets the choice's prompt.
    */
   public getPrompt(): string {
-    return this.getOutputValue('prompt');
+    return this.getOutputByName<string>('prompt', '');
   }
 
   /**
    * Gets the choice's default answer.
    */
   public getDefaultChoice(): number {
-    return this.getOutputValue('defaultChoice');
+    return this.getOutputByName<number>('defaultChoice', 0);
   }
 
   /**
    * Gets the choice's possible answers.
    */
   public getChoices(): string[] {
-    return this.getOutputValue('choices');
+    return this.getOutputByName<string[]>('choices', []);
   }
 
   /**
    * Sets the choice's answer by index position.
    */
-  public setChoiceIndex(index: number) {
+  public setChoiceIndex(index: number): void {
     const length = this.getChoices().length;
     if (index < 0 || index > length - 1) {
       throw new Error(`${index} is out of bounds`);
@@ -47,7 +47,7 @@ class ChoiceCallback extends FRCallback {
   /**
    * Sets the choice's answer by value.
    */
-  public setChoiceValue(value: string) {
+  public setChoiceValue(value: string): void {
     const index = this.getChoices().indexOf(value);
     if (index === -1) {
       throw new Error(`"${value}" is not a valid choice`);

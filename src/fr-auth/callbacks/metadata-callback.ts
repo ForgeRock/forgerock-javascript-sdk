@@ -16,7 +16,7 @@ class MetadataCallback extends FRCallback {
    * Gets the callback's data.
    */
   public getData<T>(): T {
-    return this.getOutputValue('data');
+    return this.getOutputByName<T>('data', {} as T);
   }
 }
 

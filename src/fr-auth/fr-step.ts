@@ -57,7 +57,7 @@ class FRStep implements AuthResponse {
    * @param type The type of callback to find.
    * @param value The value to set for the callback.
    */
-  public setCallbackValue(type: CallbackType, value: any) {
+  public setCallbackValue(type: CallbackType, value: unknown): void {
     const callbacks = this.getCallbacksOfType(type);
     if (callbacks.length !== 1) {
       throw new Error(`Expected 1 callback of type "${type}", but found ${callbacks.length}`);
@@ -68,25 +68,28 @@ class FRStep implements AuthResponse {
   /**
    * Gets the step's description.
    */
-  public getDescription() {
+  public getDescription(): string | undefined {
     return this.payload.description;
   }
 
   /**
    * Gets the step's header.
    */
-  public getHeader() {
+  public getHeader(): string | undefined {
     return this.payload.header;
   }
 
   /**
    * Gets the step's stage.
    */
-  public getStage() {
+  public getStage(): string | undefined {
     return this.payload.stage;
   }
 
-  private convertCallbacks(callbacks: Callback[], callbackFactory?: FRCallbackFactory) {
+  private convertCallbacks(
+    callbacks: Callback[],
+    callbackFactory?: FRCallbackFactory,
+  ): FRCallback[] {
     const converted = callbacks.map((x: Callback) => {
       // This gives preference to the provided factory and falls back to our default implementation
       return (callbackFactory || createCallback)(x) || createCallback(x);
