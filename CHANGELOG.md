@@ -2,7 +2,15 @@
 
 ## [Unreleased]
 
+- Support for RedirectCallback
+
+## [1.0.0] - 2019-12-09
+
+### Added
+
 - WebAuthn module that can be used in custom UIs
+- Improvements to `FRCallback`
+- Addressed all linter warnings
 
 ## [0.9.3] - 2019-11-13
 

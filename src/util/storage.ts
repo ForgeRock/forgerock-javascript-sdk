@@ -13,11 +13,11 @@ class LocalStorage {
     return JSON.parse(value);
   }
 
-  public set<T>(key: string, value: T) {
+  public set<T>(key: string, value: T): void {
     this.storage.setItem(key, JSON.stringify(value));
   }
 
-  public remove(key: string) {
+  public remove(key: string): void {
     this.storage.removeItem(key);
   }
 }

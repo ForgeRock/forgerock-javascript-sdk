@@ -16,28 +16,29 @@ class TermsAndConditionsCallback extends FRCallback {
    * Gets the terms and conditions content.
    */
   public getTerms(): string {
-    return this.getOutputValue('terms');
+    return this.getOutputByName<string>('terms', '');
   }
 
   /**
    * Gets the version of the terms and conditions.
    */
   public getVersion(): string {
-    return this.getOutputValue('version');
+    return this.getOutputByName<string>('version', '');
   }
 
   /**
    * Gets the date of the terms and conditions.
    */
   public getCreateDate(): Date {
-    return new Date(this.getOutputValue('createDate'));
+    const date = this.getOutputByName<string>('createDate', '');
+    return new Date(date);
   }
 
   /**
-   * Sets the callback's acceptance to `true`.
+   * Sets the callback's acceptance.
    */
-  public setAccepted() {
-    this.setInputValue(true);
+  public setAccepted(accepted = true): void {
+    this.setInputValue(accepted);
   }
 }
 

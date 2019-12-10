@@ -44,7 +44,7 @@ interface PolicyRequirement {
 }
 
 interface PolicyParams {
-  [key: string]: any;
+  [key: string]: unknown;
   disallowedFields: string;
   duplicateValue: string;
   forbiddenChars: string;
@@ -69,7 +69,7 @@ interface Callback {
  */
 interface NameValue {
   name: string;
-  value: any;
+  value: unknown;
 }
 
 export {

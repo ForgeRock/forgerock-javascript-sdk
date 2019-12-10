@@ -1,5 +1,5 @@
 import FRCallback from '.';
-import { Callback } from '../../auth/interfaces';
+import { Callback, PolicyRequirement } from '../../auth/interfaces';
 
 /**
  * Represents a callback used to collect a valid platform password.
@@ -13,37 +13,37 @@ class ValidatedCreatePasswordCallback extends FRCallback {
   }
 
   /**
+   * Gets the callback's failed policies.
+   */
+  public getFailedPolicies(): PolicyRequirement[] {
+    return this.getOutputByName<PolicyRequirement[]>('failedPolicies', []);
+  }
+
+  /**
+   * Gets the callback's applicable policies.
+   */
+  public getPolicies(): string[] {
+    return this.getOutputByName<string[]>('policies', []);
+  }
+
+  /**
    * Gets the callback's prompt.
    */
   public getPrompt(): string {
-    return this.getOutputValue('prompt');
+    return this.getOutputByName<string>('prompt', '');
   }
 
   /**
    * Gets whether the password is required.
    */
   public isRequired(): boolean {
-    return this.getOutputValue('required');
-  }
-
-  /**
-   * Gets the password policy keys.
-   */
-  public getPolicyKeys(): string[] {
-    return this.getOutputValue('policies');
-  }
-
-  /**
-   * Gets the password policy keys that are not satisfied.
-   */
-  public getFailedPolicyKeys(): string[] {
-    return this.getOutputValue('failedPolicies');
+    return this.getOutputByName<boolean>('required', false);
   }
 
   /**
    * Sets the callback's password.
    */
-  public setPassword(password: string) {
+  public setPassword(password: string): void {
     this.setInputValue(password);
   }
 }

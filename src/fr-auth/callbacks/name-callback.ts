@@ -16,13 +16,13 @@ class NameCallback extends FRCallback {
    * Gets the callback's prompt.
    */
   public getPrompt(): string {
-    return this.getOutputValue('prompt');
+    return this.getOutputByName<string>('prompt', '');
   }
 
   /**
    * Sets the username.
    */
-  public setName(name: string) {
+  public setName(name: string): void {
     this.setInputValue(name);
   }
 }

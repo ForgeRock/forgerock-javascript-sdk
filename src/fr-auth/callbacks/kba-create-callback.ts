@@ -16,31 +16,31 @@ class KbaCreateCallback extends FRCallback {
    * Gets the callback prompt.
    */
   public getPrompt(): string {
-    return this.getOutputValue('prompt');
+    return this.getOutputByName<string>('prompt', '');
   }
 
   /**
    * Gets the callback's list of pre-defined security questions.
    */
   public getPredefinedQuestions(): string[] {
-    return this.getOutputValue('predefinedQuestions');
+    return this.getOutputByName<string[]>('predefinedQuestions', []);
   }
 
   /**
    * Sets the callback's security question.
    */
-  public setQuestion(question: string) {
+  public setQuestion(question: string): void {
     this.setValue('question', question);
   }
 
   /**
    * Sets the callback's security question answer.
    */
-  public setAnswer(answer: string) {
+  public setAnswer(answer: string): void {
     this.setValue('answer', answer);
   }
 
-  private setValue(type: 'question' | 'answer', value: string) {
+  private setValue(type: 'question' | 'answer', value: string): void {
     const input = this.payload.input.find((x) => x.name.endsWith(type));
     if (!input) {
       throw new Error(`No input has name ending in "${type}"`);

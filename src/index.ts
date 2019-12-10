@@ -1,9 +1,10 @@
 import Auth from './auth';
 import { CallbackType, ErrorCode } from './auth/enums';
-import { Callback, NameValue, Step, StepDetail } from './auth/interfaces';
+import { Callback, NameValue, PolicyRequirement, Step, StepDetail } from './auth/interfaces';
 import Config, { ConfigOptions, ValidConfigOptions } from './config';
 import Dispatcher, { CallbackContainer, FREvent, Listener } from './event';
 import FRAuth from './fr-auth';
+import FRCallback from './fr-auth/callbacks';
 import AttributeInputCallback from './fr-auth/callbacks/attribute-input-callback';
 import ChoiceCallback from './fr-auth/callbacks/choice-callback';
 import ConfirmationCallback from './fr-auth/callbacks/confirmation-callback';
@@ -26,8 +27,18 @@ import FRLoginFailure from './fr-auth/fr-login-failure';
 import FRLoginSuccess from './fr-auth/fr-login-success';
 import FRStep, { FRStepHandler } from './fr-auth/fr-step';
 import { AuthResponse, FailureDetail } from './fr-auth/interfaces';
+import FRPolicy, { MessageCreator, PolicyKey, ProcessedPropertyError } from './fr-policy';
+import defaultMessageCreator from './fr-policy/message-creator';
 import FRUI from './fr-ui';
 import FRUser from './fr-user';
+import FRWebAuthn, {
+  RelyingParty,
+  WebAuthnAuthenticationMetadata,
+  WebAuthnCallbacks,
+  WebAuthnOutcome,
+  WebAuthnRegistrationMetadata,
+  WebAuthnStepType,
+} from './fr-webauthn';
 import HttpClient from './http-client';
 import OAuth2Client, {
   GetAuthorizationUrlOptions,
@@ -44,6 +55,7 @@ import PKCE from './util/pkce';
 import LocalStorage from './util/storage';
 
 export {
+  defaultMessageCreator,
   AttributeInputCallback,
   Auth,
   AuthResponse,
@@ -58,14 +70,17 @@ export {
   ErrorCode,
   FailureDetail,
   FRAuth,
+  FRCallback,
   FRCallbackFactory,
   FREvent,
   FRLoginFailure,
   FRLoginSuccess,
+  FRPolicy,
   FRStep,
   FRStepHandler,
   FRUI,
   FRUser,
+  FRWebAuthn,
   GetAuthorizationUrlOptions,
   GetOAuth2TokensOptions,
   GetTokensOptions,
@@ -74,6 +89,7 @@ export {
   KbaCreateCallback,
   Listener,
   LocalStorage,
+  MessageCreator,
   MetadataCallback,
   NameCallback,
   NameValue,
@@ -81,8 +97,12 @@ export {
   OAuth2Tokens,
   PasswordCallback,
   PKCE,
+  PolicyKey,
+  PolicyRequirement,
   PollingWaitCallback,
+  ProcessedPropertyError,
   ReCaptchaCallback,
+  RelyingParty,
   ResponseType,
   SessionManager,
   Step,
@@ -97,4 +117,9 @@ export {
   ValidatedCreatePasswordCallback,
   ValidatedCreateUsernameCallback,
   ValidConfigOptions,
+  WebAuthnAuthenticationMetadata,
+  WebAuthnCallbacks,
+  WebAuthnOutcome,
+  WebAuthnRegistrationMetadata,
+  WebAuthnStepType,
 };

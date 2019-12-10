@@ -1,6 +1,6 @@
-import AttributeInputCallback from './attribute-input-callback';
 import { CallbackType } from '../../auth/enums';
 import { Callback } from '../../auth/interfaces';
+import AttributeInputCallback from './attribute-input-callback';
 
 describe('AttributeInputCallback', () => {
   const payload: Callback = {
@@ -44,8 +44,8 @@ describe('AttributeInputCallback', () => {
     expect(cb.getName()).toBe('givenName');
     expect(cb.getPrompt()).toBe('First Name:');
     expect(cb.isRequired()).toBe(true);
-    expect(cb.getPolicyKeys()).toStrictEqual(['a', 'b']);
-    expect(cb.getFailedPolicyKeys()).toStrictEqual(['c', 'd']);
+    expect(cb.getPolicies()).toStrictEqual(['a', 'b']);
+    expect(cb.getFailedPolicies()).toStrictEqual(['c', 'd']);
     expect(cb.getInputValue()).toBe('Clark');
   });
 });

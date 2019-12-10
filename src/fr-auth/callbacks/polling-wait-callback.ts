@@ -16,14 +16,14 @@ class PollingWaitCallback extends FRCallback {
    * Gets the message to display while polling.
    */
   public getMessage(): string {
-    return this.getOutputValue('message');
+    return this.getOutputByName<string>('message', '');
   }
 
   /**
    * Gets the polling interval in seconds.
    */
   public getWaitTime(): number {
-    return Number(this.getOutputValue('waitTime'));
+    return Number(this.getOutputByName<number>('waitTime', 0));
   }
 }
 

@@ -6,7 +6,7 @@ function nonce(length = 15): () => number {
     throw new Error('Invalid nonce length');
   }
 
-  return () => {
+  return (): number => {
     const now = Math.pow(10, 2) * +new Date();
 
     if (now === last) {

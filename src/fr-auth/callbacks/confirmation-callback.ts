@@ -16,35 +16,35 @@ class ConfirmationCallback extends FRCallback {
    * Gets the index position of the confirmation's default answer.
    */
   public getDefaultOption(): number {
-    return Number(this.getOutputValue('defaultOption'));
+    return Number(this.getOutputByName<number>('defaultOption', 0));
   }
 
   /**
    * Gets the confirmation's message type.
    */
   public getMessageType(): number {
-    return Number(this.getOutputValue('messageType'));
+    return Number(this.getOutputByName<number>('messageType', 0));
   }
 
   /**
    * Gets the confirmation's possible answers.
    */
   public getOptions(): string[] {
-    return this.getOutputValue('options');
+    return this.getOutputByName<string[]>('options', []);
   }
 
   /**
    * Gets the confirmation's option type.
    */
   public getOptionType(): number {
-    return Number(this.getOutputValue('optionType'));
+    return Number(this.getOutputByName<number>('optionType', 0));
   }
 
   /**
    * Gets the confirmation's prompt.
    */
   public getPrompt(): string {
-    return this.getOutputValue('prompt');
+    return this.getOutputByName<string>('prompt', '');
   }
 }
 

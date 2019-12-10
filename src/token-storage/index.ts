@@ -1,6 +1,7 @@
 import Config from '../config/index';
 import { Tokens } from '../shared/interfaces';
 import { DB_NAME, TOKEN_KEY } from './constants';
+import { TokenDbEvent } from './interfaces';
 
 /**
  * Provides access to the token storage API.
@@ -13,14 +14,11 @@ abstract class TokenStorage {
     const clientId = this.getClientId();
 
     return new Promise((resolve, reject) => {
-      const onError = (event: Event) => {
-        this.logError('get', event);
-        reject();
-      };
+      const onError = (): void => reject();
 
       const openReq = window.indexedDB.open(DB_NAME);
 
-      openReq.onsuccess = () => {
+      openReq.onsuccess = (): void => {
         if (!openReq.result.objectStoreNames.contains(clientId)) {
           openReq.result.close();
           return resolve(undefined);
@@ -31,8 +29,8 @@ abstract class TokenStorage {
           .objectStore(clientId)
           .get(TOKEN_KEY);
 
-        getReq.onsuccess = (event: Event) => {
-          const tokens = this.getResult<Tokens>(event);
+        getReq.onsuccess = (event: TokenDbEvent): void => {
+          const tokens = this.getResult(event);
           openReq.result.close();
           resolve(tokens);
         };
@@ -40,7 +38,7 @@ abstract class TokenStorage {
         getReq.onerror = onError;
       };
 
-      openReq.onupgradeneeded = () => {
+      openReq.onupgradeneeded = (): void => {
         openReq.result.close();
         resolve(undefined);
       };
@@ -56,21 +54,20 @@ abstract class TokenStorage {
     const clientId = this.getClientId();
 
     return new Promise((resolve, reject) => {
-      const onSetSuccess = () => {
+      let openReq = window.indexedDB.open(DB_NAME);
+
+      const onSetSuccess = (): void => {
         openReq.result.close();
         resolve();
       };
 
-      const onError = (event: Event) => {
-        this.logError('set', event);
-        reject();
-      };
+      const onError = (): void => reject();
 
-      const onUpgradeNeeded = () => {
+      const onUpgradeNeeded = (): void => {
         openReq.result.createObjectStore(clientId);
       };
 
-      const onOpenSuccess = () => {
+      const onOpenSuccess = (): void => {
         if (!openReq.result.objectStoreNames.contains(clientId)) {
           const version = openReq.result.version + 1;
           openReq.result.close();
@@ -90,7 +87,6 @@ abstract class TokenStorage {
         putReq.onerror = onError;
       };
 
-      let openReq = window.indexedDB.open(DB_NAME);
       openReq.onupgradeneeded = onUpgradeNeeded;
       openReq.onsuccess = onOpenSuccess;
       openReq.onerror = onError;
@@ -104,14 +100,11 @@ abstract class TokenStorage {
     const clientId = this.getClientId();
 
     return new Promise((resolve, reject) => {
-      const onError = (event: Event) => {
-        this.logError('remove', event);
-        reject();
-      };
+      const onError = (): void => reject();
 
       const openReq = window.indexedDB.open(DB_NAME);
 
-      openReq.onsuccess = () => {
+      openReq.onsuccess = (): void => {
         if (!openReq.result.objectStoreNames.contains(clientId)) {
           return resolve();
         }
@@ -121,7 +114,7 @@ abstract class TokenStorage {
           .objectStore(clientId)
           .delete(TOKEN_KEY);
 
-        removeReq.onsuccess = () => {
+        removeReq.onsuccess = (): void => {
           resolve();
         };
 
@@ -132,7 +125,7 @@ abstract class TokenStorage {
     });
   }
 
-  private static getClientId() {
+  private static getClientId(): string {
     const { clientId } = Config.get();
     if (!clientId) {
       throw new Error('clientId is required to manage token storage');
@@ -140,13 +133,11 @@ abstract class TokenStorage {
     return clientId;
   }
 
-  private static getResult<T>(event: Event) {
-    return (event.target as any).result as T;
-  }
-
-  private static logError(key: string, data: any) {
-    const message = data.target && data.target.error ? data.target.error.message : event;
-    console.error(`TokenStorage:${key}`, message);
+  private static getResult(event: TokenDbEvent): Tokens | undefined {
+    if (!event || !event.target) {
+      throw new Error('Missing storage event target');
+    }
+    return event.target.result;
   }
 }
 

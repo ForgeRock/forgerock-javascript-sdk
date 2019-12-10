@@ -26,7 +26,7 @@ abstract class Config {
    *
    * @param options The options to use as defaults
    */
-  public static set(options: ConfigOptions) {
+  public static set(options: ConfigOptions): void {
     if (!this.isValid(options)) {
       throw new Error('Configuration is invalid');
     }
@@ -54,11 +54,11 @@ abstract class Config {
     return merged as ValidConfigOptions;
   }
 
-  private static isValid(options: ConfigOptions) {
-    return options && options.serverConfig;
+  private static isValid(options: ConfigOptions): boolean {
+    return !!(options && options.serverConfig);
   }
 
-  private static validateServerConfig(serverConfig: ServerConfig) {
+  private static validateServerConfig(serverConfig: ServerConfig): void {
     if (!serverConfig.timeout) {
       serverConfig.timeout = DEFAULT_TIMEOUT;
     }

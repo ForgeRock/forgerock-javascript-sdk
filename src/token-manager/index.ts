@@ -52,7 +52,7 @@ abstract class TokenManager {
     return tokens;
   }
 
-  public static async deleteTokens() {
+  public static async deleteTokens(): Promise<void> {
     await TokenStorage.remove();
   }
 }
