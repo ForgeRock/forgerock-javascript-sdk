@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Authorize | E2E Test | ForgeRock JavaScript SDK Samples</title>
+  <script>
+    const url = new URL(window.location.href);
+    const stateValue = url.searchParams.get('state');
+
+    window.location = `https://forgerock-sdk-samples.com:3002/callback/?code=foo&iss=https://forgerock-sdk-samples.com:3000/am/oauth2&state=${stateValue}&client_id=bar`;
+  </script>
+</head>
+<body></body>
+</html>
