@@ -1,5 +1,6 @@
 import { resolve } from 'url';
 import Config, { ConfigOptions, ServerConfig } from '../config';
+import { REQUESTED_WITH } from '../shared/constants';
 import { getRealmUrlPath } from '../util/realm';
 import { withTimeout } from '../util/timeout';
 import { Step } from './interfaces';
@@ -44,6 +45,7 @@ abstract class Auth {
         accept: 'application/json',
         'accept-api-version': 'protocol=1.0,resource=2.1',
         'content-type': 'application/json',
+        'x-requested-with': REQUESTED_WITH,
       },
       method: 'POST',
     };
