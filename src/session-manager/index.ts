@@ -1,5 +1,6 @@
 import { resolve } from 'url';
 import Config, { ConfigOptions } from '../config/index';
+import { REQUESTED_WITH } from '../shared/constants';
 import { isOkOr4xx } from '../util/http';
 import { getRealmUrlPath } from '../util/realm';
 import { withTimeout } from '../util/timeout';
@@ -15,6 +16,10 @@ abstract class SessionManager {
     const { realmPath, serverConfig } = Config.get(options);
     const init: RequestInit = {
       credentials: 'include',
+      headers: {
+        'accept-api-version': 'protocol=1.0,resource=2.0',
+        'x-requested-with': REQUESTED_WITH,
+      },
       method: 'POST',
     };
 
