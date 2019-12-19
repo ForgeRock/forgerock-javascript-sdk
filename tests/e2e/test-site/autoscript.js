@@ -1,4 +1,4 @@
-(function () {
+(function() {
   const rxFlatMap = rxjs.operators.flatMap;
   const rxMap = rxjs.operators.map;
   const rxTap = rxjs.operators.tap;
@@ -24,31 +24,31 @@
     },
   });
 
-  rxjs.from(forgerock.FRAuth.next())
+  rxjs
+    .from(forgerock.FRAuth.next())
     .pipe(
       rxFlatMap((step) => {
         console.log('Initiate first step with `undefined`');
-        step.getCallbackOfType('ValidatedCreateUsernameCallback')
-          .setName(un);
-        step.getCallbackOfType('ValidatedCreatePasswordCallback')
-          .setPassword(pw);
+        step.getCallbackOfType('ValidatedCreateUsernameCallback').setName(un);
+        step.getCallbackOfType('ValidatedCreatePasswordCallback').setPassword(pw);
         return forgerock.FRAuth.next(step);
       }),
       // Uncomment the below operators to delay the steps for debugging purposes
       // rxjs.operators.delay(2000),
       rxFlatMap(
         (step) => {
-          if (step.payload.code === 401) { throw new Error('Auth_Error'); }
+          if (step.payload.code === 401) {
+            throw new Error('Auth_Error');
+          }
           return forgerock.TokenManager.getTokens({ forceRenew: true });
         },
-        (step) => step
+        (step) => step,
       ),
       // rxjs.operators.delay(2000),
       rxMap((step) => {
         if (step.getSessionToken()) {
           console.log('Login successful');
           document.body.innerHTML = `<p class="Logged_In">Login successful</p>`;
-
         } else {
           throw new Error('Session_Error');
         }
@@ -59,12 +59,12 @@
         (step, user) => {
           console.log('User given name: ' + user.given_name);
           return step;
-        }
+        },
       ),
       // rxjs.operators.delay(2000),
       rxFlatMap(
         (step) => {
-          console.log('Initiate logout')
+          console.log('Initiate logout');
           return forgerock.FRUser.logout();
         },
         (step) => step,
@@ -79,24 +79,26 @@
             console.log('Logout successful');
             document.body.innerHTML = `<p class="Logged_Out">Logout successful</p>`;
           } else {
-            throw new Error('Logout_Error')
+            throw new Error('Logout_Error');
           }
           return step;
-        }
+        },
       ),
       // rxjs.operators.delay(2000),
       rxTap(
-        () => { },
+        () => {},
         (err) => {
           console.log(`Error: ${err.message}`);
           document.body.innerHTML = `<p class="${err.message}">${err.message}</p>`;
         },
-        () => { }
-      )
+        () => {},
+      ),
     )
     .subscribe(
-      (data) => { },
-      (err) => { },
-      () => { console.log('Test script complete'); }
+      (data) => {},
+      (err) => {},
+      () => {
+        console.log('Test script complete');
+      },
     );
-}());
+})();
