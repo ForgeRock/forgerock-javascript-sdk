@@ -57,7 +57,10 @@ class FRCallback {
     return output ? (output.value as T) : defaultValue;
   }
 
-  private getArrayElement(array: NameValue[], selector: number | string = 0): NameValue {
+  private getArrayElement(
+    array: NameValue[] | undefined,
+    selector: number | string = 0,
+  ): NameValue {
     if (array === undefined) {
       throw new Error(`No NameValue array was provided to search (selector ${selector})`);
     }

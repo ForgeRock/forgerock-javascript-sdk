@@ -58,8 +58,8 @@ interface PolicyParams {
  * Represents the authentication tree API callback schema.
  */
 interface Callback {
-  _id: number;
-  input: NameValue[];
+  _id?: number;
+  input?: NameValue[];
   output: NameValue[];
   type: CallbackType;
 }
