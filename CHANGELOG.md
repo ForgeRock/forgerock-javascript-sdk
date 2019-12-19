@@ -4,6 +4,14 @@
 
 - Support for RedirectCallback
 
+## [1.0.1] - 2019-12-19
+
+### Added
+
+- Server mocking with Mirage JS for E2E tests
+- Version header to all OpenAM calls to avoid CSRF problems
+- Updated callback interface to reflect that some properties are optional
+
 ## [1.0.0] - 2019-12-09
 
 ### Added
