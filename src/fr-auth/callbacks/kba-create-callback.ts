@@ -41,6 +41,10 @@ class KbaCreateCallback extends FRCallback {
   }
 
   private setValue(type: 'question' | 'answer', value: string): void {
+    if (!this.payload.input) {
+      throw new Error('KBA payload is missing input');
+    }
+
     const input = this.payload.input.find((x) => x.name.endsWith(type));
     if (!input) {
       throw new Error(`No input has name ending in "${type}"`);
