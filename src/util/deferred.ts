@@ -1,3 +1,6 @@
+/**
+ * Implementation of the Deferred API to simplify handling of Promises.
+ */
 class Deferred<T> {
   public promise: Promise<T>;
   public resolve!: (value: T) => void;
