@@ -1,24 +1,24 @@
 import { ParsedCredential, ResponseCredential } from './interfaces';
 
-function parsePubKeyArray(s: string | unknown[]): PublicKeyCredentialParameters[] | undefined {
-  if (!s) {
+function parsePubKeyArray(value: string | unknown[]): PublicKeyCredentialParameters[] | undefined {
+  if (!value) {
     return undefined;
   }
-  if (Array.isArray(s)) {
-    return s as PublicKeyCredentialParameters[];
+  if (Array.isArray(value)) {
+    return value as PublicKeyCredentialParameters[];
   }
-  if (typeof s !== 'string') {
+  if (typeof value !== 'string') {
     return undefined;
   }
-  if (s.length > 0 && s[0] === '[') {
-    return JSON.parse(s);
+  if (value.length > 0 && value[0] === '[') {
+    return JSON.parse(value);
   }
-  s = s.replace(/(\w+):/g, '"$1":');
-  return JSON.parse(`[${s}]`);
+  value = value.replace(/(\w+):/g, '"$1":');
+  return JSON.parse(`[${value}]`);
 }
 
-function parseNumberArray(s: string): number[] {
-  const matches = /new Int8Array\((.+)\)/.exec(s);
+function parseNumberArray(value: string): number[] {
+  const matches = /new Int8Array\((.+)\)/.exec(value);
   if (matches === null || matches.length < 2) {
     return [];
   }
@@ -26,9 +26,9 @@ function parseNumberArray(s: string): number[] {
 }
 
 // TODO: Remove this once AM is providing fully-serialized JSON
-function parseCredentials(s: string): ParsedCredential[] {
+function parseCredentials(value: string): ParsedCredential[] {
   try {
-    const creds = s
+    const creds = value
       .split('}')
       .filter((x) => !!x)
       .map((x) => {

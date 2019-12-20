@@ -1,3 +1,8 @@
+/**
+ * Returns a factory function to produce numbers intended for one-time use.
+ *
+ * @param length The number of digits to generate
+ */
 function nonce(length = 15): () => number {
   let last = -1;
   let repeat = 0;

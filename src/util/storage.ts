@@ -1,3 +1,4 @@
+/** @hidden */
 class LocalStorage {
   private storage: Storage;
   constructor(persist = false) {

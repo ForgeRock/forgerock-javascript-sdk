@@ -1,3 +1,4 @@
+/** @hidden */
 function getRealmUrlPath(realmPath?: string): string {
   // Split the path and scrub segments
   const names = (realmPath || '')

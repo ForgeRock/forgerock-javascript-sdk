@@ -51,11 +51,14 @@ import { Tokens } from './shared/interfaces';
 import TokenManager, { GetTokensOptions } from './token-manager';
 import TokenStorage from './token-storage';
 import UserManager from './user-manager';
+import Deferred from './util/deferred';
+import nonce from './util/nonce';
 import PKCE from './util/pkce';
 import LocalStorage from './util/storage';
 
 export {
   defaultMessageCreator,
+  nonce,
   AttributeInputCallback,
   Auth,
   AuthResponse,
@@ -66,6 +69,7 @@ export {
   Config,
   ConfigOptions,
   ConfirmationCallback,
+  Deferred,
   Dispatcher,
   ErrorCode,
   FailureDetail,
