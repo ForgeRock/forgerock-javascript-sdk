@@ -4,6 +4,12 @@
 
 - Support for RedirectCallback
 
+## [1.0.2] - 2019-12-20
+
+### Added
+
+- Exported `Deferred` and `nonce`
+
 ## [1.0.1] - 2019-12-19
 
 ### Added
