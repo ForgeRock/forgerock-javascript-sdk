@@ -1,5 +1,6 @@
 import { DEFAULT_TIMEOUT } from '../config';
 
+/** @hidden */
 function withTimeout<T>(promise: Promise<T>, timeout: number = DEFAULT_TIMEOUT): Promise<T> {
   const effectiveTimeout = timeout || DEFAULT_TIMEOUT;
   return Promise.race([

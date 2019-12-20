@@ -1,5 +1,5 @@
 /**
- * PKCE helper class for generating verifier and challenge.
+ * Helper class for generating verifier and challenge strings for PKCE.
  */
 abstract class PKCE {
   /**
@@ -43,10 +43,10 @@ abstract class PKCE {
   /**
    * Creates a SHA-256 hash of the specified string.
    *
-   * @param s The string to hash
+   * @param value The string to hash
    */
-  public static async sha256(s: string): Promise<Uint8Array> {
-    const uint8Array = new TextEncoder().encode(s);
+  public static async sha256(value: string): Promise<Uint8Array> {
+    const uint8Array = new TextEncoder().encode(value);
     const hashBuffer = await window.crypto.subtle.digest('SHA-256', uint8Array);
     const hashArray = new Uint8Array(hashBuffer);
     return hashArray;

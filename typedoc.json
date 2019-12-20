@@ -1,5 +1,4 @@
 {
-  "exclude": "**/util/**/*.ts",
   "excludeExternals": true,
   "excludePrivate": true,
   "excludeProtected": true,
