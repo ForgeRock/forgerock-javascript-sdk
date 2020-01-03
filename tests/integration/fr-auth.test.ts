@@ -1,5 +1,5 @@
-import FRAuth from '../../src/fr-auth';
 import Config from '../../src/config';
+import FRAuth from '../../src/fr-auth';
 import { rawResponse } from './fr-auth.data';
 
 jest.mock('../../src/config');
@@ -10,9 +10,9 @@ describe('Test FRAuth.next functionality', () => {
     Config.get.mockImplementation(() => ({
       realmPath: '',
       serverConfig: {
-        baseUrl: '',
+        baseUrl: 'https://domain.com',
       },
-      tree: '',
+      tree: 'FakeTree',
     }));
 
     const step = await FRAuth.next();

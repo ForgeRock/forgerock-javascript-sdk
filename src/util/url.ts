@@ -21,7 +21,7 @@ function parseQuery(fullUrl: string): NameValue<string> {
 }
 
 function stringify(data: NameValue<string | undefined>): string {
-  var pairs = [];
+  const pairs = [];
   for (const k in data) {
     if (data[k]) {
       pairs.push(k + '=' + encodeURIComponent(data[k] as string));
