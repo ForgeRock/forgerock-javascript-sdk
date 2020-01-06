@@ -1,5 +1,6 @@
 import Config, { ConfigOptions } from '../config/index';
 import { NameValue } from '../shared/interfaces';
+import { Noop } from '../shared/types';
 import TokenStorage from '../token-storage';
 import { isOkOr4xx } from '../util/http';
 import PKCE from '../util/pkce';
@@ -48,9 +49,11 @@ abstract class OAuth2Client {
       const iframe = document.createElement('iframe');
 
       // Define these here to avoid linter warnings
-      const noop = () => { return; }
-      let onLoad: () => void = noop;
-      let cleanUp: () => void = noop;
+      const noop: Noop = () => {
+        return;
+      };
+      let onLoad: Noop = noop;
+      let cleanUp: Noop = noop;
       let timeout = 0;
 
       cleanUp = (): void => {
