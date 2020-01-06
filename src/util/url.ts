@@ -4,7 +4,7 @@ import { NameValue } from '../shared/interfaces';
  * Returns the base URL including protocol, hostname and any non-standard port.
  * The returned URL does not include a trailing slash.
  */
-function getBaseUrl(url: URL) {
+function getBaseUrl(url: URL): string {
   const isNonStandardPort =
     (url.protocol === 'http:' && ['', '80'].indexOf(url.port) === -1) ||
     (url.protocol === 'https:' && ['', '443'].indexOf(url.port) === -1);
