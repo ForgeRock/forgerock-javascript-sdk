@@ -1,8 +1,8 @@
-import { resolve } from 'url';
 import Config, { ConfigOptions, ServerConfig } from '../config';
 import { REQUESTED_WITH } from '../shared/constants';
 import { getRealmUrlPath } from '../util/realm';
 import { withTimeout } from '../util/timeout';
+import { resolve } from '../util/url';
 import { Step } from './interfaces';
 
 /**

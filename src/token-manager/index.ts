@@ -1,10 +1,10 @@
-import { parse as parseUrl } from 'url';
 import { ConfigOptions } from '../config';
 import OAuth2Client, { OAuth2Tokens, ResponseType } from '../oauth2-client';
 import { Tokens } from '../shared/interfaces';
 import TokenStorage from '../token-storage';
 import nonce from '../util/nonce';
 import PKCE from '../util/pkce';
+import { parseQuery } from '../util/url';
 
 interface GetTokensOptions extends ConfigOptions {
   forceRenew?: boolean;
@@ -31,15 +31,15 @@ abstract class TokenManager {
     const authorizeUrlOptions = { ...options, responseType: ResponseType.Code, state, verifier };
     const authorizeUrl = await OAuth2Client.getAuthorizeUrl(authorizeUrlOptions);
 
-    const parsedAuthorizeUrl = parseUrl(authorizeUrl, true);
-    if (parsedAuthorizeUrl.query.state !== state) {
+    const parsedQuery = parseQuery(authorizeUrl);
+    if (parsedQuery.state !== state) {
       throw new Error('State mismatch');
     }
-    if (!parsedAuthorizeUrl.query.code || Array.isArray(parsedAuthorizeUrl.query.code)) {
+    if (!parsedQuery.code || Array.isArray(parsedQuery.code)) {
       throw new Error('Failed to acquire authorization code');
     }
 
-    const authorizationCode = parsedAuthorizeUrl.query.code;
+    const authorizationCode = parsedQuery.code;
     const getTokensOptions = { ...options, authorizationCode, verifier };
     tokens = await OAuth2Client.getOAuth2Tokens(getTokensOptions);
 
