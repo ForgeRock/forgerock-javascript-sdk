@@ -1,4 +1,4 @@
-import { parseQuery, resolve, stringify } from './url';
+import { getBaseUrl, parseQuery, resolve, stringify } from './url';
 
 describe('The URL utility', () => {
   const querystrings = {
@@ -8,20 +8,53 @@ describe('The URL utility', () => {
     'foo=b%20r': { foo: 'b r' },
   };
 
-  it('correctly resolves paths', () => {
-    const baseUrl = 'http://domain.com';
-    const basePath = '/a/b/c';
+  it('correctly determines base URL', () => {
     const tests = [
-      ['', `${baseUrl}/a/b`],
-      ['foo', `${baseUrl}/a/b/foo`],
-      ['/foo', `${baseUrl}/foo`],
-      ['foo/baz', `${baseUrl}/a/b/foo/baz`],
-      ['/foo/baz', `${baseUrl}/foo/baz`],
+      ['http://domain.com', 'http://domain.com'],
+      ['http://domain.com/', 'http://domain.com'],
+      ['http://domain.com:80', 'http://domain.com'],
+      ['http://domain.com:80/', 'http://domain.com'],
+      ['http://domain.com:81', 'http://domain.com:81'],
+      ['http://domain.com:81/', 'http://domain.com:81'],
+      ['https://domain.com', 'https://domain.com'],
+      ['https://domain.com/', 'https://domain.com'],
+      ['https://domain.com:443', 'https://domain.com'],
+      ['https://domain.com:443/', 'https://domain.com'],
+      ['https://domain.com:8443', 'https://domain.com:8443'],
+      ['https://domain.com:8443/', 'https://domain.com:8443'],
     ];
 
     tests.forEach((x) => {
-      const actual = resolve(baseUrl + basePath, x[0]);
+      const url = new URL(x[0]);
+      const actual = getBaseUrl(url);
       expect(actual).toBe(x[1]);
+    });
+  });
+
+  it('correctly resolves paths', () => {
+    const baseUrls = [
+      'http://domain.com',
+      'http://domain.com/',
+      'https://domain.com:8443',
+      'https://domain.com:8443/',
+    ];
+    const basePath = '/a/b/c';
+
+    baseUrls.forEach((baseUrl) => {
+      const baseUrlWithoutSlash = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
+
+      const tests = [
+        ['', `${baseUrlWithoutSlash}/a/b`],
+        ['foo', `${baseUrlWithoutSlash}/a/b/foo`],
+        ['/foo', `${baseUrlWithoutSlash}/foo`],
+        ['foo/baz', `${baseUrlWithoutSlash}/a/b/foo/baz`],
+        ['/foo/baz', `${baseUrlWithoutSlash}/foo/baz`],
+      ];
+
+      tests.forEach((x) => {
+        const actual = resolve(baseUrlWithoutSlash + basePath, x[0]);
+        expect(actual).toBe(x[1]);
+      });
     });
   });
 
