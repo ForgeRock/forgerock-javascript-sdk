@@ -4,6 +4,12 @@
 
 - Support for RedirectCallback
 
+## [1.0.3] - 2020-01-06
+
+### Added
+
+- Replaced `url` and `querystring` dependencies to avoid build issues in some environments
+
 ## [1.0.2] - 2019-12-20
 
 ### Added

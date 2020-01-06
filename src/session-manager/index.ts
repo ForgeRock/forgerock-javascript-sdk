@@ -1,9 +1,9 @@
-import { resolve } from 'url';
 import Config, { ConfigOptions } from '../config/index';
 import { REQUESTED_WITH } from '../shared/constants';
 import { isOkOr4xx } from '../util/http';
 import { getRealmUrlPath } from '../util/realm';
 import { withTimeout } from '../util/timeout';
+import { resolve } from '../util/url';
 
 /**
  * Provides access to the session management API.

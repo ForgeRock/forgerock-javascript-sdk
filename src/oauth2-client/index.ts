@@ -1,12 +1,12 @@
-import { ParsedUrlQueryInput, stringify } from 'querystring';
-import { resolve } from 'url';
 import Config, { ConfigOptions } from '../config/index';
 import { NameValue } from '../shared/interfaces';
+import { Noop } from '../shared/types';
 import TokenStorage from '../token-storage';
 import { isOkOr4xx } from '../util/http';
 import PKCE from '../util/pkce';
 import { getRealmUrlPath } from '../util/realm';
 import { withTimeout } from '../util/timeout';
+import { resolve, stringify } from '../util/url';
 import { ResponseType } from './enums';
 import {
   AccessTokenResponse,
@@ -26,7 +26,7 @@ abstract class OAuth2Client {
     const { serverConfig, clientId, redirectUri, scope } = Config.get(options);
 
     /* eslint-disable @typescript-eslint/camelcase */
-    const requestParams: ParsedUrlQueryInput = {
+    const requestParams: NameValue<string | undefined> = {
       client_id: clientId,
       redirect_uri: redirectUri,
       response_type: options.responseType,
@@ -47,8 +47,13 @@ abstract class OAuth2Client {
 
     return new Promise((resolve, reject) => {
       const iframe = document.createElement('iframe');
-      let onLoad: () => void = () => {};
-      let cleanUp: () => void = () => {};
+
+      // Define these here to avoid linter warnings
+      const noop: Noop = () => {
+        return;
+      };
+      let onLoad: Noop = noop;
+      let cleanUp: Noop = noop;
       let timeout = 0;
 
       cleanUp = (): void => {
@@ -86,7 +91,7 @@ abstract class OAuth2Client {
     const { clientId, redirectUri } = Config.get(options);
 
     /* eslint-disable @typescript-eslint/camelcase */
-    const requestParams: ParsedUrlQueryInput = {
+    const requestParams: NameValue<string | undefined> = {
       client_id: clientId,
       code: options.authorizationCode,
       grant_type: 'authorization_code',
@@ -151,7 +156,7 @@ abstract class OAuth2Client {
   public static async endSession(options?: ConfigOptions): Promise<void> {
     const { idToken } = await TokenStorage.get();
 
-    const query: ParsedUrlQueryInput = {};
+    const query: NameValue<string | undefined> = {};
     if (idToken) {
       // eslint-disable-next-line @typescript-eslint/camelcase
       query.id_token_hint = idToken;
@@ -186,7 +191,7 @@ abstract class OAuth2Client {
 
   private static async request(
     path: string,
-    query?: ParsedUrlQueryInput,
+    query?: NameValue<string | undefined>,
     includeToken?: boolean,
     init?: RequestInit,
     options?: ConfigOptions,
@@ -232,7 +237,7 @@ abstract class OAuth2Client {
 
   private static getUrl(
     path: string,
-    query?: ParsedUrlQueryInput,
+    query?: NameValue<string | undefined>,
     options?: ConfigOptions,
   ): string {
     const { realmPath, serverConfig } = Config.get(options);
