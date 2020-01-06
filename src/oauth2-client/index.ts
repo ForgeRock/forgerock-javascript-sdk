@@ -47,13 +47,19 @@ abstract class OAuth2Client {
     return new Promise((resolve, reject) => {
       const iframe = document.createElement('iframe');
 
-      const cleanUp = (): void => {
+      // Define these here to avoid linter warnings
+      const noop = () => { return; }
+      let onLoad: () => void = noop;
+      let cleanUp: () => void = noop;
+      let timeout = 0;
+
+      cleanUp = (): void => {
         window.clearTimeout(timeout);
         iframe.removeEventListener('load', onLoad);
         iframe.remove();
       };
 
-      const onLoad = (): void => {
+      onLoad = (): void => {
         if (iframe.contentWindow) {
           const newHref = iframe.contentWindow.location.href;
           if (this.containsAuthCode(newHref)) {
@@ -63,7 +69,7 @@ abstract class OAuth2Client {
         }
       };
 
-      const timeout = window.setTimeout(() => {
+      timeout = window.setTimeout(() => {
         cleanUp();
         reject('Timeout');
       }, serverConfig.timeout);
