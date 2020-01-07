@@ -4,6 +4,12 @@
 
 - Support for RedirectCallback
 
+## [1.0.4] - 2020-01-06
+
+### Fixed
+
+- Renamed `getWebAuthStepType` to `getWebAuthnStepType` in `FRWebAuthn` module
+
 ## [1.0.3] - 2020-01-06
 
 ### Added
