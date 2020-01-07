@@ -25,13 +25,13 @@ type WebAuthnMetadata = WebAuthnAuthenticationMetadata | WebAuthnRegistrationMet
  *
  * ```js
  * // Determine if a step is a WebAuthn step
- * const stepType = FRWebAuthn.getWebAuthStepType(step);
+ * const stepType = FRWebAuthn.getWebAuthnStepType(step);
  * if (stepType === WebAuthnStepType.Registration) {
  *   // Register a new device
- *   const registeredStep = await FRWebAuthn.register(registrationStep);
+ *   await FRWebAuthn.register(step);
  * } else if (stepType === WebAuthnStepType.Authentication) {
- *   // Authenticate with a device
- *   const authenticatedStep = await FRWebAuthn.authenticate(authentiationStep);
+ *   // Authenticate with existing device
+ *   await FRWebAuthn.authenticate(step);
  * }
  */
 abstract class FRWebAuthn {
@@ -41,7 +41,7 @@ abstract class FRWebAuthn {
    * @param step The step to evaluate
    * @return A WebAuthnStepType value
    */
-  public static getWebAuthStepType(step: FRStep): WebAuthnStepType {
+  public static getWebAuthnStepType(step: FRStep): WebAuthnStepType {
     const outcomeCallback = this.getOutcomeCallback(step);
     const metadataCallback = this.getMetadataCallback(step);
 
