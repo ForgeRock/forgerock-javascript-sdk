@@ -30,7 +30,7 @@ type WebAuthnMetadata = WebAuthnAuthenticationMetadata | WebAuthnRegistrationMet
  *   // Register a new device
  *   await FRWebAuthn.register(step);
  * } else if (stepType === WebAuthnStepType.Authentication) {
- *   // Authenticate with existing device
+ *   // Authenticate with a registered device
  *   await FRWebAuthn.authenticate(step);
  * }
  */

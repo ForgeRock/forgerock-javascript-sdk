@@ -1,5 +1,5 @@
 import Auth from '../auth/index';
-import { ConfigOptions } from '../config';
+import { StepOptions } from '../auth/interfaces';
 import FRLoginFailure from './fr-login-failure';
 import FRLoginSuccess from './fr-login-success';
 import FRStep from './fr-step';
@@ -42,7 +42,7 @@ abstract class FRAuth {
    */
   public static async next(
     previousStep?: FRStep,
-    options?: ConfigOptions,
+    options?: StepOptions,
   ): Promise<FRStep | FRLoginSuccess | FRLoginFailure> {
     const nextPayload = await Auth.next(previousStep ? previousStep.payload : undefined, options);
 

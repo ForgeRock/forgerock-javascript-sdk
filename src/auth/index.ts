@@ -1,9 +1,10 @@
-import Config, { ConfigOptions, ServerConfig } from '../config';
+import Config, { ServerConfig } from '../config';
 import { REQUESTED_WITH } from '../shared/constants';
+import { StringDict } from '../shared/interfaces';
 import { getRealmUrlPath } from '../util/realm';
 import { withTimeout } from '../util/timeout';
-import { resolve } from '../util/url';
-import { Step } from './interfaces';
+import { resolve, stringify } from '../util/url';
+import { Step, StepOptions } from './interfaces';
 
 /**
  * Provides direct access to the OpenAM authentication tree API.
@@ -13,12 +14,13 @@ abstract class Auth {
    * Gets the next step in the authentication tree.
    *
    * @param {Step} previousStep The previous step, including any required input.
-   * @param {ConfigOptions} options Configuration default overrides.
+   * @param {StepOptions} options Configuration default overrides.
    * @return {Step} The next step in the authentication tree.
    */
-  public static async next(previousStep?: Step, options?: ConfigOptions): Promise<Step> {
+  public static async next(previousStep?: Step, options?: StepOptions): Promise<Step> {
     const { realmPath, serverConfig, tree } = Config.get(options);
-    const url = this.constructUrl(serverConfig, realmPath, tree);
+    const query = options ? options.query : {};
+    const url = this.constructUrl(serverConfig, realmPath, tree, query);
     const init = this.configureRequest(previousStep);
     const res = await withTimeout(fetch(url, init), serverConfig.timeout);
     const json = await this.getResponseJson<Step>(res);
@@ -29,10 +31,13 @@ abstract class Auth {
     serverConfig: ServerConfig,
     realmPath?: string,
     tree?: string,
+    query?: StringDict<string>,
   ): string {
     const realmUrlPath = getRealmUrlPath(realmPath);
-    const query = tree ? `?authIndexType=service&authIndexValue=${tree}` : '';
-    const path = `json/${realmUrlPath}/authenticate${query}`;
+    const treeParams = tree ? { authIndexType: 'service', authIndexValue: tree } : undefined;
+    const params: StringDict<string | undefined> = { ...query, ...treeParams };
+    const queryString = Object.keys(params).length > 0 ? `?${stringify(params)}` : '';
+    const path = `json/${realmUrlPath}/authenticate${queryString}`;
     const url = resolve(serverConfig.baseUrl, path);
     return url;
   }

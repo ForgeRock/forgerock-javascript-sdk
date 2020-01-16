@@ -1,4 +1,4 @@
-interface NameValue<T> {
+interface StringDict<T> {
   [name: string]: T;
 }
 
@@ -8,4 +8,4 @@ interface Tokens {
   refreshToken?: string;
 }
 
-export { NameValue, Tokens };
+export { StringDict, Tokens };

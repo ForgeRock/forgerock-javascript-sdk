@@ -1,5 +1,5 @@
 import Config, { ConfigOptions } from '../config/index';
-import { NameValue } from '../shared/interfaces';
+import { StringDict } from '../shared/interfaces';
 import { Noop } from '../shared/types';
 import TokenStorage from '../token-storage';
 import { isOkOr4xx } from '../util/http';
@@ -26,7 +26,7 @@ abstract class OAuth2Client {
     const { serverConfig, clientId, redirectUri, scope } = Config.get(options);
 
     /* eslint-disable @typescript-eslint/camelcase */
-    const requestParams: NameValue<string | undefined> = {
+    const requestParams: StringDict<string | undefined> = {
       client_id: clientId,
       redirect_uri: redirectUri,
       response_type: options.responseType,
@@ -91,7 +91,7 @@ abstract class OAuth2Client {
     const { clientId, redirectUri } = Config.get(options);
 
     /* eslint-disable @typescript-eslint/camelcase */
-    const requestParams: NameValue<string | undefined> = {
+    const requestParams: StringDict<string | undefined> = {
       client_id: clientId,
       code: options.authorizationCode,
       grant_type: 'authorization_code',
@@ -121,7 +121,7 @@ abstract class OAuth2Client {
       const message =
         typeof responseBody === 'string'
           ? `Expected 200, received ${response.status}`
-          : this.parseError(responseBody as NameValue<unknown>);
+          : this.parseError(responseBody as StringDict<unknown>);
       throw new Error(message);
     }
 
@@ -156,7 +156,7 @@ abstract class OAuth2Client {
   public static async endSession(options?: ConfigOptions): Promise<void> {
     const { idToken } = await TokenStorage.get();
 
-    const query: NameValue<string | undefined> = {};
+    const query: StringDict<string | undefined> = {};
     if (idToken) {
       // eslint-disable-next-line @typescript-eslint/camelcase
       query.id_token_hint = idToken;
@@ -191,7 +191,7 @@ abstract class OAuth2Client {
 
   private static async request(
     path: string,
-    query?: NameValue<string | undefined>,
+    query?: StringDict<string | undefined>,
     includeToken?: boolean,
     init?: RequestInit,
     options?: ConfigOptions,
@@ -223,7 +223,7 @@ abstract class OAuth2Client {
     return await response.text();
   }
 
-  private static parseError(json: NameValue<unknown>): string | undefined {
+  private static parseError(json: StringDict<unknown>): string | undefined {
     if (json) {
       if (json.error && json.error_description) {
         return `${json.error}: ${json.error_description}`;
@@ -237,7 +237,7 @@ abstract class OAuth2Client {
 
   private static getUrl(
     path: string,
-    query?: NameValue<string | undefined>,
+    query?: StringDict<string | undefined>,
     options?: ConfigOptions,
   ): string {
     const { realmPath, serverConfig } = Config.get(options);

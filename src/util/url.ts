@@ -1,4 +1,4 @@
-import { NameValue } from '../shared/interfaces';
+import { StringDict } from '../shared/interfaces';
 
 /**
  * Returns the base URL including protocol, hostname and any non-standard port.
@@ -27,14 +27,14 @@ function resolve(baseUrl: string, path: string): string {
   return `${getBaseUrl(url)}${newPath}`;
 }
 
-function parseQuery(fullUrl: string): NameValue<string> {
+function parseQuery(fullUrl: string): StringDict<string> {
   const url = new URL(fullUrl);
-  const query: NameValue<string> = {};
+  const query: StringDict<string> = {};
   url.searchParams.forEach((v, k) => (query[k] = v));
   return query;
 }
 
-function stringify(data: NameValue<string | undefined>): string {
+function stringify(data: StringDict<string | undefined>): string {
   const pairs = [];
   for (const k in data) {
     if (data[k]) {

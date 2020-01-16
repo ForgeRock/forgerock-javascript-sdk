@@ -4,6 +4,12 @@
 
 - Support for RedirectCallback
 
+## [1.0.5] - 2020-01-16
+
+### Added
+
+- Support for additional querystring parameters (e.g. `suspendedId`) when invoking authentication trees
+
 ## [1.0.4] - 2020-01-06
 
 ### Fixed

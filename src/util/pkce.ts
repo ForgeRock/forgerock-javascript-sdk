@@ -1,5 +1,6 @@
 /**
- * Helper class for generating verifier and challenge strings for PKCE.
+ * Helper class for generating verifier and challenge strings used for
+ * Proof Key for Code Exchange (PKCE).
  */
 abstract class PKCE {
   /**
@@ -15,7 +16,7 @@ abstract class PKCE {
   }
 
   /**
-   * Creates a SDH-256 hash of the verifier.
+   * Creates a SHA-256 hash of the verifier.
    *
    * @param verifier The verifier to hash
    */
@@ -26,7 +27,7 @@ abstract class PKCE {
   }
 
   /**
-   * Creates a base-64 encoded url-friendly version of the specified array.
+   * Creates a base64 encoded, URL-friendly version of the specified array.
    *
    * @param array The array of numbers to encode
    */

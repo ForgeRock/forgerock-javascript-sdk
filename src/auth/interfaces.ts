@@ -1,3 +1,5 @@
+import { ConfigOptions } from '../config/interfaces';
+import { StringDict } from '../shared/interfaces';
 import { CallbackType } from './enums';
 
 /**
@@ -25,6 +27,14 @@ interface StepDetail {
   failedPolicyRequirements?: FailedPolicyRequirement[];
   failureUrl?: string;
   result?: boolean;
+}
+
+/**
+ * Represents configuration overrides used when requesting the next
+ * step in an authentication tree.
+ */
+interface StepOptions extends ConfigOptions {
+  query?: StringDict<string>;
 }
 
 /**
@@ -80,4 +90,5 @@ export {
   PolicyRequirement,
   Step,
   StepDetail,
+  StepOptions,
 };
