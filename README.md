@@ -130,7 +130,7 @@ npm i
 
 # Generate CA and self-signed certificate
 # (Pick any passphrase and use it whenever prompted)
-npm run make_certs
+npm run certs:make
 
 # Build the SDK and watch for changes
 npm start
@@ -153,7 +153,7 @@ Add the certificate to your keychain:
 
 ```bash
 # MacOS
-sudo npm run trust_certs
+sudo npm run certs:trust
 ```
 
 You **must** restart Chrome for the change to take effect.
