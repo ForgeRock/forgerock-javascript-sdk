@@ -1,3 +1,5 @@
+import { AM_URL, RESOURCE_URL } from '../config.mjs';
+
 export const initial = {
   authId: 'foo',
   callbacks: [
@@ -15,6 +17,16 @@ export const initial = {
     },
   ],
   stage: 'UsernamePassword',
+};
+
+export const createStepUpUrl = () => {
+  const url = new URL(`${AM_URL}/html/realms/root/authenticate`);
+  url.searchParams.set('goto', `${RESOURCE_URL}/withdraw`);
+  url.searchParams.set('realm', '/');
+  url.searchParams.set('authIndexType', 'composite_advice');
+  url.searchParams.set('authIndexValue', '%3CAdvices%3E%3CAttributeValuePair%3E%3CAttribute%20name%3D%22TransactionConditionAdvice%22/%3E%3CValue%3E39dfdd15-59a3-473c-a7fc-ecda3bbc3bc8%3C/Value%3E%3C/AttributeValuePair%3E%3C/Advices%3E');
+
+  return url.toString();
 };
 
 export const authFail = {

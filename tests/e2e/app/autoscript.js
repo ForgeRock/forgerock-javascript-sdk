@@ -3,10 +3,13 @@
   const rxMap = rxjs.operators.map;
   const rxTap = rxjs.operators.tap;
 
+  const delay = 0;
+
   const url = new URL(window.location.href);
   const amUrl = url.searchParams.get('amUrl');
   const clientId = url.searchParams.get('clientId');
   const realmPath = url.searchParams.get('realmPath');
+  const resourceUrl = url.searchParams.get('resourceUrl');
   const scope = url.searchParams.get('scope');
   const un = url.searchParams.get('un');
   const pw = url.searchParams.get('pw');
@@ -33,8 +36,7 @@
         step.getCallbackOfType('ValidatedCreatePasswordCallback').setPassword(pw);
         return forgerock.FRAuth.next(step);
       }),
-      // Uncomment the below operators to delay the steps for debugging purposes
-      // rxjs.operators.delay(2000),
+      rxjs.operators.delay(delay),
       rxFlatMap(
         (step) => {
           if (step.payload.code === 401) {
@@ -44,8 +46,9 @@
         },
         (step) => step,
       ),
-      // rxjs.operators.delay(2000),
+      rxjs.operators.delay(delay),
       rxMap((step) => {
+        const myStep = step;
         if (step.getSessionToken()) {
           console.log('Login successful');
           document.body.innerHTML = `<p class="Logged_In">Login successful</p>`;
@@ -53,7 +56,7 @@
           throw new Error('Session_Error');
         }
       }),
-      // rxjs.operators.delay(2000),
+      rxjs.operators.delay(delay),
       rxFlatMap(
         (step) => forgerock.UserManager.getCurrentUser(),
         (step, user) => {
@@ -61,7 +64,39 @@
           return step;
         },
       ),
-      // rxjs.operators.delay(2000),
+      rxjs.operators.delay(delay),
+      rxFlatMap(
+        (step) =>
+          forgerock.HttpClient.request({
+            url: `${resourceUrl}/balance`,
+            init: {
+              method: 'GET',
+            },
+          }),
+        (step, response) => {
+          console.log(response);
+          return step;
+        },
+      ),
+      rxjs.operators.delay(delay),
+      rxFlatMap(
+        (step) =>
+          forgerock.HttpClient.request({
+            init: {
+              method: 'POST',
+              txnAuth: {
+                init: true,
+                options: {},
+              },
+            },
+            timeout: 0,
+            url: `${resourceUrl}/withdraw`,
+          }),
+        (step, response) => {
+          return step;
+        },
+      ),
+      rxjs.operators.delay(delay),
       rxFlatMap(
         (step) => {
           console.log('Initiate logout');
@@ -69,7 +104,7 @@
         },
         (step) => step,
       ),
-      // rxjs.operators.delay(2000),
+      rxjs.operators.delay(delay),
       rxFlatMap(
         (step) => {
           return forgerock.TokenStorage.get();
@@ -84,7 +119,7 @@
           return step;
         },
       ),
-      // rxjs.operators.delay(2000),
+      rxjs.operators.delay(delay),
       rxTap(
         () => {},
         (err) => {
