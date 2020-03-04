@@ -60,7 +60,7 @@
       rxFlatMap(
         (step) => forgerock.UserManager.getCurrentUser(),
         (step, user) => {
-          console.log('User given name: ' + user.given_name);
+          console.log(`User given name: ${user.given_name}`);
           return step;
         },
       ),
@@ -73,8 +73,9 @@
               method: 'GET',
             },
           }),
-        (step, response) => {
-          console.log(response);
+        async (step, response) => {
+          const body = await response.json();
+          console.log(`Balance is: ${body.balance}`);
           return step;
         },
       ),
@@ -84,15 +85,16 @@
           forgerock.HttpClient.request({
             init: {
               method: 'POST',
-              txnAuth: {
-                init: true,
-                options: {},
-              },
+            },
+            txnAuth: {
+              init: true,
             },
             timeout: 0,
             url: `${resourceUrl}/withdraw`,
           }),
-        (step, response) => {
+        async (step, response) => {
+          const body = await response.json();
+          console.log(`Auth stage: ${body.stage}`);
           return step;
         },
       ),

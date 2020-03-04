@@ -37,7 +37,11 @@ abstract class HttpClient extends Dispatcher {
 
       if (txnAuthJSON && txnAuthJSON.advices) {
         const { serverConfig } = Config.get(options.txnAuth.options);
-        const txnAuthOptions = buildTxnAuthReqOptions(txnAuthJSON, serverConfig.baseUrl);
+        const txnAuthOptions = buildTxnAuthReqOptions(
+          txnAuthJSON,
+          serverConfig.baseUrl,
+          options.timeout,
+        );
         res = await this._request(txnAuthOptions, false);
       }
     }

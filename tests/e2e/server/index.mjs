@@ -4,7 +4,7 @@ import { createServer } from 'https';
 import { readFileSync } from 'fs';
 import { env } from 'process';
 import { fileURLToPath } from 'url';
-import { BASE_URL } from '../config.mjs';
+import { BASE_URL } from './config.copy.mjs';
 import authRoutes from './auth-routes.mjs';
 import resourceRoutes from './resource-routes.mjs';
 

@@ -3,10 +3,12 @@ import { HttpClientRequestOptions, TxnAuthJSON } from './interfaces';
 export function buildTxnAuthReqOptions(
   txnAuthObj: TxnAuthJSON,
   baseURL: string,
+  timeout: number,
 ): HttpClientRequestOptions {
   const advices = txnAuthObj.advices ? txnAuthObj.advices.TransactionConditionAdvice : [];
   const transactionID = advices.reduce((prev: string, curr: string) => {
-    prev = `${prev} ${curr}`;
+    const prevWithSpace = prev ? ` ${prev}` : prev;
+    prev = `${curr}${prevWithSpace}`;
     return prev;
   }, '');
 
@@ -24,7 +26,7 @@ export function buildTxnAuthReqOptions(
     init: {
       method: 'POST',
     },
-    timeout: 0,
+    timeout,
     url: url.toString(),
   };
   return options;
@@ -42,8 +44,11 @@ export async function examineForRESTTxnAuth(res: Response): Promise<boolean> {
 
 function getTxnIdFromURL(urlString: string): string {
   const url = new URL(urlString);
-  const value = url.searchParams.get('authIndexValue');
-  return value || '';
+  const value = url.searchParams.get('authIndexValue') || '';
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(value, 'text/xml');
+  const el = doc.querySelector('Value');
+  return el ? el.innerHTML : '';
 }
 
 export async function normalizeIGJSON(res: Response): Promise<TxnAuthJSON> {

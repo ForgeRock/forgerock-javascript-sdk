@@ -24,15 +24,15 @@
     "docs:watch": "watch 'npm run docs' ./src",
     "lint": "eslint --ignore-path .gitignore '**/*.ts' --fix",
     "start:e2e": "http-server tests/e2e/app -c1 -p 3002 --ssl --cert certs/samples.crt --key certs/samples.key",
-    "start:server": "APP_PORT=3002 SERVER_PORT=3001 node --input-type=module tests/e2e/server",
+    "start:server": "APP_PORT=3002 SERVER_PORT=3001 node tests/e2e/server/index.mjs",
     "start:samples": "http-server samples -c1 -p 3000 --ssl --cert certs/samples.crt --key certs/samples.key",
-    "test": "jest --config=./tests-plus.config.js",
-    "test:e2e": "jest tests/e2e --config=./tests-plus.config.js",
-    "test:e2e:live": "OAUTH_SERVER=live jest tests/e2e --config=./tests-plus.config.js",
+    "test": "npm run test:unit && npm run test:integration && npm run test:e2e",
+    "test:e2e": "jest tests/e2e --config=./tests-e2e.config.js",
+    "test:e2e:live": "OAUTH_SERVER=live jest tests/e2e --config=./tests-e2e.config.js",
     "test:integration": "jest tests/integration --config=./tests-basic.config.js",
-    "test:unit": "jest src/** --config=./tests-basic.config.js",
+    "test:unit": "jest src/ --config=./tests-basic.config.js",
     "test:coverage": "jest --config=./tests-plus.config.js --coverage=true",
-    "watch": "webpack --env.DEV=yes"
+    "watch": "webpack -w --env.DEV=no"
   },
   "husky": {
     "hooks": {
@@ -53,7 +53,6 @@
   "devDependencies": {
     "@types/dotenv": "^6.1.1",
     "@types/jest": "^24.0.15",
-    "@types/puppeteer": "^1.20.1",
     "@typescript-eslint/eslint-plugin": "^2.4.0",
     "@typescript-eslint/parser": "^2.4.0",
     "@typescript-eslint/typescript-estree": "^2.4.0",
@@ -70,9 +69,9 @@
     "http-server": "^0.12.1",
     "husky": "^3.0.9",
     "jest": "^24.8.0",
-    "jest-puppeteer": "^4.3.0",
+    "jest-dev-server": "^4.4.0",
+    "playwright": "^0.11.1",
     "prettier": "^1.18.2",
-    "puppeteer": "^1.20.0",
     "ramda": "^0.26.1",
     "shx": "^0.3.2",
     "ts-jest": "^24.1.0",

@@ -12,7 +12,8 @@ module.exports = (env) => {
       apply: (compiler) => {
         compiler.hooks.afterEmit.tap('AfterEmitPlugin', (compilation) => {
           const cmds = [
-            'cpy ./bundles/index.js ./tests/e2e/test-site',
+            'cpy ./bundles/index.js ./tests/e2e/app',
+            'cp ./tests/e2e/config.ts ./tests/e2e/server/config.copy.mjs',
             'copyup ./bundles/index.js* ./samples/js/',
             'copyup ./src/**/*.{html,scss} lib',
             'copyup ./src/**/*.{html,scss} lib-esm',

@@ -1,5 +1,5 @@
 import { accessToken, authFail, authSuccess, initial, userInfo } from './responses.mjs';
-import { AM_URL, BASE_URL } from '../config.mjs';
+import { AM_URL, BASE_URL } from './config.copy.mjs';
 
 export default function(app) {
   app.post('/am/json/realms/root/authenticate', (req, res) => {
