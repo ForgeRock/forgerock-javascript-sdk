@@ -1,6 +1,12 @@
-import { HttpClientRequestOptions, TxnAuthJSON } from './interfaces';
+/**
+ * @module
+ * @ignore
+ * These are private utility functions for HttpClient
+ */
 
-export function buildTxnAuthReqOptions(
+import { HttpClientRequestOptions, RequiresNewTokenFn, TxnAuthJSON } from './interfaces';
+
+export function buildTxnAuthOptions(
   txnAuthObj: TxnAuthJSON,
   baseURL: string,
   timeout: number,
@@ -32,13 +38,14 @@ export function buildTxnAuthReqOptions(
   return options;
 }
 
-export async function examineForIGTxnAuth(res: Response): Promise<boolean> {
+export function examineForIGTxnAuth(res: Response): boolean {
   const type = res.headers.get('Content-Type') || '';
-  return Promise.resolve(type.includes('html') && res.url.includes('composite_advice'));
+  return type.includes('html') && res.url.includes('composite_advice');
 }
 
 export async function examineForRESTTxnAuth(res: Response): Promise<boolean> {
-  const json = await res.json();
+  const clone = res.clone();
+  const json = await clone.json();
   return !!json.advices;
 }
 
@@ -51,8 +58,21 @@ function getTxnIdFromURL(urlString: string): string {
   return el ? el.innerHTML : '';
 }
 
-export async function normalizeIGJSON(res: Response): Promise<TxnAuthJSON> {
-  return Promise.resolve({
+export async function isAuthStep(res: Response): Promise<boolean> {
+  const clone = res.clone();
+  const json = await clone.json();
+  return !!json.callbacks;
+}
+
+export function newTokenRequired(res: Response, requiresNewToken?: RequiresNewTokenFn): boolean {
+  if (typeof requiresNewToken === 'function') {
+    return requiresNewToken(res);
+  }
+  return res.status === 401;
+}
+
+export function normalizeIGJSON(res: Response): TxnAuthJSON {
+  return {
     resource: '',
     actions: {},
     attributes: {},
@@ -60,7 +80,7 @@ export async function normalizeIGJSON(res: Response): Promise<TxnAuthJSON> {
       TransactionConditionAdvice: [getTxnIdFromURL(res.url)],
     },
     ttl: 0,
-  });
+  };
 }
 
 export async function normalizeRESTJSON(res: Response): Promise<TxnAuthJSON> {

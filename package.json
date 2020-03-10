@@ -32,7 +32,7 @@
     "test:integration": "jest tests/integration --config=./tests-basic.config.js",
     "test:unit": "jest src/ --config=./tests-basic.config.js",
     "test:coverage": "jest --config=./tests-plus.config.js --coverage=true",
-    "watch": "webpack -w --env.DEV=no"
+    "watch": "webpack -w --env.DEV=yes"
   },
   "husky": {
     "hooks": {

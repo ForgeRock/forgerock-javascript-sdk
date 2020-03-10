@@ -19,6 +19,19 @@ export const initial = {
   stage: 'UsernamePassword',
 };
 
+export const initialTxnAuth = {
+  authId: 'bar',
+  callbacks: [
+    {
+      type: 'PasswordCallback',
+      output: [{ name: 'prompt', value: 'Password' }],
+      input: [{ name: 'IDToken0', value: '' }],
+      _id: 0,
+    },
+  ],
+  stage: 'TransactionAuthorization',
+};
+
 export const createStepUpUrl = () => {
   const url = new URL(`${AM_URL}/html/realms/root/authenticate`);
   url.searchParams.set('goto', `${RESOURCE_URL}/withdraw`);

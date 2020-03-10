@@ -1,4 +1,7 @@
 import { ConfigOptions } from '../config/interfaces';
+import FRStep from '../fr-auth/fr-step';
+
+export declare type HandleStep = (step: FRStep) => Promise<FRStep>;
 
 /**
  * Options to use when making an HTTP call.
@@ -6,8 +9,8 @@ import { ConfigOptions } from '../config/interfaces';
 export interface HttpClientRequestOptions {
   bypassAuthentication?: boolean;
   txnAuth?: {
-    init: boolean;
-    options?: ConfigOptions;
+    config?: ConfigOptions;
+    handleStep: HandleStep;
   };
   init: RequestInit;
   requiresNewToken?: RequiresNewTokenFn;

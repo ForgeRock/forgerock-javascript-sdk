@@ -41,7 +41,7 @@ describe('Test Transaction Authorization flow', () => {
 
     // Test assertions
     expect(messageArray.includes('Balance is: $750.00')).toBe(true);
-    expect(messageArray.includes('Auth stage: UsernamePassword')).toBe(true);
+    expect(messageArray.includes('Withdrawal of $200 was successful')).toBe(true);
 
     await browser.close();
     done();

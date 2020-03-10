@@ -42,6 +42,7 @@
           if (step.payload.code === 401) {
             throw new Error('Auth_Error');
           }
+          console.log('Get tokens');
           return forgerock.TokenManager.getTokens({ forceRenew: true });
         },
         (step) => step,
@@ -58,7 +59,10 @@
       }),
       rxjs.operators.delay(delay),
       rxFlatMap(
-        (step) => forgerock.UserManager.getCurrentUser(),
+        (step) => {
+          console.log('Get user info from OAuth endpoint');
+          return forgerock.UserManager.getCurrentUser();
+        },
         (step, user) => {
           console.log(`User given name: ${user.given_name}`);
           return step;
@@ -66,13 +70,15 @@
       ),
       rxjs.operators.delay(delay),
       rxFlatMap(
-        (step) =>
-          forgerock.HttpClient.request({
+        (step) => {
+          console.log('Retrieve the user balance');
+          return forgerock.HttpClient.request({
             url: `${resourceUrl}/balance`,
             init: {
               method: 'GET',
             },
-          }),
+          });
+        },
         async (step, response) => {
           const body = await response.json();
           console.log(`Balance is: ${body.balance}`);
@@ -81,20 +87,30 @@
       ),
       rxjs.operators.delay(delay),
       rxFlatMap(
-        (step) =>
-          forgerock.HttpClient.request({
+        (step) => {
+          console.log('Make a $200 withdrawal from account');
+          return forgerock.HttpClient.request({
             init: {
               method: 'POST',
+              body: JSON.stringify({ amount: '200' }),
             },
             txnAuth: {
-              init: true,
+              handleStep: async (step) => {
+                console.log('Withdraw action requires additional authorization')
+                step.getCallbackOfType('PasswordCallback').setPassword('123456');
+                return Promise.resolve(step);
+              },
             },
             timeout: 0,
             url: `${resourceUrl}/withdraw`,
-          }),
-        async (step, response) => {
-          const body = await response.json();
-          console.log(`Auth stage: ${body.stage}`);
+          });
+        },
+        (step, response) => {
+          if (response.ok) {
+            console.log('Withdrawal of $200 was successful');
+          } else {
+            console.log('Withdraw authorization failed');
+          }
           return step;
         },
       ),

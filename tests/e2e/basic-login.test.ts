@@ -40,7 +40,6 @@ describe('Test basic login flow', () => {
     await page.waitForSelector('.Logged_Out', { visibility: 'visible' });
 
     // Test assertions
-    console.log(messageArray);
     expect(messageArray.includes('Login successful')).toBe(true);
     expect(messageArray.includes('Logout successful')).toBe(true);
 

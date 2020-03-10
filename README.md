@@ -133,10 +133,10 @@ npm i
 npm run certs:make
 
 # Build the SDK and watch for changes
-npm start
+npm run watch
 
 # Start the sample webserver
-npm run server:samples
+npm run start:samples
 
 # Follow the next section to trust certificate
 ```
@@ -171,7 +171,11 @@ Import the certificate to Firefox:
 
 This project is configured for multiple forms of tests: unit, integration, and e2e. Compilation and linting occurs as a pre-commit hook, and all tests are run as a pre-push hook.
 
-Some tests require an OpenAM instance with a public OAuth client configured. Specify your environment details in an `.env` file:
+### E2E Test Requirements
+
+Node v13.10 or higher is required to run the mock E2E server application.
+
+Testing against a live environment requires an OpenAM instance with a public OAuth client configured. Specify your environment details in an `.env` file:
 
 | Variable    | Purpose                                                |
 | ----------- | ------------------------------------------------------ |
@@ -189,18 +193,38 @@ Some tests require an OpenAM instance with a public OAuth client configured. Spe
 
 This occurs when OpenAM returns the authorization code, but the `redirect_uri` doesn't match what's configured for the OAuth client. Tests use a path of `/callback`, so your OAuth client should be configured with a `redirect_uri` of `{BASE_URL}/callback` (e.g. https://forgerock-sdk-samples.com:3000/callback).
 
-**Manually view test site**
+**Debug E2E in mock environment**
 
-To replicate the e2e environment for troubleshooting, run:
+To manually run the E2E script for troubleshooting against a mock environment, run:
 
 ```bash
-npm run server:e2e
+npm run start:e2e
 ```
 
 Now browse to the following URL, replacing relevant tokens with values from your `.env` file:
 
 ```
-{BASE_URL}?amUrl={AM_URL}&clientId={CLIENT_ID}&scope={SCOPE}&un={USERNAME}&pw={PASSWORD}
+{BASE_URL}?clientId={CLIENT_ID}&scope={SCOPE}&un={USERNAME}&pw={PASSWORD}&amUrl={AM_URL}
+```
+
+**Debug E2E in live environment**
+
+To manually run the E2E script for troubleshooting against a mock environment, run:
+
+```bash
+npm run start:e2e
+```
+
+Within a different shell, run:
+
+```bash
+npm run start:server
+```
+
+Now browse to the following URL:
+
+```
+https://forgerock-sdk-samples.com:3002/?amUrl=https%3A%2F%2Fforgerock-sdk-samples.com%3A3001%2Fam&clientId=newOauthClient&realmPath=root&scope=openid+profile+me.read&un=jlowery&pw=Password1%21&resourceUrl=https%3A%2F%2Fforgerock-sdk-samples.com%3A3001%2Fresource
 ```
 
 ## License

@@ -1,9 +1,10 @@
 import {
-  buildTxnAuthReqOptions,
+  buildTxnAuthOptions,
   examineForIGTxnAuth,
   examineForRESTTxnAuth,
   normalizeIGJSON,
 } from './util';
+import { responseFromIG, responseFromREST } from './http-client.mock.data';
 
 describe('Test HttpClient utils', () => {
   it('build txn auth req options', () => {
@@ -24,41 +25,18 @@ describe('Test HttpClient utils', () => {
       // eslint-disable-next-line
       url: 'https://openam.example.com/am/json/realms/root/authenticate?authIndexType=composite_advice&authIndexValue=%3CAdvices%3E%3CAttributeValuePair%3E%3CAttribute+name%3D%22TransactionConditionAdvice%22%2F%3E%3CValue%3Eabcd%3C%2FValue%3E%3C%2FAttributeValuePair%3E%3C%2FAdvices%3E',
     };
-    const output = buildTxnAuthReqOptions(txnAuthObj, 'https://openam.example.com/am/', 0);
+    const output = buildTxnAuthOptions(txnAuthObj, 'https://openam.example.com/am/', 0);
     expect(output).toStrictEqual(expected);
   });
 
   it('examines response for IG txn auth', async (done) => {
-    const res: any = {
-      headers: {
-        get(name): string {
-          return this[name];
-        },
-        'Content-Type': 'text/html; charset=utf-8',
-      },
-      // eslint-disable-next-line
-      url: 'https://openam.example.com/openam/?goto=http://openig.example.com:8080/products/abc&realm=/&authIndexType=composite_advice&authIndexValue=abc',
-    };
-    const output = await examineForIGTxnAuth(res);
+    const output = await examineForIGTxnAuth(responseFromIG);
     expect(output).toBe(true);
     done();
   });
 
   it('examines response for REST txn auth', async (done) => {
-    const res: any = {
-      json() {
-        return Promise.resolve({
-          resource: '',
-          actions: {},
-          attributes: {},
-          advices: {
-            TransactionConditionAdvice: ['abc'],
-          },
-          ttl: 0,
-        });
-      },
-    };
-    const output = await examineForRESTTxnAuth(res);
+    const output = await examineForRESTTxnAuth(responseFromREST);
     expect(output).toBe(true);
     done();
   });
