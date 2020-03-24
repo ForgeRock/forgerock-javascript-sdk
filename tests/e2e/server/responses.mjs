@@ -23,10 +23,16 @@ export const initialTxnAuth = {
   authId: 'bar',
   callbacks: [
     {
-      type: 'PasswordCallback',
-      output: [{ name: 'prompt', value: 'Password' }],
-      input: [{ name: 'IDToken0', value: '' }],
+      type: 'ValidatedCreateUsernameCallback',
+      output: [{ name: 'prompt', value: 'User Name' }],
+      input: [{ name: 'IDToken1', value: '' }],
       _id: 0,
+    },
+    {
+      type: 'ValidatedCreatePasswordCallback',
+      output: [{ name: 'prompt', value: 'Password' }],
+      input: [{ name: 'IDToken2', value: '' }],
+      _id: 1,
     },
   ],
   stage: 'TransactionAuthorization',
@@ -66,9 +72,9 @@ export const accessToken = {
 };
 
 export const userInfo = {
-  family_name: 'Lowery',
-  given_name: 'Justin',
-  name: 'Justin Lowery',
+  family_name: 'Tester',
+  given_name: 'Bob',
+  name: 'Bob Tester',
   updated_at: 1575671644,
-  sub: 'jlowery',
+  sub: 'thetester',
 };

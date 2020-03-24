@@ -14,7 +14,7 @@ export const baz = {
 };
 
 export default function(app) {
-  app.post('/am/json/realms/root/authenticate', async (req, res) => {
+  app.post('/am/json/realms/root/authenticate', wait, async (req, res) => {
     /**
      * If there is no stage, then we know this is the initial
      * request, so we'll return the appropriate callbacks.
@@ -24,10 +24,8 @@ export default function(app) {
      */
     if (!req.body.stage) {
       if (req.query.authIndexType === 'composite_advice') {
-        await wait();
         res.json(initialTxnAuth);
       } else {
-        await wait();
         res.json(initial);
       }
     } else if (req.body.stage === 'UsernamePassword') {
@@ -35,58 +33,50 @@ export default function(app) {
         (callback) => callback.type === 'ValidatedCreatePasswordCallback',
       );
       if (pwCb.input[0].value === 'sad_Password1!_panda') {
-        await wait();
         res.status(401).json(authFail);
       } else {
-        await wait();
         res.json(authSuccess);
       }
     } else if (req.body.stage === 'TransactionAuthorization') {
-      const pwCb = req.body.callbacks.find((callback) => callback.type === 'PasswordCallback');
-      if (pwCb.input[0].value !== '123456') {
-        await wait();
+      const pwCb = req.body.callbacks.find(
+        (callback) => callback.type === 'ValidatedCreatePasswordCallback',
+      );
+      if (pwCb.input[0].value === 'sad_Password1!_panda') {
         res.status(401).json(authFail);
       } else {
         baz.canWithdraw = true;
-        await wait();
         res.json(authSuccess);
       }
     }
   });
 
-  app.post('/am/oauth2/realms/root/access_token', async (req, res) => {
-    await wait();
+  app.post('/am/oauth2/realms/root/access_token', wait, async (req, res) => {
     res.json(accessToken);
   });
 
-  app.get('/am/oauth2/realms/root/authorize', async (req, res) => {
+  app.get('/am/oauth2/realms/root/authorize', wait, async (req, res) => {
     const url = new URL(`${BASE_URL}`);
     url.pathname = '/callback';
     url.searchParams.set('client_id', 'bar');
     url.searchParams.set('code', 'foo');
     url.searchParams.set('iss', `${AM_URL}/oauth2`);
     url.searchParams.set('state', req.query.state);
-    await wait();
     res.redirect(url);
   });
 
-  app.get('/am/oauth2/realms/root/userinfo', async (req, res) => {
-    await wait();
+  app.get('/am/oauth2/realms/root/userinfo', wait, async (req, res) => {
     res.json(userInfo);
   });
 
-  app.get('/am/oauth2/realms/root/connect/endSession', async (req, res) => {
-    await wait();
+  app.get('/am/oauth2/realms/root/connect/endSession', wait, async (req, res) => {
     res.status(204).send();
   });
 
-  app.post('/am/oauth2/realms/root/token/revoke', async (req, res) => {
-    await wait();
+  app.post('/am/oauth2/realms/root/token/revoke', wait, async (req, res) => {
     res.status(200).send();
   });
 
-  app.all('/am/html/realms/root/authenticate', async (req, res) => {
-    await wait();
+  app.all('/am/html/realms/root/authenticate', wait, async (req, res) => {
     res.type('html');
     res.status(200).send('<html></html>');
   });

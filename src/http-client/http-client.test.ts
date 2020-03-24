@@ -27,6 +27,7 @@ jest.mock('./index', () => {
 describe('Test HttpClient request for txn auth', () => {
   const expected = {
     init: {
+      credentials: 'include' as 'include',
       method: 'POST',
     },
     timeout: 0,

@@ -2,6 +2,7 @@ import { HandleStep } from './interfaces';
 
 export const requestOptionsForIG = {
   init: {
+    credentials: 'include' as 'include',
     method: 'POST',
   },
   txnAuth: {
@@ -47,6 +48,7 @@ export const responseFromIG = {
 
 export const requestOptionsForREST = {
   init: {
+    credentials: 'include' as 'include',
     method: 'POST',
   },
   txnAuth: {

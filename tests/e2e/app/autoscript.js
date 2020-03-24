@@ -13,9 +13,11 @@
   const scope = url.searchParams.get('scope');
   const un = url.searchParams.get('un');
   const pw = url.searchParams.get('pw');
+  const live = url.searchParams.get('live');
 
-  const tree = 'UsernamePassword';
+  const tree = 'BasicLogin';
 
+  console.log('Configure the SDK');
   forgerock.Config.set({
     clientId,
     redirectUri: `${url.origin}/callback`,
@@ -27,11 +29,12 @@
     },
   });
 
+  console.log('Initiate first step with `undefined`');
   rxjs
     .from(forgerock.FRAuth.next())
     .pipe(
       rxFlatMap((step) => {
-        console.log('Initiate first step with `undefined`');
+        console.log('Set values on auth tree callbacks');
         step.getCallbackOfType('ValidatedCreateUsernameCallback').setName(un);
         step.getCallbackOfType('ValidatedCreatePasswordCallback').setPassword(pw);
         return forgerock.FRAuth.next(step);
@@ -42,16 +45,17 @@
           if (step.payload.code === 401) {
             throw new Error('Auth_Error');
           }
-          console.log('Get tokens');
-          return forgerock.TokenManager.getTokens({ forceRenew: true });
+          console.log('Auth tree successfully completed');
+          console.log('Get OAuth tokens');
+          const tokens = forgerock.TokenManager.getTokens({ forceRenew: true });
+          return tokens;
         },
         (step) => step,
       ),
       rxjs.operators.delay(delay),
       rxMap((step) => {
-        const myStep = step;
         if (step.getSessionToken()) {
-          console.log('Login successful');
+          console.log('OAuth login successful');
           document.body.innerHTML = `<p class="Logged_In">Login successful</p>`;
         } else {
           throw new Error('Session_Error');
@@ -61,21 +65,26 @@
       rxFlatMap(
         (step) => {
           console.log('Get user info from OAuth endpoint');
-          return forgerock.UserManager.getCurrentUser();
+          const user = forgerock.UserManager.getCurrentUser();
+          return user;
         },
         (step, user) => {
-          console.log(`User given name: ${user.given_name}`);
+          console.log(`User's given name: ${user.family_name}`);
           return step;
         },
       ),
       rxjs.operators.delay(delay),
       rxFlatMap(
         (step) => {
+          const token = document.cookie;
           console.log('Retrieve the user balance');
           return forgerock.HttpClient.request({
             url: `${resourceUrl}/balance`,
             init: {
               method: 'GET',
+              headers: {
+                iPlanetDirectoryPro: token,
+              },
             },
           });
         },
@@ -96,18 +105,21 @@
             },
             txnAuth: {
               handleStep: async (step) => {
-                console.log('Withdraw action requires additional authorization')
-                step.getCallbackOfType('PasswordCallback').setPassword('123456');
+                console.log('Withdraw action requires additional authorization');
+                step.getCallbackOfType('ValidatedCreateUsernameCallback').setName(un);
+                step.getCallbackOfType('ValidatedCreatePasswordCallback').setPassword(pw);
                 return Promise.resolve(step);
               },
             },
             timeout: 0,
-            url: `${resourceUrl}/withdraw`,
+            url: `${resourceUrl}/withdraw?live=${live}`,
           });
         },
-        (step, response) => {
+        async (step, response) => {
           if (response.ok) {
             console.log('Withdrawal of $200 was successful');
+            const body = await response.json();
+            console.log(`Balance is ${body.balance}`);
           } else {
             console.log('Withdraw authorization failed');
           }

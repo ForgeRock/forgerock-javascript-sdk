@@ -31,6 +31,7 @@ export function buildTxnAuthOptions(
   const options = {
     init: {
       method: 'POST',
+      credentials: 'include' as 'include',
     },
     timeout,
     url: url.toString(),
@@ -56,6 +57,17 @@ function getTxnIdFromURL(urlString: string): string {
   const doc = parser.parseFromString(value, 'text/xml');
   const el = doc.querySelector('Value');
   return el ? el.innerHTML : '';
+}
+
+export function hasTransactionAdvice(json: TxnAuthJSON): boolean {
+  if (json.advices) {
+    return (
+      Array.isArray(json.advices.TransactionConditionAdvice) &&
+      json.advices.TransactionConditionAdvice.length > 0
+    );
+  } else {
+    return false;
+  }
 }
 
 export async function isAuthStep(res: Response): Promise<boolean> {

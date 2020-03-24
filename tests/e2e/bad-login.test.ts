@@ -15,7 +15,7 @@ describe('Test bad login flow', () => {
     const browser = await chromium.launch({ headless: true });
     const context = await browser.newContext({
       ignoreHTTPSErrors: true,
-      // bypassCSP: true,
+      bypassCSP: true,
     });
     const page = await context.newPage();
 

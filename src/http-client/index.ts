@@ -3,23 +3,25 @@ import Dispatcher from '../event';
 import FRAuth from '../fr-auth';
 import { StepType } from '../fr-auth/enums';
 import FRStep from '../fr-auth/fr-step';
-import TokenManager from '../token-manager';
-import { withTimeout } from '../util/timeout';
-import {
-  buildTxnAuthOptions,
-  examineForIGTxnAuth,
-  examineForRESTTxnAuth,
-  isAuthStep,
-  newTokenRequired,
-  normalizeIGJSON,
-  normalizeRESTJSON,
-} from './util';
 import {
   HandleStep,
   HttpClientRequestOptions,
   RequiresNewTokenFn,
   TxnAuthJSON,
 } from './interfaces';
+import TokenManager from '../token-manager';
+import TokenStorage from '../token-storage';
+import { withTimeout } from '../util/timeout';
+import {
+  buildTxnAuthOptions,
+  examineForIGTxnAuth,
+  examineForRESTTxnAuth,
+  hasTransactionAdvice,
+  isAuthStep,
+  newTokenRequired,
+  normalizeIGJSON,
+  normalizeRESTJSON,
+} from './util';
 
 /**
  * HTTP client that includes bearer token injection and refresh.
@@ -54,22 +56,55 @@ abstract class HttpClient extends Dispatcher {
         );
         const initialStep = await this._request(txnAuthOptions, false);
 
-        if (await isAuthStep(initialStep)) {
-          try {
-            // Resolves with return of `void` upon successful completion
-            await this.stepIterator(initialStep, options.txnAuth.handleStep);
-            // Retry original resource request
-            res = await this._request(options, false);
-          } catch (err) {
-            throw new Error(err);
-          }
-        } else {
+        if (!(await isAuthStep(initialStep))) {
           throw new Error('Error: Initial response from auth server not a "step".');
+        }
+        if (!hasTransactionAdvice(txnAuthJSON)) {
+          throw new Error(`Error: TransactionConditionAdvice is empty.`);
+        }
+        try {
+          // Walk through auth tree
+          await this.stepIterator(initialStep, options.txnAuth.handleStep);
+          // Add Txn ID to *original* request options
+          options.txnAuth.txnID = txnAuthJSON.advices.TransactionConditionAdvice[0];
+          // Retry original resource request
+          res = await this._request(options, false);
+        } catch (err) {
+          throw new Error(err);
         }
       }
     }
 
     return res;
+  }
+
+  private static async setAuthHeaders(
+    headers: Headers,
+    options: HttpClientRequestOptions,
+    forceRenew: boolean,
+  ): Promise<Headers> {
+    const txnAuthRequest = options.txnAuth && options.txnAuth.handleStep;
+    let tokens = await TokenStorage.get();
+
+    /**
+     * Condition to see if Auth is session based or OAuth token based
+     */
+    if (tokens.accessToken) {
+      // Access tokens are an OAuth artifact
+      tokens = await TokenManager.getTokens({ forceRenew });
+      headers.set('Authorization', `Bearer ${tokens.accessToken}`);
+
+      if (txnAuthRequest) {
+        headers.set('X-Id-Token', tokens.idToken || '');
+        headers.set('X-Txn-Id', (options.txnAuth && options.txnAuth.txnID) || '');
+      }
+    } else {
+      // If no access tokens, OAuth is not being used.
+      if (txnAuthRequest) {
+        headers.set('X-Txn-Id', (options.txnAuth && options.txnAuth.txnID) || '');
+      }
+    }
+    return headers;
   }
 
   private static async stepIterator(res: Response, handleStep: HandleStep): Promise<void> {
@@ -99,11 +134,10 @@ abstract class HttpClient extends Dispatcher {
     forceRenew: boolean,
   ): Promise<Response> {
     const { url, init, timeout } = options;
-    const headers = new Headers(init.headers);
+    let headers = new Headers(init.headers);
 
     if (!options.bypassAuthentication) {
-      const tokens = await TokenManager.getTokens({ forceRenew });
-      headers.set('authorization', `Bearer ${tokens.accessToken}`);
+      headers = await this.setAuthHeaders(headers, options, forceRenew);
     }
     init.headers = headers;
     return await withTimeout(fetch(url, init), timeout);

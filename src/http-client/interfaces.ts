@@ -11,6 +11,8 @@ export interface HttpClientRequestOptions {
   txnAuth?: {
     config?: ConfigOptions;
     handleStep: HandleStep;
+    idToken?: string;
+    txnID?: string;
   };
   init: RequestInit;
   requiresNewToken?: RequiresNewTokenFn;

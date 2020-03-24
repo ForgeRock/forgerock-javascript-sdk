@@ -19,6 +19,7 @@ describe('Test HttpClient utils', () => {
     };
     const expected = {
       init: {
+        credentials: 'include',
         method: 'POST',
       },
       timeout: 0,

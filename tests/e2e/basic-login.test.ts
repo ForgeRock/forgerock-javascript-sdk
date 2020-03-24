@@ -15,7 +15,7 @@ describe('Test basic login flow', () => {
     const browser = await chromium.launch({ headless: true });
     const context = await browser.newContext({
       ignoreHTTPSErrors: true,
-      // bypassCSP: true,
+      bypassCSP: true,
     });
     const page = await context.newPage();
 
@@ -40,7 +40,7 @@ describe('Test basic login flow', () => {
     await page.waitForSelector('.Logged_Out', { visibility: 'visible' });
 
     // Test assertions
-    expect(messageArray.includes('Login successful')).toBe(true);
+    expect(messageArray.includes('OAuth login successful')).toBe(true);
     expect(messageArray.includes('Logout successful')).toBe(true);
 
     await browser.close();
