@@ -203,6 +203,10 @@ Now browse to the following URL, replacing relevant tokens with values from your
 {BASE_URL}?amUrl={AM_URL}&clientId={CLIENT_ID}&scope={SCOPE}&un={USERNAME}&pw={PASSWORD}
 ```
 
+## Version History
+
+[Our version history can be viewed by visiting our CHANGELOG.md](https://github.com/ForgeRock/forgerock-javascript-sdk/blob/master/CHANGELOG.md).
+
 ## License
 
 [MIT](http://opensource.org/licenses/MIT)
