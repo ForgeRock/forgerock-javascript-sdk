@@ -1,4 +1,4 @@
 /** @hidden */
-const DEFAULT_TIMEOUT = 5000;
+const DEFAULT_TIMEOUT = 60 * 1000;
 
 export { DEFAULT_TIMEOUT };

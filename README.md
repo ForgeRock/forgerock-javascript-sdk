@@ -193,6 +193,10 @@ Testing against a live environment requires an OpenAM instance with a public OAu
 
 This occurs when OpenAM returns the authorization code, but the `redirect_uri` doesn't match what's configured for the OAuth client. Tests use a path of `/callback`, so your OAuth client should be configured with a `redirect_uri` of `{BASE_URL}/callback` (e.g. https://forgerock-sdk-samples.com:3000/callback).
 
+## Version History
+
+[Our version history can be viewed by visiting our CHANGELOG.md](https://github.com/ForgeRock/forgerock-javascript-sdk/blob/master/CHANGELOG.md).
+
 ## License
 
 [MIT](http://opensource.org/licenses/MIT)
