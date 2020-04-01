@@ -1,6 +1,6 @@
 module.exports = {
-  globalSetup: './global-setup.js',
-  globalTeardown: './global-teardown.js',
+  globalSetup: './tests/e2e/env.setup.js',
+  globalTeardown: './tests/e2e/env.teardown.js',
   globals: {
     'ts-jest': {
       isolatedModules: true,
@@ -8,4 +8,5 @@ module.exports = {
   },
   preset: 'ts-jest',
   testTimeout: 30000,
+  rootDir: '../'
 };

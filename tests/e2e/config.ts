@@ -5,7 +5,6 @@ const useLiveOauth = process.env.OAUTH_SERVER === 'live';
 
 export const AM_URL = useLiveOauth ? process.env.AM_URL : 'https://auth.example.com:3001/am';
 export const BASE_URL = useLiveOauth ? process.env.BASE_URL : 'https://user.example.com:3002';
-export const CHROME_PATH = process.env.CHROME_PATH;
 export const CLIENT_ID = process.env.CLIENT_ID;
 export const PASSWORD = process.env.PASSWORD;
 export const REALM_PATH = process.env.REALM_PATH;

@@ -27,11 +27,11 @@
     "start:server": "APP_PORT=3002 SERVER_PORT=3001 node tests/e2e/server/index.mjs",
     "start:samples": "http-server samples -c1 -p 3000 --ssl --cert certs/samples.crt --key certs/samples.key",
     "test": "npm run test:unit && npm run test:integration && npm run test:e2e",
-    "test:e2e": "jest tests/e2e --config=./tests-e2e.config.js",
-    "test:e2e:live": "OAUTH_SERVER=live jest tests/e2e --config=./tests-e2e.config.js",
-    "test:integration": "jest tests/integration --config=./tests-basic.config.js",
-    "test:unit": "jest src/ --config=./tests-basic.config.js",
-    "test:coverage": "jest --config=./tests-plus.config.js --coverage=true",
+    "test:coverage": "jest --config=./tests/basic.config.js --coverage=true",
+    "test:e2e": "jest --testMatch='<rootDir>/tests/e2e/**/*.test.ts' --config=./tests/e2e.config.js",
+    "test:e2e:live": "OAUTH_SERVER=live jest --testMatch='<rootDir>/tests/e2e/**/*.test.ts' --config=./tests/e2e.config.js",
+    "test:integration": "jest --testMatch='<rootDir>/tests/integration/**/*.test.ts' --config=./tests/basic.config.js",
+    "test:unit": "jest --testMatch='<rootDir>/src/**/*.test.ts' --config=./tests/basic.config.js",
     "watch": "webpack -w --env.DEV=yes"
   },
   "husky": {

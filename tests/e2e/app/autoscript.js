@@ -1,5 +1,5 @@
 (function() {
-  const rxFlatMap = rxjs.operators.flatMap;
+  const rxMergeMap = rxjs.operators.mergeMap;
   const rxMap = rxjs.operators.map;
   const rxTap = rxjs.operators.tap;
 
@@ -7,15 +7,15 @@
 
   const url = new URL(window.location.href);
   const amUrl = url.searchParams.get('amUrl');
-  const clientId = url.searchParams.get('clientId');
-  const realmPath = url.searchParams.get('realmPath');
-  const resourceUrl = url.searchParams.get('resourceUrl');
-  const scope = url.searchParams.get('scope');
-  const un = url.searchParams.get('un');
-  const pw = url.searchParams.get('pw');
-  const live = url.searchParams.get('live');
-
-  const tree = 'BasicLogin';
+  const clientId = url.searchParams.get('clientId') || 'AccountHolderOAuth2';
+  const realmPath = url.searchParams.get('realmPath') || 'root';
+  const resourceUrl =
+    url.searchParams.get('resourceUrl') || 'https://bank.example.com:3001/account';
+  const scope = url.searchParams.get('scope') || 'openid+profile+me.read';
+  const un = url.searchParams.get('un') || '57a5b4e4-6999-4b45-bf86-a4f2e5d4b629';
+  const pw = url.searchParams.get('pw') || 'Password1!';
+  const tree = url.searchParams.get('tree') || 'BasicLogin';
+  const txnAuth = url.searchParams.get('txnAuth');
 
   console.log('Configure the SDK');
   forgerock.Config.set({
@@ -33,14 +33,14 @@
   rxjs
     .from(forgerock.FRAuth.next())
     .pipe(
-      rxFlatMap((step) => {
+      rxMergeMap((step) => {
         console.log('Set values on auth tree callbacks');
         step.getCallbackOfType('ValidatedCreateUsernameCallback').setName(un);
         step.getCallbackOfType('ValidatedCreatePasswordCallback').setPassword(pw);
         return forgerock.FRAuth.next(step);
       }),
       rxjs.operators.delay(delay),
-      rxFlatMap(
+      rxMergeMap(
         (step) => {
           if (step.payload.code === 401) {
             throw new Error('Auth_Error');
@@ -62,7 +62,7 @@
         }
       }),
       rxjs.operators.delay(delay),
-      rxFlatMap(
+      rxMergeMap(
         (step) => {
           console.log('Get user info from OAuth endpoint');
           const user = forgerock.UserManager.getCurrentUser();
@@ -74,7 +74,7 @@
         },
       ),
       rxjs.operators.delay(delay),
-      rxFlatMap(
+      rxMergeMap(
         (step) => {
           const token = document.cookie;
           console.log('Retrieve the user balance');
@@ -95,39 +95,43 @@
         },
       ),
       rxjs.operators.delay(delay),
-      rxFlatMap(
-        (step) => {
-          console.log('Make a $200 withdrawal from account');
-          return forgerock.HttpClient.request({
-            init: {
-              method: 'POST',
-              body: JSON.stringify({ amount: '200' }),
-            },
-            txnAuth: {
-              handleStep: async (step) => {
-                console.log('Withdraw action requires additional authorization');
-                step.getCallbackOfType('ValidatedCreateUsernameCallback').setName(un);
-                step.getCallbackOfType('ValidatedCreatePasswordCallback').setPassword(pw);
-                return Promise.resolve(step);
-              },
-            },
-            timeout: 0,
-            url: `${resourceUrl}/withdraw?live=${live}`,
-          });
-        },
-        async (step, response) => {
-          if (response.ok) {
-            console.log('Withdrawal of $200 was successful');
-            const body = await response.json();
-            console.log(`Balance is ${body.balance}`);
-          } else {
-            console.log('Withdraw authorization failed');
-          }
-          return step;
-        },
+      rxMergeMap(
+        txnAuth
+          ? (step) => {
+              console.log('Make a $200 withdrawal from account');
+              return forgerock.HttpClient.request({
+                init: {
+                  method: 'POST',
+                  body: JSON.stringify({ amount: '200' }),
+                },
+                txnAuth: {
+                  handleStep: async (step) => {
+                    console.log('Withdraw action requires additional authorization');
+                    step.getCallbackOfType('ValidatedCreateUsernameCallback').setName(un);
+                    step.getCallbackOfType('ValidatedCreatePasswordCallback').setPassword(pw);
+                    return Promise.resolve(step);
+                  },
+                },
+                timeout: 0,
+                url: `${resourceUrl}/withdraw`,
+              });
+            }
+          : (step) => Promise.resolve(step),
+        txnAuth
+          ? async (step, response) => {
+              if (response.ok) {
+                console.log('Withdrawal of $200 was successful');
+                const body = await response.json();
+                console.log(`Balance is ${body.balance}`);
+              } else {
+                console.log('Withdraw authorization failed');
+              }
+              return step;
+            }
+          : (step) => step,
       ),
       rxjs.operators.delay(delay),
-      rxFlatMap(
+      rxMergeMap(
         (step) => {
           console.log('Initiate logout');
           return forgerock.FRUser.logout();
@@ -135,7 +139,7 @@
         (step) => step,
       ),
       rxjs.operators.delay(delay),
-      rxFlatMap(
+      rxMergeMap(
         (step) => {
           return forgerock.TokenStorage.get();
         },

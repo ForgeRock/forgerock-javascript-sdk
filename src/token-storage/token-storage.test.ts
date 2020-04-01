@@ -78,7 +78,7 @@ jest.mock('../config/index', () => ({
 }));
 
 describe('The TokenStorage module', () => {
-  beforeEach(async (done) => {
+  const cleanUp = async (done) => {
     const deleteDatabase = indexedDB.deleteDatabase(DB_NAME);
     deleteDatabase.onsuccess = (): void => {
       done();
@@ -86,32 +86,28 @@ describe('The TokenStorage module', () => {
     deleteDatabase.onerror = (): void => {
       console.log('failed to delete database');
     };
-  });
+  };
+  beforeEach(cleanUp);
 
-  afterEach(async (done) => {
-    indexedDB.deleteDatabase(DB_NAME);
-    done();
-  });
-
-  it.skip('get method, returns undefined if no token exists', async (done) => {
+  it('get method, returns undefined if no token exists', async (done) => {
     await initTokenIndexedDB();
     expect(await TokenStorage.get()).toBe(undefined);
     done();
   });
 
-  it.skip('get method, returns token if it exists', async (done) => {
+  it('get method, returns token if it exists', async (done) => {
     await initTokenIndexedDB(testTokensOne);
     expect(await TokenStorage.get()).toStrictEqual(testTokensOne);
     done();
   });
 
-  it.skip('set method, adds new the token', async (done) => {
+  it('set method, adds new the token', async (done) => {
     await TokenStorage.set(testTokensOne);
     expect(await getTestToken()).toStrictEqual(testTokensOne);
     done();
   });
 
-  it.skip('set method, updates existing token', async (done) => {
+  it('set method, updates existing token', async (done) => {
     await initTokenIndexedDB(testTokensOne);
     expect(await getTestToken()).toStrictEqual(testTokensOne);
     await TokenStorage.set(testTokensTwo);
@@ -121,7 +117,7 @@ describe('The TokenStorage module', () => {
     done();
   });
 
-  it.skip('remove method, removes existing token', async (done) => {
+  it('remove method, removes existing token', async (done) => {
     await initTokenIndexedDB(testTokensOne);
     expect(await getTestToken()).toStrictEqual(testTokensOne);
     await TokenStorage.remove();

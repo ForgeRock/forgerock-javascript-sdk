@@ -28,7 +28,6 @@ module.exports = (env) => {
               if (stdout) process.stdout.write(stdout);
               if (stderr) process.stderr.write(stderr);
             });
-            console.log('Copied compiled SDK.');
           }
         });
       }

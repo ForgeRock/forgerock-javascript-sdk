@@ -71,6 +71,7 @@ export function hasTransactionAdvice(json: TxnAuthJSON): boolean {
 }
 
 export async function isAuthStep(res: Response): Promise<boolean> {
+  // TODO: add comment
   const clone = res.clone();
   const json = await clone.json();
   return !!json.callbacks;

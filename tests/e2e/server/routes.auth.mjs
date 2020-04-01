@@ -1,3 +1,4 @@
+import dotenv from 'dotenv';
 import { AM_URL, BASE_URL } from './config.copy.mjs';
 import {
   accessToken,
@@ -8,6 +9,10 @@ import {
   userInfo,
 } from './responses.mjs';
 import wait from './wait.mjs';
+
+dotenv.config();
+
+console.log(`Your user password from .env file: ${process.env.PASSWORD}`);
 
 export const baz = {
   canWithdraw: false,
@@ -32,16 +37,19 @@ export default function(app) {
       const pwCb = req.body.callbacks.find(
         (callback) => callback.type === 'ValidatedCreatePasswordCallback',
       );
-      if (pwCb.input[0].value === 'sad_Password1!_panda') {
+      if (pwCb.input[0].value !== process.env.PASSWORD) {
         res.status(401).json(authFail);
       } else {
         res.json(authSuccess);
       }
     } else if (req.body.stage === 'TransactionAuthorization') {
+      // Yes, this is a duplicate from above, but I'm sure we want to
+      // change this to something more realistic, rather than basic login,
+      // so I'm not optimizing this for now.
       const pwCb = req.body.callbacks.find(
         (callback) => callback.type === 'ValidatedCreatePasswordCallback',
       );
-      if (pwCb.input[0].value === 'sad_Password1!_panda') {
+      if (pwCb.input[0].value !== process.env.PASSWORD) {
         res.status(401).json(authFail);
       } else {
         baz.canWithdraw = true;
