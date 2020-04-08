@@ -14,8 +14,8 @@ describe('Test OAuth login flow', () => {
       await page.waitForSelector('.Logged_Out', { waitFor: 'visible' });
 
       // Test assertions
-      expect(messageArray.includes('OAuth login successful')).toBe(true);
-      expect(messageArray.includes('Logout successful')).toBe(true);
+      expect(messageArray.includes('Basic login successful.')).toBe(true);
+      expect(messageArray.includes('Logout successful.')).toBe(true);
 
       await browser.close();
       done();
