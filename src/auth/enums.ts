@@ -15,6 +15,7 @@ enum CallbackType {
   BooleanAttributeInputCallback = 'BooleanAttributeInputCallback',
   ChoiceCallback = 'ChoiceCallback',
   ConfirmationCallback = 'ConfirmationCallback',
+  DeviceProfileCallback = 'DeviceProfileCallback',
   HiddenValueCallback = 'HiddenValueCallback',
   KbaCreateCallback = 'KbaCreateCallback',
   MetadataCallback = 'MetadataCallback',

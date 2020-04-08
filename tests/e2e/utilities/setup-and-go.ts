@@ -12,15 +12,22 @@ import {
 
 const browsers = { chromium, firefox, webkit };
 
-export async function setupAndGo(browserType, failAuth?, txnAuth?) {
+export async function setupAndGo(
+  browserType: string,
+  path: string,
+  failAuth?: boolean,
+  allowGeo?: boolean,
+) {
   const browser = await browsers[browserType].launch({ headless: true });
   const context = await browser.newContext({
-    ignoreHTTPSErrors: true,
     bypassCSP: true,
+    geolocation: { latitude: 24.9884, longitude: -87.3459 },
+    ignoreHTTPSErrors: true,
+    permissions: allowGeo ? ['geolocation'] : [],
   });
   const page = await context.newPage();
 
-  const url = new URL(BASE_URL);
+  const url = new URL(`${BASE_URL}/${path}`);
   url.searchParams.set('amUrl', AM_URL || '');
   url.searchParams.set('clientId', CLIENT_ID || '');
   url.searchParams.set('realmPath', REALM_PATH || '');
@@ -28,7 +35,6 @@ export async function setupAndGo(browserType, failAuth?, txnAuth?) {
   url.searchParams.set('scope', SCOPE || '');
   url.searchParams.set('un', USERNAME);
   url.searchParams.set('pw', failAuth ? `sad_${PASSWORD}_panda` : PASSWORD);
-  txnAuth && url.searchParams.set('txnAuth', 'true');
 
   await page.goto(url.toString());
 

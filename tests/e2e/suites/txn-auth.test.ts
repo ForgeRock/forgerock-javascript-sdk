@@ -3,7 +3,7 @@ import { setupAndGo } from '../utilities/setup-and-go';
 describe('Test Transaction Authorization flow', () => {
   ['chromium', 'webkit'].forEach((browserType) => {
     it(`Trigger Txn Auth appropriately with ${browserType}`, async (done) => {
-      const { browser, page } = await setupAndGo(browserType, false, true);
+      const { browser, page } = await setupAndGo(browserType, 'txn-auth');
 
       const messageArray = [];
 
@@ -11,8 +11,8 @@ describe('Test Transaction Authorization flow', () => {
         messageArray.push(msg.text());
       });
 
-      await page.waitForSelector('.Logged_In', { visibility: 'visible' });
-      await page.waitForSelector('.Logged_Out', { visibility: 'visible' });
+      await page.waitForSelector('.Logged_In', { waitFor: 'visible' });
+      await page.waitForSelector('.Logged_Out', { waitFor: 'visible' });
 
       // Test assertions
       expect(messageArray.includes('Make a $200 withdrawal from account')).toBe(true);

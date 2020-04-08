@@ -6,5 +6,6 @@ module.exports = {
     },
   },
   preset: 'ts-jest',
-  rootDir: '../'
+  rootDir: '../',
+  setupFiles: ['jest-canvas-mock'],
 };
