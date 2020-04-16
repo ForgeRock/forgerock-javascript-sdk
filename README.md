@@ -1,208 +1,159 @@
-# ForgeRock JavaScript SDK
+[![npm (scoped)](https://img.shields.io/npm/v/@forgerock/javascript-sdk?color=%23f46200&label=Version&style=flat-square)](CHANGELOG.md)
 
-The ForgeRock JavaScript SDK is a toolkit that allows web developers to easily integrate intelligent authentication using ForgeRock OpenAM and/or ForgeRock Identity Cloud.
+
+<p align="center">
+  <a href="https://github.com/ForgeRock">
+    <img src="https://www.forgerock.com/themes/custom/forgerock/images/fr-logo-horz-color.svg" alt="Logo">
+  </a>
+  <h2 align="center">ForgeRock SDK for JavaScript</h2>
+  <p align="center">
+    <a href="./blob/master/CHANGELOG.md">Change Log</a>
+    ·
+    <a href="#support">Support</a>
+    ·
+    <a href="#documentation" target="_blank">Docs</a>
+  </p>
+<hr/></p>
+
+The ForgeRock JavaScript SDK enables you to quickly integrate the [ForgeRock Identity Platform](https://www.forgerock
+.com/digital-identity-and-access-management-platform) into your client-side JavaScript apps.
+
+Use the SDKs to leverage _[Intelligent Authentication](https://www.forgerock.com/platform/access-management/intelligent-authentication)_ in [ForgeRock's Access Management (AM)](https://www.forgerock.com/platform/access-management) product, to easily step through each stage of an authentication tree by using callbacks.
+
+<!------------------------------------------------------------------------------------------------------------------------------------>
+<!-- REQUIREMENTS - Supported AM versions, API versions, any other requirements. -->
+
+## Requirements
+
+* ForgeRock Identity Platform
+    * Access Management (AM) 6.5.2+
+
+* Browsers:
+    * Chrome 42
+    * Firefox 39
+    * Safari 10.1
+    * Edge 15
+
+> **Tip**: Older browsers can be supported by using polyfills.
+
+<!------------------------------------------------------------------------------------------------------------------------------------>
+<!-- INSTALLATION -->
 
 ## Installation
 
-```bash
+```
 npm install @forgerock/javascript-sdk
 ```
 
-## Sample Usage
+<!------------------------------------------------------------------------------------------------------------------------------------>
+<!-- QUICK START - Get one of the included samples up and running in as few steps as possible. -->
 
-In most real-world scenarios, you will want to have full control over the UI. In these cases, you can use `FRAuth` to obtain typed callback instances from authentication trees and render the UI in whatever way makes sense for your application.
+## Getting Started
 
-In the following example, a simple React app iteratively calls `FRAuth.next()` until either an error occurs or a session token is obtained. The custom React component `<UsernamePassword />` is defined to handle an authentication step named "UsernamePassword".
+To try out the ForgeRock JavaScript SDK, perform these steps:
 
-```js
-import { FRAuth, Config } from '@forgerock/javascript-sdk';
-import React from 'react';
+1. Setup CORS support in an Access Management (AM) instance.
 
-class App extends React.Component {
-  constructor(props) {
-    super(props);
+   See [Enabling CORS Support](https://sdks.forgerock.com/js/01_prepare-am/#enabling-cors-support) in the Documentation.
+2. Create an authentication tree in AM.
 
-    // Initialize application state
-    this.state = {
-      error: undefined,
-      ssoToken: undefined,
-      step: undefined,
-    };
-  }
+   See [Creating a User Authentication Tree](https://sdks.forgerock.com/js/01_prepare-am/#creating-a-user
+ -authentication-tree) in the Documentation.
+4. Clone this repo:
 
-  componentDidMount() {
-    // Set configuration defaults
-    Config.set({
-      clientId: 'my_client_id',
-      redirectUri: 'https://myapp.domain.com/callback',
-      scope: 'openid profile me.read',
-      serverConfig: { baseUrl: 'https://mytenant.forgeblocks.local/am/' },
-      tree: 'UsernamePassword',
-    });
+    ```
+    git clone https://github.com/ForgeRock/forgerock-javascript-sdk.git
+    ```
 
-    // Start the authentication flow
-    this.nextStep();
-  }
+5. Open `samples/js/config.js` and edit the values to match your AM instance.
+6. Serve the `samples` directory by using a simple HTTP server, for example:
+   `npx http-server samples -c1 -p 3000`
+7. In a [supported web browser](#requirements), navigate to `http://localhost:3000/index.html`, and then click
+ **Custom UI**.
 
-  nextStep = async (step) => {
-    // Get the next step in this authentication tree
-    step = await FRAuth.next(step).catch(this.onError);
+   > **Note**:
+   >
+   > Using `localhost` is for testing and evaluation purposes **only**.
+   >
+   > Use a fully-qualified domain name, and the HTTPS protocol in production environments.
 
-    // Update application state based on the response
-    let ssoToken, error;
-    if (step.type === 'LoginSuccess') {
-      ssoToken = step.getSessionToken();
-    } else if (step.type === 'LoginFailure') {
-      error = step.getCode();
-    }
-    this.setState({ step, ssoToken, error });
-  };
-
-  onError = (error) => {
-    this.setState({ error });
-  };
-
-  render() {
-    // Handle init/success/failure states
-    if (!this.state.step) {
-      return <p>Loading...</p>;
-    } else if (this.state.ssoToken) {
-      return <p>Authenticated!</p>;
-    } else if (this.state.error) {
-      return <p>Error: {this.state.error}</p>;
-    }
-
-    // Otherwise, select the correct component for this step
-    const stage = this.state.step.getStage();
-    return (
-      <>
-        <h1>Sign In</h1>
-        {stage === 'UsernamePassword' && (
-          <UsernamePassword step={this.state.step} onSubmit={this.nextStep} />
-        )}
-        {/* Create similar components for other stages */}
-      </>
-    );
-  }
-}
-
-// Custom UI for rendering the "UsernamePassword" step
-function UsernamePassword(props) {
-  const setUsername = (e) => {
-    const cb = props.step.getCallbackOfType('NameCallback');
-    cb.setName(e.target.value);
-  };
-
-  const setPassword = (e) => {
-    const cb = props.step.getCallbackOfType('PasswordCallback');
-    cb.setPassword(e.target.value);
-  };
-
-  const onSubmit = () => {
-    props.onSubmit(props.step);
-  };
-
-  return (
-    <>
-      <input type="text" placeholder="Username" onChange={setUsername} />
-      <input type="password" placeholder="Password" onChange={setPassword} />
-      <button onClick={onSubmit}>Submit</button>
-    </>
-  );
-}
-
-export default App;
-```
+<!------------------------------------------------------------------------------------------------------------------------------------>
+<!-- SAMPLES - List the samples we include with the SDKs, where they are, briefly what they show. -->
 
 ## Samples
 
-Prerequisites:
+ForgeRock provides these samples to help demonstrate SDK functionality:
 
-- [OpenSSL](https://www.openssl.org/) is installed
-- **samples/js/config.js** is updated to specify your SDK configuration
+- **Custom UI - `/samples/custom-ui`**
 
-```bash
-# Add host
-echo '127.0.0.1 forgerock-sdk-samples.com' | sudo tee -a /etc/hosts
+    In most real-world scenarios, you will want to have full control over the UI. In these cases, you can use `FRAuth`
+    to obtain typed callback instances from authentication trees and render the UI in whatever way makes sense for your application.
 
-# Install dependencies
-npm i
+    In this example, a simple React app iteratively calls `FRAuth.next()` until either an error occurs, or the sample obtains a session token.
 
-# Generate CA and self-signed certificate
-# (Pick any passphrase and use it whenever prompted)
-npm run certs:make
+    The custom React component `<UsernamePassword />` is defined to handle an authentication step named "_UsernamePassword_".
 
-# Build the SDK and watch for changes
-npm start
+<!------------------------------------------------------------------------------------------------------------------------------------>
+<!-- DOCS - Link off to the AM-centric documentation at sdks.forgerock.com. -->
 
-# Start the sample webserver
-npm run server:samples
+## Documentation
 
-# Follow the next section to trust certificate
-```
+Documentation for the SDKs is provided at **<https://sdks.forgerock.com>**, and includes topics such as:
 
-Access the samples at https://forgerock-sdk-samples.com:3000
+* Introducing the SDK Features
+* Preparing AM for use with the SDKS
+* API Reference documentation
 
-### Trusting the Certificate
+<!------------------------------------------------------------------------------------------------------------------------------------>
+<!-- SUPPORT -->
 
-Trusting the certificate is required to avoid browser warnings and for WebAuthn to work correctly.
+## Support
 
-#### Chrome
+If you encounter any issues, be sure to check our **[Troubleshooting](https://backstage.forgerock.com/knowledge/kb/article/a83789945)** pages.
 
-Add the certificate to your keychain:
+Support tickets can be raised whenever you need our assistance; here are some examples of when it is appropriate to open a ticket (but not limited to):
 
-```bash
-# MacOS
-sudo npm run certs:trust
-```
+* Suspected bugs or problems with ForgeRock software.
+* Requests for assistance - please look at the **[Documentation](https://sdks.forgerock.com)** and **[Knowledge Base](https://backstage.forgerock.com/knowledge/kb/home/g32324668)** first.
 
-You **must** restart Chrome for the change to take effect.
+You can raise a ticket using **[BackStage](https://backstage.forgerock.com/support/tickets)**, our customer support portal that provides one stop access to ForgeRock services.
 
-#### Firefox
+BackStage shows all currently open support tickets and allows you to raise a new one by clicking **New Ticket**.
 
-Import the certificate to Firefox:
+<!------------------------------------------------------------------------------------------------------------------------------------>
+<!-- COLLABORATION -->
 
-1. Go to **Preferences > Privacy & Security > Certificates > View Certificates...**
-1. On the **Authorities** tab, click **Import...**
-1. Select `certs/ca.crt` and enable option to "Trust this CA to identify websites"
-1. Restart Firefox
+## Contributing
 
-## Tests
+If you would like to contribute to this project you can fork the repository, clone it to your machine and get started.
 
-This project is configured for multiple forms of tests: unit, integration, and e2e. Compilation and linting occurs as a pre-commit hook, and all tests are run as a pre-push hook.
+<!-- Note: Found elsewhere, but is Java-only //-->
+Be sure to check out our [Coding Style and Guidelines](https://wikis.forgerock.org/confluence/display/devcom/Coding+Style+and+Guidelines) page.
 
-Some tests require an OpenAM instance with a public OAuth client configured. Specify your environment details in an `.env` file:
+<!------------------------------------------------------------------------------------------------------------------------------------>
+<!-- LEGAL -->
 
-| Variable    | Purpose                                                |
-| ----------- | ------------------------------------------------------ |
-| `AM_URL`    | Full URL to your OpenAM instance                       |
-| `BASE_URL`  | Base URL for your application                          |
-| `CLIENT_ID` | Your OAuth client ID                                   |
-| `SCOPE`     | The scopes to request when getting access tokens       |
-| `TREE`      | The authentication tree name to use for authentication |
-| `USERNAME`  | The username to use when authenticating                |
-| `PASSWORD`  | The password to use when authenticating                |
+## Disclaimer
 
-### Troubleshooting
+> This code is provided on an “as is” basis, without warranty of any kind, to the fullest extent permitted by law.
+>
+> ForgeRock does not warrant or guarantee the individual success developers may have in implementing the code on their development platforms or in production configurations.
+>
+> ForgeRock does not warrant, guarantee or make any representations regarding the use, results of use, accuracy, timeliness or completeness of any data or information relating to this code.
+>
+> ForgeRock disclaims all warranties, expressed or implied, and in particular, disclaims all warranties of merchantability, and warranties related to the code, or any service or software related thereto.
+>
+> ForgeRock shall not be liable for any direct, indirect or consequential damages or costs of any type arising out of any action taken by you or others related to the code.
 
-**DOMException: Blocked a frame with origin "{url}" from accessing a cross-origin frame** (in browser console)
-
-This occurs when OpenAM returns the authorization code, but the `redirect_uri` doesn't match what's configured for the OAuth client. Tests use a path of `/callback`, so your OAuth client should be configured with a `redirect_uri` of `{BASE_URL}/callback` (e.g. https://forgerock-sdk-samples.com:3000/callback).
-
-**Manually view test site**
-
-To replicate the e2e environment for troubleshooting, run:
-
-```bash
-npm run server:e2e
-```
-
-Now browse to the following URL, replacing relevant tokens with values from your `.env` file:
-
-```
-{BASE_URL}?amUrl={AM_URL}&clientId={CLIENT_ID}&scope={SCOPE}&un={USERNAME}&pw={PASSWORD}
-```
+<!------------------------------------------------------------------------------------------------------------------------------------>
+<!-- LICENSE - Links to the MIT LICENSE file in each repo. -->
 
 ## License
 
-[MIT](http://opensource.org/licenses/MIT)
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
+
+---
+
+&copy; Copyright 2020 ForgeRock AS. All Rights Reserved.
+
+[forgerock-logo]: https://www.forgerock.com/themes/custom/forgerock/images/fr-logo-horz-color.svg "ForgeRock Logo"
