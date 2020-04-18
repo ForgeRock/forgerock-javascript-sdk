@@ -48,11 +48,13 @@ abstract class HttpClient extends Dispatcher {
       }
 
       if (txnAuthJSON && txnAuthJSON.advices) {
-        const { serverConfig } = Config.get(options.txnAuth.config);
+        const { realmPath, serverConfig } = Config.get(options.txnAuth.config);
         const txnAuthOptions = buildTxnAuthOptions(
           txnAuthJSON,
           serverConfig.baseUrl,
           options.timeout,
+          realmPath,
+          serverConfig.paths,
         );
         const initialStep = await this._request(txnAuthOptions, false);
 

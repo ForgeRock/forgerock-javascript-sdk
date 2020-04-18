@@ -1,14 +1,6 @@
 import { FRCallbackFactory } from '../fr-auth/callbacks/factory';
 
 /**
- * Configuration settings for connecting to a server.
- */
-interface ServerConfig {
-  baseUrl: string;
-  timeout: number;
-}
-
-/**
  * Configuration options.
  */
 interface ConfigOptions {
@@ -21,6 +13,37 @@ interface ConfigOptions {
   tree?: string;
 }
 
+type ConfigurablePaths =
+  | 'authenticate'
+  | 'authorize'
+  | 'accessToken'
+  | 'endSession'
+  | 'userInfo'
+  | 'revoke'
+  | 'sessions';
+
+/**
+ * Optional configuration for custom paths for actions
+ */
+interface CustomPathConfig {
+  authenticate?: string;
+  authorize?: string;
+  accessToken?: string;
+  endSession?: string;
+  userInfo?: string;
+  revoke?: string;
+  sessions?: string;
+}
+
+/**
+ * Configuration settings for connecting to a server.
+ */
+interface ServerConfig {
+  baseUrl: string;
+  paths?: CustomPathConfig;
+  timeout: number;
+}
+
 /**
  * Configuration options with a server configuration specified.
  */
@@ -28,4 +51,4 @@ interface ValidConfigOptions extends ConfigOptions {
   serverConfig: ServerConfig;
 }
 
-export { ConfigOptions, ServerConfig, ValidConfigOptions };
+export { ConfigOptions, ConfigurablePaths, CustomPathConfig, ServerConfig, ValidConfigOptions };

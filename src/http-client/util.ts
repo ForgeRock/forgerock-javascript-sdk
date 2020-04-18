@@ -3,13 +3,16 @@
  * @ignore
  * These are private utility functions for HttpClient
  */
-
+import { CustomPathConfig } from '../config/interfaces';
 import { HttpClientRequestOptions, RequiresNewTokenFn, TxnAuthJSON } from './interfaces';
+import { getEndpointPath, resolve, stringify } from '../util/url';
 
 export function buildTxnAuthOptions(
   txnAuthObj: TxnAuthJSON,
   baseURL: string,
   timeout: number,
+  realmPath?: string,
+  customPaths?: CustomPathConfig,
 ): HttpClientRequestOptions {
   const advices = txnAuthObj.advices ? txnAuthObj.advices.TransactionConditionAdvice : [];
   const transactionID = advices.reduce((prev: string, curr: string) => {
@@ -24,9 +27,11 @@ export function buildTxnAuthOptions(
   const endTags = `</AttributeValuePair></Advices>`;
   const fullXML = `${openTags}${nameTag}${valueTag}${endTags}`;
 
-  const url = new URL(`${baseURL}json/realms/root/authenticate`);
-  url.searchParams.set('authIndexType', 'composite_advice');
-  url.searchParams.set('authIndexValue', fullXML);
+  const path = getEndpointPath('authenticate', realmPath, customPaths);
+  const queryParams = {
+    authIndexType: 'composite_advice',
+    authIndexValue: fullXML,
+  };
 
   const options = {
     init: {
@@ -34,7 +39,7 @@ export function buildTxnAuthOptions(
       credentials: 'include' as 'include',
     },
     timeout,
-    url: url.toString(),
+    url: resolve(baseURL, `${path}?${stringify(queryParams)}`),
   };
   return options;
 }
@@ -54,7 +59,8 @@ function getTxnIdFromURL(urlString: string): string {
   const url = new URL(urlString);
   const value = url.searchParams.get('authIndexValue') || '';
   const parser = new DOMParser();
-  const doc = parser.parseFromString(value, 'text/xml');
+  const decodedValue = decodeURIComponent(value);
+  const doc = parser.parseFromString(decodedValue, 'application/xml');
   const el = doc.querySelector('Value');
   return el ? el.innerHTML : '';
 }
