@@ -17,6 +17,7 @@ export async function setupAndGo(
   path: string,
   failAuth?: boolean,
   allowGeo?: boolean,
+  tokenStore?: string,
 ) {
   const browser = await browsers[browserType].launch({ headless: true });
   const context = await browser.newContext({
@@ -35,6 +36,10 @@ export async function setupAndGo(
   url.searchParams.set('scope', SCOPE || '');
   url.searchParams.set('un', USERNAME);
   url.searchParams.set('pw', failAuth ? `sad_${PASSWORD}_panda` : PASSWORD);
+
+  if (tokenStore) {
+    url.searchParams.set('tokenStore', tokenStore);
+  }
 
   await page.goto(url.toString());
 
