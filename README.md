@@ -133,10 +133,10 @@ npm i
 npm run certs:make
 
 # Build the SDK and watch for changes
-npm start
+npm run watch
 
 # Start the sample webserver
-npm run server:samples
+npm run start:samples
 
 # Follow the next section to trust certificate
 ```
@@ -171,7 +171,11 @@ Import the certificate to Firefox:
 
 This project is configured for multiple forms of tests: unit, integration, and e2e. Compilation and linting occurs as a pre-commit hook, and all tests are run as a pre-push hook.
 
-Some tests require an OpenAM instance with a public OAuth client configured. Specify your environment details in an `.env` file:
+### E2E Test Requirements
+
+Node v13.10 or higher is required to run the mock E2E server application.
+
+Testing against a live environment requires an OpenAM instance with a public OAuth client configured. Specify your environment details in an `.env` file:
 
 | Variable    | Purpose                                                |
 | ----------- | ------------------------------------------------------ |
@@ -189,19 +193,9 @@ Some tests require an OpenAM instance with a public OAuth client configured. Spe
 
 This occurs when OpenAM returns the authorization code, but the `redirect_uri` doesn't match what's configured for the OAuth client. Tests use a path of `/callback`, so your OAuth client should be configured with a `redirect_uri` of `{BASE_URL}/callback` (e.g. https://forgerock-sdk-samples.com:3000/callback).
 
-**Manually view test site**
+## Version History
 
-To replicate the e2e environment for troubleshooting, run:
-
-```bash
-npm run server:e2e
-```
-
-Now browse to the following URL, replacing relevant tokens with values from your `.env` file:
-
-```
-{BASE_URL}?amUrl={AM_URL}&clientId={CLIENT_ID}&scope={SCOPE}&un={USERNAME}&pw={PASSWORD}
-```
+[Our version history can be viewed by visiting our CHANGELOG.md](https://github.com/ForgeRock/forgerock-javascript-sdk/blob/master/CHANGELOG.md).
 
 ## License
 
