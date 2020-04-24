@@ -4,6 +4,7 @@ import { Callback } from '../../auth/interfaces';
 import AttributeInputCallback from './attribute-input-callback';
 import ChoiceCallback from './choice-callback';
 import ConfirmationCallback from './confirmation-callback';
+import DeviceProfileCallback from './device-profile-callback';
 import HiddenValueCallback from './hidden-value-callback';
 import KbaCreateCallback from './kba-create-callback';
 import MetadataCallback from './metadata-callback';
@@ -29,6 +30,8 @@ function createCallback(callback: Callback): FRCallback {
       return new ChoiceCallback(callback);
     case CallbackType.ConfirmationCallback:
       return new ConfirmationCallback(callback);
+    case CallbackType.DeviceProfileCallback:
+      return new DeviceProfileCallback(callback);
     case CallbackType.HiddenValueCallback:
       return new HiddenValueCallback(callback);
     case CallbackType.KbaCreateCallback:

@@ -8,6 +8,7 @@ import FRCallback from './fr-auth/callbacks';
 import AttributeInputCallback from './fr-auth/callbacks/attribute-input-callback';
 import ChoiceCallback from './fr-auth/callbacks/choice-callback';
 import ConfirmationCallback from './fr-auth/callbacks/confirmation-callback';
+import DeviceProfileCallback from './fr-auth/callbacks/device-profile-callback';
 import { FRCallbackFactory } from './fr-auth/callbacks/factory';
 import HiddenValueCallback from './fr-auth/callbacks/hidden-value-callback';
 import KbaCreateCallback from './fr-auth/callbacks/kba-create-callback';
@@ -27,6 +28,7 @@ import FRLoginFailure from './fr-auth/fr-login-failure';
 import FRLoginSuccess from './fr-auth/fr-login-success';
 import FRStep, { FRStepHandler } from './fr-auth/fr-step';
 import { AuthResponse, FailureDetail } from './fr-auth/interfaces';
+import FRDevice from './fr-device';
 import FRPolicy, { MessageCreator, PolicyKey, ProcessedPropertyError } from './fr-policy';
 import defaultMessageCreator from './fr-policy/message-creator';
 import FRUI from './fr-ui';
@@ -70,12 +72,14 @@ export {
   ConfigOptions,
   ConfirmationCallback,
   Deferred,
+  DeviceProfileCallback,
   Dispatcher,
   ErrorCode,
   FailureDetail,
   FRAuth,
   FRCallback,
   FRCallbackFactory,
+  FRDevice,
   FREvent,
   FRLoginFailure,
   FRLoginSuccess,

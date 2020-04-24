@@ -4,8 +4,9 @@ import {
   accessToken,
   authFail,
   authSuccess,
-  initial,
+  initialBasicLogin,
   initialTxnAuth,
+  requestDeviceProfile,
   userInfo,
 } from './responses.mjs';
 import wait from './wait.mjs';
@@ -20,40 +21,57 @@ export const baz = {
 
 export default function(app) {
   app.post('/am/json/realms/root/authenticate', wait, async (req, res) => {
-    /**
-     * If there is no stage, then we know this is the initial
-     * request, so we'll return the appropriate callbacks.
-     * If there is a requestBody, then we check if it has a bad password.
-     * Fail if bad password, otherwise return the second response with
-     * appropriate token and success URL.
-     */
-    if (!req.body.stage) {
+    if (!req.body.callbacks) {
       if (req.query.authIndexType === 'composite_advice') {
         res.json(initialTxnAuth);
       } else {
-        res.json(initial);
+        res.json(initialBasicLogin);
       }
-    } else if (req.body.stage === 'UsernamePassword') {
-      const pwCb = req.body.callbacks.find(
-        (callback) => callback.type === 'ValidatedCreatePasswordCallback',
-      );
+    } else if (req.body.callbacks.find((cb) => cb.type === 'ValidatedCreatePasswordCallback')) {
+      const pwCb = req.body.callbacks.find((cb) => cb.type === 'ValidatedCreatePasswordCallback');
       if (pwCb.input[0].value !== process.env.PASSWORD) {
         res.status(401).json(authFail);
       } else {
-        res.json(authSuccess);
+        if (req.query.authIndexValue === 'LoginWithDeviceProfile') {
+          res.json(requestDeviceProfile);
+        } else {
+          if (req.body.stage === 'TransactionAuthorization') {
+            baz.canWithdraw = true;
+          }
+          res.json(authSuccess);
+        }
       }
-    } else if (req.body.stage === 'TransactionAuthorization') {
-      // Yes, this is a duplicate from above, but I'm sure we want to
-      // change this to something more realistic, rather than basic login,
-      // so I'm not optimizing this for now.
-      const pwCb = req.body.callbacks.find(
-        (callback) => callback.type === 'ValidatedCreatePasswordCallback',
-      );
-      if (pwCb.input[0].value !== process.env.PASSWORD) {
-        res.status(401).json(authFail);
-      } else {
-        baz.canWithdraw = true;
+    } else if (req.body.callbacks.find((cb) => cb.type === 'DeviceProfileCallback')) {
+      const deviceCb = req.body.callbacks.find((cb) => cb.type === 'DeviceProfileCallback') || {};
+      const inputArr = deviceCb.input || [];
+      const input = inputArr[0] || {};
+      const value = JSON.parse(input.value);
+      const location = value.location || {};
+      const metadata = value.metadata || {};
+      // location is not allowed in some browser automation
+      // const location = value.location || {};
+
+      // We just need property existence to ensure profile is generated
+      // We don't care about values since they are unique per browser
+      if (
+        location &&
+        location.latitude &&
+        location.longitude &&
+        metadata.browser &&
+        metadata.browser.userAgent &&
+        metadata.platform &&
+        metadata.platform.deviceName &&
+        metadata.platform.fonts &&
+        metadata.platform.fonts.length > 0 &&
+        metadata.platform.timezone &&
+        value.identifier &&
+        value.identifier.length > 0
+      ) {
         res.json(authSuccess);
+      } else {
+        // Just failing the auth for testing, but in reality,
+        // an additional auth callback would be sent, like OTP
+        res.json(authFail);
       }
     }
   });
@@ -87,5 +105,11 @@ export default function(app) {
   app.all('/am/html/realms/root/authenticate', wait, async (req, res) => {
     res.type('html');
     res.status(200).send('<html></html>');
+  });
+
+  app.post('/am/json/realms/root/sessions', wait, async (req, res) => {
+    if (req.query._action === 'logout') {
+      res.status(204).send();
+    }
   });
 }

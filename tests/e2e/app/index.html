@@ -2,12 +2,13 @@
 <html>
 
 <head>
-  <title>E2E Test | ForgeRock JavaScript SDK Samples</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/6.5.3/rxjs.umd.min.js"></script>
+  <title>E2E Test Index | ForgeRock JavaScript SDK</title>
 </head>
 
 <body>
-  <script src="index.js"></script>
-  <script src="autoscript.js"></script>
+  <a href="basic-login/?amUrl=https://auth.example.com:3001/am&realmPath=root&scope=openid+profile+me.read&un=57a5b4e4-6999-4b45-bf86-a4f2e5d4b629&pw=Password1%21&resourceUrl=https%3A%2F%2Fbank.example.com%3A3001%2Faccount">Basic Login</a><br/>
+  <a href="oauth-login/?amUrl=https://auth.example.com:3001/am&clientId=AccountHolderOAuth2&realmPath=root&scope=openid+profile+me.read&un=57a5b4e4-6999-4b45-bf86-a4f2e5d4b629&pw=Password1%21&resourceUrl=https%3A%2F%2Fbank.example.com%3A3001%2Faccount">OAuth Login</a><br/>
+  <a href="txn-auth/?amUrl=https://auth.example.com:3001/am&clientId=AccountHolderOAuth2&realmPath=root&scope=openid+profile+me.read&un=57a5b4e4-6999-4b45-bf86-a4f2e5d4b629&pw=Password1%21&resourceUrl=https%3A%2F%2Fbank.example.com%3A3001%2Faccount">Transactional Authorization</a><br/>
+  <a href="device-profile/?amUrl=https://auth.example.com:3001/am">Device Profile</a><br/>
 </body>
 </html>
