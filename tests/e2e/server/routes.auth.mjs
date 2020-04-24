@@ -1,3 +1,4 @@
+import { authPaths } from './constants.mjs';
 import dotenv from 'dotenv';
 import { AM_URL, BASE_URL } from './config.copy.mjs';
 import {
@@ -20,7 +21,7 @@ export const baz = {
 };
 
 export default function(app) {
-  app.post('/am/json/realms/root/authenticate', wait, async (req, res) => {
+  app.post(authPaths.authenticate, wait, async (req, res) => {
     if (!req.body.callbacks) {
       if (req.query.authIndexType === 'composite_advice') {
         res.json(initialTxnAuth);
@@ -76,11 +77,11 @@ export default function(app) {
     }
   });
 
-  app.post('/am/oauth2/realms/root/access_token', wait, async (req, res) => {
+  app.post(authPaths.accessToken, wait, async (req, res) => {
     res.json(accessToken);
   });
 
-  app.get('/am/oauth2/realms/root/authorize', wait, async (req, res) => {
+  app.get(authPaths.authorize, wait, async (req, res) => {
     const url = new URL(`${BASE_URL}`);
     url.pathname = '/callback';
     url.searchParams.set('client_id', 'bar');
@@ -90,24 +91,24 @@ export default function(app) {
     res.redirect(url);
   });
 
-  app.get('/am/oauth2/realms/root/userinfo', wait, async (req, res) => {
+  app.get(authPaths.userInfo, wait, async (req, res) => {
     res.json(userInfo);
   });
 
-  app.get('/am/oauth2/realms/root/connect/endSession', wait, async (req, res) => {
+  app.get(authPaths.endSession, wait, async (req, res) => {
     res.status(204).send();
   });
 
-  app.post('/am/oauth2/realms/root/token/revoke', wait, async (req, res) => {
+  app.post(authPaths.revoke, wait, async (req, res) => {
     res.status(200).send();
   });
 
-  app.all('/am/html/realms/root/authenticate', wait, async (req, res) => {
+  app.all(authPaths.htmlAuthenticate, wait, async (req, res) => {
     res.type('html');
     res.status(200).send('<html></html>');
   });
 
-  app.post('/am/json/realms/root/sessions', wait, async (req, res) => {
+  app.post(authPaths.sessions, wait, async (req, res) => {
     if (req.query._action === 'logout') {
       res.status(204).send();
     }

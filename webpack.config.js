@@ -1,7 +1,8 @@
 const { exec } = require('child_process');
 const path = require('path');
-const webpack = require('webpack');
 const TsConfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const webpack = require('webpack');
 
 module.exports = (env) => {
   const isDev = env.DEV === 'yes';
@@ -18,7 +19,7 @@ module.exports = (env) => {
             'copyup ./src/**/*.{html,scss} lib',
             'copyup ./src/**/*.{html,scss} lib-esm',
           ];
-          for (var cmd of cmds) {
+          for (const cmd of cmds) {
             exec(cmd, (err, stdout, stderr) => {
               if (err) {
                 console.error(err);
@@ -30,14 +31,14 @@ module.exports = (env) => {
             });
           }
         });
-      }
-    }
+      },
+    },
   ];
 
   return {
     devtool: isDev ? 'eval-source-map' : 'source-map',
     entry: './src/index.ts',
-    mode: 'production',
+    mode: isDev ? 'development' : 'production',
     module: {
       rules: [
         {
@@ -45,13 +46,21 @@ module.exports = (env) => {
           loader: 'awesome-typescript-loader',
           exclude: /node_modules/,
           query: {
-            declaration: false
-          }
+            declaration: false,
+          },
         },
       ],
     },
     optimization: {
-      minimize: !isDev,
+      minimizer: [
+        new UglifyJsPlugin({
+          uglifyOptions: {
+            output: {
+              comments: false,
+            },
+          },
+        }),
+      ],
     },
     output: {
       filename: 'index.js',
@@ -67,4 +76,4 @@ module.exports = (env) => {
     },
     watch: isDev,
   };
-}
+};

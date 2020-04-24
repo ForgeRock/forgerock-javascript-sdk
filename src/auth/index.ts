@@ -1,9 +1,8 @@
 import Config, { ServerConfig } from '../config';
 import { REQUESTED_WITH } from '../shared/constants';
 import { StringDict } from '../shared/interfaces';
-import { getRealmUrlPath } from '../util/realm';
 import { withTimeout } from '../util/timeout';
-import { resolve, stringify } from '../util/url';
+import { getEndpointPath, resolve, stringify } from '../util/url';
 import { Step, StepOptions } from './interfaces';
 
 /**
@@ -33,12 +32,11 @@ abstract class Auth {
     tree?: string,
     query?: StringDict<string>,
   ): string {
-    const realmUrlPath = getRealmUrlPath(realmPath);
     const treeParams = tree ? { authIndexType: 'service', authIndexValue: tree } : undefined;
     const params: StringDict<string | undefined> = { ...query, ...treeParams };
     const queryString = Object.keys(params).length > 0 ? `?${stringify(params)}` : '';
-    const path = `json/${realmUrlPath}/authenticate${queryString}`;
-    const url = resolve(serverConfig.baseUrl, path);
+    const path = getEndpointPath('authenticate', realmPath, serverConfig.paths);
+    const url = resolve(serverConfig.baseUrl, `${path}${queryString}`);
     return url;
   }
 

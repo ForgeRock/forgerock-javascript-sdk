@@ -11,7 +11,6 @@ describe('Test Transaction Authorization flow', () => {
         messageArray.push(msg.text());
       });
 
-      await page.waitForSelector('.Logged_In', { waitFor: 'visible' });
       await page.waitForSelector('.Logged_Out', { waitFor: 'visible' });
 
       // Test assertions

@@ -1,4 +1,6 @@
+import { ConfigurablePaths, CustomPathConfig } from '../config/interfaces';
 import { StringDict } from '../shared/interfaces';
+import { getRealmUrlPath } from '../util/realm';
 
 /**
  * Returns the base URL including protocol, hostname and any non-standard port.
@@ -11,6 +13,32 @@ function getBaseUrl(url: URL): string {
   const port = isNonStandardPort ? `:${url.port}` : '';
   const baseUrl = `${url.protocol}//${url.hostname}${port}`;
   return baseUrl;
+}
+
+function getEndpointPath(
+  endpoint: ConfigurablePaths,
+  realmPath?: string,
+  customPaths?: CustomPathConfig,
+): string {
+  const realmUrlPath = getRealmUrlPath(realmPath);
+  const defaultPaths = {
+    authenticate: `json/${realmUrlPath}/authenticate`,
+    authorize: `oauth2/${realmUrlPath}/authorize`,
+    accessToken: `oauth2/${realmUrlPath}/access_token`,
+    endSession: `oauth2/${realmUrlPath}/connect/endSession`,
+    userInfo: `oauth2/${realmUrlPath}/userinfo`,
+    revoke: `oauth2/${realmUrlPath}/token/revoke`,
+    sessions: `json/${realmUrlPath}/sessions/`,
+  };
+  if (customPaths && customPaths[endpoint]) {
+    // TypeScript is not correctly reading the condition above
+    // It's thinking that customPaths[endpoint] may result in undefined
+    // eslint-disable-next-line
+    // @ts-ignore
+    return customPaths[endpoint];
+  } else {
+    return defaultPaths[endpoint];
+  }
 }
 
 function resolve(baseUrl: string, path: string): string {
@@ -44,4 +72,4 @@ function stringify(data: StringDict<string | undefined>): string {
   return pairs.join('&');
 }
 
-export { getBaseUrl, parseQuery, resolve, stringify };
+export { getBaseUrl, getEndpointPath, parseQuery, resolve, stringify };

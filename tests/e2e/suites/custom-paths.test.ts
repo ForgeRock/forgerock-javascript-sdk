@@ -1,9 +1,9 @@
 import { setupAndGo } from '../utilities/setup-and-go';
 
-describe('Test OAuth login flow', () => {
+describe('Test OAuth login flow with custom paths', () => {
   ['chromium', 'webkit', 'firefox'].forEach((browserType) => {
     it(`should login successfully and then log out with ${browserType}`, async (done) => {
-      const { browser, page } = await setupAndGo(browserType, 'oauth-login/');
+      const { browser, page } = await setupAndGo(browserType, 'custom-paths/');
 
       const messageArray = [];
 

@@ -39,13 +39,27 @@
         (step) => {
           if (step.payload.code === 401) {
             throw new Error('Auth_Error');
+          } else if (step.payload.tokenId) {
+            console.log('Basic login successful.');
+            document.body.innerHTML = `<p class="Logged_In">Login successful</p>`;
           } else {
-            return '';
+            throw new Error('Something went wrong.');
           }
         },
         (step) => step,
       ),
       rxjs.operators.delay(delay),
+      rxMergeMap((step) => {
+        return forgerock.SessionManager.logout();
+      }),
+      rxMap((response) => {
+        if (response.ok) {
+          console.log('Logout successful.');
+          document.body.innerHTML = `<p class="Logged_Out">Logout successful</p>`;
+        } else {
+          throw new Error('Logout_Error');
+        }
+      }),
       rxTap(
         () => {},
         (err) => {
