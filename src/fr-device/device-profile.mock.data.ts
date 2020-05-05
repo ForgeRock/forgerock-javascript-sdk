@@ -16,10 +16,8 @@ const expectedJsdom = {
     },
     browser: {
       appName: 'Netscape',
-      // eslint-disable-next-line
       userAgent: 'Mozilla/5.0 (darwin) AppleWebKit/537.36 (KHTML, like Gecko) jsdom/11.12.0',
       appCodeName: 'Mozilla',
-      // eslint-disable-next-line
       appVersion: '4.0',
       appMinorVersion: null,
       buildID: null,
@@ -28,7 +26,6 @@ const expectedJsdom = {
       vendor: 'Apple Computer, Inc.',
       vendorSub: '',
       browserLanguage: null,
-      // eslint-disable-next-line
       plugins: '',
     },
     platform: {

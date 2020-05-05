@@ -70,7 +70,7 @@
             throw new Error('No profile match.');
           } else {
             console.log('Login with profile successful.');
-            document.body.innerHTML = `<p class="Logged_In">Login successful</p>`;
+            document.body.innerHTML = '<p class="Logged_In">Login successful</p>';
             return step;
           }
         },

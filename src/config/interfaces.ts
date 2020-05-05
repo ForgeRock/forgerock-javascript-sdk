@@ -15,14 +15,7 @@ interface ConfigOptions {
   tree?: string;
 }
 
-type ConfigurablePaths =
-  | 'authenticate'
-  | 'authorize'
-  | 'accessToken'
-  | 'endSession'
-  | 'userInfo'
-  | 'revoke'
-  | 'sessions';
+type ConfigurablePaths = keyof CustomPathConfig;
 
 /**
  * Optional configuration for custom paths for actions

@@ -41,7 +41,7 @@
             throw new Error('Auth_Error');
           } else if (step.payload.tokenId) {
             console.log('Basic login successful.');
-            document.body.innerHTML = `<p class="Logged_In">Login successful</p>`;
+            document.body.innerHTML = '<p class="Logged_In">Login successful</p>';
           } else {
             throw new Error('Something went wrong.');
           }
@@ -55,7 +55,7 @@
       rxMap((response) => {
         if (response.ok) {
           console.log('Logout successful.');
-          document.body.innerHTML = `<p class="Logged_Out">Logout successful</p>`;
+          document.body.innerHTML = '<p class="Logged_Out">Logout successful</p>';
         } else {
           throw new Error('Logout_Error');
         }

@@ -9,8 +9,6 @@
   const amUrl = url.searchParams.get('amUrl');
   const clientId = url.searchParams.get('clientId') || 'AccountHolderOAuth2';
   const realmPath = url.searchParams.get('realmPath') || 'root';
-  const resourceUrl =
-    url.searchParams.get('resourceUrl') || 'https://bank.example.com:3001/account';
   const scope = url.searchParams.get('scope') || 'openid profile me.read';
   const un = url.searchParams.get('un') || '57a5b4e4-6999-4b45-bf86-a4f2e5d4b629';
   const pw = url.searchParams.get('pw') || 'Password1!';
@@ -55,7 +53,7 @@
       rxMap((step) => {
         if (step.getSessionToken()) {
           console.log('OAuth login successful');
-          document.body.innerHTML = `<p class="Logged_In">Login successful</p>`;
+          document.body.innerHTML = '<p class="Logged_In">Login successful</p>';
         } else {
           throw new Error('Session_Error');
         }
@@ -88,7 +86,7 @@
         (step, tokens) => {
           if (!tokens) {
             console.log('Logout successful');
-            document.body.innerHTML = `<p class="Logged_Out">Logout successful</p>`;
+            document.body.innerHTML = '<p class="Logged_Out">Logout successful</p>';
           } else {
             throw new Error('Logout_Error');
           }

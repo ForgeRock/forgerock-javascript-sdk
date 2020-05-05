@@ -1,3 +1,5 @@
+import { StringDict } from '../shared/interfaces';
+
 /**
  * @class Collector - base class for FRDevice
  * Generic collector functions for collecting a device profile attributes
@@ -8,17 +10,19 @@ class Collector {
    * @param props - array of strings; can use dot notation for two level lookup
    * @param src - source of attributes to check
    */
-  reduceToObject(props: string[], src: any): { [key: string]: string } {
+  reduceToObject(props: string[], src: StringDict<any>): StringDict<string> {
     return props.reduce((prev, curr) => {
       if (curr.includes('.')) {
         const propArr = curr.split('.');
-        const prop = src[propArr[0]] && src[propArr[0]][propArr[1]];
-        prev[propArr[1]] = prop != undefined ? prop : '';
+        const prop1 = propArr[0];
+        const prop2 = propArr[1];
+        const prop = src[prop1] && src[prop1][prop2];
+        prev[prop2] = prop != undefined ? prop : '';
       } else {
         prev[curr] = src[curr] != undefined ? src[curr] : null;
       }
       return prev;
-    }, {} as { [key: string]: string });
+    }, {} as StringDict<string>);
   }
 
   /**
