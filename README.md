@@ -15,8 +15,7 @@
   </p>
 <hr/></p>
 
-The ForgeRock JavaScript SDK enables you to quickly integrate the [ForgeRock Identity Platform](https://www.forgerock
-.com/digital-identity-and-access-management-platform) into your client-side JavaScript apps.
+The ForgeRock JavaScript SDK enables you to quickly integrate the [ForgeRock Identity Platform](https://www.forgerock.com/digital-identity-and-access-management-platform) into your client-side JavaScript apps.
 
 Use the SDKs to leverage _[Intelligent Authentication](https://www.forgerock.com/platform/access-management/intelligent-authentication)_ in [ForgeRock's Access Management (AM)](https://www.forgerock.com/platform/access-management) product, to easily step through each stage of an authentication tree by using callbacks.
 
@@ -57,18 +56,29 @@ To try out the ForgeRock JavaScript SDK, perform these steps:
    See [Enabling CORS Support](https://sdks.forgerock.com/js/01_prepare-am/#enabling-cors-support) in the Documentation.
 2. Create an authentication tree in AM.
 
-   See [Creating a User Authentication Tree](https://sdks.forgerock.com/js/01_prepare-am/#creating-a-user
- -authentication-tree) in the Documentation.
-4. Clone this repo:
+   See [Creating a User Authentication Tree](https://sdks.forgerock.com/js/01_prepare-am/#creating-a-user-authentication-tree) in the Documentation.
+3. Clone this repo:
 
     ```
     git clone https://github.com/ForgeRock/forgerock-javascript-sdk.git
     ```
 
-5. Open `samples/js/config.js` and edit the values to match your AM instance.
-6. Serve the `samples` directory by using a simple HTTP server, for example:
+4. In the root folder of the repo, use NPM to install dependencies:
+
+    ```
+    npm install
+    ```
+
+5. Build the ForgeRock JavaScript SDK:
+
+    ```
+    npm run build
+    ```
+
+6. Open `samples/js/config.js` and edit the values to match your AM instance.
+7. Serve the `samples` directory by using a simple HTTP server, for example:
    `npx http-server samples -c1 -p 3000`
-7. In a [supported web browser](#requirements), navigate to `http://localhost:3000/index.html`, and then click
+8. In a [supported web browser](#requirements), navigate to `http://localhost:3000/index.html`, and then click
  **Custom UI**.
 
    > **Note**:
