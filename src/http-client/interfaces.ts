@@ -1,6 +1,10 @@
 import { ConfigOptions } from '../config/interfaces';
 import FRStep from '../fr-auth/fr-step';
 
+export interface Advices {
+  TransactionConditionAdvice: string[];
+}
+
 export declare type HandleStep = (step: FRStep) => Promise<FRStep>;
 
 /**
@@ -29,6 +33,6 @@ export interface TxnAuthJSON {
   resource: string;
   actions: { [key: string]: string };
   attributes: { [key: string]: string };
-  advices: { TransactionConditionAdvice: string[] } | null;
+  advices: Advices | null;
   ttl: number;
 }

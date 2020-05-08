@@ -28,8 +28,8 @@ export default function(app) {
       } else {
         res.json(initialBasicLogin);
       }
-    } else if (req.body.callbacks.find((cb) => cb.type === 'ValidatedCreatePasswordCallback')) {
-      const pwCb = req.body.callbacks.find((cb) => cb.type === 'ValidatedCreatePasswordCallback');
+    } else if (req.body.callbacks.find((cb) => cb.type === 'PasswordCallback')) {
+      const pwCb = req.body.callbacks.find((cb) => cb.type === 'PasswordCallback');
       if (pwCb.input[0].value !== process.env.PASSWORD) {
         res.status(401).json(authFail);
       } else {

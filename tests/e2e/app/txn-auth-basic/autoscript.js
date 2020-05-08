@@ -7,7 +7,10 @@
 
   const url = new URL(window.location.href);
   const amUrl = url.searchParams.get('amUrl');
+  const clientId = url.searchParams.get('clientId') || 'AccountHolderOAuth2';
   const realmPath = url.searchParams.get('realmPath') || 'root';
+  const resourceUrl =
+    url.searchParams.get('resourceUrl') || 'https://bank.example.com:3001/account';
   const scope = url.searchParams.get('scope') || 'openid profile me.read';
   const un = url.searchParams.get('un') || '57a5b4e4-6999-4b45-bf86-a4f2e5d4b629';
   const pw = url.searchParams.get('pw') || 'Password1!';
@@ -15,6 +18,7 @@
 
   console.log('Configure the SDK');
   forgerock.Config.set({
+    clientId,
     redirectUri: `${url.origin}/callback`,
     realmPath,
     scope,
@@ -35,18 +39,45 @@
         return forgerock.FRAuth.next(step);
       }),
       rxjs.operators.delay(delay),
-      rxMap(
+      rxMap((step) => {
+        if (step.payload.code === 401) {
+          throw new Error('Auth_Error');
+        } else if (step.payload.tokenId) {
+          console.log('Basic login successful.');
+          document.body.innerHTML = '<p class="Logged_In">Login successful</p>';
+          return step;
+        } else {
+          throw new Error('Something went wrong.');
+        }
+      }),
+      rxjs.operators.delay(delay),
+      rxMergeMap(
         (step) => {
-          if (step.payload.code === 401) {
-            throw new Error('Auth_Error');
-          } else if (step.payload.tokenId) {
-            console.log('Basic login successful.');
-            document.body.innerHTML = '<p class="Logged_In">Login successful</p>';
-          } else {
-            throw new Error('Something went wrong.');
-          }
+          console.log('Retrieve the user balance');
+          return forgerock.HttpClient.request({
+            url: `${resourceUrl}/anything`,
+            init: {
+              method: 'GET',
+              credentials: 'include',
+            },
+            txnAuth: {
+              handleStep: async (step) => {
+                console.log('Resource requires additional authorization');
+                step.getCallbackOfType('NameCallback').setName(un);
+                step.getCallbackOfType('PasswordCallback').setPassword(pw);
+                return Promise.resolve(step);
+              },
+            },
+          });
         },
-        (step) => step,
+        (step, response) => {
+          if (response.status === 200) {
+            console.log('Request to resource successfully responded');
+          } else {
+            throw new Error('Transactional Authorization was not successful');
+          }
+          return step;
+        },
       ),
       rxjs.operators.delay(delay),
       rxMergeMap((step) => {
@@ -60,6 +91,7 @@
           throw new Error('Logout_Error');
         }
       }),
+      rxjs.operators.delay(delay),
       rxTap(
         () => {},
         (err) => {

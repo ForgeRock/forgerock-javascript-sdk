@@ -34,9 +34,21 @@
     .pipe(
       rxMergeMap((step) => {
         console.log('Set values on auth tree callbacks');
-        step.getCallbackOfType('ValidatedCreateUsernameCallback').setName(un);
-        step.getCallbackOfType('ValidatedCreatePasswordCallback').setPassword(pw);
+        step.getCallbackOfType('NameCallback').setName(un);
+        step.getCallbackOfType('PasswordCallback').setPassword(pw);
         return forgerock.FRAuth.next(step);
+      }),
+      rxjs.operators.delay(delay),
+      rxMap((step) => {
+        if (step.payload.code === 401) {
+          throw new Error('Auth_Error');
+        } else if (step.payload.tokenId) {
+          console.log('Basic login successful.');
+          document.body.innerHTML = '<p class="Logged_In">Login successful</p>';
+          return step;
+        } else {
+          throw new Error('Something went wrong.');
+        }
       }),
       rxjs.operators.delay(delay),
       rxMergeMap(
@@ -63,26 +75,19 @@
       rxjs.operators.delay(delay),
       rxMergeMap(
         (step) => {
-          console.log('Get user info from OAuth endpoint');
-          const user = forgerock.UserManager.getCurrentUser();
-          return user;
-        },
-        (step, user) => {
-          console.log(`User's given name: ${user.family_name}`);
-          return step;
-        },
-      ),
-      rxjs.operators.delay(delay),
-      rxMergeMap(
-        (step) => {
-          const token = document.cookie;
           console.log('Retrieve the user balance');
           return forgerock.HttpClient.request({
-            url: `${resourceUrl}/balance`,
+            url: `${resourceUrl}/anything`,
             init: {
               method: 'GET',
-              headers: {
-                iPlanetDirectoryPro: token,
+              credentials: 'include',
+            },
+            txnAuth: {
+              handleStep: async (step) => {
+                console.log('Withdraw action requires additional authorization');
+                step.getCallbackOfType('NameCallback').setName(un);
+                step.getCallbackOfType('PasswordCallback').setPassword(pw);
+                return Promise.resolve(step);
               },
             },
           });
@@ -126,28 +131,17 @@
         },
       ),
       rxjs.operators.delay(delay),
-      rxMergeMap(
-        (step) => {
-          console.log('Initiate logout');
-          return forgerock.FRUser.logout();
-        },
-        (step) => step,
-      ),
-      rxjs.operators.delay(delay),
-      rxMergeMap(
-        (step) => {
-          return forgerock.TokenStorage.get();
-        },
-        (step, tokens) => {
-          if (!tokens) {
-            console.log('Logout successful');
-            document.body.innerHTML = '<p class="Logged_Out">Logout successful</p>';
-          } else {
-            throw new Error('Logout_Error');
-          }
-          return step;
-        },
-      ),
+      rxMergeMap((step) => {
+        return forgerock.SessionManager.logout();
+      }),
+      rxMap((response) => {
+        if (response.ok) {
+          console.log('Logout successful.');
+          document.body.innerHTML = '<p class="Logged_Out">Logout successful</p>';
+        } else {
+          throw new Error('Logout_Error');
+        }
+      }),
       rxjs.operators.delay(delay),
       rxTap(
         () => {},

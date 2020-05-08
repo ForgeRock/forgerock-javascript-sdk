@@ -29,7 +29,7 @@
 
   <div id="steps">
     <div id="loader" class="active">Loading...</div>
-    <div id="UsernamePassword">
+    <div id="NameCallback">
       <input class="form-control" type="text" placeholder="Username" />
       <input class="form-control" type="password" placeholder="Password" />
       <button class="btn btn-primary">Sign In</button>
@@ -57,8 +57,8 @@
 
     // Define custom handlers to render and submit each expected step
     const handlers = {
-      UsernamePassword: (step) => {
-        const panel = document.querySelector('#UsernamePassword');
+      NameCallback: (step) => {
+        const panel = document.querySelector('#NameCallback');
         panel.querySelector('.btn').addEventListener('click', () => {
           const nameCallback = step.getCallbackOfType('NameCallback');
           const passwordCallback = step.getCallbackOfType('PasswordCallback');
@@ -110,7 +110,7 @@
           return;
 
         default:
-          const stage = step.getStage() || FATAL;
+          const stage = step.getStage() || step.payload.callbacks[0].type;
           if (!showStep(stage)) {
             showStep(FATAL);
             handlers[FATAL](step);

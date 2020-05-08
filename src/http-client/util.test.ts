@@ -20,6 +20,9 @@ describe('Test HttpClient utils', () => {
     const expected = {
       init: {
         credentials: 'include',
+        headers: {
+          'Accept-API-Version': 'resource=2.0, protocol=1.0',
+        },
         method: 'POST',
       },
       timeout: 0,

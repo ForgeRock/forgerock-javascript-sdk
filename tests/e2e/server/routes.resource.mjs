@@ -14,12 +14,12 @@ async function txnAuth(req, res, next) {
       application: 'Account-API-Policy',
       resources: [fullURL],
       subject: {
-        ssoToken: req.headers['x-id-token'] || req.cookies.iPlanetDirectoryPro,
+        ssoToken: req.query._idtoken || req.cookies.iPlanetDirectoryPro,
       },
     };
     if (req.headers['x-txn-id']) {
       body.environment = {
-        TxId: [req.headers['x-txn-id']],
+        TxId: [req.query._txid],
       };
     }
     const response = await request
@@ -63,11 +63,7 @@ export default function(app) {
     }
   });
 
-  app.get('/account/balance', wait, async (req, res) => {
-    res.json({ balance: '$750.00' });
-  });
-
-  app.post('/account/withdraw', wait, txnAuth, async (req, res) => {
+  app.get('/account/anything', wait, txnAuth, async (req, res) => {
     if (env.LIVE === 'true' && req.host !== 'openig.example.com') {
       // Calls are directly from client, so Txn Auth is needed
       if (req.access.actions && req.access.actions.POST) {

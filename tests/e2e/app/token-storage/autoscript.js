@@ -54,8 +54,8 @@
     .pipe(
       rxMergeMap((step) => {
         console.log('Set values on auth tree callbacks');
-        step.getCallbackOfType('ValidatedCreateUsernameCallback').setName(un);
-        step.getCallbackOfType('ValidatedCreatePasswordCallback').setPassword(pw);
+        step.getCallbackOfType('NameCallback').setName(un);
+        step.getCallbackOfType('PasswordCallback').setPassword(pw);
         return forgerock.FRAuth.next(step);
       }),
       rxjs.operators.delay(delay),

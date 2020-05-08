@@ -32,8 +32,8 @@
     .pipe(
       rxMergeMap((step) => {
         console.log('Set values on auth tree callbacks');
-        step.getCallbackOfType('ValidatedCreateUsernameCallback').setName(un);
-        step.getCallbackOfType('ValidatedCreatePasswordCallback').setPassword(pw);
+        step.getCallbackOfType('NameCallback').setName(un);
+        step.getCallbackOfType('PasswordCallback').setPassword(pw);
         return forgerock.FRAuth.next(step);
       }),
       rxjs.operators.delay(delay),
@@ -58,18 +58,18 @@
           throw new Error('Session_Error');
         }
       }),
-      rxjs.operators.delay(delay),
-      rxMergeMap(
-        (step) => {
-          console.log('Get user info from OAuth endpoint');
-          const user = forgerock.UserManager.getCurrentUser();
-          return user;
-        },
-        (step, user) => {
-          console.log(`User's given name: ${user.family_name}`);
-          return step;
-        },
-      ),
+      // rxjs.operators.delay(delay),
+      // rxMergeMap(
+      //   (step) => {
+      //     console.log('Get user info from OAuth endpoint');
+      //     const user = forgerock.UserManager.getCurrentUser();
+      //     return user;
+      //   },
+      //   (step, user) => {
+      //     console.log(`User's given name: ${user.family_name}`);
+      //     return step;
+      //   },
+      // ),
       rxjs.operators.delay(delay),
       rxMergeMap(
         (step) => {
