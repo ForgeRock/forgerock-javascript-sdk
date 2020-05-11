@@ -19,7 +19,7 @@ interface WebAuthnRegistrationMetadata {
 }
 
 interface WebAuthnAuthenticationMetadata {
-  acceptableCredentials: string;
+  allowCredentials: string;
   challenge: string;
   relyingPartyId: string;
   timeout: number;
