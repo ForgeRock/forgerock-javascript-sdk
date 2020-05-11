@@ -39,6 +39,7 @@ export default function(app) {
           if (req.body.stage === 'TransactionAuthorization') {
             baz.canWithdraw = true;
           }
+          res.cookie('iPlanetDirectoryPro', 'abcd1234', { domain: '.example.com' });
           res.json(authSuccess);
         }
       }
@@ -68,6 +69,7 @@ export default function(app) {
         value.identifier &&
         value.identifier.length > 0
       ) {
+        res.cookie('iPlanetDirectoryPro', 'abcd1234', { domain: '.example.com' });
         res.json(authSuccess);
       } else {
         // Just failing the auth for testing, but in reality,
@@ -110,6 +112,7 @@ export default function(app) {
 
   app.post(authPaths.sessions, wait, async (req, res) => {
     if (req.query._action === 'logout') {
+      res.clearCookie('iPlanetDirectoryPro');
       res.status(204).send();
     }
   });

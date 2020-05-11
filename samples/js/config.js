@@ -1,8 +1,8 @@
 forgerock.Config.set({
-  clientId: 'WebOAuthClient',
-  redirectUri: 'https://sdks.mytestrun.com:3000/custom-ui/callback',
-  realmPath: 'sdk',
-  scope: 'openid profile me.read',
-  serverConfig: { baseUrl: 'https://idp37.mytestrun.com/openam', timeout: 30000 },
-  tree: 'UsernamePassword',
+  clientId: 'sdk',
+  redirectUri: 'https://forgerock-sdk-samples.com:3000/custom-ui/callback',
+  realmPath: 'root',
+  scope: 'openid profile',
+  serverConfig: { baseUrl: 'https://default.iam.example.com/am/', timeout: 30000 },
+  tree: 'Sample',
 });

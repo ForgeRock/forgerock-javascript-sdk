@@ -9,8 +9,8 @@
   const amUrl = url.searchParams.get('amUrl');
   const clientId = url.searchParams.get('clientId') || 'AccountHolderOAuth2';
   const realmPath = url.searchParams.get('realmPath') || 'root';
-  const resourceUrl =
-    url.searchParams.get('resourceUrl') || 'https://bank.example.com:3001/account';
+  const igUrl = url.searchParams.get('igUrl'); // only use when testing against IG on a different host
+  const restUrl = url.searchParams.get('restUrl') || 'https://bank.example.com:3001/account';
   const scope = url.searchParams.get('scope') || 'openid profile me.read';
   const un = url.searchParams.get('un') || '57a5b4e4-6999-4b45-bf86-a4f2e5d4b629';
   const pw = url.searchParams.get('pw') || 'Password1!';
@@ -53,16 +53,16 @@
       rxjs.operators.delay(delay),
       rxMergeMap(
         (step) => {
-          console.log('Retrieve the user balance');
+          console.log('Retrieve the protected resource');
           return forgerock.HttpClient.request({
-            url: `${resourceUrl}/anything`,
+            url: `${igUrl ? igUrl : restUrl}/ig`,
             init: {
               method: 'GET',
               credentials: 'include',
             },
             txnAuth: {
               handleStep: async (step) => {
-                console.log('Resource requires additional authorization');
+                console.log('IG resource requires additional authorization');
                 step.getCallbackOfType('NameCallback').setName(un);
                 step.getCallbackOfType('PasswordCallback').setPassword(pw);
                 return Promise.resolve(step);
@@ -70,11 +70,42 @@
             },
           });
         },
-        (step, response) => {
-          if (response.status === 200) {
-            console.log('Request to resource successfully responded');
+        async (step, response) => {
+          const jsonResponse = await response.json();
+          if (jsonResponse.message === 'Successfully retrieved resource!') {
+            console.log('Request to IG resource successfully responded');
           } else {
-            throw new Error('Transactional Authorization was not successful');
+            throw new Error('IG Transactional Authorization was not successful');
+          }
+          return step;
+        },
+      ),
+      rxjs.operators.delay(delay),
+      rxMergeMap(
+        (step) => {
+          console.log('Retrieve the protected resource');
+          return forgerock.HttpClient.request({
+            url: `${restUrl}/rest`,
+            init: {
+              method: 'GET',
+              credentials: 'include',
+            },
+            txnAuth: {
+              handleStep: async (step) => {
+                console.log('Rest resource requires additional authorization');
+                step.getCallbackOfType('NameCallback').setName(un);
+                step.getCallbackOfType('PasswordCallback').setPassword(pw);
+                return Promise.resolve(step);
+              },
+            },
+          });
+        },
+        async (step, response) => {
+          const jsonResponse = await response.json();
+          if (jsonResponse.message === 'Successfully retrieved resource!') {
+            console.log('Request to REST resource successfully responded');
+          } else {
+            throw new Error('REST Transactional Authorization was not successful');
           }
           return step;
         },

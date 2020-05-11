@@ -58,18 +58,18 @@
           throw new Error('Session_Error');
         }
       }),
-      // rxjs.operators.delay(delay),
-      // rxMergeMap(
-      //   (step) => {
-      //     console.log('Get user info from OAuth endpoint');
-      //     const user = forgerock.UserManager.getCurrentUser();
-      //     return user;
-      //   },
-      //   (step, user) => {
-      //     console.log(`User's given name: ${user.family_name}`);
-      //     return step;
-      //   },
-      // ),
+      rxjs.operators.delay(delay),
+      rxMergeMap(
+        (step) => {
+          console.log('Get user info from OAuth endpoint');
+          const user = forgerock.UserManager.getCurrentUser();
+          return user;
+        },
+        (step, user) => {
+          console.log(`User's given name: ${user.family_name}`);
+          return step;
+        },
+      ),
       rxjs.operators.delay(delay),
       rxMergeMap(
         (step) => {
