@@ -50,7 +50,7 @@ abstract class FRWebAuthn {
     }
 
     const metadata = metadataCallback.getOutputValue('data') as WebAuthnAuthenticationMetadata;
-    if (metadata.allowCredentials) {
+    if (metadata.acceptableCredentials) {
       return WebAuthnStepType.Authentication;
     }
 
@@ -234,11 +234,11 @@ abstract class FRWebAuthn {
   public static createAuthenticationPublicKey(
     metadata: WebAuthnAuthenticationMetadata,
   ): PublicKeyCredentialRequestOptions {
-    const { allowCredentials, challenge, relyingPartyId, timeout } = metadata;
+    const { acceptableCredentials, challenge, relyingPartyId, timeout } = metadata;
     const rpId = parseRelyingPartyId(relyingPartyId);
 
     return {
-      allowCredentials: parseCredentials(allowCredentials),
+      allowCredentials: parseCredentials(acceptableCredentials),
       challenge: Uint8Array.from(atob(challenge), (c) => c.charCodeAt(0)).buffer,
       timeout,
       ...(rpId && { rpId }),
