@@ -13,6 +13,7 @@ import TokenManager from '../token-manager';
 import TokenStorage from '../token-storage';
 import { withTimeout } from '../util/timeout';
 import {
+  addTxnIDAndTokenToURL,
   buildTxnAuthOptions,
   examineForIGTxnAuth,
   examineForRESTTxnAuth,
@@ -67,8 +68,10 @@ abstract class HttpClient extends Dispatcher {
         try {
           // Walk through auth tree
           await this.stepIterator(initialStep, options.txnAuth.handleStep);
-          // Add Txn ID to *original* request options
-          options.txnAuth.txnID = txnAuthJSON.advices.TransactionConditionAdvice[0];
+          // See if OAuth tokens are being used
+          const tokens = await TokenStorage.get();
+          // Update URL with txn ID
+          options.url = addTxnIDAndTokenToURL(options.url, txnAuthJSON.advices, tokens);
           // Retry original resource request
           res = await this._request(options, false);
         } catch (err) {
@@ -80,31 +83,16 @@ abstract class HttpClient extends Dispatcher {
     return res;
   }
 
-  private static async setAuthHeaders(
-    headers: Headers,
-    options: HttpClientRequestOptions,
-    forceRenew: boolean,
-  ): Promise<Headers> {
-    const txnAuthRequest = options.txnAuth && options.txnAuth.handleStep;
+  private static async setAuthHeaders(headers: Headers, forceRenew: boolean): Promise<Headers> {
     let tokens = await TokenStorage.get();
 
     /**
      * Condition to see if Auth is session based or OAuth token based
      */
-    if (tokens.accessToken) {
+    if (tokens && tokens.accessToken) {
       // Access tokens are an OAuth artifact
       tokens = await TokenManager.getTokens({ forceRenew });
       headers.set('Authorization', `Bearer ${tokens.accessToken}`);
-
-      if (txnAuthRequest) {
-        headers.set('X-Id-Token', tokens.idToken || '');
-        headers.set('X-Txn-Id', (options.txnAuth && options.txnAuth.txnID) || '');
-      }
-    } else {
-      // If no access tokens, OAuth is not being used.
-      if (txnAuthRequest) {
-        headers.set('X-Txn-Id', (options.txnAuth && options.txnAuth.txnID) || '');
-      }
     }
     return headers;
   }
@@ -139,7 +127,7 @@ abstract class HttpClient extends Dispatcher {
     let headers = new Headers(init.headers);
 
     if (!options.bypassAuthentication) {
-      headers = await this.setAuthHeaders(headers, options, forceRenew);
+      headers = await this.setAuthHeaders(headers, forceRenew);
     }
     init.headers = headers;
     return await withTimeout(fetch(url, init), timeout);

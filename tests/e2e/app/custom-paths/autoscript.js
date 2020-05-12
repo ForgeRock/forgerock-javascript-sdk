@@ -41,8 +41,8 @@
     .pipe(
       rxMergeMap((step) => {
         console.log('Set values on auth tree callbacks');
-        step.getCallbackOfType('ValidatedCreateUsernameCallback').setName(un);
-        step.getCallbackOfType('ValidatedCreatePasswordCallback').setPassword(pw);
+        step.getCallbackOfType('NameCallback').setName(un);
+        step.getCallbackOfType('PasswordCallback').setPassword(pw);
         return forgerock.FRAuth.next(step);
       }),
       rxjs.operators.delay(delay),
@@ -62,7 +62,7 @@
       rxMap((step) => {
         if (step.getSessionToken()) {
           console.log('OAuth login successful');
-          document.body.innerHTML = `<p class="Logged_In">Login successful</p>`;
+          document.body.innerHTML = '<p class="Logged_In">Login successful</p>';
         } else {
           throw new Error('Session_Error');
         }
@@ -95,7 +95,7 @@
         (step, tokens) => {
           if (!tokens) {
             console.log('Logout successful');
-            document.body.innerHTML = `<p class="Logged_Out">Logout successful</p>`;
+            document.body.innerHTML = '<p class="Logged_Out">Logout successful</p>';
           } else {
             throw new Error('Logout_Error');
           }

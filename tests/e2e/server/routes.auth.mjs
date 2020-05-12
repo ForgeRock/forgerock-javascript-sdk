@@ -28,8 +28,8 @@ export default function(app) {
       } else {
         res.json(initialBasicLogin);
       }
-    } else if (req.body.callbacks.find((cb) => cb.type === 'ValidatedCreatePasswordCallback')) {
-      const pwCb = req.body.callbacks.find((cb) => cb.type === 'ValidatedCreatePasswordCallback');
+    } else if (req.body.callbacks.find((cb) => cb.type === 'PasswordCallback')) {
+      const pwCb = req.body.callbacks.find((cb) => cb.type === 'PasswordCallback');
       if (pwCb.input[0].value !== process.env.PASSWORD) {
         res.status(401).json(authFail);
       } else {
@@ -39,6 +39,7 @@ export default function(app) {
           if (req.body.stage === 'TransactionAuthorization') {
             baz.canWithdraw = true;
           }
+          res.cookie('iPlanetDirectoryPro', 'abcd1234', { domain: '.example.com' });
           res.json(authSuccess);
         }
       }
@@ -68,6 +69,7 @@ export default function(app) {
         value.identifier &&
         value.identifier.length > 0
       ) {
+        res.cookie('iPlanetDirectoryPro', 'abcd1234', { domain: '.example.com' });
         res.json(authSuccess);
       } else {
         // Just failing the auth for testing, but in reality,
@@ -110,6 +112,7 @@ export default function(app) {
 
   app.post(authPaths.sessions, wait, async (req, res) => {
     if (req.query._action === 'logout') {
+      res.clearCookie('iPlanetDirectoryPro');
       res.status(204).send();
     }
   });

@@ -86,11 +86,11 @@ class FRDevice extends Collector {
     const platform = navigator.platform;
 
     switch (true) {
-      case this.config.devicePlatforms.mac.indexOf(platform) !== -1:
+      case this.config.devicePlatforms.mac.includes(platform):
         return 'Mac (Browser)';
-      case this.config.devicePlatforms.ios.indexOf(platform) !== -1:
+      case this.config.devicePlatforms.ios.includes(platform):
         return `${platform} (Browser)`;
-      case this.config.devicePlatforms.windows.indexOf(platform) !== -1:
+      case this.config.devicePlatforms.windows.includes(platform):
         return 'Windows (Browser)';
       case /Android/.test(platform) || /Android/.test(userAgent):
         return 'Android (Browser)';
@@ -129,6 +129,7 @@ class FRDevice extends Collector {
     }
     let id = localStorage.getItem('profile-id');
     if (!id) {
+      // generate ID, 3 sections of random numbers: "714524572-2799534390-3707617532"
       id = window.crypto.getRandomValues(new Uint32Array(3)).join('-');
       localStorage.setItem('profile-id', id);
     }
@@ -152,7 +153,7 @@ class FRDevice extends Collector {
     const baseWidth = context.measureText(text).width;
 
     const installedFonts = this.config.fontNames.reduce((prev, curr) => {
-      context.font = '72px ' + curr + ', Comic Sans';
+      context.font = `72px ${curr}, Comic Sans`;
       const newWidth = context.measureText(text).width;
 
       if (newWidth !== baseWidth) {

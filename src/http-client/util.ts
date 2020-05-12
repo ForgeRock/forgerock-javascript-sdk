@@ -4,8 +4,24 @@
  * These are private utility functions for HttpClient
  */
 import { CustomPathConfig } from '../config/interfaces';
-import { HttpClientRequestOptions, RequiresNewTokenFn, TxnAuthJSON } from './interfaces';
+import { Advices, HttpClientRequestOptions, RequiresNewTokenFn, TxnAuthJSON } from './interfaces';
+import { Tokens } from '../shared/interfaces';
 import { getEndpointPath, resolve, stringify } from '../util/url';
+
+export function addTxnIDAndTokenToURL(url: string, advices: Advices, tokens?: Tokens): string {
+  const txId = advices.TransactionConditionAdvice[0];
+
+  // Add Txn ID to *original* request options as URL param
+  const updatedURL = new URL(url);
+  updatedURL.searchParams.append('_txid', txId);
+
+  // If tokens are used, send idToken (JWT)
+  if (tokens && tokens.idToken) {
+    updatedURL.searchParams.append('_idtoken', tokens.idToken);
+  }
+
+  return updatedURL.toString();
+}
 
 export function buildTxnAuthOptions(
   txnAuthObj: TxnAuthJSON,
@@ -37,6 +53,9 @@ export function buildTxnAuthOptions(
     init: {
       method: 'POST',
       credentials: 'include' as 'include',
+      headers: {
+        'Accept-API-Version': 'resource=2.0, protocol=1.0',
+      },
     },
     timeout,
     url: resolve(baseURL, `${path}?${stringify(queryParams)}`),

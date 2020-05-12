@@ -20,8 +20,8 @@ export const authSuccess = {
 };
 
 export const createStepUpUrl = () => {
-  const url = new URL(`${AM_URL}/html/realms/root/authenticate`);
-  url.searchParams.set('goto', `${RESOURCE_URL}/withdraw`);
+  const url = new URL(`${AM_URL}`);
+  url.searchParams.set('goto', `${RESOURCE_URL}/ig`);
   url.searchParams.set('realm', '/');
   url.searchParams.set('authIndexType', 'composite_advice');
   url.searchParams.set(
@@ -33,17 +33,27 @@ export const createStepUpUrl = () => {
   return url.toString();
 };
 
+export const stepUpResponse = {
+  resource: '',
+  actions: {},
+  attributes: {},
+  advices: {
+    TransactionConditionAdvice: ['39dfdd15-59a3-473c-a7fc-ecda3bbc3bc8'],
+  },
+  ttl: 0,
+};
+
 export const initialBasicLogin = {
   authId: 'foo',
   callbacks: [
     {
-      type: 'ValidatedCreateUsernameCallback',
+      type: 'NameCallback',
       output: [{ name: 'prompt', value: 'User Name' }],
       input: [{ name: 'IDToken1', value: '' }],
       _id: 0,
     },
     {
-      type: 'ValidatedCreatePasswordCallback',
+      type: 'PasswordCallback',
       output: [{ name: 'prompt', value: 'Password' }],
       input: [{ name: 'IDToken2', value: '' }],
       _id: 1,
@@ -56,13 +66,13 @@ export const initialTxnAuth = {
   authId: 'bar',
   callbacks: [
     {
-      type: 'ValidatedCreateUsernameCallback',
+      type: 'NameCallback',
       output: [{ name: 'prompt', value: 'User Name' }],
       input: [{ name: 'IDToken1', value: '' }],
       _id: 0,
     },
     {
-      type: 'ValidatedCreatePasswordCallback',
+      type: 'PasswordCallback',
       output: [{ name: 'prompt', value: 'Password' }],
       input: [{ name: 'IDToken2', value: '' }],
       _id: 1,

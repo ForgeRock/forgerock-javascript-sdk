@@ -32,8 +32,8 @@
     .pipe(
       rxMergeMap((step) => {
         console.log('Set values on auth tree callbacks');
-        step.getCallbackOfType('ValidatedCreateUsernameCallback').setName(un);
-        step.getCallbackOfType('ValidatedCreatePasswordCallback').setPassword(pw);
+        step.getCallbackOfType('NameCallback').setName(un);
+        step.getCallbackOfType('PasswordCallback').setPassword(pw);
         return forgerock.FRAuth.next(step);
       }),
       rxjs.operators.delay(delay),
@@ -70,7 +70,7 @@
             throw new Error('No profile match.');
           } else {
             console.log('Login with profile successful.');
-            document.body.innerHTML = `<p class="Logged_In">Login successful</p>`;
+            document.body.innerHTML = '<p class="Logged_In">Login successful</p>';
             return step;
           }
         },

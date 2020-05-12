@@ -1,4 +1,5 @@
 import HttpClient from './index';
+import TokenStorage from '../token-storage';
 import {
   requestOptionsForREST,
   responseFromAM,
@@ -6,6 +7,8 @@ import {
   requestOptionsForIG,
   responseFromIG,
 } from './http-client.mock.data';
+
+jest.mock('../token-storage');
 
 jest.mock('./index', () => {
   const originalHttpClient = jest.requireActual('./index');
@@ -28,6 +31,9 @@ describe('Test HttpClient request for txn auth', () => {
   const expected = {
     init: {
       credentials: 'include' as 'include',
+      headers: {
+        'Accept-API-Version': 'resource=2.0, protocol=1.0',
+      },
       method: 'POST',
     },
     timeout: 0,
@@ -38,6 +44,13 @@ describe('Test HttpClient request for txn auth', () => {
   beforeEach(() => {
     const mockedHttpClientRequest = HttpClient['_request'] as any;
     mockedHttpClientRequest.mockClear();
+    // eslint-disable-next-line
+    // @ts-ignore
+    TokenStorage.get.mockResolvedValue({
+      accessToken: 'abcd',
+      idToken: '1234',
+      refreshToken: 'xyz',
+    });
   });
 
   it('should construct proper txn auth request from IG response', async (done) => {
