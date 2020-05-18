@@ -23,6 +23,7 @@
     "docs": "typedoc",
     "docs:watch": "watch 'npm run docs' ./src",
     "lint": "eslint --ignore-path .gitignore '**/*.ts' --fix",
+    "prepublishOnly": "npm run clean:all && npm run build && npm t",
     "start:e2e": "http-server tests/e2e/app -c1 -p 3002 --ssl --cert certs/samples.crt --key certs/samples.key",
     "start:e2e:insecure": "http-server tests/e2e/app -c1 -p 3002",
     "start:server": "APP_PORT=3002 SERVER_PORT=3001 node tests/e2e/server/index.mjs",
@@ -38,7 +39,7 @@
   "husky": {
     "hooks": {
       "pre-commit": "tsc && npm run lint",
-      "pre-push": "npm test"
+      "pre-push": "npm t"
     }
   },
   "repository": {
