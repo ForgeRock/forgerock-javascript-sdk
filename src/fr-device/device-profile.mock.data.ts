@@ -16,7 +16,7 @@ const expectedJsdom = {
     },
     browser: {
       appName: 'Netscape',
-      userAgent: 'Mozilla/5.0 (darwin) AppleWebKit/537.36 (KHTML, like Gecko) jsdom/11.12.0',
+      userAgent: 'Mozilla/5.0 (darwin) AppleWebKit/537.36 (KHTML, like Gecko) jsdom/16.2.2',
       appCodeName: 'Mozilla',
       appVersion: '4.0',
       appMinorVersion: null,
@@ -54,7 +54,7 @@ const expectedJsdomWithoutDisplay = {
     browser: {
       appName: 'Netscape',
       // eslint-disable-next-line
-      userAgent: 'Mozilla/5.0 (darwin) AppleWebKit/537.36 (KHTML, like Gecko) jsdom/11.12.0',
+      userAgent: 'Mozilla/5.0 (darwin) AppleWebKit/537.36 (KHTML, like Gecko) jsdom/16.2.2',
       appCodeName: 'Mozilla',
       // eslint-disable-next-line
       appVersion: '4.0',
@@ -98,7 +98,7 @@ const expectedJsdomWithNarrowedBrowserProps = {
     },
     browser: {
       // eslint-disable-next-line
-      userAgent: 'Mozilla/5.0 (darwin) AppleWebKit/537.36 (KHTML, like Gecko) jsdom/11.12.0',
+      userAgent: 'Mozilla/5.0 (darwin) AppleWebKit/537.36 (KHTML, like Gecko) jsdom/16.2.2',
       plugins: '',
     },
     platform: {

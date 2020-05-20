@@ -11,7 +11,7 @@ describe('Test OAuth login flow with custom paths', () => {
         messageArray.push(msg.text());
       });
 
-      await page.waitForSelector('.Logged_Out', { waitFor: 'visible' });
+      await page.waitForSelector('.Logged_Out');
 
       // Test assertions
       expect(messageArray.includes('OAuth login successful')).toBe(true);

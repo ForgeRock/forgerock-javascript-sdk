@@ -14,10 +14,7 @@ Object.defineProperty(window, 'crypto', {
     subtle: {
       digest: (alg: string, array: Uint8Array): Buffer => {
         if (alg === 'SHA-256') {
-          return crypto
-            .createHash('sha256')
-            .update(array)
-            .digest();
+          return crypto.createHash('sha256').update(array).digest();
         }
         throw new Error(`Unsupported algorithm "${alg}"`);
       },

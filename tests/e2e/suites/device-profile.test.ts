@@ -11,7 +11,7 @@ describe('Test bad login flow', () => {
         messageArray.push(msg.text());
       });
 
-      await page.waitForSelector('.Logged_In', { waitFor: 'visible' });
+      await page.waitForSelector('.Logged_In');
 
       // Test assertions
       expect(messageArray.includes('Collecting profile ...')).toBe(true);

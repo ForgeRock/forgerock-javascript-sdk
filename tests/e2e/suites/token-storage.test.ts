@@ -17,7 +17,7 @@ describe('Test oauth login flow with localStorage', () => {
         messageArray.push(msg.text());
       });
 
-      await page.waitForSelector('.Logged_Out', { waitFor: 'visible' });
+      await page.waitForSelector('.Logged_Out');
 
       // Test assertions
       expect(messageArray.includes('OAuth login successful')).toBe(true);
@@ -43,7 +43,7 @@ describe('Test oauth login flow with localStorage', () => {
         messageArray.push(msg.text());
       });
 
-      await page.waitForSelector('.Logged_Out', { waitFor: 'visible' });
+      await page.waitForSelector('.Logged_Out');
 
       // Test assertions
       expect(messageArray.includes('OAuth login successful')).toBe(true);
