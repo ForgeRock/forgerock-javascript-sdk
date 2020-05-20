@@ -15,7 +15,7 @@ jest.mock('./index', () => {
   return {
     request: originalHttpClient.default.request,
     stepIterator: jest.fn().mockResolvedValue({}),
-    _request: jest.fn(function(options: any): Promise<Response> {
+    _request: jest.fn(function (options: any): Promise<Response> {
       if (options.url === 'https://bank-using-ig.com/withdraw') {
         return Promise.resolve(responseFromIG);
       } else if (options.url === 'https://bank-using-rest.com/withdraw') {

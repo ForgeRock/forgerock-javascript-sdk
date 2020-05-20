@@ -11,7 +11,7 @@ describe('Test bad login flow', () => {
         messageArray.push(msg.text());
       });
 
-      await page.waitForSelector('.Auth_Error', { waitFor: 'visible' });
+      await page.waitForSelector('.Auth_Error');
 
       // Test assertions
       expect(messageArray.includes('Error: Auth_Error')).toBe(true);

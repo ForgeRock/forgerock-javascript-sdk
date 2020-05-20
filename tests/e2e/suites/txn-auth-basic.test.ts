@@ -11,7 +11,7 @@ describe('Test Transaction Authorization flow', () => {
         messageArray.push(msg.text());
       });
 
-      await page.waitForSelector('.Logged_Out', { waitFor: 'visible' });
+      await page.waitForSelector('.Logged_Out');
 
       // Test assertions
       expect(messageArray.includes('IG resource requires additional authorization')).toBe(true);
