@@ -1,12 +1,18 @@
 import { FRCallbackFactory } from '../fr-auth/callbacks/factory';
 import { Tokens } from '../shared/interfaces';
 
+interface Action {
+  type: string;
+  payload: any;
+}
+
 /**
  * Configuration options.
  */
 interface ConfigOptions {
   callbackFactory?: FRCallbackFactory;
   clientId?: string;
+  middleware?: RequestMiddleware[];
   realmPath?: string;
   redirectUri?: string;
   scope?: string;
@@ -28,6 +34,13 @@ interface CustomPathConfig {
   userInfo?: string;
   revoke?: string;
   sessions?: string;
+}
+
+type RequestMiddleware = (req: RequestObj, action: Action, next: () => RequestObj) => RequestObj;
+
+interface RequestObj {
+  url: URL;
+  init: RequestInit;
 }
 
 /**
@@ -56,9 +69,12 @@ interface ValidConfigOptions extends ConfigOptions {
 }
 
 export {
+  Action,
   ConfigOptions,
   ConfigurablePaths,
   CustomPathConfig,
+  RequestMiddleware,
+  RequestObj,
   ServerConfig,
   TokenStoreObject,
   ValidConfigOptions,

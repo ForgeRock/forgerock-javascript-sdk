@@ -2,6 +2,7 @@ import Config, { ConfigOptions } from '../config/index';
 import { REQUESTED_WITH } from '../shared/constants';
 import { isOkOr4xx } from '../util/http';
 import { withTimeout } from '../util/timeout';
+import middlewareWrapper from '../util/middleware';
 import { getEndpointPath, resolve } from '../util/url';
 
 /**
@@ -25,7 +26,8 @@ abstract class SessionManager {
     const path = `${getEndpointPath('sessions', realmPath, serverConfig.paths)}?_action=logout`;
     const url = resolve(serverConfig.baseUrl, path);
 
-    const response = await withTimeout(fetch(url, init), serverConfig.timeout);
+    const req = middlewareWrapper({ url: new URL(url), init }, 'LOGOUT');
+    const response = await withTimeout(fetch(req.url.toString(), req.init), serverConfig.timeout);
     if (!isOkOr4xx(response)) {
       throw new Error(`Failed to log out; received ${response.status}`);
     }

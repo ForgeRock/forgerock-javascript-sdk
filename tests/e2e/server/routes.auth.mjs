@@ -20,7 +20,7 @@ export const baz = {
   canWithdraw: false,
 };
 
-export default function(app) {
+export default function (app) {
   app.post(authPaths.authenticate, wait, async (req, res) => {
     if (!req.body.callbacks) {
       if (req.query.authIndexType === 'composite_advice') {
@@ -39,8 +39,22 @@ export default function(app) {
           if (req.body.stage === 'TransactionAuthorization') {
             baz.canWithdraw = true;
           }
-          res.cookie('iPlanetDirectoryPro', 'abcd1234', { domain: '.example.com' });
-          res.json(authSuccess);
+          if (req.headers['x-auth-middleware']) {
+            if (
+              req.query['auth-middleware'] === 'authentication' &&
+              req.headers['x-auth-middleware'] === 'authentication' &&
+              !req.headers['x-logout-middleware'] &&
+              !req.query['logout-middleware']
+            ) {
+              res.cookie('iPlanetDirectoryPro', 'abcd1234', { domain: '.example.com' });
+              res.json(authSuccess);
+            } else {
+              res.status(406).send('Middleware header is missing.');
+            }
+          } else {
+            res.cookie('iPlanetDirectoryPro', 'abcd1234', { domain: '.example.com' });
+            res.json(authSuccess);
+          }
         }
       }
     } else if (req.body.callbacks.find((cb) => cb.type === 'DeviceProfileCallback')) {
@@ -112,8 +126,22 @@ export default function(app) {
 
   app.post(authPaths.sessions, wait, async (req, res) => {
     if (req.query._action === 'logout') {
-      res.clearCookie('iPlanetDirectoryPro');
-      res.status(204).send();
+      if (req.headers['x-logout-middleware']) {
+        if (
+          req.query['logout-middleware'] === 'logout' &&
+          req.headers['x-logout-middleware'] === 'logout' &&
+          !req.headers['x-auth-middleware'] &&
+          !req.query['auth-middleware']
+        ) {
+          res.clearCookie('iPlanetDirectoryPro');
+          res.status(204).send();
+        } else {
+          res.status(406).send('Middleware header is missing.');
+        }
+      } else {
+        res.clearCookie('iPlanetDirectoryPro');
+        res.status(204).send();
+      }
     }
   });
 }
