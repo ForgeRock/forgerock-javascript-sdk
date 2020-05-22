@@ -1,12 +1,15 @@
-mkdir -p certs
+## Genertates self-signed certs for development/testing purposes only.
+## DO NOT USE IN PRODUCTION!
+
+mkdir -p tests/certs
 
 # Generate the root key
-openssl genrsa -des3 -out certs/ca.key 2048
+openssl genrsa -des3 -out tests/certs/ca.key 2048
 
 # Create a CA configuration file
 echo \
-"FQDN = forgerock-sdk-samples-ca.com
-ORGNAME = ForgeRock SDK Samples CA
+"FQDN = fake-ca.com
+ORGNAME = Fake Certificate Authority
 ALTNAMES = DNS:\$FQDN
 
 [ req ]
@@ -24,19 +27,19 @@ CN = \$FQDN
 
 [ req_ext ]
 subjectAltName = \$ALTNAMES
-"> certs/ca.conf
+"> tests/certs/ca.conf
 
 # Generate a root certificate based on the root key
-openssl req -x509 -new -nodes -key certs/ca.key -sha256 -days 1825 \
-  -out certs/ca.crt -config certs/ca.conf
+openssl req -x509 -new -nodes -key tests/certs/ca.key -sha256 -days 1825 \
+  -out tests/certs/ca.crt -config tests/certs/ca.conf
 
 # Generate a new private key
-openssl genrsa -out certs/samples.key 2048
+openssl genrsa -out tests/certs/samples.key 2048
 
 # Create a CSR configuration file
 echo \
-"FQDN = forgerock-sdk-samples.com
-ORGNAME = ForgeRock SDK Samples
+"FQDN = sdk.example.com
+ORGNAME = ForgeRock Samples
 ALTNAMES = DNS:\$FQDN
 
 [ req ]
@@ -54,11 +57,11 @@ CN = \$FQDN
 
 [ req_ext ]
 subjectAltName = \$ALTNAMES
-"> certs/samples-csr.conf
+"> tests/certs/samples-csr.conf
 
 # Generate a Certificate Signing Request (CSR) based on that private key
-openssl req -new -key certs/samples.key -out certs/samples.csr \
-  -config certs/samples-csr.conf
+openssl req -new -key tests/certs/samples.key -out tests/certs/samples.csr \
+  -config tests/certs/samples-csr.conf
 
 # Create a configuration-file
 echo \
@@ -68,9 +71,9 @@ keyUsage                = digitalSignature,nonRepudiation,keyEncipherment,dataEn
 subjectAltName          = @alt_names
 
 [alt_names]
-DNS.1                   = forgerock-sdk-samples.com
-"> certs/samples-crt.conf
+DNS.1                   = *.example.com
+"> tests/certs/samples-crt.conf
 
 # Create the certificate for the webserver to serve
-openssl x509 -req -in certs/samples.csr -CA certs/ca.crt -CAkey certs/ca.key -CAcreateserial \
-  -out certs/samples.crt -days 1825 -sha256 -extfile certs/samples-crt.conf
+openssl x509 -req -in tests/certs/samples.csr -CA tests/certs/ca.crt -CAkey tests/certs/ca.key -CAcreateserial \
+  -out tests/certs/samples.crt -days 1825 -sha256 -extfile tests/certs/samples-crt.conf

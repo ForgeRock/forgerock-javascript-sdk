@@ -1,4 +1,4 @@
-(function() {
+(function () {
   const rxMergeMap = rxjs.operators.mergeMap;
   const rxMap = rxjs.operators.map;
   const rxTap = rxjs.operators.tap;

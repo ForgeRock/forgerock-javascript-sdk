@@ -1,12 +1,12 @@
 bundles/
-certs/
 docs/
 coverage/
 lib/
 lib-esm/
 node_modules/
-samples/js/index.js*
+samples/js
 tests/e2e/app/index.js*
+tests/e2e/server/config.copy.mjs
 
 .DS_Store
 .env

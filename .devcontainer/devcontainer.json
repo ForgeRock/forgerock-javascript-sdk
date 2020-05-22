@@ -11,7 +11,7 @@
   "extensions": ["dbaeumer.vscode-eslint"],
 
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
-  "forwardPorts": [3001, 3002],
+  "forwardPorts": [8443, 9443],
 
   // Use 'postCreateCommand' to run commands after the container is created.
   "postCreateCommand": "npm i && npm run build"
