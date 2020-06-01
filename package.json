@@ -33,7 +33,7 @@
     "test:e2e": "jest --testMatch='<rootDir>/tests/e2e/**/*.test.ts' --config=./tests/e2e.config.js",
     "test:e2e:live": "OAUTH_SERVER=live jest --testMatch='<rootDir>/tests/e2e/**/*.test.ts' --config=./tests/e2e.config.js",
     "test:integration": "jest --testMatch='<rootDir>/tests/integration/**/*.test.ts' --config=./tests/basic.config.js",
-    "test:unit": "jest --testMatch='<rootDir>/src/**/*.test.ts' --config=./tests/basic.config.js",
+    "test:unit": "jest --testMatch='<rootDir>/src/**/*.test.ts' --config=./tests/basic.config.js --env=./tests/test-env.js",
     "watch": "webpack -w --env.DEV=yes"
   },
   "husky": {
@@ -74,6 +74,7 @@
     "jest": "^26.0.1",
     "jest-canvas-mock": "^2.2.0",
     "jest-dev-server": "^4.3.0",
+    "jest-environment-jsdom": "^26.0.1",
     "playwright": "^1.0.2",
     "prettier": "^2.0.5",
     "shx": "^0.3.2",
@@ -82,6 +83,7 @@
     "tsconfig-paths-webpack-plugin": "^3.2.0",
     "typedoc": "^0.17.7",
     "typescript": "^3.5.2",
+    "util": "^0.12.3",
     "watch": "^1.0.2",
     "webpack": "^4.42.1",
     "webpack-cli": "^3.3.11"

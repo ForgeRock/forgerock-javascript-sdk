@@ -14,10 +14,15 @@ import {
   WebAuthnAuthenticationMetadata,
   WebAuthnCallbacks,
   WebAuthnRegistrationMetadata,
+  WebAuthnTextOutputRegistration,
 } from './interfaces';
+import TextOutputCallback from 'fr-auth/callbacks/text-output-callback';
+import { parseWebAuthnAuthenticateText, parseWebAuthnRegisterText } from './script-parser';
 
+// JSON-based WebAuthn
 type WebAuthnMetadata = WebAuthnAuthenticationMetadata | WebAuthnRegistrationMetadata;
-
+// Script-based WebAuthn
+type WebAuthnTextOutput = WebAuthnTextOutputRegistration;
 /**
  * Utility for integrating a web browser's WebAuthn API.
  *
@@ -44,17 +49,25 @@ abstract class FRWebAuthn {
   public static getWebAuthnStepType(step: FRStep): WebAuthnStepType {
     const outcomeCallback = this.getOutcomeCallback(step);
     const metadataCallback = this.getMetadataCallback(step);
+    const textOutputCallback = this.getTextOutputCallback(step);
 
-    if (!outcomeCallback || !metadataCallback) {
+    if (outcomeCallback && metadataCallback) {
+      const metadata = metadataCallback.getOutputValue('data') as WebAuthnAuthenticationMetadata;
+      if (metadata.allowCredentials) {
+        return WebAuthnStepType.Authentication;
+      }
+
+      return WebAuthnStepType.Registration;
+    } else if (outcomeCallback && textOutputCallback) {
+      const message = textOutputCallback.getMessage();
+      if (message.includes('allowCredentials')) {
+        return WebAuthnStepType.Authentication;
+      }
+
+      return WebAuthnStepType.Registration;
+    } else {
       return WebAuthnStepType.None;
     }
-
-    const metadata = metadataCallback.getOutputValue('data') as WebAuthnAuthenticationMetadata;
-    if (metadata.allowCredentials) {
-      return WebAuthnStepType.Authentication;
-    }
-
-    return WebAuthnStepType.Registration;
   }
 
   /**
@@ -64,22 +77,32 @@ abstract class FRWebAuthn {
    * @return The populated step
    */
   public static async authenticate(step: FRStep): Promise<FRStep> {
-    const { hiddenCallback, metadataCallback } = this.getCallbacks(step);
-    if (!hiddenCallback || !metadataCallback) {
+    const { hiddenCallback, metadataCallback, textOutputCallback } = this.getCallbacks(step);
+    if (hiddenCallback && (metadataCallback || textOutputCallback)) {
+      let outcome: string;
+
+      try {
+        let publicKey: PublicKeyCredentialRequestOptions;
+        if (metadataCallback) {
+          const meta = metadataCallback.getOutputValue('data') as WebAuthnAuthenticationMetadata;
+          publicKey = this.createAuthenticationPublicKey(meta);
+        } else if (textOutputCallback) {
+          publicKey = parseWebAuthnAuthenticateText(textOutputCallback.getMessage());
+        }
+        // TypeScript doesn't like `publicKey` being assigned in conditionals above
+        // eslint-disable-next-line
+        // @ts-ignore
+        const credential = await this.getAuthenticationCredential(publicKey);
+        outcome = this.getAuthenticationOutcome(credential);
+      } catch (error) {
+        outcome = this.getErrorOutcome(error);
+      }
+
+      hiddenCallback.setInputValue(outcome);
+      return step;
+    } else {
       throw new Error('Invalid webauthn payload');
     }
-
-    let outcome: string;
-    try {
-      const metadata = metadataCallback.getOutputValue('data') as WebAuthnAuthenticationMetadata;
-      const publicKey = this.createAuthenticationPublicKey(metadata);
-      const credential = await this.getAuthenticationCredential(publicKey);
-      outcome = this.getAuthenticationOutcome(credential);
-    } catch (error) {
-      outcome = this.getErrorOutcome(error);
-    }
-    hiddenCallback.setInputValue(outcome);
-    return step;
   }
 
   /**
@@ -89,22 +112,32 @@ abstract class FRWebAuthn {
    * @return The populated step
    */
   public static async register(step: FRStep): Promise<FRStep> {
-    const { hiddenCallback, metadataCallback } = this.getCallbacks(step);
-    if (!hiddenCallback || !metadataCallback) {
+    const { hiddenCallback, metadataCallback, textOutputCallback } = this.getCallbacks(step);
+    if (hiddenCallback && (metadataCallback || textOutputCallback)) {
+      let outcome: string;
+
+      try {
+        let publicKey: PublicKeyCredentialRequestOptions;
+        if (metadataCallback) {
+          const meta = metadataCallback.getOutputValue('data') as WebAuthnRegistrationMetadata;
+          publicKey = this.createRegistrationPublicKey(meta);
+        } else if (textOutputCallback) {
+          publicKey = parseWebAuthnRegisterText(textOutputCallback.getMessage());
+        }
+        // TypeScript doesn't like `publicKey` being assigned in conditionals above
+        // eslint-disable-next-line
+        // @ts-ignore
+        const credential = await this.getRegistrationCredential(publicKey);
+        outcome = this.getRegistrationOutcome(credential);
+      } catch (error) {
+        outcome = this.getErrorOutcome(error);
+      }
+
+      hiddenCallback.setInputValue(outcome);
+      return step;
+    } else {
       throw new Error('Invalid webauthn payload');
     }
-
-    let outcome: string;
-    try {
-      const metadata = metadataCallback.getOutputValue('data') as WebAuthnRegistrationMetadata;
-      const publicKey = this.createRegistrationPublicKey(metadata);
-      const credential = await this.getRegistrationCredential(publicKey);
-      outcome = this.getRegistrationOutcome(credential);
-    } catch (error) {
-      outcome = this.getErrorOutcome(error);
-    }
-    hiddenCallback.setInputValue(outcome);
-    return step;
   }
 
   /**
@@ -114,10 +147,19 @@ abstract class FRWebAuthn {
    * @return The WebAuthn callbacks
    */
   public static getCallbacks(step: FRStep): WebAuthnCallbacks {
-    return {
-      hiddenCallback: this.getOutcomeCallback(step),
-      metadataCallback: this.getMetadataCallback(step),
+    const hiddenCallback = this.getOutcomeCallback(step);
+    const metadataCallback = this.getMetadataCallback(step);
+    const textOutputCallback = this.getTextOutputCallback(step);
+
+    const returnObj: WebAuthnCallbacks = {
+      hiddenCallback,
     };
+    if (metadataCallback) {
+      returnObj.metadataCallback = metadataCallback;
+    } else if (textOutputCallback) {
+      returnObj.textOutputCallback = textOutputCallback;
+    }
+    return returnObj;
   }
 
   /**
@@ -144,6 +186,22 @@ abstract class FRWebAuthn {
     return step
       .getCallbacksOfType<HiddenValueCallback>(CallbackType.HiddenValueCallback)
       .find((x) => x.getOutputByName<string>('id', '') === 'webAuthnOutcome');
+  }
+
+  /**
+   * Returns the WebAuthn metadata callback containing data to pass to the browser
+   * Web Authentication API.
+   *
+   * @param step The step that contains WebAuthn callbacks
+   * @return The metadata callback
+   */
+  public static getTextOutputCallback(step: FRStep): TextOutputCallback | undefined {
+    return step
+      .getCallbacksOfType<TextOutputCallback>(CallbackType.TextOutputCallback)
+      .find((x) => {
+        const cb = x.getOutputByName<WebAuthnTextOutput | undefined>('message', undefined);
+        return cb && cb.includes('webAuthnOutcome');
+      });
   }
 
   /**
