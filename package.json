@@ -27,6 +27,7 @@
     "start:e2e": "http-server tests/e2e/app -c1 -p 3002 --ssl --cert certs/samples.crt --key certs/samples.key",
     "start:e2e:insecure": "http-server tests/e2e/app -c1 -p 3002",
     "start:server": "APP_PORT=3002 SERVER_PORT=3001 node tests/e2e/server/index.mjs",
+    "start:server:live": "LIVE=true APP_PORT=3002 SERVER_PORT=3001 node tests/e2e/server/index.mjs",
     "start:samples": "http-server samples -c1 -p 3000 --ssl --cert certs/samples.crt --key certs/samples.key",
     "test": "npm run test:unit && npm run test:integration && npm run test:e2e",
     "test:coverage": "jest --testMatch='<rootDir>/src/**/*.test.ts' --config=./tests/basic.config.js --coverage=true",

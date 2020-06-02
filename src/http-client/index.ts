@@ -13,6 +13,7 @@ import TokenManager from '../token-manager';
 import TokenStorage from '../token-storage';
 import { withTimeout } from '../util/timeout';
 import {
+  addTxnIDAndTokenToHeaders,
   addTxnIDAndTokenToURL,
   buildTxnAuthOptions,
   examineForIGTxnAuth,
@@ -36,6 +37,7 @@ abstract class HttpClient extends Dispatcher {
   public static async request(options: HttpClientRequestOptions): Promise<Response> {
     let res = await this._request(options, false);
     let txnAuthJSON: TxnAuthJSON | undefined;
+    let hasIG = false;
 
     if (newTokenRequired(res, options.requiresNewToken)) {
       res = await this._request(options, true);
@@ -43,6 +45,7 @@ abstract class HttpClient extends Dispatcher {
 
     if (options.txnAuth && options.txnAuth.handleStep) {
       if (res.redirected && examineForIGTxnAuth(res)) {
+        hasIG = true;
         txnAuthJSON = normalizeIGJSON(res);
       } else if (await examineForRESTTxnAuth(res)) {
         txnAuthJSON = await normalizeRESTJSON(res);
@@ -70,8 +73,17 @@ abstract class HttpClient extends Dispatcher {
           await this.stepIterator(initialStep, options.txnAuth.handleStep);
           // See if OAuth tokens are being used
           const tokens = await TokenStorage.get();
-          // Update URL with txn ID
-          options.url = addTxnIDAndTokenToURL(options.url, txnAuthJSON.advices, tokens);
+          if (hasIG) {
+            // Update URL with txn ID for IG
+            options.url = addTxnIDAndTokenToURL(options.url, txnAuthJSON.advices, tokens);
+          } else {
+            // Update URL with txn ID for REST API
+            options.init.headers = addTxnIDAndTokenToHeaders(
+              options.init,
+              txnAuthJSON.advices,
+              tokens,
+            );
+          }
           // Retry original resource request
           res = await this._request(options, false);
         } catch (err) {
