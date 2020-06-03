@@ -8,7 +8,7 @@ describe('Test oauth login flow with localStorage', () => {
         'token-storage/',
         null,
         null,
-        'localStorage',
+        'sessionStorage',
       );
 
       const messageArray = [];

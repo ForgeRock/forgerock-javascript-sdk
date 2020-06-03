@@ -2,6 +2,7 @@ import Config from '../config/index';
 import { TokenStoreObject } from '../config/interfaces';
 import IndexedDBWrapper from './indexed-db';
 import LocalStorageWrapper from './local-storage';
+import SessionStorageWrapper from './session-storage';
 import { Tokens } from '../shared/interfaces';
 
 /**
@@ -14,7 +15,9 @@ abstract class TokenStorage {
   public static async get(): Promise<Tokens> {
     const { clientId, tokenStore } = this.getClientConfig();
 
-    if (tokenStore === 'localStorage') {
+    if (tokenStore === 'sessionStorage') {
+      return await SessionStorageWrapper.get(clientId);
+    } else if (tokenStore === 'localStorage') {
       return await LocalStorageWrapper.get(clientId);
     } else if (tokenStore === 'indexedDB') {
       return await IndexedDBWrapper.get(clientId);
@@ -32,7 +35,9 @@ abstract class TokenStorage {
   public static async set(tokens: Tokens): Promise<void> {
     const { clientId, tokenStore } = this.getClientConfig();
 
-    if (tokenStore === 'localStorage') {
+    if (tokenStore === 'sessionStorage') {
+      return await SessionStorageWrapper.set(clientId, tokens);
+    } else if (tokenStore === 'localStorage') {
       return await LocalStorageWrapper.set(clientId, tokens);
     } else if (tokenStore === 'indexedDB') {
       return await IndexedDBWrapper.set(clientId, tokens);
@@ -50,7 +55,9 @@ abstract class TokenStorage {
   public static async remove(): Promise<void> {
     const { clientId, tokenStore } = this.getClientConfig();
 
-    if (tokenStore === 'localStorage') {
+    if (tokenStore === 'sessionStorage') {
+      return await SessionStorageWrapper.remove(clientId);
+    } else if (tokenStore === 'localStorage') {
       return await LocalStorageWrapper.remove(clientId);
     } else if (tokenStore === 'indexedDB') {
       return await IndexedDBWrapper.remove(clientId);
@@ -64,7 +71,7 @@ abstract class TokenStorage {
 
   private static getClientConfig(): {
     clientId: string;
-    tokenStore: TokenStoreObject | 'indexedDB' | 'localStorage' | undefined;
+    tokenStore: TokenStoreObject | 'indexedDB' | 'sessionStorage' | 'localStorage' | undefined;
   } {
     const { clientId, tokenStore } = Config.get();
     if (!clientId) {
