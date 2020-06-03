@@ -17,7 +17,7 @@ interface ConfigOptions {
   redirectUri?: string;
   scope?: string;
   serverConfig?: ServerConfig;
-  tokenStore?: TokenStoreObject | 'indexedDB' | 'localStorage';
+  tokenStore?: TokenStoreObject | 'indexedDB' | 'sessionStorage' | 'localStorage';
   tree?: string;
 }
 

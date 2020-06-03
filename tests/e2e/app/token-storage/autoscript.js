@@ -13,7 +13,7 @@
   const un = url.searchParams.get('un') || '57a5b4e4-6999-4b45-bf86-a4f2e5d4b629';
   const pw = url.searchParams.get('pw') || 'Password1!';
   const tree = url.searchParams.get('tree') || 'BasicLogin';
-  let tokenStore = url.searchParams.get('tokenStore') || 'localStorage';
+  let tokenStore = url.searchParams.get('tokenStore') || 'sessionStorage';
   let inMemoryTokens;
 
   if (tokenStore === 'customStore') {
