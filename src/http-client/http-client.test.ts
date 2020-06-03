@@ -9,7 +9,6 @@ import {
 } from './http-client.mock.data';
 
 jest.mock('../token-storage');
-
 jest.mock('./index', () => {
   const originalHttpClient = jest.requireActual('./index');
   return {

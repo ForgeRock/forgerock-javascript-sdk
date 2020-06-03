@@ -8,6 +8,20 @@ import { Advices, HttpClientRequestOptions, RequiresNewTokenFn, TxnAuthJSON } fr
 import { Tokens } from '../shared/interfaces';
 import { getEndpointPath, resolve, stringify } from '../util/url';
 
+export function addTxnIDAndTokenToHeaders(
+  init: RequestInit,
+  advices: Advices,
+  tokens?: Tokens,
+): Headers {
+  const headers = new Headers(init.headers);
+  headers.set('x-txid', advices.TransactionConditionAdvice[0]);
+
+  if (tokens && tokens.idToken) {
+    headers.set('x-idtoken', tokens.idToken);
+  }
+  return headers;
+}
+
 export function addTxnIDAndTokenToURL(url: string, advices: Advices, tokens?: Tokens): string {
   const txId = advices.TransactionConditionAdvice[0];
 
