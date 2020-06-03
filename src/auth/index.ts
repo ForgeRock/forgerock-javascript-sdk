@@ -4,6 +4,7 @@ import { StringDict } from '../shared/interfaces';
 import { withTimeout } from '../util/timeout';
 import { getEndpointPath, resolve, stringify } from '../util/url';
 import { Step, StepOptions } from './interfaces';
+import middlewareWrapper from '../util/middleware';
 
 /**
  * Provides direct access to the OpenAM authentication tree API.
@@ -20,8 +21,14 @@ abstract class Auth {
     const { realmPath, serverConfig, tree } = Config.get(options);
     const query = options ? options.query : {};
     const url = this.constructUrl(serverConfig, realmPath, tree, query);
-    const init = this.configureRequest(previousStep);
-    const res = await withTimeout(fetch(url, init), serverConfig.timeout);
+    const req = middlewareWrapper(
+      {
+        url: new URL(url),
+        init: this.configureRequest(previousStep),
+      },
+      previousStep ? 'AUTHENTICATE' : 'START_AUTHENTICATE',
+    );
+    const res = await withTimeout(fetch(req.url.toString(), req.init), serverConfig.timeout);
     const json = await this.getResponseJson<Step>(res);
     return json;
   }

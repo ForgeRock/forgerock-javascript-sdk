@@ -14,6 +14,7 @@ import {
   GetOAuth2TokensOptions,
   OAuth2Tokens,
 } from './interfaces';
+import middlewareWrapper from '../util/middleware';
 
 /**
  * OAuth 2.0 client.
@@ -201,6 +202,26 @@ abstract class OAuth2Client {
     const { serverConfig } = Config.get(options);
     const url = this.getUrl(endpoint, query, options);
 
+    enum ActionType {
+      AUTHORIZE = 'AUTHORIZE',
+      LOGOUT = 'LOGOUT',
+      REVOKE_TOKEN = 'REVOKE_TOKEN',
+      USER_INFO = 'USER_INFO',
+    }
+
+    const getActionType = (endpoint: ConfigurablePaths): keyof typeof ActionType => {
+      switch (endpoint) {
+        case 'accessToken':
+          return 'AUTHORIZE';
+        case 'endSession':
+          return 'LOGOUT';
+        case 'revoke':
+          return 'REVOKE_TOKEN';
+        default:
+          return 'USER_INFO';
+      }
+    };
+
     init = init || ({} as RequestInit);
 
     if (includeToken) {
@@ -209,8 +230,8 @@ abstract class OAuth2Client {
       init.headers = (init.headers || new Headers()) as Headers;
       init.headers.set('authorization', `Bearer ${accessToken}`);
     }
-
-    return await withTimeout(fetch(url, init), serverConfig.timeout);
+    const req = middlewareWrapper({ url: new URL(url), init }, getActionType(endpoint));
+    return await withTimeout(fetch(req.url.toString(), req.init), serverConfig.timeout);
   }
 
   private static containsAuthCode(url: string | null): boolean {

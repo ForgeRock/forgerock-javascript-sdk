@@ -1,9 +1,9 @@
 import { setupAndGo } from '../utilities/setup-and-go';
 
-describe('Test OAuth login flow', () => {
+describe('Test request middleware with login flow', () => {
   ['chromium', 'webkit', 'firefox'].forEach((browserType) => {
-    it(`should login successfully and then log out with ${browserType}`, async (done) => {
-      const { browser, page } = await setupAndGo(browserType, 'oauth-login/');
+    it(`Login successfully with ${browserType}`, async (done) => {
+      const { browser, page } = await setupAndGo(browserType, 'request-middleware/');
 
       const messageArray = [];
 
@@ -14,7 +14,7 @@ describe('Test OAuth login flow', () => {
       await page.waitForSelector('.Logged_Out');
 
       // Test assertions
-      expect(messageArray.includes('OAuth login successful')).toBe(true);
+      expect(messageArray.includes('Basic login successful')).toBe(true);
       expect(messageArray.includes('Logout successful')).toBe(true);
 
       await browser.close();
