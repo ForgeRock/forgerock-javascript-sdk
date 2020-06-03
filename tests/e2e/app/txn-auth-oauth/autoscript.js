@@ -64,44 +64,9 @@
         (step) => step,
       ),
       rxjs.operators.delay(delay),
-      rxMap((step) => {
-        if (step.getSessionToken()) {
-          console.log('OAuth login successful');
-          document.body.innerHTML = '<p class="Logged_In">Login successful</p>';
-        } else {
-          throw new Error('Session_Error');
-        }
-      }),
-      rxjs.operators.delay(delay),
       rxMergeMap(
         (step) => {
-          console.log('Retrieve the user balance');
-          return forgerock.HttpClient.request({
-            url: `${resourceUrl}/anything`,
-            init: {
-              method: 'GET',
-              credentials: 'include',
-            },
-            txnAuth: {
-              handleStep: async (step) => {
-                console.log('Withdraw action requires additional authorization');
-                step.getCallbackOfType('NameCallback').setName(un);
-                step.getCallbackOfType('PasswordCallback').setPassword(pw);
-                return Promise.resolve(step);
-              },
-            },
-          });
-        },
-        async (step, response) => {
-          const body = await response.json();
-          console.log(`Balance is: ${body.balance}`);
-          return step;
-        },
-      ),
-      rxjs.operators.delay(delay),
-      rxMergeMap(
-        (step) => {
-          console.log('Make a $200 withdrawal from account');
+          console.log('IG: Make a $200 withdrawal from account');
           return forgerock.HttpClient.request({
             init: {
               method: 'POST',
@@ -109,23 +74,55 @@
             },
             txnAuth: {
               handleStep: async (step) => {
-                console.log('Withdraw action requires additional authorization');
-                step.getCallbackOfType('ValidatedCreateUsernameCallback').setName(un);
-                step.getCallbackOfType('ValidatedCreatePasswordCallback').setPassword(pw);
+                console.log('IG: Withdraw action requires additional authorization');
+                step.getCallbackOfType('NameCallback').setName(un);
+                step.getCallbackOfType('PasswordCallback').setPassword(pw);
                 return Promise.resolve(step);
               },
             },
             timeout: 0,
-            url: `${resourceUrl}/withdraw`,
+            url: `${resourceUrl}/ig`,
           });
         },
         async (step, response) => {
           if (response.ok) {
-            console.log('Withdrawal of $200 was successful');
+            console.log('IG: Withdrawal of $200 was successful');
             const body = await response.json();
-            console.log(`Balance is ${body.balance}`);
+            console.log(`IG: Balance is ${body.balance}`);
           } else {
-            console.log('Withdraw authorization failed');
+            console.log('IG: Withdraw authorization failed');
+          }
+          return step;
+        },
+      ),
+      rxjs.operators.delay(delay),
+      rxMergeMap(
+        (step) => {
+          console.log('REST: Make a $200 withdrawal from account');
+          return forgerock.HttpClient.request({
+            init: {
+              method: 'POST',
+              body: JSON.stringify({ amount: '200' }),
+            },
+            txnAuth: {
+              handleStep: async (step) => {
+                console.log('REST: Withdraw action requires additional authorization');
+                step.getCallbackOfType('NameCallback').setName(un);
+                step.getCallbackOfType('PasswordCallback').setPassword(pw);
+                return Promise.resolve(step);
+              },
+            },
+            timeout: 0,
+            url: `${resourceUrl}/rest`,
+          });
+        },
+        async (step, response) => {
+          if (response.ok) {
+            console.log('REST: Withdrawal of $200 was successful');
+            const body = await response.json();
+            console.log(`REST: Balance is ${body.balance}`);
+          } else {
+            console.log('REST: Withdraw authorization failed');
           }
           return step;
         },
