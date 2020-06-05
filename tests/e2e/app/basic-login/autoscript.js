@@ -1,4 +1,4 @@
-(function() {
+(function () {
   const rxMergeMap = rxjs.operators.mergeMap;
   const rxMap = rxjs.operators.map;
   const rxTap = rxjs.operators.tap;
@@ -15,6 +15,23 @@
 
   console.log('Configure the SDK');
   forgerock.Config.set({
+    middleware: [
+      (req, action, next) => {
+        switch (action.type) {
+          case 'START_AUTHENTICATE':
+            if (action.payload.type === 'service' && typeof action.payload.tree === 'string') {
+              console.log('Starting authentication with service');
+            }
+            break;
+          case 'AUTHENTICATE':
+            if (action.payload.type === 'service' && typeof action.payload.tree === 'string') {
+              console.log('Continuing authentication with service');
+            }
+            break;
+        }
+        next();
+      },
+    ],
     redirectUri: `${url.origin}/callback`,
     realmPath,
     scope,
@@ -25,55 +42,58 @@
   });
 
   console.log('Initiate first step with `undefined`');
-  rxjs
-    .from(forgerock.FRAuth.next())
-    .pipe(
-      rxMergeMap((step) => {
-        console.log('Set values on auth tree callbacks');
-        step.getCallbackOfType('NameCallback').setName(un);
-        step.getCallbackOfType('PasswordCallback').setPassword(pw);
-        return forgerock.FRAuth.next(step);
-      }),
-      rxjs.operators.delay(delay),
-      rxMap(
-        (step) => {
-          if (step.payload.code === 401) {
-            throw new Error('Auth_Error');
-          } else if (step.payload.tokenId) {
-            console.log('Basic login successful');
-            document.body.innerHTML = '<p class="Logged_In">Login successful</p>';
+  // Wrapping in setTimeout to give the test time to bind listener to console.log
+  setTimeout(function () {
+    rxjs
+      .from(forgerock.FRAuth.next())
+      .pipe(
+        rxMergeMap((step) => {
+          console.log('Set values on auth tree callbacks');
+          step.getCallbackOfType('NameCallback').setName(un);
+          step.getCallbackOfType('PasswordCallback').setPassword(pw);
+          return forgerock.FRAuth.next(step);
+        }),
+        rxjs.operators.delay(delay),
+        rxMap(
+          (step) => {
+            if (step.payload.code === 401) {
+              throw new Error('Auth_Error');
+            } else if (step.payload.tokenId) {
+              console.log('Basic login successful');
+              document.body.innerHTML = '<p class="Logged_In">Login successful</p>';
+            } else {
+              throw new Error('Something went wrong.');
+            }
+          },
+          (step) => step,
+        ),
+        rxjs.operators.delay(delay),
+        rxMergeMap((step) => {
+          return forgerock.SessionManager.logout();
+        }),
+        rxMap((response) => {
+          if (response.ok) {
+            console.log('Logout successful');
+            document.body.innerHTML = '<p class="Logged_Out">Logout successful</p>';
           } else {
-            throw new Error('Something went wrong.');
+            throw new Error('Logout_Error');
           }
+        }),
+        rxTap(
+          () => {},
+          (err) => {
+            console.log(`Error: ${err.message}`);
+            document.body.innerHTML = `<p class="${err.message}">${err.message}</p>`;
+          },
+          () => {},
+        ),
+      )
+      .subscribe(
+        (data) => {},
+        (err) => {},
+        () => {
+          console.log('Test script complete');
         },
-        (step) => step,
-      ),
-      rxjs.operators.delay(delay),
-      rxMergeMap((step) => {
-        return forgerock.SessionManager.logout();
-      }),
-      rxMap((response) => {
-        if (response.ok) {
-          console.log('Logout successful');
-          document.body.innerHTML = '<p class="Logged_Out">Logout successful</p>';
-        } else {
-          throw new Error('Logout_Error');
-        }
-      }),
-      rxTap(
-        () => {},
-        (err) => {
-          console.log(`Error: ${err.message}`);
-          document.body.innerHTML = `<p class="${err.message}">${err.message}</p>`;
-        },
-        () => {},
-      ),
-    )
-    .subscribe(
-      (data) => {},
-      (err) => {},
-      () => {
-        console.log('Test script complete');
-      },
-    );
+      );
+  }, 250);
 })();

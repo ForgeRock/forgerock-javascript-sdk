@@ -16,6 +16,8 @@ describe('Test Basic login flow', () => {
       // Test assertions
       expect(messageArray.includes('Basic login successful')).toBe(true);
       expect(messageArray.includes('Logout successful')).toBe(true);
+      expect(messageArray.includes('Starting authentication with service')).toBe(true);
+      expect(messageArray.includes('Continuing authentication with service')).toBe(true);
 
       await browser.close();
       done();

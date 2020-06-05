@@ -18,6 +18,8 @@ describe('Test Transaction Authorization flow', () => {
       expect(messageArray.includes('Rest resource requires additional authorization')).toBe(true);
       expect(messageArray.includes('Request to IG resource successfully responded')).toBe(true);
       expect(messageArray.includes('Request to REST resource successfully responded')).toBe(true);
+      expect(messageArray.includes('Starting authentication with composite advice')).toBe(true);
+      expect(messageArray.includes('Continuing authentication with composite advice')).toBe(true);
 
       await browser.close();
       done();

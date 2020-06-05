@@ -1,7 +1,8 @@
 import Config from '../config';
 import { RequestObj } from '../config/interfaces';
+import { ActionTypes } from '../config/enums';
 
-function middlewareWrapper(request: RequestObj, type: string, payload?: any): RequestObj {
+function middlewareWrapper(request: RequestObj, type: ActionTypes, payload?: any): RequestObj {
   const { middleware } = Config.get();
 
   if (!Array.isArray(middleware)) {

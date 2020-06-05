@@ -1,17 +1,26 @@
 import { Action, RequestObj } from '../config/interfaces';
+import { ActionTypes } from '../config/enums';
 
 type NextFn = () => RequestObj;
+
+const a = 'a' as ActionTypes;
+const b = 'b' as ActionTypes;
+const one = '1' as ActionTypes;
+const two = '2' as ActionTypes;
+const add = 'ADD' as ActionTypes;
+const reassignment = 'REASSIGNMENT' as ActionTypes;
+const mutateAction = 'MUTATE-ACTION' as ActionTypes;
 
 export default [
   (req: RequestObj, action: Action, next: NextFn) => {
     switch (action.type) {
-      case 'a':
-      case 'b':
+      case a:
+      case b:
         req.url.searchParams.set('letter', 'true');
         req.init.headers = { ...{ 'x-letter': 'true' }, ...req.init.headers };
         break;
-      case '1':
-      case '2':
+      case one:
+      case two:
         req.url.searchParams.set('letter', 'false');
         req.init.headers = { ...{ 'x-letter': 'false' }, ...req.init.headers };
         break;
@@ -20,11 +29,11 @@ export default [
   },
   (req: RequestObj, action: Action, next: NextFn) => {
     switch (action.type) {
-      case 'a':
+      case a:
         req.url.searchParams.set('char', 'a');
         req.init.headers = { ...{ 'x-char': 'a' }, ...req.init.headers };
         break;
-      case 'b':
+      case b:
         req.url.searchParams.set('char', 'b');
         req.init.headers = { ...{ 'x-char': 'b' }, ...req.init.headers };
         break;
@@ -33,11 +42,11 @@ export default [
   },
   (req: RequestObj, action: Action, next: NextFn) => {
     switch (action.type) {
-      case '1':
+      case one:
         req.url.searchParams.set('char', '1');
         req.init.headers = { ...{ 'x-char': '1' }, ...req.init.headers };
         break;
-      case '2':
+      case two:
         req.url.searchParams.set('char', '2');
         req.init.headers = { ...{ 'x-char': '2' }, ...req.init.headers };
         break;
@@ -46,7 +55,7 @@ export default [
   },
   (req: RequestObj, action: Action, next: NextFn) => {
     switch (action.type) {
-      case 'ADD':
+      case add:
         // eslint-disable-next-line
         // @ts-ignore
         req.init.headers = { ...{ 'x-char': 'a,' + action.payload }, ...req.init.headers };
@@ -58,7 +67,7 @@ export default [
   // @ts-ignore
   (req: RequestObj, action: Action, next: NextFn) => {
     switch (action.type) {
-      case 'REASSIGNMENT':
+      case reassignment:
         req = { url: new URL('https://bad.com'), init: { headers: { 'x-bad': 'true' } } };
         break;
     }
@@ -68,8 +77,8 @@ export default [
   // @ts-ignore
   (req: RequestObj, action: Action, next: NextFn) => {
     switch (action.type) {
-      case 'MUTATE-ACTION':
-        action.type = 'hello';
+      case mutateAction:
+        action.type = 'hello' as ActionTypes;
         break;
     }
     next();

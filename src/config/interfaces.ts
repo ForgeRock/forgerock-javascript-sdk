@@ -1,8 +1,9 @@
+import { ActionTypes } from './enums';
 import { FRCallbackFactory } from '../fr-auth/callbacks/factory';
 import { Tokens } from '../shared/interfaces';
 
 interface Action {
-  type: string;
+  type: ActionTypes;
   payload: any;
 }
 
@@ -19,6 +20,7 @@ interface ConfigOptions {
   serverConfig?: ServerConfig;
   tokenStore?: TokenStoreObject | 'indexedDB' | 'sessionStorage' | 'localStorage';
   tree?: string;
+  type?: string;
 }
 
 type ConfigurablePaths = keyof CustomPathConfig;

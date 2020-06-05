@@ -1,4 +1,4 @@
-(function() {
+(function () {
   const rxMergeMap = rxjs.operators.mergeMap;
   const rxMap = rxjs.operators.map;
   const rxTap = rxjs.operators.tap;
@@ -19,6 +19,29 @@
   console.log('Configure the SDK');
   forgerock.Config.set({
     clientId,
+    middleware: [
+      (req, action, next) => {
+        switch (action.type) {
+          case 'START_AUTHENTICATE':
+            if (
+              action.payload.type === 'composite_advice' &&
+              typeof action.payload.tree === 'string'
+            ) {
+              console.log('Starting authentication with composite advice');
+            }
+            break;
+          case 'AUTHENTICATE':
+            if (
+              action.payload.type === 'composite_advice' &&
+              typeof action.payload.tree === 'string'
+            ) {
+              console.log('Continuing authentication with composite advice');
+            }
+            break;
+        }
+        next();
+      },
+    ],
     redirectUri: `${url.origin}/callback`,
     realmPath,
     scope,
