@@ -1,4 +1,4 @@
-(function() {
+(function () {
   const rxMergeMap = rxjs.operators.mergeMap;
   const rxMap = rxjs.operators.map;
   const rxTap = rxjs.operators.tap;
@@ -17,6 +17,19 @@
   console.log('Configure the SDK');
   forgerock.Config.set({
     clientId,
+    middleware: [
+      (req, action, next) => {
+        switch (action.type) {
+          case 'AUTHORIZE':
+            console.log('Calling authorize endpoint');
+            break;
+          case 'EXCHANGE_TOKEN':
+            console.log('Calling access token exchange endpoint');
+            break;
+        }
+        next();
+      },
+    ],
     redirectUri: `${url.origin}/callback`,
     realmPath,
     scope,

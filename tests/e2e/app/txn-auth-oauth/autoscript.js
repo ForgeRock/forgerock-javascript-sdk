@@ -1,4 +1,4 @@
-(function() {
+(function () {
   const rxMergeMap = rxjs.operators.mergeMap;
   const rxMap = rxjs.operators.map;
   const rxTap = rxjs.operators.tap;
@@ -9,8 +9,8 @@
   const amUrl = url.searchParams.get('amUrl');
   const clientId = url.searchParams.get('clientId') || 'AccountHolderOAuth2';
   const realmPath = url.searchParams.get('realmPath') || 'root';
-  const resourceUrl =
-    url.searchParams.get('resourceUrl') || 'https://bank.example.com:3001/account';
+  const igUrl = url.searchParams.get('igUrl'); // only use when testing against IG on a different host
+  const restUrl = url.searchParams.get('restUrl') || 'https://bank.example.com:3001/account';
   const scope = url.searchParams.get('scope') || 'openid profile me.read';
   const un = url.searchParams.get('un') || '57a5b4e4-6999-4b45-bf86-a4f2e5d4b629';
   const pw = url.searchParams.get('pw') || 'Password1!';
@@ -66,31 +66,29 @@
       rxjs.operators.delay(delay),
       rxMergeMap(
         (step) => {
-          console.log('IG: Make a $200 withdrawal from account');
+          console.log('Retrieve the protected resource');
           return forgerock.HttpClient.request({
+            url: `${igUrl ? igUrl : restUrl}/ig`,
             init: {
-              method: 'POST',
-              body: JSON.stringify({ amount: '200' }),
+              method: 'GET',
+              credentials: 'include',
             },
             txnAuth: {
               handleStep: async (step) => {
-                console.log('IG: Withdraw action requires additional authorization');
+                console.log('IG resource requires additional authorization');
                 step.getCallbackOfType('NameCallback').setName(un);
                 step.getCallbackOfType('PasswordCallback').setPassword(pw);
                 return Promise.resolve(step);
               },
             },
-            timeout: 0,
-            url: `${resourceUrl}/ig`,
           });
         },
         async (step, response) => {
-          if (response.ok) {
-            console.log('IG: Withdrawal of $200 was successful');
-            const body = await response.json();
-            console.log(`IG: Balance is ${body.balance}`);
+          const jsonResponse = await response.json();
+          if (jsonResponse.message === 'Successfully retrieved resource!') {
+            console.log('Request to IG resource successfully responded');
           } else {
-            console.log('IG: Withdraw authorization failed');
+            throw new Error('IG Transactional Authorization was not successful');
           }
           return step;
         },
@@ -98,31 +96,29 @@
       rxjs.operators.delay(delay),
       rxMergeMap(
         (step) => {
-          console.log('REST: Make a $200 withdrawal from account');
+          console.log('Retrieve the protected resource');
           return forgerock.HttpClient.request({
+            url: `${restUrl}/rest`,
             init: {
-              method: 'POST',
-              body: JSON.stringify({ amount: '200' }),
+              method: 'GET',
+              credentials: 'include',
             },
             txnAuth: {
               handleStep: async (step) => {
-                console.log('REST: Withdraw action requires additional authorization');
+                console.log('Rest resource requires additional authorization');
                 step.getCallbackOfType('NameCallback').setName(un);
                 step.getCallbackOfType('PasswordCallback').setPassword(pw);
                 return Promise.resolve(step);
               },
             },
-            timeout: 0,
-            url: `${resourceUrl}/rest`,
           });
         },
         async (step, response) => {
-          if (response.ok) {
-            console.log('REST: Withdrawal of $200 was successful');
-            const body = await response.json();
-            console.log(`REST: Balance is ${body.balance}`);
+          const jsonResponse = await response.json();
+          if (jsonResponse.message === 'Successfully retrieved resource!') {
+            console.log('Request to REST resource successfully responded');
           } else {
-            console.log('REST: Withdraw authorization failed');
+            throw new Error('REST Transactional Authorization was not successful');
           }
           return step;
         },

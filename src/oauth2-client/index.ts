@@ -1,3 +1,4 @@
+import { ActionTypes } from '../config/enums';
 import Config, { ConfigOptions } from '../config/index';
 import { ConfigurablePaths } from '../config/interfaces';
 import { StringDict } from '../shared/interfaces';
@@ -44,7 +45,13 @@ abstract class OAuth2Client {
       /* eslint-enable @typescript-eslint/camelcase */
     }
 
-    const url = this.getUrl('authorize', requestParams, options);
+    const { url } = middlewareWrapper(
+      {
+        url: new URL(this.getUrl('authorize', requestParams, options)),
+        init: {},
+      },
+      ActionTypes.Authorize,
+    );
 
     return new Promise((resolve, reject) => {
       const iframe = document.createElement('iframe');
@@ -81,7 +88,7 @@ abstract class OAuth2Client {
       iframe.style.display = 'none';
       iframe.addEventListener('load', onLoad);
       document.body.appendChild(iframe);
-      iframe.src = url;
+      iframe.src = url.toString();
     });
   }
 
@@ -202,23 +209,16 @@ abstract class OAuth2Client {
     const { serverConfig } = Config.get(options);
     const url = this.getUrl(endpoint, query, options);
 
-    enum ActionType {
-      AUTHORIZE = 'AUTHORIZE',
-      LOGOUT = 'LOGOUT',
-      REVOKE_TOKEN = 'REVOKE_TOKEN',
-      USER_INFO = 'USER_INFO',
-    }
-
-    const getActionType = (endpoint: ConfigurablePaths): keyof typeof ActionType => {
+    const getActionType = (endpoint: ConfigurablePaths) => {
       switch (endpoint) {
         case 'accessToken':
-          return 'AUTHORIZE';
+          return ActionTypes.ExchangeToken;
         case 'endSession':
-          return 'LOGOUT';
+          return ActionTypes.Logout;
         case 'revoke':
-          return 'REVOKE_TOKEN';
+          return ActionTypes.RevokeToken;
         default:
-          return 'USER_INFO';
+          return ActionTypes.UserInfo;
       }
     };
 

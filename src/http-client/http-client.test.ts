@@ -9,6 +9,18 @@ import {
 } from './http-client.mock.data';
 
 jest.mock('../token-storage');
+jest.mock('../config', () => {
+  return {
+    get() {
+      return {
+        serverConfig: {
+          baseUrl: 'https://openam.example.com/am/',
+          timeout: 0,
+        },
+      };
+    },
+  };
+});
 jest.mock('./index', () => {
   const originalHttpClient = jest.requireActual('./index');
   return {

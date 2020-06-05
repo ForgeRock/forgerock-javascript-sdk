@@ -16,6 +16,8 @@ describe('Test OAuth login flow', () => {
       // Test assertions
       expect(messageArray.includes('OAuth login successful')).toBe(true);
       expect(messageArray.includes('Logout successful')).toBe(true);
+      expect(messageArray.includes('Calling authorize endpoint')).toBe(true);
+      expect(messageArray.includes('Calling access token exchange endpoint')).toBe(true);
 
       await browser.close();
       done();

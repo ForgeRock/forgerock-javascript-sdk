@@ -1,4 +1,5 @@
 import Config from '../config';
+import { ActionTypes } from '../config/enums';
 import Dispatcher from '../event';
 import FRAuth from '../fr-auth';
 import { StepType } from '../fr-auth/enums';
@@ -24,6 +25,7 @@ import {
   normalizeIGJSON,
   normalizeRESTJSON,
 } from './util';
+import middlewareWrapper from '../util/middleware';
 
 /**
  * HTTP client that includes bearer token injection and refresh.
@@ -60,6 +62,20 @@ abstract class HttpClient extends Dispatcher {
           realmPath,
           serverConfig.paths,
         );
+
+        const url = new URL(txnAuthOptions.url);
+        const type = url.searchParams.get('authIndexType') as string;
+        const tree = url.searchParams.get('authIndexValue') as string;
+        const { url: authUrl, init: authInit } = middlewareWrapper(
+          {
+            url: new URL(txnAuthOptions.url),
+            init: txnAuthOptions.init,
+          },
+          ActionTypes.StartAuthenticate,
+          { type, tree },
+        );
+        txnAuthOptions.url = authUrl.toString();
+        txnAuthOptions.init = authInit;
         const initialStep = await this._request(txnAuthOptions, false);
 
         if (!(await isAuthStep(initialStep))) {
@@ -68,9 +84,10 @@ abstract class HttpClient extends Dispatcher {
         if (!hasTransactionAdvice(txnAuthJSON)) {
           throw new Error(`Error: TransactionConditionAdvice is empty.`);
         }
+
         try {
           // Walk through auth tree
-          await this.stepIterator(initialStep, options.txnAuth.handleStep);
+          await this.stepIterator(initialStep, options.txnAuth.handleStep, type, tree);
           // See if OAuth tokens are being used
           const tokens = await TokenStorage.get();
           if (hasIG) {
@@ -109,14 +126,19 @@ abstract class HttpClient extends Dispatcher {
     return headers;
   }
 
-  private static async stepIterator(res: Response, handleStep: HandleStep): Promise<void> {
+  private static async stepIterator(
+    res: Response,
+    handleStep: HandleStep,
+    type: string,
+    tree: string,
+  ): Promise<void> {
     const jsonRes = await res.json();
     const initialStep = new FRStep(jsonRes);
 
     return new Promise(async (resolve, reject) => {
       async function handleNext(step: FRStep): Promise<void> {
         const input = await handleStep(step);
-        const output = await FRAuth.next(input);
+        const output = await FRAuth.next(input, { type, tree });
 
         if (output.type === StepType.LoginSuccess) {
           resolve();

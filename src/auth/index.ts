@@ -1,4 +1,5 @@
 import Config, { ServerConfig } from '../config';
+import { ActionTypes } from '../config/enums';
 import { REQUESTED_WITH } from '../shared/constants';
 import { StringDict } from '../shared/interfaces';
 import { withTimeout } from '../util/timeout';
@@ -18,7 +19,7 @@ abstract class Auth {
    * @return {Step} The next step in the authentication tree.
    */
   public static async next(previousStep?: Step, options?: StepOptions): Promise<Step> {
-    const { realmPath, serverConfig, tree } = Config.get(options);
+    const { realmPath, serverConfig, tree, type } = Config.get(options);
     const query = options ? options.query : {};
     const url = this.constructUrl(serverConfig, realmPath, tree, query);
     const req = middlewareWrapper(
@@ -26,7 +27,11 @@ abstract class Auth {
         url: new URL(url),
         init: this.configureRequest(previousStep),
       },
-      previousStep ? 'AUTHENTICATE' : 'START_AUTHENTICATE',
+      previousStep ? ActionTypes.Authenticate : ActionTypes.StartAuthenticate,
+      {
+        tree,
+        type: type ? type : 'service',
+      },
     );
     const res = await withTimeout(fetch(req.url.toString(), req.init), serverConfig.timeout);
     const json = await this.getResponseJson<Step>(res);
@@ -65,7 +70,9 @@ abstract class Auth {
   private static async getResponseJson<T>(res: Response): Promise<T> {
     const contentType = res.headers.get('content-type');
     const isJson = contentType && contentType.indexOf('application/json') > -1;
-    const json = isJson ? await res.json() : undefined;
+    const json = isJson ? await res.json() : {};
+    json.status = res.status;
+    json.ok = res.ok;
     return json;
   }
 }

@@ -46,15 +46,18 @@ abstract class FRAuth {
   ): Promise<FRStep | FRLoginSuccess | FRLoginFailure> {
     const nextPayload = await Auth.next(previousStep ? previousStep.payload : undefined, options);
 
-    if (nextPayload.tokenId) {
-      return new FRLoginSuccess(nextPayload);
-    }
-
     if (nextPayload.authId) {
+      // If there's an authId, tree is has not been completed
       const callbackFactory = options ? options.callbackFactory : undefined;
       return new FRStep(nextPayload, callbackFactory);
     }
 
+    if (!nextPayload.authId && nextPayload.ok) {
+      // If there's no authId, and the response is OK, tree is complete
+      return new FRLoginSuccess(nextPayload);
+    }
+
+    // If there's no authId, and the response is no OK, tree has failure
     return new FRLoginFailure(nextPayload);
   }
 }
