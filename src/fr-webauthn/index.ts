@@ -253,7 +253,12 @@ abstract class FRWebAuthn {
   public static async getRegistrationCredential(
     options: PublicKeyCredentialCreationOptions,
   ): Promise<PublicKeyCredential | null> {
-    const credential = await navigator.credentials.create({ publicKey: options });
+    let credential;
+    try {
+      credential = await navigator.credentials.create({ publicKey: options });
+    } catch (error) {
+      throw new Error(error.message);
+    }
     return credential as PublicKeyCredential;
   }
 

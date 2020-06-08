@@ -28,9 +28,9 @@ function parseWebAuthnRegisterText(text: string): PublicKeyCredentialCreationOpt
   // e.g `id: Uint8Array.from(\"NTdhN...RiNjI5\",`
   const userId = getIndexOne(user.match(/id:\s{0,}Uint8Array.from\("([^"]+)"/));
   // e.g. `name: \"57a5b4e4-...-a4f2e5d4b629\",`
-  const userName = getIndexOne(user.match(/name:\s{0,}"(\w+)"/));
+  const userName = getIndexOne(user.match(/name:\s{0,}"([\d\w._-]+)"/));
   // e.g. `displayName: \"57a5b4e4-...-a4f2e5d4b629\"`
-  const userDisplayName = getIndexOne(user.match(/displayName:\s{0,}"(\w+)"/));
+  const userDisplayName = getIndexOne(user.match(/displayName:\s{0,}"([\d\w._-]+)"/));
 
   // e.g. `pubKeyCredParams: [
   // { \"type\": \"public-key\", \"alg\": -257 }, { \"type\": \"public-key\", \"alg\": -7 }

@@ -7,19 +7,15 @@
 
   const url = new URL(window.location.href);
   const amUrl = url.searchParams.get('amUrl');
-  const clientId = url.searchParams.get('clientId') || 'AccountHolderOAuth2';
   const realmPath = url.searchParams.get('realmPath') || 'root';
-  const scope = url.searchParams.get('scope') || 'openid profile me.read';
   const un = url.searchParams.get('un') || '57a5b4e4-6999-4b45-bf86-a4f2e5d4b629';
   const pw = url.searchParams.get('pw') || 'Password1!';
-  const tree = url.searchParams.get('tree') || 'LoginWithDeviceProfile';
+  const tree = url.searchParams.get('tree') || 'DeviceProfileLogin';
 
   console.log('Configure the SDK');
   forgerock.Config.set({
-    clientId,
     redirectUri: `${url.origin}/callback`,
     realmPath,
-    scope,
     tree,
     serverConfig: {
       baseUrl: amUrl,
@@ -75,6 +71,18 @@
           }
         },
       ),
+      rxjs.operators.delay(delay),
+      rxMergeMap((step) => {
+        return forgerock.SessionManager.logout();
+      }),
+      rxMap((response) => {
+        if (response.ok) {
+          console.log('Logout successful');
+          document.body.innerHTML = '<p class="Logged_Out">Logout successful</p>';
+        } else {
+          throw new Error('Logout_Error');
+        }
+      }),
       rxjs.operators.delay(delay),
       rxTap(
         () => {},

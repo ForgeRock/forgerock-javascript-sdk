@@ -23,7 +23,7 @@ function parseCredentials(value: string): ParsedCredential[] {
   try {
     const creds = value
       .split('}')
-      .filter((x) => !!x)
+      .filter((x) => !!x && x !== ']')
       .map((x) => {
         const idArray = parseNumberArray(x);
         return {

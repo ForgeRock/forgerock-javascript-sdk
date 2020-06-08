@@ -98,8 +98,7 @@ export default function (app) {
   });
 
   app.get(authPaths.authorize, wait, async (req, res) => {
-    const url = new URL(`${BASE_URL}`);
-    url.pathname = '/callback';
+    const url = new URL(`${req.query.redirect_uri}`);
     url.searchParams.set('client_id', 'bar');
     url.searchParams.set('code', 'foo');
     url.searchParams.set('iss', `${AM_URL}/oauth2`);

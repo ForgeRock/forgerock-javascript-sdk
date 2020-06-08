@@ -90,7 +90,7 @@ export default function(app) {
         baz.canWithdraw = false;
         res.json({ message: 'Successfully retrieved resource!' });
       } else {
-        res.redirect(307, createStepUpUrl());
+        res.redirect(307, createStepUpUrl(req.headers.referer));
       }
     }
   });

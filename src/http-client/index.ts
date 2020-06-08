@@ -158,13 +158,32 @@ abstract class HttpClient extends Dispatcher {
     forceRenew: boolean,
   ): Promise<Response> {
     const { url, init, timeout } = options;
-    let headers = new Headers(init.headers);
+    let headers = new Headers(init.headers || {});
 
     if (!options.bypassAuthentication) {
       headers = await this.setAuthHeaders(headers, forceRenew);
     }
     init.headers = headers;
-    return await withTimeout(fetch(url, init), timeout);
+
+    let response;
+    try {
+      response = await withTimeout(fetch(url, init), timeout);
+    } catch (err) {
+      /**
+       * If the above fetch fails due to the following conditions:
+       *
+       * 1. Preflight
+       * 2. Authorization header
+       * 3. Redirection
+       *
+       * The request will need to be refetched as a "simple request".
+       * For more information, see:
+       * https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS#Preflighted_requests_and_redirects
+       */
+
+      response = await withTimeout(fetch(url, { method: 'GET' }), timeout);
+    }
+    return response as Response;
   }
 }
 
