@@ -33,11 +33,11 @@ class App extends React.Component {
   componentDidMount() {
     // Set configuration defaults
     Config.set({
-      clientId: 'my_client_id',
-      redirectUri: 'https://myapp.domain.com/callback',
-      scope: 'openid profile me.read',
-      serverConfig: { baseUrl: 'https://mytenant.forgeblocks.local/am/' },
-      tree: 'UsernamePassword',
+      clientId: '<Your OAuth Client ID>',
+      redirectUri: '<Your Callback URL>',
+      scope: '<Your Scopes>',
+      serverConfig: { baseUrl: '<Your AM URL>' },
+      tree: '<Your Auth Tree in AM>',
     });
 
     // Start the authentication flow
@@ -123,7 +123,7 @@ Prerequisites:
 
 ```bash
 # Add host
-echo '127.0.0.1 forgerock-sdk-samples.com' | sudo tee -a /etc/hosts
+echo '127.0.0.1 sdkapp.example.com' | sudo tee -a /etc/hosts
 
 # Install dependencies
 npm i
@@ -141,7 +141,7 @@ npm run start:samples
 # Follow the next section to trust certificate
 ```
 
-Access the samples at https://forgerock-sdk-samples.com:3000
+Access the samples at https://sdkapp.example.com:8443
 
 ### Trusting the Certificate
 
@@ -191,7 +191,7 @@ Testing against a live environment requires an OpenAM instance with a public OAu
 
 **DOMException: Blocked a frame with origin "{url}" from accessing a cross-origin frame** (in browser console)
 
-This occurs when OpenAM returns the authorization code, but the `redirect_uri` doesn't match what's configured for the OAuth client. Tests use a path of `/callback`, so your OAuth client should be configured with a `redirect_uri` of `{BASE_URL}/callback` (e.g. https://forgerock-sdk-samples.com:3000/callback).
+This occurs when OpenAM returns the authorization code, but the `redirect_uri` doesn't match what's configured for the OAuth client. Tests use a path of `/callback`, so your OAuth client should be configured with a `redirect_uri` of `{BASE_URL}/callback` (e.g. https://sdkapp.example.com:8443/callback).
 
 ## Version History
 
