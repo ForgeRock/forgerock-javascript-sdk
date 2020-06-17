@@ -3,8 +3,8 @@ import express from 'express';
 import cookieParser from 'cookie-parser';
 import { createServer } from 'https';
 import { env } from 'process';
-import { authorizeApp } from './auth.app.mjs';
-import { key, cert } from './certs.mjs';
+import { authorizeApp } from './app.auth.mjs';
+import { key, cert } from './app.certs.mjs';
 import authRoutes from './routes.auth.mjs';
 import resourceRoutes from './routes.resource.mjs';
 

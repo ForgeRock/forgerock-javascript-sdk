@@ -1,17 +1,17 @@
 import { env } from 'process';
 import request from 'superagent';
-import { session } from './auth.app.mjs';
+import { session } from './app.auth.mjs';
+import { key, cert } from './app.certs.mjs';
+import { AM_URL } from './config.copy.mjs';
+import { authByTreeResponse, authByTxnResponse, createStepUpUrl } from './responses.mjs';
 import { baz } from './routes.auth.mjs';
-import { key, cert } from './certs.mjs';
-import { amURL } from './constants.mjs';
-import { stepUpResponse, createStepUpUrl } from './responses.mjs';
 import wait from './wait.mjs';
 
-async function txnAuth(req, res, next) {
+async function authorization(req, res, next) {
   if (env.LIVE === 'true' && req.host !== 'openig.example.com') {
     const fullURL = `${req.protocol}://${req.host}:${env.SERVER_PORT}${req.url}`;
     const body = {
-      application: 'Account-API-Policy',
+      application: req.path.includes('authz-by-txn') ? 'TxnBasedPolicy' : 'TreeBasedPolicy',
       resources: [fullURL],
       subject: {
         ssoToken: req.headers['x-idtoken'] || req.cookies.iPlanetDirectoryPro,
@@ -23,11 +23,11 @@ async function txnAuth(req, res, next) {
       };
     }
     const response = await request
-      .post(`${amURL}/json/policies/?_action=evaluate`)
+      .post(`${AM_URL}/json/realms/root/realms/sdk/policies/?_action=evaluate`)
       .key(key)
       .cert(cert)
       .set('Content-Type', 'application/json')
-      .set('Accept-API-Version', 'resource=2.0')
+      .set('Accept-API-Version', 'resource=2.1')
       .set('iPlanetDirectoryPro', session.tokenId)
       .send(body);
 
@@ -38,16 +38,18 @@ async function txnAuth(req, res, next) {
   }
 }
 
-export default function(app) {
-  app.all('/account/*', async (req, res, next) => {
-    if (env.LIVE === 'true' && req.host !== 'openig.example.com') {
+export default function (app) {
+  // Passthrough route that enforces authentication
+  app.all('/resource/*', async (req, res, next) => {
+    if (env.LIVE === 'true' && req.host !== env.IG_URL) {
+      // Only enforce authentication if IG is not used
+      // In other words, the call comes directly from app
       let response;
-      // Only enforce auth if IG is not used
       if (req.headers.authorization) {
         // Using OAuth
         const authHeaderArr = req.headers.authorization.split(' ');
         response = await request
-          .post(`${amURL}/oauth2/introspect`)
+          .post(`${AM_URL}/oauth2/introspect`)
           .key(key)
           .cert(cert)
           .set('Content-Type', 'application/json')
@@ -57,7 +59,7 @@ export default function(app) {
       } else {
         // Using SSO
         response = await request
-          .post(`${amURL}/json/sessions/?_action=validate`)
+          .post(`${AM_URL}/json/sessions/?_action=validate`)
           .key(key)
           .cert(cert)
           .set('Content-Type', 'application/json')
@@ -72,12 +74,13 @@ export default function(app) {
         res.status(401).send();
       }
     } else {
+      // Call came from a proxy, so proxy (e.g. IG) will enforce auth
       next();
     }
   });
 
-  app.get('/account/ig', wait, txnAuth, async (req, res) => {
-    if (env.LIVE === 'true' && req.host === 'openig.example.com') {
+  app.get('/resource/ig/*', wait, authorization, async (req, res) => {
+    if (env.LIVE === 'true' && req.host === env.IG_URL) {
       // Calls are coming from IG, so Txn Auth is not needed
       res.json({ message: 'Successfully retrieved resource!' });
     } else {
@@ -85,7 +88,7 @@ export default function(app) {
       if (
         req.cookies.iPlanetDirectoryPro === 'abcd1234' &&
         baz.canWithdraw &&
-        req.query._txid === stepUpResponse.advices.TransactionConditionAdvice[0]
+        req.query._txid === authByTxnResponse.advices.TransactionConditionAdvice[0]
       ) {
         baz.canWithdraw = false;
         res.json({ message: 'Successfully retrieved resource!' });
@@ -95,12 +98,15 @@ export default function(app) {
     }
   });
 
-  app.get('/account/rest', wait, txnAuth, async (req, res) => {
+  app.get('/resource/rest/*', wait, authorization, async (req, res) => {
     if (env.LIVE === 'true') {
-      // Calls are directly from client, so Txn Auth is needed
       if (req.access.actions && req.access.actions.GET) {
         res.json({ message: 'Successfully retrieved resource!' });
-      } else if (req.access.advices && req.access.advices.TransactionConditionAdvice) {
+      } else if (
+        req.access.advices &&
+        (req.access.advices.TransactionConditionAdvice ||
+          req.access.advices.AuthenticateToServiceConditionAdvice)
+      ) {
         res.json(req.access);
       } else {
         res.status(401).send();
@@ -109,12 +115,14 @@ export default function(app) {
       if (
         req.cookies.iPlanetDirectoryPro === 'abcd1234' &&
         baz.canWithdraw &&
-        req.headers['x-txid'] === stepUpResponse.advices.TransactionConditionAdvice[0]
+        (req.headers['x-txid'] === authByTxnResponse.advices.TransactionConditionAdvice[0] ||
+          req.headers['x-tree'] ===
+            authByTreeResponse.advices.AuthenticateToServiceConditionAdvice[0])
       ) {
         baz.canWithdraw = false;
         res.json({ message: 'Successfully retrieved resource!' });
       } else {
-        res.json(stepUpResponse);
+        res.json(authByTxnResponse);
       }
     }
   });

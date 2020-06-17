@@ -24,7 +24,7 @@ export const createStepUpUrl = (url) => {
   const referer = new URL(url);
   const amUrl = referer.searchParams.get('amUrl');
   // Create the redirect URL
-  const redirectUrl = new URL(amUrl);
+  const redirectUrl = new URL(amUrl || AM_URL);
   redirectUrl.searchParams.set('goto', `${RESOURCE_URL}/ig`);
   redirectUrl.searchParams.set('realm', '/');
   redirectUrl.searchParams.set('authIndexType', 'composite_advice');
@@ -37,7 +37,17 @@ export const createStepUpUrl = (url) => {
   return redirectUrl.toString();
 };
 
-export const stepUpResponse = {
+export const authByTreeResponse = {
+  resource: '',
+  actions: {},
+  attributes: {},
+  advices: {
+    AuthenticateToServiceConditionAdvice: ['/sdk:ConfirmPassword'],
+  },
+  ttl: 0,
+};
+
+export const authByTxnResponse = {
   resource: '',
   actions: {},
   attributes: {},
@@ -66,15 +76,9 @@ export const initialBasicLogin = {
   stage: 'UsernamePassword',
 };
 
-export const initialTxnAuth = {
+export const initialAuthz = {
   authId: 'bar',
   callbacks: [
-    {
-      type: 'NameCallback',
-      output: [{ name: 'prompt', value: 'User Name' }],
-      input: [{ name: 'IDToken1', value: '' }],
-      _id: 0,
-    },
     {
       type: 'PasswordCallback',
       output: [{ name: 'prompt', value: 'Password' }],

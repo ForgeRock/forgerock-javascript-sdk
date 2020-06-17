@@ -1,20 +1,17 @@
+import { AM_URL, PASSWORD } from './config.copy.mjs';
 import { authPaths } from './constants.mjs';
-import dotenv from 'dotenv';
-import { AM_URL, BASE_URL } from './config.copy.mjs';
 import {
   accessToken,
   authFail,
   authSuccess,
   initialBasicLogin,
-  initialTxnAuth,
+  initialAuthz,
   requestDeviceProfile,
   userInfo,
 } from './responses.mjs';
 import wait from './wait.mjs';
 
-dotenv.config();
-
-console.log(`Your user password from .env file: ${process.env.PASSWORD}`);
+console.log(`Your user password from .env file: ${PASSWORD}`);
 
 export const baz = {
   canWithdraw: false,
@@ -24,16 +21,16 @@ export default function (app) {
   app.post(authPaths.authenticate, wait, async (req, res) => {
     if (!req.body.callbacks) {
       if (req.query.authIndexType === 'composite_advice') {
-        res.json(initialTxnAuth);
+        res.json(initialAuthz);
       } else {
         res.json(initialBasicLogin);
       }
     } else if (req.body.callbacks.find((cb) => cb.type === 'PasswordCallback')) {
       const pwCb = req.body.callbacks.find((cb) => cb.type === 'PasswordCallback');
-      if (pwCb.input[0].value !== process.env.PASSWORD) {
+      if (pwCb.input[0].value !== PASSWORD) {
         res.status(401).json(authFail);
       } else {
-        if (req.query.authIndexValue === 'LoginWithDeviceProfile') {
+        if (req.query.authIndexValue === 'DeviceProfileLogin') {
           res.json(requestDeviceProfile);
         } else {
           if (req.body.stage === 'TransactionAuthorization') {

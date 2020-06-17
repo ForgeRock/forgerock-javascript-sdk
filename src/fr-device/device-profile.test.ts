@@ -5,6 +5,13 @@ import {
 } from './device-profile.mock.data';
 import FRDevice from './index';
 
+Object.defineProperty(window, 'crypto', {
+  writable: true,
+  value: {
+    getRandomValues: jest.fn().mockImplementation(() => ['714524572', '2799534390', '3707617532']),
+  },
+});
+
 describe('Test DeviceProfile', () => {
   it('should return basic metadata', async () => {
     const device = new FRDevice();
