@@ -1,8 +1,3 @@
-import {
-  expectedJsdom,
-  expectedJsdomWithoutDisplay,
-  expectedJsdomWithNarrowedBrowserProps,
-} from './device-profile.mock.data';
 import FRDevice from './index';
 
 Object.defineProperty(window, 'crypto', {

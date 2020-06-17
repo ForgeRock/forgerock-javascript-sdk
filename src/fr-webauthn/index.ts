@@ -90,7 +90,7 @@ abstract class FRWebAuthn {
           publicKey = parseWebAuthnAuthenticateText(textOutputCallback.getMessage());
         }
         // TypeScript doesn't like `publicKey` being assigned in conditionals above
-        // eslint-disable-next-line
+        // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
         // @ts-ignore
         const credential = await this.getAuthenticationCredential(publicKey);
         outcome = this.getAuthenticationOutcome(credential);
@@ -125,7 +125,7 @@ abstract class FRWebAuthn {
           publicKey = parseWebAuthnRegisterText(textOutputCallback.getMessage());
         }
         // TypeScript doesn't like `publicKey` being assigned in conditionals above
-        // eslint-disable-next-line
+        // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
         // @ts-ignore
         const credential = await this.getRegistrationCredential(publicKey);
         outcome = this.getRegistrationOutcome(credential);

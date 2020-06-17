@@ -30,7 +30,7 @@ export const createStepUpUrl = (url) => {
   redirectUrl.searchParams.set('authIndexType', 'composite_advice');
   redirectUrl.searchParams.set(
     'authIndexValue',
-    // eslint-disable-next-line
+    // eslint-disable-next-line max-len
     '%3CAdvices%3E%3CAttributeValuePair%3E%3CAttribute%20name%3D%22TransactionConditionAdvice%22/%3E%3CValue%3E39dfdd15-59a3-473c-a7fc-ecda3bbc3bc8%3C/Value%3E%3C/AttributeValuePair%3E%3C/Advices%3E',
   );
 

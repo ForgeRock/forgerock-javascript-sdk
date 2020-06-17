@@ -209,7 +209,7 @@ abstract class OAuth2Client {
     const { serverConfig } = Config.get(options);
     const url = this.getUrl(endpoint, query, options);
 
-    const getActionType = (endpoint: ConfigurablePaths) => {
+    const getActionType = (endpoint: ConfigurablePaths): ActionTypes => {
       switch (endpoint) {
         case 'accessToken':
           return ActionTypes.ExchangeToken;

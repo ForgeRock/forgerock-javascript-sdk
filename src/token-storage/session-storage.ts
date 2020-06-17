@@ -18,7 +18,7 @@ abstract class SessionStorageWrapper {
         'Could not parse token from sessionStorage. This could be due to accessing a removed token',
       );
       // Original behavior had an untyped return of undefined for no token
-      // eslint-disable-next-line
+      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
       // @ts-ignore
       return undefined;
     }

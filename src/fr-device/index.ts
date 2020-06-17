@@ -103,7 +103,7 @@ class FRDevice extends Collector {
     }
   }
 
-  getDisplayMeta(): { [key: string]: any } {
+  getDisplayMeta(): { [key: string]: string | number | null } {
     if (!screen) {
       console.warn('Cannot collect screen information. screen is not defined.');
     }
