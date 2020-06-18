@@ -8,19 +8,19 @@ import {
   HandleStep,
   HttpClientRequestOptions,
   RequiresNewTokenFn,
-  TxnAuthJSON,
+  AuthorizationJSON,
 } from './interfaces';
 import TokenManager from '../token-manager';
 import TokenStorage from '../token-storage';
 import { withTimeout } from '../util/timeout';
 import {
-  addTxnIDAndTokenToHeaders,
-  addTxnIDAndTokenToURL,
-  buildTxnAuthOptions,
-  examineForIGTxnAuth,
-  examineForRESTTxnAuth,
-  hasTransactionAdvice,
-  isAuthStep,
+  addAuthzInfoToHeaders,
+  addAuthzInfoToURL,
+  buildAuthzOptions,
+  examineForIGAuthz,
+  examineForRESTAuthz,
+  hasAuthzAdvice,
+  isAuthzStep,
   newTokenRequired,
   normalizeIGJSON,
   normalizeRESTJSON,
@@ -38,66 +38,71 @@ abstract class HttpClient extends Dispatcher {
    */
   public static async request(options: HttpClientRequestOptions): Promise<Response> {
     let res = await this._request(options, false);
-    let txnAuthJSON: TxnAuthJSON | undefined;
+    let authorizationJSON: AuthorizationJSON | undefined;
     let hasIG = false;
 
     if (newTokenRequired(res, options.requiresNewToken)) {
       res = await this._request(options, true);
     }
 
-    if (options.txnAuth && options.txnAuth.handleStep) {
-      if (res.redirected && examineForIGTxnAuth(res)) {
+    if (options.authorization && options.authorization.handleStep) {
+      if (res.redirected && examineForIGAuthz(res)) {
         hasIG = true;
-        txnAuthJSON = normalizeIGJSON(res);
-      } else if (await examineForRESTTxnAuth(res)) {
-        txnAuthJSON = await normalizeRESTJSON(res);
+        authorizationJSON = normalizeIGJSON(res);
+      } else if (await examineForRESTAuthz(res)) {
+        authorizationJSON = await normalizeRESTJSON(res);
       }
 
-      if (txnAuthJSON && txnAuthJSON.advices) {
-        const { realmPath, serverConfig } = Config.get(options.txnAuth.config);
-        const txnAuthOptions = buildTxnAuthOptions(
-          txnAuthJSON,
+      if (authorizationJSON && authorizationJSON.advices) {
+        const { realmPath, serverConfig } = Config.get(options.authorization.config);
+        const authzOptions = buildAuthzOptions(
+          authorizationJSON,
           serverConfig.baseUrl,
           options.timeout,
           realmPath,
           serverConfig.paths,
         );
 
-        const url = new URL(txnAuthOptions.url);
+        const url = new URL(authzOptions.url);
         const type = url.searchParams.get('authIndexType') as string;
         const tree = url.searchParams.get('authIndexValue') as string;
         const { url: authUrl, init: authInit } = middlewareWrapper(
           {
-            url: new URL(txnAuthOptions.url),
-            init: txnAuthOptions.init,
+            url: new URL(authzOptions.url),
+            init: authzOptions.init,
           },
           ActionTypes.StartAuthenticate,
           { type, tree },
         );
-        txnAuthOptions.url = authUrl.toString();
-        txnAuthOptions.init = authInit;
-        const initialStep = await this._request(txnAuthOptions, false);
+        authzOptions.url = authUrl.toString();
+        authzOptions.init = authInit;
+        const initialStep = await this._request(authzOptions, false);
 
-        if (!(await isAuthStep(initialStep))) {
+        if (!(await isAuthzStep(initialStep))) {
           throw new Error('Error: Initial response from auth server not a "step".');
         }
-        if (!hasTransactionAdvice(txnAuthJSON)) {
-          throw new Error(`Error: TransactionConditionAdvice is empty.`);
+        if (!hasAuthzAdvice(authorizationJSON)) {
+          throw new Error(`Error: Transactional or Service Advice is empty.`);
         }
 
         try {
           // Walk through auth tree
-          await this.stepIterator(initialStep, options.txnAuth.handleStep, type, tree);
+          await this.stepIterator(initialStep, options.authorization.handleStep, type, tree);
           // See if OAuth tokens are being used
-          const tokens = await TokenStorage.get();
+          let tokens;
+          try {
+            tokens = await TokenStorage.get();
+          } catch (err) {
+            // No OAuth Tokens
+          }
           if (hasIG) {
-            // Update URL with txn ID for IG
-            options.url = addTxnIDAndTokenToURL(options.url, txnAuthJSON.advices, tokens);
+            // Update URL with IDs and tokens for IG
+            options.url = addAuthzInfoToURL(options.url, authorizationJSON.advices, tokens);
           } else {
-            // Update URL with txn ID for REST API
-            options.init.headers = addTxnIDAndTokenToHeaders(
+            // Update headers with IDs and tokens for REST API
+            options.init.headers = addAuthzInfoToHeaders(
               options.init,
-              txnAuthJSON.advices,
+              authorizationJSON.advices,
               tokens,
             );
           }
@@ -113,7 +118,12 @@ abstract class HttpClient extends Dispatcher {
   }
 
   private static async setAuthHeaders(headers: Headers, forceRenew: boolean): Promise<Headers> {
-    let tokens = await TokenStorage.get();
+    let tokens;
+    try {
+      tokens = await TokenStorage.get();
+    } catch (err) {
+      // No OAuth Tokens
+    }
 
     /**
      * Condition to see if Auth is session based or OAuth token based
@@ -143,7 +153,7 @@ abstract class HttpClient extends Dispatcher {
         if (output.type === StepType.LoginSuccess) {
           resolve();
         } else if (output.type === StepType.LoginFailure) {
-          reject('Transaction authorization failure.');
+          reject('Authentication tree failure.');
         } else {
           handleNext(output);
         }
