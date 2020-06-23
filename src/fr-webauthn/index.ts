@@ -16,7 +16,7 @@ import {
   WebAuthnRegistrationMetadata,
   WebAuthnTextOutputRegistration,
 } from './interfaces';
-import TextOutputCallback from 'fr-auth/callbacks/text-output-callback';
+import TextOutputCallback from '../fr-auth/callbacks/text-output-callback';
 import { parseWebAuthnAuthenticateText, parseWebAuthnRegisterText } from './script-parser';
 
 // JSON-based WebAuthn

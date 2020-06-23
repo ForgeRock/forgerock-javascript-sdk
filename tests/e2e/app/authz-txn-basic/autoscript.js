@@ -11,8 +11,8 @@
   const igUrl = url.searchParams.get('igUrl'); // only use when testing against IG on a different host
   const restUrl = url.searchParams.get('restUrl') || 'https://api.example.com:9443/resource';
   const un = url.searchParams.get('un') || '57a5b4e4-6999-4b45-bf86-a4f2e5d4b629';
-  const pw = url.searchParams.get('pw') || 'Password1!';
-  const tree = url.searchParams.get('tree') || 'Login';
+  const pw = url.searchParams.get('pw') || 'ieH034K&-zlwqh3V_';
+  const tree = url.searchParams.get('tree') || 'BasicLogin';
 
   console.log('Configure the SDK');
   forgerock.Config.set({
@@ -84,7 +84,7 @@
               method: 'GET',
               credentials: 'include',
             },
-            txnAuth: {
+            authorization: {
               handleStep: async (step) => {
                 console.log('IG resource requires additional authorization');
                 step.getCallbackOfType('PasswordCallback').setPassword(pw);
@@ -112,7 +112,7 @@
               method: 'GET',
               credentials: 'include',
             },
-            txnAuth: {
+            authorization: {
               handleStep: async (step) => {
                 console.log('Rest resource requires additional authorization');
                 step.getCallbackOfType('PasswordCallback').setPassword(pw);

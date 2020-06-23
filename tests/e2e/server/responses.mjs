@@ -76,6 +76,109 @@ export const initialBasicLogin = {
   stage: 'UsernamePassword',
 };
 
+export const initialPlatformLogin = {
+  authId: 'foo',
+  callbacks: [
+    {
+      type: 'ValidatedCreateUsernameCallback',
+      input: [
+        { name: 'IDToken1', value: '' },
+        { name: 'IDToken1validateOnly', value: false },
+      ],
+      output: [
+        { name: 'policies', value: [] },
+        { name: 'failedPolicies', value: [] },
+        { name: 'validateOnly', value: false },
+        { name: 'prompt', value: 'Username' },
+      ],
+      _id: 0,
+    },
+    {
+      type: 'ValidatedCreatePasswordCallback',
+      output: [{ name: 'prompt', value: 'Password' }],
+      input: [{ name: 'IDToken2', value: '' }],
+      _id: 1,
+    },
+  ],
+  stage: 'UsernamePassword',
+};
+
+export const initialMiscCallbacks = {
+  authId: 'foo',
+  callbacks: [
+    {
+      type: 'NameCallback',
+      output: [{ name: 'prompt', value: 'User Name' }],
+      input: [{ name: 'IDToken1', value: '' }],
+    },
+  ],
+};
+
+export const passwordCallback = {
+  authId: 'foo',
+  callbacks: [
+    {
+      type: 'PasswordCallback',
+      output: [{ name: 'prompt', value: 'Password' }],
+      input: [{ name: 'IDToken1', value: '' }],
+    },
+  ],
+};
+
+export const choiceCallback = {
+  authId: 'foo',
+  callbacks: [
+    {
+      type: 'ChoiceCallback',
+      output: [
+        { name: 'prompt', value: 'Choose your color' },
+        { name: 'choices', value: ['red', 'green', 'blue'] },
+        { name: 'defaultChoice', value: 0 },
+      ],
+      input: [{ name: 'IDToken1', value: 0 }],
+    },
+  ],
+};
+
+export const messageCallback = {
+  authId: 'foo',
+  callbacks: [
+    {
+      type: 'TextOutputCallback',
+      output: [
+        { name: 'message', value: 'Is it true?' },
+        { name: 'messageType', value: '0' },
+      ],
+    },
+    {
+      type: 'ConfirmationCallback',
+      output: [
+        { name: 'prompt', value: '' },
+        { name: 'messageType', value: 0 },
+        { name: 'options', value: ['Yes', 'No'] },
+        { name: 'optionType', value: -1 },
+        { name: 'defaultOption', value: 1 },
+      ],
+      input: [{ name: 'IDToken2', value: 0 }],
+    },
+  ],
+};
+
+export const noSessionSuccess = { successUrl: '/am/console', realm: '/' };
+
+export const pollingCallback = {
+  authId: 'foo',
+  callbacks: [
+    {
+      type: 'PollingWaitCallback',
+      output: [
+        { name: 'waitTime', value: '1000' },
+        { name: 'message', value: 'Waiting 1 second.' },
+      ],
+    },
+  ],
+};
+
 export const initialAuthz = {
   authId: 'bar',
   callbacks: [

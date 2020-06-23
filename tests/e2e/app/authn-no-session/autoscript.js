@@ -18,15 +18,9 @@
       (req, action, next) => {
         switch (action.type) {
           case 'START_AUTHENTICATE':
-            if (action.payload.type === 'service' && typeof action.payload.tree === 'string') {
-              console.log('Starting authentication with service');
-            }
-            break;
           case 'AUTHENTICATE':
-            if (action.payload.type === 'service' && typeof action.payload.tree === 'string') {
-              console.log('Continuing authentication with service');
-            }
-            break;
+            console.log('Adding "noSession" query param to URL');
+            req.url.searchParams.append('noSession', 'true');
         }
         next();
       },
@@ -61,8 +55,8 @@
           (step) => {
             if (step.payload.code === 401) {
               throw new Error('Auth_Error');
-            } else if (step.payload.tokenId) {
-              console.log('Basic login successful');
+            } else if (step.payload.ok) {
+              console.log('Basic login with "noSession" completed successfully');
               document.body.innerHTML = '<p class="Logged_In">Login successful</p>';
             } else {
               throw new Error('Something went wrong.');
@@ -70,18 +64,6 @@
           },
           (step) => step,
         ),
-        rxjs.operators.delay(delay),
-        rxMergeMap((step) => {
-          return forgerock.SessionManager.logout();
-        }),
-        rxMap((response) => {
-          if (response.ok) {
-            console.log('Logout successful');
-            document.body.innerHTML = '<p class="Logged_Out">Logout successful</p>';
-          } else {
-            throw new Error('Logout_Error');
-          }
-        }),
         rxTap(
           () => {},
           (err) => {

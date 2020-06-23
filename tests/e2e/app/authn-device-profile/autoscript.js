@@ -9,7 +9,7 @@
   const amUrl = url.searchParams.get('amUrl');
   const realmPath = url.searchParams.get('realmPath') || 'root';
   const un = url.searchParams.get('un') || '57a5b4e4-6999-4b45-bf86-a4f2e5d4b629';
-  const pw = url.searchParams.get('pw') || 'Password1!';
+  const pw = url.searchParams.get('pw') || 'ieH034K&-zlwqh3V_';
   const tree = url.searchParams.get('tree') || 'DeviceProfileLogin';
 
   console.log('Configure the SDK');

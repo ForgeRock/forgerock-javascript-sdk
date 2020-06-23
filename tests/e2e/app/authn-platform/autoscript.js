@@ -9,28 +9,11 @@
   const amUrl = url.searchParams.get('amUrl');
   const realmPath = url.searchParams.get('realmPath') || 'root';
   const un = url.searchParams.get('un') || '57a5b4e4-6999-4b45-bf86-a4f2e5d4b629';
-  const pw = url.searchParams.get('pw') || 'Password1!';
+  const pw = url.searchParams.get('pw') || 'ieH034K&-zlwqh3V_';
   const tree = url.searchParams.get('tree') || 'PlatformLogin';
 
   console.log('Configure the SDK');
   forgerock.Config.set({
-    middleware: [
-      (req, action, next) => {
-        switch (action.type) {
-          case 'START_AUTHENTICATE':
-            if (action.payload.type === 'service' && typeof action.payload.tree === 'string') {
-              console.log('Starting authentication with service');
-            }
-            break;
-          case 'AUTHENTICATE':
-            if (action.payload.type === 'service' && typeof action.payload.tree === 'string') {
-              console.log('Continuing authentication with service');
-            }
-            break;
-        }
-        next();
-      },
-    ],
     realmPath,
     tree,
     serverConfig: {
@@ -62,7 +45,7 @@
             if (step.payload.code === 401) {
               throw new Error('Auth_Error');
             } else if (step.payload.tokenId) {
-              console.log('Basic login successful');
+              console.log('Basic login with platform nodes successful');
               document.body.innerHTML = '<p class="Logged_In">Login successful</p>';
             } else {
               throw new Error('Something went wrong.');

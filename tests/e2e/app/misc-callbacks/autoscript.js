@@ -9,7 +9,7 @@
   const amUrl = url.searchParams.get('amUrl');
   const realmPath = url.searchParams.get('realmPath') || 'root';
   const un = url.searchParams.get('un') || '57a5b4e4-6999-4b45-bf86-a4f2e5d4b629';
-  const pw = url.searchParams.get('pw') || 'Password1!';
+  const pw = url.searchParams.get('pw') || 'ieH034K&-zlwqh3V_';
   const tree = url.searchParams.get('tree') || 'MiscCallbacks';
 
   console.log('Configure the SDK');
@@ -37,15 +37,16 @@
         rxMergeMap((step) => {
           console.log('Handle Username Callback');
           const cb = step.getCallbackOfType('NameCallback');
-          console.log(`Prompt from NameCallback is ${cb}`);
-          step.getCallbackOfType('NameCallback').setName(un);
+          console.log(`Prompt from NameCallback is ${cb.getPrompt()}`);
+          cb.setName(un);
           return forgerock.FRAuth.next(step);
         }),
         rxjs.operators.delay(delay),
         rxMergeMap((step) => {
           console.log('Handle Password Callback');
-          const cb = step.getCallbackOfType('PasswordCallback').setPassword(pw);
-          console.log(`Prompt from PasswordCallback is ${cb}`);
+          const cb = step.getCallbackOfType('PasswordCallback');
+          console.log(`Prompt from PasswordCallback is ${cb.getPrompt()}`);
+          cb.setPassword(pw);
           return forgerock.FRAuth.next(step);
         }),
         rxMergeMap((step) => {
@@ -68,9 +69,8 @@
           const confirmCB = step.getCallbackOfType('ConfirmationCallback');
           const textCB = step.getCallbackOfType('TextOutputCallback');
           const message = textCB.getMessage();
-          console.log(message);
+          console.log(`Default value for confirmation is: ${message}`);
           const options = confirmCB.getOptions();
-          console.log(options);
           confirmCB.setOptionValue(options[1]);
           confirmCB.setOptionIndex(0);
           console.log('Setting value to "Yes"');
