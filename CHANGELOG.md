@@ -1,8 +1,24 @@
 # Changelog
 
-## [Unreleased]
+## [2.0.0] - 2020-06-22
 
-- Support for RedirectCallback
+### Added
+
+- Support for authorization by transaction
+- Support for authorization by tree
+- Support for device profile collection callback
+- Allow server paths to be configurable
+- Allow OAuth token storage to be configurable
+- Support for request "middleware" for modifying request from SDK
+- "Containerize" code base for easier development
+- End-to-end tests now use Playwright and mock Node.js server
+- Support for WebAuthn script-based authentication
+
+### Fixed
+
+- Increased default timeout to accommodate development/debugging
+- Provide alternative token store for Firefox Private IndexedDB bug
+- Aligned json-based WebAuthn with 7.0 release of AM
 
 ## [1.0.5] - 2020-01-16
 
