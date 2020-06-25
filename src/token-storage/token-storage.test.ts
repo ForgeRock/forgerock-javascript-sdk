@@ -78,7 +78,7 @@ jest.mock('../config/index', () => ({
 }));
 
 describe('The TokenStorage module', () => {
-  const cleanUp = async (done) => {
+  const cleanUp = async (done): Promise<void> => {
     const deleteDatabase = indexedDB.deleteDatabase(DB_NAME);
     deleteDatabase.onsuccess = (): void => {
       done();

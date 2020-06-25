@@ -3,6 +3,7 @@ import middleware from './middleware.mock.data';
 import { ActionTypes } from '../config/enums';
 
 jest.mock('../config/index', () => ({
+  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
   get: () => ({ middleware }),
 }));
 
@@ -49,7 +50,7 @@ describe('Middleware should be called with an action', () => {
   });
   it('should not allow middleware to mutate `action`', () => {
     try {
-      const newReq = middlewareWrapper(
+      middlewareWrapper(
         { url: new URL('https://www.example.com'), init: {} },
         'MUTATE-ACTION' as ActionTypes,
       );

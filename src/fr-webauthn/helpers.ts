@@ -23,8 +23,9 @@ function parseCredentials(value: string): ParsedCredential[] {
   try {
     const creds = value
       .split('}')
-      .filter((x) => !!x)
+      .filter((x) => !!x && x !== ']')
       .map((x) => {
+        // eslint-disable-next-line @typescript-eslint/no-use-before-define
         const idArray = parseNumberArray(x);
         return {
           id: new Int8Array(idArray).buffer,

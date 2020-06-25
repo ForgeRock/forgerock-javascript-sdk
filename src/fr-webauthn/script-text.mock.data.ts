@@ -108,11 +108,11 @@ const registerOutput = {
   rp: { id: 'user.example.com', name: 'ForgeRock' },
   timeout: 60000,
   user: {
-    displayName: '',
+    displayName: '57a5b4e4-6999-4b45-bf86-a4f2e5d4b629',
     id: [
       /* don't directly test */
     ],
-    name: '',
+    name: '57a5b4e4-6999-4b45-bf86-a4f2e5d4b629',
   },
 };
 

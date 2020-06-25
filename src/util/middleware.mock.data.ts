@@ -12,7 +12,7 @@ const reassignment = 'REASSIGNMENT' as ActionTypes;
 const mutateAction = 'MUTATE-ACTION' as ActionTypes;
 
 export default [
-  (req: RequestObj, action: Action, next: NextFn) => {
+  (req: RequestObj, action: Action, next: NextFn): void => {
     switch (action.type) {
       case a:
       case b:
@@ -27,7 +27,7 @@ export default [
     }
     next();
   },
-  (req: RequestObj, action: Action, next: NextFn) => {
+  (req: RequestObj, action: Action, next: NextFn): void => {
     switch (action.type) {
       case a:
         req.url.searchParams.set('char', 'a');
@@ -40,7 +40,7 @@ export default [
     }
     next();
   },
-  (req: RequestObj, action: Action, next: NextFn) => {
+  (req: RequestObj, action: Action, next: NextFn): void => {
     switch (action.type) {
       case one:
         req.url.searchParams.set('char', '1');
@@ -53,19 +53,19 @@ export default [
     }
     next();
   },
-  (req: RequestObj, action: Action, next: NextFn) => {
+  (req: RequestObj, action: Action, next: NextFn): void => {
     switch (action.type) {
       case add:
-        // eslint-disable-next-line
+        // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
         // @ts-ignore
         req.init.headers = { ...{ 'x-char': 'a,' + action.payload }, ...req.init.headers };
         break;
     }
     next();
   },
-  // eslint-disable-next-line
+  // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
   // @ts-ignore
-  (req: RequestObj, action: Action, next: NextFn) => {
+  (req: RequestObj, action: Action, next: NextFn): void => {
     switch (action.type) {
       case reassignment:
         req = { url: new URL('https://bad.com'), init: { headers: { 'x-bad': 'true' } } };
@@ -73,9 +73,9 @@ export default [
     }
     next();
   },
-  // eslint-disable-next-line
+  // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
   // @ts-ignore
-  (req: RequestObj, action: Action, next: NextFn) => {
+  (req: RequestObj, action: Action, next: NextFn): void => {
     switch (action.type) {
       case mutateAction:
         action.type = 'hello' as ActionTypes;

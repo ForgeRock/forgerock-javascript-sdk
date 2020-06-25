@@ -1,20 +1,24 @@
+import { AM_URL, PASSWORD, USERNAME } from './config.copy.mjs';
 import { authPaths } from './constants.mjs';
-import dotenv from 'dotenv';
-import { AM_URL, BASE_URL } from './config.copy.mjs';
 import {
   accessToken,
   authFail,
   authSuccess,
   initialBasicLogin,
-  initialTxnAuth,
+  initialMiscCallbacks,
+  initialPlatformLogin,
+  initialAuthz,
+  passwordCallback,
+  choiceCallback,
+  messageCallback,
+  noSessionSuccess,
+  pollingCallback,
   requestDeviceProfile,
   userInfo,
 } from './responses.mjs';
 import wait from './wait.mjs';
 
-dotenv.config();
-
-console.log(`Your user password from .env file: ${process.env.PASSWORD}`);
+console.log(`Your user password from .env file: ${PASSWORD}`);
 
 export const baz = {
   canWithdraw: false,
@@ -24,16 +28,54 @@ export default function (app) {
   app.post(authPaths.authenticate, wait, async (req, res) => {
     if (!req.body.callbacks) {
       if (req.query.authIndexType === 'composite_advice') {
-        res.json(initialTxnAuth);
+        res.json(initialAuthz);
+      } else if (req.query.authIndexValue === 'PlatformLogin') {
+        res.json(initialPlatformLogin);
+      } else if (req.query.authIndexValue === 'MiscCallbacks') {
+        res.json(initialMiscCallbacks);
       } else {
         res.json(initialBasicLogin);
       }
+    } else if (req.query.authIndexValue === 'MiscCallbacks') {
+      if (req.body.callbacks.find((cb) => cb.type === 'NameCallback')) {
+        const cb = req.body.callbacks.find((cb) => cb.type === 'NameCallback');
+        if (cb.input[0].value !== USERNAME) {
+          res.json(authFail);
+        } else {
+          res.json(passwordCallback);
+        }
+      } else if (req.body.callbacks.find((cb) => cb.type === 'PasswordCallback')) {
+        const cb = req.body.callbacks.find((cb) => cb.type === 'PasswordCallback');
+        if (cb.input[0].value !== PASSWORD) {
+          res.json(authFail);
+        } else {
+          res.json(choiceCallback);
+        }
+      } else if (req.body.callbacks.find((cb) => cb.type === 'ChoiceCallback')) {
+        const cb = req.body.callbacks.find((cb) => cb.type === 'ChoiceCallback');
+        if (cb.input[0].value !== 1) {
+          res.json(authFail);
+        } else {
+          res.json(messageCallback);
+        }
+      } else if (req.body.callbacks.find((cb) => cb.type === 'ConfirmationCallback')) {
+        const cb = req.body.callbacks.find((cb) => cb.type === 'ConfirmationCallback');
+        if (cb.input[0].value !== 0) {
+          res.json(authFail);
+        } else {
+          res.json(pollingCallback);
+        }
+      } else if (req.body.callbacks.find((cb) => cb.type === 'PollingCallback')) {
+        res.json(authSuccess);
+      } else {
+        res.json(authFail);
+      }
     } else if (req.body.callbacks.find((cb) => cb.type === 'PasswordCallback')) {
       const pwCb = req.body.callbacks.find((cb) => cb.type === 'PasswordCallback');
-      if (pwCb.input[0].value !== process.env.PASSWORD) {
+      if (pwCb.input[0].value !== PASSWORD) {
         res.status(401).json(authFail);
       } else {
-        if (req.query.authIndexValue === 'LoginWithDeviceProfile') {
+        if (req.query.authIndexValue === 'DeviceProfileLogin') {
           res.json(requestDeviceProfile);
         } else {
           if (req.body.stage === 'TransactionAuthorization') {
@@ -53,9 +95,17 @@ export default function (app) {
             }
           } else {
             res.cookie('iPlanetDirectoryPro', 'abcd1234', { domain: '.example.com' });
-            res.json(authSuccess);
+            res.json(req.query.noSession === 'true' ? noSessionSuccess : authSuccess);
           }
         }
+      }
+    } else if (req.body.callbacks.find((cb) => cb.type === 'ValidatedCreatePasswordCallback')) {
+      const pwCb = req.body.callbacks.find((cb) => cb.type === 'ValidatedCreatePasswordCallback');
+      if (pwCb.input[0].value !== PASSWORD) {
+        res.status(401).json(authFail);
+      } else {
+        res.cookie('iPlanetDirectoryPro', 'abcd1234', { domain: '.example.com' });
+        res.json(authSuccess);
       }
     } else if (req.body.callbacks.find((cb) => cb.type === 'DeviceProfileCallback')) {
       const deviceCb = req.body.callbacks.find((cb) => cb.type === 'DeviceProfileCallback') || {};
@@ -98,8 +148,7 @@ export default function (app) {
   });
 
   app.get(authPaths.authorize, wait, async (req, res) => {
-    const url = new URL(`${BASE_URL}`);
-    url.pathname = '/callback';
+    const url = new URL(`${req.query.redirect_uri}`);
     url.searchParams.set('client_id', 'bar');
     url.searchParams.set('code', 'foo');
     url.searchParams.set('iss', `${AM_URL}/oauth2`);

@@ -39,7 +39,7 @@
   "husky": {
     "hooks": {
       "pre-commit": "tsc && npm run lint",
-      "pre-push": "npm t"
+      "pre-push": "npm run test:unit && npm run test:integration"
     }
   },
   "repository": {

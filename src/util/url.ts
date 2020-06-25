@@ -33,7 +33,7 @@ function getEndpointPath(
   if (customPaths && customPaths[endpoint]) {
     // TypeScript is not correctly reading the condition above
     // It's thinking that customPaths[endpoint] may result in undefined
-    // eslint-disable-next-line
+    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
     // @ts-ignore
     return customPaths[endpoint];
   } else {

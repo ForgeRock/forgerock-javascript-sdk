@@ -1,10 +1,10 @@
+import path from 'path';
 import dotenv from 'dotenv';
 
-dotenv.config();
-const useLiveOauth = process.env.OAUTH_SERVER === 'live';
+dotenv.config({ path: path.resolve(process.cwd(), '.env') });
 
-export const AM_URL = useLiveOauth ? process.env.AM_URL : 'https://auth.example.com:9443/am';
-export const BASE_URL = useLiveOauth ? process.env.BASE_URL : 'https://sdkapp.example.com:8443';
+export const AM_URL = process.env.AM_URL;
+export const BASE_URL = process.env.BASE_URL;
 export const CLIENT_ID = process.env.CLIENT_ID;
 export const PASSWORD = process.env.PASSWORD;
 export const REALM_PATH = process.env.REALM_PATH;

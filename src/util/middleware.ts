@@ -2,6 +2,7 @@ import Config from '../config';
 import { RequestObj } from '../config/interfaces';
 import { ActionTypes } from '../config/enums';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function middlewareWrapper(request: RequestObj, type: ActionTypes, payload?: any): RequestObj {
   const { middleware } = Config.get();
 

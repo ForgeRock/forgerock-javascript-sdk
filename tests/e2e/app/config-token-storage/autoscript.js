@@ -1,0 +1,154 @@
+(function () {
+  const rxMergeMap = rxjs.operators.mergeMap;
+  const rxMap = rxjs.operators.map;
+  const rxTap = rxjs.operators.tap;
+
+  const delay = 0;
+
+  const url = new URL(window.location.href);
+  const amUrl = url.searchParams.get('amUrl');
+  const clientId = url.searchParams.get('clientId') || 'WebOAuthClient';
+  const realmPath = url.searchParams.get('realmPath') || 'root';
+  const scope = url.searchParams.get('scope') || 'openid profile me.read';
+  const un = url.searchParams.get('un') || '57a5b4e4-6999-4b45-bf86-a4f2e5d4b629';
+  const pw = url.searchParams.get('pw') || 'ieH034K&-zlwqh3V_';
+  const tree = url.searchParams.get('tree') || 'BasicLogin';
+  let tokenStore = url.searchParams.get('tokenStore') || 'sessionStorage';
+  let inMemoryTokens;
+
+  if (tokenStore === 'customStore') {
+    tokenStore = {
+      get(clientId) {
+        console.log('Custom token getter used.');
+        return Promise.resolve(inMemoryTokens);
+      },
+      set(clientId, tokens) {
+        console.log('Custom token setter used.');
+        inMemoryTokens = tokens;
+        return Promise.resolve(undefined);
+      },
+      remove(clientId) {
+        console.log('Custom token remover used.');
+        inMemoryTokens = undefined;
+        return Promise.resolve(undefined);
+      },
+    };
+  }
+
+  console.log('Configure the SDK');
+  forgerock.Config.set({
+    clientId,
+    redirectUri: `${url.origin}/_callback`,
+    realmPath,
+    scope,
+    serverConfig: {
+      baseUrl: amUrl,
+    },
+    tokenStore,
+    tree,
+  });
+
+  try {
+    forgerock.SessionManager.logout();
+  } catch (err) {
+    // Do nothing
+  }
+
+  console.log('Initiate first step with `undefined`');
+  rxjs
+    .from(forgerock.FRAuth.next())
+    .pipe(
+      rxMergeMap((step) => {
+        console.log('Set values on auth tree callbacks');
+        step.getCallbackOfType('NameCallback').setName(un);
+        step.getCallbackOfType('PasswordCallback').setPassword(pw);
+        return forgerock.FRAuth.next(step);
+      }),
+      rxjs.operators.delay(delay),
+      rxMergeMap(
+        (step) => {
+          if (step.payload.code === 401) {
+            throw new Error('Auth_Error');
+          }
+          console.log('Auth tree successfully completed');
+          console.log('Get OAuth tokens');
+          const tokens = forgerock.TokenManager.getTokens({ forceRenew: true });
+          return tokens;
+        },
+        (step) => step,
+      ),
+      rxjs.operators.delay(delay),
+      rxMap((step) => {
+        if (step.getSessionToken()) {
+          console.log('OAuth login successful');
+          document.body.innerHTML = '<p class="Logged_In">Login successful</p>';
+        } else {
+          throw new Error('Session_Error');
+        }
+      }),
+      rxjs.operators.delay(delay),
+      rxMergeMap(
+        (step) => {
+          console.log('Get user info from OAuth endpoint');
+          const user = forgerock.UserManager.getCurrentUser();
+          return user;
+        },
+        (step, user) => {
+          console.log(`User's given name: ${user.family_name}`);
+          return step;
+        },
+      ),
+      rxjs.operators.delay(delay),
+      rxMergeMap(
+        (step) => {
+          console.log('Get stored tokens');
+          const tokens = forgerock.TokenStorage.get();
+          return tokens;
+        },
+        (step, tokens) => {
+          console.log(`Access token is ${tokens.accessToken}.`);
+          return step;
+        },
+      ),
+      rxjs.operators.delay(delay),
+      rxMergeMap(
+        (step) => {
+          console.log('Initiate logout');
+          return forgerock.FRUser.logout();
+        },
+        (step) => step,
+      ),
+      rxjs.operators.delay(delay),
+      rxMergeMap(
+        (step) => {
+          return forgerock.TokenStorage.get();
+        },
+        (step, tokens) => {
+          if (!tokens) {
+            console.log('Logout successful');
+            document.body.innerHTML = '<p class="Logged_Out">Logout successful</p>';
+          } else {
+            throw new Error('Logout_Error');
+          }
+          return step;
+        },
+      ),
+      rxjs.operators.delay(delay),
+      rxTap(
+        () => {},
+        (err) => {
+          console.log(`Error: ${err.message}`);
+          document.body.innerHTML = `<p class="${err.message}">${err.message}</p>`;
+        },
+        () => {},
+      ),
+    )
+    .subscribe(
+      (data) => {},
+      (err) => {},
+      () => {
+        console.log('Test script complete');
+        document.body.innerHTML = `<p class="Test_Complete">Test script complete</p>`;
+      },
+    );
+})();

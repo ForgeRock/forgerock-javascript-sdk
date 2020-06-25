@@ -1,6 +1,6 @@
 import Config from '../../src/config';
 import FRAuth from '../../src/fr-auth';
-import { rawResponse } from './fr-auth.data';
+import { rawResponse } from './fr-auth.mock.data';
 
 jest.mock('../../src/config');
 

@@ -18,7 +18,8 @@ export async function setupAndGo(
   failAuth?: boolean,
   allowGeo?: boolean,
   tokenStore?: string,
-) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+): Promise<{ browser: any; page: any }> {
   const browser = await browsers[browserType].launch({ headless: true });
   const context = await browser.newContext({
     bypassCSP: true,

@@ -2,7 +2,7 @@ import FRCallback from '.';
 import { Callback } from '../../auth/interfaces';
 
 /**
- * Represents a callback used to collect a comfirmation to a message.
+ * Represents a callback used to collect a confirmation to a message.
  */
 class ConfirmationCallback extends FRCallback {
   /**
@@ -45,6 +45,27 @@ class ConfirmationCallback extends FRCallback {
    */
   public getPrompt(): string {
     return this.getOutputByName<string>('prompt', '');
+  }
+
+  /**
+   * Set option index.
+   */
+  public setOptionIndex(index: number): void {
+    if (index !== 0 && index !== 1) {
+      throw new Error(`"${index}" is not a valid choice`);
+    }
+    this.setInputValue(index);
+  }
+
+  /**
+   * Set option value.
+   */
+  public setOptionValue(value: string): void {
+    const index = this.getOptions().indexOf(value);
+    if (index === -1) {
+      throw new Error(`"${value}" is not a valid choice`);
+    }
+    this.setInputValue(index);
   }
 }
 

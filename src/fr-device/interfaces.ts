@@ -12,6 +12,7 @@ interface DeviceProfileData {
       display: {
         [key: string]: string | number | null;
       };
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       [key: string]: any;
     };
     browser: {

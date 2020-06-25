@@ -1,23 +1,17 @@
+import { buildAuthzOptions, examineForIGAuthz, examineForRESTAuthz, normalizeIGJSON } from './util';
 import {
-  buildTxnAuthOptions,
-  examineForIGTxnAuth,
-  examineForRESTTxnAuth,
-  normalizeIGJSON,
-} from './util';
-import { responseFromIG, responseFromREST } from './http-client.mock.data';
+  authzByTxnResFromIG,
+  authzByTxnResFromREST,
+  authzByTreeResFromIG,
+  authzByTreeResFromREST,
+  authzTreeJSON,
+  authzTxnJSON,
+} from './http-client.mock.data';
 
 describe('Test HttpClient utils', () => {
-  it('build txn auth req options', () => {
-    const txnAuthObj = {
-      resource: '',
-      actions: {},
-      attributes: {},
-      advices: {
-        TransactionConditionAdvice: ['abcd'],
-      },
-      ttl: 0,
-    };
-    const expected = {
+  it('build auth by tree req options', () => {
+    const txnAuthObj = authzTreeJSON;
+    const expectedTreeResult = {
       init: {
         credentials: 'include',
         headers: {
@@ -26,39 +20,75 @@ describe('Test HttpClient utils', () => {
         method: 'POST',
       },
       timeout: 0,
-      // eslint-disable-next-line
-      url: 'https://openam.example.com/am/json/realms/root/authenticate?authIndexType=composite_advice&authIndexValue=%3CAdvices%3E%3CAttributeValuePair%3E%3CAttribute%20name%3D%22TransactionConditionAdvice%22%2F%3E%3CValue%3Eabcd%3C%2FValue%3E%3C%2FAttributeValuePair%3E%3C%2FAdvices%3E',
+      // eslint-disable-next-line max-len, prettier/prettier
+      url: 'https://openam.example.com/am/json/realms/root/authenticate?authIndexType=composite_advice&authIndexValue=%3CAdvices%3E%3CAttributeValuePair%3E%3CAttribute%20name%3D%22AuthenticateToServiceConditionAdvice%22%2F%3E%3CValue%3Eabc%3C%2FValue%3E%3C%2FAttributeValuePair%3E%3C%2FAdvices%3E',
     };
-    const output = buildTxnAuthOptions(txnAuthObj, 'https://openam.example.com/am/', 0);
-    expect(output).toStrictEqual(expected);
+
+    const output = buildAuthzOptions(txnAuthObj, 'https://openam.example.com/am/', 0);
+    expect(output).toStrictEqual(expectedTreeResult);
   });
 
-  it('examines response for IG txn auth', async (done) => {
-    const output = await examineForIGTxnAuth(responseFromIG);
+  it('build auth by txn req options', () => {
+    const txnAuthObj = authzTxnJSON;
+    const expectedTxnResult = {
+      init: {
+        credentials: 'include',
+        headers: {
+          'Accept-API-Version': 'resource=2.0, protocol=1.0',
+        },
+        method: 'POST',
+      },
+      timeout: 0,
+      // eslint-disable-next-line max-len, prettier/prettier
+      url: 'https://openam.example.com/am/json/realms/root/authenticate?authIndexType=composite_advice&authIndexValue=%3CAdvices%3E%3CAttributeValuePair%3E%3CAttribute%20name%3D%22TransactionConditionAdvice%22%2F%3E%3CValue%3Eabc%3C%2FValue%3E%3C%2FAttributeValuePair%3E%3C%2FAdvices%3E',
+    };
+    const output = buildAuthzOptions(txnAuthObj, 'https://openam.example.com/am/', 0);
+    expect(output).toStrictEqual(expectedTxnResult);
+  });
+
+  it('examines response for IG auth by tree', async (done) => {
+    const output = await examineForIGAuthz(authzByTreeResFromIG);
     expect(output).toBe(true);
     done();
   });
 
-  it('examines response for REST txn auth', async (done) => {
-    const output = await examineForRESTTxnAuth(responseFromREST);
+  it('examines response for REST auth by tree', async (done) => {
+    const output = await examineForRESTAuthz(authzByTreeResFromREST);
     expect(output).toBe(true);
+    done();
+  });
+
+  it('examines response for IG auth by txn', async (done) => {
+    const output = await examineForIGAuthz(authzByTxnResFromIG);
+    expect(output).toBe(true);
+    done();
+  });
+
+  it('examines response for REST auth by txn', async (done) => {
+    const output = await examineForRESTAuthz(authzByTxnResFromREST);
+    expect(output).toBe(true);
+    done();
+  });
+
+  it('normalizes authz by tree from IG redirect to JSON', async (done) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const res: any = {
+      // eslint-disable-next-line max-len, prettier/prettier
+      url: 'https://openam.example.com/am/json/realms/root/authenticate?authIndexType=composite_advice&authIndexValue=%3CAdvices%3E%3CAttributeValuePair%3E%3CAttribute+name%3D%22AuthenticateToServiceConditionAdvice%22%2F%3E%3CValue%3Eabc%3C%2FValue%3E%3C%2FAttributeValuePair%3E%3C%2FAdvices%3E',
+    };
+    const expected = authzTreeJSON;
+    const output = await normalizeIGJSON(res);
+    expect(output).toStrictEqual(expected);
     done();
   });
 
   it('normalizes IG redirect to JSON', async (done) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const res: any = {
-      // eslint-disable-next-line
+      // eslint-disable-next-line max-len, prettier/prettier
       url: 'https://openam.example.com/am/json/realms/root/authenticate?authIndexType=composite_advice&authIndexValue=%3CAdvices%3E%3CAttributeValuePair%3E%3CAttribute+name%3D%22TransactionConditionAdvice%22%2F%3E%3CValue%3Eabc%3C%2FValue%3E%3C%2FAttributeValuePair%3E%3C%2FAdvices%3E',
     };
-    const expected = {
-      resource: '',
-      actions: {},
-      attributes: {},
-      advices: {
-        TransactionConditionAdvice: ['abc'],
-      },
-      ttl: 0,
-    };
+    const expected = authzTxnJSON;
     const output = await normalizeIGJSON(res);
     expect(output).toStrictEqual(expected);
     done();

@@ -4,17 +4,27 @@
  * These are private utility functions for HttpClient
  */
 import { CustomPathConfig } from '../config/interfaces';
-import { Advices, HttpClientRequestOptions, RequiresNewTokenFn, TxnAuthJSON } from './interfaces';
+import {
+  Advices,
+  HttpClientRequestOptions,
+  RequiresNewTokenFn,
+  AuthorizationJSON,
+} from './interfaces';
 import { Tokens } from '../shared/interfaces';
 import { getEndpointPath, resolve, stringify } from '../util/url';
 
-export function addTxnIDAndTokenToHeaders(
+export function addAuthzInfoToHeaders(
   init: RequestInit,
   advices: Advices,
   tokens?: Tokens,
 ): Headers {
   const headers = new Headers(init.headers);
-  headers.set('x-txid', advices.TransactionConditionAdvice[0]);
+
+  if (advices.AuthenticateToServiceConditionAdvice) {
+    headers.set('x-tree', advices.AuthenticateToServiceConditionAdvice[0]);
+  } else if (advices.TransactionConditionAdvice) {
+    headers.set('x-txid', advices.TransactionConditionAdvice[0]);
+  }
 
   if (tokens && tokens.idToken) {
     headers.set('x-idtoken', tokens.idToken);
@@ -22,38 +32,56 @@ export function addTxnIDAndTokenToHeaders(
   return headers;
 }
 
-export function addTxnIDAndTokenToURL(url: string, advices: Advices, tokens?: Tokens): string {
-  const txId = advices.TransactionConditionAdvice[0];
-
-  // Add Txn ID to *original* request options as URL param
+export function addAuthzInfoToURL(url: string, advices: Advices, tokens?: Tokens): string {
   const updatedURL = new URL(url);
-  updatedURL.searchParams.append('_txid', txId);
 
-  // If tokens are used, send idToken (JWT)
+  // Only modify URL for Transactional Authorization
+  if (advices.TransactionConditionAdvice) {
+    const txId = advices.TransactionConditionAdvice[0];
+    // Add Txn ID to *original* request options as URL param
+    updatedURL.searchParams.append('_txid', txId);
+  }
+
+  // If tokens are used, send idToken (OIDC)
   if (tokens && tokens.idToken) {
     updatedURL.searchParams.append('_idtoken', tokens.idToken);
   }
 
+  // FYI: in certain circumstances, the URL may be returned unchanged
   return updatedURL.toString();
 }
 
-export function buildTxnAuthOptions(
-  txnAuthObj: TxnAuthJSON,
+export function buildAuthzOptions(
+  authzObj: AuthorizationJSON,
   baseURL: string,
   timeout: number,
   realmPath?: string,
   customPaths?: CustomPathConfig,
 ): HttpClientRequestOptions {
-  const advices = txnAuthObj.advices ? txnAuthObj.advices.TransactionConditionAdvice : [];
-  const transactionID = advices.reduce((prev: string, curr: string) => {
-    const prevWithSpace = prev ? ` ${prev}` : prev;
-    prev = `${curr}${prevWithSpace}`;
-    return prev;
-  }, '');
+  const treeAuthAdvices = authzObj.advices && authzObj.advices.AuthenticateToServiceConditionAdvice;
+  const txnAuthAdvices = authzObj.advices && authzObj.advices.TransactionConditionAdvice;
+  let attributeValue = '';
+  let attributeName = '';
+
+  if (treeAuthAdvices) {
+    attributeValue = treeAuthAdvices.reduce((prev: string, curr: string) => {
+      const prevWithSpace = prev ? ` ${prev}` : prev;
+      prev = `${curr}${prevWithSpace}`;
+      return prev;
+    }, '');
+    attributeName = 'AuthenticateToServiceConditionAdvice';
+  } else if (txnAuthAdvices) {
+    attributeValue = txnAuthAdvices.reduce((prev: string, curr: string) => {
+      const prevWithSpace = prev ? ` ${prev}` : prev;
+      prev = `${curr}${prevWithSpace}`;
+      return prev;
+    }, '');
+    attributeName = 'TransactionConditionAdvice';
+  }
 
   const openTags = `<Advices><AttributeValuePair>`;
-  const nameTag = `<Attribute name="TransactionConditionAdvice"/>`;
-  const valueTag = `<Value>${transactionID}</Value>`;
+  const nameTag = `<Attribute name="${attributeName}"/>`;
+  const valueTag = `<Value>${attributeValue}</Value>`;
   const endTags = `</AttributeValuePair></Advices>`;
   const fullXML = `${openTags}${nameTag}${valueTag}${endTags}`;
 
@@ -77,18 +105,18 @@ export function buildTxnAuthOptions(
   return options;
 }
 
-export function examineForIGTxnAuth(res: Response): boolean {
+export function examineForIGAuthz(res: Response): boolean {
   const type = res.headers.get('Content-Type') || '';
   return type.includes('html') && res.url.includes('composite_advice');
 }
 
-export async function examineForRESTTxnAuth(res: Response): Promise<boolean> {
+export async function examineForRESTAuthz(res: Response): Promise<boolean> {
   const clone = res.clone();
   const json = await clone.json();
   return !!json.advices;
 }
 
-function getTxnIdFromURL(urlString: string): string {
+function getXMLValueFromURL(urlString: string): string {
   const url = new URL(urlString);
   const value = url.searchParams.get('authIndexValue') || '';
   const parser = new DOMParser();
@@ -98,8 +126,13 @@ function getTxnIdFromURL(urlString: string): string {
   return el ? el.innerHTML : '';
 }
 
-export function hasTransactionAdvice(json: TxnAuthJSON): boolean {
-  if (json.advices) {
+export function hasAuthzAdvice(json: AuthorizationJSON): boolean {
+  if (json.advices && json.advices.AuthenticateToServiceConditionAdvice) {
+    return (
+      Array.isArray(json.advices.AuthenticateToServiceConditionAdvice) &&
+      json.advices.AuthenticateToServiceConditionAdvice.length > 0
+    );
+  } else if (json.advices && json.advices.TransactionConditionAdvice) {
     return (
       Array.isArray(json.advices.TransactionConditionAdvice) &&
       json.advices.TransactionConditionAdvice.length > 0
@@ -109,7 +142,7 @@ export function hasTransactionAdvice(json: TxnAuthJSON): boolean {
   }
 }
 
-export async function isAuthStep(res: Response): Promise<boolean> {
+export async function isAuthzStep(res: Response): Promise<boolean> {
   // TODO: add comment
   const clone = res.clone();
   const json = await clone.json();
@@ -123,18 +156,22 @@ export function newTokenRequired(res: Response, requiresNewToken?: RequiresNewTo
   return res.status === 401;
 }
 
-export function normalizeIGJSON(res: Response): TxnAuthJSON {
+export function normalizeIGJSON(res: Response): AuthorizationJSON {
+  const advices: Advices = {};
+  if (res.url.includes('AuthenticateToServiceConditionAdvice')) {
+    advices.AuthenticateToServiceConditionAdvice = [getXMLValueFromURL(res.url)];
+  } else {
+    advices.TransactionConditionAdvice = [getXMLValueFromURL(res.url)];
+  }
   return {
     resource: '',
     actions: {},
     attributes: {},
-    advices: {
-      TransactionConditionAdvice: [getTxnIdFromURL(res.url)],
-    },
+    advices,
     ttl: 0,
   };
 }
 
-export async function normalizeRESTJSON(res: Response): Promise<TxnAuthJSON> {
+export async function normalizeRESTJSON(res: Response): Promise<AuthorizationJSON> {
   return await res.json();
 }

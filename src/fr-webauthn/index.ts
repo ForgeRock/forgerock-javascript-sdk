@@ -16,7 +16,7 @@ import {
   WebAuthnRegistrationMetadata,
   WebAuthnTextOutputRegistration,
 } from './interfaces';
-import TextOutputCallback from 'fr-auth/callbacks/text-output-callback';
+import TextOutputCallback from '../fr-auth/callbacks/text-output-callback';
 import { parseWebAuthnAuthenticateText, parseWebAuthnRegisterText } from './script-parser';
 
 // JSON-based WebAuthn
@@ -90,7 +90,7 @@ abstract class FRWebAuthn {
           publicKey = parseWebAuthnAuthenticateText(textOutputCallback.getMessage());
         }
         // TypeScript doesn't like `publicKey` being assigned in conditionals above
-        // eslint-disable-next-line
+        // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
         // @ts-ignore
         const credential = await this.getAuthenticationCredential(publicKey);
         outcome = this.getAuthenticationOutcome(credential);
@@ -125,7 +125,7 @@ abstract class FRWebAuthn {
           publicKey = parseWebAuthnRegisterText(textOutputCallback.getMessage());
         }
         // TypeScript doesn't like `publicKey` being assigned in conditionals above
-        // eslint-disable-next-line
+        // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
         // @ts-ignore
         const credential = await this.getRegistrationCredential(publicKey);
         outcome = this.getRegistrationOutcome(credential);
@@ -253,7 +253,12 @@ abstract class FRWebAuthn {
   public static async getRegistrationCredential(
     options: PublicKeyCredentialCreationOptions,
   ): Promise<PublicKeyCredential | null> {
-    const credential = await navigator.credentials.create({ publicKey: options });
+    let credential;
+    try {
+      credential = await navigator.credentials.create({ publicKey: options });
+    } catch (error) {
+      throw new Error(error.message);
+    }
     return credential as PublicKeyCredential;
   }
 

@@ -1,4 +1,3 @@
-export const amURL = 'https://default.iam.example.com:51927/am';
 export const authPaths = {
   accessToken: ['/am/auth/accessToken', '/am/oauth2/realms/root/access_token'],
   authenticate: ['/am/auth/authenticate', '/am/json/realms/root/authenticate'],

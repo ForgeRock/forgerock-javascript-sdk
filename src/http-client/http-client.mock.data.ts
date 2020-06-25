@@ -1,94 +1,73 @@
-import { HandleStep } from './interfaces';
-
-export const requestOptionsForIG = {
-  init: {
-    credentials: 'include' as 'include',
-    method: 'POST',
-  },
-  txnAuth: {
-    handleStep: {} as HandleStep,
-    config: {
-      serverConfig: {
-        baseUrl: 'https://openam.example.com/am/',
-        timeout: 0,
-      },
-    },
-  },
-  timeout: 0,
-  url: 'https://bank-using-ig.com/withdraw',
-};
-
-export const responseFromAM = {
-  clone() {
-    return {
-      json() {
-        return Promise.resolve({
-          callbacks: {},
-        });
-      },
-    };
-  },
-  json() {
-    return Promise.resolve({
-      callbacks: {},
-    });
-  },
-} as any;
-
-export const responseFromIG = {
+export const authzByTreeResFromIG = {
   headers: {
     get(): string {
       return 'text/html; charset=utf-8';
     },
   },
   redirected: true,
-  // eslint-disable-next-line
-  url: 'https://openam.example.com/am/json/realms/root/authenticate?authIndexType=composite_advice&authIndexValue=%3CAdvices%3E%3CAttributeValuePair%3E%3CAttribute%20name%3D%22TransactionConditionAdvice%22%2F%3E%3CValue%3Eabc%3C%2FValue%3E%3C%2FAttributeValuePair%3E%3C%2FAdvices%3E',
+  // eslint-disable-next-line max-len, prettier/prettier
+  url: 'https://openam.example.com/am/json/realms/root/authenticate?authIndexType=composite_advice&authIndexValue=%3CAdvices%3E%3CAttributeValuePair%3E%3CAttribute%20name%3D%22AuthenticateToServiceConditionAdvice%22%2F%3E%3CValue%3Eabc%3C%2FValue%3E%3C%2FAttributeValuePair%3E%3C%2FAdvices%3E',
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
 } as any;
 
-export const requestOptionsForREST = {
-  init: {
-    credentials: 'include' as 'include',
-    method: 'POST',
-  },
-  txnAuth: {
-    handleStep: {} as HandleStep,
-    config: {
-      serverConfig: {
-        baseUrl: 'https://openam.example.com/am/',
-        timeout: 0,
-      },
+export const authzByTxnResFromIG = {
+  headers: {
+    get(): string {
+      return 'text/html; charset=utf-8';
     },
   },
-  timeout: 0,
-  url: 'https://bank-using-rest.com/withdraw',
+  redirected: true,
+  // eslint-disable-next-line max-len, prettier/prettier
+  url: 'https://openam.example.com/am/json/realms/root/authenticate?authIndexType=composite_advice&authIndexValue=%3CAdvices%3E%3CAttributeValuePair%3E%3CAttribute%20name%3D%22TransactionConditionAdvice%22%2F%3E%3CValue%3Eabc%3C%2FValue%3E%3C%2FAttributeValuePair%3E%3C%2FAdvices%3E',
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+} as any;
+
+export const authzTreeJSON = {
+  resource: '',
+  actions: {},
+  attributes: {},
+  advices: {
+    AuthenticateToServiceConditionAdvice: ['abc'],
+  },
+  ttl: 0,
 };
 
-export const responseFromREST = {
+export const authzTxnJSON = {
+  resource: '',
+  actions: {},
+  attributes: {},
+  advices: {
+    TransactionConditionAdvice: ['abc'],
+  },
+  ttl: 0,
+};
+
+export const authzByTreeResFromREST = {
   clone() {
     return {
-      json() {
-        return Promise.resolve({
-          resource: '',
-          actions: {},
-          attributes: {},
-          advices: {
-            TransactionConditionAdvice: ['abc'],
-          },
-          ttl: 0,
-        });
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      json(): any {
+        return Promise.resolve(authzTreeJSON);
       },
     };
   },
   json() {
-    return Promise.resolve({
-      resource: '',
-      actions: {},
-      attributes: {},
-      advices: {
-        TransactionConditionAdvice: ['abc'],
-      },
-      ttl: 0,
-    });
+    return Promise.resolve(authzTreeJSON);
   },
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+} as any;
+
+export const authzByTxnResFromREST = {
+  clone() {
+    return {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      json(): any {
+        return Promise.resolve(authzTxnJSON);
+      },
+    };
+  },
+  json() {
+    return Promise.resolve(authzTxnJSON);
+  },
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
 } as any;

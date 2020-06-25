@@ -2,7 +2,8 @@ import { ConfigOptions } from '../config/interfaces';
 import FRStep from '../fr-auth/fr-step';
 
 export interface Advices {
-  TransactionConditionAdvice: string[];
+  AuthenticateToServiceConditionAdvice?: string[];
+  TransactionConditionAdvice?: string[];
 }
 
 export declare type HandleStep = (step: FRStep) => Promise<FRStep>;
@@ -12,7 +13,7 @@ export declare type HandleStep = (step: FRStep) => Promise<FRStep>;
  */
 export interface HttpClientRequestOptions {
   bypassAuthentication?: boolean;
-  txnAuth?: {
+  authorization?: {
     config?: ConfigOptions;
     handleStep: HandleStep;
     idToken?: string;
@@ -29,7 +30,7 @@ export interface HttpClientRequestOptions {
  */
 export type RequiresNewTokenFn = (res: Response) => boolean;
 
-export interface TxnAuthJSON {
+export interface AuthorizationJSON {
   resource: string;
   actions: { [key: string]: string };
   attributes: { [key: string]: string };
