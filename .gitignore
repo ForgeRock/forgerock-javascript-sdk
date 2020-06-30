@@ -5,7 +5,7 @@ coverage/
 lib/
 lib-esm/
 node_modules/
-samples/js
+samples/_static/js
 tests/e2e/app/index.js*
 tests/e2e/server/config.copy.mjs
 
