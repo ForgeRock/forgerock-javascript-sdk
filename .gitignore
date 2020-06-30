@@ -1,3 +1,4 @@
+ecosystem.config.js
 bundles/
 docs/
 coverage/
@@ -9,5 +10,4 @@ tests/e2e/app/index.js*
 tests/e2e/server/config.copy.mjs
 
 .DS_Store
-.env
 .vscode

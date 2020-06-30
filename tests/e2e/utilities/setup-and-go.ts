@@ -8,7 +8,7 @@ import {
   RESOURCE_URL,
   SCOPE,
   USERNAME,
-} from '../config';
+} from '../env.config';
 
 const browsers = { chromium, firefox, webkit };
 

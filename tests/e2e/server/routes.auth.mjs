@@ -1,5 +1,5 @@
-import { AM_URL, PASSWORD, USERNAME } from './config.copy.mjs';
 import { authPaths } from './constants.mjs';
+import { AM_URL, PASSWORD, USERNAME } from './env.config.copy.mjs';
 import {
   accessToken,
   authFail,
@@ -18,7 +18,7 @@ import {
 } from './responses.mjs';
 import wait from './wait.mjs';
 
-console.log(`Your user password from .env file: ${PASSWORD}`);
+console.log(`Your user password from 'env.config' file: ${PASSWORD}`);
 
 export const baz = {
   canWithdraw: false,
@@ -29,7 +29,7 @@ export default function (app) {
     if (!req.body.callbacks) {
       if (req.query.authIndexType === 'composite_advice') {
         res.json(initialAuthz);
-      } else if (req.query.authIndexValue === 'PlatformLogin') {
+      } else if (req.query.authIndexValue === 'PlatformUsernamePassword') {
         res.json(initialPlatformLogin);
       } else if (req.query.authIndexValue === 'MiscCallbacks') {
         res.json(initialMiscCallbacks);
@@ -75,7 +75,7 @@ export default function (app) {
       if (pwCb.input[0].value !== PASSWORD) {
         res.status(401).json(authFail);
       } else {
-        if (req.query.authIndexValue === 'DeviceProfileLogin') {
+        if (req.query.authIndexValue === 'UsernamePasswordDevice') {
           res.json(requestDeviceProfile);
         } else {
           if (req.body.stage === 'TransactionAuthorization') {

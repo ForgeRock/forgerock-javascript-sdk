@@ -114,12 +114,12 @@ function UsernamePassword(props) {
 export default App;
 ```
 
-## Samples
+## Included Sample App
 
 Prerequisites:
 
 - [OpenSSL](https://www.openssl.org/) is installed
-- **samples/js/config.js** is updated to specify your SDK configuration
+- The SDK configuration is updated within **samples/custom-ui/index.html** to specify your AM settings
 
 ```bash
 # Add host
@@ -127,10 +127,6 @@ echo '127.0.0.1 sdkapp.example.com' | sudo tee -a /etc/hosts
 
 # Install dependencies
 npm i
-
-# Generate CA and self-signed certificate
-# (Pick any passphrase and use it whenever prompted)
-npm run certs:make
 
 # Build the SDK and watch for changes
 npm run watch
@@ -164,7 +160,7 @@ Import the certificate to Firefox:
 
 1. Go to **Preferences > Privacy & Security > Certificates > View Certificates...**
 1. On the **Authorities** tab, click **Import...**
-1. Select `certs/ca.crt` and enable option to "Trust this CA to identify websites"
+1. Select `test/certs/ca.crt` and enable option to "Trust this CA to identify websites"
 1. Restart Firefox
 
 ## Tests
@@ -175,23 +171,47 @@ This project is configured for multiple forms of tests: unit, integration, and e
 
 Node v13.10 or higher is required to run the mock E2E server application.
 
-Testing against a live environment requires an OpenAM instance with a public OAuth client configured. Specify your environment details in an `.env` file:
+To run the end-to-end tests, you'll need to add a few more domains to your host file:
 
-| Variable    | Purpose                                                |
-| ----------- | ------------------------------------------------------ |
-| `AM_URL`    | Full URL to your OpenAM instance                       |
-| `BASE_URL`  | Base URL for your application                          |
-| `CLIENT_ID` | Your OAuth client ID                                   |
-| `SCOPE`     | The scopes to request when getting access tokens       |
-| `TREE`      | The authentication tree name to use for authentication |
-| `USERNAME`  | The username to use when authenticating                |
-| `PASSWORD`  | The password to use when authenticating                |
+```bash
+# For end-to-end testing this code base, these domains also need to be added
+echo '127.0.0.1 auth.example.com api.example.com' | sudo tee -a /etc/hosts
+```
+
+### Environment Configuration
+
+| Variable     | Purpose                                                |
+| ------------ | ------------------------------------------------------ |
+| `AM_URL`     | Full URL to your OpenAM instance                       |
+| `BASE_URL`   | Base URL for your application                          |
+| `CLIENT_ID`  | Your OAuth client ID                                   |
+| `REALM_PATH` | The realm in which trees, users, OAuth clients reside  |
+| `SCOPE`      | The scopes to request when getting access tokens       |
+| `TREE`       | The authentication tree name to use for authentication |
+| `USERNAME`   | The username to use when authenticating                |
+| `PASSWORD`   | The password to use when authenticating                |
+
+Running E2E tests require a running server (or "backend") for the necessary request/response relationship. Configuration of the server is done within `env.config.ts` file within the `tests/e2e/` directory. The default shown below runs the tests against a mock server:
+
+```js
+export const AM_URL = 'https://auth.example.com:9443/am';
+export const BASE_URL = 'https://sdkapp.example.com:8443';
+export const CLIENT_ID = 'WebOAuthClient';
+export const PASSWORD = 'ieH034K&-zlwqh3V_';
+export const REALM_PATH = 'root';
+export const RESOURCE_URL = 'https://api.example.com:9443/account';
+export const SCOPE = 'openid profile me.read';
+export const TREE = 'BasicLogin';
+export const USERNAME = '57a5b4e4-6999-4b45-bf86-a4f2e5d4b629';
+```
+
+If you prefer to test against a live environment, you will need to configure the `.env` file to use your OpenAM instance and its public OAuth client.
 
 ### Troubleshooting
 
 **DOMException: Blocked a frame with origin "{url}" from accessing a cross-origin frame** (in browser console)
 
-This occurs when OpenAM returns the authorization code, but the `redirect_uri` doesn't match what's configured for the OAuth client. Tests use a path of `/callback`, so your OAuth client should be configured with a `redirect_uri` of `{BASE_URL}/callback` (e.g. https://sdkapp.example.com:8443/callback).
+This occurs when OpenAM returns the authorization code, but the `redirect_uri` doesn't match what's configured for the OAuth client. Tests use a path of `/callback`, so your OAuth client should be configured with a `redirect_uri` of `{BASE_URL}/callback` (e.g. https://sdkapp.example.com:8443/_callback).
 
 ## Version History
 
