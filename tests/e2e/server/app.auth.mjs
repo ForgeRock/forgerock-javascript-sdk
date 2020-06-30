@@ -1,6 +1,6 @@
 import request from 'superagent';
 import { key, cert } from './app.certs.mjs';
-import { AM_URL } from './config.copy.mjs';
+import { AM_URL } from './env.config.copy.mjs';
 
 export let session;
 

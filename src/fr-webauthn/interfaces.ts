@@ -1,6 +1,6 @@
 import HiddenValueCallback from '../fr-auth/callbacks/hidden-value-callback';
 import MetadataCallback from '../fr-auth/callbacks/metadata-callback';
-import TextOutputCallback from 'fr-auth/callbacks/text-output-callback';
+import TextOutputCallback from '../fr-auth/callbacks/text-output-callback';
 
 enum AttestationType {
   Direct = 'direct',

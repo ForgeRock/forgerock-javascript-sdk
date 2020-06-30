@@ -12,11 +12,9 @@ module.exports = (env) => {
       apply: (compiler) => {
         compiler.hooks.afterEmit.tap('AfterEmitPlugin', (compilation) => {
           const cmds = [
-            'cp ./tests/e2e/config.ts ./tests/e2e/server/config.copy.mjs',
+            'cp ./tests/e2e/env.config.ts ./tests/e2e/server/env.config.copy.mjs',
             'copyup ./bundles/index.js* ./tests/e2e/app',
-            'copyup ./bundles/index.js* ./samples/js/',
-            'copyup ./src/**/*.{html,scss} lib',
-            'copyup ./src/**/*.{html,scss} lib-esm',
+            'copyup ./bundles/index.js* ./samples/_static/js/',
           ];
           for (const cmd of cmds) {
             exec(cmd, (err, stdout, stderr) => {

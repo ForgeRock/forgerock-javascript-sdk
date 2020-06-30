@@ -1,6 +1,6 @@
 {
   "name": "@forgerock/javascript-sdk",
-  "version": "2.0.0-beta2",
+  "version": "2.0.0",
   "description": "ForgeRock JavaScript SDK",
   "main": "./lib/",
   "module": "./lib-esm/",
@@ -13,8 +13,8 @@
   ],
   "scripts": {
     "build": "npm run clean && tsc && tsc -m es6 --outDir lib-esm && webpack --env.DEV=no",
-    "clean": "shx rm -rf bundles lib lib-esm coverage",
-    "clean:all": "npm run clean && shx rm -rf node_modules package-lock.json && git clean -fX --exclude='!.env'",
+    "clean": "shx rm -rf bundles docs lib lib-esm coverage",
+    "clean:all": "npm run clean && shx rm -rf node_modules package-lock.json && git clean -fX",
     "certs:make": "sh ./bin/create_certs.sh",
     "certs:trust": "npm run certs:trust:ca && npm run certs:trust:sample",
     "certs:trust:ca": "security add-trusted-cert -d -r trustRoot -k '/Library/Keychains/System.keychain' tests/certs/ca.crt",
@@ -29,11 +29,11 @@
     "start:server:live": "LIVE=true APP_PORT=8443 SERVER_PORT=9443 node tests/e2e/server/index.mjs",
     "start:samples": "http-server samples -c1 -p 8443 --ssl --cert tests/certs/samples.crt --key tests/certs/samples.key",
     "test": "npm run test:unit && npm run test:integration && npm run test:e2e",
-    "test:coverage": "jest --testMatch='<rootDir>/src/**/*.test.ts' --config=./tests/basic.config.js --coverage=true",
-    "test:e2e": "jest --testMatch='<rootDir>/tests/e2e/**/*.test.ts' --config=./tests/e2e.config.js",
-    "test:e2e:live": "OAUTH_SERVER=live jest --testMatch='<rootDir>/tests/e2e/**/*.test.ts' --config=./tests/e2e.config.js",
-    "test:integration": "jest --testMatch='<rootDir>/tests/integration/**/*.test.ts' --config=./tests/basic.config.js",
-    "test:unit": "jest --testMatch='<rootDir>/src/**/*.test.ts' --config=./tests/basic.config.js --env=./tests/test-env.js",
+    "test:coverage": "jest --testMatch='<rootDir>/src/**/*.test.ts' --config=./tests/jest.basic.config.js --coverage=true",
+    "test:e2e": "jest --testMatch='<rootDir>/tests/e2e/**/*.test.ts' --config=./tests/jest.e2e.config.js",
+    "test:e2e:live": "OAUTH_SERVER=live jest --testMatch='<rootDir>/tests/e2e/**/*.test.ts' --config=./tests/jest.e2e.config.js",
+    "test:integration": "jest --testMatch='<rootDir>/tests/integration/**/*.test.ts' --config=./tests/jest.basic.config.js",
+    "test:unit": "jest --testMatch='<rootDir>/src/**/*.test.ts' --config=./tests/jest.basic.config.js --env=./tests/jest.env.config.js",
     "watch": "webpack -w --env.DEV=yes"
   },
   "husky": {

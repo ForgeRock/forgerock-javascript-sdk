@@ -2,7 +2,7 @@ import { env } from 'process';
 import request from 'superagent';
 import { session } from './app.auth.mjs';
 import { key, cert } from './app.certs.mjs';
-import { AM_URL } from './config.copy.mjs';
+import { AM_URL } from './env.config.copy.mjs';
 import { authByTreeResponse, authByTxnResponse, createStepUpUrl } from './responses.mjs';
 import { baz } from './routes.auth.mjs';
 import wait from './wait.mjs';

@@ -1,4 +1,4 @@
-import { AM_URL, RESOURCE_URL } from './config.copy.mjs';
+import { AM_URL, RESOURCE_URL } from './env.config.copy.mjs';
 
 export const accessToken = {
   access_token: 'baz',
