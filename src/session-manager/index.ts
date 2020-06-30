@@ -1,9 +1,10 @@
 import Config, { ConfigOptions } from '../config/index';
 import { REQUESTED_WITH } from '../shared/constants';
 import { isOkOr4xx } from '../util/http';
-import { getRealmUrlPath } from '../util/realm';
 import { withTimeout } from '../util/timeout';
-import { resolve } from '../util/url';
+import { ActionTypes } from '../config/enums';
+import middlewareWrapper from '../util/middleware';
+import { getEndpointPath, resolve } from '../util/url';
 
 /**
  * Provides access to the session management API.
@@ -12,7 +13,7 @@ abstract class SessionManager {
   /**
    * Ends the current session.
    */
-  public static async logout(options?: ConfigOptions): Promise<void> {
+  public static async logout(options?: ConfigOptions): Promise<Response> {
     const { realmPath, serverConfig } = Config.get(options);
     const init: RequestInit = {
       credentials: 'include',
@@ -23,13 +24,15 @@ abstract class SessionManager {
       method: 'POST',
     };
 
-    const realmUrlPath = getRealmUrlPath(realmPath);
-    const url = resolve(serverConfig.baseUrl, `json/${realmUrlPath}/sessions/?_action=logout`);
+    const path = `${getEndpointPath('sessions', realmPath, serverConfig.paths)}?_action=logout`;
+    const url = resolve(serverConfig.baseUrl, path);
 
-    const response = await withTimeout(fetch(url, init), serverConfig.timeout);
+    const req = middlewareWrapper({ url: new URL(url), init }, ActionTypes.Logout);
+    const response = await withTimeout(fetch(req.url.toString(), req.init), serverConfig.timeout);
     if (!isOkOr4xx(response)) {
       throw new Error(`Failed to log out; received ${response.status}`);
     }
+    return response;
   }
 }
 

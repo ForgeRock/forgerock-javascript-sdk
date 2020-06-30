@@ -28,12 +28,12 @@ Use the SDKs to leverage _[Intelligent Authentication](https://www.forgerock.com
     * Access Management (AM) 6.5.2+
 
 * Browsers:
-    * Chrome 42
-    * Firefox 39
-    * Safari 10.1
-    * Edge 15
+    * Edge 44 (Legacy): requires one polyfill for TextEncoder, [`fast-text-encoding` is recommended](https://www.npmjs.com/package/fast-text-encoding)
+    * Edge 83 (Chromium)
+    * Chrome 83
+    * Firefox 77
 
-> **Tip**: Older browsers can be supported by using polyfills.
+> **Tip**: Older browsers (like IE11) may require multiple [polyfills, which can be found in our documentation](https://sdks.forgerock.com/javascript/polyfills/).
 
 <!------------------------------------------------------------------------------------------------------------------------------------>
 <!-- INSTALLATION -->
@@ -75,17 +75,18 @@ To try out the ForgeRock JavaScript SDK, perform these steps:
     npm run build
     ```
 
-6. Open `samples/js/config.js` and edit the values to match your AM instance.
+6. Open `samples/custom-ui/index.html` and edit the configuration values to match your AM instance.
 7. Serve the `samples` directory by using a simple HTTP server, for example:
-   `npx http-server samples -c1 -p 3000`
-8. In a [supported web browser](#requirements), navigate to `http://localhost:3000/index.html`, and then click
+   `npm run start:samples`
+8. Edit your `/etc/hosts` file to point your localhost to `sdkapp.example.com`
+8. In a [supported web browser](#requirements), navigate to `https://sdkapp.example.com:8443`, and then click
  **Custom UI**.
 
    > **Note**:
    >
-   > Using `localhost` is for testing and evaluation purposes **only**.
+   > Using the supplied self-signed certs is for testing and evaluation purposes **only**.
    >
-   > Use a fully-qualified domain name, and the HTTPS protocol in production environments.
+   > Use your own production certifications from a valid Certificate Authority in production environments.
 
 <!------------------------------------------------------------------------------------------------------------------------------------>
 <!-- SAMPLES - List the samples we include with the SDKs, where they are, briefly what they show. -->

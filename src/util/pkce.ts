@@ -34,10 +34,7 @@ abstract class PKCE {
   public static base64UrlEncode(array: Uint8Array): string {
     const numbers = Array.prototype.slice.call(array);
     const ascii = window.btoa(String.fromCharCode.apply(null, numbers));
-    const urlEncoded = ascii
-      .replace(/\+/g, '-')
-      .replace(/\//g, '_')
-      .replace(/=/g, '');
+    const urlEncoded = ascii.replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
     return urlEncoded;
   }
 

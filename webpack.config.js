@@ -1,7 +1,7 @@
 const { exec } = require('child_process');
 const path = require('path');
-const webpack = require('webpack');
 const TsConfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
+const webpack = require('webpack');
 
 module.exports = (env) => {
   const isDev = env.DEV === 'yes';
@@ -12,12 +12,11 @@ module.exports = (env) => {
       apply: (compiler) => {
         compiler.hooks.afterEmit.tap('AfterEmitPlugin', (compilation) => {
           const cmds = [
-            'cpy ./bundles/index.js ./tests/e2e/test-site',
-            'copyup ./bundles/index.js* ./samples/js/',
-            'copyup ./src/**/*.{html,scss} lib',
-            'copyup ./src/**/*.{html,scss} lib-esm',
+            'cp ./tests/e2e/env.config.ts ./tests/e2e/server/env.config.copy.mjs',
+            'copyup ./bundles/index.js* ./tests/e2e/app',
+            'copyup ./bundles/index.js* ./samples/_static/js/',
           ];
-          for (var cmd of cmds) {
+          for (const cmd of cmds) {
             exec(cmd, (err, stdout, stderr) => {
               if (err) {
                 console.error(err);
@@ -27,17 +26,16 @@ module.exports = (env) => {
               if (stdout) process.stdout.write(stdout);
               if (stderr) process.stderr.write(stderr);
             });
-            console.log('Copied compiled SDK.');
           }
         });
-      }
-    }
+      },
+    },
   ];
 
   return {
     devtool: isDev ? 'eval-source-map' : 'source-map',
     entry: './src/index.ts',
-    mode: 'production',
+    mode: isDev ? 'development' : 'production',
     module: {
       rules: [
         {
@@ -45,13 +43,10 @@ module.exports = (env) => {
           loader: 'awesome-typescript-loader',
           exclude: /node_modules/,
           query: {
-            declaration: false
-          }
+            declaration: false,
+          },
         },
       ],
-    },
-    optimization: {
-      minimize: !isDev,
     },
     output: {
       filename: 'index.js',
@@ -67,4 +62,4 @@ module.exports = (env) => {
     },
     watch: isDev,
   };
-}
+};

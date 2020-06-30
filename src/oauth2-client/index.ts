@@ -1,12 +1,13 @@
+import { ActionTypes } from '../config/enums';
 import Config, { ConfigOptions } from '../config/index';
+import { ConfigurablePaths } from '../config/interfaces';
 import { StringDict } from '../shared/interfaces';
 import { Noop } from '../shared/types';
 import TokenStorage from '../token-storage';
 import { isOkOr4xx } from '../util/http';
 import PKCE from '../util/pkce';
-import { getRealmUrlPath } from '../util/realm';
 import { withTimeout } from '../util/timeout';
-import { resolve, stringify } from '../util/url';
+import { getEndpointPath, resolve, stringify } from '../util/url';
 import { ResponseType } from './enums';
 import {
   AccessTokenResponse,
@@ -14,6 +15,7 @@ import {
   GetOAuth2TokensOptions,
   OAuth2Tokens,
 } from './interfaces';
+import middlewareWrapper from '../util/middleware';
 
 /**
  * OAuth 2.0 client.
@@ -43,7 +45,13 @@ abstract class OAuth2Client {
       /* eslint-enable @typescript-eslint/camelcase */
     }
 
-    const url = this.getUrl('authorize', requestParams, options);
+    const { url } = middlewareWrapper(
+      {
+        url: new URL(this.getUrl('authorize', requestParams, options)),
+        init: {},
+      },
+      ActionTypes.Authorize,
+    );
 
     return new Promise((resolve, reject) => {
       const iframe = document.createElement('iframe');
@@ -80,7 +88,7 @@ abstract class OAuth2Client {
       iframe.style.display = 'none';
       iframe.addEventListener('load', onLoad);
       document.body.appendChild(iframe);
-      iframe.src = url;
+      iframe.src = url.toString();
     });
   }
 
@@ -114,7 +122,7 @@ abstract class OAuth2Client {
       method: 'POST',
     };
 
-    const response = await this.request('access_token', undefined, false, init, options);
+    const response = await this.request('accessToken', undefined, false, init, options);
     const responseBody = await this.getBody<unknown>(response);
 
     if (response.status !== 200) {
@@ -141,7 +149,7 @@ abstract class OAuth2Client {
    * Gets OIDC user information.
    */
   public static async getUserInfo(options?: ConfigOptions): Promise<unknown> {
-    const response = await this.request('userinfo', undefined, true, undefined, options);
+    const response = await this.request('userInfo', undefined, true, undefined, options);
     if (response.status !== 200) {
       throw new Error(`Failed to get user info; received ${response.status}`);
     }
@@ -153,7 +161,7 @@ abstract class OAuth2Client {
   /**
    * Invokes the OIDC end session endpoint.
    */
-  public static async endSession(options?: ConfigOptions): Promise<void> {
+  public static async endSession(options?: ConfigOptions): Promise<Response> {
     const { idToken } = await TokenStorage.get();
 
     const query: StringDict<string | undefined> = {};
@@ -162,16 +170,17 @@ abstract class OAuth2Client {
       query.id_token_hint = idToken;
     }
 
-    const response = await this.request('connect/endSession', query, true, undefined, options);
+    const response = await this.request('endSession', query, true, undefined, options);
     if (!isOkOr4xx(response)) {
       throw new Error(`Failed to end session; received ${response.status}`);
     }
+    return response;
   }
 
   /**
    * Immediately revokes the stored access token.
    */
-  public static async revokeToken(options?: ConfigOptions): Promise<void> {
+  public static async revokeToken(options?: ConfigOptions): Promise<Response> {
     const { clientId } = Config.get(options);
     const { accessToken } = await TokenStorage.get();
 
@@ -183,21 +192,35 @@ abstract class OAuth2Client {
       method: 'POST',
     };
 
-    const response = await this.request('token/revoke', undefined, false, init, options);
+    const response = await this.request('revoke', undefined, false, init, options);
     if (!isOkOr4xx(response)) {
       throw new Error(`Failed to revoke token; received ${response.status}`);
     }
+    return response;
   }
 
   private static async request(
-    path: string,
+    endpoint: ConfigurablePaths,
     query?: StringDict<string | undefined>,
     includeToken?: boolean,
     init?: RequestInit,
     options?: ConfigOptions,
   ): Promise<Response> {
     const { serverConfig } = Config.get(options);
-    const url = this.getUrl(path, query, options);
+    const url = this.getUrl(endpoint, query, options);
+
+    const getActionType = (endpoint: ConfigurablePaths): ActionTypes => {
+      switch (endpoint) {
+        case 'accessToken':
+          return ActionTypes.ExchangeToken;
+        case 'endSession':
+          return ActionTypes.Logout;
+        case 'revoke':
+          return ActionTypes.RevokeToken;
+        default:
+          return ActionTypes.UserInfo;
+      }
+    };
 
     init = init || ({} as RequestInit);
 
@@ -207,8 +230,8 @@ abstract class OAuth2Client {
       init.headers = (init.headers || new Headers()) as Headers;
       init.headers.set('authorization', `Bearer ${accessToken}`);
     }
-
-    return await withTimeout(fetch(url, init), serverConfig.timeout);
+    const req = middlewareWrapper({ url: new URL(url), init }, getActionType(endpoint));
+    return await withTimeout(fetch(req.url.toString(), req.init), serverConfig.timeout);
   }
 
   private static containsAuthCode(url: string | null): boolean {
@@ -236,13 +259,13 @@ abstract class OAuth2Client {
   }
 
   private static getUrl(
-    path: string,
+    endpoint: ConfigurablePaths,
     query?: StringDict<string | undefined>,
     options?: ConfigOptions,
   ): string {
     const { realmPath, serverConfig } = Config.get(options);
-    const realmUrlPath = getRealmUrlPath(realmPath);
-    let url = resolve(serverConfig.baseUrl, `oauth2/${realmUrlPath}/${path}`);
+    const path = getEndpointPath(endpoint, realmPath, serverConfig.paths);
+    let url = resolve(serverConfig.baseUrl, path);
     if (query) {
       url += `?${stringify(query)}`;
     }

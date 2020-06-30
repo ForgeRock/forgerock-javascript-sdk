@@ -13,9 +13,11 @@ interface Step {
   detail?: StepDetail;
   header?: string;
   message?: string;
+  ok?: string;
   realm?: string;
   reason?: string;
   stage?: string;
+  status?: number;
   successUrl?: string;
   tokenId?: string;
 }

@@ -1,0 +1,9 @@
+export const AM_URL = 'https://auth.example.com:9443/am';
+export const BASE_URL = 'https://sdkapp.example.com:8443';
+export const CLIENT_ID = 'WebOAuthClient';
+export const PASSWORD = 'ieH034K&-zlwqh3V_';
+export const REALM_PATH = 'root';
+export const RESOURCE_URL = 'https://api.example.com:9443/account';
+export const SCOPE = 'openid profile me.read';
+export const TREE = 'BasicLogin';
+export const USERNAME = '57a5b4e4-6999-4b45-bf86-a4f2e5d4b629';

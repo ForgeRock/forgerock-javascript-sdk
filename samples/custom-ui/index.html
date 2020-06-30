@@ -1,32 +1,27 @@
 <!DOCTYPE html>
 <html>
-
 <head>
   <title>Custom UI | ForgeRock JavaScript SDK Samples</title>
-  <link rel="shortcut icon" href="../fr-ico.png" type="image/png">
+  <link rel="shortcut icon" href="../img/fr-ico.png" type="image/png">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
   <style>
     body {
       padding: 2rem;
     }
-
     #steps {
       position: relative;
     }
-
-    #steps>div {
+    #steps > div {
       left: -20000px;
       position: absolute;
     }
-
-    #steps>div.active {
+    #steps > div.active {
       left: 0;
     }
   </style>
 </head>
 
 <body>
-
   <div id="steps">
     <div id="loader" class="active">Loading...</div>
     <div id="UsernamePassword">
@@ -51,9 +46,20 @@
   </div>
 
   <script src="../js/index.js"></script>
-  <script src="../js/config.js"></script>
   <script>
     const FATAL = 'Fatal';
+
+    forgerock.Config.set({
+      clientId: '<Your OAuth Client>', // e.g. 'ForgeRockSDKClient'
+      redirectUri: '<Your Redirect/Callback URL>', // e.g. 'https://user.example.com:8443/_callback'
+      scope: '<Your OAuth Scopes>', // e.g. 'openid profile me.read'
+      serverConfig: {
+        baseUrl: '<Your AM URL>', // e.g. 'https://openam.example.com:9443/openam/'
+        timeout: '<Your Timeout (milliseconds)>' // 90000 or less
+      },
+      realmPath: '<Your Realm>', // e.g. 'root'
+      tree: '<Your Auth Tree>', // e.g. 'Login'
+    });
 
     // Define custom handlers to render and submit each expected step
     const handlers = {
@@ -143,5 +149,4 @@
     nextStep();
   </script>
 </body>
-
 </html>

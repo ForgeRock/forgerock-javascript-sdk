@@ -1,10 +1,11 @@
 import Config, { ServerConfig } from '../config';
+import { ActionTypes } from '../config/enums';
 import { REQUESTED_WITH } from '../shared/constants';
 import { StringDict } from '../shared/interfaces';
-import { getRealmUrlPath } from '../util/realm';
 import { withTimeout } from '../util/timeout';
-import { resolve, stringify } from '../util/url';
+import { getEndpointPath, resolve, stringify } from '../util/url';
 import { Step, StepOptions } from './interfaces';
+import middlewareWrapper from '../util/middleware';
 
 /**
  * Provides direct access to the OpenAM authentication tree API.
@@ -18,11 +19,21 @@ abstract class Auth {
    * @return {Step} The next step in the authentication tree.
    */
   public static async next(previousStep?: Step, options?: StepOptions): Promise<Step> {
-    const { realmPath, serverConfig, tree } = Config.get(options);
+    const { realmPath, serverConfig, tree, type } = Config.get(options);
     const query = options ? options.query : {};
     const url = this.constructUrl(serverConfig, realmPath, tree, query);
-    const init = this.configureRequest(previousStep);
-    const res = await withTimeout(fetch(url, init), serverConfig.timeout);
+    const req = middlewareWrapper(
+      {
+        url: new URL(url),
+        init: this.configureRequest(previousStep),
+      },
+      previousStep ? ActionTypes.Authenticate : ActionTypes.StartAuthenticate,
+      {
+        tree,
+        type: type ? type : 'service',
+      },
+    );
+    const res = await withTimeout(fetch(req.url.toString(), req.init), serverConfig.timeout);
     const json = await this.getResponseJson<Step>(res);
     return json;
   }
@@ -33,12 +44,11 @@ abstract class Auth {
     tree?: string,
     query?: StringDict<string>,
   ): string {
-    const realmUrlPath = getRealmUrlPath(realmPath);
     const treeParams = tree ? { authIndexType: 'service', authIndexValue: tree } : undefined;
     const params: StringDict<string | undefined> = { ...query, ...treeParams };
     const queryString = Object.keys(params).length > 0 ? `?${stringify(params)}` : '';
-    const path = `json/${realmUrlPath}/authenticate${queryString}`;
-    const url = resolve(serverConfig.baseUrl, path);
+    const path = getEndpointPath('authenticate', realmPath, serverConfig.paths);
+    const url = resolve(serverConfig.baseUrl, `${path}${queryString}`);
     return url;
   }
 
@@ -60,7 +70,9 @@ abstract class Auth {
   private static async getResponseJson<T>(res: Response): Promise<T> {
     const contentType = res.headers.get('content-type');
     const isJson = contentType && contentType.indexOf('application/json') > -1;
-    const json = isJson ? await res.json() : undefined;
+    const json = isJson ? await res.json() : {};
+    json.status = res.status;
+    json.ok = res.ok;
     return json;
   }
 }

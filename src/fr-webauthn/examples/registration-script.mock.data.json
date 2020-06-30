@@ -1,0 +1,33 @@
+{
+  "authId": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdXRoSW5kZXhWYWx1ZSI6IkJhc2ljTG9naW4iLCJvdGsiOiJtbzlwMDk5bGNvcHR1aDgxa2RiaGQybHRtdiIsImF1dGhJbmRleFR5cGUiOiJzZXJ2aWNlIiwicmVhbG0iOiIvIiwic2Vzc2lvbklkIjoiKkFBSlRTUUFDTURJQUJIUjVjR1VBQ0VwWFZGOUJWVlJJQUFKVE1RQUNNREUuKmV5SjBlWEFpT2lKS1YxUWlMQ0pqZEhraU9pSktWMVFpTENKaGJHY2lPaUpJVXpJMU5pSjkuWlhsS01HVllRV2xQYVVwTFZqRlJhVXhEU214aWJVMXBUMmxLUWsxVVNUUlJNRXBFVEZWb1ZFMXFWVEpKYVhkcFdWZDRia2xxYjJsYVIyeDVTVzR3TGk0MFZGZFhURFppTkhGNk1qVnRMVUpuV1VGeGQxcG5MbmxNYjBGZmJqVkdiazUxVjNsU1owTTNiRnBzTm5RMmVESnhWMGxFYVVOSWFYaG1PRFZTY0hwM1NYZERZV2hsYWtneWNtOUNRbGx4ZGpOVlNHeHBVa1V0WHpFMFMxUkhRV2hGZUVsaVgzTkhZM0JwZURGaVkzRlNZa2RFUlVwU1pGUnRMVWgyUVhwbWFHeFFhbXRQYjFSdmVUTkxWbkJQV1dGU01rSjBjMmxOWVU5ZmRFOUJlbE56UlRkeWRXeGpja1JLWDJWNmRHazJSVzh4YTI1VmFUVndOV0pWZVdwRWQzb3hTMEY1ZGpGb1RHSndkMmR1ZFU5MmRYTm5jbkEyUkROZmVVbDVVVlpSYzBOZmQycDFkVEJyZUVOUlQycFdiRVpoVFZOeVNUUjBYekpPZVVWMVFsRmxjMjFmUWprdGFuTm1jbFEyVTFSblEzVm1NR0p2U2s5c05XUjJhRTFCY1c5eVIxbGlWRGR5VmpGV1NFTXlNblF0ZGpWYU5EUndNMkZTVWxCZk5YSXRaSGw0TVZKa2RHWXRValJIYVdoNVVrdFFjVXBuYlROWU1IWlJSRWRLVlRndFkyTlZjbVpKTTBGR0xUTmhaMU5yVldGbmVVcDNjRkpSTUY5RE1raERTSGhoTW5kU1p6WjJTek16WkcxV1VGOHpNMFkwT0RKTFFVbzBWRlZKZVVSbE1EVnhZa2x0VVZaUGIxOXlMWGR3Y3padVQweFZURGcwV0RkUE4yZ3RkM1ZzVUVaNldYRnRUMUpYWkc1UFNrNHRXVVpxYVd0UE1IRkxWRzgyVjFFMk5VTnRYMWh5ZFVRdFdWOVJPRFZMYUZCUmRIQm1XR0YyYm1zeVFXSXpUVE0xVlRCSVZqbEpZVzEzTVRNNVR6aE5NRmQ0T1hsbWNYQnJOVmxtWVU5VGFVeFJPRkJoZUdrelgydExTRGRLYTFsUFNDMWphMnd4WWtGZlVUaEtiWGN5V0dSbFprVlJYMVZsWkhsMGRIRXlaVEZLVGt4MVV6RlpNMDlDUzFoU01WbDROVWw0VUhnM2RETXRRalpETVRkRmFHbEJWbHB3ZDJaUmVrVlBabU5pYkc0eWJsTlFhWEpaTWkxZlZUZHNaRE5PVlRaUk5XcGhRVlJEZFdobE5WOHlkbWRrYVdRME15MDNkMHRGVm1ORFQwOUtaV1pFYlUxNVdYWmZaRUpoU1cxM01GUjFVRzFCT0RBeFRVeFRSazFWTWtWSFNFWldkbFpyYm04M2JWbFBVVVJ3UW14QmFVdFJlV3hpU2tkTU9XNUZaMDA1ZHkxaFVHaFhYMmR1UkhFMU9FNUNWRGxWUTNobE9YUkhNRTQ1WDJ0aU4xbE1XSEZzZVVaUFVqWXlMV3cwVEU5YWJGbG5lVzluTlhSVmVYVkdkRTlsT1cxMlZtbzNkVTQ1YUVGZlVtNWxSa2xvVlVScFgxRlVhWEV5WVdKWmJIVm1kRGxYUjFjNU9EY3lNSFZ6VG5CM2EzUm9jMGg0U1dWU1YwaEJMa2h1UWpSMVpYRTNWRkI1VERObU0xQm9lak5DV1VFLmFCZDdjMW9VbzhEdmRqaHdBdkctZm83WHl0WnU5M29CaFdOSXIycnNzYnciLCJleHAiOjE1OTA2MTMyNDEsImlhdCI6MTU5MDYxMjk0MX0.PKInB8t1d82fwjP0RmgpG5kihL2OWqcewTk9TW6sM2U",
+  "callbacks": [
+    {
+      "type": "TextOutputCallback",
+      "output": [
+        {
+          "name": "message",
+          "value": "/*\n * Copyright 2018-2020 ForgeRock AS. All Rights Reserved\n *\n * Use of this code requires a commercial software license with ForgeRock AS.\n * or with one of its affiliates. All use shall be exclusively subject\n * to such license between the licensee and ForgeRock AS.\n */\n\nif (!window.PublicKeyCredential) {\n    document.getElementById('webAuthnOutcome').value = \"unsupported\";\n    document.getElementById(\"loginButton_0\").click();\n}\n\nvar publicKey = {\n    challenge: new Int8Array([87, -95, 18, -17, -59, -3, -72, -9, -109, 77, -66, 67, 101, -59, -29, -92, -31, -58, 117, -14, 3, -123, 1, -54, -69, -122, 44, 111, 30, 49, 12, 81]).buffer,\n    // Relying Party:\n    rp: {\n        id: \"https://user.example.com:3002\",\n        name: \"ForgeRock\"\n    },\n    // User:\n    user: {\n        id: Uint8Array.from(\"NTdhNWI0ZTQtNjk5OS00YjQ1LWJmODYtYTRmMmU1ZDRiNjI5\", function (c) { return c.charCodeAt(0) }),\n        name: \"57a5b4e4-6999-4b45-bf86-a4f2e5d4b629\",\n        displayName: \"57a5b4e4-6999-4b45-bf86-a4f2e5d4b629\"\n    },\n    pubKeyCredParams: [ { \"type\": \"public-key\", \"alg\": -257 }, { \"type\": \"public-key\", \"alg\": -7 } ],\n    attestation: \"none\",\n    timeout: 60000,\n    excludeCredentials: [],\n    authenticatorSelection: {\"userVerification\":\"preferred\"}\n};\n\nnavigator.credentials.create({publicKey: publicKey})\n    .then(function (newCredentialInfo) {\n        var rawId = newCredentialInfo.id;\n        var clientData = String.fromCharCode.apply(null, new Uint8Array(newCredentialInfo.response.clientDataJSON));\n        var keyData = new Int8Array(newCredentialInfo.response.attestationObject).toString();\n        document.getElementById('webAuthnOutcome').value = clientData + \"::\" + keyData + \"::\" + rawId;\n        document.getElementById(\"loginButton_0\").click();\n    }).catch(function (err) {\n        document.getElementById('webAuthnOutcome').value = \"ERROR\" + \"::\" + err;\n        document.getElementById(\"loginButton_0\").click();\n    });"
+        },
+        { "name": "messageType", "value": "4" }
+      ]
+    },
+    {
+      "type": "TextOutputCallback",
+      "output": [
+        {
+          "name": "message",
+          "value": "/*\n * Copyright 2018 ForgeRock AS. All Rights Reserved\n *\n * Use of this code requires a commercial software license with ForgeRock AS.\n * or with one of its affiliates. All use shall be exclusively subject\n * to such license between the licensee and ForgeRock AS.\n *\n */\n\n/*\n * Note:\n *\n * When a ConfirmationCallback is used (e.g. during recovery code use), the XUI does not render a loginButton. However\n * the webAuthn script needs to call loginButton.click() to execute the appropriate data reformatting prior to sending\n * the request into AM. Here we query whether the loginButton exists and add it to the DOM if it doesn't.\n */\n\nvar newLocation = document.getElementById(\"wrapper\");\n\nvar script = \"<div class=\\\"form-group\\\">\\n\" +\n    \"<div class=\\\"panel panel-default\\\">\\n\" +\n    \"    <div class=\\\"panel-body text-center\\\">\\n\" +\n    \"    <h4 class=\\\"awaiting-response\\\"><i class=\\\"fa fa-circle-o-notch fa-spin text-primary\\\"></i> Waiting for local device... </h4>\\n\" +\n    \"    </div>\\n\" +\n    \"</div>\\n\";\n\nif (!document.getElementById(\"loginButton_0\")) {\n    script += \"<input id=\\\"loginButton_0\\\" role=\\\"button\\\" type=\\\"submit\\\" hidden>\";\n} else {\n    document.getElementById(\"loginButton_0\").style.visibility='hidden';\n}\n\nscript += \"</div>\";\n\nnewLocation.getElementsByTagName(\"fieldset\")[0].innerHTML += script;\ndocument.body.appendChild(newLocation);"
+        },
+        { "name": "messageType", "value": "4" }
+      ]
+    },
+    {
+      "type": "HiddenValueCallback",
+      "output": [
+        { "name": "value", "value": "false" },
+        { "name": "id", "value": "webAuthnOutcome" }
+      ],
+      "input": [{ "name": "IDToken3", "value": "webAuthnOutcome" }]
+    }
+  ]
+}
