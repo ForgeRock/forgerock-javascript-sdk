@@ -1,13 +1,12 @@
-ecosystem.config.js
 bundles/
 docs/
 coverage/
 lib/
 lib-esm/
 node_modules/
-samples/_static/js
-tests/e2e/app/index.js*
-tests/e2e/server/config.copy.mjs
+samples/_static/js/*.js*
+tests/**/app/index.js*
+*.copy.*
 
 .DS_Store
 .vscode

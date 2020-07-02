@@ -4,7 +4,7 @@
 mkdir -p tests/certs
 
 # Generate the root key
-openssl genrsa -des3 -out tests/certs/ca.key 2048
+openssl genrsa -des3 -out tests/e2e/certs/ca.key 2048
 
 # Create a CA configuration file
 echo \
@@ -27,14 +27,14 @@ CN = \$FQDN
 
 [ req_ext ]
 subjectAltName = \$ALTNAMES
-"> tests/certs/ca.conf
+"> tests/e2e/certs/ca.conf
 
 # Generate a root certificate based on the root key
-openssl req -x509 -new -nodes -key tests/certs/ca.key -sha256 -days 1825 \
-  -out tests/certs/ca.crt -config tests/certs/ca.conf
+openssl req -x509 -new -nodes -key tests/e2e/certs/ca.key -sha256 -days 1825 \
+  -out tests/e2e/certs/ca.crt -config tests/e2e/certs/ca.conf
 
 # Generate a new private key
-openssl genrsa -out tests/certs/samples.key 2048
+openssl genrsa -out tests/e2e/certs/samples.key 2048
 
 # Create a CSR configuration file
 echo \
@@ -57,11 +57,11 @@ CN = \$FQDN
 
 [ req_ext ]
 subjectAltName = \$ALTNAMES
-"> tests/certs/samples-csr.conf
+"> tests/e2e/certs/samples-csr.conf
 
 # Generate a Certificate Signing Request (CSR) based on that private key
-openssl req -new -key tests/certs/samples.key -out tests/certs/samples.csr \
-  -config tests/certs/samples-csr.conf
+openssl req -new -key tests/e2e/certs/samples.key -out tests/e2e/certs/samples.csr \
+  -config tests/e2e/certs/samples-csr.conf
 
 # Create a configuration-file
 echo \
@@ -72,8 +72,8 @@ subjectAltName          = @alt_names
 
 [alt_names]
 DNS.1                   = *.example.com
-"> tests/certs/samples-crt.conf
+"> tests/e2e/certs/samples-crt.conf
 
 # Create the certificate for the webserver to serve
-openssl x509 -req -in tests/certs/samples.csr -CA tests/certs/ca.crt -CAkey tests/certs/ca.key -CAcreateserial \
-  -out tests/certs/samples.crt -days 1825 -sha256 -extfile tests/certs/samples-crt.conf
+openssl x509 -req -in tests/e2e/certs/samples.csr -CA tests/e2e/certs/ca.crt -CAkey tests/e2e/certs/ca.key -CAcreateserial \
+  -out tests/e2e/certs/samples.crt -days 1825 -sha256 -extfile tests/e2e/certs/samples-crt.conf
