@@ -68,6 +68,7 @@ interface WebAuthnAuthenticationMetadata {
   challenge: string;
   relyingPartyId: string;
   timeout: number;
+  userVerification: UserVerificationType;
 }
 
 interface WebAuthnCallbacks {

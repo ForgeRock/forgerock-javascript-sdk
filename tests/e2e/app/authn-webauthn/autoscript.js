@@ -86,8 +86,12 @@
         }
       }),
       rxjs.operators.delay(delay),
-      rxMergeMap((step) => {
+      rxMergeMap(() => {
         console.log('Log back in with WebAuthn');
+        return forgerock.FRAuth.next();
+      }),
+      rxjs.operators.delay(delay),
+      rxMergeMap((step) => {
         step.getCallbackOfType('NameCallback').setName(un);
         return forgerock.FRAuth.next(step);
       }),

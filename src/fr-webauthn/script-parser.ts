@@ -82,6 +82,11 @@ function parseWebAuthnAuthenticateText(text: string): PublicKeyCredentialRequest
   const allowCredentialsText = getIndexOne(
     text.match(/allowCredentials:\s{0,}\[([^]+)\s{0,}]/),
   ).trim();
+  // e.g. `"userVerification":"preferred"`
+  const userVerification = getIndexOne(
+    text.match(/"userVerification":\s{0,}"(\w+)"/),
+  ) as UserVerificationType;
+
   // Splitting objects in array in case the user has multiple keys
   const allowCredentialArr = allowCredentialsText.split('},') || [allowCredentialsText];
   // Iterating over array of substrings
@@ -119,6 +124,7 @@ function parseWebAuthnAuthenticateText(text: string): PublicKeyCredentialRequest
     allowCredentials,
     challenge,
     timeout,
+    ...(userVerification && { userVerification }),
     ...(rpId && { id: rpId }),
   };
 }
