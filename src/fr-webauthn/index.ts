@@ -297,13 +297,14 @@ abstract class FRWebAuthn {
   public static createAuthenticationPublicKey(
     metadata: WebAuthnAuthenticationMetadata,
   ): PublicKeyCredentialRequestOptions {
-    const { allowCredentials, challenge, relyingPartyId, timeout } = metadata;
+    const { allowCredentials, challenge, relyingPartyId, timeout, userVerification } = metadata;
     const rpId = parseRelyingPartyId(relyingPartyId);
 
     return {
       allowCredentials: parseCredentials(allowCredentials),
       challenge: Uint8Array.from(atob(challenge), (c) => c.charCodeAt(0)).buffer,
       timeout,
+      ...(userVerification && { userVerification }),
       ...(rpId && { rpId }),
     };
   }
