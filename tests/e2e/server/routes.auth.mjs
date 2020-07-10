@@ -14,8 +14,11 @@ import {
   noSessionSuccess,
   pollingCallback,
   requestDeviceProfile,
+  secondFactorCallback,
+  secondFactorChoiceCallback,
   userInfo,
 } from './responses.mjs';
+import initialRegResponse from './response.registration.mjs';
 import wait from './wait.mjs';
 
 console.log(`Your user password from 'env.config' file: ${PASSWORD}`);
@@ -33,6 +36,8 @@ export default function (app) {
         res.json(initialPlatformLogin);
       } else if (req.query.authIndexValue === 'MiscCallbacks') {
         res.json(initialMiscCallbacks);
+      } else if (req.query.authIndexValue === 'Registration') {
+        res.json(initialRegResponse);
       } else {
         res.json(initialBasicLogin);
       }
@@ -69,6 +74,48 @@ export default function (app) {
         res.json(authSuccess);
       } else {
         res.json(authFail);
+      }
+    } else if (req.query.authIndexValue === 'SecondFactor') {
+      if (req.body.callbacks.find((cb) => cb.type === 'NameCallback')) {
+        res.json(secondFactorChoiceCallback);
+      } else if (req.body.callbacks.find((cb) => cb.type === 'ChoiceCallback')) {
+        res.json(secondFactorCallback);
+      } else if (req.body.callbacks.find((cb) => cb.type === 'PasswordCallback')) {
+        const pwCb = req.body.callbacks.find((cb) => cb.type === 'PasswordCallback');
+        if (pwCb.input[0].value !== 'abc123') {
+          res.status(401).json(authFail);
+        } else {
+          res.json(authSuccess);
+        }
+      }
+    } else if (req.query.authIndexValue === 'Registration') {
+      const un = req.body.callbacks.find((cb) => cb.type === 'ValidatedCreateUsernameCallback');
+      const [fn, ln, em] = req.body.callbacks.filter(
+        (cb) => cb.type === 'StringAttributeInputCallback',
+      );
+      const [mktg, update] = req.body.callbacks.filter(
+        (cb) => cb.type === 'BooleanAttributeInputCallback',
+      );
+      const pw = req.body.callbacks.find((cb) => cb.type === 'ValidatedCreatePasswordCallback');
+      const [kba1, kba2] = req.body.callbacks.filter((cb) => cb.type === 'KbaCreateCallback');
+      const terms = req.body.callbacks.find((cb) => cb.type === 'TermsAndConditionsCallback');
+      if (
+        un.input[0].value === 'f9022889-4452-48a0-aa94-182436645551' &&
+        fn.input[0].value === 'Sally' &&
+        ln.input[0].value === 'Tester' &&
+        em.input[0].value === 'sally.tester@me.com' &&
+        mktg.input[0].value === false &&
+        update.input[0].value === false &&
+        pw.input[0].value === 'ieH034K&-zlwqh3V_' &&
+        kba1.input[0].value === 'What is your favorite color?' &&
+        kba1.input[1].value === 'Red' &&
+        kba2.input[0].value === 'Who was your first employer?' &&
+        kba2.input[1].value === 'AAA Engineering' &&
+        terms.input[0].value === true
+      ) {
+        res.json(authSuccess);
+      } else {
+        res.status(401).json(authFail);
       }
     } else if (req.body.callbacks.find((cb) => cb.type === 'PasswordCallback')) {
       const pwCb = req.body.callbacks.find((cb) => cb.type === 'PasswordCallback');

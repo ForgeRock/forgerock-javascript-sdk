@@ -140,6 +140,21 @@ export const choiceCallback = {
   ],
 };
 
+export const secondFactorChoiceCallback = {
+  authId: 'foo',
+  callbacks: [
+    {
+      type: 'ChoiceCallback',
+      output: [
+        { name: 'prompt', value: 'Choose Second Factor' },
+        { name: 'choices', value: ['Email', 'SMS'] },
+        { name: 'defaultChoice', value: 0 },
+      ],
+      input: [{ name: 'IDToken1', value: 0 }],
+    },
+  ],
+};
+
 export const messageCallback = {
   authId: 'foo',
   callbacks: [
@@ -177,6 +192,19 @@ export const pollingCallback = {
       ],
     },
   ],
+};
+
+export const secondFactorCallback = {
+  authId: 'foo',
+  callbacks: [
+    {
+      type: 'PasswordCallback',
+      output: [{ name: 'prompt', value: 'One Time Password' }],
+      input: [{ name: 'IDToken1', value: '' }],
+      _id: 0,
+    },
+  ],
+  stage: 'OneTimePasswordEmail',
 };
 
 export const initialAuthz = {
