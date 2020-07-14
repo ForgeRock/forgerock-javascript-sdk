@@ -96,7 +96,10 @@ export const initialPlatformLogin = {
     {
       type: 'ValidatedCreatePasswordCallback',
       output: [{ name: 'prompt', value: 'Password' }],
-      input: [{ name: 'IDToken2', value: '' }],
+      input: [
+        { name: 'IDToken2', value: '' },
+        { name: 'IDToken2validateOnly', value: false },
+      ],
       _id: 1,
     },
   ],

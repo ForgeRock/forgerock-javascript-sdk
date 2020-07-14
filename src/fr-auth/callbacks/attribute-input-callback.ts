@@ -1,5 +1,6 @@
 import FRCallback from '.';
 import { Callback, PolicyRequirement } from '../../auth/interfaces';
+import { StringDict } from 'shared/interfaces';
 
 /**
  * Represents a callback used to collect attributes.
@@ -45,8 +46,15 @@ class AttributeInputCallback<T extends string | boolean> extends FRCallback {
   /**
    * Gets the callback's applicable policies.
    */
-  public getPolicies(): string[] {
-    return this.getOutputByName<string[]>('policies', []);
+  public getPolicies(): StringDict<any> {
+    return this.getOutputByName<StringDict<any>>('policies', {});
+  }
+
+  /**
+   * Set if validating value only.
+   */
+  public setValidateOnly(value: boolean): void {
+    this.setInputValue(value, /validateOnly/);
   }
 
   /**
