@@ -32,10 +32,10 @@ export default function (app) {
     if (!req.body.callbacks) {
       if (req.query.authIndexType === 'composite_advice') {
         res.json(initialAuthz);
-      } else if (req.query.authIndexValue === 'PlatformUsernamePassword') {
-        res.json(initialPlatformLogin);
       } else if (req.query.authIndexValue === 'MiscCallbacks') {
         res.json(initialMiscCallbacks);
+      } else if (req.query.authIndexValue === 'PlatformUsernamePassword') {
+        res.json(initialPlatformLogin);
       } else if (req.query.authIndexValue === 'Registration') {
         res.json(initialRegResponse);
       } else {
@@ -75,18 +75,16 @@ export default function (app) {
       } else {
         res.json(authFail);
       }
-    } else if (req.query.authIndexValue === 'SecondFactor') {
-      if (req.body.callbacks.find((cb) => cb.type === 'NameCallback')) {
-        res.json(secondFactorChoiceCallback);
-      } else if (req.body.callbacks.find((cb) => cb.type === 'ChoiceCallback')) {
-        res.json(secondFactorCallback);
-      } else if (req.body.callbacks.find((cb) => cb.type === 'PasswordCallback')) {
-        const pwCb = req.body.callbacks.find((cb) => cb.type === 'PasswordCallback');
-        if (pwCb.input[0].value !== 'abc123') {
-          res.status(401).json(authFail);
-        } else {
-          res.json(authSuccess);
-        }
+    } else if (req.query.authIndexValue === 'PlatformUsernamePassword') {
+      const pwCb = req.body.callbacks.find((cb) => cb.type === 'ValidatedCreatePasswordCallback');
+      // If validate only, return callbacks
+      if (pwCb.input[1].value) {
+        res.json(initialPlatformLogin);
+      } else if (pwCb.input[0].value !== PASSWORD) {
+        res.status(401).json(authFail);
+      } else {
+        res.cookie('iPlanetDirectoryPro', 'abcd1234', { domain: '.example.com' });
+        res.json(authSuccess);
       }
     } else if (req.query.authIndexValue === 'Registration') {
       const un = req.body.callbacks.find((cb) => cb.type === 'ValidatedCreateUsernameCallback');
@@ -117,6 +115,19 @@ export default function (app) {
       } else {
         res.status(401).json(authFail);
       }
+    } else if (req.query.authIndexValue === 'SecondFactor') {
+      if (req.body.callbacks.find((cb) => cb.type === 'NameCallback')) {
+        res.json(secondFactorChoiceCallback);
+      } else if (req.body.callbacks.find((cb) => cb.type === 'ChoiceCallback')) {
+        res.json(secondFactorCallback);
+      } else if (req.body.callbacks.find((cb) => cb.type === 'PasswordCallback')) {
+        const pwCb = req.body.callbacks.find((cb) => cb.type === 'PasswordCallback');
+        if (pwCb.input[0].value !== 'abc123') {
+          res.status(401).json(authFail);
+        } else {
+          res.json(authSuccess);
+        }
+      }
     } else if (req.body.callbacks.find((cb) => cb.type === 'PasswordCallback')) {
       const pwCb = req.body.callbacks.find((cb) => cb.type === 'PasswordCallback');
       if (pwCb.input[0].value !== PASSWORD) {
@@ -145,14 +156,6 @@ export default function (app) {
             res.json(req.query.noSession === 'true' ? noSessionSuccess : authSuccess);
           }
         }
-      }
-    } else if (req.body.callbacks.find((cb) => cb.type === 'ValidatedCreatePasswordCallback')) {
-      const pwCb = req.body.callbacks.find((cb) => cb.type === 'ValidatedCreatePasswordCallback');
-      if (pwCb.input[0].value !== PASSWORD) {
-        res.status(401).json(authFail);
-      } else {
-        res.cookie('iPlanetDirectoryPro', 'abcd1234', { domain: '.example.com' });
-        res.json(authSuccess);
       }
     } else if (req.body.callbacks.find((cb) => cb.type === 'DeviceProfileCallback')) {
       const deviceCb = req.body.callbacks.find((cb) => cb.type === 'DeviceProfileCallback') || {};

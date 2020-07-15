@@ -1,5 +1,6 @@
 import FRCallback from '.';
 import { Callback, PolicyRequirement } from '../../auth/interfaces';
+import { StringDict } from 'shared/interfaces';
 
 /**
  * Represents a callback used to collect a valid platform username.
@@ -29,8 +30,8 @@ class ValidatedCreateUsernameCallback extends FRCallback {
   /**
    * Gets the callback's applicable policies.
    */
-  public getPolicies(): string[] {
-    return this.getOutputByName<string[]>('policies', []);
+  public getPolicies(): StringDict<any> {
+    return this.getOutputByName<StringDict<any>>('policies', {});
   }
 
   /**
@@ -45,6 +46,13 @@ class ValidatedCreateUsernameCallback extends FRCallback {
    */
   public setName(name: string): void {
     this.setInputValue(name);
+  }
+
+  /**
+   * Set if validating value only.
+   */
+  public setValidateOnly(value: boolean): void {
+    this.setInputValue(value, /validateOnly/);
   }
 }
 

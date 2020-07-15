@@ -34,7 +34,20 @@
       .from(forgerock.FRAuth.next())
       .pipe(
         rxMergeMap((step) => {
-          console.log('Set values on auth tree callbacks');
+          console.log('Set values on auth tree callbacks for validation only');
+          const unCb = step.getCallbackOfType('ValidatedCreateUsernameCallback');
+          unCb.setName(un);
+          unCb.setValidateOnly(true);
+
+          const pwCb = step.getCallbackOfType('ValidatedCreatePasswordCallback');
+          pwCb.setPassword(pw);
+          pwCb.setValidateOnly(true);
+
+          return forgerock.FRAuth.next(step);
+        }),
+        rxjs.operators.delay(delay),
+        rxMergeMap((step) => {
+          console.log('Set values on auth tree callbacks for submission');
           step.getCallbackOfType('ValidatedCreateUsernameCallback').setName(un);
           step.getCallbackOfType('ValidatedCreatePasswordCallback').setPassword(pw);
           return forgerock.FRAuth.next(step);

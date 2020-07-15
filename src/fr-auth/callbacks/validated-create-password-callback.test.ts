@@ -1,28 +1,14 @@
 import { CallbackType } from '../../auth/enums';
 import { Callback } from '../../auth/interfaces';
-import AttributeInputCallback from './attribute-input-callback';
+import ValidatedCreatePasswordCallback from './validated-create-password-callback';
 
-describe('AttributeInputCallback', () => {
+describe('ValidatedCreatePasswordCallback', () => {
   const payload: Callback = {
-    _id: 0,
-    input: [
-      {
-        name: 'IDToken0',
-        value: '',
-      },
-      {
-        name: 'IDToken0validateOnly',
-        value: false,
-      },
-    ],
+    type: CallbackType.ValidatedCreatePasswordCallback,
     output: [
       {
-        name: 'name',
-        value: 'givenName',
-      },
-      {
-        name: 'prompt',
-        value: 'First Name:',
+        name: 'echoOn',
+        value: false,
       },
       {
         name: 'required',
@@ -32,7 +18,7 @@ describe('AttributeInputCallback', () => {
         name: 'policies',
         value: {
           policyRequirements: ['a', 'b'],
-          name: 'givenName',
+          name: 'password',
           policies: [],
         },
       },
@@ -44,27 +30,40 @@ describe('AttributeInputCallback', () => {
         name: 'validateOnly',
         value: false,
       },
+      {
+        name: 'prompt',
+        value: 'Password',
+      },
     ],
-    type: CallbackType.StringAttributeInputCallback,
+    input: [
+      {
+        name: 'IDToken2',
+        value: '',
+      },
+      {
+        name: 'IDToken2validateOnly',
+        value: false,
+      },
+    ],
+    _id: 1,
   };
 
   it('reads/writes basic properties with "validate only"', () => {
-    const cb = new AttributeInputCallback<string>(payload);
-    cb.setValue('Clark');
+    const cb = new ValidatedCreatePasswordCallback(payload);
+    cb.setPassword('abcd123');
     cb.setValidateOnly(true);
 
-    expect(cb.getType()).toBe('StringAttributeInputCallback');
-    expect(cb.getName()).toBe('givenName');
-    expect(cb.getPrompt()).toBe('First Name:');
+    expect(cb.getType()).toBe('ValidatedCreatePasswordCallback');
+    expect(cb.getPrompt()).toBe('Password');
     expect(cb.isRequired()).toBe(true);
     expect(cb.getPolicies().policyRequirements).toStrictEqual(['a', 'b']);
     expect(cb.getFailedPolicies()).toStrictEqual(['c', 'd']);
-    expect(cb.getInputValue()).toBe('Clark');
+    expect(cb.payload.input[0].value).toBe('abcd123');
     expect(cb.payload.input[1].value).toBe(true);
   });
 
   it('writes validate only to `false` for submission', () => {
-    const cb = new AttributeInputCallback<string>(payload);
+    const cb = new ValidatedCreatePasswordCallback(payload);
     cb.setValidateOnly(false);
     expect(cb.payload.input[1].value).toBe(false);
   });
