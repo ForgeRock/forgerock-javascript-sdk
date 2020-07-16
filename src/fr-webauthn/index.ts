@@ -299,11 +299,13 @@ abstract class FRWebAuthn {
   ): PublicKeyCredentialRequestOptions {
     const { allowCredentials, challenge, relyingPartyId, timeout, userVerification } = metadata;
     const rpId = parseRelyingPartyId(relyingPartyId);
+    const allowCredentialsValue = parseCredentials(allowCredentials);
 
     return {
-      allowCredentials: parseCredentials(allowCredentials),
       challenge: Uint8Array.from(atob(challenge), (c) => c.charCodeAt(0)).buffer,
       timeout,
+      // only add key-value pair if proper value is provided
+      ...(allowCredentialsValue && { allowCredentials: allowCredentialsValue }),
       ...(userVerification && { userVerification }),
       ...(rpId && { rpId }),
     };
@@ -334,6 +336,7 @@ abstract class FRWebAuthn {
       timeout,
       userId,
       userName,
+      displayName,
     } = metadata;
     const rpId = parseRelyingPartyId(relyingPartyId);
     const rp: RelyingParty = {
@@ -349,7 +352,7 @@ abstract class FRWebAuthn {
       rp,
       timeout,
       user: {
-        displayName: userName,
+        displayName: displayName,
         id: Int8Array.from(userId.split('').map((c: string) => c.charCodeAt(0))),
         name: userName,
       },
