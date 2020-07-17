@@ -15,7 +15,7 @@ function parseWebAuthnRegisterText(text: string): PublicKeyCredentialCreationOpt
 
   // e.g. `rp: {\n id: \"https://user.example.com:3002\",\n name: \"ForgeRock\"\n }`
   const rp = getIndexOne(text.match(/rp:\s{0,}{([^}]+)}/)).trim();
-  // e.g. `id: \"https://user.example.com:3002\"
+  // e.g. `id: \"example.com\"
   const rpId = getIndexOne(rp.match(/id:\s{0,}"([^"]*)"/));
   // e.g. `name: \"ForgeRock\"`
   const rpName = getIndexOne(rp.match(/name:\s{0,}"([^"]*)"/));
@@ -30,7 +30,7 @@ function parseWebAuthnRegisterText(text: string): PublicKeyCredentialCreationOpt
   // e.g. `name: \"57a5b4e4-...-a4f2e5d4b629\",`
   const userName = getIndexOne(user.match(/name:\s{0,}"([\d\w._-]+)"/));
   // e.g. `displayName: \"57a5b4e4-...-a4f2e5d4b629\"`
-  const userDisplayName = getIndexOne(user.match(/displayName:\s{0,}"([\d\w._-]+)"/));
+  const userDisplayName = getIndexOne(user.match(/displayName:\s{0,}"([\d\w\s._-]+)"/));
 
   // e.g. `pubKeyCredParams: [
   // { \"type\": \"public-key\", \"alg\": -257 }, { \"type\": \"public-key\", \"alg\": -7 }
@@ -59,11 +59,11 @@ function parseWebAuthnRegisterText(text: string): PublicKeyCredentialCreationOpt
       userVerification,
     },
     challenge,
-    excludeCredentials: [],
     pubKeyCredParams,
     rp: {
-      id: rpId,
       name: rpName,
+      // only add key-value pair if proper value is provided
+      ...(rpId && { id: rpId }),
     },
     timeout,
     user: {
@@ -75,6 +75,7 @@ function parseWebAuthnRegisterText(text: string): PublicKeyCredentialCreationOpt
 }
 
 function parseWebAuthnAuthenticateText(text: string): PublicKeyCredentialRequestOptions {
+  let allowCredentials;
   // e.g. `allowCredentials: [
   // { \"type\": \"public-key\",
   // \"id\": new Int8Array([-107, 93, 68, -67, ... -19, 7, 4]).buffer }
@@ -87,24 +88,26 @@ function parseWebAuthnAuthenticateText(text: string): PublicKeyCredentialRequest
     text.match(/"userVerification":\s{0,}"(\w+)"/),
   ) as UserVerificationType;
 
-  // Splitting objects in array in case the user has multiple keys
-  const allowCredentialArr = allowCredentialsText.split('},') || [allowCredentialsText];
-  // Iterating over array of substrings
-  const allowCredentials = allowCredentialArr.map((str) => {
-    // e.g. `{ \"type\": \"public-key\",
-    const type = getIndexOne(str.match(/"type":\s{0,}"([\w-]+)"/)) as 'public-key';
-    // e.g. \"id\": new Int8Array([-107, 93, 68, -67, ... -19, 7, 4]).buffer
-    const idArr = ensureArray(text.match(/"id":\s{0,}new\s{0,}(Uint|Int)8Array\(([^\)]+)/));
-    // e.g. `[-107, 93, 68, -67, ... -19, 7, 4]`
-    const idJSON = JSON.parse(idArr[2]);
-    // e.g. [-107, 93, 68, -67, ... -19, 7, 4]
-    const id = new Int8Array(idJSON).buffer;
+  if (allowCredentialsText) {
+    // Splitting objects in array in case the user has multiple keys
+    const allowCredentialArr = allowCredentialsText.split('},') || [allowCredentialsText];
+    // Iterating over array of substrings
+    allowCredentials = allowCredentialArr.map((str) => {
+      // e.g. `{ \"type\": \"public-key\",
+      const type = getIndexOne(str.match(/"type":\s{0,}"([\w-]+)"/)) as 'public-key';
+      // e.g. \"id\": new Int8Array([-107, 93, 68, -67, ... -19, 7, 4]).buffer
+      const idArr = ensureArray(text.match(/"id":\s{0,}new\s{0,}(Uint|Int)8Array\(([^\)]+)/));
+      // e.g. `[-107, 93, 68, -67, ... -19, 7, 4]`
+      const idJSON = JSON.parse(idArr[2]);
+      // e.g. [-107, 93, 68, -67, ... -19, 7, 4]
+      const id = new Int8Array(idJSON).buffer;
 
-    return {
-      type,
-      id,
-    };
-  });
+      return {
+        type,
+        id,
+      };
+    });
+  }
 
   // e.g. `timeout: 60000`
   const timeout = Number(getIndexOne(text.match(/timeout:\s{0,}(\d+)/)));
@@ -117,15 +120,16 @@ function parseWebAuthnAuthenticateText(text: string): PublicKeyCredentialRequest
   const challengeJSON = JSON.parse(challengeArr[2]);
   // e.g. [87, -95, 18, ... -3,  49, 12, 81]
   const challenge = new Int8Array(challengeJSON).buffer;
-  // e.g. `rpId: "user.example.com",`
-  const rpId = getIndexOne(text.match(/rpId:\s{0,}\[([^]+)\s{0,}]/));
+  // e.g. `rpId: \"example.com\"`
+  const rpId = getIndexOne(text.match(/rpId:\s{0,}\\{0,}"([^"\\]*)/));
 
   return {
-    allowCredentials,
     challenge,
     timeout,
+    // only add key-value pairs if the proper value is provided
+    ...(allowCredentials && { allowCredentials }),
     ...(userVerification && { userVerification }),
-    ...(rpId && { id: rpId }),
+    ...(rpId && { rpId }),
   };
 }
 

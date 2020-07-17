@@ -61,6 +61,7 @@ interface WebAuthnRegistrationMetadata {
   timeout: number;
   userId: string;
   userName: string;
+  displayName: string;
 }
 
 interface WebAuthnAuthenticationMetadata {
