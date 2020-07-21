@@ -1,6 +1,6 @@
 import FRCallback from '.';
 import { Callback, PolicyRequirement } from '../../auth/interfaces';
-import { StringDict } from 'shared/interfaces';
+import { StringDict } from '../../shared/interfaces';
 
 /**
  * Represents a callback used to collect a valid platform username.
