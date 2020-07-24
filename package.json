@@ -1,6 +1,6 @@
 {
   "name": "@forgerock/javascript-sdk",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "ForgeRock JavaScript SDK",
   "main": "./lib/",
   "module": "./lib-esm/",
