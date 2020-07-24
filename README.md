@@ -131,6 +131,10 @@ You can raise a ticket using **[BackStage](https://backstage.forgerock.com/suppo
 
 BackStage shows all currently open support tickets and allows you to raise a new one by clicking **New Ticket**.
 
+## Version History
+
+[Our version history can be viewed by visiting our CHANGELOG.md](https://github.com/ForgeRock/forgerock-javascript-sdk/blob/master/CHANGELOG.md).
+
 <!------------------------------------------------------------------------------------------------------------------------------------>
 <!-- COLLABORATION -->
 
