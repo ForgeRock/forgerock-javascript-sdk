@@ -38,6 +38,7 @@ type WebAuthnTextOutput = WebAuthnTextOutputRegistration;
  *   // Authenticate with a registered device
  *   await FRWebAuthn.authenticate(step);
  * }
+ * ```
  */
 abstract class FRWebAuthn {
   /**

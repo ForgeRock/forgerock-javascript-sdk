@@ -62,6 +62,15 @@
         console.log('Send WebAuthn Credentials');
         return forgerock.FRAuth.next(step);
       }),
+      rxjs.operators.delay(delay),
+      rxMergeMap((step) => {
+        console.log('Check for Display Recovery Codes step');
+        const isDisplayStep = forgerock.FRRecoveryCodes.isDisplayStep(step);
+        const recoveryCodes = forgerock.FRRecoveryCodes.getCodes(step);
+        console.log(isDisplayStep ? 'Display recovery codes' : 'Missing recovery codes');
+        console.log(recoveryCodes.length === 10 ? 'Parsed all codes' : 'Unable to parse all codes');
+        return forgerock.FRAuth.next(step);
+      }),
       rxMap((step) => {
         if (step.payload.code === 401) {
           throw new Error('Auth_Error');
