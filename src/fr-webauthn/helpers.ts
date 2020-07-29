@@ -1,13 +1,13 @@
-import { ParsedCredential, ResponseCredential } from './interfaces';
+import { ParsedCredential } from './interfaces';
 
 function ensureArray(arr: RegExpMatchArray | null): string[] {
   return arr || [];
 }
 
-function getClientDataJson(credential: ResponseCredential): string {
+function arrayBufferToString(arrayBuffer: ArrayBuffer): string {
   // https://goo.gl/yabPex - To future-proof, we'll pass along whatever the browser
   // gives us and let AM disregard randomly-injected properties
-  const uint8Array = new Uint8Array(credential.response.clientDataJSON);
+  const uint8Array = new Uint8Array(arrayBuffer);
   const txtDecoder = new TextDecoder();
 
   const json = txtDecoder.decode(uint8Array);
@@ -99,7 +99,7 @@ function parseRelyingPartyId(relyingPartyId: string): string {
 
 export {
   ensureArray,
-  getClientDataJson,
+  arrayBufferToString,
   getIndexOne,
   parseCredentials,
   parseNumberArray,

@@ -4,7 +4,7 @@ import MetadataCallback from '../fr-auth/callbacks/metadata-callback';
 import FRStep from '../fr-auth/fr-step';
 import { WebAuthnOutcome, WebAuthnStepType } from './enums';
 import {
-  getClientDataJson,
+  arrayBufferToString,
   parseCredentials,
   parsePubKeyArray,
   parseRelyingPartyId,
@@ -234,12 +234,22 @@ abstract class FRWebAuthn {
         throw new Error('No credential provided');
       }
 
-      const clientDataJSON = getClientDataJson(credential);
+      const clientDataJSON = arrayBufferToString(credential.response.clientDataJSON);
       const assertionResponse = credential.response as AuthenticatorAssertionResponse;
       const authenticatorData = new Int8Array(assertionResponse.authenticatorData).toString();
       const signature = new Int8Array(assertionResponse.signature).toString();
 
-      return `${clientDataJSON}::${authenticatorData}::${signature}::${credential.id}`;
+      // Current native typing for PublicKeyCredential does not include `userHandle`
+      // eslint-disable-next-line
+      // @ts-ignore
+      const userHandle = arrayBufferToString(credential.response.userHandle);
+
+      let stringOutput = `${clientDataJSON}::${authenticatorData}::${signature}::${credential.id}`;
+      // Check if Username is stored on device
+      if (userHandle) {
+        stringOutput = `${stringOutput}::${userHandle}`;
+      }
+      return stringOutput;
     } catch (error) {
       return this.getErrorOutcome(error);
     }
@@ -279,7 +289,7 @@ abstract class FRWebAuthn {
         throw new Error('No credential provided');
       }
 
-      const clientDataJSON = getClientDataJson(credential);
+      const clientDataJSON = arrayBufferToString(credential.response.clientDataJSON);
       const attestationResponse = credential.response as AuthenticatorAttestationResponse;
       const attestationObject = new Int8Array(attestationResponse.attestationObject).toString();
       return `${clientDataJSON}::${attestationObject}::${credential.id}`;

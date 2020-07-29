@@ -1,5 +1,19 @@
 # Changelog
 
+## [unreleased]
+
+### Added
+
+- Support for "usernameless" login (storing username on WebAuthn capable tech)
+- Support for the recovery code display node and the parsing of the codes from the TextOutputCallback
+- Support for user verification property for WebAuthn
+- Updated support for new IDM nodes for registration and self-service
+
+### Fixed
+
+- Conditionally set user verification, relying party and allow credentials to WebAuthn key options
+- Ensure display name and username are correctly parsed and added to WebAuthn key options
+
 ## [2.0.0] - 2020-06-22
 
 ### Added
