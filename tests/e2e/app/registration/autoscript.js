@@ -1,5 +1,6 @@
 (function () {
   const rxMergeMap = rxjs.operators.mergeMap;
+  const rxMap = rxjs.operators.map;
   const rxTap = rxjs.operators.tap;
 
   const delay = 0;
@@ -35,7 +36,7 @@
       .pipe(
         rxjs.operators.delay(delay),
         rxMergeMap((step) => {
-          console.log('Handle ValidatedCreatePasswordCallback');
+          console.log('Handle ValidatedCreateUsernameCallback');
           const unCb = step.getCallbackOfType('ValidatedCreateUsernameCallback');
           console.log(`Prompt from UsernameCallback is ${unCb.getPrompt()}`);
           unCb.setName(un);
@@ -63,11 +64,16 @@
           baCb1.setInputValue(false);
           baCb2.setInputValue(false);
 
+          const naCb = step.getCallbackOfType('NumberAttributeInputCallback');
+          console.log(`Prompt 6: ${naCb.getPrompt()}`);
+
+          naCb.setInputValue(40);
+
           console.log('Handle KbaCreateCallback');
           const [kbCb1, kbCb2] = step.getCallbacksOfType('KbaCreateCallback');
 
-          console.log(`Prompt 1: ${kbCb1.getPrompt()}`);
-          console.log(`Prompt 2: ${kbCb2.getPrompt()}`);
+          console.log(`Prompt 7: ${kbCb1.getPrompt()}`);
+          console.log(`Prompt 8: ${kbCb2.getPrompt()}`);
 
           const [pdq1, pdq2] = kbCb1.getPredefinedQuestions();
           console.log(`Predefined Question1: ${pdq1}`);
@@ -88,6 +94,32 @@
           tcCb.setAccepted();
 
           return forgerock.FRAuth.next(step);
+        }),
+        rxjs.operators.delay(delay),
+        rxMap(
+          (step) => {
+            if (step.payload.code === 401) {
+              throw new Error('Auth_Error');
+            } else if (step.payload.tokenId) {
+              console.log('Basic login successful');
+              document.body.innerHTML = '<p class="Logged_In">Login successful</p>';
+            } else {
+              throw new Error('Something went wrong.');
+            }
+          },
+          (step) => step,
+        ),
+        rxjs.operators.delay(delay),
+        rxMergeMap((step) => {
+          return forgerock.SessionManager.logout();
+        }),
+        rxMap((response) => {
+          if (response.ok) {
+            console.log('Logout successful');
+            document.body.innerHTML = '<p class="Logged_Out">Logout successful</p>';
+          } else {
+            throw new Error('Logout_Error');
+          }
         }),
         rxTap(
           () => {},

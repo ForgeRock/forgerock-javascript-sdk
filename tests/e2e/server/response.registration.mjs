@@ -57,6 +57,37 @@ export default {
       _id: 2,
     },
     {
+      type: 'NumberAttributeInputCallback',
+      input: [
+        { name: 'IDToken4', value: null },
+        { name: 'IDToken4validateOnly', value: false },
+      ],
+      output: [
+        { name: 'name', value: 'age' },
+        { name: 'prompt', value: 'Age' },
+        { name: 'required', value: true },
+        {
+          name: 'policies',
+          value: {
+            policyRequirements: ['VALID_TYPE'],
+            fallbackPolicies: null,
+            name: 'age',
+            policies: [
+              {
+                policyRequirements: ['VALID_TYPE'],
+                policyId: 'valid-type',
+                params: { types: ['number'] },
+              },
+            ],
+            conditionalPolicies: null,
+          },
+        },
+        { name: 'failedPolicies', value: [] },
+        { name: 'validateOnly', value: false },
+        { name: 'value', value: null },
+      ],
+    },
+    {
       type: 'StringAttributeInputCallback',
       output: [
         { name: 'name', value: 'mail' },

@@ -1,14 +1,5 @@
 import { chromium, firefox, webkit } from 'playwright';
-import {
-  AM_URL,
-  BASE_URL,
-  CLIENT_ID,
-  PASSWORD,
-  REALM_PATH,
-  RESOURCE_URL,
-  SCOPE,
-  USERNAME,
-} from '../env.config';
+import { BASE_URL } from '../env.config';
 
 const browsers = { chromium, firefox, webkit };
 
@@ -18,6 +9,8 @@ export async function setupAndGo(
   failAuth?: boolean,
   allowGeo?: boolean,
   tokenStore?: string,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  config?: any,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): Promise<{ browser: any; page: any }> {
   const browser = await browsers[browserType].launch({ headless: true });
@@ -30,13 +23,18 @@ export async function setupAndGo(
   const page = await context.newPage();
 
   const url = new URL(`${BASE_URL}/${path}`);
-  url.searchParams.set('amUrl', AM_URL || '');
-  url.searchParams.set('clientId', CLIENT_ID || '');
-  url.searchParams.set('realmPath', REALM_PATH || '');
-  url.searchParams.set('resourceUrl', RESOURCE_URL || '');
-  url.searchParams.set('scope', SCOPE || '');
-  url.searchParams.set('un', USERNAME);
-  url.searchParams.set('pw', failAuth ? `sad_${PASSWORD}_panda` : PASSWORD);
+
+  if (config) {
+    url.searchParams.set('amUrl', config.amUrl);
+    url.searchParams.set('clientId', config.clientId);
+    url.searchParams.set('realmPath', config.realmPath);
+    url.searchParams.set('resourceUrl', config.resourceUrl);
+    url.searchParams.set('scope', config.scrop);
+    url.searchParams.set('un', config.un);
+    url.searchParams.set('pw', failAuth ? `sad_${config.pw}_panda` : config.pw);
+  } else if (failAuth) {
+    url.searchParams.set('pw', 'wrong_password_123!');
+  }
 
   if (tokenStore) {
     url.searchParams.set('tokenStore', tokenStore);

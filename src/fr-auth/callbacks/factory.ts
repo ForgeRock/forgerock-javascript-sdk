@@ -40,6 +40,8 @@ function createCallback(callback: Callback): FRCallback {
       return new MetadataCallback(callback);
     case CallbackType.NameCallback:
       return new NameCallback(callback);
+    case CallbackType.NumberAttributeInputCallback:
+      return new AttributeInputCallback<number>(callback);
     case CallbackType.PasswordCallback:
       return new PasswordCallback(callback);
     case CallbackType.PollingWaitCallback:
