@@ -54,9 +54,11 @@ To try out the ForgeRock JavaScript SDK, perform these steps:
 1. Setup CORS support in an Access Management (AM) instance.
 
    See [Enabling CORS Support](https://sdks.forgerock.com/js/01_prepare-am/#enabling-cors-support) in the Documentation.
+
 2. Create an authentication tree in AM.
 
    See [Creating a User Authentication Tree](https://sdks.forgerock.com/js/01_prepare-am/#creating-a-user-authentication-tree) in the Documentation.
+
 3. Clone this repo:
 
     ```
@@ -76,17 +78,29 @@ To try out the ForgeRock JavaScript SDK, perform these steps:
     ```
 
 6. Open `samples/custom-ui/index.html` and edit the configuration values to match your AM instance.
-7. Serve the `samples` directory by using a simple HTTP server, for example:
-   `npm run start:samples`
-8. Edit your `/etc/hosts` file to point your localhost to `sdkapp.example.com`
-8. In a [supported web browser](#requirements), navigate to `https://sdkapp.example.com:8443`, and then click
- **Custom UI**.
 
-   > **Note**:
-   >
-   > Using the supplied self-signed certs is for testing and evaluation purposes **only**.
-   >
-   > Use your own production certifications from a valid Certificate Authority in production environments.
+7. This SDK requires HTTPS (secure protocol) which means security (SSL/TLS) certificates are necessary. For local testing and development, it's common to generate your own self-signed certificates. You're free to use any method to do this, but if you need assistance in generating your own certs, the following can be helpful:
+
+    - Using [this utility (`mkcert`) can help simplify the process of creating trusted certs](https://github.com/FiloSottile/mkcert)
+    - After following `mkcert`'s installation guide and simple example of creating certs, you should have two files: `example.com+5.pem` & `example.com+5-key.pem`
+
+        (Ensure these two files are in the root of this project)
+
+    > **Warning: Self-signed certificates or certificates not from an industry-recognized, certificate authority (CA) should never be used in production.**
+
+8. Serve the `samples` directory by using a simple HTTP server.
+
+   - If you used the `mkcert` utility from above, followed their tutorial, and the files are in the root of this project, simply run `npm run start:samples`
+   - Or, if you generated certs using a different method, you will need to run the below with your certificate and key file names you created:
+
+       ```
+       http-server samples -c1 -p 8443 --ssl --cert <your_certificate> --key <your_private_key>
+       ```
+
+9. Edit your `/etc/hosts` file to point your localhost (e.g. `127.0.0.1`) to `sdkapp.example.com`
+
+10. In a [supported web browser](#requirements), navigate to `https://sdkapp.example.com:8443`, and then click
+ **Custom UI**.
 
 <!------------------------------------------------------------------------------------------------------------------------------------>
 <!-- SAMPLES - List the samples we include with the SDKs, where they are, briefly what they show. -->
