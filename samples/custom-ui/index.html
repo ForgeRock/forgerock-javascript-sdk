@@ -45,13 +45,13 @@
     </div>
   </div>
 
-  <script src="../js/index.js"></script>
+  <script src="../_static/js/index.js"></script>
   <script>
     const FATAL = 'Fatal';
 
     forgerock.Config.set({
       clientId: '<Your OAuth Client>', // e.g. 'ForgeRockSDKClient'
-      redirectUri: '<Your Redirect/Callback URL>', // e.g. 'https://user.example.com:8443/_callback'
+      redirectUri: '<Your Redirect/Callback URL>', // e.g. 'https://sdkapp.example.com:8443/_callback'
       scope: '<Your OAuth Scopes>', // e.g. 'openid profile me.read'
       serverConfig: {
         baseUrl: '<Your AM URL>', // e.g. 'https://openam.example.com:9443/openam/'
