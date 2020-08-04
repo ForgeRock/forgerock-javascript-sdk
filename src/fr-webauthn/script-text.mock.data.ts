@@ -131,6 +131,7 @@ var publicKey = {
     excludeCredentials: [],
     authenticatorSelection: {
       userVerification: "preferred"
+      authenticatorAttachment:"cross-platform"
     }
 };
 
@@ -176,7 +177,7 @@ const registerInputWithRpidAndQuotes = `/*
        "attestation": "none",
        "timeout": 60000,
        "excludeCredentials": [],
-       "authenticatorSelection": {"userVerification":"preferred"}
+       "authenticatorSelection": {"userVerification":"preferred","authenticatorAttachment":"cross-platform"}
    };
 
    navigator.credentials.create({publicKey: publicKey})
@@ -193,7 +194,10 @@ const registerInputWithRpidAndQuotes = `/*
 
 const registerOutputWithRpid = {
   attestation: 'none',
-  authenticatorSelection: { userVerification: 'preferred' },
+  authenticatorSelection: {
+    userVerification: 'preferred',
+    authenticatorAttachment: 'cross-platform',
+  },
   challenge: [
     /* don't directly test */
   ],
