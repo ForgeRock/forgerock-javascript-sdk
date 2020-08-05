@@ -20,6 +20,7 @@ enum CallbackType {
   KbaCreateCallback = 'KbaCreateCallback',
   MetadataCallback = 'MetadataCallback',
   NameCallback = 'NameCallback',
+  NumberAttributeInputCallback = 'NumberAttributeInputCallback',
   PasswordCallback = 'PasswordCallback',
   PollingWaitCallback = 'PollingWaitCallback',
   ReCaptchaCallback = 'ReCaptchaCallback',

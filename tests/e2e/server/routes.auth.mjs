@@ -91,6 +91,7 @@ export default function (app) {
       const [fn, ln, em] = req.body.callbacks.filter(
         (cb) => cb.type === 'StringAttributeInputCallback',
       );
+      const age = req.body.callbacks.find((cb) => cb.type === 'NumberAttributeInputCallback');
       const [mktg, update] = req.body.callbacks.filter(
         (cb) => cb.type === 'BooleanAttributeInputCallback',
       );
@@ -101,6 +102,7 @@ export default function (app) {
         un.input[0].value === 'f9022889-4452-48a0-aa94-182436645551' &&
         fn.input[0].value === 'Sally' &&
         ln.input[0].value === 'Tester' &&
+        age.input[0].value === 40 &&
         em.input[0].value === 'sally.tester@me.com' &&
         mktg.input[0].value === false &&
         update.input[0].value === false &&
