@@ -17,6 +17,10 @@ function parseWebAuthnRegisterText(text: string): PublicKeyCredentialCreationOpt
   const requireResidentKey = getIndexOne(
     text.match(/requireResidentKey"{0,}:\s{0,}(\w+)/),
   ) as string;
+  // e.g. `"authenticatorAttachment":"cross-platform"`
+  const authenticatorAttachment = getIndexOne(
+    text.match(/authenticatorAttachment"{0,}:\s{0,}"([\w-]+)/),
+  ) as AuthenticatorAttachment;
 
   // e.g. `rp: {\n id: \"https://user.example.com:3002\",\n name: \"ForgeRock\"\n }`
   const rp = getIndexOne(text.match(/rp"{0,}:\s{0,}{([^}]+)}/)).trim();
@@ -62,6 +66,8 @@ function parseWebAuthnRegisterText(text: string): PublicKeyCredentialCreationOpt
     attestation,
     authenticatorSelection: {
       userVerification,
+      // Only include authenticatorAttachment prop if the value is truthy
+      ...(authenticatorAttachment && { authenticatorAttachment }),
       // Only include requireResidentKey prop if the value is of string "true"
       ...(requireResidentKey === 'true' && { requireResidentKey: !!requireResidentKey }),
     },
@@ -103,7 +109,7 @@ function parseWebAuthnAuthenticateText(text: string): PublicKeyCredentialRequest
       // e.g. `{ \"type\": \"public-key\",
       const type = getIndexOne(str.match(/type"{0,}:\s{0,}"([\w-]+)"/)) as 'public-key';
       // e.g. \"id\": new Int8Array([-107, 93, 68, -67, ... -19, 7, 4]).buffer
-      const idArr = ensureArray(text.match(/id"{0,}:\s{0,}new\s{0,}(Uint|Int)8Array\(([^\)]+)/));
+      const idArr = ensureArray(str.match(/id"{0,}:\s{0,}new\s{0,}(Uint|Int)8Array\(([^\)]+)/));
       // e.g. `[-107, 93, 68, -67, ... -19, 7, 4]`
       const idJSON = JSON.parse(idArr[2]);
       // e.g. [-107, 93, 68, -67, ... -19, 7, 4]
