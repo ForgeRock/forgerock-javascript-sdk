@@ -4,6 +4,8 @@
  * @param length The number of digits to generate
  */
 function nonce(length = 15): () => number {
+  console.warn('Deprecation warning: the `nonce` method will be removed in v3.');
+
   let last = -1;
   let repeat = 0;
 

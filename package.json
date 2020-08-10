@@ -14,7 +14,7 @@
   "scripts": {
     "build": "npm run clean && tsc && tsc -m es6 --outDir lib-esm && webpack --env.DEV=no",
     "clean": "shx rm -rf bundles docs lib lib-esm coverage",
-    "clean:all": "npm run clean && shx rm -rf node_modules package-lock.json && git clean -fX",
+    "clean:all": "npm run clean && shx rm -rf node_modules package-lock.json && git clean -fX -e '!*.pem'",
     "docs": "typedoc",
     "docs:watch": "watch 'npm run docs' ./src",
     "lint": "eslint --ignore-path .gitignore '**/*.ts' --fix",
