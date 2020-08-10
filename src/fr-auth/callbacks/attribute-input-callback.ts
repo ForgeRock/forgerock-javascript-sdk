@@ -47,7 +47,9 @@ class AttributeInputCallback<T extends string | number | boolean> extends FRCall
   /**
    * Gets the callback's applicable policies.
    */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public getPolicies(): StringDict<any> {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return this.getOutputByName<StringDict<any>>('policies', {});
   }
 

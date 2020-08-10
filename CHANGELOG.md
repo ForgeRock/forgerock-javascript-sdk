@@ -13,6 +13,15 @@
 
 - Conditionally set user verification, relying party and allow credentials to WebAuthn key options
 - Ensure display name and username are correctly parsed and added to WebAuthn key options
+- Add authenticator attachment to WebAuthn and other WebAuthn fixes for custom configuration
+- Increased entropy for cryptographic functions related to PKCE for both state and verifier
+- Improved instructions for cert creation for sample app
+
+### Deprecated
+
+- Name change for `getAuthorizeUrl`: method's name will change to better reflect its behavior in v3
+- Removal of `nonce`: this utility is no longer used in the SDK, and therefor will be removed in v3
+- Function signature change for `createVerifier`: the parameter will be removed in v3.
 
 ## [2.0.0] - 2020-06-22
 
