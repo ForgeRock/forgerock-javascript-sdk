@@ -10,7 +10,7 @@ declare let window: unknown;
 
 Object.defineProperty(window, 'crypto', {
   value: {
-    getRandomValues: (array: Uint8Array): Buffer => crypto.randomBytes(array.length),
+    getRandomValues: (array: Buffer): Buffer => crypto.randomFillSync(array),
     subtle: {
       digest: (alg: string, array: Uint8Array): Buffer => {
         if (alg === 'SHA-256') {
@@ -29,9 +29,10 @@ Object.defineProperty(global, 'TextEncoder', {
 describe('The PKCE module', () => {
   it('creates verifiers and challenges in the correct format', async () => {
     const validChars = /[a-z0-9-_]/i;
-    for (let i = 1; i <= 100; i++) {
-      const verifier = PKCE.createVerifier(i);
+    for (let i = 0; i < 100; i++) {
+      const verifier = PKCE.createVerifier();
       expect(verifier).toMatch(validChars);
+      expect(verifier.length).toBeGreaterThan(90);
 
       const challenge = await PKCE.createChallenge(verifier);
       expect(challenge).toMatch(validChars);

@@ -34,7 +34,7 @@ export default function (app) {
         res.json(initialAuthz);
       } else if (req.query.authIndexValue === 'MiscCallbacks') {
         res.json(initialMiscCallbacks);
-      } else if (req.query.authIndexValue === 'PlatformUsernamePassword') {
+      } else if (req.query.authIndexValue === 'Login') {
         res.json(initialPlatformLogin);
       } else if (req.query.authIndexValue === 'Registration') {
         res.json(initialRegResponse);
@@ -75,7 +75,7 @@ export default function (app) {
       } else {
         res.json(authFail);
       }
-    } else if (req.query.authIndexValue === 'PlatformUsernamePassword') {
+    } else if (req.query.authIndexValue === 'Login') {
       const pwCb = req.body.callbacks.find((cb) => cb.type === 'ValidatedCreatePasswordCallback');
       // If validate only, return callbacks
       if (pwCb.input[1].value) {
