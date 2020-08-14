@@ -3,7 +3,7 @@ import { setupAndGo } from '../utilities/setup-and-go';
 describe('Test basic registration flow', () => {
   ['chromium', 'webkit', 'firefox'].forEach((browserType) => {
     it(`should register user successfully and then log out with ${browserType}`, async (done) => {
-      const { browser, page } = await setupAndGo(browserType, 'registration/');
+      const { browser, page } = await setupAndGo(browserType, 'register-basic/');
 
       const messageArray = [];
 

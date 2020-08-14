@@ -4,7 +4,9 @@ import {
   accessToken,
   authFail,
   authSuccess,
+  emailSuspend,
   initialBasicLogin,
+  initialLoginWithEmailResponse,
   initialMiscCallbacks,
   initialPlatformLogin,
   initialAuthz,
@@ -38,9 +40,17 @@ export default function (app) {
         res.json(initialPlatformLogin);
       } else if (req.query.authIndexValue === 'Registration') {
         res.json(initialRegResponse);
+      } else if (req.query.authIndexValue === 'LoginWithEmail') {
+        if (typeof req.query.suspendedId === 'string' && req.query.suspendedId.length) {
+          res.json(authSuccess);
+        } else {
+          res.json(initialLoginWithEmailResponse);
+        }
       } else {
         res.json(initialBasicLogin);
       }
+    } else if (req.query.authIndexValue === 'LoginWithEmail') {
+      res.json(emailSuspend);
     } else if (req.query.authIndexValue === 'MiscCallbacks') {
       if (req.body.callbacks.find((cb) => cb.type === 'NameCallback')) {
         const cb = req.body.callbacks.find((cb) => cb.type === 'NameCallback');

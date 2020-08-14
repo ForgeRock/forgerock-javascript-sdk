@@ -57,6 +57,24 @@ export const authByTxnResponse = {
   ttl: 0,
 };
 
+export const emailSuspend = {
+  authId: 'foo',
+  callbacks: [
+    {
+      type: 'SuspendedTextOutputCallback',
+      output: [
+        {
+          name: 'message',
+          value:
+            // eslint-disable-next-line max-len
+            'An email has been sent to the address you entered. Click the link in that email to proceed.',
+        },
+        { name: 'messageType', value: '0' },
+      ],
+    },
+  ],
+};
+
 export const initialBasicLogin = {
   authId: 'foo',
   callbacks: [
@@ -74,6 +92,25 @@ export const initialBasicLogin = {
     },
   ],
   stage: 'UsernamePassword',
+};
+
+export const initialLoginWithEmailResponse = {
+  authId: 'foo',
+  callbacks: [
+    {
+      type: 'ValidatedCreateUsernameCallback',
+      output: [
+        { name: 'policies', value: {} },
+        { name: 'failedPolicies', value: [] },
+        { name: 'validateOnly', value: false },
+        { name: 'prompt', value: 'Username' },
+      ],
+      input: [
+        { name: 'IDToken1', value: '' },
+        { name: 'IDToken1validateOnly', value: false },
+      ],
+    },
+  ],
 };
 
 export const initialPlatformLogin = {

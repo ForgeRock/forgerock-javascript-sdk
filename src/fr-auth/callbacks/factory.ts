@@ -12,6 +12,7 @@ import NameCallback from './name-callback';
 import PasswordCallback from './password-callback';
 import PollingWaitCallback from './polling-wait-callback';
 import ReCaptchaCallback from './recaptcha-callback';
+import SuspendedTextOutputCallback from './suspended-text-output-callback';
 import TermsAndConditionsCallback from './terms-and-conditions-callback';
 import TextOutputCallback from './text-output-callback';
 import ValidatedCreatePasswordCallback from './validated-create-password-callback';
@@ -50,6 +51,8 @@ function createCallback(callback: Callback): FRCallback {
       return new ReCaptchaCallback(callback);
     case CallbackType.StringAttributeInputCallback:
       return new AttributeInputCallback<string>(callback);
+    case CallbackType.SuspendedTextOutputCallback:
+      return new SuspendedTextOutputCallback(callback);
     case CallbackType.TermsAndConditionsCallback:
       return new TermsAndConditionsCallback(callback);
     case CallbackType.TextOutputCallback:
