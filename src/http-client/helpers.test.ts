@@ -1,4 +1,9 @@
-import { buildAuthzOptions, examineForIGAuthz, examineForRESTAuthz, normalizeIGJSON } from './util';
+import {
+  buildAuthzOptions,
+  examineForIGAuthz,
+  examineForRESTAuthz,
+  normalizeIGJSON,
+} from './helpers';
 import {
   authzByTxnResFromIG,
   authzByTxnResFromREST,

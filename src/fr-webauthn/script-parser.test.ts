@@ -8,6 +8,7 @@ import {
   registerOutputWithRpid,
   registerInputWithoutRpid,
   registerOutputWithoutRpid,
+  registerInputWithExcludeCreds,
 } from './script-text.mock.data';
 
 describe('Parsing of the WebAuthn script type text', () => {
@@ -64,5 +65,11 @@ describe('Parsing of the WebAuthn script type text', () => {
   it('should parse the WebAuthn register block of text withOUT rpid', () => {
     const obj = parseWebAuthnRegisterText(registerInputWithoutRpid);
     expect(obj.rp).toStrictEqual(registerOutputWithoutRpid.rp);
+  });
+
+  it('should parse the WebAuthn register block of text with exclude creds', () => {
+    const obj = parseWebAuthnRegisterText(registerInputWithExcludeCreds);
+    expect(obj.excludeCredentials.length).toBe(2);
+    expect(obj.excludeCredentials[0].type).toBe('public-key');
   });
 });

@@ -55,6 +55,7 @@ interface WebAuthnRegistrationMetadata {
   attestationPreference: 'none' | 'indirect' | 'direct';
   authenticatorSelection: string;
   challenge: string;
+  excludeCredentials: string;
   pubKeyCredParams: string;
   relyingPartyId: string;
   relyingPartyName: string;

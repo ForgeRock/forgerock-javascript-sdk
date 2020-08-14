@@ -1,4 +1,4 @@
-import { ensureArray, getIndexOne, parsePubKeyArray } from './helpers';
+import { ensureArray, getIndexOne, parsePubKeyArray, parseCredentials } from './helpers';
 import { AttestationType, UserVerificationType } from './interfaces';
 
 function parseWebAuthnRegisterText(text: string): PublicKeyCredentialCreationOptions {
@@ -39,19 +39,33 @@ function parseWebAuthnRegisterText(text: string): PublicKeyCredentialCreationOpt
   // e.g. `name: \"57a5b4e4-...-a4f2e5d4b629\",`
   const userName = getIndexOne(user.match(/name"{0,}:\s{0,}"([\d\w._-]+)"/));
   // e.g. `displayName: \"57a5b4e4-...-a4f2e5d4b629\"`
-  const userDisplayName = getIndexOne(user.match(/displayName"{0,}:\s{0,}"([\d\w\s._-]+)"/));
+  const userDisplayName = getIndexOne(user.match(/displayName"{0,}:\s{0,}"([\d\w\s.@_-]+)"/));
 
   // e.g. `pubKeyCredParams: [
   // { \"type\": \"public-key\", \"alg\": -257 }, { \"type\": \"public-key\", \"alg\": -7 }
   // ]`
   const pubKeyCredParamsString = getIndexOne(
-    text.match(/pubKeyCredParams"{0,}:\s{0,}\[([^]+) ]/),
+    // Capture the `pubKeyCredParams` without also matching `excludeCredentials` as well.
+    // `excludeCredentials` values are very similar to this property, so we need to make sure
+    // our last value doesn't end with "buffer", so we are only capturing objects that
+    // end in a digit and possibly a space.
+    text.match(/pubKeyCredParams"{0,}:\s{0,}\[([^]+\d\s?})\s?]/),
   ).trim();
   // e.g. `{ \"type\": \"public-key\", \"alg\": -257 }, { \"type\": \"public-key\", \"alg\": -7 }`
   const pubKeyCredParams = parsePubKeyArray(pubKeyCredParamsString);
   if (!pubKeyCredParams) {
     throw new Error('Missing pubKeyCredParams');
   }
+
+  // e.g. `excludeCredentials: [{
+  // \"type\": \"public-key\", \"id\": new Int8Array([-18, 69, -99, 82, 38, -66]).buffer },
+  // { \"type\": \"public-key\", \"id\": new Int8Array([64, 17, -15, 56, -32, 91]).buffer }],\n`
+  const excludeCredentialsString = getIndexOne(
+    text.match(/excludeCredentials"{0,}:\s{0,}\[([^]+)\s{0,}]/),
+  ).trim();
+  // e.g. `{ \"type\": \"public-key\", \"id\": new Int8Array([-18, 69, -99, 82, 38, -66]).buffer },
+  // { \"type\": \"public-key\", \"id\": new Int8Array([64, 17, -15, 56, -32, 91]).buffer }`
+  const excludeCredentials = parseCredentials(excludeCredentialsString);
 
   // e.g. `challenge: new Int8Array([87, -95, 18, ... -3,  49, 12, 81]).buffer,`
   const challengeArr: string[] = ensureArray(
@@ -72,6 +86,7 @@ function parseWebAuthnRegisterText(text: string): PublicKeyCredentialCreationOpt
       ...(requireResidentKey === 'true' && { requireResidentKey: !!requireResidentKey }),
     },
     challenge,
+    ...(excludeCredentials.length && { excludeCredentials }),
     pubKeyCredParams,
     rp: {
       name: rpName,

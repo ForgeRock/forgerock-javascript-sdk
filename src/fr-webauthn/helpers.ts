@@ -1,3 +1,8 @@
+/**
+ * @module
+ * @ignore
+ * These are private utility functions for HttpClient
+ */
 import { ParsedCredential } from './interfaces';
 
 function ensureArray(arr: RegExpMatchArray | null): string[] {

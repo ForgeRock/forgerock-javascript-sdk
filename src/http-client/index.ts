@@ -24,7 +24,7 @@ import {
   newTokenRequired,
   normalizeIGJSON,
   normalizeRESTJSON,
-} from './util';
+} from './helpers';
 import middlewareWrapper from '../util/middleware';
 
 /**

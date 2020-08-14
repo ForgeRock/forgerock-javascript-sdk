@@ -96,13 +96,13 @@ abstract class FRWebAuthn {
         const credential = await this.getAuthenticationCredential(publicKey);
         outcome = this.getAuthenticationOutcome(credential);
       } catch (error) {
-        outcome = this.getErrorOutcome(error);
+        throw new Error(`WebAuthn: ${error.message}`);
       }
 
       hiddenCallback.setInputValue(outcome);
       return step;
     } else {
-      throw new Error('Invalid webauthn payload');
+      throw new Error('WebAuthn: Invalid payload');
     }
   }
 
@@ -131,13 +131,13 @@ abstract class FRWebAuthn {
         const credential = await this.getRegistrationCredential(publicKey);
         outcome = this.getRegistrationOutcome(credential);
       } catch (error) {
-        outcome = this.getErrorOutcome(error);
+        throw new Error(`WebAuthn: ${error.message}`);
       }
 
       hiddenCallback.setInputValue(outcome);
       return step;
     } else {
-      throw new Error('Invalid webauthn payload');
+      throw new Error('WebAuthn: Invalid payload');
     }
   }
 
@@ -231,7 +231,7 @@ abstract class FRWebAuthn {
 
     try {
       if (credential === null) {
-        throw new Error('No credential provided');
+        throw new Error('WebAuthn: No credential provided');
       }
 
       const clientDataJSON = arrayBufferToString(credential.response.clientDataJSON);
@@ -251,7 +251,7 @@ abstract class FRWebAuthn {
       }
       return stringOutput;
     } catch (error) {
-      return this.getErrorOutcome(error);
+      throw new Error(error.message);
     }
   }
 
@@ -264,12 +264,7 @@ abstract class FRWebAuthn {
   public static async getRegistrationCredential(
     options: PublicKeyCredentialCreationOptions,
   ): Promise<PublicKeyCredential | null> {
-    let credential;
-    try {
-      credential = await navigator.credentials.create({ publicKey: options });
-    } catch (error) {
-      throw new Error(error.message);
-    }
+    const credential = await navigator.credentials.create({ publicKey: options });
     return credential as PublicKeyCredential;
   }
 
@@ -294,7 +289,7 @@ abstract class FRWebAuthn {
       const attestationObject = new Int8Array(attestationResponse.attestationObject).toString();
       return `${clientDataJSON}::${attestationObject}::${credential.id}`;
     } catch (error) {
-      return this.getErrorOutcome(error);
+      throw new Error(error.message);
     }
   }
 
@@ -334,9 +329,10 @@ abstract class FRWebAuthn {
   ): PublicKeyCredentialCreationOptions {
     const { pubKeyCredParams: pubKeyCredParamsString } = metadata;
     const pubKeyCredParams = parsePubKeyArray(pubKeyCredParamsString);
-    if (!pubKeyCredParams) {
+    if (!pubKeyCredParams || !pubKeyCredParams.length) {
       throw new Error('Missing pubKeyCredParams');
     }
+    const excludeCredentials = parseCredentials(metadata.excludeCredentials);
 
     const {
       attestationPreference,
@@ -359,6 +355,7 @@ abstract class FRWebAuthn {
       attestation: attestationPreference,
       authenticatorSelection: JSON.parse(authenticatorSelection),
       challenge: Uint8Array.from(atob(challenge), (c) => c.charCodeAt(0)).buffer,
+      ...(excludeCredentials.length && { excludeCredentials }),
       pubKeyCredParams,
       rp,
       timeout,
@@ -368,11 +365,6 @@ abstract class FRWebAuthn {
         name: userName,
       },
     };
-  }
-
-  private static getErrorOutcome(error: Error): string {
-    const name = error.name ? `${error.name}:` : '';
-    return `${WebAuthnOutcome.Error}::${name}${error.message}`;
   }
 }
 
