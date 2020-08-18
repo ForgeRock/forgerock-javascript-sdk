@@ -8,6 +8,7 @@
 - Support for the recovery code display node and the parsing of the codes from the TextOutputCallback
 - Support for user verification property for WebAuthn
 - Updated support for new IDM nodes for registration and self-service
+- Added SuspendedTextOutputCallback support for the new Email Suspended Node
 
 ### Fixed
 

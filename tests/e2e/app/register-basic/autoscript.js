@@ -12,6 +12,7 @@
   const tree = url.searchParams.get('tree') || 'Registration';
   const un = url.searchParams.get('un') || 'f9022889-4452-48a0-aa94-182436645551';
   const pw = url.searchParams.get('pw') || 'ieH034K&-zlwqh3V_';
+  const email = url.searchParams.get('email') || 'sally.tester@me.com';
 
   console.log('Configure the SDK');
   forgerock.Config.set({
@@ -54,7 +55,7 @@
 
           saCb1.setInputValue('Sally');
           saCb2.setInputValue('Tester');
-          saCb3.setInputValue('sally.tester@me.com');
+          saCb3.setInputValue(email);
 
           const [baCb1, baCb2] = step.getCallbacksOfType('BooleanAttributeInputCallback');
 
