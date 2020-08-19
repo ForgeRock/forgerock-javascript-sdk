@@ -1,7 +1,8 @@
-import { ConfigOptions } from '../config';
+import Config, { ConfigOptions } from '../config';
 import FRStep, { FRStepHandler } from '../fr-auth/fr-step';
 import FRUI from '../fr-ui';
 import OAuth2Client from '../oauth2-client';
+import SessionManager from '../session-manager';
 import TokenManager from '../token-manager';
 import UserManager from '../user-manager';
 
@@ -49,10 +50,13 @@ abstract class FRUser {
    * @param options Configuration overrides
    */
   public static async logout(options?: ConfigOptions): Promise<void> {
+    const { serverConfig } = Config.get(options);
     try {
-      // TODO: Determine if we're using logout() or endSession(). logout() removes
-      //       the cookie, but fails with CORS issues currently.
-      // await SessionManager.logout();
+      // Only call SessionManager.logout if not on Express (i.e. forgeblocks.com)
+      // Express does not expose this endpoint publicly
+      if (!serverConfig.baseUrl.includes('forgeblocks.com')) {
+        await SessionManager.logout();
+      }
       await OAuth2Client.endSession(options);
       await OAuth2Client.revokeToken(options);
       await TokenManager.deleteTokens();
