@@ -56,37 +56,37 @@ export default {
       ],
       _id: 2,
     },
-    {
-      type: 'NumberAttributeInputCallback',
-      input: [
-        { name: 'IDToken4', value: null },
-        { name: 'IDToken4validateOnly', value: false },
-      ],
-      output: [
-        { name: 'name', value: 'age' },
-        { name: 'prompt', value: 'Age' },
-        { name: 'required', value: true },
-        {
-          name: 'policies',
-          value: {
-            policyRequirements: ['VALID_TYPE'],
-            fallbackPolicies: null,
-            name: 'age',
-            policies: [
-              {
-                policyRequirements: ['VALID_TYPE'],
-                policyId: 'valid-type',
-                params: { types: ['number'] },
-              },
-            ],
-            conditionalPolicies: null,
-          },
-        },
-        { name: 'failedPolicies', value: [] },
-        { name: 'validateOnly', value: false },
-        { name: 'value', value: null },
-      ],
-    },
+    // {
+    //   type: 'NumberAttributeInputCallback',
+    //   input: [
+    //     { name: 'IDToken4', value: null },
+    //     { name: 'IDToken4validateOnly', value: false },
+    //   ],
+    //   output: [
+    //     { name: 'name', value: 'age' },
+    //     { name: 'prompt', value: 'Age' },
+    //     { name: 'required', value: true },
+    //     {
+    //       name: 'policies',
+    //       value: {
+    //         policyRequirements: ['VALID_TYPE'],
+    //         fallbackPolicies: null,
+    //         name: 'age',
+    //         policies: [
+    //           {
+    //             policyRequirements: ['VALID_TYPE'],
+    //             policyId: 'valid-type',
+    //             params: { types: ['number'] },
+    //           },
+    //         ],
+    //         conditionalPolicies: null,
+    //       },
+    //     },
+    //     { name: 'failedPolicies', value: [] },
+    //     { name: 'validateOnly', value: false },
+    //     { name: 'value', value: null },
+    //   ],
+    // },
     {
       type: 'StringAttributeInputCallback',
       output: [
@@ -199,7 +199,8 @@ export default {
         { name: 'version', value: '0.0' },
         {
           name: 'terms',
-          value: 'Lorem ipsum dolor sit amet ...',
+          // eslint-disable-next-line
+          value: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
         },
         { name: 'createDate', value: '2019-10-28T04:20:11.320Z' },
       ],

@@ -3,7 +3,9 @@ import { setupAndGo } from '../utilities/setup-and-go';
 describe('Test bad login flow', () => {
   ['chromium', 'webkit', 'firefox'].forEach((browserType) => {
     it(`Login UNsuccessfully with ${browserType}`, async (done) => {
-      const { browser, page } = await setupAndGo(browserType, 'authn-basic/', true);
+      const { browser, page } = await setupAndGo(browserType, 'authn-basic/', {
+        pw: 'wrong_password_123!',
+      });
 
       const messageArray = [];
 

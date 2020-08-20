@@ -2,7 +2,7 @@ import { env } from 'process';
 import request from 'superagent';
 import { session } from './app.auth.mjs';
 import { key, cert } from './app.certs.mjs';
-import { AM_URL } from './env.config.copy.mjs';
+import { AM_URL, FORGEOPS } from './env.config.copy.mjs';
 import { authByTreeResponse, authByTxnResponse, createStepUpUrl } from './responses.mjs';
 import { baz } from './routes.auth.mjs';
 import wait from './wait.mjs';
@@ -41,7 +41,7 @@ async function authorization(req, res, next) {
 export default function (app) {
   // Passthrough route that enforces authentication
   app.all('/resource/*', async (req, res, next) => {
-    if (env.LIVE === 'true' && req.host !== env.IG_URL) {
+    if (env.LIVE === 'true' && req.host !== IG_URL) {
       // Only enforce authentication if IG is not used
       // In other words, the call comes directly from app
       let response;
@@ -80,11 +80,11 @@ export default function (app) {
   });
 
   app.get('/resource/ig/*', wait, authorization, async (req, res) => {
-    if (env.LIVE === 'true' && req.host === env.IG_URL) {
-      // Calls are coming from IG, so Txn Auth is not needed
+    if (req.host === FORGEOPS) {
+      // Calls are coming from IG, so Auth is already enforced
       res.json({ message: 'Successfully retrieved resource!' });
     } else {
-      // This mocks IG's behavior
+      // Calls are coming directly from app, so let's mocks IG's behavior
       if (
         req.cookies.iPlanetDirectoryPro === 'abcd1234' &&
         baz.canWithdraw &&

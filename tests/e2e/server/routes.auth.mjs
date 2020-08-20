@@ -1,5 +1,5 @@
 import { authPaths } from './constants.mjs';
-import { AM_URL, PASSWORD, USERNAME } from './env.config.copy.mjs';
+import { AM_URL, USERS } from './env.config.copy.mjs';
 import {
   accessToken,
   authFail,
@@ -23,7 +23,7 @@ import {
 import initialRegResponse from './response.registration.mjs';
 import wait from './wait.mjs';
 
-console.log(`Your user password from 'env.config' file: ${PASSWORD}`);
+console.log(`Your user password from 'env.config' file: ${USERS[0].pw}`);
 
 export const baz = {
   canWithdraw: false,
@@ -36,7 +36,7 @@ export default function (app) {
         res.json(initialAuthz);
       } else if (req.query.authIndexValue === 'MiscCallbacks') {
         res.json(initialMiscCallbacks);
-      } else if (req.query.authIndexValue === 'Login') {
+      } else if (req.query.authIndexValue === 'PlatformUsernamePassword') {
         res.json(initialPlatformLogin);
       } else if (req.query.authIndexValue === 'Registration') {
         res.json(initialRegResponse);
@@ -54,14 +54,14 @@ export default function (app) {
     } else if (req.query.authIndexValue === 'MiscCallbacks') {
       if (req.body.callbacks.find((cb) => cb.type === 'NameCallback')) {
         const cb = req.body.callbacks.find((cb) => cb.type === 'NameCallback');
-        if (cb.input[0].value !== USERNAME) {
+        if (cb.input[0].value !== USERS[0].un) {
           res.json(authFail);
         } else {
           res.json(passwordCallback);
         }
       } else if (req.body.callbacks.find((cb) => cb.type === 'PasswordCallback')) {
         const cb = req.body.callbacks.find((cb) => cb.type === 'PasswordCallback');
-        if (cb.input[0].value !== PASSWORD) {
+        if (cb.input[0].value !== USERS[0].pw) {
           res.json(authFail);
         } else {
           res.json(choiceCallback);
@@ -85,12 +85,12 @@ export default function (app) {
       } else {
         res.json(authFail);
       }
-    } else if (req.query.authIndexValue === 'Login') {
+    } else if (req.query.authIndexValue === 'PlatformUsernamePassword') {
       const pwCb = req.body.callbacks.find((cb) => cb.type === 'ValidatedCreatePasswordCallback');
       // If validate only, return callbacks
       if (pwCb.input[1].value) {
         res.json(initialPlatformLogin);
-      } else if (pwCb.input[0].value !== PASSWORD) {
+      } else if (pwCb.input[0].value !== USERS[0].pw) {
         res.status(401).json(authFail);
       } else {
         res.cookie('iPlanetDirectoryPro', 'abcd1234', { domain: '.example.com' });
@@ -101,7 +101,7 @@ export default function (app) {
       const [fn, ln, em] = req.body.callbacks.filter(
         (cb) => cb.type === 'StringAttributeInputCallback',
       );
-      const age = req.body.callbacks.find((cb) => cb.type === 'NumberAttributeInputCallback');
+      // const age = req.body.callbacks.find((cb) => cb.type === 'NumberAttributeInputCallback');
       const [mktg, update] = req.body.callbacks.filter(
         (cb) => cb.type === 'BooleanAttributeInputCallback',
       );
@@ -109,11 +109,11 @@ export default function (app) {
       const [kba1, kba2] = req.body.callbacks.filter((cb) => cb.type === 'KbaCreateCallback');
       const terms = req.body.callbacks.find((cb) => cb.type === 'TermsAndConditionsCallback');
       if (
-        un.input[0].value === 'f9022889-4452-48a0-aa94-182436645551' &&
+        un.input[0].value.length &&
         fn.input[0].value === 'Sally' &&
         ln.input[0].value === 'Tester' &&
-        age.input[0].value === 40 &&
-        em.input[0].value === 'sally.tester@me.com' &&
+        // age.input[0].value === 40 &&
+        em.input[0].value.length &&
         mktg.input[0].value === false &&
         update.input[0].value === false &&
         pw.input[0].value === 'ieH034K&-zlwqh3V_' &&
@@ -142,7 +142,7 @@ export default function (app) {
       }
     } else if (req.body.callbacks.find((cb) => cb.type === 'PasswordCallback')) {
       const pwCb = req.body.callbacks.find((cb) => cb.type === 'PasswordCallback');
-      if (pwCb.input[0].value !== PASSWORD) {
+      if (pwCb.input[0].value !== USERS[0].pw) {
         res.status(401).json(authFail);
       } else {
         if (req.query.authIndexValue === 'UsernamePasswordDevice') {

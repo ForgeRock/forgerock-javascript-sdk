@@ -69,7 +69,7 @@
           const confirmCB = step.getCallbackOfType('ConfirmationCallback');
           const textCB = step.getCallbackOfType('TextOutputCallback');
           const message = textCB.getMessage();
-          console.log(`Default value for confirmation is: ${message}`);
+          console.log(`Message for confirmation is: ${message}`);
           const options = confirmCB.getOptions();
           confirmCB.setOptionValue(options[1]);
           confirmCB.setOptionIndex(0);

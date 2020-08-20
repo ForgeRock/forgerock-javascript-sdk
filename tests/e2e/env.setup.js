@@ -4,8 +4,12 @@ const liveServers = [
     command: 'npm run start:e2e',
     port: 8443,
   },
+  {
+    command: 'npm run start:server:live',
+    port: 9443,
+  },
 ];
-const nonLiveServers = [
+const mockServers = [
   {
     command: 'npm run start:e2e',
     port: 8443,
@@ -15,7 +19,8 @@ const nonLiveServers = [
     port: 9443,
   },
 ];
-const servers = process.env.OAUTH_SERVER === 'live' ? liveServers : nonLiveServers;
+const servers = process.env.LIVE === 'true' ? liveServers : mockServers;
+
 module.exports = async () => {
   await setupDevServer(servers);
 };

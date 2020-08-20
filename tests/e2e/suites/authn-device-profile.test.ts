@@ -1,9 +1,12 @@
 import { setupAndGo } from '../utilities/setup-and-go';
 
 describe('Test bad login flow', () => {
-  ['chromium' /*, 'webkit', 'firefox'*/].forEach((browserType) => {
+  ['chromium', 'webkit', 'firefox'].forEach((browserType) => {
     it(`Login with device profile callback ${browserType}`, async (done) => {
-      const { browser, page } = await setupAndGo(browserType, 'authn-device-profile/', null, true);
+      const { browser, page } = await setupAndGo(browserType, 'authn-device-profile/', {
+        allowGeo: true,
+        tree: 'UsernamePasswordDevice',
+      });
 
       const messageArray = [];
 
