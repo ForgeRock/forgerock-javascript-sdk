@@ -13,6 +13,9 @@ const origins = {
   mock: 'https://auth.example.com',
   resource: 'https://api.example.com',
 };
+const paths = {
+  am: '/am',
+};
 const ports = {
   app: '8443',
   forgeops: '51927',
@@ -46,7 +49,7 @@ export const APP_PORT = ports.app;
 export const AM_PORT = amPort;
 export const MOCK_PORT = ports.mock;
 
-export const AM_URL = `${amUrl}:${amPort}/am`;
+export const AM_URL = `${amUrl}:${amPort}${paths.am}`;
 export const BASE_URL = `${origins.app}:${ports.app}`;
 export const CLIENT_ID = oauth.client;
 export const FORGEOPS = origins.forgeops;

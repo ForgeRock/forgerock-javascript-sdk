@@ -2,14 +2,15 @@ import { env } from 'process';
 import request from 'superagent';
 import { session } from './app.auth.mjs';
 import { key, cert } from './app.certs.mjs';
-import { AM_URL, FORGEOPS } from './env.config.copy.mjs';
+import { AM_URL, AM_PORT, FORGEOPS, REALM_PATH } from './env.config.copy.mjs';
 import { authByTreeResponse, authByTxnResponse, createStepUpUrl } from './responses.mjs';
 import { baz } from './routes.auth.mjs';
 import wait from './wait.mjs';
 
 async function authorization(req, res, next) {
-  if (env.LIVE === 'true' && req.host !== 'openig.example.com') {
-    const fullURL = `${req.protocol}://${req.host}:${env.SERVER_PORT}${req.url}`;
+  if (env.LIVE === 'true' && req.hostname !== FORGEOPS) {
+    const fullURL = `${req.protocol}://${req.host}:${AM_PORT}${req.url}`;
+    let realms;
     const body = {
       application: req.path.includes('authz-by-txn') ? 'TxnBasedPolicy' : 'TreeBasedPolicy',
       resources: [fullURL],
@@ -22,8 +23,14 @@ async function authorization(req, res, next) {
         TxId: [req.headers['x-txid']],
       };
     }
+    if (REALM_PATH !== 'root') {
+      realms = `realms/root/realms/${REALM_PATH}`;
+    } else {
+      realms = 'realms/root';
+    }
     const response = await request
-      .post(`${AM_URL}/json/realms/root/realms/sdk/policies/?_action=evaluate`)
+      // eslint-disable-next-line
+      .post(`${AM_URL}/json/${realms}/policies/?_action=evaluate`)
       .key(key)
       .cert(cert)
       .set('Content-Type', 'application/json')
@@ -41,7 +48,7 @@ async function authorization(req, res, next) {
 export default function (app) {
   // Passthrough route that enforces authentication
   app.all('/resource/*', async (req, res, next) => {
-    if (env.LIVE === 'true' && req.host !== IG_URL) {
+    if (env.LIVE === 'true' && req.hostname === FORGEOPS) {
       // Only enforce authentication if IG is not used
       // In other words, the call comes directly from app
       let response;
@@ -80,7 +87,7 @@ export default function (app) {
   });
 
   app.get('/resource/ig/*', wait, authorization, async (req, res) => {
-    if (req.host === FORGEOPS) {
+    if (req.hostname === FORGEOPS) {
       // Calls are coming from IG, so Auth is already enforced
       res.json({ message: 'Successfully retrieved resource!' });
     } else {

@@ -9,8 +9,9 @@
   const amUrl = url.searchParams.get('amUrl');
   const clientId = url.searchParams.get('clientId') || 'WebOAuthClient';
   const realmPath = url.searchParams.get('realmPath') || 'root';
-  const igUrl = url.searchParams.get('igUrl'); // only use when testing against IG on a different host
-  const restUrl = url.searchParams.get('restUrl') || 'https://api.example.com:9443/resource';
+  const igUrl = url.searchParams.get('igUrl'); // only use when testing against IG on different host
+  const resourceOrigin =
+    url.searchParams.get('resourceOrigin') || 'https://api.example.com:9443/resource';
   const scope = url.searchParams.get('scope') || 'openid profile me.read';
   const un = url.searchParams.get('un') || '57a5b4e4-6999-4b45-bf86-a4f2e5d4b629';
   const pw = url.searchParams.get('pw') || 'ieH034K&-zlwqh3V_';
@@ -19,7 +20,7 @@
   console.log('Configure the SDK');
   forgerock.Config.set({
     clientId,
-    redirectUri: `${url.origin}/callback`,
+    redirectUri: `${url.origin}/_callback`,
     realmPath,
     scope,
     tree,
@@ -57,21 +58,18 @@
         }
       }),
       rxjs.operators.delay(delay),
-      rxMergeMap(
-        (step) => {
-          if (step.payload.code === 401) {
-            throw new Error('Auth_Error');
-          }
-          console.log('Auth tree successfully completed');
-          console.log('Get OAuth tokens');
-          const tokens = forgerock.TokenManager.getTokens({ forceRenew: true });
-          return tokens;
-        },
-        (step) => step,
-      ),
+      rxMergeMap((step) => {
+        if (step.payload.code === 401) {
+          throw new Error('Auth_Error');
+        }
+        console.log('Auth tree successfully completed');
+        console.log('Get OAuth tokens');
+        const tokens = forgerock.TokenManager.getTokens({ forceRenew: true });
+        return tokens;
+      }),
       rxjs.operators.delay(delay),
       rxMergeMap(
-        (step) => {
+        (tokens) => {
           console.log('Retrieve the protected resource');
           return forgerock.HttpClient.request({
             url: `${igUrl ? igUrl : restUrl}/ig/authz-by-tree`,
@@ -103,7 +101,7 @@
         (step) => {
           console.log('Retrieve the protected resource');
           return forgerock.HttpClient.request({
-            url: `${restUrl}/rest/authz-by-tree`,
+            url: `${resourceOrigin}/rest/authz-by-tree`,
             init: {
               method: 'GET',
               credentials: 'include',

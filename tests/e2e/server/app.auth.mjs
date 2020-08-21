@@ -1,12 +1,12 @@
 import request from 'superagent';
 import { key, cert } from './app.certs.mjs';
-import { AM_URL } from './env.config.copy.mjs';
+import { AM_URL, REALM_PATH } from './env.config.copy.mjs';
 
 export let session;
 
 export async function authorizeApp({ un, pw }) {
   const response = await request
-    .post(`${AM_URL}/json/realms/root/authenticate`)
+    .post(`${AM_URL}/json/realms/${REALM_PATH}/authenticate`)
     .key(key)
     .cert(cert)
     .set('Content-Type', 'application/json')
