@@ -1,5 +1,6 @@
 import FRCallback from '.';
 import { Callback, PolicyRequirement } from '../../auth/interfaces';
+import { StringDict } from '../../shared/interfaces';
 
 /**
  * Represents a callback used to collect a valid platform password.
@@ -22,8 +23,10 @@ class ValidatedCreatePasswordCallback extends FRCallback {
   /**
    * Gets the callback's applicable policies.
    */
-  public getPolicies(): string[] {
-    return this.getOutputByName<string[]>('policies', []);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  public getPolicies(): StringDict<any> {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return this.getOutputByName<StringDict<any>>('policies', {});
   }
 
   /**
@@ -45,6 +48,13 @@ class ValidatedCreatePasswordCallback extends FRCallback {
    */
   public setPassword(password: string): void {
     this.setInputValue(password);
+  }
+
+  /**
+   * Set if validating value only.
+   */
+  public setValidateOnly(value: boolean): void {
+    this.setInputValue(value, /validateOnly/);
   }
 }
 

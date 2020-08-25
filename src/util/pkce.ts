@@ -1,18 +1,23 @@
 /**
- * Helper class for generating verifier and challenge strings used for
+ * Helper class for generating verifier, challenge and state strings used for
  * Proof Key for Code Exchange (PKCE).
  */
 abstract class PKCE {
   /**
-   * Creates a random verifier.
-   *
-   * @param size The length of the verifier (default 32 characters)
+   * Creates a random state.
    */
-  public static createVerifier(size = 32): string {
-    const array = new Uint8Array(size);
-    window.crypto.getRandomValues(array);
-    const verifier = this.base64UrlEncode(array);
-    return verifier;
+  public static createState(): string {
+    return this.createRandomString(16);
+  }
+
+  /**
+   * Creates a random verifier.
+   */
+  public static createVerifier(num?: number): string {
+    if (num) {
+      console.warn('Deprecation warning: the parameter for `createVerifier` will be removed in v3');
+    }
+    return this.createRandomString(num || 32);
   }
 
   /**
@@ -48,6 +53,16 @@ abstract class PKCE {
     const hashBuffer = await window.crypto.subtle.digest('SHA-256', uint8Array);
     const hashArray = new Uint8Array(hashBuffer);
     return hashArray;
+  }
+  /**
+   * Creates a random string.
+   *
+   * @param size The number for entropy (default: 32)
+   */
+  private static createRandomString(num = 32): string {
+    const random = new Uint8Array(num);
+    window.crypto.getRandomValues(random);
+    return btoa(random.join('')).replace(/[^a-zA-Z0-9]+/, '');
   }
 }
 

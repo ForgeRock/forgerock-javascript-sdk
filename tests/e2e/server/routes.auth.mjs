@@ -1,10 +1,12 @@
 import { authPaths } from './constants.mjs';
-import { AM_URL, PASSWORD, USERNAME } from './env.config.copy.mjs';
+import { AM_URL, USERS } from './env.config.copy.mjs';
 import {
   accessToken,
   authFail,
   authSuccess,
+  emailSuspend,
   initialBasicLogin,
+  initialLoginWithEmailResponse,
   initialMiscCallbacks,
   initialPlatformLogin,
   initialAuthz,
@@ -14,11 +16,14 @@ import {
   noSessionSuccess,
   pollingCallback,
   requestDeviceProfile,
+  secondFactorCallback,
+  secondFactorChoiceCallback,
   userInfo,
 } from './responses.mjs';
+import initialRegResponse from './response.registration.mjs';
 import wait from './wait.mjs';
 
-console.log(`Your user password from 'env.config' file: ${PASSWORD}`);
+console.log(`Your user password from 'env.config' file: ${USERS[0].pw}`);
 
 export const baz = {
   canWithdraw: false,
@@ -29,24 +34,34 @@ export default function (app) {
     if (!req.body.callbacks) {
       if (req.query.authIndexType === 'composite_advice') {
         res.json(initialAuthz);
-      } else if (req.query.authIndexValue === 'PlatformUsernamePassword') {
-        res.json(initialPlatformLogin);
       } else if (req.query.authIndexValue === 'MiscCallbacks') {
         res.json(initialMiscCallbacks);
+      } else if (req.query.authIndexValue === 'PlatformUsernamePassword') {
+        res.json(initialPlatformLogin);
+      } else if (req.query.authIndexValue === 'Registration') {
+        res.json(initialRegResponse);
+      } else if (req.query.authIndexValue === 'LoginWithEmail') {
+        if (typeof req.query.suspendedId === 'string' && req.query.suspendedId.length) {
+          res.json(authSuccess);
+        } else {
+          res.json(initialLoginWithEmailResponse);
+        }
       } else {
         res.json(initialBasicLogin);
       }
+    } else if (req.query.authIndexValue === 'LoginWithEmail') {
+      res.json(emailSuspend);
     } else if (req.query.authIndexValue === 'MiscCallbacks') {
       if (req.body.callbacks.find((cb) => cb.type === 'NameCallback')) {
         const cb = req.body.callbacks.find((cb) => cb.type === 'NameCallback');
-        if (cb.input[0].value !== USERNAME) {
+        if (cb.input[0].value !== USERS[0].un) {
           res.json(authFail);
         } else {
           res.json(passwordCallback);
         }
       } else if (req.body.callbacks.find((cb) => cb.type === 'PasswordCallback')) {
         const cb = req.body.callbacks.find((cb) => cb.type === 'PasswordCallback');
-        if (cb.input[0].value !== PASSWORD) {
+        if (cb.input[0].value !== USERS[0].pw) {
           res.json(authFail);
         } else {
           res.json(choiceCallback);
@@ -70,9 +85,64 @@ export default function (app) {
       } else {
         res.json(authFail);
       }
+    } else if (req.query.authIndexValue === 'PlatformUsernamePassword') {
+      const pwCb = req.body.callbacks.find((cb) => cb.type === 'ValidatedCreatePasswordCallback');
+      // If validate only, return callbacks
+      if (pwCb.input[1].value) {
+        res.json(initialPlatformLogin);
+      } else if (pwCb.input[0].value !== USERS[0].pw) {
+        res.status(401).json(authFail);
+      } else {
+        res.cookie('iPlanetDirectoryPro', 'abcd1234', { domain: '.example.com' });
+        res.json(authSuccess);
+      }
+    } else if (req.query.authIndexValue === 'Registration') {
+      const un = req.body.callbacks.find((cb) => cb.type === 'ValidatedCreateUsernameCallback');
+      const [fn, ln, em] = req.body.callbacks.filter(
+        (cb) => cb.type === 'StringAttributeInputCallback',
+      );
+      // const age = req.body.callbacks.find((cb) => cb.type === 'NumberAttributeInputCallback');
+      const [mktg, update] = req.body.callbacks.filter(
+        (cb) => cb.type === 'BooleanAttributeInputCallback',
+      );
+      const pw = req.body.callbacks.find((cb) => cb.type === 'ValidatedCreatePasswordCallback');
+      const [kba1, kba2] = req.body.callbacks.filter((cb) => cb.type === 'KbaCreateCallback');
+      const terms = req.body.callbacks.find((cb) => cb.type === 'TermsAndConditionsCallback');
+      if (
+        un.input[0].value.length &&
+        fn.input[0].value === 'Sally' &&
+        ln.input[0].value === 'Tester' &&
+        // age.input[0].value === 40 &&
+        em.input[0].value.length &&
+        mktg.input[0].value === false &&
+        update.input[0].value === false &&
+        pw.input[0].value === 'ieH034K&-zlwqh3V_' &&
+        kba1.input[0].value === 'What is your favorite color?' &&
+        kba1.input[1].value === 'Red' &&
+        kba2.input[0].value === 'Who was your first employer?' &&
+        kba2.input[1].value === 'AAA Engineering' &&
+        terms.input[0].value === true
+      ) {
+        res.json(authSuccess);
+      } else {
+        res.status(401).json(authFail);
+      }
+    } else if (req.query.authIndexValue === 'SecondFactor') {
+      if (req.body.callbacks.find((cb) => cb.type === 'NameCallback')) {
+        res.json(secondFactorChoiceCallback);
+      } else if (req.body.callbacks.find((cb) => cb.type === 'ChoiceCallback')) {
+        res.json(secondFactorCallback);
+      } else if (req.body.callbacks.find((cb) => cb.type === 'PasswordCallback')) {
+        const pwCb = req.body.callbacks.find((cb) => cb.type === 'PasswordCallback');
+        if (pwCb.input[0].value !== 'abc123') {
+          res.status(401).json(authFail);
+        } else {
+          res.json(authSuccess);
+        }
+      }
     } else if (req.body.callbacks.find((cb) => cb.type === 'PasswordCallback')) {
       const pwCb = req.body.callbacks.find((cb) => cb.type === 'PasswordCallback');
-      if (pwCb.input[0].value !== PASSWORD) {
+      if (pwCb.input[0].value !== USERS[0].pw) {
         res.status(401).json(authFail);
       } else {
         if (req.query.authIndexValue === 'UsernamePasswordDevice') {
@@ -98,14 +168,6 @@ export default function (app) {
             res.json(req.query.noSession === 'true' ? noSessionSuccess : authSuccess);
           }
         }
-      }
-    } else if (req.body.callbacks.find((cb) => cb.type === 'ValidatedCreatePasswordCallback')) {
-      const pwCb = req.body.callbacks.find((cb) => cb.type === 'ValidatedCreatePasswordCallback');
-      if (pwCb.input[0].value !== PASSWORD) {
-        res.status(401).json(authFail);
-      } else {
-        res.cookie('iPlanetDirectoryPro', 'abcd1234', { domain: '.example.com' });
-        res.json(authSuccess);
       }
     } else if (req.body.callbacks.find((cb) => cb.type === 'DeviceProfileCallback')) {
       const deviceCb = req.body.callbacks.find((cb) => cb.type === 'DeviceProfileCallback') || {};

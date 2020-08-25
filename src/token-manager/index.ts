@@ -2,7 +2,6 @@ import { ConfigOptions } from '../config';
 import OAuth2Client, { OAuth2Tokens, ResponseType } from '../oauth2-client';
 import { Tokens } from '../shared/interfaces';
 import TokenStorage from '../token-storage';
-import nonce from '../util/nonce';
 import PKCE from '../util/pkce';
 import { parseQuery } from '../util/url';
 
@@ -27,7 +26,7 @@ abstract class TokenManager {
     }
 
     const verifier = PKCE.createVerifier();
-    const state = nonce()().toString();
+    const state = PKCE.createState();
     const authorizeUrlOptions = { ...options, responseType: ResponseType.Code, state, verifier };
     const authorizeUrl = await OAuth2Client.getAuthorizeUrl(authorizeUrlOptions);
 

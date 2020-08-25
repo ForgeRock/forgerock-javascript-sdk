@@ -10,6 +10,10 @@ describe('AttributeInputCallback', () => {
         name: 'IDToken0',
         value: '',
       },
+      {
+        name: 'IDToken0validateOnly',
+        value: false,
+      },
     ],
     output: [
       {
@@ -26,26 +30,42 @@ describe('AttributeInputCallback', () => {
       },
       {
         name: 'policies',
-        value: ['a', 'b'],
+        value: {
+          policyRequirements: ['a', 'b'],
+          name: 'givenName',
+          policies: [],
+        },
       },
       {
         name: 'failedPolicies',
         value: ['c', 'd'],
       },
+      {
+        name: 'validateOnly',
+        value: false,
+      },
     ],
     type: CallbackType.StringAttributeInputCallback,
   };
 
-  it('reads/writes basic properties', () => {
+  it('reads/writes basic properties with "validate only"', () => {
     const cb = new AttributeInputCallback<string>(payload);
     cb.setValue('Clark');
+    cb.setValidateOnly(true);
 
     expect(cb.getType()).toBe('StringAttributeInputCallback');
     expect(cb.getName()).toBe('givenName');
     expect(cb.getPrompt()).toBe('First Name:');
     expect(cb.isRequired()).toBe(true);
-    expect(cb.getPolicies()).toStrictEqual(['a', 'b']);
+    expect(cb.getPolicies().policyRequirements).toStrictEqual(['a', 'b']);
     expect(cb.getFailedPolicies()).toStrictEqual(['c', 'd']);
     expect(cb.getInputValue()).toBe('Clark');
+    expect(cb.payload.input[1].value).toBe(true);
+  });
+
+  it('writes validate only to `false` for submission', () => {
+    const cb = new AttributeInputCallback<string>(payload);
+    cb.setValidateOnly(false);
+    expect(cb.payload.input[1].value).toBe(false);
   });
 });

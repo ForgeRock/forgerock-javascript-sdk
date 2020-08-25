@@ -17,6 +17,7 @@ import NameCallback from './fr-auth/callbacks/name-callback';
 import PasswordCallback from './fr-auth/callbacks/password-callback';
 import PollingWaitCallback from './fr-auth/callbacks/polling-wait-callback';
 import ReCaptchaCallback from './fr-auth/callbacks/recaptcha-callback';
+import SuspendedTextOutputCallback from './fr-auth/callbacks/suspended-text-output-callback';
 import TermsAndConditionsCallback from './fr-auth/callbacks/terms-and-conditions-callback';
 import TextOutputCallback from './fr-auth/callbacks/text-output-callback';
 // eslint-disable-next-line max-len
@@ -31,6 +32,7 @@ import { AuthResponse, FailureDetail } from './fr-auth/interfaces';
 import FRDevice from './fr-device';
 import FRPolicy, { MessageCreator, PolicyKey, ProcessedPropertyError } from './fr-policy';
 import defaultMessageCreator from './fr-policy/message-creator';
+import FRRecoveryCodes from './fr-recovery-codes';
 import FRUI from './fr-ui';
 import FRUser from './fr-user';
 import FRWebAuthn, {
@@ -84,6 +86,7 @@ export {
   FRLoginFailure,
   FRLoginSuccess,
   FRPolicy,
+  FRRecoveryCodes,
   FRStep,
   FRStepHandler,
   FRUI,
@@ -116,6 +119,7 @@ export {
   Step,
   StepDetail,
   StepType,
+  SuspendedTextOutputCallback,
   TermsAndConditionsCallback,
   TextOutputCallback,
   TokenManager,

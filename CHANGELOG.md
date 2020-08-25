@@ -1,5 +1,31 @@
 # Changelog
 
+## [2.1.0] - 2020-08-25
+
+### Added
+
+- Support for "usernameless" login (storing username on WebAuthn capable tech)
+- Support for the recovery code display node and the parsing of the codes from the TextOutputCallback
+- Support for user verification property for WebAuthn
+- Updated support for new IDM nodes for registration and self-service: BooleanAttributeInputCallback and NumberAttributeInputCallback support
+- Added SuspendedTextOutputCallback support for the new Email Suspended Node
+- Added SessionManager.logout() call back to FRUser.logout()
+
+### Fixed
+
+- Conditionally set user verification, relying party and allow credentials to WebAuthn key options
+- Added exclude credentials to script parsing for WebAuthn key options
+- Ensure display name and username are correctly parsed and added to WebAuthn key options
+- Add authenticator attachment to WebAuthn and other WebAuthn fixes for custom configuration
+- Increased entropy for cryptographic functions related to PKCE for both state and verifier
+- Improved instructions for cert creation for sample app
+
+### Deprecated
+
+- Name change for `getAuthorizeUrl`: method's name will change to better reflect its behavior in v3
+- Removal of `nonce`: this utility is no longer used in the SDK, and therefore will be removed in v3
+- Function signature change for `createVerifier`: the parameter will be removed in v3.
+
 ## [2.0.0] - 2020-06-22
 
 ### Added

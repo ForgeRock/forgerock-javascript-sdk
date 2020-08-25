@@ -25,6 +25,8 @@ abstract class OAuth2Client {
    * Gets the authorization URL configured in OpenAM, optionally using PKCE.
    */
   public static async getAuthorizeUrl(options: GetAuthorizationUrlOptions): Promise<string> {
+    console.warn('Deprecation warning: this `getAuthorizeUrl` method will be renamed in v3.');
+
     const { serverConfig, clientId, redirectUri, scope } = Config.get(options);
 
     /* eslint-disable @typescript-eslint/camelcase */

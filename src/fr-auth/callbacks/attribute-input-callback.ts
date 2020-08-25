@@ -1,12 +1,14 @@
 import FRCallback from '.';
 import { Callback, PolicyRequirement } from '../../auth/interfaces';
+import { StringDict } from '../../shared/interfaces';
 
 /**
  * Represents a callback used to collect attributes.
  *
- * @typeparam T Maps to StringAttributeInputCallback and BooleanAttributeInputCallback, respectively
+ * @typeparam T Maps to StringAttributeInputCallback, NumberAttributeInputCallback and
+ *     BooleanAttributeInputCallback, respectively
  */
-class AttributeInputCallback<T extends string | boolean> extends FRCallback {
+class AttributeInputCallback<T extends string | number | boolean> extends FRCallback {
   /**
    * @param payload The raw payload returned by OpenAM
    */
@@ -45,8 +47,17 @@ class AttributeInputCallback<T extends string | boolean> extends FRCallback {
   /**
    * Gets the callback's applicable policies.
    */
-  public getPolicies(): string[] {
-    return this.getOutputByName<string[]>('policies', []);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  public getPolicies(): StringDict<any> {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return this.getOutputByName<StringDict<any>>('policies', {});
+  }
+
+  /**
+   * Set if validating value only.
+   */
+  public setValidateOnly(value: boolean): void {
+    this.setInputValue(value, /validateOnly/);
   }
 
   /**

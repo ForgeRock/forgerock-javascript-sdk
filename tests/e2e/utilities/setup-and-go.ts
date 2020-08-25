@@ -1,23 +1,24 @@
 import { chromium, firefox, webkit } from 'playwright';
-import {
-  AM_URL,
-  BASE_URL,
-  CLIENT_ID,
-  PASSWORD,
-  REALM_PATH,
-  RESOURCE_URL,
-  SCOPE,
-  USERNAME,
-} from '../env.config';
+import { AM_URL, BASE_URL, CLIENT_ID, RESOURCE_URL, SCOPE, REALM_PATH } from '../env.config';
 
 const browsers = { chromium, firefox, webkit };
 
 export async function setupAndGo(
   browserType: string,
   path: string,
-  failAuth?: boolean,
-  allowGeo?: boolean,
-  tokenStore?: string,
+  config?: {
+    allowGeo?: boolean;
+    amUrl?: string;
+    clientId?: string;
+    email?: string;
+    pw?: string;
+    realmPath?: string;
+    resourceUrl?: string;
+    scope?: string;
+    tokenStore?: string;
+    tree?: string;
+    un?: string;
+  },
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): Promise<{ browser: any; page: any }> {
   const browser = await browsers[browserType].launch({ headless: true });
@@ -25,21 +26,25 @@ export async function setupAndGo(
     bypassCSP: true,
     geolocation: { latitude: 24.9884, longitude: -87.3459 },
     ignoreHTTPSErrors: true,
-    permissions: allowGeo ? ['geolocation'] : [],
+    permissions: config && config.allowGeo ? ['geolocation'] : [],
   });
   const page = await context.newPage();
 
   const url = new URL(`${BASE_URL}/${path}`);
-  url.searchParams.set('amUrl', AM_URL || '');
-  url.searchParams.set('clientId', CLIENT_ID || '');
-  url.searchParams.set('realmPath', REALM_PATH || '');
-  url.searchParams.set('resourceUrl', RESOURCE_URL || '');
-  url.searchParams.set('scope', SCOPE || '');
-  url.searchParams.set('un', USERNAME);
-  url.searchParams.set('pw', failAuth ? `sad_${PASSWORD}_panda` : PASSWORD);
 
-  if (tokenStore) {
-    url.searchParams.set('tokenStore', tokenStore);
+  url.searchParams.set('amUrl', (config && config.amUrl) || AM_URL);
+  url.searchParams.set('clientId', (config && config.clientId) || CLIENT_ID);
+  url.searchParams.set('email', (config && config.email) || '');
+  url.searchParams.set('realmPath', (config && config.realmPath) || REALM_PATH);
+  url.searchParams.set('resourceUrl', (config && config.resourceUrl) || RESOURCE_URL);
+  url.searchParams.set('scope', (config && config.scope) || SCOPE);
+  url.searchParams.set('pw', (config && config.pw) || '');
+  url.searchParams.set('tokenStore', (config && config.tokenStore) || '');
+  url.searchParams.set('tree', (config && config.tree) || '');
+  url.searchParams.set('un', (config && config.un) || '');
+
+  if (browserType === 'chromium') {
+    console.log(url.toString());
   }
 
   await page.goto(url.toString());

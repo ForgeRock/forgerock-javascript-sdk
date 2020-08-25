@@ -57,6 +57,24 @@ export const authByTxnResponse = {
   ttl: 0,
 };
 
+export const emailSuspend = {
+  authId: 'foo',
+  callbacks: [
+    {
+      type: 'SuspendedTextOutputCallback',
+      output: [
+        {
+          name: 'message',
+          value:
+            // eslint-disable-next-line max-len
+            'An email has been sent to the address you entered. Click the link in that email to proceed.',
+        },
+        { name: 'messageType', value: '0' },
+      ],
+    },
+  ],
+};
+
 export const initialBasicLogin = {
   authId: 'foo',
   callbacks: [
@@ -74,6 +92,25 @@ export const initialBasicLogin = {
     },
   ],
   stage: 'UsernamePassword',
+};
+
+export const initialLoginWithEmailResponse = {
+  authId: 'foo',
+  callbacks: [
+    {
+      type: 'ValidatedCreateUsernameCallback',
+      output: [
+        { name: 'policies', value: {} },
+        { name: 'failedPolicies', value: [] },
+        { name: 'validateOnly', value: false },
+        { name: 'prompt', value: 'Username' },
+      ],
+      input: [
+        { name: 'IDToken1', value: '' },
+        { name: 'IDToken1validateOnly', value: false },
+      ],
+    },
+  ],
 };
 
 export const initialPlatformLogin = {
@@ -96,7 +133,10 @@ export const initialPlatformLogin = {
     {
       type: 'ValidatedCreatePasswordCallback',
       output: [{ name: 'prompt', value: 'Password' }],
-      input: [{ name: 'IDToken2', value: '' }],
+      input: [
+        { name: 'IDToken2', value: '' },
+        { name: 'IDToken2validateOnly', value: false },
+      ],
       _id: 1,
     },
   ],
@@ -140,6 +180,21 @@ export const choiceCallback = {
   ],
 };
 
+export const secondFactorChoiceCallback = {
+  authId: 'foo',
+  callbacks: [
+    {
+      type: 'ChoiceCallback',
+      output: [
+        { name: 'prompt', value: 'Choose Second Factor' },
+        { name: 'choices', value: ['Email', 'SMS'] },
+        { name: 'defaultChoice', value: 0 },
+      ],
+      input: [{ name: 'IDToken1', value: 0 }],
+    },
+  ],
+};
+
 export const messageCallback = {
   authId: 'foo',
   callbacks: [
@@ -173,10 +228,23 @@ export const pollingCallback = {
       type: 'PollingWaitCallback',
       output: [
         { name: 'waitTime', value: '1000' },
-        { name: 'message', value: 'Waiting 1 second.' },
+        { name: 'message', value: 'Waiting for response...' },
       ],
     },
   ],
+};
+
+export const secondFactorCallback = {
+  authId: 'foo',
+  callbacks: [
+    {
+      type: 'PasswordCallback',
+      output: [{ name: 'prompt', value: 'One Time Password' }],
+      input: [{ name: 'IDToken1', value: '' }],
+      _id: 0,
+    },
+  ],
+  stage: 'OneTimePasswordEmail',
 };
 
 export const initialAuthz = {

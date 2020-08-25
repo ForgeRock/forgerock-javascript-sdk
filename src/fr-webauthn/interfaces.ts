@@ -55,12 +55,14 @@ interface WebAuthnRegistrationMetadata {
   attestationPreference: 'none' | 'indirect' | 'direct';
   authenticatorSelection: string;
   challenge: string;
+  excludeCredentials: string;
   pubKeyCredParams: string;
   relyingPartyId: string;
   relyingPartyName: string;
   timeout: number;
   userId: string;
   userName: string;
+  displayName: string;
 }
 
 interface WebAuthnAuthenticationMetadata {
@@ -68,6 +70,7 @@ interface WebAuthnAuthenticationMetadata {
   challenge: string;
   relyingPartyId: string;
   timeout: number;
+  userVerification: UserVerificationType;
 }
 
 interface WebAuthnCallbacks {
