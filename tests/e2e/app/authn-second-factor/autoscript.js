@@ -47,9 +47,7 @@
         }),
         rxjs.operators.delay(delay),
         rxMergeMap((step) => {
-          let otp = 'abc123';
-          // For LIVE testing: use breakpoint to pause and retrieve OTP from user's email
-          // debugger; // Use browser *console* to assign given code to `otp` variable, then unpause
+          const otp = window.prompt('What is your OTP?');
           console.log('Set given OTP to password callback');
           step.getCallbackOfType('PasswordCallback').setPassword(otp);
 

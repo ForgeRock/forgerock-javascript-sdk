@@ -10,7 +10,7 @@
   const realmPath = url.searchParams.get('realmPath') || 'root';
   const un = url.searchParams.get('un') || '57a5b4e4-6999-4b45-bf86-a4f2e5d4b629';
   const pw = url.searchParams.get('pw') || 'ieH034K&-zlwqh3V_';
-  const tree = url.searchParams.get('tree') || 'Login';
+  const tree = url.searchParams.get('tree') || 'PlatformUsernamePassword';
 
   console.log('Configure the SDK');
   forgerock.Config.set({
@@ -48,8 +48,14 @@
         rxjs.operators.delay(delay),
         rxMergeMap((step) => {
           console.log('Set values on auth tree callbacks for submission');
-          step.getCallbackOfType('ValidatedCreateUsernameCallback').setName(un);
-          step.getCallbackOfType('ValidatedCreatePasswordCallback').setPassword(pw);
+          const unCb = step.getCallbackOfType('ValidatedCreateUsernameCallback');
+          unCb.setName(un);
+          unCb.setValidateOnly(false);
+
+          const pwCb = step.getCallbackOfType('ValidatedCreatePasswordCallback');
+          pwCb.setPassword(pw);
+          pwCb.setValidateOnly(false);
+
           return forgerock.FRAuth.next(step);
         }),
         rxjs.operators.delay(delay),

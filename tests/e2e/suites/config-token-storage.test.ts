@@ -3,13 +3,9 @@ import { setupAndGo } from '../utilities/setup-and-go';
 describe('Test oauth login flow with localStorage', () => {
   ['chromium', 'webkit', 'firefox'].forEach((browserType) => {
     it(`Login successfully with ${browserType}`, async (done) => {
-      const { browser, page } = await setupAndGo(
-        browserType,
-        'config-token-storage/',
-        null,
-        null,
-        'sessionStorage',
-      );
+      const { browser, page } = await setupAndGo(browserType, 'config-token-storage/', {
+        tokenStore: 'sessionStorage',
+      });
 
       const messageArray = [];
 
@@ -29,13 +25,9 @@ describe('Test oauth login flow with localStorage', () => {
     });
 
     it(`Login successfully with ${browserType}`, async (done) => {
-      const { browser, page } = await setupAndGo(
-        browserType,
-        'config-token-storage/',
-        null,
-        null,
-        'indexedDB',
-      );
+      const { browser, page } = await setupAndGo(browserType, 'config-token-storage/', {
+        tokenStore: 'indexedDB',
+      });
 
       const messageArray = [];
 
@@ -55,13 +47,9 @@ describe('Test oauth login flow with localStorage', () => {
     });
 
     it(`Login successfully with ${browserType}`, async (done) => {
-      const { browser, page } = await setupAndGo(
-        browserType,
-        'config-token-storage/',
-        null,
-        null,
-        'customStore',
-      );
+      const { browser, page } = await setupAndGo(browserType, 'config-token-storage/', {
+        tokenStore: 'customStore',
+      });
 
       const messageArray = [];
 

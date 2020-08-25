@@ -228,7 +228,7 @@ export const pollingCallback = {
       type: 'PollingWaitCallback',
       output: [
         { name: 'waitTime', value: '1000' },
-        { name: 'message', value: 'Waiting 1 second.' },
+        { name: 'message', value: 'Waiting for response...' },
       ],
     },
   ],

@@ -5,6 +5,7 @@ import { createServer } from 'https';
 import { env } from 'process';
 import { authorizeApp } from './app.auth.mjs';
 import { key, cert } from './app.certs.mjs';
+import { MOCK_PORT } from './env.config.copy.mjs';
 import authRoutes from './routes.auth.mjs';
 import resourceRoutes from './routes.resource.mjs';
 
@@ -27,13 +28,13 @@ app.use((req, res, next) => {
 if (env.LIVE === 'true') {
   authorizeApp({
     un: '9190fcce-d6d7-4473-9449-412f281f9bc6',
-    pw: 'Password1!',
+    pw: '7fh9sj7*NP$%F6978',
   });
 }
 authRoutes(app);
 resourceRoutes(app);
 
 env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0;
-createServer({ key, cert }, app).listen(env.SERVER_PORT);
+createServer({ key, cert }, app).listen(MOCK_PORT);
 
-console.log(`Listening to HTTPS on secure port: ${env.SERVER_PORT}`);
+console.log(`Listening to HTTPS on secure port: ${MOCK_PORT}`);

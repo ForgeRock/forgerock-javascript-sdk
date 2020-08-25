@@ -65,10 +65,10 @@
           baCb1.setInputValue(false);
           baCb2.setInputValue(false);
 
-          const naCb = step.getCallbackOfType('NumberAttributeInputCallback');
-          console.log(`Prompt 6: ${naCb.getPrompt()}`);
+          // const naCb = step.getCallbackOfType('NumberAttributeInputCallback');
+          // console.log(`Prompt 6: ${naCb.getPrompt()}`);
 
-          naCb.setInputValue(40);
+          // naCb.setInputValue(40);
 
           console.log('Handle KbaCreateCallback');
           const [kbCb1, kbCb2] = step.getCallbacksOfType('KbaCreateCallback');

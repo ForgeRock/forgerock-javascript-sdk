@@ -11,6 +11,10 @@ describe('Test Second Factor login flow', () => {
         messageArray.push(msg.text());
       });
 
+      page.on('dialog', async (dialog) => {
+        await dialog.accept('abc123');
+      });
+
       await page.waitForSelector('.Test_Complete');
 
       // Test assertions

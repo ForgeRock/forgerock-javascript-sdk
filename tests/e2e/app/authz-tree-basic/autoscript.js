@@ -8,8 +8,9 @@
   const url = new URL(window.location.href);
   const amUrl = url.searchParams.get('amUrl') || 'https://auth.example.com:9443/am';
   const realmPath = url.searchParams.get('realmPath') || 'root';
-  const igUrl = url.searchParams.get('igUrl'); // only use when testing against IG on a different host
-  const restUrl = url.searchParams.get('restUrl') || 'https://api.example.com:9443/resource';
+  const igUrl = url.searchParams.get('igUrl'); // only use when testing against IG on different host
+  const resourceOrigin =
+    url.searchParams.get('resourceOrigin') || 'https://api.example.com:9443/resource';
   const un = url.searchParams.get('un') || '57a5b4e4-6999-4b45-bf86-a4f2e5d4b629';
   const pw = url.searchParams.get('pw') || 'ieH034K&-zlwqh3V_';
   const tree = url.searchParams.get('tree') || 'UsernamePassword';
@@ -79,7 +80,7 @@
         (step) => {
           console.log('Retrieve the protected resource');
           return forgerock.HttpClient.request({
-            url: `${igUrl ? igUrl : restUrl}/ig/authz-by-tree`,
+            url: `${igUrl ? igUrl : resourceOrigin + '/ig/authz-by-tree'}`,
             init: {
               method: 'GET',
               credentials: 'include',
@@ -122,7 +123,7 @@
         (step) => {
           console.log('Retrieve the protected resource');
           return forgerock.HttpClient.request({
-            url: `${restUrl}/rest/authz-by-tree`,
+            url: `${resourceOrigin}/rest/authz-by-tree`,
             init: {
               method: 'GET',
               credentials: 'include',
