@@ -1,6 +1,6 @@
 # Changelog
 
-## [unreleased]
+## [2.1.0] - 2020-08-25
 
 ### Added
 
@@ -9,10 +9,12 @@
 - Support for user verification property for WebAuthn
 - Updated support for new IDM nodes for registration and self-service
 - Added SuspendedTextOutputCallback support for the new Email Suspended Node
+- Added SessionManager.logout() call back to FRUser.logout()
 
 ### Fixed
 
 - Conditionally set user verification, relying party and allow credentials to WebAuthn key options
+- Added exclude credentials to script parsing for WebAuthn key options
 - Ensure display name and username are correctly parsed and added to WebAuthn key options
 - Add authenticator attachment to WebAuthn and other WebAuthn fixes for custom configuration
 - Increased entropy for cryptographic functions related to PKCE for both state and verifier
