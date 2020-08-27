@@ -1,3 +1,13 @@
+/*
+ * @forgerock/javascript-sdk
+ *
+ * index.ts
+ *
+ * Copyright (c) 2020 ForgeRock. All rights reserved.
+ * This software may be modified and distributed under the terms
+ * of the MIT license. See the LICENSE file for details.
+ */
+
 import Config, { ServerConfig } from '../config';
 import { ActionTypes } from '../config/enums';
 import { REQUESTED_WITH } from '../shared/constants';

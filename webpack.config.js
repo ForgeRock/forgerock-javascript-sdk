@@ -3,11 +3,22 @@ const path = require('path');
 const TsConfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 const webpack = require('webpack');
 
+const banner = `
+@forgerock/javascript-sdk
+
+index.js
+
+Copyright (c) ${new Date().getFullYear()} ForgeRock. All rights reserved.
+This software may be modified and distributed under the terms
+of the MIT license. See the LICENSE file for details.
+`;
+
 module.exports = (env) => {
   const isDev = env.DEV === 'yes';
 
   const plugins = [
     new webpack.WatchIgnorePlugin([/bundles|docs|lib|lib\-esm|samples/]),
+    new webpack.BannerPlugin(banner),
     {
       apply: (compiler) => {
         compiler.hooks.afterEmit.tap('AfterEmitPlugin', (compilation) => {

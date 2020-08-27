@@ -1,3 +1,13 @@
+/*
+ * @forgerock/javascript-sdk
+ *
+ * routes.auth.mjs
+ *
+ * Copyright (c) 2020 ForgeRock. All rights reserved.
+ * This software may be modified and distributed under the terms
+ * of the MIT license. See the LICENSE file for details.
+ */
+
 import { authPaths } from './constants.mjs';
 import { AM_URL, USERS } from './env.config.copy.mjs';
 import {

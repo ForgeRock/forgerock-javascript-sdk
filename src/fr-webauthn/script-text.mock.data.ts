@@ -1,3 +1,13 @@
+/*
+ * @forgerock/javascript-sdk
+ *
+ * script-text.mock.data.ts
+ *
+ * Copyright (c) 2020 ForgeRock. All rights reserved.
+ * This software may be modified and distributed under the terms
+ * of the MIT license. See the LICENSE file for details.
+ */
+
 /* eslint-disable max-len */
 const authenticateInputWithRpidAndAllowCredentials = `/*
 * Copyright 2018-2020 ForgeRock AS. All Rights Reserved
