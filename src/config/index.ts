@@ -1,3 +1,13 @@
+/*
+ * @forgerock/javascript-sdk
+ *
+ * index.ts
+ *
+ * Copyright (c) 2020 ForgeRock. All rights reserved.
+ * This software may be modified and distributed under the terms
+ * of the MIT license. See the LICENSE file for details.
+ */
+
 import { DEFAULT_TIMEOUT } from './constants';
 import { ConfigOptions, ServerConfig, ValidConfigOptions } from './interfaces';
 

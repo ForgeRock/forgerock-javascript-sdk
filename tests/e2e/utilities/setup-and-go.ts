@@ -1,3 +1,13 @@
+/*
+ * @forgerock/javascript-sdk
+ *
+ * setup-and-go.ts
+ *
+ * Copyright (c) 2020 ForgeRock. All rights reserved.
+ * This software may be modified and distributed under the terms
+ * of the MIT license. See the LICENSE file for details.
+ */
+
 import { chromium, firefox, webkit } from 'playwright';
 import { AM_URL, BASE_URL, CLIENT_ID, RESOURCE_URL, SCOPE, REALM_PATH } from '../env.config';
 
