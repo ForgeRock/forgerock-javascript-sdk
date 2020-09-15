@@ -228,6 +228,10 @@ export default function (app) {
     res.redirect(url);
   });
 
+  app.get('/callback', async (req, res) => {
+    res.status(200).send();
+  });
+
   app.get(authPaths.userInfo, wait, async (req, res) => {
     res.json(userInfo);
   });

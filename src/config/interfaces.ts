@@ -24,6 +24,7 @@ interface Action {
 interface ConfigOptions {
   callbackFactory?: FRCallbackFactory;
   clientId?: string;
+  login?: 'native' | 'redirect' | undefined;
   middleware?: RequestMiddleware[];
   realmPath?: string;
   redirectUri?: string;

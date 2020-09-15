@@ -31,13 +31,8 @@ import middlewareWrapper from '../util/middleware';
  * OAuth 2.0 client.
  */
 abstract class OAuth2Client {
-  /**
-   * Gets the authorization URL configured in OpenAM, optionally using PKCE.
-   */
-  public static async getAuthorizeUrl(options: GetAuthorizationUrlOptions): Promise<string> {
-    console.warn('Deprecation warning: this `getAuthorizeUrl` method will be renamed in v3.');
-
-    const { serverConfig, clientId, redirectUri, scope } = Config.get(options);
+  public static async createAuthorizeUrl(options: GetAuthorizationUrlOptions): Promise<string> {
+    const { clientId, redirectUri, scope } = Config.get(options);
 
     /* eslint-disable @typescript-eslint/camelcase */
     const requestParams: StringDict<string | undefined> = {
@@ -64,6 +59,18 @@ abstract class OAuth2Client {
       },
       ActionTypes.Authorize,
     );
+    return url.toString();
+  }
+
+  /**
+   * DEPRECATED
+   * Gets the authorization URL configured in OpenAM, optionally using PKCE.
+   */
+  public static async getAuthorizeUrl(options: GetAuthorizationUrlOptions): Promise<string> {
+    console.warn('Deprecation warning: this `getAuthorizeUrl` method will be renamed in v3.');
+
+    const url = await this.createAuthorizeUrl(options);
+    const { serverConfig } = Config.get(options);
 
     return new Promise((resolve, reject) => {
       const iframe = document.createElement('iframe');
@@ -100,7 +107,7 @@ abstract class OAuth2Client {
       iframe.style.display = 'none';
       iframe.addEventListener('load', onLoad);
       document.body.appendChild(iframe);
-      iframe.src = url.toString();
+      iframe.src = url;
     });
   }
 
