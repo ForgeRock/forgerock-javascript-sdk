@@ -64,7 +64,9 @@ abstract class OAuth2Client {
 
   /**
    * DEPRECATED
-   * Gets the authorization URL configured in OpenAM, optionally using PKCE.
+   * Calls the authorize URL with an iframe. If successful,
+   * it returns the callback URL with authentication code,
+   * optionally using PKCE.
    */
   public static async getAuthorizeUrl(options: GetAuthorizationUrlOptions): Promise<string> {
     console.warn('Deprecation warning: this `getAuthorizeUrl` method will be renamed in v3.');

@@ -53,6 +53,8 @@ export async function setupAndGo(
   url.searchParams.set('tree', (config && config.tree) || '');
   url.searchParams.set('un', (config && config.un) || '');
 
+  // log out the URL used for the test, but only for chromium;
+  // the other browser URLs would just be duplicates
   if (browserType === 'chromium') {
     console.log(url.toString());
   }

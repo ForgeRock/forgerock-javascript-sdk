@@ -55,15 +55,15 @@
     const FATAL = 'Fatal';
 
     forgerock.Config.set({
-      clientId: 'CentralLoginOAuthClient', // e.g. 'ForgeRockSDKClient'
-      login: 'redirect', // e.g 'redirect'
-      redirectUri: 'https://sdkapp.example.com:8443/central-login/', // e.g. 'https://sdkapp.example.com:8443/_callback'
-      scope: 'openid profile email', // e.g. 'openid profile me.read'
-      serverConfig: {
-        baseUrl: 'https://nightly.iam.forgeops.com/am/', // e.g. 'https://openam.example.com:9443/openam/'
-        timeout: '90000' // 90000 or less
+      clientId: '<Your OAuth Client>', // e.g. 'ForgeRockSDKClient'
+      redirectUri: '<Your Redirect/Callback URL>', // e.g. 'https://sdkapp.example.com:8443/_callback'
+      scope: '<Your OAuth Scopes>', // e.g. 'openid profile me.read'
+        serverConfig: {
+        baseUrl: '<Your AM URL>', // e.g. 'https://openam.example.com:9443/openam/'
+        timeout: '<Your Timeout (milliseconds)>' // 90000 or less
       },
-      realmPath: 'sdk', // e.g. 'root'
+      support: '<Browser Support>', // e.g. 'legacy' or 'modern'
+      realmPath: '<Your Realm>', // e.g. 'root'
     });
 
     // Show only the view for this handler
@@ -96,14 +96,14 @@
       }
     }
 
-    const authorize = async (authorizationCode, state) => {
-      await forgerock.TokenManager.getTokens({ authorizationCode, state });
+    const authorize = async (code, state) => {
+      await forgerock.TokenManager.getTokens({ query: { code, state }});
       const user = await forgerock.UserManager.getCurrentUser();
       showUser(user);
     }
 
     document.querySelector('#loginBtn').addEventListener('click', async () => {
-      await forgerock.TokenManager.getTokens();
+      await forgerock.TokenManager.getTokens({ login: 'redirect' });
       const user = await forgerock.UserManager.getCurrentUser();
       showUser(user);
     });

@@ -24,12 +24,12 @@ interface Action {
 interface ConfigOptions {
   callbackFactory?: FRCallbackFactory;
   clientId?: string;
-  login?: 'native' | 'redirect' | undefined;
   middleware?: RequestMiddleware[];
   realmPath?: string;
   redirectUri?: string;
   scope?: string;
   serverConfig?: ServerConfig;
+  support?: 'modern' | 'legacy' | undefined;
   tokenStore?: TokenStoreObject | 'indexedDB' | 'sessionStorage' | 'localStorage';
   tree?: string;
   type?: string;

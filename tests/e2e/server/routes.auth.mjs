@@ -205,7 +205,7 @@ export default function (app) {
         value.identifier &&
         value.identifier.length > 0
       ) {
-        res.cookie('iPlanetDirectoryPro', 'abcd1234', { domain: '.example.com' });
+        res.cookie('iPlanetDirectoryPro', 'abcd1234', { domain: 'example.com' });
         res.json(authSuccess);
       } else {
         // Just failing the auth for testing, but in reality,
@@ -220,12 +220,16 @@ export default function (app) {
   });
 
   app.get(authPaths.authorize, wait, async (req, res) => {
-    const url = new URL(`${req.query.redirect_uri}`);
-    url.searchParams.set('client_id', 'bar');
-    url.searchParams.set('code', 'foo');
-    url.searchParams.set('iss', `${AM_URL}/oauth2`);
-    url.searchParams.set('state', req.query.state);
-    res.redirect(url);
+    if (req.cookies.iPlanetDirectoryPro) {
+      const url = new URL(`${req.query.redirect_uri}`);
+      url.searchParams.set('client_id', 'bar');
+      url.searchParams.set('code', 'foo');
+      url.searchParams.set('iss', `${AM_URL}/oauth2`);
+      url.searchParams.set('state', req.query.state);
+      res.redirect(url);
+    } else {
+      res.redirect('/login');
+    }
   });
 
   app.get('/callback', async (req, res) => {
@@ -258,13 +262,12 @@ export default function (app) {
           !req.headers['x-auth-middleware'] &&
           !req.query['auth-middleware']
         ) {
-          res.clearCookie('iPlanetDirectoryPro');
+          res.clearCookie('iPlanetDirectoryPro', { domain: 'example.com', path: '/' });
           res.status(204).send();
         } else {
           res.status(406).send('Middleware header is missing.');
         }
       } else {
-        res.clearCookie('iPlanetDirectoryPro');
         res.status(204).send();
       }
     }
