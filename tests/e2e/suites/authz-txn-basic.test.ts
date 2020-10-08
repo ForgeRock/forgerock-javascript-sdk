@@ -13,7 +13,7 @@ import { setupAndGo } from '../utilities/setup-and-go';
 describe('Test Transaction Authorization flow', () => {
   ['chromium' /*, 'webkit' */].forEach((browserType) => {
     it(`Trigger Txn Auth appropriately with ${browserType}`, async (done) => {
-      const { browser, page } = await setupAndGo(browserType, 'authz-txn-basic');
+      const { browser, page } = await setupAndGo(browserType, 'authz-txn-basic/');
 
       const messageArray = [];
 

@@ -27,17 +27,18 @@ import {
 } from './interfaces';
 import middlewareWrapper from '../util/middleware';
 
+const allowedErrors = {
+  AuthenticationConsentRequired: 'Authentication or consent required',
+  AuthorizationTimeout: 'Authorization timed out',
+  FailedToFetch: 'Failed to fetch',
+};
+
 /**
  * OAuth 2.0 client.
  */
 abstract class OAuth2Client {
-  /**
-   * Gets the authorization URL configured in OpenAM, optionally using PKCE.
-   */
-  public static async getAuthorizeUrl(options: GetAuthorizationUrlOptions): Promise<string> {
-    console.warn('Deprecation warning: this `getAuthorizeUrl` method will be renamed in v3.');
-
-    const { serverConfig, clientId, redirectUri, scope } = Config.get(options);
+  public static async createAuthorizeUrl(options: GetAuthorizationUrlOptions): Promise<string> {
+    const { clientId, redirectUri, scope } = Config.get(options);
 
     /* eslint-disable @typescript-eslint/camelcase */
     const requestParams: StringDict<string | undefined> = {
@@ -64,6 +65,20 @@ abstract class OAuth2Client {
       },
       ActionTypes.Authorize,
     );
+    return url.toString();
+  }
+
+  /**
+   * DEPRECATED
+   * Calls the authorize URL with an iframe. If successful,
+   * it returns the callback URL with authentication code,
+   * optionally using PKCE.
+   */
+  public static async getAuthorizeUrl(options: GetAuthorizationUrlOptions): Promise<string> {
+    console.warn('Deprecation warning: this `getAuthorizeUrl` method will be renamed in v3.');
+
+    const url = await this.createAuthorizeUrl(options);
+    const { serverConfig } = Config.get(options);
 
     return new Promise((resolve, reject) => {
       const iframe = document.createElement('iframe');
@@ -88,19 +103,22 @@ abstract class OAuth2Client {
           if (this.containsAuthCode(newHref)) {
             cleanUp();
             resolve(newHref);
+          } else if (this.containsAuthError(newHref)) {
+            cleanUp();
+            resolve(newHref);
           }
         }
       };
 
       timeout = window.setTimeout(() => {
         cleanUp();
-        reject('Timeout');
+        reject(new Error(allowedErrors.AuthorizationTimeout));
       }, serverConfig.timeout);
 
       iframe.style.display = 'none';
       iframe.addEventListener('load', onLoad);
       document.body.appendChild(iframe);
-      iframe.src = url.toString();
+      iframe.src = url;
     });
   }
 
@@ -250,6 +268,10 @@ abstract class OAuth2Client {
     return !!url && /code=([^&]+)/.test(url);
   }
 
+  private static containsAuthError(url: string | null): boolean {
+    return !!url && /error=([^&]+)/.test(url);
+  }
+
   private static async getBody<T>(response: Response): Promise<T | string> {
     const contentType = response.headers.get('content-type');
     if (contentType && contentType.indexOf('application/json') > -1) {
@@ -286,4 +308,10 @@ abstract class OAuth2Client {
 }
 
 export default OAuth2Client;
-export { GetAuthorizationUrlOptions, GetOAuth2TokensOptions, OAuth2Tokens, ResponseType };
+export {
+  allowedErrors,
+  GetAuthorizationUrlOptions,
+  GetOAuth2TokensOptions,
+  OAuth2Tokens,
+  ResponseType,
+};
