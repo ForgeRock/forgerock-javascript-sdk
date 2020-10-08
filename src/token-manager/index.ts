@@ -9,7 +9,7 @@
  */
 
 import Config, { ConfigOptions } from '../config';
-import OAuth2Client, { OAuth2Tokens, ResponseType } from '../oauth2-client';
+import OAuth2Client, { allowedErrors, OAuth2Tokens, ResponseType } from '../oauth2-client';
 import { StringDict, Tokens } from '../shared/interfaces';
 import TokenStorage from '../token-storage';
 import PKCE from '../util/pkce';
@@ -70,7 +70,7 @@ abstract class TokenManager {
     /**
      * Return stored tokens, if possible
      */
-    if (!options || !options.forceRenew) {
+    if (!options || (!options.forceRenew && !options.query?.code)) {
       try {
         tokens = await TokenStorage.get();
         if (tokens) {
@@ -99,18 +99,20 @@ abstract class TokenManager {
     const state = PKCE.createState();
     const authorizeUrlOptions = { ...options, responseType: ResponseType.Code, state, verifier };
     const authorizeUrl = await OAuth2Client.createAuthorizeUrl(authorizeUrlOptions);
-    let authorizeResponseUrl = '';
 
     /**
      * Attempt to call the authorize URL to retrieve authorization code
      */
     try {
+      let parsedUrl;
+
+      // Check expected browser support
       if (support === 'legacy' || support === undefined) {
         // To support legacy browsers, iframe works best with short timeout
-        authorizeResponseUrl = await OAuth2Client.getAuthorizeUrl(authorizeUrlOptions);
+        parsedUrl = new URL(await OAuth2Client.getAuthorizeUrl(authorizeUrlOptions));
       } else {
         // Using modern `fetch` provides better redirect and error handling
-        // Downside is IE11 is not supported, *even* with polyfill
+        // Downside is IE11 is not supported, *even* with the fetch polyfill
         const response = await withTimeout(
           fetch(authorizeUrl, {
             credentials: 'include',
@@ -119,22 +121,38 @@ abstract class TokenManager {
           serverConfig.timeout,
         );
 
-        const parsedUrl = new URL(response.url);
-        if (!parsedUrl.searchParams.get('code')) {
-          throw Error();
-        }
-        authorizeResponseUrl = response.url;
+        parsedUrl = new URL(response.url);
       }
-      const parsedQuery = parseQuery(authorizeResponseUrl);
+
+      // Throw if we have an error param or have no authorization code
+      if (parsedUrl.searchParams.get('error')) {
+        throw Error(`${parsedUrl.searchParams.get('error_description')}`);
+      } else if (!parsedUrl.searchParams.get('code')) {
+        throw Error(allowedErrors.AuthenticationConsentRequired);
+      }
+
+      const parsedQuery = parseQuery(parsedUrl.toString());
 
       if (!options) {
         options = {};
       }
       options.query = parsedQuery;
     } catch (err) {
-      // If authorize request fails, handle according to `login`
+      // If authorize request fails, handle according to `login` type
       if (options?.login !== 'redirect') {
-        throw new Error('Failed to retrieve authorization code');
+        // Throw for any error if login is NOT of type "redirect"
+        throw err;
+      }
+
+      // Check if error is not one of our allowed errors
+      if (
+        allowedErrors.AuthenticationConsentRequired !== err.message &&
+        allowedErrors.AuthorizationTimeout !== err.message &&
+        allowedErrors.FailedToFetch !== err.message
+      ) {
+        // Throw if the error is NOT "Authentication or consent required" & login is "redirect"
+        // as that is a normal response and requires a redirect
+        throw err;
       }
 
       // Since `login` is configured for "redirect", store authorize values and redirect

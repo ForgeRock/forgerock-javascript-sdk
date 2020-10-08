@@ -27,6 +27,12 @@ import {
 } from './interfaces';
 import middlewareWrapper from '../util/middleware';
 
+const allowedErrors = {
+  AuthenticationConsentRequired: 'Authentication or consent required',
+  AuthorizationTimeout: 'Authorization timed out',
+  FailedToFetch: 'Failed to fetch',
+};
+
 /**
  * OAuth 2.0 client.
  */
@@ -97,13 +103,16 @@ abstract class OAuth2Client {
           if (this.containsAuthCode(newHref)) {
             cleanUp();
             resolve(newHref);
+          } else if (this.containsAuthError(newHref)) {
+            cleanUp();
+            resolve(newHref);
           }
         }
       };
 
       timeout = window.setTimeout(() => {
         cleanUp();
-        reject('Timeout');
+        reject(new Error(allowedErrors.AuthorizationTimeout));
       }, serverConfig.timeout);
 
       iframe.style.display = 'none';
@@ -259,6 +268,10 @@ abstract class OAuth2Client {
     return !!url && /code=([^&]+)/.test(url);
   }
 
+  private static containsAuthError(url: string | null): boolean {
+    return !!url && /error=([^&]+)/.test(url);
+  }
+
   private static async getBody<T>(response: Response): Promise<T | string> {
     const contentType = response.headers.get('content-type');
     if (contentType && contentType.indexOf('application/json') > -1) {
@@ -295,4 +308,10 @@ abstract class OAuth2Client {
 }
 
 export default OAuth2Client;
-export { GetAuthorizationUrlOptions, GetOAuth2TokensOptions, OAuth2Tokens, ResponseType };
+export {
+  allowedErrors,
+  GetAuthorizationUrlOptions,
+  GetOAuth2TokensOptions,
+  OAuth2Tokens,
+  ResponseType,
+};

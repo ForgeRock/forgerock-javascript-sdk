@@ -23,7 +23,10 @@
 
 <body>
   <div id="steps">
-    <button id="loginBtn" class="btn btn-primary active">Login</button>
+    <div class="active">
+      <button id="loginBtn" class="btn btn-primary">Login</button>
+      <button id="forceRenewBtn" class="btn btn-primary">Force Renew</button>
+    </div>
     <div id="User">
       <p>Your user information:
         <pre></pre>
@@ -107,6 +110,13 @@
       const user = await forgerock.UserManager.getCurrentUser();
       showUser(user);
     });
+
+    document.querySelector('#forceRenewBtn').addEventListener('click', async () => {
+      await forgerock.TokenManager.getTokens({ login: 'redirect', forceRenew: true });
+      const user = await forgerock.UserManager.getCurrentUser();
+      showUser(user);
+    });
+
     const url = new URL(document.location);
     const params = url.searchParams;
 
