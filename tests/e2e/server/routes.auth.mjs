@@ -46,7 +46,7 @@ export default function (app) {
         res.json(initialAuthz);
       } else if (req.query.authIndexValue === 'MiscCallbacks') {
         res.json(initialMiscCallbacks);
-      } else if (req.query.authIndexValue === 'PlatformUsernamePassword') {
+      } else if (req.query.authIndexValue === 'PlatformUsernamePasswordTest') {
         res.json(initialPlatformLogin);
       } else if (req.query.authIndexValue === 'Registration') {
         res.json(initialRegResponse);
@@ -95,7 +95,7 @@ export default function (app) {
       } else {
         res.json(authFail);
       }
-    } else if (req.query.authIndexValue === 'PlatformUsernamePassword') {
+    } else if (req.query.authIndexValue === 'PlatformUsernamePasswordTest') {
       const pwCb = req.body.callbacks.find((cb) => cb.type === 'ValidatedCreatePasswordCallback');
       // If validate only, return callbacks
       if (pwCb.input[1].value) {
@@ -126,7 +126,7 @@ export default function (app) {
         em.input[0].value.length &&
         mktg.input[0].value === false &&
         update.input[0].value === false &&
-        pw.input[0].value === 'ieH034K&-zlwqh3V_' &&
+        pw.input[0].value === USERS[0].pw &&
         kba1.input[0].value === 'What is your favorite color?' &&
         kba1.input[1].value === 'Red' &&
         kba2.input[0].value === 'Who was your first employer?' &&
@@ -155,7 +155,7 @@ export default function (app) {
       if (pwCb.input[0].value !== USERS[0].pw) {
         res.status(401).json(authFail);
       } else {
-        if (req.query.authIndexValue === 'UsernamePasswordDevice') {
+        if (req.query.authIndexValue === 'DeviceProfileCallbackTest') {
           res.json(requestDeviceProfile);
         } else {
           if (req.body.stage === 'TransactionAuthorization') {

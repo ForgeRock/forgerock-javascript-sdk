@@ -9,7 +9,7 @@
  */
 
 import { chromium, firefox, webkit } from 'playwright';
-import { AM_URL, BASE_URL, CLIENT_ID, RESOURCE_URL, SCOPE, REALM_PATH } from '../env.config';
+import { AM_URL, BASE_URL, CLIENT_ID, RESOURCE_URL, SCOPE, REALM_PATH, USERS } from '../env.config';
 
 const browsers = { chromium, firefox, webkit };
 
@@ -48,10 +48,10 @@ export async function setupAndGo(
   url.searchParams.set('realmPath', (config && config.realmPath) || REALM_PATH);
   url.searchParams.set('resourceUrl', (config && config.resourceUrl) || RESOURCE_URL);
   url.searchParams.set('scope', (config && config.scope) || SCOPE);
-  url.searchParams.set('pw', (config && config.pw) || '');
+  url.searchParams.set('pw', (config && config.pw) || USERS[0].pw);
   url.searchParams.set('tokenStore', (config && config.tokenStore) || '');
   url.searchParams.set('tree', (config && config.tree) || '');
-  url.searchParams.set('un', (config && config.un) || '');
+  url.searchParams.set('un', (config && config.un) || USERS[0].un);
 
   // log out the URL used for the test, but only for chromium;
   // the other browser URLs would just be duplicates

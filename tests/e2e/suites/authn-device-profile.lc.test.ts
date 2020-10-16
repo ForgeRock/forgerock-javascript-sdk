@@ -15,7 +15,7 @@ describe('Test bad login flow', () => {
     it(`Login with device profile callback ${browserType}`, async (done) => {
       const { browser, page } = await setupAndGo(browserType, 'authn-device-profile/', {
         allowGeo: true,
-        tree: 'UsernamePasswordDevice',
+        tree: 'DeviceProfileCallbackTest',
       });
 
       const messageArray = [];
