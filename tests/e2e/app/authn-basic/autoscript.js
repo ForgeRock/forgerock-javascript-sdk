@@ -58,7 +58,7 @@
   // Wrapping in setTimeout to give the test time to bind listener to console.log
   setTimeout(function () {
     rxjs
-      .from(forgerock.FRAuth.next())
+      .from(forgerock.FRAuth.start())
       .pipe(
         rxMergeMap((step) => {
           console.log('Set values on auth tree callbacks');

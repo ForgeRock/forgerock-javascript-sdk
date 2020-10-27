@@ -1,5 +1,18 @@
 # Changelog
 
+## [Unreleased]
+
+### Added
+
+- Native Social Login callbacks for Identity Providers Google and Facebook
+- New `FRAuth` methods for handing redirection to provider and resuming an authentication journey
+  - `FRAuth.resume` supports both return from an IdP and returning from Email Suspend node
+- New `FRAuth.start` method that aliases `FRAuth.next` to align native mobile SDKs
+
+### Fixed
+
+- Arbitrary query parameters now passed along to authorize URL creation
+
 ## [2.2.0] - 2020-12-18
 
 ### Added

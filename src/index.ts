@@ -27,6 +27,8 @@ import NameCallback from './fr-auth/callbacks/name-callback';
 import PasswordCallback from './fr-auth/callbacks/password-callback';
 import PollingWaitCallback from './fr-auth/callbacks/polling-wait-callback';
 import ReCaptchaCallback from './fr-auth/callbacks/recaptcha-callback';
+import RedirectCallback from './fr-auth/callbacks/redirect-callback';
+import SelectIdPCallback, { IdPValue } from './fr-auth/callbacks/select-idp-callback';
 import SuspendedTextOutputCallback from './fr-auth/callbacks/suspended-text-output-callback';
 import TermsAndConditionsCallback from './fr-auth/callbacks/terms-and-conditions-callback';
 import TextOutputCallback from './fr-auth/callbacks/text-output-callback';
@@ -107,6 +109,7 @@ export {
   GetTokensOptions,
   HiddenValueCallback,
   HttpClient,
+  IdPValue,
   KbaCreateCallback,
   Listener,
   LocalStorage,
@@ -123,8 +126,10 @@ export {
   PollingWaitCallback,
   ProcessedPropertyError,
   ReCaptchaCallback,
+  RedirectCallback,
   RelyingParty,
   ResponseType,
+  SelectIdPCallback,
   SessionManager,
   Step,
   StepDetail,
