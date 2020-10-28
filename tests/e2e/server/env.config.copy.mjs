@@ -19,7 +19,7 @@ const oauth = {
 };
 const origins = {
   app: 'https://sdkapp.example.com',
-  forgeops: 'https://default.iam.example.com',
+  forgeops: 'https://default.forgeops.petrov.ca',
   mock: 'https://auth.example.com',
   resource: 'https://api.example.com',
 };
@@ -28,15 +28,15 @@ const paths = {
 };
 const ports = {
   app: '8443',
-  forgeops: '51927',
+  forgeops: '443',
   mock: '9443',
   resource: '9443',
 };
 const realm = 'root';
 const testUsers = [
   {
-    pw: 'ieH034K&-zlwqh3V_',
-    un: '57a5b4e4-6999-4b45-bf86-a4f2e5d4b629',
+    pw: 'password',
+    un: 'sdkuser',
   },
 ];
 
