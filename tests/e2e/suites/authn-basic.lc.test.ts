@@ -21,7 +21,12 @@ describe('Test Basic login flow', () => {
         messageArray.push(msg.text());
       });
 
-      await page.waitForSelector('.Test_Complete');
+      try {
+        await page.waitForSelector('.Test_Complete');
+      } catch (error) {
+        browser.close();
+        return done.fail();
+      }
 
       // Test assertions
       expect(messageArray.includes('Basic login successful')).toBe(true);

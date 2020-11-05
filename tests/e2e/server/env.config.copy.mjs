@@ -35,6 +35,7 @@ const ports = {
 const realm = 'root';
 const testUsers = [
   {
+    // Already exists in forgeops...
     pw: 'password',
     un: 'sdkuser',
   },

@@ -17,6 +17,6 @@ module.exports = {
     },
   },
   preset: 'ts-jest',
-  testTimeout: 30000,
+  testTimeout: 20000,
   rootDir: '../',
 };

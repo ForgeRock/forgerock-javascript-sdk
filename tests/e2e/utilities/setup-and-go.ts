@@ -39,6 +39,7 @@ export async function setupAndGo(
     permissions: config && config.allowGeo ? ['geolocation'] : [],
   });
   const page = await context.newPage();
+  page.setDefaultTimeout(10 * 1000);
 
   const url = new URL(`${BASE_URL}/${path}`);
 
