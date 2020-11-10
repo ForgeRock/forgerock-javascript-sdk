@@ -10,7 +10,7 @@
 
 import { AM_URL, RESOURCE_URL } from './env.config.copy.mjs';
 
-export const accessToken = {
+export const oauthTokens = {
   access_token: 'baz',
   scope: 'openid profile me.read',
   id_token: 'mox',

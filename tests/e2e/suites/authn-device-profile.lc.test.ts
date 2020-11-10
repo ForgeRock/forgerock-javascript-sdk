@@ -9,30 +9,26 @@
  */
 
 import { setupAndGo } from '../utilities/setup-and-go';
+import browsers from '../utilities/browsers';
 
 describe('Test bad login flow', () => {
-  ['chromium', 'webkit', 'firefox'].forEach((browserType) => {
+  browsers.forEach((browserType) => {
     it(`Login with device profile callback ${browserType}`, async (done) => {
-      const { browser, page } = await setupAndGo(browserType, 'authn-device-profile/', {
-        allowGeo: true,
-        tree: 'DeviceProfileCallbackTest',
-      });
+      try {
+        const { browser, messageArray } = await setupAndGo(browserType, 'authn-device-profile/', {
+          allowGeo: true,
+        });
 
-      const messageArray = [];
+        // Test assertions
+        expect(messageArray.includes('Collecting profile ...')).toBe(true);
+        expect(messageArray.includes('Profile collected.')).toBe(true);
+        expect(messageArray.includes('Login with profile successful.')).toBe(true);
 
-      page.on('console', (msg) => {
-        messageArray.push(msg.text());
-      });
-
-      await page.waitForSelector('.Test_Complete');
-
-      // Test assertions
-      expect(messageArray.includes('Collecting profile ...')).toBe(true);
-      expect(messageArray.includes('Profile collected.')).toBe(true);
-      expect(messageArray.includes('Login with profile successful.')).toBe(true);
-
-      await browser.close();
-      done();
+        await browser.close();
+        done();
+      } catch (error) {
+        done(error);
+      }
     });
   });
 });

@@ -9,7 +9,7 @@
  */
 
 export const authPaths = {
-  accessToken: ['/am/auth/accessToken', '/am/oauth2/realms/root/access_token'],
+  tokenExchange: ['/am/auth/tokenExchange', '/am/oauth2/realms/root/access_token'],
   authenticate: ['/am/auth/authenticate', '/am/json/realms/root/authenticate'],
   htmlAuthenticate: ['/am/'],
   authorize: ['/am/auth/authorize', '/am/oauth2/realms/root/authorize'],

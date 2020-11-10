@@ -47,7 +47,7 @@
         next();
       },
     ],
-    redirectUri: `${url.origin}/_callback`,
+    redirectUri: `${url.origin}/_callback/`,
     realmPath,
     scope,
     serverConfig: {

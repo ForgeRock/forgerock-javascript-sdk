@@ -12,11 +12,12 @@ module.exports = {
   globalSetup: './tests/e2e/env.setup.js',
   globalTeardown: './tests/e2e/env.teardown.js',
   globals: {
+    browsers: ['chromium', 'webkit', 'firefox'],
     'ts-jest': {
       isolatedModules: true,
     },
   },
   preset: 'ts-jest',
-  testTimeout: 20000,
+  testTimeout: 20 * 1000, // 20 seconds (must be more than the setup-and-go.ts timeout)
   rootDir: '../',
 };

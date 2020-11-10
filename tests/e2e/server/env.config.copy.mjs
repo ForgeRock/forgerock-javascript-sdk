@@ -18,7 +18,8 @@ const oauth = {
   scope: 'openid profile me.read',
 };
 const origins = {
-  app: 'https://sdkapp.example.com',
+  // Ensure all domains are added to the security cert creation
+  app: process.env.LIVE ? 'https://sdkapp.petrov.ca' : 'https://sdkapp.example.com',
   forgeops: 'https://default.forgeops.petrov.ca',
   mock: 'https://auth.example.com',
   resource: 'https://api.example.com',

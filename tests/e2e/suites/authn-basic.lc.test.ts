@@ -9,33 +9,25 @@
  */
 
 import { setupAndGo } from '../utilities/setup-and-go';
+import browsers from '../utilities/browsers';
 
 describe('Test Basic login flow', () => {
-  ['chromium', 'webkit', 'firefox'].forEach((browserType) => {
+  browsers.forEach((browserType) => {
     it(`should login successfully and then log out with ${browserType}`, async (done) => {
-      const { browser, page } = await setupAndGo(browserType, 'authn-basic/');
-
-      const messageArray = [];
-
-      page.on('console', (msg) => {
-        messageArray.push(msg.text());
-      });
-
       try {
-        await page.waitForSelector('.Test_Complete');
+        const { browser, messageArray } = await setupAndGo(browserType, 'authn-basic/');
+
+        // Test assertions
+        expect(messageArray.includes('Basic login successful')).toBe(true);
+        expect(messageArray.includes('Logout successful')).toBe(true);
+        expect(messageArray.includes('Starting authentication with service')).toBe(true);
+        expect(messageArray.includes('Continuing authentication with service')).toBe(true);
+
+        await browser.close();
+        done();
       } catch (error) {
-        browser.close();
-        return done.fail();
+        done(error);
       }
-
-      // Test assertions
-      expect(messageArray.includes('Basic login successful')).toBe(true);
-      expect(messageArray.includes('Logout successful')).toBe(true);
-      expect(messageArray.includes('Starting authentication with service')).toBe(true);
-      expect(messageArray.includes('Continuing authentication with service')).toBe(true);
-
-      await browser.close();
-      done();
     });
   });
 });

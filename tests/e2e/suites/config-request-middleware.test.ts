@@ -9,26 +9,26 @@
  */
 
 import { setupAndGo } from '../utilities/setup-and-go';
+import browsers from '../utilities/browsers';
 
 describe('Test request middleware with login flow', () => {
-  ['chromium', 'webkit', 'firefox'].forEach((browserType) => {
+  browsers.forEach((browserType) => {
     it(`Login successfully with ${browserType}`, async (done) => {
-      const { browser, page } = await setupAndGo(browserType, 'config-request-middleware/');
+      try {
+        const { browser, messageArray } = await setupAndGo(
+          browserType,
+          'config-request-middleware/',
+        );
 
-      const messageArray = [];
+        // Test assertions
+        expect(messageArray.includes('Basic login successful')).toBe(true);
+        expect(messageArray.includes('Logout successful')).toBe(true);
 
-      page.on('console', (msg) => {
-        messageArray.push(msg.text());
-      });
-
-      await page.waitForSelector('.Test_Complete');
-
-      // Test assertions
-      expect(messageArray.includes('Basic login successful')).toBe(true);
-      expect(messageArray.includes('Logout successful')).toBe(true);
-
-      await browser.close();
-      done();
+        await browser.close();
+        done();
+      } catch (error) {
+        done(error);
+      }
     });
   });
 });

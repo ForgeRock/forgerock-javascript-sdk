@@ -30,7 +30,7 @@
   console.log('Configure the SDK');
   forgerock.Config.set({
     clientId,
-    redirectUri: `${url.origin}/_callback`,
+    redirectUri: `${url.origin}/_callback/`,
     realmPath,
     scope,
     tree,

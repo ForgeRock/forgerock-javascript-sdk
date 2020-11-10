@@ -9,26 +9,23 @@
  */
 
 import { setupAndGo } from '../utilities/setup-and-go';
+import browsers from '../utilities/browsers';
 
 describe('Test OAuth login flow with custom paths', () => {
-  ['chromium', 'webkit', 'firefox'].forEach((browserType) => {
+  browsers.forEach((browserType) => {
     it(`should login successfully and then log out with ${browserType}`, async (done) => {
-      const { browser, page } = await setupAndGo(browserType, 'config-custom-paths/');
+      try {
+        const { browser, messageArray } = await setupAndGo(browserType, 'config-custom-paths/');
 
-      const messageArray = [];
+        // Test assertions
+        expect(messageArray.includes('OAuth login successful')).toBe(true);
+        expect(messageArray.includes('Logout successful')).toBe(true);
 
-      page.on('console', (msg) => {
-        messageArray.push(msg.text());
-      });
-
-      await page.waitForSelector('.Test_Complete');
-
-      // Test assertions
-      expect(messageArray.includes('OAuth login successful')).toBe(true);
-      expect(messageArray.includes('Logout successful')).toBe(true);
-
-      await browser.close();
-      done();
+        await browser.close();
+        done();
+      } catch (error) {
+        done(error);
+      }
     });
   });
 });

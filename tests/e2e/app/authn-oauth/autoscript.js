@@ -40,7 +40,7 @@
         next();
       },
     ],
-    redirectUri: `${url.origin}/_callback`,
+    redirectUri: `${url.origin}/_callback/`,
     realmPath,
     scope,
     tree,
@@ -66,47 +66,57 @@
         return forgerock.FRAuth.next(step);
       }),
       rxjs.operators.delay(delay),
-      rxMergeMap(
-        (step) => {
-          if (step.payload.code === 401) {
-            throw new Error('Auth_Error');
-          }
-          console.log('Auth tree successfully completed');
-          console.log('Get OAuth tokens');
-          const tokens = forgerock.TokenManager.getTokens({ forceRenew: true });
-          return tokens;
-        },
-        (step) => step,
-      ),
+      rxMergeMap((step) => {
+        if (step.payload.code === 401) {
+          throw new Error('Auth_Error');
+        }
+        console.log('Auth tree successfully completed');
+        console.log('Get OAuth tokens');
+        const tokens = forgerock.TokenManager.getTokens();
+        return tokens;
+      }),
       rxjs.operators.delay(delay),
-      rxMap((step) => {
-        if (step.getSessionToken()) {
+      rxMap((tokens) => {
+        if (tokens.accessToken) {
           console.log('OAuth login successful');
           document.body.innerHTML = '<p class="Logged_In">Login successful</p>';
         } else {
           throw new Error('Session_Error');
         }
+        return tokens;
       }),
       rxjs.operators.delay(delay),
       rxMergeMap(
-        (step) => {
+        (tokens) => {
           console.log('Get user info from OAuth endpoint');
           const user = forgerock.UserManager.getCurrentUser();
           return user;
         },
-        (step, user) => {
+        (tokens, user) => {
           console.log(`User's given name: ${user.family_name}`);
-          return step;
+          return tokens;
         },
       ),
       rxjs.operators.delay(delay),
       rxMergeMap(
-        (step) => {
-          console.log('Initiate logout');
-          return forgerock.FRUser.logout();
+        (tokens) => {
+          console.log('Force renew OAuth tokens');
+          return forgerock.TokenManager.getTokens({ forceRenew: true });;
         },
-        (step) => step,
+        (oldTokens, newTokens) => {
+          if (oldTokens.accessToken !== newTokens.accessToken) {
+            console.log('New OAuth tokens retrieved');
+          } else {
+            throw new Error('Force_Renew_Error');
+          }
+          return newTokens;
+        },
       ),
+      rxjs.operators.delay(delay),
+      rxMergeMap(() => {
+        console.log('Initiate logout');
+        return forgerock.FRUser.logout();
+      }),
       rxjs.operators.delay(delay),
       rxMergeMap(
         (step) => {

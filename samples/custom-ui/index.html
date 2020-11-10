@@ -2,7 +2,7 @@
 <html>
 <head>
   <title>Custom UI | ForgeRock JavaScript SDK Samples</title>
-  <link rel="shortcut icon" href="../img/fr-ico.png" type="image/png">
+  <link rel="shortcut icon" href="../_static/img/fr-ico.png" type="image/png">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
   <style>
     body {
@@ -57,7 +57,7 @@
      * of the MIT license. See the LICENSE file for details.
      */
 
-const FATAL = 'Fatal';
+    const FATAL = 'Fatal';
 
     forgerock.Config.set({
       clientId: '<Your OAuth Client>', // e.g. 'ForgeRockSDKClient'
@@ -110,6 +110,18 @@ const FATAL = 'Fatal';
       showStep('User')
     }
 
+    const getStage = (step) => {
+      // Check if the step contains callbacks for capturing username and password
+      const usernameCallbacks = step.getCallbacksOfType('NameCallback');
+      const passwordCallbacks = step.getCallbacksOfType('PasswordCallback');
+
+      if (usernameCallbacks.length && passwordCallbacks.length) {
+        return "UsernamePassword";
+      }
+
+      return undefined;
+    };
+
     // Display and bind the handler for this stage
     const handleStep = async (step) => {
       switch (step.type) {
@@ -126,7 +138,7 @@ const FATAL = 'Fatal';
           return;
 
         default:
-          const stage = step.getStage() || FATAL;
+          const stage = getStage(step) || FATAL;
           if (!showStep(stage)) {
             showStep(FATAL);
             handlers[FATAL](step);

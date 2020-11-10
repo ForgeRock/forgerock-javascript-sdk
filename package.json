@@ -26,7 +26,7 @@
     "test": "npm run test:unit && npm run test:integration && npm run test:e2e",
     "test:coverage": "jest --testMatch='<rootDir>/src/**/*.test.ts' --config=./tests/jest.basic.config.js --coverage=true",
     "test:e2e": "jest --testMatch='<rootDir>/tests/e2e/**/*.test.ts' --config=./tests/jest.e2e.config.js",
-    "test:e2e:live": "LIVE=true jest --testMatch='<rootDir>/tests/e2e/**/authn-basic.lc.test.ts' --config=./tests/jest.e2e.config.js",
+    "test:e2e:live": "LIVE=true jest --testMatch='<rootDir>/tests/e2e/**/*.lc.test.ts' --config=./tests/jest.e2e.config.js",
     "test:integration": "jest --testMatch='<rootDir>/tests/integration/**/*.test.ts' --config=./tests/jest.basic.config.js",
     "test:unit": "jest --testMatch='<rootDir>/src/**/*.test.ts' --config=./tests/jest.basic.config.js --env=./tests/jest.env.config.js",
     "watch": "webpack -w --env.DEV=yes"
