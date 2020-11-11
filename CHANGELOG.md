@@ -1,5 +1,19 @@
 # Changelog
 
+## Unreleased
+
+### Added
+
+- Centralized login support has been added
+- OAuth authorize endpoint now supports both iframe and fetch through the new `support` property in the config
+
+### Fixed
+
+- `step.getStage()` is no longer used in sample app; `getStage(step)` is now used for better compatibility with AM 6.5
+- `FRUser.logout` now uses a try-catch around each endpoint call, rather than a single try-catch
+- Paths for sample app now point to correct favicon image
+- Improved automation testing
+
 ## [2.1.0] - 2020-08-25
 
 ### Added

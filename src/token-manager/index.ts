@@ -64,25 +64,42 @@ abstract class TokenManager {
    ```
    */
   public static async getTokens(options?: GetTokensOptions): Promise<OAuth2Tokens | void> {
-    let tokens: Tokens;
+    let tokens: OAuth2Tokens | null = null;
     const { clientId, serverConfig, support } = Config.get(options as ConfigOptions);
 
     /**
-     * Return stored tokens, if possible
+     * First, let's see if tokens exist locally
      */
-    if (!options || (!options.forceRenew && !options.query?.code)) {
+    try {
+      tokens = await TokenStorage.get();
+    } catch (error) {
+      console.info('No stored tokens available', error);
+    }
+
+    /**
+     * If tokens are stored and no option for `forceRenew` or `query` object with `code`,
+     * immediately return the stored tokens
+     */
+    if (tokens && !options?.forceRenew && !options?.query?.code) {
+      return tokens;
+    }
+
+    /**
+     * If we are still here because of forceRenew or we have an authorization code,
+     * revoke and delete existing tokens to prepare for the new ones
+     */
+    if (tokens) {
       try {
-        tokens = await TokenStorage.get();
-        if (tokens) {
-          return tokens;
-        }
+        await OAuth2Client.revokeToken(options);
+        await TokenManager.deleteTokens();
       } catch (error) {
-        console.log('No stored tokens available', error);
+        console.warn('Existing tokens could not be revoked or deleted', error);
       }
     }
 
     /**
-     * If authorization code and state are passed in, call token exchange and return
+     * If authorization code and state are passed in, call token exchange
+     * and return acquired tokens
      */
     if (options?.query?.code && options?.query?.state) {
       const storedString = window.sessionStorage.getItem(clientId as string);
@@ -93,7 +110,8 @@ abstract class TokenManager {
     }
 
     /**
-     * Generate authorize PKCE values and URL
+     * If we are here, then we are just beginning the auth code flow,
+     * so let's generate authorize PKCE values and URL
      */
     const verifier = PKCE.createVerifier();
     const state = PKCE.createState();

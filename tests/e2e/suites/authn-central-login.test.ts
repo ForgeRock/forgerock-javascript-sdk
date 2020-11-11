@@ -9,100 +9,80 @@
  */
 
 import { setupAndGo } from '../utilities/setup-and-go';
+import browsers from '../utilities/browsers';
 
 describe('Test OAuth login flow', () => {
-  ['chromium', 'webkit', 'firefox'].forEach((browserType) => {
+  browsers.forEach((browserType) => {
     // eslint-disable-next-line
     it(`should use invisible iframe to request auth code, then token exchange with ${browserType}`, async (done) => {
-      const { browser, page } = await setupAndGo(browserType, 'authn-central-login/');
+      try {
+        const { browser, messageArray, networkArray } = await setupAndGo(
+          browserType,
+          'authn-central-login/',
+        );
 
-      const messageArray = [];
-      const networkArray = [];
+        // Test assertions
+        // Test log messages
+        expect(messageArray.includes('OAuth authorization successful')).toBe(true);
+        expect(messageArray.includes('Test script complete')).toBe(true);
+        // Test network requests
+        // Authorize endpoint should use iframe, which is type "document"
+        expect(networkArray.includes('/am/oauth2/realms/root/authorize, document')).toBe(true);
+        expect(networkArray.includes('/am/oauth2/realms/root/access_token, fetch')).toBe(true);
 
-      page.on('console', (msg) => {
-        messageArray.push(msg.text());
-      });
-      page.on('request', (req) => {
-        networkArray.push(`${new URL(req.url()).pathname}, ${req.resourceType()}`);
-      });
-
-      await page.waitForSelector('.Test_Complete');
-
-      // Test assertions
-      // Test log messages
-      expect(messageArray.includes('OAuth authorization successful')).toBe(true);
-      expect(messageArray.includes('Test script complete')).toBe(true);
-      // Test network requests
-      // Authorize endpoint should use iframe, which is type "document"
-      expect(networkArray.includes('/am/oauth2/realms/root/authorize, document')).toBe(true);
-      expect(networkArray.includes('/am/oauth2/realms/root/access_token, fetch')).toBe(true);
-
-      await browser.close();
-      done();
+        await browser.close();
+        done();
+      } catch (error) {
+        done(error);
+      }
     });
 
     // eslint-disable-next-line
     it(`should use fetch to request auth code, then token exchange with ${browserType}`, async (done) => {
-      const { browser, page } = await setupAndGo(
-        browserType,
-        'authn-central-login/?support=modern',
-      );
+      try {
+        const { browser, messageArray, networkArray } = await setupAndGo(
+          browserType,
+          'authn-central-login/?support=modern',
+        );
 
-      const messageArray = [];
-      const networkArray = [];
+        // Test assertions
+        // Test log messages
+        expect(messageArray.includes('OAuth authorization successful')).toBe(true);
+        expect(messageArray.includes('Test script complete')).toBe(true);
+        // Test network requests
+        expect(networkArray.includes('/am/oauth2/realms/root/authorize, fetch')).toBe(true);
+        expect(networkArray.includes('/am/oauth2/realms/root/access_token, fetch')).toBe(true);
 
-      page.on('console', (msg) => {
-        messageArray.push(msg.text());
-      });
-      page.on('request', (req) => {
-        networkArray.push(`${new URL(req.url()).pathname}, ${req.resourceType()}`);
-      });
-
-      await page.waitForSelector('.Test_Complete');
-
-      // Test assertions
-      // Test log messages
-      expect(messageArray.includes('OAuth authorization successful')).toBe(true);
-      expect(messageArray.includes('Test script complete')).toBe(true);
-      // Test network requests
-      expect(networkArray.includes('/am/oauth2/realms/root/authorize, fetch')).toBe(true);
-      expect(networkArray.includes('/am/oauth2/realms/root/access_token, fetch')).toBe(true);
-
-      await browser.close();
-      done();
+        await browser.close();
+        done();
+      } catch (error) {
+        done(error);
+      }
     });
 
     // eslint-disable-next-line
     it(`should successfully take code & state params for token exchange with ${browserType}`, async (done) => {
-      const { browser, page } = await setupAndGo(
-        browserType,
-        'authn-central-login/?state=abc&code=xyz',
-      );
+      try {
+        const { browser, messageArray, networkArray } = await setupAndGo(
+          browserType,
+          'authn-central-login/?state=abc&code=xyz',
+        );
 
-      const messageArray = [];
-      const networkArray = [];
+        // Test assertions
+        // Test log messages
+        expect(messageArray.includes('OAuth authorization successful')).toBe(true);
+        expect(messageArray.includes('Test script complete')).toBe(true);
+        // Test network requests
+        // Authorize endpoint should NOT be called using document or fetch
+        expect(networkArray.includes('/am/oauth2/realms/root/authorize, document')).toBe(false);
+        expect(networkArray.includes('/am/oauth2/realms/root/authorize, fetch')).toBe(false);
+        expect(networkArray.includes('/am/oauth2/realms/root/access_token, fetch')).toBe(true);
 
-      page.on('console', (msg) => {
-        messageArray.push(msg.text());
-      });
-      page.on('request', (req) => {
-        networkArray.push(`${new URL(req.url()).pathname}, ${req.resourceType()}`);
-      });
-
-      await page.waitForSelector('.Test_Complete');
-
-      // Test assertions
-      // Test log messages
-      expect(messageArray.includes('OAuth authorization successful')).toBe(true);
-      expect(messageArray.includes('Test script complete')).toBe(true);
-      // Test network requests
-      // Authorize endpoint should NOT be called using document or fetch
-      expect(networkArray.includes('/am/oauth2/realms/root/authorize, document')).toBe(false);
-      expect(networkArray.includes('/am/oauth2/realms/root/authorize, fetch')).toBe(false);
-      expect(networkArray.includes('/am/oauth2/realms/root/access_token, fetch')).toBe(true);
-
-      await browser.close();
-      done();
+        await browser.close();
+        done();
+      } catch (error) {
+        done(error);
+      }
     });
   });
 });

@@ -8,10 +8,11 @@
  * of the MIT license. See the LICENSE file for details.
  */
 
+import { v4 } from 'uuid';
 import { authPaths } from './constants.mjs';
 import { AM_URL, USERS } from './env.config.copy.mjs';
 import {
-  accessToken,
+  oauthTokens,
   authFail,
   authSuccess,
   emailSuspend,
@@ -215,8 +216,12 @@ export default function (app) {
     }
   });
 
-  app.post(authPaths.accessToken, wait, async (req, res) => {
-    res.json(accessToken);
+  app.post(authPaths.tokenExchange, wait, async (req, res) => {
+    // eslint-disable-next-line
+    const access_token = v4();
+    // eslint-disable-next-line
+    const tokens = { ...oauthTokens, access_token };
+    res.json(tokens);
   });
 
   app.get(authPaths.authorize, wait, async (req, res) => {

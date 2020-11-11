@@ -48,7 +48,7 @@
   console.log('Configure the SDK');
   forgerock.Config.set({
     clientId,
-    redirectUri: `${url.origin}/_callback`,
+    redirectUri: `${url.origin}/_callback/`,
     realmPath,
     scope,
     serverConfig: {
@@ -75,49 +75,26 @@
         return forgerock.FRAuth.next(step);
       }),
       rxjs.operators.delay(delay),
-      rxMergeMap(
-        (step) => {
-          if (step.payload.code === 401) {
-            throw new Error('Auth_Error');
-          }
-          console.log('Auth tree successfully completed');
-          console.log('Get OAuth tokens');
-          const tokens = forgerock.TokenManager.getTokens({ forceRenew: true });
-          return tokens;
-        },
-        (step) => step,
-      ),
-      rxjs.operators.delay(delay),
-      rxMap((step) => {
-        if (step.getSessionToken()) {
-          console.log('OAuth login successful');
-          document.body.innerHTML = '<p class="Logged_In">Login successful</p>';
-        } else {
-          throw new Error('Session_Error');
+      rxMergeMap((step) => {
+        if (step.payload.code === 401) {
+          throw new Error('Auth_Error');
         }
+        console.log('Auth tree successfully completed');
+        console.log('Get OAuth tokens');
+        const tokens = forgerock.TokenManager.getTokens();
+        return tokens;
       }),
       rxjs.operators.delay(delay),
       rxMergeMap(
-        (step) => {
-          console.log('Get user info from OAuth endpoint');
-          const user = forgerock.UserManager.getCurrentUser();
-          return user;
-        },
-        (step, user) => {
-          console.log(`User's given name: ${user.family_name}`);
-          return step;
-        },
-      ),
-      rxjs.operators.delay(delay),
-      rxMergeMap(
-        (step) => {
+        (tokens) => {
           console.log('Get stored tokens');
-          const tokens = forgerock.TokenStorage.get();
-          return tokens;
+          return forgerock.TokenStorage.get();
         },
-        (step, tokens) => {
-          console.log(`Access token is ${tokens.accessToken}.`);
-          return step;
+        (tokens, storedTokens) => {
+          if (tokens.accessToken === storedTokens.accessToken) {
+            console.log(`Access token is correct`);
+          }
+          return tokens;
         },
       ),
       rxjs.operators.delay(delay),

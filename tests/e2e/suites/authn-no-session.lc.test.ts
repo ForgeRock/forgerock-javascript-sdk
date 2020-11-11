@@ -9,28 +9,25 @@
  */
 
 import { setupAndGo } from '../utilities/setup-and-go';
+import browsers from '../utilities/browsers';
 
 describe('Test Basic login flow', () => {
-  ['chromium', 'webkit', 'firefox'].forEach((browserType) => {
+  browsers.forEach((browserType) => {
     it(`should login successfully and then log out with ${browserType}`, async (done) => {
-      const { browser, page } = await setupAndGo(browserType, 'authn-no-session/');
+      try {
+        const { browser, messageArray } = await setupAndGo(browserType, 'authn-no-session/');
 
-      const messageArray = [];
+        // Test assertions
+        expect(messageArray.includes('Adding "noSession" query param to URL')).toBe(true);
+        expect(messageArray.includes('Basic login with "noSession" completed successfully')).toBe(
+          true,
+        );
 
-      page.on('console', (msg) => {
-        messageArray.push(msg.text());
-      });
-
-      await page.waitForSelector('.Test_Complete');
-
-      // Test assertions
-      expect(messageArray.includes('Adding "noSession" query param to URL')).toBe(true);
-      expect(messageArray.includes('Basic login with "noSession" completed successfully')).toBe(
-        true,
-      );
-
-      await browser.close();
-      done();
+        await browser.close();
+        done();
+      } catch (error) {
+        done(error);
+      }
     });
   });
 });

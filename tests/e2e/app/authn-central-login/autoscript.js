@@ -28,7 +28,7 @@
   forgerock.Config.set({
     clientId,
     realmPath,
-    redirectUri: `${url.origin}/_callback`,
+    redirectUri: `${url.origin}/_callback/`,
     scope,
     serverConfig: {
       baseUrl: amUrl,

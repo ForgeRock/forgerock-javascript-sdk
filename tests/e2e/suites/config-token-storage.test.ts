@@ -9,76 +9,62 @@
  */
 
 import { setupAndGo } from '../utilities/setup-and-go';
+import browsers from '../utilities/browsers';
 
 describe('Test oauth login flow with localStorage', () => {
-  ['chromium', 'webkit', 'firefox'].forEach((browserType) => {
+  browsers.forEach((browserType) => {
     it(`Login successfully with ${browserType}`, async (done) => {
-      const { browser, page } = await setupAndGo(browserType, 'config-token-storage/', {
-        tokenStore: 'sessionStorage',
-      });
+      try {
+        const { browser, messageArray } = await setupAndGo(browserType, 'config-token-storage/', {
+          tokenStore: 'sessionStorage',
+        });
 
-      const messageArray = [];
+        // Test assertions
+        expect(messageArray.includes('Access token is correct')).toBe(true);
+        expect(messageArray.includes('Logout successful')).toBe(true);
 
-      page.on('console', (msg) => {
-        messageArray.push(msg.text());
-      });
-
-      await page.waitForSelector('.Test_Complete');
-
-      // Test assertions
-      expect(messageArray.includes('OAuth login successful')).toBe(true);
-      expect(messageArray.includes('Access token is baz.')).toBe(true);
-      expect(messageArray.includes('Logout successful')).toBe(true);
-
-      await browser.close();
-      done();
+        await browser.close();
+        done();
+      } catch (error) {
+        done(error);
+      }
     });
 
     it(`Login successfully with ${browserType}`, async (done) => {
-      const { browser, page } = await setupAndGo(browserType, 'config-token-storage/', {
-        tokenStore: 'indexedDB',
-      });
+      try {
+        const { browser, messageArray } = await setupAndGo(browserType, 'config-token-storage/', {
+          tokenStore: 'indexedDB',
+        });
 
-      const messageArray = [];
+        // Test assertions
+        expect(messageArray.includes('Access token is correct')).toBe(true);
+        expect(messageArray.includes('Logout successful')).toBe(true);
 
-      page.on('console', (msg) => {
-        messageArray.push(msg.text());
-      });
-
-      await page.waitForSelector('.Test_Complete');
-
-      // Test assertions
-      expect(messageArray.includes('OAuth login successful')).toBe(true);
-      expect(messageArray.includes('Access token is baz.')).toBe(true);
-      expect(messageArray.includes('Logout successful')).toBe(true);
-
-      await browser.close();
-      done();
+        await browser.close();
+        done();
+      } catch (error) {
+        done(error);
+      }
     });
 
     it(`Login successfully with ${browserType}`, async (done) => {
-      const { browser, page } = await setupAndGo(browserType, 'config-token-storage/', {
-        tokenStore: 'customStore',
-      });
+      try {
+        const { browser, messageArray } = await setupAndGo(browserType, 'config-token-storage/', {
+          tokenStore: 'customStore',
+        });
 
-      const messageArray = [];
+        // Test assertions
+        expect(messageArray.includes('Custom token setter used.')).toBe(true);
+        expect(messageArray.includes('Custom token getter used.')).toBe(true);
+        expect(messageArray.includes('Custom token remover used.')).toBe(true);
+        expect(messageArray.includes('Access token is correct')).toBe(true);
+        expect(messageArray.includes('Logout successful')).toBe(true);
 
-      page.on('console', (msg) => {
-        messageArray.push(msg.text());
-      });
-
-      await page.waitForSelector('.Test_Complete');
-
-      // Test assertions
-      expect(messageArray.includes('OAuth login successful')).toBe(true);
-      expect(messageArray.includes('Custom token setter used.')).toBe(true);
-      expect(messageArray.includes('Custom token getter used.')).toBe(true);
-      expect(messageArray.includes('Custom token remover used.')).toBe(true);
-      expect(messageArray.includes('Access token is baz.')).toBe(true);
-      expect(messageArray.includes('Logout successful')).toBe(true);
-
-      await browser.close();
-      done();
+        await browser.close();
+        done();
+      } catch (error) {
+        done(error);
+      }
     });
   });
 });

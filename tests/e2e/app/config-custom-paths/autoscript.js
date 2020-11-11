@@ -27,7 +27,7 @@
   console.log('Configure the SDK');
   forgerock.Config.set({
     clientId,
-    redirectUri: `${url.origin}/_callback`,
+    redirectUri: `${url.origin}/_callback/`,
     realmPath,
     scope,
     tree,
@@ -36,7 +36,7 @@
       paths: {
         authenticate: 'auth/authenticate',
         authorize: 'auth/authorize',
-        accessToken: 'auth/accessToken',
+        accessToken: 'auth/tokenExchange',
         endSession: 'auth/endSession',
         userInfo: 'auth/userInfo',
         revoke: 'auth/revoke',

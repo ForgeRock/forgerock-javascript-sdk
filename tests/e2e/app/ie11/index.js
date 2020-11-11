@@ -71,7 +71,7 @@ const loginTree = 'Login'; // Login tree after registration
 console.log('Configure the SDK');
 forgerock.Config.set({
   clientId: 'WebOAuthClient',
-  redirectUri: 'https://sdkapp.example.com:8443/_callback',
+  redirectUri: 'https://sdkapp.example.com:8443/_callback/',
   realmPath: 'root',
   scope: 'openid profile me.read',
   tree: 'Registration', // Don't forget to config your login tree above
