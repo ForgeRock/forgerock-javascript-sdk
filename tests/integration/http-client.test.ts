@@ -66,7 +66,7 @@ jest.mock('../../src/http-client/index', () => {
 describe('Test HttpClient request for txn auth', () => {
   const expectedTxnReq = {
     init: {
-      credentials: 'include' as 'include',
+      credentials: 'include' as const,
       headers: {
         'Accept-API-Version': 'resource=2.0, protocol=1.0',
       },
@@ -81,7 +81,7 @@ describe('Test HttpClient request for txn auth', () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const mockedHttpClientRequest = HttpClient['_request'] as any;
     mockedHttpClientRequest.mockClear();
-    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     TokenStorage.get.mockResolvedValue({
       accessToken: 'abcd',

@@ -20,7 +20,7 @@ class Collector {
    * @param props - array of strings; can use dot notation for two level lookup
    * @param src - source of attributes to check
    */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line
   reduceToObject(props: string[], src: StringDict<any>): StringDict<string> {
     return props.reduce((prev, curr) => {
       if (curr.includes('.')) {
@@ -41,7 +41,7 @@ class Collector {
    * @param props - array of strings
    * @param src - source of attributes to check
    */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line
   reduceToString(props: string[], src: any): string {
     return props.reduce((prev, curr) => {
       prev = `${prev}${src[curr].filename};`;

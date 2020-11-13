@@ -32,7 +32,7 @@ interface DeviceProfileData {
       [key: string]: string | number | null;
     };
   };
-  location?: Geolocation | {};
+  location?: Geolocation | Record<string, unknown>;
 }
 
 interface Geolocation {

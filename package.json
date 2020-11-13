@@ -50,9 +50,9 @@
   "devDependencies": {
     "@types/dotenv": "^8.2.0",
     "@types/jest": "^25.2.3",
-    "@typescript-eslint/eslint-plugin": "^2.4.0",
-    "@typescript-eslint/parser": "^2.4.0",
-    "@typescript-eslint/typescript-estree": "^2.4.0",
+    "@typescript-eslint/eslint-plugin": "^4.7.0",
+    "@typescript-eslint/parser": "^4.7.0",
+    "@typescript-eslint/typescript-estree": "^4.7.0",
     "awesome-typescript-loader": "^5.2.1",
     "cookie-parser": "^1.4.4",
     "copyfiles": "^2.1.1",

@@ -175,7 +175,7 @@ class FRDevice extends Collector {
     return installedFonts;
   }
 
-  async getLocationCoordinates(): Promise<Geolocation | {}> {
+  async getLocationCoordinates(): Promise<Geolocation | Record<string, unknown>> {
     if (!(navigator && navigator.geolocation)) {
       console.warn('Cannot collect geolocation information. navigator.geolocation is not defined.');
       return Promise.resolve({});
