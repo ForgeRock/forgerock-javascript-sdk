@@ -28,7 +28,7 @@ abstract class LocalStorageWrapper {
         'Could not parse token from localStorage. This could be due to accessing a removed token',
       );
       // Original behavior had an untyped return of undefined for no token
-      // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       return undefined;
     }

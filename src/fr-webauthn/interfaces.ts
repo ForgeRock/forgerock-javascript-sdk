@@ -72,11 +72,12 @@ interface WebAuthnRegistrationMetadata {
   timeout: number;
   userId: string;
   userName: string;
-  displayName: string;
+  displayName?: string;
 }
 
 interface WebAuthnAuthenticationMetadata {
-  allowCredentials: string;
+  acceptableCredentials?: string;
+  allowCredentials?: string;
   challenge: string;
   relyingPartyId: string;
   timeout: number;

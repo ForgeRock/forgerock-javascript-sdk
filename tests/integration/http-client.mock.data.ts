@@ -12,7 +12,7 @@ import { HandleStep } from '../../src/http-client/interfaces';
 
 export const authzByTreeReqOptionsForIG = {
   init: {
-    credentials: 'include' as 'include',
+    credentials: 'include' as const,
     method: 'POST',
   },
   authorization: {
@@ -30,7 +30,7 @@ export const authzByTreeReqOptionsForIG = {
 
 export const authzByTreeReqOptionsForREST = {
   init: {
-    credentials: 'include' as 'include',
+    credentials: 'include' as const,
     method: 'POST',
   },
   authorization: {
@@ -48,7 +48,7 @@ export const authzByTreeReqOptionsForREST = {
 
 export const authzByTxnReqOptionsForIG = {
   init: {
-    credentials: 'include' as 'include',
+    credentials: 'include' as const,
     method: 'POST',
   },
   authorization: {
@@ -66,7 +66,7 @@ export const authzByTxnReqOptionsForIG = {
 
 export const authzByTxnReqOptionsForREST = {
   init: {
-    credentials: 'include' as 'include',
+    credentials: 'include' as const,
     method: 'POST',
   },
   authorization: {

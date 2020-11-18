@@ -19,7 +19,7 @@ import { ActionTypes } from '../config/enums';
  * @param type - A "Redux" style type that contains the serialized action
  * @param payload - The payload of the action that can contain metadata
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// eslint-disable-next-line
 function middlewareWrapper(request: RequestObj, type: ActionTypes, payload?: any): RequestObj {
   const { middleware } = Config.get();
 

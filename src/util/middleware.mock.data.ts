@@ -66,14 +66,14 @@ export default [
   (req: RequestObj, action: Action, next: NextFn): void => {
     switch (action.type) {
       case add:
-        // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         req.init.headers = { ...{ 'x-char': 'a,' + action.payload }, ...req.init.headers };
         break;
     }
     next();
   },
-  // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   (req: RequestObj, action: Action, next: NextFn): void => {
     switch (action.type) {
@@ -83,7 +83,7 @@ export default [
     }
     next();
   },
-  // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   (req: RequestObj, action: Action, next: NextFn): void => {
     switch (action.type) {

@@ -40,7 +40,6 @@ abstract class OAuth2Client {
   public static async createAuthorizeUrl(options: GetAuthorizationUrlOptions): Promise<string> {
     const { clientId, redirectUri, scope } = Config.get(options);
 
-    /* eslint-disable @typescript-eslint/camelcase */
     const requestParams: StringDict<string | undefined> = {
       client_id: clientId,
       redirect_uri: redirectUri,
@@ -48,14 +47,11 @@ abstract class OAuth2Client {
       scope,
       state: options.state,
     };
-    /* eslint-enable @typescript-eslint/camelcase */
 
     if (options.verifier) {
       const challenge = await PKCE.createChallenge(options.verifier);
-      /* eslint-disable @typescript-eslint/camelcase */
       requestParams.code_challenge = challenge;
       requestParams.code_challenge_method = 'S256';
-      /* eslint-enable @typescript-eslint/camelcase */
     }
 
     const { url } = middlewareWrapper(
@@ -128,17 +124,14 @@ abstract class OAuth2Client {
   public static async getOAuth2Tokens(options: GetOAuth2TokensOptions): Promise<OAuth2Tokens> {
     const { clientId, redirectUri } = Config.get(options);
 
-    /* eslint-disable @typescript-eslint/camelcase */
     const requestParams: StringDict<string | undefined> = {
       client_id: clientId,
       code: options.authorizationCode,
       grant_type: 'authorization_code',
       redirect_uri: redirectUri,
     };
-    /* eslint-enable @typescript-eslint/camelcase */
 
     if (options.verifier) {
-      // eslint-disable-next-line @typescript-eslint/camelcase
       requestParams.code_verifier = options.verifier;
     }
 
@@ -196,7 +189,6 @@ abstract class OAuth2Client {
 
     const query: StringDict<string | undefined> = {};
     if (idToken) {
-      // eslint-disable-next-line @typescript-eslint/camelcase
       query.id_token_hint = idToken;
     }
 
@@ -215,7 +207,6 @@ abstract class OAuth2Client {
     const { accessToken } = await TokenStorage.get();
 
     const init: RequestInit = {
-      // eslint-disable-next-line @typescript-eslint/camelcase
       body: stringify({ client_id: clientId, token: accessToken }),
       credentials: 'include',
       headers: { 'content-type': 'application/x-www-form-urlencoded' },

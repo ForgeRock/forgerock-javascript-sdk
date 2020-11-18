@@ -13,6 +13,8 @@
 - `FRUser.logout` now uses a try-catch around each endpoint call, rather than a single try-catch
 - Paths for sample app now point to correct favicon image
 - Improved automation testing
+- Compatibility with AM 6.5.3 WebAuthn nodes
+- Step detection with `getWebAuthnStepType` and "usernameless" configuration
 
 ## [2.1.0] - 2020-08-25
 

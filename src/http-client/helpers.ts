@@ -104,7 +104,7 @@ export function buildAuthzOptions(
   const options = {
     init: {
       method: 'POST',
-      credentials: 'include' as 'include',
+      credentials: 'include' as const,
       headers: {
         'Accept-API-Version': 'resource=2.0, protocol=1.0',
       },

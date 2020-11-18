@@ -13,6 +13,7 @@ import {
   authenticateInputWithRpidAndAllowCredentials,
   authenticateInputWithRpidAllowCredentialsAndQuotes,
   authenticateInputWithoutRpidAndAllowCredentials,
+  authenticateInputWithAcceptableCredentialsWithoutRpid,
   registerInputWithRpid,
   registerInputWithRpidAndQuotes,
   registerOutputWithRpid,
@@ -40,6 +41,16 @@ describe('Parsing of the WebAuthn script type text', () => {
     expect(obj.rpId).toBe('example.com');
   });
 
+  it('should parse the WebAuthn authenticate block from 6.5.3 text', () => {
+    const obj = parseWebAuthnAuthenticateText(
+      authenticateInputWithAcceptableCredentialsWithoutRpid,
+    );
+    expect(obj.allowCredentials[0].type).toBe('public-key');
+    expect(obj.allowCredentials[0].id.byteLength > 0).toBe(true);
+    expect(obj.challenge.byteLength > 0).toBe(true);
+    expect(obj.timeout).toBe(60000);
+  });
+
   it('should parse the WebAuthn authenticate block of text', () => {
     const obj = parseWebAuthnAuthenticateText(authenticateInputWithoutRpidAndAllowCredentials);
     expect(obj.allowCredentials).toBe(undefined);
@@ -51,7 +62,8 @@ describe('Parsing of the WebAuthn script type text', () => {
     expect(obj.attestation).toBe(registerOutputWithRpid.attestation);
     expect(obj.authenticatorSelection).toStrictEqual(registerOutputWithRpid.authenticatorSelection);
     expect(obj.challenge.byteLength > 0).toBe(true);
-    expect(obj.pubKeyCredParams).toStrictEqual(registerOutputWithRpid.pubKeyCredParams);
+    expect(obj.pubKeyCredParams).toContainEqual(registerOutputWithRpid.pubKeyCredParams[0]);
+    expect(obj.pubKeyCredParams).toContainEqual(registerOutputWithRpid.pubKeyCredParams[1]);
     expect(obj.rp).toStrictEqual(registerOutputWithRpid.rp);
     expect(obj.timeout).toBe(registerOutputWithRpid.timeout);
     expect(obj.user.displayName).toStrictEqual(registerOutputWithRpid.user.displayName);
@@ -64,7 +76,8 @@ describe('Parsing of the WebAuthn script type text', () => {
     expect(obj.attestation).toBe(registerOutputWithRpid.attestation);
     expect(obj.authenticatorSelection).toStrictEqual(registerOutputWithRpid.authenticatorSelection);
     expect(obj.challenge.byteLength > 0).toBe(true);
-    expect(obj.pubKeyCredParams).toStrictEqual(registerOutputWithRpid.pubKeyCredParams);
+    expect(obj.pubKeyCredParams).toContainEqual(registerOutputWithRpid.pubKeyCredParams[0]);
+    expect(obj.pubKeyCredParams).toContainEqual(registerOutputWithRpid.pubKeyCredParams[1]);
     expect(obj.rp).toStrictEqual(registerOutputWithRpid.rp);
     expect(obj.timeout).toBe(registerOutputWithRpid.timeout);
     expect(obj.user.displayName).toStrictEqual(registerOutputWithRpid.user.displayName);
