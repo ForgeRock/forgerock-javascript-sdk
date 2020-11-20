@@ -62,11 +62,14 @@ abstract class FRUser {
   public static async logout(options?: ConfigOptions): Promise<void> {
     // Just log any exceptions that are thrown, but don't abandon the flow
     try {
+      // Both invalidates the session on the server AND removes browser cookie
       await SessionManager.logout();
     } catch (error) {
       console.warn('Session logout was not successful');
     }
     try {
+      // Invalidates session on the server tied to the ID Token
+      // Needed for Express environment as session logout is unavailable
       await OAuth2Client.endSession(options);
     } catch (error) {
       console.warn('OAuth endSession was not successful');
