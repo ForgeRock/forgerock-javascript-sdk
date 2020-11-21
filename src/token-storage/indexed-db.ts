@@ -28,7 +28,7 @@ abstract class IndexedDBWrapper {
       openReq.onsuccess = (): void => {
         if (!openReq.result.objectStoreNames.contains(clientId)) {
           openReq.result.close();
-          return resolve(undefined);
+          return reject('Client ID not found');
         }
 
         const getReq = openReq.result
@@ -41,7 +41,7 @@ abstract class IndexedDBWrapper {
             throw new Error('Missing storage event target');
           }
           openReq.result.close();
-          resolve(event.target.result);
+          resolve(event.target.result as Tokens);
         };
 
         getReq.onerror = onError;
@@ -49,7 +49,7 @@ abstract class IndexedDBWrapper {
 
       openReq.onupgradeneeded = (): void => {
         openReq.result.close();
-        resolve(undefined);
+        reject('IndexedDB upgrade needed');
       };
 
       openReq.onerror = onError;
