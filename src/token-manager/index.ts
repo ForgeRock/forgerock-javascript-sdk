@@ -166,10 +166,13 @@ abstract class TokenManager {
       if (
         allowedErrors.AuthenticationConsentRequired !== err.message &&
         allowedErrors.AuthorizationTimeout !== err.message &&
-        allowedErrors.FailedToFetch !== err.message
+        allowedErrors.FailedToFetch !== err.message &&
+        allowedErrors.NetworkError !== err.message &&
+        // Safari has a very long error message, so we check for a substring
+        !err.message.includes(allowedErrors.CORSError)
       ) {
-        // Throw if the error is NOT "Authentication or consent required" & login is "redirect"
-        // as that is a normal response and requires a redirect
+        // Throw if the error is NOT an explicitly allowed error along with redirect of true
+        // as that is a normal response and just requires a redirect
         throw err;
       }
 

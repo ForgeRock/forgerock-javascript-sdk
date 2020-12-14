@@ -93,7 +93,7 @@
     const logout = async () => {
       try {
         await forgerock.FRUser.logout();
-        location.assign(`${document.location.origin}/central-login`);
+        location.assign(`${document.location.origin}/central-login/`);
       } catch (error) {
         console.error(error);
       }
