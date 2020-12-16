@@ -59,7 +59,7 @@
 
     forgerock.Config.set({
       clientId: '<Your OAuth Client>', // e.g. 'ForgeRockSDKClient'
-      redirectUri: '<Your Redirect/Callback URL>', // e.g. 'https://sdkapp.example.com:8443/_callback'
+      redirectUri: '<Your Redirect/Callback URL>', // e.g. 'https://sdkapp.example.com:8443/central-login/'
       scope: '<Your OAuth Scopes>', // e.g. 'openid profile me.read'
         serverConfig: {
         baseUrl: '<Your AM URL>', // e.g. 'https://openam.example.com:9443/openam/'
@@ -100,12 +100,22 @@
     }
 
     const authorize = async (code, state) => {
+      /**
+       *  When the user return to this app after successfully logging in,
+       * the URL will include code and state query parameters that need to
+       * be passed in to complete the OAuth flow giving the user access
+       */
       await forgerock.TokenManager.getTokens({ query: { code, state }});
       const user = await forgerock.UserManager.getCurrentUser();
       showUser(user);
     }
 
     document.querySelector('#loginBtn').addEventListener('click', async () => {
+      /**
+       * The key-value of `login: redirect` is what allows central-login.
+       * Passing no arguments or a key-value of `login: 'embedded'` means
+       * the app handles authentication locally.
+       */
       await forgerock.TokenManager.getTokens({ login: 'redirect' });
       const user = await forgerock.UserManager.getCurrentUser();
       showUser(user);
@@ -117,12 +127,19 @@
       showUser(user);
     });
 
+    /**
+     * Check URL for query parameters
+     */
     const url = new URL(document.location);
     const params = url.searchParams;
-
     const authCode = params.get('code');
     const state = params.get('state');
 
+    /**
+     * If the URL has state and authCode as query parameters, then the user
+     * returned back here after successfully logging, so call authorize with
+     * the values
+     */
     if (state && authCode) {
       authorize(authCode, state);
     }
