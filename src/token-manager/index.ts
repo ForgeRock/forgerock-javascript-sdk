@@ -18,7 +18,7 @@ import { parseQuery } from '../util/url';
 
 interface GetTokensOptions extends ConfigOptions {
   forceRenew?: boolean;
-  login?: 'native' | 'redirect' | undefined;
+  login?: 'embedded' | 'redirect' | undefined;
   query?: StringDict<string>;
 }
 
@@ -27,14 +27,14 @@ abstract class TokenManager {
    * Token Manager class that provides high-level abstraction for Authorization Code flow,
    * PKCE value generation, token exchange and token storage.
    *
-   * Supports both native authentication as well as external authentication via redirects
+   * Supports both embedded authentication as well as external authentication via redirects
    *
    Example 1:
 
    ```js
    const tokens = forgerock.TokenManager.getTokens({
      forceRenew: true, // If you want to get new tokens, despite existing ones
-     login: 'native', // If user authentication is handled natively in-app
+     login: 'embedded', // If user authentication is handled in-app
      support: 'legacy', // Set globally or locally; `"legacy"` or `undefined` will use iframe
      serverConfig: {
        timeout: 5000, // If using "legacy", use a short timeout to catch error
