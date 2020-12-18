@@ -1,5 +1,15 @@
+/*
+ * @forgerock/javascript-sdk
+ *
+ * script-text.mock.data.ts
+ *
+ * Copyright (c) 2020 ForgeRock. All rights reserved.
+ * This software may be modified and distributed under the terms
+ * of the MIT license. See the LICENSE file for details.
+ */
+
 /* eslint-disable max-len */
-const authenticateInputWithRpidAndAllowCredentials = `/*
+export const authenticateInputWithRpidAndAllowCredentials = `/*
 * Copyright 2018-2020 ForgeRock AS. All Rights Reserved
 *
 * Use of this code requires a commercial software license with ForgeRock AS.
@@ -33,7 +43,7 @@ navigator.credentials.get({ "publicKey" : options })
        document.getElementById("loginButton_0").click();
    });`;
 
-const authenticateInputWithRpidAllowCredentialsAndQuotes = `/*
+export const authenticateInputWithRpidAllowCredentialsAndQuotes = `/*
 * Copyright 2018-2020 ForgeRock AS. All Rights Reserved
 *
 * Use of this code requires a commercial software license with ForgeRock AS.
@@ -67,7 +77,7 @@ navigator.credentials.get({ "publicKey" : options })
        document.getElementById("loginButton_0").click();
    });`;
 
-const authenticateInputWithoutRpidAndAllowCredentials = `/*
+export const authenticateInputWithoutRpidAndAllowCredentials = `/*
 * Copyright 2018-2020 ForgeRock AS. All Rights Reserved
 *
 * Use of this code requires a commercial software license with ForgeRock AS.
@@ -99,7 +109,46 @@ navigator.credentials.get({ "publicKey" : options })
        document.getElementById("loginButton_0").click();
    });`;
 
-const registerInputWithRpid = `/*
+// AM 6.5.3 variant of JS text string
+export const authenticateInputWithAcceptableCredentialsWithoutRpid = `/*
+* Copyright 2018-2020 ForgeRock AS. All Rights Reserved
+*
+* Use of this code requires a commercial software license with ForgeRock AS.
+* or with one of its affiliates. All use shall be exclusively subject
+* to such license between the licensee and ForgeRock AS.
+*/
+
+if (!window.PublicKeyCredential) {
+   document.getElementById('webAuthnOutcome').value = "unsupported";
+   document.getElementById("loginButton_0").click();
+}
+
+var acceptableCredentials = [
+   { "type": "public-key", "id": new Int8Array([1, 97, 2, 123, -105, -19, -106, 10, -86, 82, -23, 5, 52, 63, 103, 110, -71, 53, 107, 104, 76, -42, -49, 96, 67, -114, -97, 19, -59, 89, -102, -115, -110, -101, -6, -98, 39, -75, 2, 74, 23, -105, 67, 6, -112, 21, -3, 36, -114, 52, 35, 75, 74, 82, -8, 115, -128, -34, -105, 110, 124, 41, -79, -53, -90, 81, -11, -7, 91, -45, -67, -82, 106, 74, 30, 112, 100, -47, 54, -12, 95, 81, 97, 36, 123, -15, -91, 87, -82, 87, -45, -103, -80, 109, -111, 82, 109, 58, 50, 19, -21, -102, 54, -108, -68, 12, -101, -53, -65, 11, -94, -36, 112, -101, -95, -90, -118, 68, 13, 8, -49, -77, -28, -82, -97, 126, -71, 33, -58, 19, 58, -118, 36, -28, 22, -55, 64, -72, -80, -9, -48, -50, 58, -52, 64, -64, -27, -5, -12, 110, -95, -17]).buffer }
+];
+
+var options = {
+
+   challenge: new Int8Array([-42, -21, -101, -22, -35, 94, 14, 33, -75, -12, -113, 86, 109, -51, 62, 89, 29, 119, 48, -92, 33, -64, 102, -18, 18, -122, 73, 13, -17, -50, -22, -74]).buffer,
+   timeout: 60000,
+   userVerification: "preferred",
+   allowCredentials: acceptableCredentials
+};
+
+navigator.credentials.get({ "publicKey" : options })
+   .then(function (assertion) {
+       var clientData = String.fromCharCode.apply(null, new Uint8Array(assertion.response.clientDataJSON));
+       var authenticatorData = new Int8Array(assertion.response.authenticatorData).toString();
+       var signature = new Int8Array(assertion.response.signature).toString();
+       var rawId = assertion.id;
+       document.getElementById('webAuthnOutcome').value = clientData + "::" + authenticatorData + "::" + signature + "::" + rawId;
+       document.getElementById("loginButton_0").click();
+   }).catch(function (err) {
+       document.getElementById('webAuthnOutcome').value = "ERROR" + "::" + err;
+       document.getElementById("loginButton_0").click();
+   });`;
+
+export const registerInputWithRpid = `/*
  * Copyright 2018-2020 ForgeRock AS. All Rights Reserved
  *
  * Use of this code requires a commercial software license with ForgeRock AS.
@@ -125,7 +174,17 @@ var publicKey = {
         name: "57a5b4e4-6999-4b45-bf86-a4f2e5d4b629",
         displayName: "bob_lee-tester@me.co.uk"
     },
-    pubKeyCredParams: [ { type: "public-key", alg: -257 }, { type: "public-key", alg: -7 } ],
+    // Below pubKeyCredParams format represents AM 6.5
+    pubKeyCredParams: [
+      {
+          type: "public-key",
+          alg: -7
+      }
+     ,{
+          type: "public-key",
+          alg: -257
+      }
+    ],
     attestation: "none",
     timeout: 60000,
     excludeCredentials: [],
@@ -147,7 +206,7 @@ navigator.credentials.create({publicKey: publicKey})
         document.getElementById("loginButton_0").click();
     });`;
 
-const registerInputWithRpidAndQuotes = `/*
+export const registerInputWithRpidAndQuotes = `/*
     * Copyright 2018-2020 ForgeRock AS. All Rights Reserved
     *
     * Use of this code requires a commercial software license with ForgeRock AS.
@@ -192,7 +251,7 @@ const registerInputWithRpidAndQuotes = `/*
            document.getElementById("loginButton_0").click();
        });`;
 
-const registerOutputWithRpid = {
+export const registerOutputWithRpid = {
   attestation: 'none',
   authenticatorSelection: {
     userVerification: 'preferred',
@@ -216,7 +275,7 @@ const registerOutputWithRpid = {
   },
 };
 
-const registerInputWithoutRpid = `/*
+export const registerInputWithoutRpid = `/*
  * Copyright 2018-2020 ForgeRock AS. All Rights Reserved
  *
  * Use of this code requires a commercial software license with ForgeRock AS.
@@ -260,7 +319,7 @@ navigator.credentials.create({publicKey: publicKey})
         document.getElementById("loginButton_0").click();
     });`;
 
-const registerOutputWithoutRpid = {
+export const registerOutputWithoutRpid = {
   attestation: 'none',
   authenticatorSelection: { userVerification: 'preferred' },
   challenge: [
@@ -281,7 +340,7 @@ const registerOutputWithoutRpid = {
   },
 };
 
-const registerInputWithExcludeCreds = `/*
+export const registerInputWithExcludeCreds = `/*
  * Copyright 2018-2020 ForgeRock AS. All Rights Reserved
  *
  * Use of this code requires a commercial software license with ForgeRock AS.
@@ -325,7 +384,7 @@ navigator.credentials.create({publicKey: publicKey})
         document.getElementById("loginButton_0").click();
     });`;
 
-const registerOutputWithExcludeCreds = {
+export const registerOutputWithExcludeCreds = {
   attestation: 'none',
   authenticatorSelection: { userVerification: 'preferred' },
   challenge: [
@@ -354,17 +413,4 @@ const registerOutputWithExcludeCreds = {
     ],
     name: '57a5b4e4-6999-4b45-bf86-a4f2e5d4b629',
   },
-};
-
-export {
-  authenticateInputWithRpidAndAllowCredentials,
-  authenticateInputWithRpidAllowCredentialsAndQuotes,
-  authenticateInputWithoutRpidAndAllowCredentials,
-  registerInputWithRpid,
-  registerInputWithRpidAndQuotes,
-  registerOutputWithRpid,
-  registerInputWithoutRpid,
-  registerOutputWithoutRpid,
-  registerInputWithExcludeCreds,
-  registerOutputWithExcludeCreds,
 };

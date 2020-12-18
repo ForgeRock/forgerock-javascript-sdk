@@ -1,3 +1,13 @@
+/*
+ * @forgerock/javascript-sdk
+ *
+ * env.config.ts
+ *
+ * Copyright (c) 2020 ForgeRock. All rights reserved.
+ * This software may be modified and distributed under the terms
+ * of the MIT license. See the LICENSE file for details.
+ */
+
 import { env } from 'process';
 
 /**
@@ -8,8 +18,9 @@ const oauth = {
   scope: 'openid profile me.read',
 };
 const origins = {
-  app: 'https://sdkapp.example.com',
-  forgeops: 'https://default.iam.example.com',
+  // Ensure all domains are added to the security cert creation
+  app: process.env.LIVE ? 'https://sdkapp.petrov.ca' : 'https://sdkapp.example.com',
+  forgeops: 'https://default.forgeops.petrov.ca',
   mock: 'https://auth.example.com',
   resource: 'https://api.example.com',
 };
@@ -18,15 +29,16 @@ const paths = {
 };
 const ports = {
   app: '8443',
-  forgeops: '51927',
+  forgeops: '443',
   mock: '9443',
   resource: '9443',
 };
 const realm = 'root';
 const testUsers = [
   {
-    pw: 'ieH034K&-zlwqh3V_',
-    un: '57a5b4e4-6999-4b45-bf86-a4f2e5d4b629',
+    // Already exists in forgeops...
+    pw: 'password',
+    un: 'sdkuser',
   },
 ];
 

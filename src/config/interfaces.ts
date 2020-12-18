@@ -1,3 +1,13 @@
+/*
+ * @forgerock/javascript-sdk
+ *
+ * interfaces.ts
+ *
+ * Copyright (c) 2020 ForgeRock. All rights reserved.
+ * This software may be modified and distributed under the terms
+ * of the MIT license. See the LICENSE file for details.
+ */
+
 import { ActionTypes } from './enums';
 import { FRCallbackFactory } from '../fr-auth/callbacks/factory';
 import { Tokens } from '../shared/interfaces';
@@ -19,6 +29,7 @@ interface ConfigOptions {
   redirectUri?: string;
   scope?: string;
   serverConfig?: ServerConfig;
+  support?: 'modern' | 'legacy' | undefined;
   tokenStore?: TokenStoreObject | 'indexedDB' | 'sessionStorage' | 'localStorage';
   tree?: string;
   type?: string;

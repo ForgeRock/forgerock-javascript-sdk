@@ -1,3 +1,13 @@
+/*
+ * @forgerock/javascript-sdk
+ *
+ * index.ts
+ *
+ * Copyright (c) 2020 ForgeRock. All rights reserved.
+ * This software may be modified and distributed under the terms
+ * of the MIT license. See the LICENSE file for details.
+ */
+
 import Config from '../config';
 import { ActionTypes } from '../config/enums';
 import Dispatcher from '../event';
@@ -150,7 +160,10 @@ abstract class HttpClient extends Dispatcher {
     if (tokens && tokens.accessToken) {
       // Access tokens are an OAuth artifact
       tokens = await TokenManager.getTokens({ forceRenew });
-      headers.set('Authorization', `Bearer ${tokens.accessToken}`);
+      // TODO: Temp fix; refactor this in next txn auth story
+      if (tokens && tokens.accessToken) {
+        headers.set('Authorization', `Bearer ${tokens.accessToken}`);
+      }
     }
     return headers;
   }

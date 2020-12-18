@@ -1,3 +1,13 @@
+/*
+ * @forgerock/javascript-sdk
+ *
+ * middleware.mock.data.ts
+ *
+ * Copyright (c) 2020 ForgeRock. All rights reserved.
+ * This software may be modified and distributed under the terms
+ * of the MIT license. See the LICENSE file for details.
+ */
+
 import { Action, RequestObj } from '../config/interfaces';
 import { ActionTypes } from '../config/enums';
 
@@ -56,14 +66,14 @@ export default [
   (req: RequestObj, action: Action, next: NextFn): void => {
     switch (action.type) {
       case add:
-        // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         req.init.headers = { ...{ 'x-char': 'a,' + action.payload }, ...req.init.headers };
         break;
     }
     next();
   },
-  // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   (req: RequestObj, action: Action, next: NextFn): void => {
     switch (action.type) {
@@ -73,7 +83,7 @@ export default [
     }
     next();
   },
-  // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   (req: RequestObj, action: Action, next: NextFn): void => {
     switch (action.type) {

@@ -1,3 +1,13 @@
+/*
+ * @forgerock/javascript-sdk
+ *
+ * interfaces.ts
+ *
+ * Copyright (c) 2020 ForgeRock. All rights reserved.
+ * This software may be modified and distributed under the terms
+ * of the MIT license. See the LICENSE file for details.
+ */
+
 import HiddenValueCallback from '../fr-auth/callbacks/hidden-value-callback';
 import MetadataCallback from '../fr-auth/callbacks/metadata-callback';
 import TextOutputCallback from '../fr-auth/callbacks/text-output-callback';
@@ -62,11 +72,12 @@ interface WebAuthnRegistrationMetadata {
   timeout: number;
   userId: string;
   userName: string;
-  displayName: string;
+  displayName?: string;
 }
 
 interface WebAuthnAuthenticationMetadata {
-  allowCredentials: string;
+  acceptableCredentials?: string;
+  allowCredentials?: string;
   challenge: string;
   relyingPartyId: string;
   timeout: number;

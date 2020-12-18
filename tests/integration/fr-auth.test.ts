@@ -1,3 +1,13 @@
+/*
+ * @forgerock/javascript-sdk
+ *
+ * fr-auth.test.ts
+ *
+ * Copyright (c) 2020 ForgeRock. All rights reserved.
+ * This software may be modified and distributed under the terms
+ * of the MIT license. See the LICENSE file for details.
+ */
+
 import Config from '../../src/config';
 import FRAuth from '../../src/fr-auth';
 import { rawResponse } from './fr-auth.mock.data';

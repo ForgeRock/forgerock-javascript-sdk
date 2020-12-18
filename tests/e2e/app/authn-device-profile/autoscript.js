@@ -1,3 +1,13 @@
+/*
+ * @forgerock/javascript-sdk
+ *
+ * autoscript.ts
+ *
+ * Copyright (c) 2020 ForgeRock. All rights reserved.
+ * This software may be modified and distributed under the terms
+ * of the MIT license. See the LICENSE file for details.
+ */
+
 (function () {
   const rxMergeMap = rxjs.operators.mergeMap;
   const rxMap = rxjs.operators.map;
@@ -10,7 +20,7 @@
   const realmPath = url.searchParams.get('realmPath') || 'root';
   const un = url.searchParams.get('un') || '57a5b4e4-6999-4b45-bf86-a4f2e5d4b629';
   const pw = url.searchParams.get('pw') || 'ieH034K&-zlwqh3V_';
-  const tree = url.searchParams.get('tree') || 'UsernamePasswordDevice';
+  const tree = url.searchParams.get('tree') || 'DeviceProfileCallbackTest';
 
   console.log('Configure the SDK');
   forgerock.Config.set({

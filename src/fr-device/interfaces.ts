@@ -1,3 +1,13 @@
+/*
+ * @forgerock/javascript-sdk
+ *
+ * interfaces.ts
+ *
+ * Copyright (c) 2020 ForgeRock. All rights reserved.
+ * This software may be modified and distributed under the terms
+ * of the MIT license. See the LICENSE file for details.
+ */
+
 type Category = 'fontNames' | 'displayProps' | 'browserProps' | 'hardwareProps' | 'platformProps';
 
 interface CollectParameters {
@@ -22,7 +32,7 @@ interface DeviceProfileData {
       [key: string]: string | number | null;
     };
   };
-  location?: Geolocation | {};
+  location?: Geolocation | Record<string, unknown>;
 }
 
 interface Geolocation {

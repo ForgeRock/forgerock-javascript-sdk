@@ -1,3 +1,13 @@
+/*
+ * @forgerock/javascript-sdk
+ *
+ * index.ts
+ *
+ * Copyright (c) 2020 ForgeRock. All rights reserved.
+ * This software may be modified and distributed under the terms
+ * of the MIT license. See the LICENSE file for details.
+ */
+
 import { ActionTypes } from '../config/enums';
 import Config, { ConfigOptions } from '../config/index';
 import { ConfigurablePaths } from '../config/interfaces';
@@ -17,19 +27,26 @@ import {
 } from './interfaces';
 import middlewareWrapper from '../util/middleware';
 
+const allowedErrors = {
+  // AM error for consent requirement
+  AuthenticationConsentRequired: 'Authentication or consent required',
+  // Manual iframe error
+  AuthorizationTimeout: 'Authorization timed out',
+  // Chromium browser error
+  FailedToFetch: 'Failed to fetch',
+  // Mozilla browser error
+  NetworkError: 'NetworkError when attempting to fetch resource.',
+  // Webkit browser error
+  CORSError: 'Cross-origin redirection',
+};
+
 /**
  * OAuth 2.0 client.
  */
 abstract class OAuth2Client {
-  /**
-   * Gets the authorization URL configured in OpenAM, optionally using PKCE.
-   */
-  public static async getAuthorizeUrl(options: GetAuthorizationUrlOptions): Promise<string> {
-    console.warn('Deprecation warning: this `getAuthorizeUrl` method will be renamed in v3.');
+  public static async createAuthorizeUrl(options: GetAuthorizationUrlOptions): Promise<string> {
+    const { clientId, redirectUri, scope } = Config.get(options);
 
-    const { serverConfig, clientId, redirectUri, scope } = Config.get(options);
-
-    /* eslint-disable @typescript-eslint/camelcase */
     const requestParams: StringDict<string | undefined> = {
       client_id: clientId,
       redirect_uri: redirectUri,
@@ -37,14 +54,11 @@ abstract class OAuth2Client {
       scope,
       state: options.state,
     };
-    /* eslint-enable @typescript-eslint/camelcase */
 
     if (options.verifier) {
       const challenge = await PKCE.createChallenge(options.verifier);
-      /* eslint-disable @typescript-eslint/camelcase */
       requestParams.code_challenge = challenge;
       requestParams.code_challenge_method = 'S256';
-      /* eslint-enable @typescript-eslint/camelcase */
     }
 
     const { url } = middlewareWrapper(
@@ -54,6 +68,20 @@ abstract class OAuth2Client {
       },
       ActionTypes.Authorize,
     );
+    return url.toString();
+  }
+
+  /**
+   * DEPRECATED
+   * Calls the authorize URL with an iframe. If successful,
+   * it returns the callback URL with authentication code,
+   * optionally using PKCE.
+   */
+  public static async getAuthorizeUrl(options: GetAuthorizationUrlOptions): Promise<string> {
+    console.warn('Deprecation warning: this `getAuthorizeUrl` method will be renamed in v3.');
+
+    const url = await this.createAuthorizeUrl(options);
+    const { serverConfig } = Config.get(options);
 
     return new Promise((resolve, reject) => {
       const iframe = document.createElement('iframe');
@@ -78,19 +106,22 @@ abstract class OAuth2Client {
           if (this.containsAuthCode(newHref)) {
             cleanUp();
             resolve(newHref);
+          } else if (this.containsAuthError(newHref)) {
+            cleanUp();
+            resolve(newHref);
           }
         }
       };
 
       timeout = window.setTimeout(() => {
         cleanUp();
-        reject('Timeout');
+        reject(new Error(allowedErrors.AuthorizationTimeout));
       }, serverConfig.timeout);
 
       iframe.style.display = 'none';
       iframe.addEventListener('load', onLoad);
       document.body.appendChild(iframe);
-      iframe.src = url.toString();
+      iframe.src = url;
     });
   }
 
@@ -100,17 +131,14 @@ abstract class OAuth2Client {
   public static async getOAuth2Tokens(options: GetOAuth2TokensOptions): Promise<OAuth2Tokens> {
     const { clientId, redirectUri } = Config.get(options);
 
-    /* eslint-disable @typescript-eslint/camelcase */
     const requestParams: StringDict<string | undefined> = {
       client_id: clientId,
       code: options.authorizationCode,
       grant_type: 'authorization_code',
       redirect_uri: redirectUri,
     };
-    /* eslint-enable @typescript-eslint/camelcase */
 
     if (options.verifier) {
-      // eslint-disable-next-line @typescript-eslint/camelcase
       requestParams.code_verifier = options.verifier;
     }
 
@@ -168,7 +196,6 @@ abstract class OAuth2Client {
 
     const query: StringDict<string | undefined> = {};
     if (idToken) {
-      // eslint-disable-next-line @typescript-eslint/camelcase
       query.id_token_hint = idToken;
     }
 
@@ -187,7 +214,6 @@ abstract class OAuth2Client {
     const { accessToken } = await TokenStorage.get();
 
     const init: RequestInit = {
-      // eslint-disable-next-line @typescript-eslint/camelcase
       body: stringify({ client_id: clientId, token: accessToken }),
       credentials: 'include',
       headers: { 'content-type': 'application/x-www-form-urlencoded' },
@@ -240,6 +266,10 @@ abstract class OAuth2Client {
     return !!url && /code=([^&]+)/.test(url);
   }
 
+  private static containsAuthError(url: string | null): boolean {
+    return !!url && /error=([^&]+)/.test(url);
+  }
+
   private static async getBody<T>(response: Response): Promise<T | string> {
     const contentType = response.headers.get('content-type');
     if (contentType && contentType.indexOf('application/json') > -1) {
@@ -276,4 +306,10 @@ abstract class OAuth2Client {
 }
 
 export default OAuth2Client;
-export { GetAuthorizationUrlOptions, GetOAuth2TokensOptions, OAuth2Tokens, ResponseType };
+export {
+  allowedErrors,
+  GetAuthorizationUrlOptions,
+  GetOAuth2TokensOptions,
+  OAuth2Tokens,
+  ResponseType,
+};

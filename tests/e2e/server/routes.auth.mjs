@@ -1,7 +1,18 @@
+/*
+ * @forgerock/javascript-sdk
+ *
+ * routes.auth.mjs
+ *
+ * Copyright (c) 2020 ForgeRock. All rights reserved.
+ * This software may be modified and distributed under the terms
+ * of the MIT license. See the LICENSE file for details.
+ */
+
+import { v4 } from 'uuid';
 import { authPaths } from './constants.mjs';
 import { AM_URL, USERS } from './env.config.copy.mjs';
 import {
-  accessToken,
+  oauthTokens,
   authFail,
   authSuccess,
   emailSuspend,
@@ -36,7 +47,7 @@ export default function (app) {
         res.json(initialAuthz);
       } else if (req.query.authIndexValue === 'MiscCallbacks') {
         res.json(initialMiscCallbacks);
-      } else if (req.query.authIndexValue === 'PlatformUsernamePassword') {
+      } else if (req.query.authIndexValue === 'PlatformUsernamePasswordTest') {
         res.json(initialPlatformLogin);
       } else if (req.query.authIndexValue === 'Registration') {
         res.json(initialRegResponse);
@@ -85,7 +96,7 @@ export default function (app) {
       } else {
         res.json(authFail);
       }
-    } else if (req.query.authIndexValue === 'PlatformUsernamePassword') {
+    } else if (req.query.authIndexValue === 'PlatformUsernamePasswordTest') {
       const pwCb = req.body.callbacks.find((cb) => cb.type === 'ValidatedCreatePasswordCallback');
       // If validate only, return callbacks
       if (pwCb.input[1].value) {
@@ -116,7 +127,7 @@ export default function (app) {
         em.input[0].value.length &&
         mktg.input[0].value === false &&
         update.input[0].value === false &&
-        pw.input[0].value === 'ieH034K&-zlwqh3V_' &&
+        pw.input[0].value === USERS[0].pw &&
         kba1.input[0].value === 'What is your favorite color?' &&
         kba1.input[1].value === 'Red' &&
         kba2.input[0].value === 'Who was your first employer?' &&
@@ -145,7 +156,7 @@ export default function (app) {
       if (pwCb.input[0].value !== USERS[0].pw) {
         res.status(401).json(authFail);
       } else {
-        if (req.query.authIndexValue === 'UsernamePasswordDevice') {
+        if (req.query.authIndexValue === 'DeviceProfileCallbackTest') {
           res.json(requestDeviceProfile);
         } else {
           if (req.body.stage === 'TransactionAuthorization') {
@@ -195,7 +206,7 @@ export default function (app) {
         value.identifier &&
         value.identifier.length > 0
       ) {
-        res.cookie('iPlanetDirectoryPro', 'abcd1234', { domain: '.example.com' });
+        res.cookie('iPlanetDirectoryPro', 'abcd1234', { domain: 'example.com' });
         res.json(authSuccess);
       } else {
         // Just failing the auth for testing, but in reality,
@@ -205,17 +216,29 @@ export default function (app) {
     }
   });
 
-  app.post(authPaths.accessToken, wait, async (req, res) => {
-    res.json(accessToken);
+  app.post(authPaths.tokenExchange, wait, async (req, res) => {
+    // eslint-disable-next-line
+    const access_token = v4();
+    // eslint-disable-next-line
+    const tokens = { ...oauthTokens, access_token };
+    res.json(tokens);
   });
 
   app.get(authPaths.authorize, wait, async (req, res) => {
-    const url = new URL(`${req.query.redirect_uri}`);
-    url.searchParams.set('client_id', 'bar');
-    url.searchParams.set('code', 'foo');
-    url.searchParams.set('iss', `${AM_URL}/oauth2`);
-    url.searchParams.set('state', req.query.state);
-    res.redirect(url);
+    if (req.cookies.iPlanetDirectoryPro) {
+      const url = new URL(`${req.query.redirect_uri}`);
+      url.searchParams.set('client_id', 'bar');
+      url.searchParams.set('code', 'foo');
+      url.searchParams.set('iss', `${AM_URL}/oauth2`);
+      url.searchParams.set('state', req.query.state);
+      res.redirect(url);
+    } else {
+      res.redirect('/login');
+    }
+  });
+
+  app.get('/callback', async (req, res) => {
+    res.status(200).send();
   });
 
   app.get(authPaths.userInfo, wait, async (req, res) => {
@@ -244,13 +267,12 @@ export default function (app) {
           !req.headers['x-auth-middleware'] &&
           !req.query['auth-middleware']
         ) {
-          res.clearCookie('iPlanetDirectoryPro');
+          res.clearCookie('iPlanetDirectoryPro', { domain: 'example.com', path: '/' });
           res.status(204).send();
         } else {
           res.status(406).send('Middleware header is missing.');
         }
       } else {
-        res.clearCookie('iPlanetDirectoryPro');
         res.status(204).send();
       }
     }

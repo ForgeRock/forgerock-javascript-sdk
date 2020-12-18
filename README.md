@@ -1,6 +1,5 @@
 [![npm (scoped)](https://img.shields.io/npm/v/@forgerock/javascript-sdk?color=%23f46200&label=Version&style=flat-square)](CHANGELOG.md)
 
-
 <p align="center">
   <a href="https://github.com/ForgeRock">
     <img src="https://www.forgerock.com/themes/custom/forgerock/images/fr-logo-horz-color.svg" alt="Logo">
@@ -28,10 +27,11 @@ Use the SDKs to leverage _[Intelligent Authentication](https://www.forgerock.com
     * Access Management (AM) 6.5.2+
 
 * Browsers:
+    * Chrome 87
+    * Firefox 84
+    * Safari 14
+    * Edge 87 (Chromium)
     * Edge 44 (Legacy): requires one polyfill for TextEncoder, [`fast-text-encoding` is recommended](https://www.npmjs.com/package/fast-text-encoding)
-    * Edge 83 (Chromium)
-    * Chrome 83
-    * Firefox 77
 
 > **Tip**: Older browsers (like IE11) may require multiple [polyfills, which can be found in our documentation](https://sdks.forgerock.com/javascript/polyfills/).
 
@@ -164,15 +164,7 @@ Be sure to check out our [Coding Style and Guidelines](https://wikis.forgerock.o
 
 ## Disclaimer
 
-> This code is provided on an “as is” basis, without warranty of any kind, to the fullest extent permitted by law.
->
-> ForgeRock does not warrant or guarantee the individual success developers may have in implementing the code on their development platforms or in production configurations.
->
-> ForgeRock does not warrant, guarantee or make any representations regarding the use, results of use, accuracy, timeliness or completeness of any data or information relating to this code.
->
-> ForgeRock disclaims all warranties, expressed or implied, and in particular, disclaims all warranties of merchantability, and warranties related to the code, or any service or software related thereto.
->
-> ForgeRock shall not be liable for any direct, indirect or consequential damages or costs of any type arising out of any action taken by you or others related to the code.
+> **This code is provided by ForgeRock on an “as is” basis, without warranty of any kind, to the fullest extent permitted by law. ForgeRock does not represent or warrant or make any guarantee regarding the use of this code or the accuracy, timeliness or completeness of any data or information relating to this code, and ForgeRock hereby disclaims all warranties whether express, or implied or statutory, including without limitation the implied warranties of merchantability, fitness for a particular purpose, and any warranty of non-infringement. ForgeRock shall not have any liability arising out of or related to any use, implementation or configuration of this code, including but not limited to use for any commercial purpose. Any action or suit relating to the use of the code may be brought only in the courts of a jurisdiction wherein ForgeRock resides or in which ForgeRock conducts its primary business, and under the laws of that jurisdiction excluding its conflict-of-law provisions.**
 
 <!------------------------------------------------------------------------------------------------------------------------------------>
 <!-- LICENSE - Links to the MIT LICENSE file in each repo. -->

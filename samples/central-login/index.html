@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Custom UI | ForgeRock JavaScript SDK Samples</title>
+  <link rel="shortcut icon" href="../_static/img/fr-ico.png" type="image/png">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <style>
+    body {
+      padding: 2rem;
+    }
+    #steps {
+      position: relative;
+    }
+    #steps > * {
+      left: -20000px;
+      position: absolute;
+    }
+    #steps > .active {
+      left: 0;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="steps">
+    <div class="active">
+      <button id="loginBtn" class="btn btn-primary">Login</button>
+      <button id="forceRenewBtn" class="btn btn-primary">Force Renew</button>
+    </div>
+    <div id="User">
+      <p>Your user information:
+        <pre></pre>
+      </p>
+      <button class="btn btn-primary">Sign Out</button>
+    </div>
+    <div id="Error">
+      <p>Error code: <span></span></p>
+      <p><a href="javascript:nextStep()">Start over</a></p>
+    </div>
+    <div id="Fatal">
+      <p>Something unexpected happened. Check the console for details.</p>
+      <p><a href="javascript:nextStep()">Start over</a></p>
+    </div>
+  </div>
+
+  <script src="../_static/js/index.js"></script>
+  <script>
+    /*
+     * @forgerock/javascript-sdk
+     *
+     * index.html
+     *
+     * Copyright (c) 2020 ForgeRock. All rights reserved.
+     * This software may be modified and distributed under the terms
+     * of the MIT license. See the LICENSE file for details.
+     */
+
+    const FATAL = 'Fatal';
+
+    forgerock.Config.set({
+      clientId: '<Your OAuth Client>', // e.g. 'ForgeRockSDKClient'
+      redirectUri: '<Your Redirect/Callback URL>', // e.g. 'https://sdkapp.example.com:8443/central-login/'
+      scope: '<Your OAuth Scopes>', // e.g. 'openid profile me.read'
+        serverConfig: {
+        baseUrl: '<Your AM URL>', // e.g. 'https://openam.example.com:9443/openam/'
+        timeout: '<Your Timeout (milliseconds)>' // 90000 or less
+      },
+      support: '<Browser Support>', // e.g. 'legacy' or 'modern'
+      realmPath: '<Your Realm>', // e.g. 'root'
+    });
+
+    // Show only the view for this handler
+    const showStep = (handler) => {
+      document.querySelectorAll('#steps > *').forEach(x => x.classList.remove('active'));
+      const panel = document.getElementById(handler);
+      if (!panel) {
+        console.error(`No panel with ID "${handler}"" found`);
+        return false;
+      }
+      document.getElementById(handler).classList.add('active');
+      return true;
+    }
+
+    const showUser = (user) => {
+      document.querySelector('#User pre').innerHTML = JSON.stringify(user, null, 2);
+      const panel = document.querySelector('#User');
+      panel.querySelector('.btn').addEventListener('click', () => {
+        logout();
+      });
+      showStep('User');
+    }
+
+    const logout = async () => {
+      try {
+        await forgerock.FRUser.logout();
+        location.assign(`${document.location.origin}/central-login/`);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    const authorize = async (code, state) => {
+      /**
+       *  When the user return to this app after successfully logging in,
+       * the URL will include code and state query parameters that need to
+       * be passed in to complete the OAuth flow giving the user access
+       */
+      await forgerock.TokenManager.getTokens({ query: { code, state }});
+      const user = await forgerock.UserManager.getCurrentUser();
+      showUser(user);
+    }
+
+    document.querySelector('#loginBtn').addEventListener('click', async () => {
+      /**
+       * The key-value of `login: redirect` is what allows central-login.
+       * Passing no arguments or a key-value of `login: 'embedded'` means
+       * the app handles authentication locally.
+       */
+      await forgerock.TokenManager.getTokens({ login: 'redirect' });
+      const user = await forgerock.UserManager.getCurrentUser();
+      showUser(user);
+    });
+
+    document.querySelector('#forceRenewBtn').addEventListener('click', async () => {
+      await forgerock.TokenManager.getTokens({ login: 'redirect', forceRenew: true });
+      const user = await forgerock.UserManager.getCurrentUser();
+      showUser(user);
+    });
+
+    /**
+     * Check URL for query parameters
+     */
+    const url = new URL(document.location);
+    const params = url.searchParams;
+    const authCode = params.get('code');
+    const state = params.get('state');
+
+    /**
+     * If the URL has state and authCode as query parameters, then the user
+     * returned back here after successfully logging, so call authorize with
+     * the values
+     */
+    if (state && authCode) {
+      authorize(authCode, state);
+    }
+  </script>
+</body>
+</html>

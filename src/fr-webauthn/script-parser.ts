@@ -1,9 +1,20 @@
+/*
+ * @forgerock/javascript-sdk
+ *
+ * script-parser.ts
+ *
+ * Copyright (c) 2020 ForgeRock. All rights reserved.
+ * This software may be modified and distributed under the terms
+ * of the MIT license. See the LICENSE file for details.
+ */
+
 import { ensureArray, getIndexOne, parsePubKeyArray, parseCredentials } from './helpers';
 import { AttestationType, UserVerificationType } from './interfaces';
 
 function parseWebAuthnRegisterText(text: string): PublicKeyCredentialCreationOptions {
   const txtEncoder = new TextEncoder();
 
+  // TODO: Incrementally move to `*` instead of `{0,}`
   // e.g. `attestation: "none"`
   const attestation = getIndexOne(text.match(/attestation"{0,}:\s{0,}"(\w+)"/)) as AttestationType;
   // e.g. `timeout: 60000`
@@ -49,7 +60,7 @@ function parseWebAuthnRegisterText(text: string): PublicKeyCredentialCreationOpt
     // `excludeCredentials` values are very similar to this property, so we need to make sure
     // our last value doesn't end with "buffer", so we are only capturing objects that
     // end in a digit and possibly a space.
-    text.match(/pubKeyCredParams"{0,}:\s{0,}\[([^]+\d\s?})\s?]/),
+    text.match(/pubKeyCredParams"*:\s*\[([^]+\d\s*})\s*]/),
   ).trim();
   // e.g. `{ \"type\": \"public-key\", \"alg\": -257 }, { \"type\": \"public-key\", \"alg\": -7 }`
   const pubKeyCredParams = parsePubKeyArray(pubKeyCredParamsString);
@@ -104,13 +115,24 @@ function parseWebAuthnRegisterText(text: string): PublicKeyCredentialCreationOpt
 
 function parseWebAuthnAuthenticateText(text: string): PublicKeyCredentialRequestOptions {
   let allowCredentials;
-  // e.g. `allowCredentials: [
-  // { \"type\": \"public-key\",
-  // \"id\": new Int8Array([-107, 93, 68, -67, ... -19, 7, 4]).buffer }
-  // ]`
-  const allowCredentialsText = getIndexOne(
-    text.match(/allowCredentials"{0,}:\s{0,}\[([^]+)\s{0,}]/),
-  ).trim();
+  let allowCredentialsText;
+
+  if (text.includes('acceptableCredentials')) {
+    // e.g. `var acceptableCredentials = [
+    //  { "type": "public-key", "id": new Int8Array([1, 97, 2, 123, ... -17]).buffer }
+    // ];`
+    allowCredentialsText = getIndexOne(
+      text.match(/acceptableCredentials"*\s*=\s*\[([^]+)\s*]/),
+    ).trim();
+  } else {
+    // e.g. `allowCredentials: [
+    // { \"type\": \"public-key\",
+    // \"id\": new Int8Array([-107, 93, 68, -67, ... -19, 7, 4]).buffer }
+    // ]`
+    allowCredentialsText = getIndexOne(
+      text.match(/allowCredentials"{0,}:\s{0,}\[([^]+)\s{0,}]/),
+    ).trim();
+  }
   // e.g. `"userVerification":"preferred"`
   const userVerification = getIndexOne(
     text.match(/userVerification"{0,}:\s{0,}"(\w+)"/),

@@ -1,3 +1,13 @@
+/*
+ * @forgerock/javascript-sdk
+ *
+ * index.ts
+ *
+ * Copyright (c) 2020 ForgeRock. All rights reserved.
+ * This software may be modified and distributed under the terms
+ * of the MIT license. See the LICENSE file for details.
+ */
+
 import {
   browserProps,
   configurableCategories,
@@ -165,7 +175,7 @@ class FRDevice extends Collector {
     return installedFonts;
   }
 
-  async getLocationCoordinates(): Promise<Geolocation | {}> {
+  async getLocationCoordinates(): Promise<Geolocation | Record<string, unknown>> {
     if (!(navigator && navigator.geolocation)) {
       console.warn('Cannot collect geolocation information. navigator.geolocation is not defined.');
       return Promise.resolve({});

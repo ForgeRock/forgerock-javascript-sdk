@@ -1,5 +1,15 @@
+/*
+ * @forgerock/javascript-sdk
+ *
+ * constants.mjs
+ *
+ * Copyright (c) 2020 ForgeRock. All rights reserved.
+ * This software may be modified and distributed under the terms
+ * of the MIT license. See the LICENSE file for details.
+ */
+
 export const authPaths = {
-  accessToken: ['/am/auth/accessToken', '/am/oauth2/realms/root/access_token'],
+  tokenExchange: ['/am/auth/tokenExchange', '/am/oauth2/realms/root/access_token'],
   authenticate: ['/am/auth/authenticate', '/am/json/realms/root/authenticate'],
   htmlAuthenticate: ['/am/'],
   authorize: ['/am/auth/authorize', '/am/oauth2/realms/root/authorize'],

@@ -1,3 +1,13 @@
+/*
+ * @forgerock/javascript-sdk
+ *
+ * index.ts
+ *
+ * Copyright (c) 2020 ForgeRock. All rights reserved.
+ * This software may be modified and distributed under the terms
+ * of the MIT license. See the LICENSE file for details.
+ */
+
 import { CallbackType } from '../auth/enums';
 import HiddenValueCallback from '../fr-auth/callbacks/hidden-value-callback';
 import MetadataCallback from '../fr-auth/callbacks/metadata-callback';
@@ -53,19 +63,19 @@ abstract class FRWebAuthn {
     const textOutputCallback = this.getTextOutputCallback(step);
 
     if (outcomeCallback && metadataCallback) {
-      const metadata = metadataCallback.getOutputValue('data') as WebAuthnAuthenticationMetadata;
-      if (metadata.allowCredentials) {
-        return WebAuthnStepType.Authentication;
+      const metadata = metadataCallback.getOutputValue('data') as { pubKeyCredParams?: [] };
+      if (metadata?.pubKeyCredParams) {
+        return WebAuthnStepType.Registration;
       }
 
-      return WebAuthnStepType.Registration;
+      return WebAuthnStepType.Authentication;
     } else if (outcomeCallback && textOutputCallback) {
       const message = textOutputCallback.getMessage();
-      if (message.includes('allowCredentials')) {
-        return WebAuthnStepType.Authentication;
+      if (message.includes('pubKeyCredParams')) {
+        return WebAuthnStepType.Registration;
       }
 
-      return WebAuthnStepType.Registration;
+      return WebAuthnStepType.Authentication;
     } else {
       return WebAuthnStepType.None;
     }
@@ -91,7 +101,7 @@ abstract class FRWebAuthn {
           publicKey = parseWebAuthnAuthenticateText(textOutputCallback.getMessage());
         }
         // TypeScript doesn't like `publicKey` being assigned in conditionals above
-        // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         const credential = await this.getAuthenticationCredential(publicKey);
         outcome = this.getAuthenticationOutcome(credential);
@@ -126,7 +136,7 @@ abstract class FRWebAuthn {
           publicKey = parseWebAuthnRegisterText(textOutputCallback.getMessage());
         }
         // TypeScript doesn't like `publicKey` being assigned in conditionals above
-        // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         const credential = await this.getRegistrationCredential(publicKey);
         outcome = this.getRegistrationOutcome(credential);
@@ -303,9 +313,16 @@ abstract class FRWebAuthn {
   public static createAuthenticationPublicKey(
     metadata: WebAuthnAuthenticationMetadata,
   ): PublicKeyCredentialRequestOptions {
-    const { allowCredentials, challenge, relyingPartyId, timeout, userVerification } = metadata;
+    const {
+      acceptableCredentials,
+      allowCredentials,
+      challenge,
+      relyingPartyId,
+      timeout,
+      userVerification,
+    } = metadata;
     const rpId = parseRelyingPartyId(relyingPartyId);
-    const allowCredentialsValue = parseCredentials(allowCredentials);
+    const allowCredentialsValue = parseCredentials(allowCredentials || acceptableCredentials || '');
 
     return {
       challenge: Uint8Array.from(atob(challenge), (c) => c.charCodeAt(0)).buffer,
@@ -360,7 +377,7 @@ abstract class FRWebAuthn {
       rp,
       timeout,
       user: {
-        displayName: displayName,
+        displayName: displayName || userName,
         id: Int8Array.from(userId.split('').map((c: string) => c.charCodeAt(0))),
         name: userName,
       },

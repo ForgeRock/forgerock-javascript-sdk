@@ -1,5 +1,23 @@
 # Changelog
 
+## [2.2.0] - 2020-12-18
+
+### Added
+
+- Centralized login support has been added
+- OAuth authorize endpoint now supports both iframe and fetch through the new `support` property in the config
+- Support for TypeScript 4.0
+
+### Fixed
+
+- `step.getStage()` is no longer used in sample app; `getStage(step)` is now used for better compatibility with AM 6.5
+- `FRUser.logout` now uses a try-catch around each endpoint call, rather than a single try-catch, ensuring an error in one doesn't interrupt other endpoints being called
+- Paths for sample app now point to correct favicon image
+- Improved automation testing
+- Compatibility with AM 6.5.3 WebAuthn nodes
+- Step detection with `getWebAuthnStepType` and "usernameless" configuration
+- `getTokens` method with `forceRenew` now revokes existing tokens, if present, before requesting new ones
+
 ## [2.1.0] - 2020-08-25
 
 ### Added

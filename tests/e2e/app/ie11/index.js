@@ -1,3 +1,13 @@
+/*
+ * @forgerock/javascript-sdk
+ *
+ * index.ts
+ *
+ * Copyright (c) 2020 ForgeRock. All rights reserved.
+ * This software may be modified and distributed under the terms
+ * of the MIT license. See the LICENSE file for details.
+ */
+
 /**
  * Polyfills and patches necessary for IE11
  */
@@ -61,7 +71,7 @@ const loginTree = 'Login'; // Login tree after registration
 console.log('Configure the SDK');
 forgerock.Config.set({
   clientId: 'WebOAuthClient',
-  redirectUri: 'https://sdkapp.example.com:8443/_callback',
+  redirectUri: 'https://sdkapp.example.com:8443/_callback/',
   realmPath: 'root',
   scope: 'openid profile me.read',
   tree: 'Registration', // Don't forget to config your login tree above

@@ -1,4 +1,14 @@
-import Config, { ConfigOptions } from '../config';
+/*
+ * @forgerock/javascript-sdk
+ *
+ * index.ts
+ *
+ * Copyright (c) 2020 ForgeRock. All rights reserved.
+ * This software may be modified and distributed under the terms
+ * of the MIT license. See the LICENSE file for details.
+ */
+
+import { ConfigOptions } from '../config';
 import FRStep, { FRStepHandler } from '../fr-auth/fr-step';
 import FRUI from '../fr-ui';
 import OAuth2Client from '../oauth2-client';
@@ -50,19 +60,26 @@ abstract class FRUser {
    * @param options Configuration overrides
    */
   public static async logout(options?: ConfigOptions): Promise<void> {
-    const { serverConfig } = Config.get(options);
+    // Just log any exceptions that are thrown, but don't abandon the flow
     try {
-      // Only call SessionManager.logout if not on Express (i.e. forgeblocks.com)
-      // Express does not expose this endpoint publicly
-      if (!serverConfig.baseUrl.includes('forgeblocks.com')) {
-        await SessionManager.logout();
-      }
-      await OAuth2Client.endSession(options);
-      await OAuth2Client.revokeToken(options);
-      await TokenManager.deleteTokens();
+      // Both invalidates the session on the server AND removes browser cookie
+      await SessionManager.logout();
     } catch (error) {
-      throw new Error('Logout failed');
+      console.warn('Session logout was not successful');
     }
+    try {
+      // Invalidates session on the server tied to the ID Token
+      // Needed for Express environment as session logout is unavailable
+      await OAuth2Client.endSession(options);
+    } catch (error) {
+      console.warn('OAuth endSession was not successful');
+    }
+    try {
+      await OAuth2Client.revokeToken(options);
+    } catch (error) {
+      console.warn('OAuth revokeToken was not successful');
+    }
+    await TokenManager.deleteTokens();
   }
 }
 

@@ -1,3 +1,13 @@
+/*
+ * @forgerock/javascript-sdk
+ *
+ * autoscript.ts
+ *
+ * Copyright (c) 2020 ForgeRock. All rights reserved.
+ * This software may be modified and distributed under the terms
+ * of the MIT license. See the LICENSE file for details.
+ */
+
 (function () {
   const rxMergeMap = rxjs.operators.mergeMap;
   const rxMap = rxjs.operators.map;
@@ -17,7 +27,7 @@
   console.log('Configure the SDK');
   forgerock.Config.set({
     clientId,
-    redirectUri: `${url.origin}/_callback`,
+    redirectUri: `${url.origin}/_callback/`,
     realmPath,
     scope,
     tree,
@@ -26,7 +36,7 @@
       paths: {
         authenticate: 'auth/authenticate',
         authorize: 'auth/authorize',
-        accessToken: 'auth/accessToken',
+        accessToken: 'auth/tokenExchange',
         endSession: 'auth/endSession',
         userInfo: 'auth/userInfo',
         revoke: 'auth/revoke',
