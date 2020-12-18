@@ -27,10 +27,11 @@ Use the SDKs to leverage _[Intelligent Authentication](https://www.forgerock.com
     * Access Management (AM) 6.5.2+
 
 * Browsers:
+    * Chrome 87
+    * Firefox 84
+    * Safari 14
+    * Edge 87 (Chromium)
     * Edge 44 (Legacy): requires one polyfill for TextEncoder, [`fast-text-encoding` is recommended](https://www.npmjs.com/package/fast-text-encoding)
-    * Edge 83 (Chromium)
-    * Chrome 83
-    * Firefox 77
 
 > **Tip**: Older browsers (like IE11) may require multiple [polyfills, which can be found in our documentation](https://sdks.forgerock.com/javascript/polyfills/).
 
