@@ -7,6 +7,7 @@ node_modules/
 samples/_static/js/*.js*
 tests/**/app/index.js*
 tests/**/ie11/autoscript.js*
+reports/*
 *.copy.*
 *.pem
 

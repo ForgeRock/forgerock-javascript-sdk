@@ -16,6 +16,7 @@ module.exports = {
     },
   },
   preset: 'ts-jest',
+  reporters: ['default', ['jest-junit', { outputDirectory: `reports/${Date.now()}`, suiteNameTemplate: "{filename}", classNameTemplate: "{filename}", includeConsoleOutput: true} ]],
   rootDir: '../',
   setupFiles: ['jest-canvas-mock'],
 };
