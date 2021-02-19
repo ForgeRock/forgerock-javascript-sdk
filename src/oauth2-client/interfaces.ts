@@ -36,6 +36,7 @@ interface GetAuthorizationUrlOptions extends ConfigOptions {
   responseType: ResponseType;
   state?: string;
   verifier?: string;
+  service?: string;
 }
 
 /**

@@ -15,6 +15,7 @@ import { StringDict } from '../shared/interfaces';
 import { Noop } from '../shared/types';
 import TokenStorage from '../token-storage';
 import { isOkOr4xx } from '../util/http';
+import middlewareWrapper from '../util/middleware';
 import PKCE from '../util/pkce';
 import { withTimeout } from '../util/timeout';
 import { getEndpointPath, resolve, stringify } from '../util/url';
@@ -25,7 +26,6 @@ import {
   GetOAuth2TokensOptions,
   OAuth2Tokens,
 } from './interfaces';
-import middlewareWrapper from '../util/middleware';
 
 const allowedErrors = {
   // AM error for consent requirement
@@ -53,6 +53,7 @@ abstract class OAuth2Client {
       response_type: options.responseType,
       scope,
       state: options.state,
+      service: options.service,
     };
 
     if (options.verifier) {

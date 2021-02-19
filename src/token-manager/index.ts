@@ -20,6 +20,7 @@ interface GetTokensOptions extends ConfigOptions {
   forceRenew?: boolean;
   login?: 'embedded' | 'redirect' | undefined;
   query?: StringDict<string>;
+  tree?: string;
 }
 
 abstract class TokenManager {
@@ -115,7 +116,13 @@ abstract class TokenManager {
      */
     const verifier = PKCE.createVerifier();
     const state = PKCE.createState();
-    const authorizeUrlOptions = { ...options, responseType: ResponseType.Code, state, verifier };
+    const authorizeUrlOptions = {
+      ...options,
+      responseType: ResponseType.Code,
+      state,
+      verifier,
+      service: options?.tree,
+    };
     const authorizeUrl = await OAuth2Client.createAuthorizeUrl(authorizeUrlOptions);
 
     /**
