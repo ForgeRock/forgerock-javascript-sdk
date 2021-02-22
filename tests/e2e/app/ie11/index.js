@@ -64,7 +64,7 @@ if (!window.crypto && window.msCrypto) {
  * Configure your user, your base environment config, registration tree and login tree
  */
 const un = 'f9022889-4452-48a0-aa94-182436645551';
-const pw = 'ieH034K&-zlwqh3V_';
+const pw = 'password';
 const email = 'sally.tester@me.com';
 const loginTree = 'Login'; // Login tree after registration
 

@@ -18,11 +18,12 @@
   const url = new URL(window.location.href);
   const amUrl = url.searchParams.get('amUrl') || 'https://auth.example.com:9443/am';
   const code = url.searchParams.get('code') || '';
-  const clientId = url.searchParams.get('clientId') || 'WebOAuthClient';
+  const clientId = url.searchParams.get('clientId') || 'CentralLoginOAuthClient';
   const realmPath = url.searchParams.get('realmPath') || 'root';
   const scope = url.searchParams.get('scope') || 'openid profile me.read';
   const state = url.searchParams.get('state') || '';
   const support = url.searchParams.get('support') || 'legacy';
+  const acr_values = url.searchParams.get('acr') || 'SpecificTree';
 
   console.log('Configure the SDK');
   forgerock.Config.set({
@@ -49,7 +50,7 @@
       .from([1])
       .pipe(
         rxMap(() => {
-          console.log('Set cookie');
+          console.log('Set mock cookie to represent existing session');
           document.cookie = 'iPlanetDirectoryPro=abcd1234; domain=example.com; path=/';
           if (code && state) {
             window.sessionStorage.setItem(
@@ -64,9 +65,9 @@
           console.log('Get OAuth tokens');
           let tokens;
           if (code && state) {
-            tokens = forgerock.TokenManager.getTokens({ query: { code, state } });
+            tokens = forgerock.TokenManager.getTokens({ query: { code, state, acr_values } });
           } else {
-            tokens = forgerock.TokenManager.getTokens();
+            tokens = forgerock.TokenManager.getTokens({ query: { acr_values } });
           }
           return tokens;
         }),

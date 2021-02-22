@@ -48,6 +48,7 @@ abstract class OAuth2Client {
     const { clientId, redirectUri, scope } = Config.get(options);
 
     const requestParams: StringDict<string | undefined> = {
+      ...options.query,
       client_id: clientId,
       redirect_uri: redirectUri,
       response_type: options.responseType,

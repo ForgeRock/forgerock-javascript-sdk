@@ -20,8 +20,8 @@
   const clientId = url.searchParams.get('clientId') || 'WebOAuthClient';
   const realmPath = url.searchParams.get('realmPath') || 'root';
   const scope = url.searchParams.get('scope') || 'openid profile me.read';
-  const un = url.searchParams.get('un') || '57a5b4e4-6999-4b45-bf86-a4f2e5d4b629';
-  const pw = url.searchParams.get('pw') || 'ieH034K&-zlwqh3V_';
+  const un = url.searchParams.get('un') || 'sdkuser';
+  const pw = url.searchParams.get('pw') || 'password';
   const tree = url.searchParams.get('tree') || 'UsernamePassword';
 
   console.log('Configure the SDK');
