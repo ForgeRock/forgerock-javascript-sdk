@@ -20,7 +20,7 @@
   const amUrl = url.searchParams.get('amUrl') || 'https://auth.example.com:9443/am';
   const realmPath = url.searchParams.get('realmPath') || 'root';
   const tree = url.searchParams.get('tree') || 'LoginWithEmail';
-  const un = url.searchParams.get('un') || '57a5b4e4-6999-4b45-bf86-a4f2e5d4b629';
+  const un = url.searchParams.get('un') || 'sdkuser';
 
   console.log('Configure the SDK');
   forgerock.Config.set({

@@ -225,6 +225,13 @@ export default function (app) {
   });
 
   app.get(authPaths.authorize, wait, async (req, res) => {
+    // Detect if Central Login to enforce ACR value presence
+    if (
+      req.query.client_id === 'CentralLoginOAuthClient' &&
+      req.query.acr_values !== 'SpecificTree'
+    ) {
+      return res.status(400).json({ message: 'acr_values did not match "SpecificTree"' });
+    }
     if (req.cookies.iPlanetDirectoryPro) {
       const url = new URL(`${req.query.redirect_uri}`);
       url.searchParams.set('client_id', 'bar');
