@@ -85,6 +85,21 @@ export const emailSuspend = {
   ],
 };
 
+export const idpChoiceCallback = {
+  authId: 'foo',
+  callbacks: [
+    {
+      type: 'ChoiceCallback',
+      output: [
+        { name: 'prompt', value: 'Select Provider' },
+        { name: 'choices', value: ['google', 'facebook'] },
+        { name: 'defaultChoice', value: 0 },
+      ],
+      input: [{ name: 'IDToken1', value: 0 }],
+    },
+  ],
+};
+
 export const initialBasicLogin = {
   authId: 'foo',
   callbacks: [
@@ -244,6 +259,40 @@ export const pollingCallback = {
   ],
 };
 
+export const selectIdPCallback = {
+  authId: 'foo',
+  callbacks: [
+    {
+      type: 'SelectIdPCallback',
+      output: [
+        {
+          name: 'providers',
+          value: [
+            {
+              provider: 'google',
+              uiConfig: {
+                buttonImage: 'images/g-logo.png',
+                buttonCustomStyle: 'background-color: #fff; color: #757575; border-color: #ddd;',
+                buttonClass: '',
+                buttonCustomStyleHover:
+                  'color: #6d6d6d; background-color: #eee; border-color: #ccc;',
+                buttonDisplayName: 'Google',
+                iconFontColor: 'white',
+                iconClass: 'fa-google',
+                iconBackground: '#4184f3',
+              },
+            },
+            { provider: 'localAuthentication' },
+          ],
+        },
+        { name: 'value', value: '' },
+      ],
+      input: [{ name: 'IDToken1', value: '' }],
+      _id: 0,
+    },
+  ],
+};
+
 export const secondFactorCallback = {
   authId: 'foo',
   callbacks: [
@@ -255,6 +304,25 @@ export const secondFactorCallback = {
     },
   ],
   stage: 'OneTimePasswordEmail',
+};
+
+export const redirectCallback = {
+  authId: 'foo',
+  callbacks: [
+    {
+      type: 'RedirectCallback',
+      output: [
+        {
+          name: 'redirectUrl',
+          value:
+            // eslint-disable-next-line max-len
+            'https://user.example.com:9443/o/oauth2/v2/auth?nonce=ko7fdf2v3b6yctgq35bdpndel0p9qiq&response_type=code&client_id=546064052569-ke17g9ufsmvda3kgg7s5kp2hpf3gnqi8.apps.googleusercontent.com&redirect_uri=https://sdkapp.example.com:8443/authn-social-login-idm/&scope=openid%20profile%20email&code_challenge=Bh_6aMiI04KGI1wVILtEamByklmXnQY9JKhKhlwsIxk&code_challenge_method=S256&state=rtu8pz65dbg6baw985d532myfbbnf5v',
+        },
+        { name: 'redirectMethod', value: 'GET' },
+        { name: 'trackingCookie', value: true },
+      ],
+    },
+  ],
 };
 
 export const initialAuthz = {

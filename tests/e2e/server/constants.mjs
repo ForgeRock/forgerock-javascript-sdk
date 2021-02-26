@@ -17,4 +17,5 @@ export const authPaths = {
   userInfo: ['/am/auth/userInfo', '/am/oauth2/realms/root/userinfo'],
   revoke: ['/am/auth/revoke', '/am/oauth2/realms/root/token/revoke'],
   sessions: ['/am/auth/sessions', '/am/json/realms/root/sessions'],
+  accounts: ['/o/oauth2/v2/auth'],
 };

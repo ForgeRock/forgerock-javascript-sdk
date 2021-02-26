@@ -16,6 +16,7 @@ import {
   authFail,
   authSuccess,
   emailSuspend,
+  idpChoiceCallback,
   initialBasicLogin,
   initialLoginWithEmailResponse,
   initialMiscCallbacks,
@@ -26,9 +27,11 @@ import {
   messageCallback,
   noSessionSuccess,
   pollingCallback,
+  redirectCallback,
   requestDeviceProfile,
   secondFactorCallback,
   secondFactorChoiceCallback,
+  selectIdPCallback,
   userInfo,
 } from './responses.mjs';
 import initialRegResponse from './response.registration.mjs';
@@ -57,6 +60,10 @@ export default function (app) {
         } else {
           res.json(initialLoginWithEmailResponse);
         }
+      } else if (req.query.authIndexValue === 'IDMSocialLogin') {
+        res.json(selectIdPCallback);
+      } else if (req.query.authIndexValue === 'AMSocialLogin') {
+        res.json(idpChoiceCallback);
       } else {
         res.json(initialBasicLogin);
       }
@@ -151,6 +158,36 @@ export default function (app) {
           res.json(authSuccess);
         }
       }
+    } else if (req.query.authIndexValue === 'IDMSocialLogin') {
+      if (req.body.callbacks.find((cb) => cb.type === 'SelectIdPCallback')) {
+        const idPCb = req.body.callbacks.find((cb) => cb.type === 'SelectIdPCallback');
+        if (idPCb.input[0].value !== 'google') {
+          res.status(401).json(authFail);
+        } else {
+          res.json(redirectCallback);
+        }
+      } else if (req.body.callbacks.find((cb) => cb.type === 'RedirectCallback')) {
+        if (req.body.authId && req.query.code && req.query.state) {
+          res.json(authSuccess);
+        } else {
+          res.status(401).json(authFail);
+        }
+      }
+    } else if (req.query.authIndexValue === 'AMSocialLogin') {
+      if (req.body.callbacks.find((cb) => cb.type === 'ChoiceCallback')) {
+        const idPCb = req.body.callbacks.find((cb) => cb.type === 'ChoiceCallback');
+        if (idPCb.input[0].value !== 0) {
+          res.status(401).json(authFail);
+        } else {
+          res.json(redirectCallback);
+        }
+      } else if (req.body.callbacks.find((cb) => cb.type === 'RedirectCallback')) {
+        if (req.body.authId && req.query.code && req.query.state) {
+          res.json(authSuccess);
+        } else {
+          res.status(401).json(authFail);
+        }
+      }
     } else if (req.body.callbacks.find((cb) => cb.type === 'PasswordCallback')) {
       const pwCb = req.body.callbacks.find((cb) => cb.type === 'PasswordCallback');
       if (pwCb.input[0].value !== USERS[0].pw) {
@@ -222,6 +259,13 @@ export default function (app) {
     // eslint-disable-next-line
     const tokens = { ...oauthTokens, access_token };
     res.json(tokens);
+  });
+
+  app.get(authPaths.accounts, wait, async (req, res) => {
+    res.redirect(
+      // eslint-disable-next-line max-len
+      'https://sdkapp.example.com:8443/authn-social-login-idm/?state=rtu8pz65dbg6baw985d532myfbbnf5v&code=4%2F0AY0e-g5vHGhzfggdAuIofxnblW-iR1Y30G5lN5RvbrU8Zv5ZmtUVheTzSX7YMJF_usbzUA&scope=email+profile+openid+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile&authuser=0&hd=forgerock.com&prompt=none',
+    );
   });
 
   app.get(authPaths.authorize, wait, async (req, res) => {

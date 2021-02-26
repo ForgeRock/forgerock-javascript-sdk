@@ -63,13 +63,21 @@
         rxjs.operators.delay(delay),
         rxMergeMap(() => {
           console.log('Collect Suspended ID');
-          const id = window.prompt('What is your suspended ID?');
-          return forgerock.FRAuth.next(null, {
-            query: {
-              suspendedId: id,
-            },
-            realmPath: realmPath,
-          });
+          // Tester can add a predefined/mock suspendedId to the URL
+          // Or, tester can add a real suspendedId from AM using the prompt element
+          if (window.location.href.includes('suspendedId')) {
+            return forgerock.FRAuth.resume(window.location.href, {
+              realmPath: realmPath,
+            });
+          } else {
+            const id = window.prompt('What is your suspended ID?');
+            return forgerock.FRAuth.next(null, {
+              query: {
+                suspendedId: id,
+              },
+              realmPath: realmPath,
+            });
+          }
         }),
         rxjs.operators.delay(delay),
         rxMap(
