@@ -1,5 +1,6 @@
 const { exec } = require('child_process');
 const path = require('path');
+const TerserPlugin = require("terser-webpack-plugin");
 const TsConfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 const webpack = require('webpack');
 
@@ -17,15 +18,15 @@ module.exports = (env) => {
   const isDev = env.DEV === 'yes';
 
   const plugins = [
-    new webpack.WatchIgnorePlugin([/bundles|docs|lib|lib\-esm|samples/]),
-    new webpack.BannerPlugin(banner),
+    new webpack.WatchIgnorePlugin({ paths: [/bundles|docs|lib|lib\-esm|samples/] }),
+    new webpack.BannerPlugin({ banner }),
     {
       apply: (compiler) => {
         compiler.hooks.afterEmit.tap('AfterEmitPlugin', (compilation) => {
           const cmds = [
             'cpy ./tests/e2e/env.config.ts ./tests/e2e/server --rename=env.config.copy.mjs',
-            'copyup ./bundles/index.js* ./tests/e2e/app',
-            'copyup ./bundles/index.js* ./samples/_static/js/',
+            'copyfiles -u 1 "./bundles/index.js*" ./tests/e2e/app/',
+            'copyfiles -u 1 "./bundles/index.js*" ./samples/_static/js/',
           ];
           for (const cmd of cmds) {
             exec(cmd, (err, stdout, stderr) => {
@@ -44,19 +45,24 @@ module.exports = (env) => {
   ];
 
   return {
-    devtool: isDev ? 'eval-source-map' : 'source-map',
+    devtool: isDev ? 'inline-source-map' : 'source-map',
     entry: './src/index.ts',
     mode: isDev ? 'development' : 'production',
     module: {
       rules: [
         {
           test: /\.ts$/,
-          loader: 'awesome-typescript-loader',
+          use: 'ts-loader',
           exclude: /node_modules/,
-          query: {
-            declaration: false,
-          },
         },
+      ],
+    },
+    optimization: {
+      minimize: true,
+      minimizer: [
+        new TerserPlugin({
+          extractComments: false,
+        }),
       ],
     },
     output: {
