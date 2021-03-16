@@ -13,14 +13,18 @@ import express from 'express';
 import cookieParser from 'cookie-parser';
 import { createServer } from 'https';
 import { env } from 'process';
+import path from 'path';
 import { authorizeApp } from './app.auth.mjs';
 import { key, cert } from './app.certs.mjs';
 import { MOCK_PORT } from './env.config.copy.mjs';
 import authRoutes from './routes.auth.mjs';
 import resourceRoutes from './routes.resource.mjs';
 
+const __dirname = path.dirname(new URL(import.meta.url).pathname);
+
 const app = express();
 app.use(express.json());
+app.use('/am/XUI/images', express.static(path.join(__dirname, 'public')));
 app.use(cookieParser());
 app.use(
   cors({

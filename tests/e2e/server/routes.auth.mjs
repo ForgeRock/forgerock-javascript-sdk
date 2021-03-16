@@ -56,6 +56,7 @@ export default function (app) {
         res.json(initialRegResponse);
       } else if (req.query.authIndexValue === 'LoginWithEmail') {
         if (typeof req.query.suspendedId === 'string' && req.query.suspendedId.length) {
+          res.cookie('iPlanetDirectoryPro', 'abcd1234', { domain: 'example.com' });
           res.json(authSuccess);
         } else {
           res.json(initialLoginWithEmailResponse);
@@ -99,6 +100,7 @@ export default function (app) {
           res.json(pollingCallback);
         }
       } else if (req.body.callbacks.find((cb) => cb.type === 'PollingCallback')) {
+        res.cookie('iPlanetDirectoryPro', 'abcd1234', { domain: 'example.com' });
         res.json(authSuccess);
       } else {
         res.json(authFail);
@@ -141,6 +143,7 @@ export default function (app) {
         kba2.input[1].value === 'AAA Engineering' &&
         terms.input[0].value === true
       ) {
+        res.cookie('iPlanetDirectoryPro', 'abcd1234', { domain: 'example.com' });
         res.json(authSuccess);
       } else {
         res.status(401).json(authFail);
@@ -155,6 +158,7 @@ export default function (app) {
         if (pwCb.input[0].value !== 'abc123') {
           res.status(401).json(authFail);
         } else {
+          res.cookie('iPlanetDirectoryPro', 'abcd1234', { domain: 'example.com' });
           res.json(authSuccess);
         }
       }
@@ -168,6 +172,7 @@ export default function (app) {
         }
       } else if (req.body.callbacks.find((cb) => cb.type === 'RedirectCallback')) {
         if (req.body.authId && req.query.code && req.query.state) {
+          res.cookie('iPlanetDirectoryPro', 'abcd1234', { domain: 'example.com' });
           res.json(authSuccess);
         } else {
           res.status(401).json(authFail);
@@ -183,6 +188,7 @@ export default function (app) {
         }
       } else if (req.body.callbacks.find((cb) => cb.type === 'RedirectCallback')) {
         if (req.body.authId && req.query.code && req.query.state) {
+          res.cookie('iPlanetDirectoryPro', 'abcd1234', { domain: 'example.com' });
           res.json(authSuccess);
         } else {
           res.status(401).json(authFail);
@@ -262,10 +268,14 @@ export default function (app) {
   });
 
   app.get(authPaths.accounts, wait, async (req, res) => {
-    res.redirect(
+    const referrer = new URL(req.get('Referer'));
+    const additionalQueryParams =
       // eslint-disable-next-line max-len
-      'https://sdkapp.example.com:8443/authn-social-login-idm/?state=rtu8pz65dbg6baw985d532myfbbnf5v&code=4%2F0AY0e-g5vHGhzfggdAuIofxnblW-iR1Y30G5lN5RvbrU8Zv5ZmtUVheTzSX7YMJF_usbzUA&scope=email+profile+openid+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile&authuser=0&hd=forgerock.com&prompt=none',
-    );
+      'state=rtu8pz65dbg6baw985d532myfbbnf5v&code=4%2F0AY0e-g5vHGhzfggdAuIofxnblW-iR1Y30G5lN5RvbrU8Zv5ZmtUVheTzSX7YMJF_usbzUA&scope=email+profile+openid+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile&authuser=0&hd=forgerock.com&prompt=none';
+    const redirectUrl = `${referrer.href}${
+      referrer.href.includes('?') ? '&' : '?'
+    }${additionalQueryParams}`;
+    res.redirect(redirectUrl);
   });
 
   app.get(authPaths.authorize, wait, async (req, res) => {

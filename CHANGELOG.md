@@ -12,6 +12,7 @@
 ### Fixed
 
 - Arbitrary query parameters now passed along to authorize URL creation
+- Fixed build issue when using Windows PowerShell
 
 ## [2.2.0] - 2020-12-18
 
