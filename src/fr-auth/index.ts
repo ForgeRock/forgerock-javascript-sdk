@@ -108,18 +108,24 @@ abstract class FRAuth {
   ): Promise<FRStep | FRLoginSuccess | FRLoginFailure> {
     const parsedUrl = new URL(url);
     const code = parsedUrl.searchParams.get('code');
+    const form_post_entry = parsedUrl.searchParams.get('form_post_entry');
     const nonce = parsedUrl.searchParams.get('nonce');
+    const scope = parsedUrl.searchParams.get('scope');
     const state = parsedUrl.searchParams.get('state');
     const suspendedId = parsedUrl.searchParams.get('suspendedId');
 
     let previousStep;
 
-    if (code && state) {
-      /**
-       * If we are returning back from a provider, and code and state are present,
-       * this is a continuation of Social Login, so retrieve the previous step from
-       * localStorage. Then delete it to remove stale data.
-       */
+    function requiresPreviousStep() {
+      return (code && state) || form_post_entry;
+    }
+
+    /**
+     * If we are returning back from a provider, the previous redirect step data is required.
+     * Retrieve the previous step from localStorage, and then delete it to remove stale data.
+     * If suspendedId is present, no previous step data is needed, so skip below conditional.
+     */
+    if (requiresPreviousStep()) {
       const redirectStepString = window.localStorage.getItem(this.previousStepKey);
 
       if (!redirectStepString) {
@@ -142,16 +148,18 @@ abstract class FRAuth {
     const nextOptions = {
       ...options,
       query: {
+        // Conditionally spread properties into object. Don't spread props with undefined/null.
         ...(options && options.query),
         ...(code && { code }),
+        ...(form_post_entry && { form_post_entry }),
         ...(nonce && { nonce }),
+        ...(scope && { scope }),
         ...(state && { state }),
         ...(suspendedId && { suspendedId }),
       },
     };
 
-    const step = await this.next(previousStep, nextOptions);
-    return step;
+    return await this.next(previousStep, nextOptions);
   }
 
   /**
@@ -164,8 +172,7 @@ abstract class FRAuth {
   public static async start(
     options?: StepOptions,
   ): Promise<FRStep | FRLoginSuccess | FRLoginFailure> {
-    const nextPayload = await FRAuth.next(undefined, options);
-    return nextPayload;
+    return await FRAuth.next(undefined, options);
   }
 }
 

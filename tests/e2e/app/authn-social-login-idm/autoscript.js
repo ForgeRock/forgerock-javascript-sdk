@@ -22,11 +22,12 @@
   const provider = url.searchParams.get('provider') || 'google';
   const code = url.searchParams.get('code');
   const state = url.searchParams.get('state');
+  const form_post_entry = url.searchParams.get('form_post_entry');
 
   console.log('Initiate first step with `undefined`');
   // Wrapping in setTimeout to give the test time to bind listener to console.log
   setTimeout(function () {
-    if (code && state) {
+    if ((code && state) || form_post_entry) {
       // Below three lines are needed for automation only
       const returnParamsString = window.localStorage.getItem('returnParams');
       window.localStorage.removeItem('returnParams');
