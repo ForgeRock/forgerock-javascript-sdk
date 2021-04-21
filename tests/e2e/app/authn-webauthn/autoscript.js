@@ -44,11 +44,6 @@
       rxMergeMap((step) => {
         console.log('Set values on auth tree callbacks');
         step.getCallbackOfType('NameCallback').setName(un);
-        return forgerock.FRAuth.next(step);
-      }),
-      rxjs.operators.delay(delay),
-      rxMergeMap((step) => {
-        console.log('Set values on auth tree callbacks');
         step.getCallbackOfType('PasswordCallback').setPassword(pw);
         return forgerock.FRAuth.next(step);
       }),
@@ -61,7 +56,7 @@
       }),
       rxjs.operators.delay(delay),
       rxMergeMap(
-        (step) => {
+        async (step) => {
           const webAuthnStep = forgerock.FRWebAuthn.getWebAuthnStepType(step);
           if (webAuthnStep === 2) {
             console.log('WebAuthn step is registration');
@@ -69,7 +64,12 @@
             throw new Error('WebAuthn step is incorrectly identified');
           }
           console.log('Handle WebAuthn Registration');
-          return forgerock.FRWebAuthn.register(step);
+          try {
+            step = await forgerock.FRWebAuthn.register(step);
+          } catch (err) {
+            console.log(err);
+          }
+          return step;
         },
         (step) => step,
       ),
@@ -122,7 +122,7 @@
       }),
       rxjs.operators.delay(delay),
       rxMergeMap(
-        (step) => {
+        async (step) => {
           const webAuthnStep = forgerock.FRWebAuthn.getWebAuthnStepType(step);
           if (webAuthnStep === 1) {
             console.log('WebAuthn step is authentication');
@@ -130,9 +130,16 @@
             throw new Error('WebAuthn step is incorrectly identified');
           }
           console.log('Handle WebAuthn Authenticate');
-          return forgerock.FRWebAuthn.authenticate(step);
+          try {
+            step = await forgerock.FRWebAuthn.authenticate(step);
+          } catch (err) {
+            console.log(err);
+          }
+          return step;
         },
-        (step) => step,
+        (step) => {
+          return step;
+        },
       ),
       rxjs.operators.delay(delay),
       rxMergeMap((step) => {

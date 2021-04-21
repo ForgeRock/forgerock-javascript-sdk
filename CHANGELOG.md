@@ -4,7 +4,7 @@
 
 ### Added
 
-- Native Social Login callbacks for Identity Providers Google and Facebook
+- Native Social Login callbacks for Identity Providers Google, Apple and Facebook
 - New `FRAuth` methods for handing redirection to provider and resuming an authentication journey
   - `FRAuth.resume` supports both return from an IdP and returning from Email Suspend node
 - New `FRAuth.start` method that aliases `FRAuth.next` to align native mobile SDKs
@@ -13,6 +13,12 @@
 
 - Arbitrary query parameters now passed along to authorize URL creation
 - Fixed build issue when using Windows PowerShell
+- WebAuthn error handling is not standardized according to the WebAuthn spec
+- When WebAuthn encounters an error, it formats is appropriately and injects it into the hiddenCallback, allowing the developer to just send to AM or handle it specially.
+
+### Breaking
+
+- WebAuthn's thrown error messaging text has been changed to align with spec, so check all conditionals comparing message strings.
 
 ## [2.2.0] - 2020-12-18
 

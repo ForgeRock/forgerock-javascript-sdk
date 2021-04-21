@@ -13,6 +13,7 @@
  * @ignore
  * These are private utility functions for HttpClient
  */
+import { WebAuthnOutcomeType } from './enums';
 import { ParsedCredential } from './interfaces';
 
 function ensureArray(arr: RegExpMatchArray | null): string[] {
@@ -49,7 +50,9 @@ function parseCredentials(value: string): ParsedCredential[] {
       });
     return creds;
   } catch (error) {
-    throw new Error('Failed to parse credentials');
+    const e = new Error('Transforming credential object to string failed');
+    e.name = WebAuthnOutcomeType.EncodingError;
+    throw e;
   }
 }
 
@@ -62,9 +65,6 @@ function parseNumberArray(value: string): number[] {
 }
 
 function parsePubKeyArray(value: string | unknown[]): PublicKeyCredentialParameters[] | undefined {
-  if (!value) {
-    return undefined;
-  }
   if (Array.isArray(value)) {
     return value as PublicKeyCredentialParameters[];
   }
