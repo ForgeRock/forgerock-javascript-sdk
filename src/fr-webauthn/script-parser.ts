@@ -8,6 +8,7 @@
  * of the MIT license. See the LICENSE file for details.
  */
 
+import { WebAuthnOutcomeType } from './enums';
 import { ensureArray, getIndexOne, parsePubKeyArray, parseCredentials } from './helpers';
 import { AttestationType, UserVerificationType } from './interfaces';
 
@@ -65,7 +66,9 @@ function parseWebAuthnRegisterText(text: string): PublicKeyCredentialCreationOpt
   // e.g. `{ \"type\": \"public-key\", \"alg\": -257 }, { \"type\": \"public-key\", \"alg\": -7 }`
   const pubKeyCredParams = parsePubKeyArray(pubKeyCredParamsString);
   if (!pubKeyCredParams) {
-    throw new Error('Missing pubKeyCredParams');
+    const e = new Error('Missing pubKeyCredParams property from registration options');
+    e.name = WebAuthnOutcomeType.DataError;
+    throw e;
   }
 
   // e.g. `excludeCredentials: [{
