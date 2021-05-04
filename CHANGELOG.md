@@ -13,8 +13,8 @@
 
 - Arbitrary query parameters now passed along to authorize URL creation
 - Fixed build issue when using Windows PowerShell
-- WebAuthn error handling is not standardized according to the WebAuthn spec
-- When WebAuthn encounters an error, it formats is appropriately and injects it into the hiddenCallback, allowing the developer to just send to AM or handle it specially.
+- WebAuthn error handling is now standardized according to the WebAuthn spec
+- When WebAuthn encounters an error, it formats it appropriately and injects it into the hiddenCallback, allowing the developer to just send to AM or handle it specially (error is still thrown).
 
 ### Breaking
 

@@ -46,7 +46,7 @@ export async function setupAndGo(
       permissions: config && config.allowGeo ? ['geolocation'] : [],
     });
     const page = await context.newPage();
-    page.setDefaultTimeout(10 * 1000); // 10 seconds (make be less than the Jest config timeout)
+    page.setDefaultTimeout(50 * 1000); // 50 seconds (make be less than the Jest config timeout)
 
     const url = new URL(`${BASE_URL}/${path}`);
 
