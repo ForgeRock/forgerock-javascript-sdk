@@ -23,11 +23,8 @@ abstract class PKCE {
   /**
    * Creates a random verifier.
    */
-  public static createVerifier(num?: number): string {
-    if (num) {
-      console.warn('Deprecation warning: the parameter for `createVerifier` will be removed in v3');
-    }
-    return this.createRandomString(num || 32);
+  public static createVerifier(): string {
+    return this.createRandomString(32);
   }
 
   /**
