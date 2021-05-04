@@ -37,8 +37,8 @@ abstract class TokenStorage {
       // User supplied token store
       return await tokenStore.get(clientId);
     }
-    // if tokenStore is undefined, default to previous behavior
-    return await IndexedDBWrapper.get(clientId);
+    // if tokenStore is undefined, default to localStorage
+    return await LocalStorageWrapper.get(clientId);
   }
 
   /**
@@ -57,8 +57,8 @@ abstract class TokenStorage {
       // User supplied token store
       return await tokenStore.set(clientId, tokens);
     }
-    // if tokenStore is undefined, default to previous behavior
-    return await IndexedDBWrapper.set(clientId, tokens);
+    // if tokenStore is undefined, default to localStorage
+    return await LocalStorageWrapper.set(clientId, tokens);
   }
 
   /**
@@ -77,8 +77,8 @@ abstract class TokenStorage {
       // User supplied token store
       return await tokenStore.remove(clientId);
     }
-    // if tokenStore is undefined, default to previous behavior
-    return await IndexedDBWrapper.remove(clientId);
+    // if tokenStore is undefined, default to localStorage
+    return await LocalStorageWrapper.remove(clientId);
   }
 
   private static getClientConfig(): {
