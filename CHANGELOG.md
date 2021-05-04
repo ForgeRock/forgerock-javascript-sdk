@@ -15,10 +15,14 @@
 - Fixed build issue when using Windows PowerShell
 - WebAuthn error handling is not standardized according to the WebAuthn spec
 - When WebAuthn encounters an error, it formats is appropriately and injects it into the hiddenCallback, allowing the developer to just send to AM or handle it specially.
+- Changed the default behaviour in case of unidentified storage, to be the localStorage option.
 
 ### Breaking
 
 - WebAuthn's thrown error messaging text has been changed to align with spec, so check all conditionals comparing message strings.
+- Removed previously deprecated getAuthorizeUrl method.
+- Removed createVerifier parameter.
+- Removal of `nonce` function.
 
 ## [2.2.0] - 2020-12-18
 
