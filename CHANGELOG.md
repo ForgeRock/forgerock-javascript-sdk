@@ -14,13 +14,17 @@
 
 - Arbitrary query parameters now passed along to authorize URL creation
 - Fixed build issue when using Windows PowerShell
-- WebAuthn error handling is now standardized according to the WebAuthn spec
-- When WebAuthn encounters an error, it formats it appropriately and injects it into the hiddenCallback, allowing the developer to just send to AM or handle it specially (error is still thrown)
+- WebAuthn error handling is not standardized according to the WebAuthn spec
+- When WebAuthn encounters an error, it formats is appropriately and injects it into the hiddenCallback, allowing the developer to just send to AM or handle it specially(error is still thrown).
+- Changed the default behaviour in case of unidentified storage, to be the localStorage option.
 - Increased timeout (20 to 60 seconds) for E2E tests to avoid pure timeout failures
 
 ### Breaking
 
 - WebAuthn's thrown error messaging text has been changed to align with spec, so check all conditionals comparing message strings.
+- Renamed getAuthorizeUrl method to getAuthCodeByIframe.
+- Removed createVerifier parameter.
+- Removal of `nonce` function.
 
 ## [2.2.0] - 2020-12-18
 
