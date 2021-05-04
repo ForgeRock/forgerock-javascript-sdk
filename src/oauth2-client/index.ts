@@ -72,59 +72,6 @@ abstract class OAuth2Client {
     return url.toString();
   }
 
-  /**
-   * DEPRECATED
-   * Calls the authorize URL with an iframe. If successful,
-   * it returns the callback URL with authentication code,
-   * optionally using PKCE.
-   */
-  public static async getAuthorizeUrl(options: GetAuthorizationUrlOptions): Promise<string> {
-    console.warn('Deprecation warning: this `getAuthorizeUrl` method will be renamed in v3.');
-
-    const url = await this.createAuthorizeUrl(options);
-    const { serverConfig } = Config.get(options);
-
-    return new Promise((resolve, reject) => {
-      const iframe = document.createElement('iframe');
-
-      // Define these here to avoid linter warnings
-      const noop: Noop = () => {
-        return;
-      };
-      let onLoad: Noop = noop;
-      let cleanUp: Noop = noop;
-      let timeout = 0;
-
-      cleanUp = (): void => {
-        window.clearTimeout(timeout);
-        iframe.removeEventListener('load', onLoad);
-        iframe.remove();
-      };
-
-      onLoad = (): void => {
-        if (iframe.contentWindow) {
-          const newHref = iframe.contentWindow.location.href;
-          if (this.containsAuthCode(newHref)) {
-            cleanUp();
-            resolve(newHref);
-          } else if (this.containsAuthError(newHref)) {
-            cleanUp();
-            resolve(newHref);
-          }
-        }
-      };
-
-      timeout = window.setTimeout(() => {
-        cleanUp();
-        reject(new Error(allowedErrors.AuthorizationTimeout));
-      }, serverConfig.timeout);
-
-      iframe.style.display = 'none';
-      iframe.addEventListener('load', onLoad);
-      document.body.appendChild(iframe);
-      iframe.src = url;
-    });
-  }
 
   /**
    * Exchanges an authorization code for OAuth tokens.

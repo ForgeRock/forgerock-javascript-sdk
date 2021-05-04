@@ -124,23 +124,17 @@ abstract class TokenManager {
     try {
       let parsedUrl;
 
-      // Check expected browser support
-      if (support === 'legacy' || support === undefined) {
-        // To support legacy browsers, iframe works best with short timeout
-        parsedUrl = new URL(await OAuth2Client.getAuthorizeUrl(authorizeUrlOptions));
-      } else {
-        // Using modern `fetch` provides better redirect and error handling
-        // Downside is IE11 is not supported, *even* with the fetch polyfill
-        const response = await withTimeout(
-          fetch(authorizeUrl, {
-            credentials: 'include',
-            mode: 'cors',
-          }),
-          serverConfig.timeout,
-        );
+      // Using modern `fetch` provides better redirect and error handling
+      // Downside is IE11 is not supported, *even* with the fetch polyfill
+      const response = await withTimeout(
+        fetch(authorizeUrl, {
+          credentials: 'include',
+          mode: 'cors',
+        }),
+        serverConfig.timeout,
+      );
 
-        parsedUrl = new URL(response.url);
-      }
+      parsedUrl = new URL(response.url);
 
       // Throw if we have an error param or have no authorization code
       if (parsedUrl.searchParams.get('error')) {
