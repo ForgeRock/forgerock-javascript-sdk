@@ -21,7 +21,7 @@
 ### Breaking
 
 - WebAuthn's thrown error messaging text has been changed to align with spec, so check all conditionals comparing message strings.
-- Removed previously deprecated getAuthorizeUrl method.
+- Renamed getAuthorizeUrl method to getAuthCodeByIframe.
 - Removed createVerifier parameter.
 - Removal of `nonce` function.
 

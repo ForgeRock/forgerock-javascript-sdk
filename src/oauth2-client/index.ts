@@ -3,7 +3,7 @@
  *
  * index.ts
  *
- * Copyright (c) 2020 ForgeRock. All rights reserved.
+ * Copyright (c) 2020-2021 ForgeRock. All rights reserved.
  * This software may be modified and distributed under the terms
  * of the MIT license. See the LICENSE file for details.
  */
@@ -72,6 +72,60 @@ abstract class OAuth2Client {
     return url.toString();
   }
 
+  /**
+   * Calls the authorize URL with an iframe. If successful,
+   * it returns the callback URL with authentication code,
+   * optionally using PKCE.
+   * Method renamed in v3. 
+   * Original Name: getAuthorizeUrl
+   * New Name: getAuthCodeByIframe
+   */
+  public static async getAuthCodeByIframe(options: GetAuthorizationUrlOptions): Promise<string> {
+    
+    const url = await this.createAuthorizeUrl(options);
+    const { serverConfig } = Config.get(options);
+
+    return new Promise((resolve, reject) => {
+      const iframe = document.createElement('iframe');
+
+      // Define these here to avoid linter warnings
+      const noop: Noop = () => {
+        return;
+      };
+      let onLoad: Noop = noop;
+      let cleanUp: Noop = noop;
+      let timeout = 0;
+
+      cleanUp = (): void => {
+        window.clearTimeout(timeout);
+        iframe.removeEventListener('load', onLoad);
+        iframe.remove();
+      };
+
+      onLoad = (): void => {
+        if (iframe.contentWindow) {
+          const newHref = iframe.contentWindow.location.href;
+          if (this.containsAuthCode(newHref)) {
+            cleanUp();
+            resolve(newHref);
+          } else if (this.containsAuthError(newHref)) {
+            cleanUp();
+            resolve(newHref);
+          }
+        }
+      };
+
+      timeout = window.setTimeout(() => {
+        cleanUp();
+        reject(new Error(allowedErrors.AuthorizationTimeout));
+      }, serverConfig.timeout);
+
+      iframe.style.display = 'none';
+      iframe.addEventListener('load', onLoad);
+      document.body.appendChild(iframe);
+      iframe.src = url;
+    });
+  }
 
   /**
    * Exchanges an authorization code for OAuth tokens.
