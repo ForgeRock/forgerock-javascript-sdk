@@ -3,7 +3,7 @@
  *
  * index.ts
  *
- * Copyright (c) 2020 ForgeRock. All rights reserved.
+ * Copyright (c) 2020-2021 ForgeRock. All rights reserved.
  * This software may be modified and distributed under the terms
  * of the MIT license. See the LICENSE file for details.
  */
@@ -68,13 +68,11 @@ import TokenManager, { GetTokensOptions } from './token-manager';
 import TokenStorage from './token-storage';
 import UserManager from './user-manager';
 import Deferred from './util/deferred';
-import nonce from './util/nonce';
 import PKCE from './util/pkce';
 import LocalStorage from './util/storage';
 
 export {
   defaultMessageCreator,
-  nonce,
   AttributeInputCallback,
   Auth,
   AuthResponse,

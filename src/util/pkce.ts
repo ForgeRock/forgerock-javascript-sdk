@@ -3,7 +3,7 @@
  *
  * pkce.ts
  *
- * Copyright (c) 2020 ForgeRock. All rights reserved.
+ * Copyright (c) 2020-2021 ForgeRock. All rights reserved.
  * This software may be modified and distributed under the terms
  * of the MIT license. See the LICENSE file for details.
  */
@@ -23,11 +23,8 @@ abstract class PKCE {
   /**
    * Creates a random verifier.
    */
-  public static createVerifier(num?: number): string {
-    if (num) {
-      console.warn('Deprecation warning: the parameter for `createVerifier` will be removed in v3');
-    }
-    return this.createRandomString(num || 32);
+  public static createVerifier(): string {
+    return this.createRandomString(32);
   }
 
   /**

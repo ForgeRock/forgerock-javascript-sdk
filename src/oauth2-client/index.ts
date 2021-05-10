@@ -3,7 +3,7 @@
  *
  * index.ts
  *
- * Copyright (c) 2020 ForgeRock. All rights reserved.
+ * Copyright (c) 2020-2021 ForgeRock. All rights reserved.
  * This software may be modified and distributed under the terms
  * of the MIT license. See the LICENSE file for details.
  */
@@ -73,14 +73,14 @@ abstract class OAuth2Client {
   }
 
   /**
-   * DEPRECATED
    * Calls the authorize URL with an iframe. If successful,
    * it returns the callback URL with authentication code,
    * optionally using PKCE.
+   * Method renamed in v3.
+   * Original Name: getAuthorizeUrl
+   * New Name: getAuthCodeByIframe
    */
-  public static async getAuthorizeUrl(options: GetAuthorizationUrlOptions): Promise<string> {
-    console.warn('Deprecation warning: this `getAuthorizeUrl` method will be renamed in v3.');
-
+  public static async getAuthCodeByIframe(options: GetAuthorizationUrlOptions): Promise<string> {
     const url = await this.createAuthorizeUrl(options);
     const { serverConfig } = Config.get(options);
 

@@ -3,7 +3,7 @@
  *
  * index.ts
  *
- * Copyright (c) 2020 ForgeRock. All rights reserved.
+ * Copyright (c) 2020-2021 ForgeRock. All rights reserved.
  * This software may be modified and distributed under the terms
  * of the MIT license. See the LICENSE file for details.
  */
@@ -127,7 +127,7 @@ abstract class TokenManager {
       // Check expected browser support
       if (support === 'legacy' || support === undefined) {
         // To support legacy browsers, iframe works best with short timeout
-        parsedUrl = new URL(await OAuth2Client.getAuthorizeUrl(authorizeUrlOptions));
+        parsedUrl = new URL(await OAuth2Client.getAuthCodeByIframe(authorizeUrlOptions));
       } else {
         // Using modern `fetch` provides better redirect and error handling
         // Downside is IE11 is not supported, *even* with the fetch polyfill
