@@ -13,10 +13,10 @@
  */
 
 import 'fake-indexeddb/auto';
-import TokenStorage from '.';
-import { ConfigOptions } from '../config';
-import { Tokens } from '../shared/interfaces';
-import { DB_NAME, TOKEN_KEY } from './constants';
+import TokenStorage from '../../src/token-storage';
+import { ConfigOptions } from '../../src/config';
+import { Tokens } from '../../src/shared/interfaces';
+import { DB_NAME, TOKEN_KEY } from '../../src/token-storage/constants';
 
 const config: ConfigOptions = {
   clientId: 'mockClientId',

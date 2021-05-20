@@ -1,7 +1,6 @@
 const { exec } = require('child_process');
 const path = require('path');
 const TerserPlugin = require("terser-webpack-plugin");
-const TsConfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 const webpack = require('webpack');
 
 const banner = `
@@ -75,7 +74,6 @@ module.exports = (env) => {
     plugins,
     resolve: {
       extensions: ['.js', '.ts'],
-      plugins: [new TsConfigPathsPlugin()],
     },
     watch: isDev,
   };
