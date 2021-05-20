@@ -17,6 +17,7 @@
 
   const url = new URL(window.location.href);
   const amUrl = url.searchParams.get('amUrl') || 'https://auth.example.com:9443/am';
+  const preAuthenticated = url.searchParams.get('preAuthenticated') || 'true';
   const code = url.searchParams.get('code') || '';
   const clientId = url.searchParams.get('clientId') || 'CentralLoginOAuthClient';
   const realmPath = url.searchParams.get('realmPath') || 'root';
@@ -29,10 +30,13 @@
   forgerock.Config.set({
     clientId,
     realmPath,
-    redirectUri: `${url.origin}/_callback/`,
+    redirectUri: `${url.origin}/${
+      preAuthenticated === 'false' ? 'authn-central-login' : '_callback'
+    }/`,
     scope,
     serverConfig: {
       baseUrl: amUrl,
+      timeout: 5000,
     },
     support,
   });
@@ -50,13 +54,15 @@
       .from([1])
       .pipe(
         rxMap(() => {
-          console.log('Set mock cookie to represent existing session');
-          document.cookie = 'iPlanetDirectoryPro=abcd1234; domain=example.com; path=/';
-          if (code && state) {
-            window.sessionStorage.setItem(
-              clientId,
-              JSON.stringify({ responseType: 'code', state, verifier: '1234' }),
-            );
+          if (preAuthenticated === 'true') {
+            console.log('Set mock cookie to represent existing session');
+            document.cookie = 'iPlanetDirectoryPro=abcd1234; domain=example.com; path=/';
+            if (code && state) {
+              window.sessionStorage.setItem(
+                clientId,
+                window.btoa(JSON.stringify({ responseType: 'code', state, verifier: '1234' })),
+              );
+            }
           }
           return;
         }),
@@ -65,9 +71,15 @@
           console.log('Get OAuth tokens');
           let tokens;
           if (code && state) {
-            tokens = forgerock.TokenManager.getTokens({ query: { code, state, acr_values } });
+            tokens = forgerock.TokenManager.getTokens({
+              login: 'redirect',
+              query: { code, state, acr_values },
+            });
           } else {
-            tokens = forgerock.TokenManager.getTokens({ query: { acr_values } });
+            tokens = forgerock.TokenManager.getTokens({
+              login: 'redirect',
+              query: { acr_values, query_type: 'hidden' },
+            });
           }
           return tokens;
         }),

@@ -293,9 +293,26 @@ export default function (app) {
       url.searchParams.set('iss', `${AM_URL}/oauth2`);
       url.searchParams.set('state', req.query.state);
       res.redirect(url);
+    } else if (req.headers.accept.includes('html')) {
+      const url = new URL(`${req.protocol}://${req.headers.host}/login`);
+      url.searchParams.set('client_id', req.query.client_id);
+      url.searchParams.set('acr_values', req.query.acr_values);
+      url.searchParams.set('redirect_uri', req.query.redirect_uri);
+      url.searchParams.set('state', req.query.state);
+      res.redirect(url);
     } else {
-      res.redirect('/login');
+      res.status(401).send('Unauthorized');
     }
+  });
+
+  app.get('/login', async (req, res) => {
+    res.cookie('iPlanetDirectoryPro', 'abcd1234', { domain: 'example.com' });
+    const url = new URL(`${req.protocol}://${req.headers.host}${authPaths.authorize[1]}`);
+    url.searchParams.set('client_id', req.query.client_id);
+    url.searchParams.set('acr_values', req.query.acr_values);
+    url.searchParams.set('redirect_uri', req.query.redirect_uri);
+    url.searchParams.set('state', req.query.state);
+    res.redirect(url);
   });
 
   app.get('/callback', async (req, res) => {
@@ -334,6 +351,7 @@ export default function (app) {
           res.status(406).send('Middleware header is missing.');
         }
       } else {
+        res.clearCookie('iPlanetDirectoryPro', { domain: 'example.com', path: '/' });
         res.status(204).send();
       }
     }

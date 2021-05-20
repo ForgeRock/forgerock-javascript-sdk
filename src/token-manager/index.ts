@@ -104,7 +104,11 @@ abstract class TokenManager {
     if (options?.query?.code && options?.query?.state) {
       const storedString = window.sessionStorage.getItem(clientId as string);
       window.sessionStorage.removeItem(clientId as string);
-      const storedValues: { state: string; verifier: string } = JSON.parse(storedString as string);
+
+      const decodedAuthorizeUrlOptions = window.atob(storedString || '');
+      const storedValues: { state: string; verifier: string } = JSON.parse(
+        decodedAuthorizeUrlOptions as string,
+      );
 
       return await this.tokenExchange(options, storedValues);
     }
@@ -177,7 +181,8 @@ abstract class TokenManager {
       }
 
       // Since `login` is configured for "redirect", store authorize values and redirect
-      window.sessionStorage.setItem(clientId as string, JSON.stringify(authorizeUrlOptions));
+      const encodedAuthorizeUrlOptions = window.btoa(JSON.stringify(authorizeUrlOptions));
+      window.sessionStorage.setItem(clientId as string, encodedAuthorizeUrlOptions);
       return window.location.assign(authorizeUrl);
     }
 
