@@ -60,7 +60,7 @@
             if (code && state) {
               window.sessionStorage.setItem(
                 clientId,
-                window.btoa(JSON.stringify({ responseType: 'code', state, verifier: '1234' })),
+                JSON.stringify({ responseType: 'code', state, verifier: '1234' }),
               );
             }
           }
@@ -78,7 +78,7 @@
           } else {
             tokens = forgerock.TokenManager.getTokens({
               login: 'redirect',
-              query: { acr_values, query_type: 'hidden' },
+              query: { acr_values },
             });
           }
           return tokens;
