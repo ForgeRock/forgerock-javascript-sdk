@@ -9,6 +9,11 @@
  */
 
 /**
+ * Import forgerock for consistent transpilation for IE
+ */
+import * as forgerock from '../../../../lib-esm/index';
+
+/**
  * Polyfills and patches necessary for IE11
  */
 // Patches Promise, URL, Object.assign, Array methods and more ...
@@ -76,7 +81,7 @@ forgerock.Config.set({
   scope: 'openid profile me.read',
   tree: 'Registration', // Don't forget to config your login tree above
   serverConfig: {
-    baseUrl: 'https://default.iam.example.com:51927/am',
+    baseUrl: 'https://default.forgeops.petrov.ca/am/',
   },
 });
 
@@ -173,8 +178,8 @@ forgerock.Config.set({
   step = await forgerock.FRAuth.next(null, { tree: loginTree });
 
   console.log('Set values on auth tree callbacks');
-  step.getCallbackOfType('ValidatedCreateUsernameCallback').setName(un);
-  step.getCallbackOfType('ValidatedCreatePasswordCallback').setPassword(pw);
+  step.getCallbackOfType('NameCallback').setName(un);
+  step.getCallbackOfType('PasswordCallback').setPassword(pw);
   step = await forgerock.FRAuth.next(step);
 
   if (!step.payload.code) {
