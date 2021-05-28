@@ -4,27 +4,29 @@
 
 ### Added
 
-- Native Social Login callbacks for Identity Providers Google, Apple and Facebook
+- "Native" Social Login callbacks for both the original AM nodes in 6.5 and the new IDM nodes in 7.0
+- SDK Social Login feature officially supports Apple, Facebook and Google
 - New `FRAuth` methods for handing redirection to provider and resuming an authentication journey
-  - `FRAuth.resume` supports both return from an IdP and returning from Email Suspend node
+    - `FRAuth.redirect` for redirecting to an Identity Provider for authentication
+    - `FRAuth.resume` supports both return from an IdP and returning from Email Suspend node
 - New `FRAuth.start` method that aliases `FRAuth.next` to align native mobile SDKs
-- E2E test pages now have react to your OS's dark mode setting
+- E2E test pages will now follow to your OS's dark mode setting
 
 ### Fixed
 
-- Arbitrary query parameters now passed along to authorize URL creation
+- Arbitrary query parameters are now passed along through to the `/authorize` endpoint supporting the use of ACR values for tree specificity
 - Fixed build issue when using Windows PowerShell
-- WebAuthn error handling is not standardized according to the WebAuthn spec
-- When WebAuthn encounters an error, it formats is appropriately and injects it into the hiddenCallback, allowing the developer to just send to AM or handle it specially(error is still thrown).
-- Changed the default behaviour in case of unidentified storage, to be the localStorage option.
+- WebAuthn error handling is now standardized according to the WebAuthn spec
+- When WebAuthn encounters an error, it formats it appropriately for AM and injects it into the hiddenCallback, allowing the developer to just send to AM or handle it specially when catching the thrown error
+- Changed the default behavior in case of unidentified storage, to be the localStorage option
 - Increased timeout (20 to 60 seconds) for E2E tests to avoid pure timeout failures
 
 ### Breaking
 
-- WebAuthn's thrown error messaging text has been changed to align with spec, so check all conditionals comparing message strings.
-- Renamed getAuthorizeUrl method to getAuthCodeByIframe.
-- Removed createVerifier parameter.
-- Removal of `nonce` function.
+- WebAuthn's thrown error message text has been changed to align with spec, so check all conditionals comparing error message strings
+- Renamed `getAuthorizeUrl` method to `getAuthCodeByIframe`
+- Removed the single parameter from `createVerifier` function
+- Removal of `nonce` function
 
 ## [2.2.0] - 2020-12-18
 
