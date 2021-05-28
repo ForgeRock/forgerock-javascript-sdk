@@ -17,7 +17,7 @@
 - Arbitrary query parameters are now passed along through to the `/authorize` endpoint supporting the use of ACR values for tree specificity
 - Fixed build issue when using Windows PowerShell
 - WebAuthn error handling is now standardized according to the WebAuthn spec
-- When WebAuthn encounters an error, it formats it appropriately for AM and injects it into the hiddenCallback, allowing the developer to just send to AM or handle it specially when catching the thrown error
+- When WebAuthn encounters an error, the SDK now formats the error appropriately for AM and sets it into the hiddenValueCallback; this allows the developer to just send it to AM "as is" or handle it specially when catching the thrown error
 - Changed the default behavior in case of unidentified storage, to be the localStorage option
 - Increased timeout (20 to 60 seconds) for E2E tests to avoid pure timeout failures
 
