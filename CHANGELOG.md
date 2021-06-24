@@ -1,6 +1,6 @@
 # Changelog
 
-## [Unreleased]
+## [3.0.0] - 2021-6-24
 
 ### Added
 
@@ -10,7 +10,7 @@
     - `FRAuth.redirect` for redirecting to an Identity Provider for authentication
     - `FRAuth.resume` supports both return from an IdP and returning from Email Suspend node
 - New `FRAuth.start` method that aliases `FRAuth.next` to align native mobile SDKs
-- E2E test pages will now follow to your OS's dark mode setting
+- E2E test pages will now follow your OS's dark mode setting
 
 ### Fixed
 
