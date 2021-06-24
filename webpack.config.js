@@ -1,4 +1,5 @@
 const { exec } = require('child_process');
+const CopyPlugin = require("copy-webpack-plugin");
 const path = require('path');
 const TerserPlugin = require("terser-webpack-plugin");
 const webpack = require('webpack');
@@ -19,11 +20,24 @@ module.exports = (env) => {
   const plugins = [
     new webpack.WatchIgnorePlugin({ paths: [/bundles|docs|lib|lib\-esm|samples/] }),
     new webpack.BannerPlugin({ banner }),
+    new CopyPlugin({
+      // Copy and rename non-built config files
+      patterns: [
+        {
+          from: 'tests/e2e/env.config.ts',
+          to: '../tests/e2e/server/env.config.copy.mjs',
+          force: true,
+          toType: 'file',
+          // minimized with value true doesn't minimize; yup, you read that right
+          info: { minimized: true },
+        },
+      ],
+    }),
     {
       apply: (compiler) => {
+        // Copy built files
         compiler.hooks.afterEmit.tap('AfterEmitPlugin', (compilation) => {
           const cmds = [
-            'cpy ./tests/e2e/env.config.ts ./tests/e2e/server --rename=env.config.copy.mjs',
             'copyfiles -u 1 "./bundles/index.js*" ./tests/e2e/app/',
             'copyfiles -u 1 "./bundles/index.js*" ./samples/_static/js/',
           ];

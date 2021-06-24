@@ -37,18 +37,25 @@
     // Do nothing
   }
 
-  console.log('Initiate first step with `undefined`');
+  // Needed for testing WebAuthn on Safari due to user event needed
+  console.log('Click the login button!');
+  const loginBtn = document.querySelector('.login-btn');
   rxjs
-    .from(forgerock.FRAuth.next())
+    .fromEvent(loginBtn, 'click')
     .pipe(
+      rxMergeMap(() => {
+        console.log('Initiate first step with `undefined`');
+        return forgerock.FRAuth.next();
+      }),
+      rxjs.operators.delay(delay),
       rxMergeMap((step) => {
-        console.log('Set values on auth tree callbacks');
+        console.log('Set username on auth tree callback');
         step.getCallbackOfType('NameCallback').setName(un);
         return forgerock.FRAuth.next(step);
       }),
       rxjs.operators.delay(delay),
       rxMergeMap((step) => {
-        console.log('Provide Password');
+        console.log('Set password on auth tree callback');
         step.getCallbackOfType('PasswordCallback').setPassword(pw);
         return forgerock.FRAuth.next(step);
       }),
@@ -110,12 +117,20 @@
       rxMap((response) => {
         if (response.ok) {
           console.log('Logout successful.');
-          document.body.innerHTML = '<p class="Logged_Out">Logout successful</p>';
+          document.body.innerHTML =
+            '<p class="Logged_Out">Logout successful</p>' +
+            '<button class="continue-btn">Continue</button>';
         } else {
           throw new Error('Logout_Error');
         }
       }),
       rxjs.operators.delay(delay),
+      rxMergeMap(() => {
+        // Needed for testing WebAuthn on Safari due to user event needed
+        console.log('Click the continue button!');
+        const continueBtn = document.querySelector('.continue-btn');
+        return rxjs.fromEvent(continueBtn, 'click');
+      }),
       rxMergeMap(() => {
         console.log('Log back in with WebAuthn');
         return forgerock.FRAuth.next();
