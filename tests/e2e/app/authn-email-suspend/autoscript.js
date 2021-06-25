@@ -20,7 +20,7 @@
   const amUrl = url.searchParams.get('amUrl') || 'https://auth.example.com:9443/am';
   const realmPath = url.searchParams.get('realmPath') || 'root';
   const tree = url.searchParams.get('tree') || 'LoginWithEmail';
-  const un = url.searchParams.get('un') || '57a5b4e4-6999-4b45-bf86-a4f2e5d4b629';
+  const un = url.searchParams.get('un') || 'sdkuser';
 
   console.log('Configure the SDK');
   forgerock.Config.set({
@@ -63,13 +63,21 @@
         rxjs.operators.delay(delay),
         rxMergeMap(() => {
           console.log('Collect Suspended ID');
-          const id = window.prompt('What is your suspended ID?');
-          return forgerock.FRAuth.next(null, {
-            query: {
-              suspendedId: id,
-            },
-            realmPath: realmPath,
-          });
+          // Tester can add a predefined/mock suspendedId to the URL
+          // Or, tester can add a real suspendedId from AM using the prompt element
+          if (window.location.href.includes('suspendedId')) {
+            return forgerock.FRAuth.resume(window.location.href, {
+              realmPath: realmPath,
+            });
+          } else {
+            const id = window.prompt('What is your suspended ID?');
+            return forgerock.FRAuth.next(null, {
+              query: {
+                suspendedId: id,
+              },
+              realmPath: realmPath,
+            });
+          }
         }),
         rxjs.operators.delay(delay),
         rxMap(

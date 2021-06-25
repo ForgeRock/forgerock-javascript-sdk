@@ -13,10 +13,24 @@ enum WebAuthnOutcome {
   Unsupported = 'unsupported',
 }
 
+enum WebAuthnOutcomeType {
+  AbortError = 'AbortError',
+  DataError = 'DataError',
+  ConstraintError = 'ConstraintError',
+  EncodingError = 'EncodingError',
+  InvalidError = 'InvalidError',
+  NetworkError = 'NetworkError',
+  NotAllowedError = 'NotAllowedError',
+  NotSupportedError = 'NotSupportedError',
+  SecurityError = 'SecurityError',
+  TimeoutError = 'TimeoutError',
+  UnknownError = 'UnknownError',
+}
+
 enum WebAuthnStepType {
   None = 0,
   Authentication = 1,
   Registration = 2,
 }
 
-export { WebAuthnOutcome, WebAuthnStepType };
+export { WebAuthnOutcome, WebAuthnOutcomeType, WebAuthnStepType };

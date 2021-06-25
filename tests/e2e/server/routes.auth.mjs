@@ -16,6 +16,7 @@ import {
   authFail,
   authSuccess,
   emailSuspend,
+  idpChoiceCallback,
   initialBasicLogin,
   initialLoginWithEmailResponse,
   initialMiscCallbacks,
@@ -26,9 +27,11 @@ import {
   messageCallback,
   noSessionSuccess,
   pollingCallback,
+  redirectCallback,
   requestDeviceProfile,
   secondFactorCallback,
   secondFactorChoiceCallback,
+  selectIdPCallback,
   userInfo,
 } from './responses.mjs';
 import initialRegResponse from './response.registration.mjs';
@@ -53,10 +56,15 @@ export default function (app) {
         res.json(initialRegResponse);
       } else if (req.query.authIndexValue === 'LoginWithEmail') {
         if (typeof req.query.suspendedId === 'string' && req.query.suspendedId.length) {
+          res.cookie('iPlanetDirectoryPro', 'abcd1234', { domain: 'example.com' });
           res.json(authSuccess);
         } else {
           res.json(initialLoginWithEmailResponse);
         }
+      } else if (req.query.authIndexValue === 'IDMSocialLogin') {
+        res.json(selectIdPCallback);
+      } else if (req.query.authIndexValue === 'AMSocialLogin') {
+        res.json(idpChoiceCallback);
       } else {
         res.json(initialBasicLogin);
       }
@@ -92,6 +100,7 @@ export default function (app) {
           res.json(pollingCallback);
         }
       } else if (req.body.callbacks.find((cb) => cb.type === 'PollingCallback')) {
+        res.cookie('iPlanetDirectoryPro', 'abcd1234', { domain: 'example.com' });
         res.json(authSuccess);
       } else {
         res.json(authFail);
@@ -134,6 +143,7 @@ export default function (app) {
         kba2.input[1].value === 'AAA Engineering' &&
         terms.input[0].value === true
       ) {
+        res.cookie('iPlanetDirectoryPro', 'abcd1234', { domain: 'example.com' });
         res.json(authSuccess);
       } else {
         res.status(401).json(authFail);
@@ -148,7 +158,40 @@ export default function (app) {
         if (pwCb.input[0].value !== 'abc123') {
           res.status(401).json(authFail);
         } else {
+          res.cookie('iPlanetDirectoryPro', 'abcd1234', { domain: 'example.com' });
           res.json(authSuccess);
+        }
+      }
+    } else if (req.query.authIndexValue === 'IDMSocialLogin') {
+      if (req.body.callbacks.find((cb) => cb.type === 'SelectIdPCallback')) {
+        const idPCb = req.body.callbacks.find((cb) => cb.type === 'SelectIdPCallback');
+        if (idPCb.input[0].value !== 'google') {
+          res.status(401).json(authFail);
+        } else {
+          res.json(redirectCallback);
+        }
+      } else if (req.body.callbacks.find((cb) => cb.type === 'RedirectCallback')) {
+        if (req.body.authId && req.query.code && req.query.state) {
+          res.cookie('iPlanetDirectoryPro', 'abcd1234', { domain: 'example.com' });
+          res.json(authSuccess);
+        } else {
+          res.status(401).json(authFail);
+        }
+      }
+    } else if (req.query.authIndexValue === 'AMSocialLogin') {
+      if (req.body.callbacks.find((cb) => cb.type === 'ChoiceCallback')) {
+        const idPCb = req.body.callbacks.find((cb) => cb.type === 'ChoiceCallback');
+        if (idPCb.input[0].value !== 0) {
+          res.status(401).json(authFail);
+        } else {
+          res.json(redirectCallback);
+        }
+      } else if (req.body.callbacks.find((cb) => cb.type === 'RedirectCallback')) {
+        if (req.body.authId && req.query.code && req.query.state) {
+          res.cookie('iPlanetDirectoryPro', 'abcd1234', { domain: 'example.com' });
+          res.json(authSuccess);
+        } else {
+          res.status(401).json(authFail);
         }
       }
     } else if (req.body.callbacks.find((cb) => cb.type === 'PasswordCallback')) {
@@ -224,7 +267,25 @@ export default function (app) {
     res.json(tokens);
   });
 
+  app.get(authPaths.accounts, wait, async (req, res) => {
+    const referrer = new URL(req.get('Referer'));
+    const additionalQueryParams =
+      // eslint-disable-next-line max-len
+      'state=rtu8pz65dbg6baw985d532myfbbnf5v&code=4%2F0AY0e-g5vHGhzfggdAuIofxnblW-iR1Y30G5lN5RvbrU8Zv5ZmtUVheTzSX7YMJF_usbzUA&scope=email+profile+openid+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile&authuser=0&hd=forgerock.com&prompt=none';
+    const redirectUrl = `${referrer.href}${
+      referrer.href.includes('?') ? '&' : '?'
+    }${additionalQueryParams}`;
+    res.redirect(redirectUrl);
+  });
+
   app.get(authPaths.authorize, wait, async (req, res) => {
+    // Detect if Central Login to enforce ACR value presence
+    if (
+      req.query.client_id === 'CentralLoginOAuthClient' &&
+      req.query.acr_values !== 'SpecificTree'
+    ) {
+      return res.status(400).json({ message: 'acr_values did not match "SpecificTree"' });
+    }
     if (req.cookies.iPlanetDirectoryPro) {
       const url = new URL(`${req.query.redirect_uri}`);
       url.searchParams.set('client_id', 'bar');
@@ -232,9 +293,26 @@ export default function (app) {
       url.searchParams.set('iss', `${AM_URL}/oauth2`);
       url.searchParams.set('state', req.query.state);
       res.redirect(url);
+    } else if (req.headers.accept.includes('html')) {
+      const url = new URL(`${req.protocol}://${req.headers.host}/login`);
+      url.searchParams.set('client_id', req.query.client_id);
+      url.searchParams.set('acr_values', req.query.acr_values);
+      url.searchParams.set('redirect_uri', req.query.redirect_uri);
+      url.searchParams.set('state', req.query.state);
+      res.redirect(url);
     } else {
-      res.redirect('/login');
+      res.status(401).send('Unauthorized');
     }
+  });
+
+  app.get('/login', async (req, res) => {
+    res.cookie('iPlanetDirectoryPro', 'abcd1234', { domain: 'example.com' });
+    const url = new URL(`${req.protocol}://${req.headers.host}${authPaths.authorize[1]}`);
+    url.searchParams.set('client_id', req.query.client_id);
+    url.searchParams.set('acr_values', req.query.acr_values);
+    url.searchParams.set('redirect_uri', req.query.redirect_uri);
+    url.searchParams.set('state', req.query.state);
+    res.redirect(url);
   });
 
   app.get('/callback', async (req, res) => {
@@ -273,6 +351,7 @@ export default function (app) {
           res.status(406).send('Middleware header is missing.');
         }
       } else {
+        res.clearCookie('iPlanetDirectoryPro', { domain: 'example.com', path: '/' });
         res.status(204).send();
       }
     }

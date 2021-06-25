@@ -1,0 +1,218 @@
+This project uses the following third party libraries:
+
+@types/jest
+-----------------------
+TypeScript type definitions for Jest
+
+- Project: https://github.com/DefinitelyTyped/DefinitelyTyped
+- License: https://github.com/DefinitelyTyped/DefinitelyTyped/blob/master/LICENSE
+
+@typescript-eslint/eslint-plugin
+-----------------------
+TypeScript plugin for ESLint
+
+- Project: https://github.com/typescript-eslint/typescript-eslint
+- License: https://github.com/typescript-eslint/typescript-eslint#license
+
+@typescript-eslint/parser
+-----------------------
+TypeScript parser for ESLint
+
+- Project: https://github.com/typescript-eslint/typescript-eslint
+- License: https://github.com/typescript-eslint/typescript-eslint#license
+
+@typescript-eslint/typescript-estree
+-----------------------
+TypeScript utility for ESLint
+
+- Project: https://github.com/typescript-eslint/typescript-eslint
+- License: https://github.com/typescript-eslint/typescript-eslint#license
+
+bootstrap
+-----------------------
+CSS framework for easy prototyping
+
+- Project: https://github.com/twbs/bootstrap
+- License: https://github.com/twbs/bootstrap/blob/main/LICENSE
+
+cookie-parser
+-----------------------
+Provides a cookie parsing capability for mock server's Node.js Express framework
+
+- Project: https://github.com/expressjs/cookie-parser
+- License: https://github.com/expressjs/cookie-parser/blob/master/LICENSE
+
+copyfiles
+-----------------------
+Copy files on the command line
+
+- Project: https://github.com/calvinmetcalf/copyfiles
+- License: https://github.com/calvinmetcalf/copyfiles/blob/master/license.md
+
+cors
+-----------------------
+Provides a CORS support for mock server's Node.js Express framework
+
+- Project: https://github.com/expressjs/cors
+- License: https://github.com/expressjs/cors/blob/master/LICENSE
+
+cpy-cli
+-----------------------
+Node helper for copying files
+
+- Project: https://github.com/sindresorhus/cpy-cli
+- License: https://github.com/sindresorhus/cpy-cli/blob/main/license
+
+eslint
+-----------------------
+Find and fix problems in your JavaScript code
+
+- Project: https://github.com/eslint/eslint
+- License: https://github.com/eslint/eslint/blob/master/LICENSE
+
+eslint-config-prettier
+-----------------------
+Turns off all rules that are unnecessary or might conflict with Prettier
+
+- Project: https://github.com/prettier/eslint-config-prettier
+- License: https://github.com/prettier/eslint-config-prettier/blob/main/LICENSE
+
+eslint-plugin-prettier
+-----------------------
+ESLint plugin for Prettier formatting
+
+- Project: https://github.com/prettier/eslint-plugin-prettier
+- License: https://github.com/prettier/eslint-plugin-prettier/blob/master/LICENSE.md
+
+express
+-----------------------
+Node.js Express framework for mock server
+
+- Project:https://github.com/expressjs/express
+- License: https://github.com/expressjs/express/blob/master/LICENSE
+
+husky
+-----------------------
+Modern native Git hooks made easy
+
+- Project: https://github.com/typicode/husky
+- License: https://github.com/typicode/husky/blob/main/LICENSE
+
+jest
+-----------------------
+Delightful JavaScript Testing
+
+- Project: https://github.com/facebook/jest
+- License: https://github.com/facebook/jest/blob/master/LICENSE
+
+jest-canvas-mock
+-----------------------
+Plugin for Jest allowing a mocking of the DOM's canvas
+
+- Project: https://github.com/hustcc/jest-canvas-mock
+- License: https://github.com/hustcc/jest-canvas-mock#license
+
+jest-dev-server
+-----------------------
+A subcomponent of `jest-puppeteer` for allowing better dev server management with Jest
+
+- Project: https://github.com/smooth-code/jest-puppeteer
+- License: https://github.com/smooth-code/jest-puppeteer/blob/master/LICENSE
+
+jest-environment-jsdom
+-----------------------
+A subcomponent of Jest allowing the mocking of the DOM
+
+- Project: https://github.com/facebook/jest
+- License: https://github.com/facebook/jest/blob/master/LICENSE
+
+jest-junit
+-----------------------
+A Jest reporter that creates compatible junit xml files
+
+- Project: https://github.com/jest-community/jest-junit
+- License: https://github.com/jest-community/jest-junit/blob/master/LICENSE
+
+local-web-server
+-----------------------
+A simple web server for testing and sample app
+
+- Project:https://github.com/lwsjs/local-web-server
+- License: https://github.com/lwsjs/local-web-server/blob/master/LICENSE
+
+playwright
+-----------------------
+Web page testing automation framework
+
+- Project: https://github.com/microsoft/playwright-test
+- License: https://github.com/microsoft/playwright-test/blob/master/LICENSE
+
+prettier
+-----------------------
+Prettier is an opinionated code formatter
+
+- Project: https://github.com/prettier/prettier
+- License: https://github.com/prettier/prettier/blob/main/LICENSE
+
+shx
+-----------------------
+Portable Shell Commands for Node
+
+- Project: https://github.com/shelljs/shx
+- License: https://github.com/shelljs/shx/blob/master/LICENSE
+
+ts-jest
+-----------------------
+A Jest transformer that lets you use Jest to test projects written in TypeScript
+
+- Project: https://github.com/kulshekhar/ts-jest
+- License: https://github.com/kulshekhar/ts-jest/blob/master/LICENSE.md
+
+ts-loader
+-----------------------
+TypeScript loader for webpack
+
+- Project: https://github.com/TypeStrong/ts-loader
+- License: https://github.com/TypeStrong/ts-loader/blob/main/LICENSE
+
+typedoc
+-----------------------
+Documentation generator for TypeScript projects
+
+- Project: https://github.com/TypeStrong/typedoc
+- License: https://github.com/TypeStrong/typedoc/blob/master/LICENSE
+
+typescript
+-----------------------
+A compile to JavaScript type safe language
+
+- Project: https://github.com/microsoft/TypeScript
+- License: https://github.com/microsoft/TypeScript/blob/master/LICENSE.txt
+
+util
+-----------------------
+Node.js module for helpful utility functions
+
+- Project: https://github.com/browserify/node-util
+- License: https://github.com/browserify/node-util/blob/master/LICENSE
+
+uuid
+-----------------------
+Node.js module for generating UUIDs
+
+- Project: https://github.com/uuidjs/uuid
+- License: https://github.com/uuidjs/uuid/blob/master/LICENSE.md
+
+webpack
+-----------------------
+Bundling tool for modular JavaScript
+
+- Project: https://github.com/webpack/webpack
+- License: https://github.com/webpack/webpack/blob/master/LICENSE
+
+webpack-cli
+-----------------------
+CLI extension to Webpack
+
+- Project: https://github.com/webpack/webpack-cli
+- License: https://github.com/webpack/webpack-cli/blob/master/LICENSE

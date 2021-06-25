@@ -3,7 +3,7 @@
  *
  * token-storage.test.ts
  *
- * Copyright (c) 2020 ForgeRock. All rights reserved.
+ * Copyright (c) 2020-2021 ForgeRock. All rights reserved.
  * This software may be modified and distributed under the terms
  * of the MIT license. See the LICENSE file for details.
  */
@@ -13,13 +13,14 @@
  */
 
 import 'fake-indexeddb/auto';
-import TokenStorage from '.';
-import { ConfigOptions } from '../config';
-import { Tokens } from '../shared/interfaces';
-import { DB_NAME, TOKEN_KEY } from './constants';
+import TokenStorage from '../../src/token-storage';
+import { ConfigOptions } from '../../src/config';
+import { Tokens } from '../../src/shared/interfaces';
+import { DB_NAME, TOKEN_KEY } from '../../src/token-storage/constants';
 
 const config: ConfigOptions = {
   clientId: 'mockClientId',
+  tokenStore: 'indexedDB',
 };
 
 const testTokensOne: Tokens = {

@@ -12,7 +12,7 @@ import { CallbackType } from '../auth/enums';
 import HiddenValueCallback from '../fr-auth/callbacks/hidden-value-callback';
 import MetadataCallback from '../fr-auth/callbacks/metadata-callback';
 import FRStep from '../fr-auth/fr-step';
-import { WebAuthnOutcome, WebAuthnStepType } from './enums';
+import { WebAuthnOutcome, WebAuthnOutcomeType, WebAuthnStepType } from './enums';
 import {
   arrayBufferToString,
   parseCredentials,
@@ -106,13 +106,22 @@ abstract class FRWebAuthn {
         const credential = await this.getAuthenticationCredential(publicKey);
         outcome = this.getAuthenticationOutcome(credential);
       } catch (error) {
-        throw new Error(`WebAuthn: ${error.message}`);
+        // NotSupportedError is a special case
+        if (error.name === WebAuthnOutcomeType.NotSupportedError) {
+          hiddenCallback.setInputValue(WebAuthnOutcome.Unsupported);
+          throw error;
+        }
+        hiddenCallback.setInputValue(`${WebAuthnOutcome.Error}::${error.name}:${error.message}`);
+        throw error;
       }
 
       hiddenCallback.setInputValue(outcome);
       return step;
     } else {
-      throw new Error('WebAuthn: Invalid payload');
+      const e = new Error('Incorrect callbacks for WebAuthn authentication');
+      e.name = WebAuthnOutcomeType.DataError;
+      hiddenCallback?.setInputValue(`${WebAuthnOutcome.Error}::${e.name}:${e.message}`);
+      throw e;
     }
   }
 
@@ -141,13 +150,22 @@ abstract class FRWebAuthn {
         const credential = await this.getRegistrationCredential(publicKey);
         outcome = this.getRegistrationOutcome(credential);
       } catch (error) {
-        throw new Error(`WebAuthn: ${error.message}`);
+        // NotSupportedError is a special case
+        if (error.name === WebAuthnOutcomeType.NotSupportedError) {
+          hiddenCallback.setInputValue(WebAuthnOutcome.Unsupported);
+          throw error;
+        }
+        hiddenCallback.setInputValue(`${WebAuthnOutcome.Error}::${error.name}:${error.message}`);
+        throw error;
       }
 
       hiddenCallback.setInputValue(outcome);
       return step;
     } else {
-      throw new Error('WebAuthn: Invalid payload');
+      const e = new Error('Incorrect callbacks for WebAuthn registration');
+      e.name = WebAuthnOutcomeType.DataError;
+      hiddenCallback?.setInputValue(`${WebAuthnOutcome.Error}::${e.name}:${e.message}`);
+      throw e;
     }
   }
 
@@ -224,6 +242,12 @@ abstract class FRWebAuthn {
   public static async getAuthenticationCredential(
     options: PublicKeyCredentialRequestOptions,
   ): Promise<PublicKeyCredential | null> {
+    // Feature check before we attempt registering a device
+    if (!window.PublicKeyCredential) {
+      const e = new Error('PublicKeyCredential not supported by this browser');
+      e.name = WebAuthnOutcomeType.NotSupportedError;
+      throw e;
+    }
     const credential = await navigator.credentials.get({ publicKey: options });
     return credential as PublicKeyCredential;
   }
@@ -235,15 +259,13 @@ abstract class FRWebAuthn {
    * @return The outcome string
    */
   public static getAuthenticationOutcome(credential: PublicKeyCredential | null): string {
-    if (!window.PublicKeyCredential) {
-      return WebAuthnOutcome.Unsupported;
+    if (credential === null) {
+      const e = new Error('No credential generated from authentication');
+      e.name = WebAuthnOutcomeType.UnknownError;
+      throw e;
     }
 
     try {
-      if (credential === null) {
-        throw new Error('WebAuthn: No credential provided');
-      }
-
       const clientDataJSON = arrayBufferToString(credential.response.clientDataJSON);
       const assertionResponse = credential.response as AuthenticatorAssertionResponse;
       const authenticatorData = new Int8Array(assertionResponse.authenticatorData).toString();
@@ -261,7 +283,9 @@ abstract class FRWebAuthn {
       }
       return stringOutput;
     } catch (error) {
-      throw new Error(error.message);
+      const e = new Error('Transforming credential object to string failed');
+      e.name = WebAuthnOutcomeType.EncodingError;
+      throw e;
     }
   }
 
@@ -274,6 +298,12 @@ abstract class FRWebAuthn {
   public static async getRegistrationCredential(
     options: PublicKeyCredentialCreationOptions,
   ): Promise<PublicKeyCredential | null> {
+    // Feature check before we attempt registering a device
+    if (!window.PublicKeyCredential) {
+      const e = new Error('PublicKeyCredential not supported by this browser');
+      e.name = WebAuthnOutcomeType.NotSupportedError;
+      throw e;
+    }
     const credential = await navigator.credentials.create({ publicKey: options });
     return credential as PublicKeyCredential;
   }
@@ -285,21 +315,21 @@ abstract class FRWebAuthn {
    * @return The outcome string
    */
   public static getRegistrationOutcome(credential: PublicKeyCredential | null): string {
-    if (!window.PublicKeyCredential) {
-      return WebAuthnOutcome.Unsupported;
+    if (credential === null) {
+      const e = new Error('No credential generated from registration');
+      e.name = WebAuthnOutcomeType.UnknownError;
+      throw e;
     }
 
     try {
-      if (credential === null) {
-        throw new Error('No credential provided');
-      }
-
       const clientDataJSON = arrayBufferToString(credential.response.clientDataJSON);
       const attestationResponse = credential.response as AuthenticatorAttestationResponse;
       const attestationObject = new Int8Array(attestationResponse.attestationObject).toString();
       return `${clientDataJSON}::${attestationObject}::${credential.id}`;
     } catch (error) {
-      throw new Error(error.message);
+      const e = new Error('Transforming credential object to string failed');
+      e.name = WebAuthnOutcomeType.EncodingError;
+      throw e;
     }
   }
 
@@ -346,8 +376,10 @@ abstract class FRWebAuthn {
   ): PublicKeyCredentialCreationOptions {
     const { pubKeyCredParams: pubKeyCredParamsString } = metadata;
     const pubKeyCredParams = parsePubKeyArray(pubKeyCredParamsString);
-    if (!pubKeyCredParams || !pubKeyCredParams.length) {
-      throw new Error('Missing pubKeyCredParams');
+    if (!pubKeyCredParams) {
+      const e = new Error('Missing pubKeyCredParams property from registration options');
+      e.name = WebAuthnOutcomeType.DataError;
+      throw e;
     }
     const excludeCredentials = parseCredentials(metadata.excludeCredentials);
 

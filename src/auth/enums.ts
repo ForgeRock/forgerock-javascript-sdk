@@ -34,6 +34,8 @@ enum CallbackType {
   PasswordCallback = 'PasswordCallback',
   PollingWaitCallback = 'PollingWaitCallback',
   ReCaptchaCallback = 'ReCaptchaCallback',
+  RedirectCallback = 'RedirectCallback',
+  SelectIdPCallback = 'SelectIdPCallback',
   StringAttributeInputCallback = 'StringAttributeInputCallback',
   SuspendedTextOutputCallback = 'SuspendedTextOutputCallback',
   TermsAndConditionsCallback = 'TermsAndConditionsCallback',

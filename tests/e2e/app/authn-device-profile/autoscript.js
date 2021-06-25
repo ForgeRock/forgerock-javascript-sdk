@@ -18,8 +18,8 @@
   const url = new URL(window.location.href);
   const amUrl = url.searchParams.get('amUrl') || 'https://auth.example.com:9443/am';
   const realmPath = url.searchParams.get('realmPath') || 'root';
-  const un = url.searchParams.get('un') || '57a5b4e4-6999-4b45-bf86-a4f2e5d4b629';
-  const pw = url.searchParams.get('pw') || 'ieH034K&-zlwqh3V_';
+  const un = url.searchParams.get('un') || 'sdkuser';
+  const pw = url.searchParams.get('pw') || 'password';
   const tree = url.searchParams.get('tree') || 'DeviceProfileCallbackTest';
 
   console.log('Configure the SDK');

@@ -21,7 +21,7 @@
   const realmPath = url.searchParams.get('realmPath') || 'root';
   const tree = url.searchParams.get('tree') || 'Registration';
   const un = url.searchParams.get('un') || 'f9022889-4452-48a0-aa94-182436645551';
-  const pw = url.searchParams.get('pw') || 'ieH034K&-zlwqh3V_';
+  const pw = url.searchParams.get('pw') || 'password';
   const email = url.searchParams.get('email') || 'sally.tester@me.com';
 
   console.log('Configure the SDK');

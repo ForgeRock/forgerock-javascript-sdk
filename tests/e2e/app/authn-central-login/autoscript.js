@@ -17,21 +17,26 @@
 
   const url = new URL(window.location.href);
   const amUrl = url.searchParams.get('amUrl') || 'https://auth.example.com:9443/am';
+  const preAuthenticated = url.searchParams.get('preAuthenticated') || 'true';
   const code = url.searchParams.get('code') || '';
-  const clientId = url.searchParams.get('clientId') || 'WebOAuthClient';
+  const clientId = url.searchParams.get('clientId') || 'CentralLoginOAuthClient';
   const realmPath = url.searchParams.get('realmPath') || 'root';
   const scope = url.searchParams.get('scope') || 'openid profile me.read';
   const state = url.searchParams.get('state') || '';
   const support = url.searchParams.get('support') || 'legacy';
+  const acr_values = url.searchParams.get('acr') || 'SpecificTree';
 
   console.log('Configure the SDK');
   forgerock.Config.set({
     clientId,
     realmPath,
-    redirectUri: `${url.origin}/_callback/`,
+    redirectUri: `${url.origin}/${
+      preAuthenticated === 'false' ? 'authn-central-login' : '_callback'
+    }/`,
     scope,
     serverConfig: {
       baseUrl: amUrl,
+      timeout: 5000,
     },
     support,
   });
@@ -49,13 +54,15 @@
       .from([1])
       .pipe(
         rxMap(() => {
-          console.log('Set cookie');
-          document.cookie = 'iPlanetDirectoryPro=abcd1234; domain=example.com; path=/';
-          if (code && state) {
-            window.sessionStorage.setItem(
-              clientId,
-              JSON.stringify({ responseType: 'code', state, verifier: '1234' }),
-            );
+          if (preAuthenticated === 'true') {
+            console.log('Set mock cookie to represent existing session');
+            document.cookie = 'iPlanetDirectoryPro=abcd1234; domain=example.com; path=/';
+            if (code && state) {
+              window.sessionStorage.setItem(
+                clientId,
+                JSON.stringify({ responseType: 'code', state, verifier: '1234' }),
+              );
+            }
           }
           return;
         }),
@@ -64,9 +71,15 @@
           console.log('Get OAuth tokens');
           let tokens;
           if (code && state) {
-            tokens = forgerock.TokenManager.getTokens({ query: { code, state } });
+            tokens = forgerock.TokenManager.getTokens({
+              login: 'redirect',
+              query: { code, state, acr_values },
+            });
           } else {
-            tokens = forgerock.TokenManager.getTokens();
+            tokens = forgerock.TokenManager.getTokens({
+              login: 'redirect',
+              query: { acr_values },
+            });
           }
           return tokens;
         }),

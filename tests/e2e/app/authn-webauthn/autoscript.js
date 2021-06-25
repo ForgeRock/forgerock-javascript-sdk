@@ -18,8 +18,8 @@
   const url = new URL(window.location.href);
   const amUrl = url.searchParams.get('amUrl') || 'https://auth.example.com:9443/am';
   const realmPath = url.searchParams.get('realmPath') || 'root';
-  const un = url.searchParams.get('un') || '57a5b4e4-6999-4b45-bf86-a4f2e5d4b629';
-  const pw = url.searchParams.get('pw') || 'ieH034K&-zlwqh3V_';
+  const un = url.searchParams.get('un') || 'sdkuser';
+  const pw = url.searchParams.get('pw') || 'password';
   const tree = url.searchParams.get('tree') || 'PasswordlessWebAuthn';
 
   console.log('Configure the SDK');
@@ -37,18 +37,25 @@
     // Do nothing
   }
 
-  console.log('Initiate first step with `undefined`');
+  // Needed for testing WebAuthn on Safari due to user event needed
+  console.log('Click the login button!');
+  const loginBtn = document.querySelector('.login-btn');
   rxjs
-    .from(forgerock.FRAuth.next())
+    .fromEvent(loginBtn, 'click')
     .pipe(
+      rxMergeMap(() => {
+        console.log('Initiate first step with `undefined`');
+        return forgerock.FRAuth.next();
+      }),
+      rxjs.operators.delay(delay),
       rxMergeMap((step) => {
-        console.log('Set values on auth tree callbacks');
+        console.log('Set username on auth tree callback');
         step.getCallbackOfType('NameCallback').setName(un);
         return forgerock.FRAuth.next(step);
       }),
       rxjs.operators.delay(delay),
       rxMergeMap((step) => {
-        console.log('Set values on auth tree callbacks');
+        console.log('Set password on auth tree callback');
         step.getCallbackOfType('PasswordCallback').setPassword(pw);
         return forgerock.FRAuth.next(step);
       }),
@@ -61,7 +68,7 @@
       }),
       rxjs.operators.delay(delay),
       rxMergeMap(
-        (step) => {
+        async (step) => {
           const webAuthnStep = forgerock.FRWebAuthn.getWebAuthnStepType(step);
           if (webAuthnStep === 2) {
             console.log('WebAuthn step is registration');
@@ -69,7 +76,12 @@
             throw new Error('WebAuthn step is incorrectly identified');
           }
           console.log('Handle WebAuthn Registration');
-          return forgerock.FRWebAuthn.register(step);
+          try {
+            step = await forgerock.FRWebAuthn.register(step);
+          } catch (err) {
+            console.log(err);
+          }
+          return step;
         },
         (step) => step,
       ),
@@ -105,12 +117,20 @@
       rxMap((response) => {
         if (response.ok) {
           console.log('Logout successful.');
-          document.body.innerHTML = '<p class="Logged_Out">Logout successful</p>';
+          document.body.innerHTML =
+            '<p class="Logged_Out">Logout successful</p>' +
+            '<button class="continue-btn">Continue</button>';
         } else {
           throw new Error('Logout_Error');
         }
       }),
       rxjs.operators.delay(delay),
+      rxMergeMap(() => {
+        // Needed for testing WebAuthn on Safari due to user event needed
+        console.log('Click the continue button!');
+        const continueBtn = document.querySelector('.continue-btn');
+        return rxjs.fromEvent(continueBtn, 'click');
+      }),
       rxMergeMap(() => {
         console.log('Log back in with WebAuthn');
         return forgerock.FRAuth.next();
@@ -122,7 +142,7 @@
       }),
       rxjs.operators.delay(delay),
       rxMergeMap(
-        (step) => {
+        async (step) => {
           const webAuthnStep = forgerock.FRWebAuthn.getWebAuthnStepType(step);
           if (webAuthnStep === 1) {
             console.log('WebAuthn step is authentication');
@@ -130,9 +150,16 @@
             throw new Error('WebAuthn step is incorrectly identified');
           }
           console.log('Handle WebAuthn Authenticate');
-          return forgerock.FRWebAuthn.authenticate(step);
+          try {
+            step = await forgerock.FRWebAuthn.authenticate(step);
+          } catch (err) {
+            console.log(err);
+          }
+          return step;
         },
-        (step) => step,
+        (step) => {
+          return step;
+        },
       ),
       rxjs.operators.delay(delay),
       rxMergeMap((step) => {

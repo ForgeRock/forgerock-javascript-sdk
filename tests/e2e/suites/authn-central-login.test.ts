@@ -61,6 +61,29 @@ describe('Test OAuth login flow', () => {
     });
 
     // eslint-disable-next-line
+    it(`should full redirect for login to request auth code, then token exchange with ${browserType}`, async (done) => {
+      try {
+        const { browser, messageArray, networkArray } = await setupAndGo(
+          browserType,
+          'authn-central-login/?support=modern&preAuthenticated=false',
+        );
+
+        // Test assertions
+        // Test log messages
+        expect(messageArray.includes('OAuth authorization successful')).toBe(true);
+        expect(messageArray.includes('Test script complete')).toBe(true);
+        // Test network requests
+        expect(networkArray.includes('/am/oauth2/realms/root/authorize, fetch')).toBe(true);
+        expect(networkArray.includes('/am/oauth2/realms/root/access_token, fetch')).toBe(true);
+
+        await browser.close();
+        done();
+      } catch (error) {
+        done(error);
+      }
+    });
+
+    // eslint-disable-next-line
     it(`should successfully take code & state params for token exchange with ${browserType}`, async (done) => {
       try {
         const { browser, messageArray, networkArray } = await setupAndGo(

@@ -3,7 +3,7 @@
  *
  * index.ts
  *
- * Copyright (c) 2020 ForgeRock. All rights reserved.
+ * Copyright (c) 2020-2021 ForgeRock. All rights reserved.
  * This software may be modified and distributed under the terms
  * of the MIT license. See the LICENSE file for details.
  */
@@ -27,6 +27,8 @@ import NameCallback from './fr-auth/callbacks/name-callback';
 import PasswordCallback from './fr-auth/callbacks/password-callback';
 import PollingWaitCallback from './fr-auth/callbacks/polling-wait-callback';
 import ReCaptchaCallback from './fr-auth/callbacks/recaptcha-callback';
+import RedirectCallback from './fr-auth/callbacks/redirect-callback';
+import SelectIdPCallback, { IdPValue } from './fr-auth/callbacks/select-idp-callback';
 import SuspendedTextOutputCallback from './fr-auth/callbacks/suspended-text-output-callback';
 import TermsAndConditionsCallback from './fr-auth/callbacks/terms-and-conditions-callback';
 import TextOutputCallback from './fr-auth/callbacks/text-output-callback';
@@ -66,13 +68,11 @@ import TokenManager, { GetTokensOptions } from './token-manager';
 import TokenStorage from './token-storage';
 import UserManager from './user-manager';
 import Deferred from './util/deferred';
-import nonce from './util/nonce';
 import PKCE from './util/pkce';
 import LocalStorage from './util/storage';
 
 export {
   defaultMessageCreator,
-  nonce,
   AttributeInputCallback,
   Auth,
   AuthResponse,
@@ -107,6 +107,7 @@ export {
   GetTokensOptions,
   HiddenValueCallback,
   HttpClient,
+  IdPValue,
   KbaCreateCallback,
   Listener,
   LocalStorage,
@@ -123,8 +124,10 @@ export {
   PollingWaitCallback,
   ProcessedPropertyError,
   ReCaptchaCallback,
+  RedirectCallback,
   RelyingParty,
   ResponseType,
+  SelectIdPCallback,
   SessionManager,
   Step,
   StepDetail,
