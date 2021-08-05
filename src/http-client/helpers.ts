@@ -105,9 +105,9 @@ export function buildAuthzOptions(
     init: {
       method: 'POST',
       credentials: 'include' as const,
-      headers: {
+      headers: new Headers({
         'Accept-API-Version': 'resource=2.0, protocol=1.0',
-      },
+      }),
     },
     timeout,
     url: resolve(baseURL, `${path}?${stringify(queryParams)}`),

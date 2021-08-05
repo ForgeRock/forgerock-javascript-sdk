@@ -22,6 +22,7 @@ export async function setupAndGo(
     clientId?: string;
     dialogInput?: string;
     email?: string;
+    middleware?: string;
     pw?: string;
     realmPath?: string;
     resourceUrl?: string;
@@ -53,10 +54,11 @@ export async function setupAndGo(
     url.searchParams.set('amUrl', (config && config.amUrl) || AM_URL);
     url.searchParams.set('clientId', (config && config.clientId) || CLIENT_ID);
     url.searchParams.set('email', (config && config.email) || '');
+    url.searchParams.set('middleware', (config && config.middleware) || '');
+    url.searchParams.set('pw', (config && config.pw) || USERS[0].pw);
     url.searchParams.set('realmPath', (config && config.realmPath) || REALM_PATH);
     url.searchParams.set('resourceUrl', (config && config.resourceUrl) || RESOURCE_URL);
     url.searchParams.set('scope', (config && config.scope) || SCOPE);
-    url.searchParams.set('pw', (config && config.pw) || USERS[0].pw);
     url.searchParams.set('tokenStore', (config && config.tokenStore) || '');
     url.searchParams.set('tree', (config && config.tree) || '');
     url.searchParams.set('un', (config && config.un) || USERS[0].un);

@@ -83,7 +83,7 @@ abstract class HttpClient extends Dispatcher {
       }
 
       if (authorizationJSON && authorizationJSON.advices) {
-        const { realmPath, serverConfig } = Config.get(options.authorization.config);
+        const { middleware, realmPath, serverConfig } = Config.get(options.authorization.config);
         const authzOptions = buildAuthzOptions(
           authorizationJSON,
           serverConfig.baseUrl,
@@ -95,14 +95,17 @@ abstract class HttpClient extends Dispatcher {
         const url = new URL(authzOptions.url);
         const type = url.searchParams.get('authIndexType') as string;
         const tree = url.searchParams.get('authIndexValue') as string;
-        const { url: authUrl, init: authInit } = middlewareWrapper(
+        const runMiddleware = middlewareWrapper(
           {
             url: new URL(authzOptions.url),
             init: authzOptions.init,
           },
-          ActionTypes.StartAuthenticate,
-          { type, tree },
+          {
+            type: ActionTypes.StartAuthenticate,
+            payload: { type, tree },
+          },
         );
+        const { url: authUrl, init: authInit } = runMiddleware(middleware);
         authzOptions.url = authUrl.toString();
         authzOptions.init = authInit;
         const initialStep = await this._request(authzOptions, false);

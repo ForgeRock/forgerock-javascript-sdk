@@ -46,7 +46,7 @@
         .from(forgerock.FRAuth.resume(window.location.href))
         .pipe(
           rxMap((step) => {
-            if (step.payload.code === 401) {
+            if (step.payload.status === 401) {
               throw new Error('Auth_Error');
             } else if (step.payload.tokenId) {
               console.log('Social Login successful');
@@ -59,7 +59,7 @@
             () => {},
             (err) => {
               console.log(`Error: ${err.message}`);
-              document.body.innerHTML = `<p class="${err.message}">${err.message}</p>`;
+              document.body.innerHTML = `<p class="Test_Failure">${err.message}</p>`;
             },
             () => {},
           ),
@@ -118,7 +118,7 @@
             () => {},
             (err) => {
               console.log(`Error: ${err.message}`);
-              document.body.innerHTML = `<p class="${err.message}">${err.message}</p>`;
+              document.body.innerHTML = `<p class="Test_Failure">${err.message}</p>`;
             },
             () => {},
           ),

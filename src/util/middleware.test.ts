@@ -12,58 +12,71 @@ import middlewareWrapper from './middleware';
 import middleware from './middleware.mock.data';
 import { ActionTypes } from '../config/enums';
 
-jest.mock('../config/index', () => ({
-  // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-  get: () => ({ middleware }),
-}));
-
 describe('Middleware should be called with an action', () => {
   it('should run all middleware testing action for letter and "a"', () => {
-    const newReq = middlewareWrapper(
+    const runMiddleware = middlewareWrapper(
       { url: new URL('https://www.example.com'), init: {} },
-      'a' as ActionTypes,
+      {
+        type: 'a' as ActionTypes,
+      },
     );
+    const newReq = runMiddleware(middleware);
     expect(newReq.init).toStrictEqual({ headers: { 'x-letter': 'true', 'x-char': 'a' } });
     expect(newReq.url.toString()).toBe('https://www.example.com/?letter=true&char=a');
   });
   it('should run all middleware testing action for number and "1"', () => {
-    const newReq = middlewareWrapper(
+    const runMiddleware = middlewareWrapper(
       { url: new URL('https://www.example.com'), init: {} },
-      '1' as ActionTypes,
+      {
+        type: '1' as ActionTypes,
+      },
     );
+    const newReq = runMiddleware(middleware);
     expect(newReq.init).toStrictEqual({ headers: { 'x-letter': 'false', 'x-char': '1' } });
     expect(newReq.url.toString()).toBe('https://www.example.com/?letter=false&char=1');
   });
   it('should run all middleware testing action for no match', () => {
-    const newReq = middlewareWrapper(
+    const runMiddleware = middlewareWrapper(
       { url: new URL('https://www.example.com'), init: {} },
-      'z' as ActionTypes,
+      {
+        type: 'z' as ActionTypes,
+      },
     );
+    const newReq = runMiddleware(middleware);
     expect(newReq.init).toStrictEqual({});
     expect(newReq.url.toString()).toBe('https://www.example.com/');
   });
   it('should run all middleware testing add action with payload', () => {
-    const newReq = middlewareWrapper(
+    const runMiddleware = middlewareWrapper(
       { url: new URL('https://www.example.com'), init: { headers: { 'x-number': '3' } } },
-      'ADD' as ActionTypes,
-      'b',
+      {
+        type: 'ADD' as ActionTypes,
+        payload: 'b',
+      },
     );
+    const newReq = runMiddleware(middleware);
     expect(newReq.init).toStrictEqual({ headers: { 'x-number': '3', 'x-char': 'a,b' } });
   });
   it('should not allow middleware to reassign `req`', () => {
-    const newReq = middlewareWrapper(
+    const runMiddleware = middlewareWrapper(
       { url: new URL('https://www.example.com'), init: {} },
-      'REASSIGNMENT' as ActionTypes,
+      {
+        type: 'REASSIGNMENT' as ActionTypes,
+      },
     );
+    const newReq = runMiddleware(middleware);
     expect(newReq.init).toStrictEqual({});
     expect(newReq.url.toString()).toBe('https://www.example.com/');
   });
   it('should not allow middleware to mutate `action`', () => {
     try {
-      middlewareWrapper(
+      const runMiddleware = middlewareWrapper(
         { url: new URL('https://www.example.com'), init: {} },
-        'MUTATE-ACTION' as ActionTypes,
+        {
+          type: 'MUTATE-ACTION' as ActionTypes,
+        },
       );
+      runMiddleware(middleware);
     } catch (err) {
       expect(err.message).toBe(`Cannot assign to read only property 'type' of object '#<Object>'`);
     }

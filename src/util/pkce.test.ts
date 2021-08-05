@@ -42,7 +42,7 @@ describe('The PKCE module', () => {
     for (let i = 0; i < 100; i++) {
       const verifier = PKCE.createVerifier();
       expect(verifier).toMatch(validChars);
-      expect(verifier.length).toBeGreaterThan(90);
+      expect(verifier.length).toBeGreaterThan(89);
 
       const challenge = await PKCE.createChallenge(verifier);
       expect(challenge).toMatch(validChars);

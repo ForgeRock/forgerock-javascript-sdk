@@ -6,7 +6,7 @@ lib-esm/
 node_modules/
 samples/_static/js/*.js*
 tests/**/app/index.js*
-tests/**/ie11/autoscript.js*
+tests/**/ie11/ie-bundle.js*
 reports/*
 *.copy.*
 *.pem

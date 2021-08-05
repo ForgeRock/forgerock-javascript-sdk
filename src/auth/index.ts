@@ -29,20 +29,23 @@ abstract class Auth {
    * @return {Step} The next step in the authentication tree.
    */
   public static async next(previousStep?: Step, options?: StepOptions): Promise<Step> {
-    const { realmPath, serverConfig, tree, type } = Config.get(options);
+    const { middleware, realmPath, serverConfig, tree, type } = Config.get(options);
     const query = options ? options.query : {};
     const url = this.constructUrl(serverConfig, realmPath, tree, query);
-    const req = middlewareWrapper(
+    const runMiddleware = middlewareWrapper(
       {
         url: new URL(url),
         init: this.configureRequest(previousStep),
       },
-      previousStep ? ActionTypes.Authenticate : ActionTypes.StartAuthenticate,
       {
-        tree,
-        type: type ? type : 'service',
+        type: previousStep ? ActionTypes.Authenticate : ActionTypes.StartAuthenticate,
+        payload: {
+          tree,
+          type: type ? type : 'service',
+        },
       },
     );
+    const req = runMiddleware(middleware);
     const res = await withTimeout(fetch(req.url.toString(), req.init), serverConfig.timeout);
     const json = await this.getResponseJson<Step>(res);
     return json;
@@ -66,12 +69,12 @@ abstract class Auth {
     const init: RequestInit = {
       body: step ? JSON.stringify(step) : undefined,
       credentials: 'include',
-      headers: {
+      headers: new Headers({
         accept: 'application/json',
         'accept-api-version': 'protocol=1.0,resource=2.1',
         'content-type': 'application/json',
         'x-requested-with': REQUESTED_WITH,
-      },
+      }),
       method: 'POST',
     };
     return init;

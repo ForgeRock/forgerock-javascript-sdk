@@ -63,7 +63,7 @@ abstract class FRUser {
     // Just log any exceptions that are thrown, but don't abandon the flow
     try {
       // Both invalidates the session on the server AND removes browser cookie
-      await SessionManager.logout();
+      await SessionManager.logout(options);
     } catch (error) {
       console.warn('Session logout was not successful');
     }

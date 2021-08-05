@@ -8,6 +8,7 @@
  * of the MIT license. See the LICENSE file for details.
  */
 
+import { ConfigOptions } from '../config/interfaces';
 import OAuth2Client from '../oauth2-client';
 
 /**
@@ -17,8 +18,8 @@ abstract class UserManager {
   /**
    * Gets the current user's profile.
    */
-  public static getCurrentUser(): Promise<unknown> {
-    return OAuth2Client.getUserInfo();
+  public static getCurrentUser(options?: ConfigOptions): Promise<unknown> {
+    return OAuth2Client.getUserInfo(options);
   }
 }
 
