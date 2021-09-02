@@ -63,9 +63,8 @@
       scope: '<Your OAuth Scopes>', // e.g. 'openid profile me.read'
         serverConfig: {
         baseUrl: '<Your AM URL>', // e.g. 'https://openam.example.com:9443/openam/'
-        timeout: '<Your Timeout (milliseconds)>' // 90000 or less
+        timeout: '<Your Timeout (milliseconds)>' // 3000 to 5000 is good, this impacts the redirect time to login
       },
-      support: '<Browser Support>', // e.g. 'legacy' or 'modern'
       realmPath: '<Your Realm>', // e.g. 'root'
     });
 
