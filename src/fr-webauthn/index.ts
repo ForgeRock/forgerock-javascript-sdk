@@ -106,6 +106,7 @@ abstract class FRWebAuthn {
         const credential = await this.getAuthenticationCredential(publicKey);
         outcome = this.getAuthenticationOutcome(credential);
       } catch (error) {
+        if (!(error instanceof Error)) throw error;
         // NotSupportedError is a special case
         if (error.name === WebAuthnOutcomeType.NotSupportedError) {
           hiddenCallback.setInputValue(WebAuthnOutcome.Unsupported);
@@ -150,6 +151,7 @@ abstract class FRWebAuthn {
         const credential = await this.getRegistrationCredential(publicKey);
         outcome = this.getRegistrationOutcome(credential);
       } catch (error) {
+        if (!(error instanceof Error)) throw error;
         // NotSupportedError is a special case
         if (error.name === WebAuthnOutcomeType.NotSupportedError) {
           hiddenCallback.setInputValue(WebAuthnOutcome.Unsupported);

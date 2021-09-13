@@ -114,32 +114,28 @@ abstract class HttpClient extends Dispatcher {
           throw new Error(`Error: Transactional or Service Advice is empty.`);
         }
 
+        // Walk through auth tree
+        await this.stepIterator(initialStep, options.authorization.handleStep, type, tree);
+        // See if OAuth tokens are being used
+        let tokens;
         try {
-          // Walk through auth tree
-          await this.stepIterator(initialStep, options.authorization.handleStep, type, tree);
-          // See if OAuth tokens are being used
-          let tokens;
-          try {
-            tokens = await TokenStorage.get();
-          } catch (err) {
-            // No OAuth Tokens
-          }
-          if (hasIG) {
-            // Update URL with IDs and tokens for IG
-            options.url = addAuthzInfoToURL(options.url, authorizationJSON.advices, tokens);
-          } else {
-            // Update headers with IDs and tokens for REST API
-            options.init.headers = addAuthzInfoToHeaders(
-              options.init,
-              authorizationJSON.advices,
-              tokens,
-            );
-          }
-          // Retry original resource request
-          res = await this._request(options, false);
+          tokens = await TokenStorage.get();
         } catch (err) {
-          throw new Error(err);
+          // No OAuth Tokens
         }
+        if (hasIG) {
+          // Update URL with IDs and tokens for IG
+          options.url = addAuthzInfoToURL(options.url, authorizationJSON.advices, tokens);
+        } else {
+          // Update headers with IDs and tokens for REST API
+          options.init.headers = addAuthzInfoToHeaders(
+            options.init,
+            authorizationJSON.advices,
+            tokens,
+          );
+        }
+        // Retry original resource request
+        res = await this._request(options, false);
       }
     }
 
