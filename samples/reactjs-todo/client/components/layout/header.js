@@ -119,9 +119,6 @@ export default function Header() {
         >
           Sign In
         </Link>
-        <Link className="btn btn-primary" to="/register">
-          Sign Up
-        </Link>
       </div>
     );
   }

@@ -8,10 +8,7 @@
  * of the MIT license. See the LICENSE file for details.
  */
 
-import { FRUser } from '@forgerock/javascript-sdk';
 import React, { useState } from 'react';
-
-import { DEBUGGER } from './constants';
 
 /**
  * @function useStateMgmt - The global state/store for managing user authentication and page
@@ -46,22 +43,6 @@ export function useGlobalStateMgmt({
    * @returns {void}
    */
   async function setAuthenticationWrapper(value) {
-    if (value === false) {
-      /** *********************************************************************
-       * SDK INTEGRATION POINT
-       * Summary: Logout, end session and revoke tokens
-       * ----------------------------------------------------------------------
-       * Details: Since this method is a global method via the Context API,
-       * any part of the application can log a user out. This is helpful when
-       * APIs are called and we get a 401 response.
-       ********************************************************************* */
-      if (DEBUGGER) debugger;
-      try {
-        await FRUser.logout();
-      } catch (err) {
-        console.error(`Error: logout did not successfully complete; ${err}`);
-      }
-    }
     setAuthentication(value);
   }
 
