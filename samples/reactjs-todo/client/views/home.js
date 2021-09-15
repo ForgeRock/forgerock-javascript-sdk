@@ -33,9 +33,7 @@ export default function Home() {
         Getting started
       </h2>
       <p>
-        To use this app, <Link to="/register">create an account now</Link>!
-        Already have an account? <Link to="/login">Sign in</Link> to get things
-        done!
+        To use this app, <a href="#">follow the tutorial found on our blog</a>.
       </p>
     </Fragment>
   ) : null;

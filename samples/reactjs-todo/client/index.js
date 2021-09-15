@@ -7,7 +7,6 @@
  * This software may be modified and distributed under the terms
  * of the MIT license. See the LICENSE file for details.
  */
-
 import { Config, TokenStorage } from '@forgerock/javascript-sdk';
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -16,7 +15,6 @@ import Router from './router';
 import {
   AM_URL,
   APP_URL,
-  DEBUGGER,
   JOURNEY_LOGIN,
   REALM_PATH,
   WEB_OAUTH_CLIENT,
@@ -29,22 +27,6 @@ import { AppContext, useGlobalStateMgmt } from './global-state';
  */
 import './styles/index.scss';
 
-/** ***************************************************************************
- * SDK INTEGRATION POINT
- * Summary: Configure the SDK
- * ----------------------------------------------------------------------------
- * Details: Below, you will see the following settings:
- * - clientId: (OAuth2 only) this is the OAuth2 client you created in ForgeRock
- * - redirectUri: (OAuth2 only) this is the URI/URL of this app too which the
- *   OAuth flow will redirect
- * - scope: (OAuth2 only) these are the OAuth scopes that you will request from
- *   ForgeRock
- * - serverConfig: this includes the baseUrl of your ForgeRock AM, should
- *   include `/am/` at the end
- * - realmPath: this is the realm you are wanting to use within ForgeRock
- * - tree: The authentication journey/tree that you are wanting to use
- *************************************************************************** */
-if (DEBUGGER) debugger;
 Config.set({
   clientId: WEB_OAUTH_CLIENT,
   redirectUri: `${APP_URL}/callback`,
@@ -59,17 +41,10 @@ Config.set({
 
 /**
  * Initialize the React application
+ * This is an IIFE (Immediately Invoked Function Expression),
+ * so it calls itself.
  */
 (async function initAndHydrate() {
-  /** *************************************************************************
-   * SDK INTEGRATION POINT
-   * Summary: Get OAuth/OIDC tokens from storage
-   * --------------------------------------------------------------------------
-   * Details: We can immediately call TokenStorage.get() to check for stored
-   * tokens. If we have them, you can cautiously assume the user is
-   * authenticated.
-   ************************************************************************* */
-  if (DEBUGGER) debugger;
   let isAuthenticated;
   try {
     isAuthenticated = !!(await TokenStorage.get());
@@ -77,9 +52,6 @@ Config.set({
     console.error(`Error: token retrieval for hydration; ${err}`);
   }
 
-  /**
-   * Pull custom values from outside of the app to (re)hydrate state.
-   */
   const prefersDarkTheme = window.matchMedia(
     '(prefers-color-scheme: dark)'
   ).matches;
