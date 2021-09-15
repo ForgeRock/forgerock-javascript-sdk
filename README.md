@@ -1,5 +1,5 @@
 [![npm (scoped)](https://img.shields.io/npm/v/@forgerock/javascript-sdk?color=%23f46200&label=Version&style=flat-square)](CHANGELOG.md)
-[![Build Status](https://jenkins.petrov.ca/buildStatus/icon?job=01-JS-Core-SDK-BUILD&style=flat-square)](https://jenkins.petrov.ca/job/01-JS-Core-SDK-BUILD/) 
+[![Build Status](https://jenkins.petrov.ca/buildStatus/icon?job=01-JS-Core-SDK-BUILD&style=flat-square)](https://jenkins.petrov.ca/job/01-JS-Core-SDK-BUILD/)
 
 <p align="center">
   <a href="https://github.com/ForgeRock">
@@ -78,7 +78,7 @@ To try out the ForgeRock JavaScript SDK, perform these steps:
     npm run build
     ```
 
-6. Open `samples/custom-ui/index.html` and edit the configuration values to match your AM instance.
+6. Open `samples/embedded-login/index.html` and edit the configuration values to match your AM instance.
 
 7. This SDK requires HTTPS (secure protocol) which means security (SSL/TLS) certificates are necessary. For local testing and development, it's common to generate your own self-signed certificates. You're free to use any method to do this, but if you need assistance in generating your own certs, the following can be helpful:
 
@@ -95,29 +95,37 @@ To try out the ForgeRock JavaScript SDK, perform these steps:
    - Or, if you generated certs using a different method, you will need to run the below with your certificate and key file names you created:
 
        ```
-       http-server samples -c1 -p 8443 --ssl --cert <your_certificate> --key <your_private_key>
+       ws -d samples -p 8443 --cors.origin null --cors.credentials --cert <your_certificate> --key <your_private_key>
        ```
 
 9. Edit your `/etc/hosts` file to point your localhost (e.g. `127.0.0.1`) to `sdkapp.example.com`
 
-10. In a [supported web browser](#requirements), navigate to `https://sdkapp.example.com:8443`, and then click
- **Custom UI**.
+10. In a [supported web browser](#requirements), navigate to `https://sdkapp.example.com:8443`, and then click **Embedded Login**.
 
 <!------------------------------------------------------------------------------------------------------------------------------------>
 <!-- SAMPLES - List the samples we include with the SDKs, where they are, briefly what they show. -->
 
 ## Samples
 
-ForgeRock provides these samples to help demonstrate SDK functionality:
+ForgeRock provides these samples to help demonstrate SDK functionality/implementation. They are provided "as is" and are not official products of ForgeRock and are not officially supported.
 
-- **Custom UI - `/samples/custom-ui`**
+- **Embedded login - `/samples/embedded-login`**
 
-    In most real-world scenarios, you will want to have full control over the UI. In these cases, you can use `FRAuth`
-    to obtain typed callback instances from authentication trees and render the UI in whatever way makes sense for your application.
+    In most real-world scenarios, you will want to have full control over the UI. In these cases, you can use `FRAuth` to obtain typed callback instances from authentication trees and render the UI in whatever way makes sense for your application.
 
-    In this example, a simple React app iteratively calls `FRAuth.next()` until either an error occurs, or the sample obtains a session token.
+    You can run this sample app with the `npm run start:samples` command. Please [see the Getting Started instructions](#getting-started) for more details.
 
-    The custom React component `<UsernamePassword />` is defined to handle an authentication step named "_UsernamePassword_".
+- **Central login - `/samples/central-login`**
+
+    In cases in which a centralized login application is desired, in contrast to an embedded login form, the SDK provides a method for leveraging an OAuth flow known as Authorization Code Flow (with PKCE). By using an option (login of "redirect") provided by `TokenManager` to request OAuth/OIDC tokens, when the user is not authenticated, the SDK will redirect the user to the configured login application with the ForgeRock platform. Once authenticated, the user will be redirected back to the original application to attain OAuth/OIDC tokens to complete the user flow.
+
+    You can run this sample app with the `npm run start:samples` command. Please [see the Getting Started instructions](#getting-started) for more details.
+
+- **React todos  - `/samples/reactjs-todos`**
+
+    A sample React JS application is provided to demonstrate how the JavaScript SDK can be implemented within a React context. You can read more about this application by [visiting its README.md file](samples/reactjs-todo/README.md).
+
+    Since this sample app uses npm's workspaces feature, its dependencies are already installed when running `npm install`. You can run this sample app's scripts with the `-w` option: `npm run build -w reactjs-todo` and `npm run start -w reactjs-todo`.
 
 <!------------------------------------------------------------------------------------------------------------------------------------>
 <!-- DOCS - Link off to the AM-centric documentation at sdks.forgerock.com. -->
