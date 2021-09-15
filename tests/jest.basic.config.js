@@ -9,25 +9,13 @@
  */
 
 module.exports = {
-  collectCoverageFrom: ['<rootDir>/src/**/*.ts', '!<rootDir>/src/**/*.d.ts'],
+  collectCoverage: false,
   globals: {
     'ts-jest': {
       isolatedModules: true,
     },
   },
   preset: 'ts-jest',
-  reporters: [
-    'default',
-    [
-      'jest-junit',
-      {
-        outputDirectory: `reports/${Date.now()}`,
-        suiteNameTemplate: '{filename}',
-        classNameTemplate: '{filename}',
-        includeConsoleOutput: true,
-      },
-    ],
-  ],
   rootDir: '../',
   setupFiles: ['jest-canvas-mock'],
 };

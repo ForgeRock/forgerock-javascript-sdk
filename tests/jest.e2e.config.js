@@ -18,18 +18,6 @@ module.exports = {
     },
   },
   preset: 'ts-jest',
-  reporters: [
-    'default',
-    [
-      'jest-junit',
-      {
-        outputDirectory: `reports/${Date.now()}`,
-        suiteNameTemplate: '{filename}',
-        classNameTemplate: '{filename}',
-        includeConsoleOutput: true,
-      },
-    ],
-  ],
   testTimeout: 60 * 1000, // 60 seconds (must be more than the setup-and-go.ts timeout)
   rootDir: '../',
 };

@@ -128,7 +128,7 @@
         case 'LoginSuccess':
           // If we have a session token, get user information
           const sessionToken = step.getSessionToken();
-          const tokens = await forgerock.TokenManager.getTokens({ forceRenew: true });
+          const tokens = await forgerock.TokenManager.getTokens();
           const user = await forgerock.UserManager.getCurrentUser();
           return showUser(user);
 
