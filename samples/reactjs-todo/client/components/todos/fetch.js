@@ -9,7 +9,6 @@
  */
 
 import { useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
 
 import apiRequest from '../../utilities/request';
 
@@ -21,8 +20,6 @@ import apiRequest from '../../utilities/request';
  * @returns {undefined} - this doesn't directly return anything, but calls dispatch to set data
  */
 export default function useTodoFetch(dispatch, setFetched) {
-  const history = useHistory();
-
   /**
    * Since we are making an API call, which is a side-effect,
    * we will wrap this in a useEffect, which will re-render the
@@ -33,9 +30,8 @@ export default function useTodoFetch(dispatch, setFetched) {
       // Request the todos from our resource API
       const fetchedTodos = await apiRequest('todos', 'GET');
 
-      // TODO: improve error handling
       if (fetchedTodos.error) {
-        return history.push('/login');
+        return;
       }
       setFetched(true);
       dispatch({ type: 'init-todos', payload: { todos: fetchedTodos } });
