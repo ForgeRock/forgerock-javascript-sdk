@@ -1,15 +1,31 @@
+# OS files
+.DS_Store
+
+# Generated code
 bundles/
 docs/
 coverage/
 lib/
 lib-esm/
 node_modules/
-samples/_static/js/*.js*
+*.copy.*
+
+# Certificates
+*.pem
+
+# IDEs
+.vscode
+
+# Test code
 tests/**/app/index.js*
 tests/**/ie11/autoscript.js*
 reports/*
-*.copy.*
-*.pem
 
-.DS_Store
-.vscode
+# Sample code
+samples/_static/js/*.js*
+samples/*/public/app.*
+samples/*/todos
+samples/*/users
+
+# Environment files
+.env
