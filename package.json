@@ -14,7 +14,7 @@
   "scripts": {
     "build": "npm run clean && tsc && tsc -m es6 --outDir lib-esm && webpack --env DEV=no",
     "clean": "shx rm -rf ./bundles ./docs ./lib ./lib-esm ./coverage",
-    "clean:all": "npm run clean && shx rm -rf ./node_modules ./package-lock.json && git clean -fX -e \"!*.pem\"",
+    "clean:all": "npm run clean && shx rm -rf ./node_modules ./tests/node_modules ./package-lock.json && git clean -fX -e \"!*.pem\" -e \"!.env\"",
     "docs": "typedoc",
     "lint": "eslint --ignore-path .gitignore \"src/**/*.ts\" --fix",
     "prepublishOnly": "npm run clean:all && npm i && npm run build && npm t",
@@ -61,6 +61,7 @@
     "local-web-server": "^4.2.1",
     "prettier": "^2.1.1",
     "shx": "^0.3.2",
+    "ts-loader": "^8.0.17",
     "typedoc": "^0.17.7",
     "typescript": "^4.0.0",
     "util": "^0.12.3",
