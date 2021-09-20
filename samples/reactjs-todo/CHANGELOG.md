@@ -1,5 +1,34 @@
 # Changelog
 
+## [1.4.3] - 2021-07-22
+
+### Summary
+
+Improve error handling for missing files.
+
+### Features
+
+- When app is run with missing `.env` file, the application will log helpful error messages
+
+## [1.4.2] - 2021-06-30
+
+### Summary
+
+Addressed additional feedback from beta testing.
+
+### Features
+
+- Added cross links from login to register and vice-versa
+
+### Improvements
+
+- Fixed visual feedback from Colin
+- Added more info in README from external testing group
+- Fixed some bugs
+- Changed some naming conventions
+- Added email as a type for the text input
+- Fixed some dark mode issues
+
 ## [1.4.1] - 2021-06-28
 
 ### Summary
