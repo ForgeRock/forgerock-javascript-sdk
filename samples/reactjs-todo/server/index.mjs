@@ -15,7 +15,7 @@ import { createServer } from 'http';
 import { createServer as createSecureServer } from 'https';
 import { env } from 'process';
 
-import { PORT, SEC_CERT, SEC_KEY } from './constants.mjs';
+import { AM_URL, PORT, SEC_CERT, SEC_KEY } from './constants.mjs';
 import routes from './routes.mjs';
 
 /**
@@ -31,7 +31,7 @@ app.use(
       // DON'T DO THIS IN PRODUCTION!
       return callback(null, true);
     },
-  })
+  }),
 );
 
 /**
@@ -50,7 +50,17 @@ routes(app);
 /**
  * Attach application to port and listen for requests
  */
-if (process.env.DEVELOPMENT) {
+if (!AM_URL) {
+  createServer(() => {}).listen(PORT);
+
+  console.error(
+    'ERROR: Missing .env value. Ensure you have an .env file within the dir of this sample app.',
+  );
+  console.error(
+    'Ensure you have a .env file with appropriate values and the proper security certificate and key.',
+  );
+  console.error('Please stop this process.');
+} else if (process.env.DEVELOPMENT) {
   /**
    * Ignore self-signed cert warning
    */
@@ -58,10 +68,12 @@ if (process.env.DEVELOPMENT) {
 
   console.log('Creating secure server');
   createSecureServer({ cert: SEC_CERT, key: SEC_KEY }, app).listen(PORT);
+
+  console.log(`Securely listening to port: ${PORT}. This should be a development server.`);
 } else {
   // Prod uses Nginx, so run regular server
   console.log('Creating regular server');
   createServer(app).listen(PORT);
-}
 
-console.log(`Listening to HTTPS on secure port: ${PORT}`);
+  console.log(`INSECURELY listening to port: ${PORT}. This should NOT be directly taking traffic.`);
+}

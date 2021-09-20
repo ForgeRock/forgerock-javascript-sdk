@@ -13,7 +13,6 @@
     "playwright": "^1.0.2",
     "superagent": "^5.2.2",
     "ts-jest": "^26.5.3",
-    "ts-loader": "^8.0.17",
     "uuid": "^8.3.0"
   },
   "scripts": {
