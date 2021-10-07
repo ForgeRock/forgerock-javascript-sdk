@@ -18,7 +18,7 @@ module.exports = {
     [
       'jest-junit',
       {
-        outputDirectory: `../reports/${Date.now()}`,
+        outputDirectory: `reports/${Date.now()}`,
         suiteNameTemplate: '{filename}',
         classNameTemplate: '{filename}',
         includeConsoleOutput: true,

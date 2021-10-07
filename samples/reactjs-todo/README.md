@@ -89,7 +89,7 @@ WEB_OAUTH_CLIENT=example-react-app (the name of the public OAuth 2.0 client/appl
 npm install
 
 # Build this sample app project
-npm run build -w reactjs-todos
+npm run build -w reactjs-todo
 ```
 
 ### Update Your `/etc/hosts` File
@@ -112,12 +112,12 @@ Now, run the below commands to start the processes needed for building the appli
 ```sh
 # In one terminal window, run the following watch command
 # This "watches" the client source files for changes and rebuilds when needed
-npm run watch -w reactjs-todos
+npm run watch -w reactjs-todo
 ```
 
 ```sh
 # In another terminal window, run the dev servers for both client and server
-npm run servers -w reactjs-todos
+npm run start -w reactjs-todo
 ```
 
 Now, you should be able to visit `https://react.example.com:8443`, which is your web app or client (the Relying Party in OAuth terms). This client will make requests to your AM instance, (the Authorization Server in OAuth terms), which will be running on whatever domain you set, and `https://api.example.com:9443` as the REST API for your todos (the Resource Server).

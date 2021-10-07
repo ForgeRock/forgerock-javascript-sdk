@@ -125,7 +125,7 @@ ForgeRock provides these samples to help demonstrate SDK functionality/implement
 
     A sample React JS application is provided to demonstrate how the JavaScript SDK can be implemented within a React context. You can read more about this application by [visiting its README.md file](samples/reactjs-todo/README.md).
 
-    Since this sample app uses npm's workspaces feature, its dependencies are already installed when running `npm install`. You can run this sample app's scripts with the `-w` option: `npm run build -w reactjs-todo` and `npm run start -w reactjs-todo`.
+    Since this sample app uses npm's workspaces feature, npm 7 or higher is required. When on npm 7+, dependencies are already installed when running `npm install`. You can run this sample app's scripts with the `-w` option: `npm run build -w reactjs-todo` and `npm run start -w reactjs-todo`.
 
 <!------------------------------------------------------------------------------------------------------------------------------------>
 <!-- DOCS - Link off to the AM-centric documentation at sdks.forgerock.com. -->
