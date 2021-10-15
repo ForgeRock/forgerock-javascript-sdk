@@ -83,7 +83,7 @@ abstract class HttpClient extends Dispatcher {
       }
 
       if (authorizationJSON && authorizationJSON.advices) {
-        const { realmPath, serverConfig } = Config.get(options.authorization.config);
+        const { middleware, realmPath, serverConfig } = Config.get(options.authorization.config);
         const authzOptions = buildAuthzOptions(
           authorizationJSON,
           serverConfig.baseUrl,
@@ -95,14 +95,17 @@ abstract class HttpClient extends Dispatcher {
         const url = new URL(authzOptions.url);
         const type = url.searchParams.get('authIndexType') as string;
         const tree = url.searchParams.get('authIndexValue') as string;
-        const { url: authUrl, init: authInit } = middlewareWrapper(
+        const runMiddleware = middlewareWrapper(
           {
             url: new URL(authzOptions.url),
             init: authzOptions.init,
           },
-          ActionTypes.StartAuthenticate,
-          { type, tree },
+          {
+            type: ActionTypes.StartAuthenticate,
+            payload: { type, tree },
+          },
         );
+        const { url: authUrl, init: authInit } = runMiddleware(middleware);
         authzOptions.url = authUrl.toString();
         authzOptions.init = authInit;
         const initialStep = await this._request(authzOptions, false);
@@ -114,32 +117,28 @@ abstract class HttpClient extends Dispatcher {
           throw new Error(`Error: Transactional or Service Advice is empty.`);
         }
 
+        // Walk through auth tree
+        await this.stepIterator(initialStep, options.authorization.handleStep, type, tree);
+        // See if OAuth tokens are being used
+        let tokens;
         try {
-          // Walk through auth tree
-          await this.stepIterator(initialStep, options.authorization.handleStep, type, tree);
-          // See if OAuth tokens are being used
-          let tokens;
-          try {
-            tokens = await TokenStorage.get();
-          } catch (err) {
-            // No OAuth Tokens
-          }
-          if (hasIG) {
-            // Update URL with IDs and tokens for IG
-            options.url = addAuthzInfoToURL(options.url, authorizationJSON.advices, tokens);
-          } else {
-            // Update headers with IDs and tokens for REST API
-            options.init.headers = addAuthzInfoToHeaders(
-              options.init,
-              authorizationJSON.advices,
-              tokens,
-            );
-          }
-          // Retry original resource request
-          res = await this._request(options, false);
+          tokens = await TokenStorage.get();
         } catch (err) {
-          throw new Error(err);
+          // No OAuth Tokens
         }
+        if (hasIG) {
+          // Update URL with IDs and tokens for IG
+          options.url = addAuthzInfoToURL(options.url, authorizationJSON.advices, tokens);
+        } else {
+          // Update headers with IDs and tokens for REST API
+          options.init.headers = addAuthzInfoToHeaders(
+            options.init,
+            authorizationJSON.advices,
+            tokens,
+          );
+        }
+        // Retry original resource request
+        res = await this._request(options, false);
       }
     }
 

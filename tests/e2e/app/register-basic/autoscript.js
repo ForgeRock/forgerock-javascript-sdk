@@ -109,7 +109,7 @@
         rxjs.operators.delay(delay),
         rxMap(
           (step) => {
-            if (step.payload.code === 401) {
+            if (step.payload.status === 401) {
               throw new Error('Auth_Error');
             } else if (step.payload.tokenId) {
               console.log('Basic login successful');

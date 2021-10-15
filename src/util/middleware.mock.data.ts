@@ -8,7 +8,7 @@
  * of the MIT license. See the LICENSE file for details.
  */
 
-import { Action, RequestObj } from '../config/interfaces';
+import { Action, RequestMiddleware, RequestObj } from '../config/interfaces';
 import { ActionTypes } from '../config/enums';
 
 type NextFn = () => RequestObj;
@@ -21,7 +21,7 @@ const add = 'ADD' as ActionTypes;
 const reassignment = 'REASSIGNMENT' as ActionTypes;
 const mutateAction = 'MUTATE-ACTION' as ActionTypes;
 
-export default [
+const middleware: RequestMiddleware[] = [
   (req: RequestObj, action: Action, next: NextFn): void => {
     switch (action.type) {
       case a:
@@ -94,3 +94,5 @@ export default [
     next();
   },
 ];
+
+export default middleware;

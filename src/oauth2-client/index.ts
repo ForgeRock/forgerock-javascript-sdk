@@ -45,7 +45,7 @@ const allowedErrors = {
  */
 abstract class OAuth2Client {
   public static async createAuthorizeUrl(options: GetAuthorizationUrlOptions): Promise<string> {
-    const { clientId, redirectUri, scope } = Config.get(options);
+    const { clientId, middleware, redirectUri, scope } = Config.get(options);
 
     const requestParams: StringDict<string | undefined> = {
       ...options.query,
@@ -62,13 +62,14 @@ abstract class OAuth2Client {
       requestParams.code_challenge_method = 'S256';
     }
 
-    const { url } = middlewareWrapper(
+    const runMiddleware = middlewareWrapper(
       {
         url: new URL(this.getUrl('authorize', requestParams, options)),
         init: {},
       },
-      ActionTypes.Authorize,
+      { type: ActionTypes.Authorize },
     );
+    const { url } = runMiddleware(middleware);
     return url.toString();
   }
 
@@ -146,10 +147,10 @@ abstract class OAuth2Client {
     const body = stringify(requestParams);
     const init = {
       body,
-      headers: {
+      headers: new Headers({
         'content-length': body.length.toString(),
         'content-type': 'application/x-www-form-urlencoded',
-      },
+      }),
       method: 'POST',
     };
 
@@ -217,7 +218,7 @@ abstract class OAuth2Client {
     const init: RequestInit = {
       body: stringify({ client_id: clientId, token: accessToken }),
       credentials: 'include',
-      headers: { 'content-type': 'application/x-www-form-urlencoded' },
+      headers: new Headers({ 'content-type': 'application/x-www-form-urlencoded' }),
       method: 'POST',
     };
 
@@ -235,7 +236,7 @@ abstract class OAuth2Client {
     init?: RequestInit,
     options?: ConfigOptions,
   ): Promise<Response> {
-    const { serverConfig } = Config.get(options);
+    const { middleware, serverConfig } = Config.get(options);
     const url = this.getUrl(endpoint, query, options);
 
     const getActionType = (endpoint: ConfigurablePaths): ActionTypes => {
@@ -243,7 +244,7 @@ abstract class OAuth2Client {
         case 'accessToken':
           return ActionTypes.ExchangeToken;
         case 'endSession':
-          return ActionTypes.Logout;
+          return ActionTypes.EndSession;
         case 'revoke':
           return ActionTypes.RevokeToken;
         default:
@@ -259,7 +260,11 @@ abstract class OAuth2Client {
       init.headers = (init.headers || new Headers()) as Headers;
       init.headers.set('authorization', `Bearer ${accessToken}`);
     }
-    const req = middlewareWrapper({ url: new URL(url), init }, getActionType(endpoint));
+    const runMiddleware = middlewareWrapper(
+      { url: new URL(url), init },
+      { type: getActionType(endpoint) },
+    );
+    const req = runMiddleware(middleware);
     return await withTimeout(fetch(req.url.toString(), req.init), serverConfig.timeout);
   }
 

@@ -67,7 +67,7 @@
       }),
       rxjs.operators.delay(delay),
       rxMergeMap((step) => {
-        if (step.payload.code === 401) {
+        if (step.payload.status === 401) {
           throw new Error('Auth_Error');
         }
         console.log('Auth tree successfully completed');
@@ -137,7 +137,7 @@
         () => {},
         (err) => {
           console.log(`Error: ${err.message}`);
-          document.body.innerHTML = `<p class="${err.message}">${err.message}</p>`;
+          document.body.innerHTML = `<p class="Test_Failure">${err.message}</p>`;
         },
         () => {},
       ),

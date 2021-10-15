@@ -66,7 +66,20 @@ export default function (app) {
       } else if (req.query.authIndexValue === 'AMSocialLogin') {
         res.json(idpChoiceCallback);
       } else {
-        res.json(initialBasicLogin);
+        if (req.path.includes('middleware')) {
+          if (
+            req.query['start-authenticate-middleware'] === 'start-authentication' &&
+            req.headers['x-start-authenticate-middleware'] === 'start-authentication' &&
+            !req.headers['x-logout-middleware'] &&
+            !req.query['logout-middleware']
+          ) {
+            res.json(initialBasicLogin);
+          } else {
+            res.status(406).send('Middleware additions are missing.');
+          }
+        } else {
+          res.json(initialBasicLogin);
+        }
       }
     } else if (req.query.authIndexValue === 'LoginWithEmail') {
       res.json(emailSuspend);
@@ -205,17 +218,17 @@ export default function (app) {
           if (req.body.stage === 'TransactionAuthorization') {
             baz.canWithdraw = true;
           }
-          if (req.headers['x-auth-middleware']) {
+          if (req.path.includes('middleware')) {
             if (
-              req.query['auth-middleware'] === 'authentication' &&
-              req.headers['x-auth-middleware'] === 'authentication' &&
+              req.query['authenticate-middleware'] === 'authentication' &&
+              req.headers['x-authenticate-middleware'] === 'authentication' &&
               !req.headers['x-logout-middleware'] &&
               !req.query['logout-middleware']
             ) {
               res.cookie('iPlanetDirectoryPro', 'abcd1234', { domain: '.example.com' });
               res.json(authSuccess);
             } else {
-              res.status(406).send('Middleware header is missing.');
+              res.status(406).send('Middleware additions are missing.');
             }
           } else {
             res.cookie('iPlanetDirectoryPro', 'abcd1234', { domain: '.example.com' });
@@ -264,7 +277,21 @@ export default function (app) {
     const access_token = v4();
     // eslint-disable-next-line
     const tokens = { ...oauthTokens, access_token };
-    res.json(tokens);
+
+    if (req.path.includes('middleware')) {
+      if (
+        req.query['exchange-token-middleware'] === 'exchange-token' &&
+        req.headers['x-exchange-token-middleware'] === 'exchange-token' &&
+        !req.headers['x-logout-middleware'] &&
+        !req.query['logout-middleware']
+      ) {
+        res.json(tokens);
+      } else {
+        res.status(406).send('Middleware header is missing.');
+      }
+    } else {
+      res.json(tokens);
+    }
   });
 
   app.get(authPaths.accounts, wait, async (req, res) => {
@@ -279,6 +306,12 @@ export default function (app) {
   });
 
   app.get(authPaths.authorize, wait, async (req, res) => {
+    const url = new URL(`${req.protocol}://${req.headers.host}/login`);
+    url.searchParams.set('client_id', req.query.client_id);
+    url.searchParams.set('acr_values', req.query.acr_values);
+    url.searchParams.set('redirect_uri', req.query.redirect_uri);
+    url.searchParams.set('state', req.query.state);
+
     // Detect if Central Login to enforce ACR value presence
     if (
       req.query.client_id === 'CentralLoginOAuthClient' &&
@@ -286,22 +319,28 @@ export default function (app) {
     ) {
       return res.status(400).json({ message: 'acr_values did not match "SpecificTree"' });
     }
-    if (req.cookies.iPlanetDirectoryPro) {
-      const url = new URL(`${req.query.redirect_uri}`);
-      url.searchParams.set('client_id', 'bar');
-      url.searchParams.set('code', 'foo');
-      url.searchParams.set('iss', `${AM_URL}/oauth2`);
-      url.searchParams.set('state', req.query.state);
-      res.redirect(url);
-    } else if (req.headers.accept.includes('html')) {
-      const url = new URL(`${req.protocol}://${req.headers.host}/login`);
-      url.searchParams.set('client_id', req.query.client_id);
-      url.searchParams.set('acr_values', req.query.acr_values);
-      url.searchParams.set('redirect_uri', req.query.redirect_uri);
-      url.searchParams.set('state', req.query.state);
-      res.redirect(url);
+    if (req.path.includes('middleware')) {
+      if (
+        req.query['authorize-middleware'] === 'authorization' &&
+        !req.query['logout-middleware']
+      ) {
+        res.redirect(url);
+      } else {
+        res.status(406).send('Middleware additions are missing.');
+      }
     } else {
-      res.status(401).send('Unauthorized');
+      if (req.cookies.iPlanetDirectoryPro) {
+        const url = new URL(`${req.query.redirect_uri}`);
+        url.searchParams.set('client_id', 'bar');
+        url.searchParams.set('code', 'foo');
+        url.searchParams.set('iss', `${AM_URL}/oauth2`);
+        url.searchParams.set('state', req.query.state);
+        res.redirect(url);
+      } else if (req.headers.accept.includes('html')) {
+        res.redirect(url);
+      } else {
+        res.status(401).send('Unauthorized');
+      }
     }
   });
 
@@ -312,6 +351,7 @@ export default function (app) {
     url.searchParams.set('acr_values', req.query.acr_values);
     url.searchParams.set('redirect_uri', req.query.redirect_uri);
     url.searchParams.set('state', req.query.state);
+
     res.redirect(url);
   });
 
@@ -320,15 +360,54 @@ export default function (app) {
   });
 
   app.get(authPaths.userInfo, wait, async (req, res) => {
-    res.json(userInfo);
+    if (req.path.includes('middleware')) {
+      if (
+        req.query['userinfo-middleware'] === 'userinfo' &&
+        req.headers['x-userinfo-middleware'] === 'userinfo' &&
+        !req.headers['x-logout-middleware'] &&
+        !req.query['logout-middleware']
+      ) {
+        res.json(userInfo);
+      } else {
+        res.status(406).send('Middleware additions are missing.');
+      }
+    } else {
+      res.json(userInfo);
+    }
   });
 
   app.get(authPaths.endSession, wait, async (req, res) => {
-    res.status(204).send();
+    if (req.path.includes('middleware')) {
+      if (
+        req.query['end-session-middleware'] === 'end-session' &&
+        req.headers['x-end-session-middleware'] === 'end-session' &&
+        !req.headers['x-logout-middleware'] &&
+        !req.query['logout-middleware']
+      ) {
+        res.status(204).send();
+      } else {
+        res.status(406).send('Middleware additions are missing missing.');
+      }
+    } else {
+      res.status(204).send();
+    }
   });
 
   app.post(authPaths.revoke, wait, async (req, res) => {
-    res.status(200).send();
+    if (req.path.includes('middleware')) {
+      if (
+        req.query['revoke-token-middleware'] === 'revoke-token' &&
+        req.headers['x-revoke-token-middleware'] === 'revoke-token' &&
+        !req.headers['x-logout-middleware'] &&
+        !req.query['logout-middleware']
+      ) {
+        res.status(200).send();
+      } else {
+        res.status(406).send('Middleware header is missing.');
+      }
+    } else {
+      res.status(200).send();
+    }
   });
 
   app.all(authPaths.htmlAuthenticate, wait, async (req, res) => {
@@ -338,7 +417,7 @@ export default function (app) {
 
   app.post(authPaths.sessions, wait, async (req, res) => {
     if (req.query._action === 'logout') {
-      if (req.headers['x-logout-middleware']) {
+      if (req.path.includes('middleware')) {
         if (
           req.query['logout-middleware'] === 'logout' &&
           req.headers['x-logout-middleware'] === 'logout' &&

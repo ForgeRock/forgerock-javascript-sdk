@@ -157,7 +157,7 @@ abstract class TokenManager {
       options.query = parsedQuery;
     } catch (err) {
       // If authorize request fails, handle according to `login` type
-      if (options?.login !== 'redirect') {
+      if (!(err instanceof Error) || options?.login !== 'redirect') {
         // Throw for any error if login is NOT of type "redirect"
         throw err;
       }

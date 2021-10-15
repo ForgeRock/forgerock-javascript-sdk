@@ -13,16 +13,52 @@ import browsers from '../utilities/browsers';
 
 describe('Test request middleware with login flow', () => {
   browsers.forEach((browserType) => {
-    it(`Login successfully with ${browserType}`, async (done) => {
+    it(`Full login and oauth using middleware at Config with ${browserType}`, async (done) => {
       try {
         const { browser, messageArray } = await setupAndGo(
           browserType,
           'config-request-middleware/',
+          { realmPath: 'middleware', middleware: 'atConfig' },
         );
 
         // Test assertions
-        expect(messageArray.includes('Basic login successful')).toBe(true);
+        // Test log messages
+        expect(messageArray.includes('Auth tree successfully completed')).toBe(true);
+        expect(messageArray.includes('OAuth login successful')).toBe(true);
+        expect(messageArray.includes('User info successfully responded')).toBe(true);
         expect(messageArray.includes('Logout successful')).toBe(true);
+
+        // Test for absence of error logs for FRUser.logout
+        expect(messageArray.includes('Session logout was not successful')).toBe(false);
+        expect(messageArray.includes('OAuth endSession was not successful')).toBe(false);
+        expect(messageArray.includes('OAuth revokeToken was not successful')).toBe(false);
+
+        await browser.close();
+        done();
+      } catch (error) {
+        done(error);
+      }
+    });
+
+    it(`Full login and oauth using middleware at Call Site with ${browserType}`, async (done) => {
+      try {
+        const { browser, messageArray } = await setupAndGo(
+          browserType,
+          'config-request-middleware/',
+          { realmPath: 'middleware', middleware: 'atCallSite' },
+        );
+
+        // Test assertions
+        // Test log messages
+        expect(messageArray.includes('Auth tree successfully completed')).toBe(true);
+        expect(messageArray.includes('OAuth login successful')).toBe(true);
+        expect(messageArray.includes('User info successfully responded')).toBe(true);
+        expect(messageArray.includes('Logout successful')).toBe(true);
+
+        // Test for absence of error logs for FRUser.logout
+        expect(messageArray.includes('Session logout was not successful')).toBe(false);
+        expect(messageArray.includes('OAuth endSession was not successful')).toBe(false);
+        expect(messageArray.includes('OAuth revokeToken was not successful')).toBe(false);
 
         await browser.close();
         done();

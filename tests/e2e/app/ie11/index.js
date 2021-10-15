@@ -153,7 +153,7 @@ forgerock.Config.set({
    */
   step = await forgerock.FRAuth.next(step);
 
-  if (step.payload.code === 401) {
+  if (step.payload.status === 401) {
     throw new Error('Auth_Error');
   } else if (step.payload.tokenId) {
     console.log('Basic login successful');
@@ -182,7 +182,7 @@ forgerock.Config.set({
   step.getCallbackOfType('PasswordCallback').setPassword(pw);
   step = await forgerock.FRAuth.next(step);
 
-  if (!step.payload.code) {
+  if (!step.payload.status) {
     console.log('Auth tree successfully completed');
   } else {
     throw new Error('Auth_Error');
