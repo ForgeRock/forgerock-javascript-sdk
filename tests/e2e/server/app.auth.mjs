@@ -32,6 +32,7 @@ export async function authorizeApp({ un, pw }) {
 
     return session;
   } catch (error) {
+    console.log(error);
     console.warn('\n###################################################');
     console.warn('WARNING: REST app user for Step Up/Txn Auth missing');
     console.warn('###################################################\n');
