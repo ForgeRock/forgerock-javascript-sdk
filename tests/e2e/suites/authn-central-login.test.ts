@@ -12,9 +12,12 @@ import { setupAndGo } from '../utilities/setup-and-go';
 import browsers from '../utilities/browsers';
 
 describe('Test OAuth login flow', () => {
-  browsers.forEach((browserType) => {
+  beforeAll(() => {
+    jest.retryTimes(3);
+  });
+  browsers.map((browserType) => {
     // eslint-disable-next-line
-    it(`should use invisible iframe to request auth code, then token exchange with ${browserType}`, async (done) => {
+    it(`should use invisible iframe to request auth code, then token exchange with ${browserType}`, async () => {
       try {
         const { browser, messageArray, networkArray } = await setupAndGo(
           browserType,
@@ -31,14 +34,13 @@ describe('Test OAuth login flow', () => {
         expect(networkArray.includes('/am/oauth2/realms/root/access_token, fetch')).toBe(true);
 
         await browser.close();
-        done();
       } catch (error) {
-        done(error);
+        return error;
       }
     });
 
     // eslint-disable-next-line
-    it(`should use fetch to request auth code, then token exchange with ${browserType}`, async (done) => {
+    it(`should use fetch to request auth code, then token exchange with ${browserType}`, async () => {
       try {
         const { browser, messageArray, networkArray } = await setupAndGo(
           browserType,
@@ -54,14 +56,13 @@ describe('Test OAuth login flow', () => {
         expect(networkArray.includes('/am/oauth2/realms/root/access_token, fetch')).toBe(true);
 
         await browser.close();
-        done();
       } catch (error) {
-        done(error);
+        return error;
       }
     });
 
     // eslint-disable-next-line
-    it(`should full redirect for login to request auth code, then token exchange with ${browserType}`, async (done) => {
+    it(`should full redirect for login to request auth code, then token exchange with ${browserType}`, async () => {
       try {
         const { browser, messageArray, networkArray } = await setupAndGo(
           browserType,
@@ -77,14 +78,13 @@ describe('Test OAuth login flow', () => {
         expect(networkArray.includes('/am/oauth2/realms/root/access_token, fetch')).toBe(true);
 
         await browser.close();
-        done();
       } catch (error) {
-        done(error);
+        return error;
       }
     });
 
     // eslint-disable-next-line
-    it(`should successfully take code & state params for token exchange with ${browserType}`, async (done) => {
+    it(`should successfully take code & state params for token exchange with ${browserType}`, async () => {
       try {
         const { browser, messageArray, networkArray } = await setupAndGo(
           browserType,
@@ -102,9 +102,8 @@ describe('Test OAuth login flow', () => {
         expect(networkArray.includes('/am/oauth2/realms/root/access_token, fetch')).toBe(true);
 
         await browser.close();
-        done();
       } catch (error) {
-        done(error);
+        return error;
       }
     });
   });

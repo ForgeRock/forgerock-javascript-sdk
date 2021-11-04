@@ -12,8 +12,11 @@ import { setupAndGo } from '../utilities/setup-and-go';
 import browsers from '../utilities/browsers';
 
 describe('Test OAuth login flow with custom paths', () => {
-  browsers.forEach((browserType) => {
-    it(`should login successfully and then log out with ${browserType}`, async (done) => {
+  beforeAll(() => {
+    jest.retryTimes(3);
+  });
+  browsers.map((browserType) => {
+    it(`should login successfully and then log out with ${browserType}`, async () => {
       try {
         const { browser, messageArray } = await setupAndGo(browserType, 'config-custom-paths/');
 
@@ -22,9 +25,8 @@ describe('Test OAuth login flow with custom paths', () => {
         expect(messageArray.includes('Logout successful')).toBe(true);
 
         await browser.close();
-        done();
       } catch (error) {
-        done(error);
+        return error;
       }
     });
   });

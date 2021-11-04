@@ -26,8 +26,9 @@ import {
 describe('Test HttpClient utils', () => {
   it('build auth by tree req options', () => {
     const txnAuthObj = authzTreeJSON;
-    // eslint-disable-next-line max-len, prettier/prettier
-    const expectedUrl = 'https://openam.example.com/am/json/realms/root/authenticate?authIndexType=composite_advice&authIndexValue=%3CAdvices%3E%3CAttributeValuePair%3E%3CAttribute%20name%3D%22AuthenticateToServiceConditionAdvice%22%2F%3E%3CValue%3Eabc%3C%2FValue%3E%3C%2FAttributeValuePair%3E%3C%2FAdvices%3E';
+    const expectedUrl =
+      // eslint-disable-next-line max-len, prettier/prettier
+      'https://openam.example.com/am/json/realms/root/authenticate?authIndexType=composite_advice&authIndexValue=%3CAdvices%3E%3CAttributeValuePair%3E%3CAttribute%20name%3D%22AuthenticateToServiceConditionAdvice%22%2F%3E%3CValue%3Eabc%3C%2FValue%3E%3C%2FAttributeValuePair%3E%3C%2FAdvices%3E';
 
     const output = buildAuthzOptions(txnAuthObj, 'https://openam.example.com/am/', 0);
     expect(output.url).toStrictEqual(expectedUrl);
@@ -35,37 +36,34 @@ describe('Test HttpClient utils', () => {
 
   it('build auth by txn req options', () => {
     const txnAuthObj = authzTxnJSON;
-    // eslint-disable-next-line max-len, prettier/prettier
-    const expectedUrl = 'https://openam.example.com/am/json/realms/root/authenticate?authIndexType=composite_advice&authIndexValue=%3CAdvices%3E%3CAttributeValuePair%3E%3CAttribute%20name%3D%22TransactionConditionAdvice%22%2F%3E%3CValue%3Eabc%3C%2FValue%3E%3C%2FAttributeValuePair%3E%3C%2FAdvices%3E';
+    const expectedUrl =
+      // eslint-disable-next-line max-len, prettier/prettier
+      'https://openam.example.com/am/json/realms/root/authenticate?authIndexType=composite_advice&authIndexValue=%3CAdvices%3E%3CAttributeValuePair%3E%3CAttribute%20name%3D%22TransactionConditionAdvice%22%2F%3E%3CValue%3Eabc%3C%2FValue%3E%3C%2FAttributeValuePair%3E%3C%2FAdvices%3E';
     const output = buildAuthzOptions(txnAuthObj, 'https://openam.example.com/am/', 0);
     expect(output.url).toStrictEqual(expectedUrl);
   });
 
-  it('examines response for IG auth by tree', async (done) => {
+  it('examines response for IG auth by tree', async () => {
     const output = await examineForIGAuthz(authzByTreeResFromIG);
     expect(output).toBe(true);
-    done();
   });
 
-  it('examines response for REST auth by tree', async (done) => {
+  it('examines response for REST auth by tree', async () => {
     const output = await examineForRESTAuthz(authzByTreeResFromREST);
     expect(output).toBe(true);
-    done();
   });
 
-  it('examines response for IG auth by txn', async (done) => {
+  it('examines response for IG auth by txn', async () => {
     const output = await examineForIGAuthz(authzByTxnResFromIG);
     expect(output).toBe(true);
-    done();
   });
 
-  it('examines response for REST auth by txn', async (done) => {
+  it('examines response for REST auth by txn', async () => {
     const output = await examineForRESTAuthz(authzByTxnResFromREST);
     expect(output).toBe(true);
-    done();
   });
 
-  it('normalizes authz by tree from IG redirect to JSON', async (done) => {
+  it('normalizes authz by tree from IG redirect to JSON', async () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const res: any = {
       // eslint-disable-next-line max-len, prettier/prettier
@@ -74,10 +72,9 @@ describe('Test HttpClient utils', () => {
     const expected = authzTreeJSON;
     const output = await normalizeIGJSON(res);
     expect(output).toStrictEqual(expected);
-    done();
   });
 
-  it('normalizes IG redirect to JSON', async (done) => {
+  it('normalizes IG redirect to JSON', async () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const res: any = {
       // eslint-disable-next-line max-len, prettier/prettier
@@ -86,6 +83,5 @@ describe('Test HttpClient utils', () => {
     const expected = authzTxnJSON;
     const output = await normalizeIGJSON(res);
     expect(output).toStrictEqual(expected);
-    done();
   });
 });

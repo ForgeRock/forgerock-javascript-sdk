@@ -13,11 +13,14 @@ import { setupAndGo } from '../utilities/setup-and-go';
 import browsers from '../utilities/browsers';
 
 describe('Test basic registration flow', () => {
-  browsers.forEach((browserType) => {
+  beforeAll(() => {
+    jest.retryTimes(3);
+  });
+  browsers.map((browserType) => {
     const un = v4();
     const email = `${un}@me.com`;
 
-    it(`should register user successfully and then log out with ${browserType}`, async (done) => {
+    it(`should register user successfully and then log out with ${browserType}`, async () => {
       try {
         const { browser, messageArray } = await setupAndGo(browserType, 'register-basic/', {
           un,
@@ -46,9 +49,8 @@ describe('Test basic registration flow', () => {
         ).toBe(true);
 
         await browser.close();
-        done();
       } catch (error) {
-        done(error);
+        return error;
       }
     });
   });

@@ -12,8 +12,11 @@ import { setupAndGo } from '../utilities/setup-and-go';
 import browsers from '../utilities/browsers';
 
 describe('Test OAuth login flow', () => {
-  browsers.forEach((browserType) => {
-    it(`should login successfully and then log out with ${browserType}`, async (done) => {
+  beforeAll(() => {
+    jest.retryTimes(3);
+  });
+  browsers.map((browserType) => {
+    it(`should login successfully and then log out with ${browserType}`, async () => {
       try {
         const { browser, messageArray, networkArray } = await setupAndGo(
           browserType,
@@ -37,9 +40,8 @@ describe('Test OAuth login flow', () => {
         expect(revokeRequests.length).toBe(2);
 
         await browser.close();
-        done();
       } catch (error) {
-        done(error);
+        return error;
       }
     });
   });

@@ -10,6 +10,7 @@
 
 module.exports = {
   collectCoverage: false,
+  testEnvironment: 'jsdom',
   globals: {
     'ts-jest': {
       isolatedModules: true,
