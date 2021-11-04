@@ -1,0 +1,72 @@
+name: Playwright Tests
+on:
+  pull_request:
+    branches:
+      - develop
+      - master
+      - release-*
+jobs:
+  linux:
+    name: ${{ matrix.os }} (${{ matrix.browser }})
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium]
+          # chromium, firefox, webkit]
+        os: [ubuntu-18.04]
+    runs-on: ${{ matrix.os }}
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v2
+      with:
+        node-version: '14.17.6'
+    - name: Setup custom host for sdkapp.example.com
+      run: echo "127.0.0.1 sdkapp.example.com sdks.mytestrun.com sdkapp.petrov.ca auth.example.com openig.example.com api.example.com user.example.com rest.example.com bank.example.com openam.example.com spa.example.com sdk.mytestrun.com sdks.mytestrun.com forgerock-sdk.local" | sudo tee -a /etc/hosts
+    - name: Debug hosts
+      run: cat /etc/hosts
+    - name: Install NPM
+      run: npm i -g npm@7
+    - name: Install Dependencies
+      run: npm ci
+      env:
+        DEBUG: pw:install
+        PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
+    - name: Build SDK
+      run: npm run build
+    - name: Install Playwright
+      run: npx playwright install --with-deps
+    - name: Run e2e
+      run: npm run test:e2e --project=${{ matrix.browser }}
+      env:
+        NODE_TLS_REJECT_UNAUTHORIZED: 0
+  # osx:
+  #     name: ${{ matrix.os }} (${{ matrix.browser }})
+  #     strategy:
+  #       fail-fast: false
+  #       matrix:
+  #         browser: [chromium, firefox, webkit]
+  #         os: [macos-10.15, macos-11.0]
+  #     runs-on: ${{ matrix.os }}
+  #     steps:
+  #     - uses: actions/checkout@v2
+  #     - uses: actions/setup-node@v2
+  #       with:
+  #         node-version: 12
+  #     - name: Generate certificates for next step
+  #       uses: "kofemann/action-create-certificate@v0.0.4"
+  #       with:
+  #         hostcert: 'example.com+5.pem'                        
+  #         hostkey:  'example.com+5-key.pem'                    
+  #         cachain:  'example.com'                             
+  #     - name: List out generated Cert
+  #       run: echo $GITHUB_WORKSPACE
+  #     - name: Install NPM
+  #       run: npm i -g npm@7
+  #     - name: Install Dependencies
+  #       run: npm ci
+  #       env:
+  #         DEBUG: pw:install
+  #         PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
+  #     - run: npm run build
+  #     - run: npx playwright install --with-deps ${{ matrix.browser }} chromium 
+  #     - run: npm run test:e2e -- --project=${{ matrix.browser }}
