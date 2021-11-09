@@ -13,7 +13,7 @@ import browsers from '../utilities/browsers';
 
 describe('Test Social Login flow with AM nodes', () => {
   browsers.forEach((browserType) => {
-    it(`Login with identity provider on ${browserType}`, async (done) => {
+    it(`Login with identity provider on ${browserType}`, async () => {
       try {
         const { browser, messageArray } = await setupAndGo(browserType, 'authn-social-login-am/', {
           clientId: 'IDMSocialLogin',
@@ -26,9 +26,8 @@ describe('Test Social Login flow with AM nodes', () => {
         expect(messageArray.includes('Social Login successful')).toBe(true);
 
         await browser.close();
-        done();
       } catch (error) {
-        done(error);
+        return error;
       }
     });
   });

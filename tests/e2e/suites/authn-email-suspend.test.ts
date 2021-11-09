@@ -13,7 +13,7 @@ import browsers from '../utilities/browsers';
 
 describe('Test basic registration flow', () => {
   browsers.forEach((browserType) => {
-    it(`should register user successfully and then log out with ${browserType}`, async (done) => {
+    it(`should register user successfully and then log out with ${browserType}`, async () => {
       try {
         const { browser, messageArray } = await setupAndGo(browserType, 'authn-email-suspend/');
 
@@ -26,9 +26,8 @@ describe('Test basic registration flow', () => {
         ).toBe(true);
 
         await browser.close();
-        done();
       } catch (error) {
-        done(error);
+        return error;
       }
     });
   });

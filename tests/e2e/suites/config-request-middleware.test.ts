@@ -13,7 +13,7 @@ import browsers from '../utilities/browsers';
 
 describe('Test request middleware with login flow', () => {
   browsers.forEach((browserType) => {
-    it(`Full login and oauth using middleware at Config with ${browserType}`, async (done) => {
+    it(`Full login and oauth using middleware at Config with ${browserType}`, async () => {
       try {
         const { browser, messageArray } = await setupAndGo(
           browserType,
@@ -34,13 +34,12 @@ describe('Test request middleware with login flow', () => {
         expect(messageArray.includes('OAuth revokeToken was not successful')).toBe(false);
 
         await browser.close();
-        done();
       } catch (error) {
-        done(error);
+        return error;
       }
     });
 
-    it(`Full login and oauth using middleware at Call Site with ${browserType}`, async (done) => {
+    it(`Full login and oauth using middleware at Call Site with ${browserType}`, async () => {
       try {
         const { browser, messageArray } = await setupAndGo(
           browserType,
@@ -61,9 +60,8 @@ describe('Test request middleware with login flow', () => {
         expect(messageArray.includes('OAuth revokeToken was not successful')).toBe(false);
 
         await browser.close();
-        done();
       } catch (error) {
-        done(error);
+        return error;
       }
     });
   });

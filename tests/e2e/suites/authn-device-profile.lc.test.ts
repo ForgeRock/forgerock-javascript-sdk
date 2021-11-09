@@ -13,7 +13,7 @@ import browsers from '../utilities/browsers';
 
 describe('Test bad login flow', () => {
   browsers.forEach((browserType) => {
-    it(`Login with device profile callback ${browserType}`, async (done) => {
+    it(`Login with device profile callback ${browserType}`, async () => {
       try {
         const { browser, messageArray } = await setupAndGo(browserType, 'authn-device-profile/', {
           allowGeo: true,
@@ -25,9 +25,8 @@ describe('Test bad login flow', () => {
         expect(messageArray.includes('Login with profile successful.')).toBe(true);
 
         await browser.close();
-        done();
       } catch (error) {
-        done(error);
+        return error;
       }
     });
   });

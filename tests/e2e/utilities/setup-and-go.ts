@@ -34,6 +34,7 @@ export async function setupAndGo(
   },
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): Promise<{ browser: any; messageArray: string[]; networkArray: string[] }> {
+  jest.retryTimes(3);
   const browser = await browsers[browserType].launch({ headless: true });
   const messageArray = [];
   const networkArray = [];

@@ -13,7 +13,7 @@ import browsers from '../utilities/browsers';
 
 describe('Test Basic login flow', () => {
   browsers.forEach((browserType) => {
-    it(`should login successfully and then log out with ${browserType}`, async (done) => {
+    it(`should login successfully and then log out with ${browserType}`, async () => {
       try {
         const { browser, messageArray } = await setupAndGo(browserType, 'authn-no-session/');
 
@@ -24,9 +24,8 @@ describe('Test Basic login flow', () => {
         );
 
         await browser.close();
-        done();
       } catch (error) {
-        done(error);
+        return error;
       }
     });
   });
