@@ -22,8 +22,6 @@ import resourceRoutes from './routes.resource.mjs';
 
 const __dirname = path.dirname(new URL(import.meta.url).pathname);
 
-console.log('********** KEY CERT *******');
-console.log(key, cert);
 const app = express();
 app.use(express.json());
 app.use('/am/XUI/images', express.static(path.join(__dirname, 'public')));
