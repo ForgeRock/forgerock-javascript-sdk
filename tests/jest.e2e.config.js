@@ -9,6 +9,7 @@
  */
 
 module.exports = {
+  retries: 3,
   globalSetup: './tests/e2e/env.setup.js',
   globalTeardown: './tests/e2e/env.teardown.js',
   globals: {
