@@ -12,6 +12,9 @@ import { setupAndGo } from '../utilities/setup-and-go';
 import browsers from '../utilities/browsers';
 
 describe('Test Transaction Authorization flow', () => {
+  beforeAll(() => {
+    jest.retryTimes(3);
+  });
   browsers.forEach((browserType) => {
     it(`Trigger Txn Auth appropriately with ${browserType}`, async () => {
       try {

@@ -13,6 +13,9 @@ import { setupAndGo } from '../utilities/setup-and-go';
 import browsers from '../utilities/browsers';
 
 describe('Test basic registration flow', () => {
+  beforeAll(() => {
+    jest.retryTimes(3);
+  });
   browsers.forEach((browserType) => {
     const un = v4();
     const email = `${un}@me.com`;

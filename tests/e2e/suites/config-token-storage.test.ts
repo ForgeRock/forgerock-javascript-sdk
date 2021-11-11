@@ -12,6 +12,9 @@ import { setupAndGo } from '../utilities/setup-and-go';
 import browsers from '../utilities/browsers';
 
 describe('Test oauth login flow with localStorage', () => {
+  beforeAll(() => {
+    jest.retryTimes(3);
+  });
   browsers.forEach((browserType) => {
     it(`Login successfully with ${browserType}`, async () => {
       try {

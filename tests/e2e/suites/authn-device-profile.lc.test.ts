@@ -12,6 +12,9 @@ import { setupAndGo } from '../utilities/setup-and-go';
 import browsers from '../utilities/browsers';
 
 describe('Test bad login flow', () => {
+  beforeAll(() => {
+    jest.retryTimes(3);
+  });
   browsers.forEach((browserType) => {
     it(`Login with device profile callback ${browserType}`, async () => {
       try {

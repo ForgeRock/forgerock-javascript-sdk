@@ -12,6 +12,9 @@ import { setupAndGo } from '../utilities/setup-and-go';
 import browsers from '../utilities/browsers';
 
 describe('Test OAuth login flow', () => {
+  beforeAll(() => {
+    jest.retryTimes(3);
+  });
   browsers.forEach((browserType) => {
     it(`should login successfully and then log out with ${browserType}`, async () => {
       try {

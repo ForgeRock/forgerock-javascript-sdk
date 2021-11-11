@@ -12,6 +12,9 @@ import { setupAndGo } from '../utilities/setup-and-go';
 import browsers from '../utilities/browsers';
 
 describe('Test OAuth login flow', () => {
+  beforeAll(() => {
+    jest.retryTimes(3);
+  });
   browsers.forEach((browserType) => {
     // eslint-disable-next-line
     it(`should use invisible iframe to request auth code, then token exchange with ${browserType}`, async () => {

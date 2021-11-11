@@ -35,14 +35,15 @@ jest.mock('../../src/util/pkce', () => {
 });
 
 describe('Test OAuth2Client methods', () => {
-  it('should construct proper authorization URL', async (done) => {
+  it('should construct proper authorization URL', async () => {
     const verifier = PKCE.createVerifier();
     const state = PKCE.createState();
     const authorizeUrlOptions = { responseType: ResponseType.Code, state, verifier };
     const authorizeUrl = await OAuth2Client.createAuthorizeUrl(authorizeUrlOptions);
     console.log(authorizeUrl);
     // eslint-disable-next-line
-    expect(authorizeUrl).toBe('https://openam.example.com/am/oauth2/realms/root/realms/alpha/authorize?client_id=OAuth2ClientID&response_type=code&scope=openid%20email%20profile&state=1234&code_challenge=wxyz&code_challenge_method=S256');
-    done();
+    expect(authorizeUrl).toBe(
+      'https://openam.example.com/am/oauth2/realms/root/realms/alpha/authorize?client_id=OAuth2ClientID&response_type=code&scope=openid%20email%20profile&state=1234&code_challenge=wxyz&code_challenge_method=S256',
+    );
   });
 });

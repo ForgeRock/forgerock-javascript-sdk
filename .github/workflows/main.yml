@@ -20,9 +20,10 @@ jobs:
     - uses: actions/checkout@v2
     - uses: actions/setup-node@v2
       with:
+        cache: npm
         node-version: ${{ matrix.nodeversion }}
     - name: Setup custom host for sdkapp.example.com
-      run: echo "127.0.0.1 sdkapp.example.com sdks.mytestrun.com sdkapp.petrov.ca auth.example.com openig.example.com api.example.com user.example.com rest.example.com bank.example.com openam.example.com spa.example.com sdk.mytestrun.com sdks.mytestrun.com forgerock-sdk.local" | sudo tee -a /etc/hosts
+      run: echo "127.0.0.1 sdkapp.example.com auth.example.com api.example.com openam.example.com" | sudo tee -a /etc/hosts
     - name: Install NPM
       run: npm i -g npm@8
     - name: Install Dependencies
@@ -53,7 +54,7 @@ jobs:
         with:
           node-version: ${{ matrix.nodeversion }}
       - name: Setup custom host for sdkapp.example.com
-        run: echo "127.0.0.1 sdkapp.example.com sdks.mytestrun.com sdkapp.petrov.ca auth.example.com openig.example.com api.example.com user.example.com rest.example.com bank.example.com openam.example.com spa.example.com sdk.mytestrun.com sdks.mytestrun.com forgerock-sdk.local" | sudo tee -a /etc/hosts      
+        run: echo "127.0.0.1 sdkapp.example.com auth.example.com api.example.com openam.example.com" | sudo tee -a /etc/hosts      
       - name: Install NPM
         run: npm i -g npm@8
       - name: Install Dependencies
@@ -78,7 +79,7 @@ jobs:
       with:
         node-version: ${{ matrix.nodeversion }}
     - name: Setup custom host for sdkapp.example.com
-      run: echo "`n127.0.0.1  sdkapp.example.com sdks.mytestrun.com sdkapp.petrov.ca auth.example.com openig.example.com api.example.com user.example.com rest.example.com bank.example.com openam.example.com spa.example.com sdk.mytestrun.com sdks.mytestrun.com forgerock-sdk.local" >> C:\Windows\System32\drivers\etc\hosts   #add to new line
+      run: echo "127.0.0.1 sdkapp.example.com auth.example.com api.example.com openam.example.com" >> C:\Windows\System32\drivers\etc\hosts   #add to new line
     - name: debug etc hosts
       run: type C:\Windows\System32\drivers\etc\hosts
     - name: Install NPM
