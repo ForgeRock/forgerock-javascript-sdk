@@ -47,9 +47,16 @@ jobs:
     - name: Install Playwright
       run: npx playwright install --with-deps
     - name: Run e2e
-      run: npm run test:e2e --project=${{ matrix.browser }}
+      run: npm run test:e2e:ci --project=${{ matrix.browser }}
       env:
         NODE_TLS_REJECT_UNAUTHORIZED: 0  
+    - name: Report Coverage
+      uses: codecov/codecov-action@v2.1.0
+      with:
+        flags: e2e-${{ matrix.os }}-${{ matrix.browser }}
+        file: coverage/lcov.info
+        token: ${{ secrets.CODE_COV_UPLOAD_TOKEN }}
+        fail_ci_if_error: true
   osx:
       name: ${{ matrix.os }} (${{ matrix.browser }})
       strategy:
@@ -88,7 +95,14 @@ jobs:
           # PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
       # - run: npx playwright install --with-deps ${{ matrix.browser }} chromium
       - run: npm run build
-      - run: npm run test:e2e
+      - run: npm run test:e2e:ci
+      - name: Report Coverage
+        uses: codecov/codecov-action@v2.1.0
+        with:
+          flags: e2e-${{ matrix.os }}-${{ matrix.browser }}
+          token: ${{ secrets.CODE_COV_UPLOAD_TOKEN }}
+          file: coverage/lcov.info
+          fail_ci_if_error: true
   windows:
     name: windows (${{ matrix.browser }})
     strategy:
@@ -115,5 +129,11 @@ jobs:
         # PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
     - run: npm run build
     # - run: PLAYWRIGHT_BROWSERS_PATH=$HOME/pw-browsers npx playwright install --with-deps ${{ matrix.browser }} chromium
-    - run: npm run test:e2e
-        
+    - run: npm run test:e2e:ci
+    - name: Report Coverage
+      uses: codecov/codecov-action@v2.1.0                          
+      with:
+        flags: e2e-${{ matrix.os }}-${{ matrix.browser }}
+        file: coverage/lcov.info
+        token: ${{ secrets.CODE_COV_UPLOAD_TOKEN }}
+        fail_ci_if_error: true
