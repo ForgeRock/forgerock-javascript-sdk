@@ -10,9 +10,11 @@
 
 import { readFileSync } from 'fs';
 import { fileURLToPath } from 'url';
+import path from 'path';
 
-const certsUrl = new URL('../../../', import.meta.url);
-const certsPath = fileURLToPath(certsUrl);
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const cert = readFileSync(path.resolve(__dirname, '../../../node_modules/lws/ssl/lws-cert.pem'));
+const key = readFileSync(path.resolve(__dirname, '../../../node_modules/lws/ssl/private-key.pem'));
 
-export const key = readFileSync(certsPath + 'example.com+5-key.pem').toString('utf8');
-export const cert = readFileSync(certsPath + 'example.com+5.pem').toString('utf8');
+export { cert, key };

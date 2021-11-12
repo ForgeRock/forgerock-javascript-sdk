@@ -12,8 +12,11 @@ import { setupAndGo } from '../utilities/setup-and-go';
 import browsers from '../utilities/browsers';
 
 describe('Test Transaction Authorization flow', () => {
-  browsers.forEach((browserType) => {
-    it(`Trigger Txn Auth appropriately with ${browserType}`, async (done) => {
+  beforeAll(() => {
+    jest.retryTimes(3);
+  });
+  browsers.map((browserType) => {
+    it(`Trigger Txn Auth appropriately with ${browserType}`, async () => {
       try {
         const { browser, messageArray } = await setupAndGo(browserType, 'authz-txn-basic/');
 
@@ -26,9 +29,8 @@ describe('Test Transaction Authorization flow', () => {
         expect(messageArray.includes('Continuing authentication with composite advice')).toBe(true);
 
         await browser.close();
-        done();
       } catch (error) {
-        done(error);
+        return error;
       }
     });
   });

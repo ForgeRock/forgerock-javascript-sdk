@@ -12,8 +12,11 @@ import { setupAndGo } from '../utilities/setup-and-go';
 import browsers from '../utilities/browsers';
 
 describe('Test oauth login flow with localStorage', () => {
-  browsers.forEach((browserType) => {
-    it(`Login successfully with ${browserType}`, async (done) => {
+  beforeAll(() => {
+    jest.retryTimes(3);
+  });
+  browsers.map((browserType) => {
+    it(`Login successfully with ${browserType}`, async () => {
       try {
         const { browser, messageArray } = await setupAndGo(browserType, 'config-token-storage/', {
           tokenStore: 'sessionStorage',
@@ -24,13 +27,12 @@ describe('Test oauth login flow with localStorage', () => {
         expect(messageArray.includes('Logout successful')).toBe(true);
 
         await browser.close();
-        done();
       } catch (error) {
-        done(error);
+        return error;
       }
     });
 
-    it(`Login successfully with ${browserType}`, async (done) => {
+    it(`Login successfully with ${browserType}`, async () => {
       try {
         const { browser, messageArray } = await setupAndGo(browserType, 'config-token-storage/', {
           tokenStore: 'indexedDB',
@@ -41,13 +43,12 @@ describe('Test oauth login flow with localStorage', () => {
         expect(messageArray.includes('Logout successful')).toBe(true);
 
         await browser.close();
-        done();
       } catch (error) {
-        done(error);
+        return error;
       }
     });
 
-    it(`Login successfully with ${browserType}`, async (done) => {
+    it(`Login successfully with ${browserType}`, async () => {
       try {
         const { browser, messageArray } = await setupAndGo(browserType, 'config-token-storage/', {
           tokenStore: 'customStore',
@@ -61,9 +62,8 @@ describe('Test oauth login flow with localStorage', () => {
         expect(messageArray.includes('Logout successful')).toBe(true);
 
         await browser.close();
-        done();
       } catch (error) {
-        done(error);
+        return error;
       }
     });
   });

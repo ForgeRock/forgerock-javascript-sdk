@@ -12,8 +12,11 @@ import { setupAndGo } from '../utilities/setup-and-go';
 import browsers from '../utilities/browsers';
 
 describe('Test Second Factor login flow', () => {
-  browsers.forEach((browserType) => {
-    it(`should login successfully with OTP and then log out with ${browserType}`, async (done) => {
+  beforeAll(() => {
+    jest.retryTimes(3);
+  });
+  browsers.map((browserType) => {
+    it(`should login successfully with OTP and then log out with ${browserType}`, async () => {
       try {
         const { browser, messageArray } = await setupAndGo(browserType, 'authn-second-factor/');
 
@@ -23,9 +26,8 @@ describe('Test Second Factor login flow', () => {
         expect(messageArray.includes('Second Factor login successful')).toBe(true);
 
         await browser.close();
-        done();
       } catch (error) {
-        done(error);
+        return error;
       }
     });
   });
