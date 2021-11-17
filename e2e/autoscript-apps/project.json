@@ -1,0 +1,43 @@
+{
+  "projectType": "application",
+  "root": "e2e/autoscript-apps",
+  "sourceRoot": "e2e/autoscript-apps/src",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nrwl/web:webpack",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/e2e/autoscript-apps",
+        "index": "e2e/autoscript-apps/src/index.html",
+        "main": "packages/javascript-sdk/src/index.ts",
+        "tsConfig": "e2e/autoscript-apps/tsconfig.app.json",
+        "webpackConfig": "e2e/autoscript-apps/webpack.config.js"
+      },
+      "configurations": {
+        "development": {
+          "optimization": false,
+          "watch": true
+        },
+        "production": {
+          "outputPath": "dist/e2e/autoscript-apps",
+          "optimized": true,
+          "watch": false
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nrwl/web:dev-server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "autoscript-apps:build",
+        "port": 8443
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "autoscript-apps:build:development"
+        }
+      }
+    }
+  }
+}

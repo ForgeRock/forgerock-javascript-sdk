@@ -63,9 +63,7 @@ export default function Kba({ callback, inputName }) {
   return (
     <Fragment>
       <hr className={`cstm_hr d-flex mt-5 ${state.theme.textClass}`} />
-      <div
-        className={`cstm_hr-lock_${state.theme.mode} d-flex justify-content-center`}
-      >
+      <div className={`cstm_hr-lock_${state.theme.mode} d-flex justify-content-center`}>
         <LockIcon />
       </div>
       <h2 className={`fs-6 mt-5 fw-normal ${state.theme.textClass}`}>

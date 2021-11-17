@@ -1,0 +1,56 @@
+{
+  "root": "samples/reactjs-todo",
+  "sourceRoot": "samples/reactjs/client",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/web:webpack",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/samples/reactjs-todo",
+        "generatePackageJson": true,
+        "index": "samples/reactjs-todo/public/index.html",
+        "main": "samples/reactjs-todo/client/index.js",
+        "tsConfig": "samples/reactjs-todo/tsconfig.app.json",
+        "webpackConfig": "samples/reactjs-todo/webpack.config.js",
+        "stylePreprocessorOptions": {
+          "includePaths": ["samples/reactjs-todo/public", "samples/reactjs-todo/client"]
+        }
+      },
+      "configurations": {}
+    },
+    "serve": {
+      "executor": "@nrwl/web:dev-server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "reactjs-todo:build",
+        "open": true,
+        "watch": true,
+        "ssl": true
+      },
+      "configurations": {
+        "development": {},
+        "production": {}
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/samples/reactjs-todo"],
+      "options": {
+        "jestConfig": "samples/reactjs-todo/jest.config.js",
+        "passWithNoTests": true
+      },
+      "configurations": {
+        "integration": {}
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["samples/reactjs-todo/**/*.js"],
+        "ignorePath": ".gitignore"
+      }
+    }
+  }
+}

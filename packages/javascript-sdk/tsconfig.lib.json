@@ -1,0 +1,31 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../../dist/packages/javascript-sdk",
+    "declaration": true,
+    "lib": ["ES2015", "dom"],
+    "moduleResolution": "node",
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitAny": false,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "sourceMap": true,
+    "skipLibCheck": true,
+    "strict": false,
+    "module": "ES2015",
+    "target": "ES2015"
+  },
+  "include": ["**/*.ts"],
+  "exclude": [
+    "jest.env.config.ts",
+    "tests/",
+    "**/*.spec.ts",
+    "**/*.test.ts",
+    "lib-esm",
+    "lib",
+    "bundles",
+    "dist/"
+  ]
+}

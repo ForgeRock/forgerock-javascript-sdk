@@ -1,0 +1,23 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../../dist/e2e/javascript-sdk-app/",
+    "strict": false,
+    "composite": true,
+    "noImplicitAny": false
+  },
+  "include": [
+    "utilities/*",
+    "suites/*",
+    "**/*.test.ts",
+    "**/*.spec.ts",
+    "**/*.test.tsx",
+    "**/*.spec.tsx",
+    "**/*.test.js",
+    "**/*.spec.js",
+    "**/*.test.jsx",
+    "**/*.spec.jsx",
+    "**/*.d.ts"
+  ],
+  "exclude": ["dist/"]
+}

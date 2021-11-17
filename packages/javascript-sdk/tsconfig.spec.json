@@ -1,0 +1,26 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../../dist/packages/javascript-sdk",
+    "types": ["node", "jest"],
+    "strict": false,
+    "noImplicitAny": false,
+    "allowJs": true,
+    "module": "ES2015",
+    "target": "ES6"
+  },
+  "include": [
+    "tests/*",
+    "**/*.test.ts",
+    "**/*.spec.ts",
+    "**/*.test.tsx",
+    "**/*.spec.tsx",
+    "**/*.test.js",
+    "**/*.spec.js",
+    "**/*.test.jsx",
+    "**/*.spec.jsx",
+    "**/*.d.ts",
+    "./jest.env.config.ts"
+  ],
+  "exclude": ["lib", "lib-esm", "dist/"]
+}

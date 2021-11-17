@@ -1,0 +1,20 @@
+{
+  "name": "@forgerock/javascript-sdk",
+  "version": "3.0.0",
+  "description": "ForgeRock JavaScript SDK",
+  "module": "./lib-esm/index.js",
+  "main": "./lilb/index.js",
+  "files": [
+    "bundles/**",
+    "lib/**",
+    "lib-esm/**",
+    "package.json",
+    "README.md"
+  ],
+  "author": "ForgeRock",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ForgeRock/forgerock-javascript-sdk/issues"
+  },
+  "homepage": "https://github.com/ForgeRock/forgerock-javascript-sdk#readme"
+}

@@ -24,15 +24,16 @@ Use the SDKs to leverage _[Intelligent Authentication](https://www.forgerock.com
 
 ## Requirements
 
-* ForgeRock Identity Platform
-    * Access Management (AM) 6.5.2+
+- ForgeRock Identity Platform
 
-* Browsers:
-    * Chrome 87
-    * Firefox 84
-    * Safari 14
-    * Edge 87 (Chromium)
-    * Edge 44 (Legacy): requires one polyfill for TextEncoder, [`fast-text-encoding` is recommended](https://www.npmjs.com/package/fast-text-encoding)
+  - Access Management (AM) 6.5.2+
+
+- Browsers:
+  - Chrome 87
+  - Firefox 84
+  - Safari 14
+  - Edge 87 (Chromium)
+  - Edge 44 (Legacy): requires one polyfill for TextEncoder, [`fast-text-encoding` is recommended](https://www.npmjs.com/package/fast-text-encoding)
 
 > **Tip**: Older browsers (like IE11) may require multiple [polyfills, which can be found in our documentation](https://sdks.forgerock.com/javascript/polyfills/).
 
@@ -62,45 +63,31 @@ To try out the ForgeRock JavaScript SDK, perform these steps:
 
 3. Clone this repo:
 
-    ```
-    git clone https://github.com/ForgeRock/forgerock-javascript-sdk.git
-    ```
+   ```
+   git clone https://github.com/ForgeRock/forgerock-javascript-sdk.git
+   ```
 
 4. In the root folder of the repo, use NPM to install dependencies:
 
-    ```
-    npm install
-    ```
+   ```
+   npm install
+   ```
 
 5. Build the ForgeRock JavaScript SDK:
 
-    ```
-    npm run build
-    ```
+   ```
+   npm run build
+   ```
 
 6. Open `samples/embedded-login/index.html` and edit the configuration values to match your AM instance.
 
-7. This SDK requires HTTPS (secure protocol) which means security (SSL/TLS) certificates are necessary. For local testing and development, it's common to generate your own self-signed certificates. You're free to use any method to do this, but if you need assistance in generating your own certs, the following can be helpful:
+7. Serve the `samples` directory by using a simple HTTP server.
 
-    - Using [this utility (`mkcert`) can help simplify the process of creating trusted certs](https://github.com/FiloSottile/mkcert)
-    - After following `mkcert`'s installation guide and simple example of creating certs, you should have two files: `example.com+5.pem` & `example.com+5-key.pem`
+   - Run `npm run start:samples`
 
-        (Ensure these two files are in the root of this project)
+8. Edit your `/etc/hosts` file to point your localhost (e.g. `127.0.0.1`) to `sdkapp.example.com`
 
-    > **Warning: Self-signed certificates or certificates not from an industry-recognized, certificate authority (CA) should never be used in production.**
-
-8. Serve the `samples` directory by using a simple HTTP server.
-
-   - If you used the `mkcert` utility from above, followed their tutorial, and the files are in the root of this project, simply run `npm run start:samples`
-   - Or, if you generated certs using a different method, you will need to run the below with your certificate and key file names you created:
-
-       ```
-       ws -d samples -p 8443 --cors.origin null --cors.credentials --cert <your_certificate> --key <your_private_key>
-       ```
-
-9. Edit your `/etc/hosts` file to point your localhost (e.g. `127.0.0.1`) to `sdkapp.example.com`
-
-10. In a [supported web browser](#requirements), navigate to `https://sdkapp.example.com:8443`, and then click **Embedded Login**.
+9. In a [supported web browser](#requirements), navigate to `https://sdkapp.example.com:8443`, and then click **Embedded Login**.
 
 <!------------------------------------------------------------------------------------------------------------------------------------>
 <!-- SAMPLES - List the samples we include with the SDKs, where they are, briefly what they show. -->
@@ -111,21 +98,21 @@ ForgeRock provides these samples to help demonstrate SDK functionality/implement
 
 - **Embedded login - `/samples/embedded-login`**
 
-    In most real-world scenarios, you will want to have full control over the UI. In these cases, you can use `FRAuth` to obtain typed callback instances from authentication trees and render the UI in whatever way makes sense for your application.
+  In most real-world scenarios, you will want to have full control over the UI. In these cases, you can use `FRAuth` to obtain typed callback instances from authentication trees and render the UI in whatever way makes sense for your application.
 
-    You can run this sample app with the `npm run start:samples` command. Please [see the Getting Started instructions](#getting-started) for more details.
+  You can run this sample app with the `npm run start:samples` command. Please [see the Getting Started instructions](#getting-started) for more details.
 
 - **Central login - `/samples/central-login`**
 
-    In cases in which a centralized login application is desired, in contrast to an embedded login form, the SDK provides a method for leveraging an OAuth flow known as Authorization Code Flow (with PKCE). By using an option (login of "redirect") provided by `TokenManager` to request OAuth/OIDC tokens, when the user is not authenticated, the SDK will redirect the user to the configured login application with the ForgeRock platform. Once authenticated, the user will be redirected back to the original application to attain OAuth/OIDC tokens to complete the user flow.
+  In cases in which a centralized login application is desired, in contrast to an embedded login form, the SDK provides a method for leveraging an OAuth flow known as Authorization Code Flow (with PKCE). By using an option (login of "redirect") provided by `TokenManager` to request OAuth/OIDC tokens, when the user is not authenticated, the SDK will redirect the user to the configured login application with the ForgeRock platform. Once authenticated, the user will be redirected back to the original application to attain OAuth/OIDC tokens to complete the user flow.
 
-    You can run this sample app with the `npm run start:samples` command. Please [see the Getting Started instructions](#getting-started) for more details.
+  You can run this sample app with the `npm run start:samples` command. Please [see the Getting Started instructions](#getting-started) for more details.
 
-- **React todos  - `/samples/reactjs-todos`**
+- **React todos - `/samples/reactjs-todos`**
 
-    A sample React JS application is provided to demonstrate how the JavaScript SDK can be implemented within a React context. You can read more about this application by [visiting its README.md file](samples/reactjs-todo/README.md).
+  A sample React JS application is provided to demonstrate how the JavaScript SDK can be implemented within a React context. You can read more about this application by [visiting its README.md file](samples/reactjs-todo/README.md).
 
-    Since this sample app uses npm's workspaces feature, npm 7 or higher is required. When on npm 7+, dependencies are already installed when running `npm install`. You can run this sample app's scripts with the `-w` option: `npm run build -w reactjs-todo` and `npm run start -w reactjs-todo`.
+  Since this sample app uses npm's workspaces feature, npm 7 or higher is required. When on npm 7+, dependencies are already installed when running `npm install`. You can run this sample app with: `npx nx run reactjs-todo:serve`.
 
 <!------------------------------------------------------------------------------------------------------------------------------------>
 <!-- DOCS - Link off to the AM-centric documentation at sdks.forgerock.com. -->
@@ -134,9 +121,9 @@ ForgeRock provides these samples to help demonstrate SDK functionality/implement
 
 Documentation for the SDKs is provided at **<https://sdks.forgerock.com>**, and includes topics such as:
 
-* Introducing the SDK Features
-* Preparing AM for use with the SDKS
-* API Reference documentation
+- Introducing the SDK Features
+- Preparing AM for use with the SDKS
+- API Reference documentation
 
 <!------------------------------------------------------------------------------------------------------------------------------------>
 <!-- SUPPORT -->
@@ -147,8 +134,8 @@ If you encounter any issues, be sure to check our **[Troubleshooting](https://ba
 
 Support tickets can be raised whenever you need our assistance; here are some examples of when it is appropriate to open a ticket (but not limited to):
 
-* Suspected bugs or problems with ForgeRock software.
-* Requests for assistance - please look at the **[Documentation](https://sdks.forgerock.com)** and **[Knowledge Base](https://backstage.forgerock.com/knowledge/kb/home/g32324668)** first.
+- Suspected bugs or problems with ForgeRock software.
+- Requests for assistance - please look at the **[Documentation](https://sdks.forgerock.com)** and **[Knowledge Base](https://backstage.forgerock.com/knowledge/kb/home/g32324668)** first.
 
 You can raise a ticket using **[BackStage](https://backstage.forgerock.com/support/tickets)**, our customer support portal that provides one stop access to ForgeRock services.
 
@@ -166,6 +153,7 @@ BackStage shows all currently open support tickets and allows you to raise a new
 If you would like to contribute to this project you can fork the repository, clone it to your machine and get started.
 
 <!-- Note: Found elsewhere, but is Java-only //-->
+
 Be sure to check out our [Coding Style and Guidelines](https://wikis.forgerock.org/confluence/display/devcom/Coding+Style+and+Guidelines) page.
 
 <!------------------------------------------------------------------------------------------------------------------------------------>
@@ -186,4 +174,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 &copy; Copyright 2020 ForgeRock AS. All Rights Reserved.
 
-[forgerock-logo]: https://www.forgerock.com/themes/custom/forgerock/images/fr-logo-horz-color.svg "ForgeRock Logo"
+[forgerock-logo]: https://www.forgerock.com/themes/custom/forgerock/images/fr-logo-horz-color.svg 'ForgeRock Logo'

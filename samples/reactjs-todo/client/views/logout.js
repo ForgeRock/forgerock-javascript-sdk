@@ -41,7 +41,7 @@ export default function Logout() {
         // Allow for enough time to communicate the action
         setTimeout(() => history.push('/?action=logout'), 1000);
       } catch (error) {
-        console.error(`Error: logout; ${err}`);
+        console.error(`Error: logout; ${error}`);
       }
     }
 

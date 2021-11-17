@@ -1,0 +1,12 @@
+{
+  "name": "@forgerock/autoscript-apps",
+  "version": "3.0.0",
+  "main": "./lib/index.js",
+  "module": "./lib-esm/index.js",
+  "files": [
+    "./lib/**/*",
+    "./lib-esm/**/*",
+    "package.json",
+    "README.md"
+  ]
+}
