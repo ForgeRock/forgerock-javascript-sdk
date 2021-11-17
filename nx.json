@@ -1,0 +1,61 @@
+{
+  "extends": "@nrwl/workspace/presets/npm.json",
+  "npmScope": "forgerock",
+  "tasksRunnerOptions": {
+    "default": {
+      "runner": "@nrwl/nx-cloud",
+      "options": {
+        "cacheableOperations": ["build", "test", "lint", "package", "prepare", "test-integration", "test-unit"],
+        "accessToken": "NzU3MWE3MjgtOWRiZi00ZDczLWI4YWYtMDI5NThmNTRkNDc1fHJlYWQtd3JpdGU="
+      }
+    }
+  },
+  "targetDependencies": {
+    "tsc": [
+      {
+        "target": "tsc",
+        "projects": "dependencies"
+      }
+    ],
+    "build": [
+      {
+        "target": "build",
+        "projects": "dependencies"
+      }
+    ],
+    "prepare": [
+      {
+        "target": "prepare",
+        "projects": "dependencies"
+      }
+    ],
+    "package": [
+      {
+        "target": "package",
+        "projects": "dependencies"
+      }
+    ]
+  },
+  "affected": {
+    "defaultBase": "develop"
+  },
+  "generators": {
+    "@nrwl/react": {
+      "application": {
+        "style": "css",
+        "linter": "eslint",
+        "babel": true
+      },
+      "component": {
+        "style": "css"
+      },
+      "library": {
+        "style": "css",
+        "linter": "eslint"
+      }
+    }
+  },
+  "cli": {
+    "defaultCollection": "@nrwl/react"
+  }
+}
