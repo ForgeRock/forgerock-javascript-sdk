@@ -1,9 +1,8 @@
-name: Playwright Tests
+name: Develop CI Pipeline
 on:
   pull_request:
     branches:
       - develop
-
 jobs:
   linux:
     name: ${{ matrix.os }} (${{ matrix.browser }})
@@ -16,6 +15,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
     - uses: actions/setup-node@v2
       with:
         cache: npm
@@ -25,7 +26,6 @@ jobs:
       env:
         cache-name: cache-node-modules
       with:
-        # npm cache files are stored in `~/.npm` on Linux/macOS
         path: ~/.npm
         key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
         restore-keys: |
@@ -42,8 +42,15 @@ jobs:
       env:
         DEBUG: pw:install
         PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
+    - name: Pull Recent Git History
+      run: git fetch origin develop
+    - name: Run Affected Unit Tests
+      shell: bash
+      run: npm run test:unit:ci
+    - name: Run Affected Integration Tests
+      run: npm run test:integration:ci
     - name: Build SDK
-      run: npm run build
+      run: npm run build:ci
     - name: Install Playwright
       run: npx playwright install --with-deps
     - name: Run e2e
@@ -61,6 +68,8 @@ jobs:
       runs-on: ${{ matrix.os }}
       steps:
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
       - uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.nodeversion }}
@@ -69,7 +78,6 @@ jobs:
         env:
           cache-name: cache-node-modules
         with:
-          # npm cache files are stored in `~/.npm` on Linux/macOS
           path: ~/.npm
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
@@ -85,20 +93,29 @@ jobs:
         run: npm ci
         env:
           DEBUG: pw:install
-          # PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
-      # - run: npx playwright install --with-deps ${{ matrix.browser }} chromium
-      - run: npm run build
-      - run: npm run test:e2e
+      - name: Pull Recent Git History
+        run: git fetch origin develop
+      - name: Run Affected Unit Tests
+        shell: bash
+        run: npm run test:unit:ci
+      - name: Run Affected Integration Tests
+        run: npm run test:integration:ci
+      - name: Build SDK
+        run: npm run build:ci
+      - name: Run E2E Tests
+        run: npm run test:e2e
   windows:
     name: windows (${{ matrix.browser }})
     strategy:
       fail-fast: false
       matrix:
-        browser: [chromiumm, msedge, firefox] # firefox, webkit, msedge]
+        browser: [chromium, msedge, firefox]
         nodeversion: ['16']
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
     - uses: actions/setup-node@v2
       with:
         node-version: ${{ matrix.nodeversion }}
@@ -107,13 +124,19 @@ jobs:
     - name: debug etc hosts
       run: type C:\Windows\System32\drivers\etc\hosts
     - name: Install NPM
-      run: npm i -g npm@7
+      run: npm i -g npm@8
     - name: Install Dependencies
       run: npm ci
       env:
         DEBUG: pw:install
-        # PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
-    - run: npm run build
-    # - run: PLAYWRIGHT_BROWSERS_PATH=$HOME/pw-browsers npx playwright install --with-deps ${{ matrix.browser }} chromium
-    - run: npm run test:e2e
-        
+    - name: Pull Recent Git History
+      run: git fetch origin develop
+    - name: Run Affected Unit Tests        
+      shell: bash
+      run: npm run test:unit:ci
+    - name: Run Affected Integration Tests
+      run: npm run test:integration:ci
+    - name: Build SDK
+      run: npm run build:ci
+    - name: Run E2E Tests
+      run: npm run test:e2e

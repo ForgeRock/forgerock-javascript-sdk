@@ -1,7 +1,13 @@
 # OS files
 .DS_Store
+*/DS_Store
+
+
 
 # Generated code
+tmp/
+dist/*
+*/dist/
 bundles/
 docs/
 coverage/

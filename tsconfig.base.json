@@ -1,0 +1,27 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "baseUrl": ".",
+    "declaration": true,
+    "esModuleInterop": true,
+    "lib": ["es2015", "dom"],
+    "module": "ES2020",
+    "moduleResolution": "node",
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noUnusedLocals": true,
+    "allowJs": true,
+    "noUnusedParameters": true,
+    "rootDir": ".",
+    "sourceMap": true,
+    "strict": true,
+    "target": "ES2016",
+    "paths": {
+      "@forgerock/javascript-sdk": ["packages/javascript-sdk/src/index.ts"],
+      "@forgerock/javascript-sdk-e2e": ["packages/javascript-sdk-e2e/src/index.ts"]
+    }
+  },
+  "exclude": ["node_modules", "tmp"]
+}

@@ -1,0 +1,111 @@
+{
+  "version": 2,
+  "projects": {
+    "javascript-sdk": {
+      "root": "packages/javascript-sdk",
+      "sourceRoot": "packages/javascript-sdk/src",
+      "projectType": "library",
+      "targets": {
+        "tsc": {
+          "executor": "@nrwl/workspace:tsc",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/packages",
+            "main": "packages/javascript-sdk/src/index.ts",
+            "tsConfig": "packages/javascript-sdk/tsconfig.lib.json"
+          }
+        },
+        "build": {
+          "executor": "@nrwl/workspace:run-commands",
+          "options": {
+            "commands": ["webpack --env DEV=no"],
+            "cwd": "packages/javascript-sdk",
+            "parallel": false
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["packages/javascript-sdk/**/*.ts"],
+            "ignorePath": ".gitignore"
+          }
+        },
+        "test-unit": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/packages/javascript-sdk"],
+          "options": {
+            "jestConfig": "packages/javascript-sdk/jest.unit.config.js",
+            "passWithNoTests": true
+          }
+        },
+        "test-integration": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/packages/javascript-sdk"],
+          "options": {
+            "jestConfig": "packages/javascript-sdk/jest.integration.config.js",
+            "passWithNoTests": false
+          }
+        }
+      },
+      "tags": []
+    },
+    "javascript-sdk-e2e": {
+      "root": "packages/javascript-sdk-e2e",
+      "sourceRoot": "packages/javascript-sdk-e2e/src",
+      "projectType": "library",
+      "targets": {
+        "build": {
+          "executor": "@nrwl/workspace:tsc",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/packages/javascript-sdk-e2e",
+            "main": "packages/javascript-sdk-e2e/src/index.ts",
+            "tsConfig": "packages/javascript-sdk-e2e/tsconfig.lib.json",
+            "assets": ["packages/javascript-sdk-e2e/*.md"]
+          }
+        },
+        "tsc": {
+          "executor": "@nrwl/workspace:tsc",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "dist/packages/javascript-sdk-e2e",
+            "main": "packages/javascript-sdk-e2e/src/index.ts",
+            "tsConfig": "packages/javascript-sdk-e2e/tsconfig.lib.json",
+            "assets": ["packages/javascript-sdk-e2e/*.md"]
+          }
+        },
+        "lint": {
+          "executor": "@nrwl/linter:eslint",
+          "outputs": ["{options.outputFile}"],
+          "options": {
+            "lintFilePatterns": ["packages/javascript-sdk-e2e/**/*.ts"]
+          }
+        },
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/packages/javascript-sdk-e2e"],
+          "options": {
+            "jestConfig": "packages/javascript-sdk-e2e/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      },
+      "tags": []
+    },
+    "reactjs-todo": {
+      "root": "samples/reactjs-todo",
+      "projectType": "application",
+      "targets": {
+        "test": {
+          "executor": "@nrwl/jest:jest",
+          "outputs": ["coverage/samples/reactjs-todo"],
+          "options": {
+            "jestConfig": "samples/reactjs-todo/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
+    }
+  }
+}
