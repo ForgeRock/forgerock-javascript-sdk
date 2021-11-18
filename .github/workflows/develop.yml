@@ -50,6 +50,9 @@ jobs:
       run: npm run test:integration:ci
     - name: Build SDK
       run: npm run build:ci
+      env: 
+        NODE_ENV: production
+
     - name: Install Playwright
       run: npx playwright install --with-deps
     - name: Run e2e
@@ -102,6 +105,9 @@ jobs:
         run: npm run test:integration:ci
       - name: Build SDK
         run: npm run build:ci
+        env: 
+          NODE_ENV: production
+
       - name: Run E2E Tests
         run: npm run test:e2e
   windows:
@@ -138,5 +144,7 @@ jobs:
       run: npm run test:integration:ci
     - name: Build SDK
       run: npm run build:ci
+      env: 
+        NODE_ENV: production
     - name: Run E2E Tests
       run: npm run test:e2e

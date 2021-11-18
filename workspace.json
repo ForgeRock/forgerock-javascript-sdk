@@ -16,15 +16,16 @@
             "tsConfig": "packages/javascript-sdk/tsconfig.lib.json",
             "cwd": "packages/javascript-sdk",
             "parallel": true,
-            "rollupConfig": "@nrwl/react/plugins/bundle-rollup"
+            "rollupConfig": "packages/javascript-sdk/rollup.config.js"
           },
           "outputs": ["{options.outputPath}"],
           "configurations": {
-            "development": {},
-            "production": {}
+            "development": {
+              "watch": true
+            }
           }
         },
-        "build:webpack": {
+        "build-webpack": {
           "executor": "@nrwl/workspace:run-commands",
           "options": {
             "commands": ["webpack --env DEV=no"],
@@ -79,7 +80,7 @@
             "lintFilePatterns": ["packages/javascript-sdk-e2e/**/*.ts"]
           }
         },
-        "e2e": {
+        "test-e2e": {
           "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/packages/javascript-sdk-e2e"],
           "options": {

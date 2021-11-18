@@ -2,5 +2,9 @@
   "name": "@forgerock/javascript-sdk",
   "version": "0.0.1",
   "main": "./lib/",
-  "module": "./lib-esm/"
+  "module": "./lib-esm/",
+  "devDependencies": {
+    "rollup-copy-plugin": "^0.1.0",
+    "rollup-plugin-visualizer": "^5.5.2"
+  }
 }
