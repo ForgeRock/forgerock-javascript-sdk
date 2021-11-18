@@ -6,16 +6,25 @@
       "sourceRoot": "packages/javascript-sdk/src",
       "projectType": "library",
       "targets": {
-        "tsc": {
-          "executor": "@nrwl/workspace:tsc",
-          "outputs": ["{options.outputPath}"],
+        "build": {
+          "executor": "@nrwl/web:package",
           "options": {
-            "outputPath": "dist/packages",
-            "main": "packages/javascript-sdk/src/index.ts",
-            "tsConfig": "packages/javascript-sdk/tsconfig.lib.json"
+            "entryFile": "packages/javascript-sdk/src/index.ts",
+            "outputPath": "packages/javascript-sdk/bundles/src/index.js",
+            "project": "packages/javascript-sdk/package.json",
+            "deleteOutputPath": true,
+            "tsConfig": "packages/javascript-sdk/tsconfig.lib.json",
+            "cwd": "packages/javascript-sdk",
+            "parallel": true,
+            "rollupConfig": "@nrwl/react/plugins/bundle-rollup"
+          },
+          "outputs": ["{options.outputPath}"],
+          "configurations": {
+            "development": {},
+            "production": {}
           }
         },
-        "build": {
+        "build:webpack": {
           "executor": "@nrwl/workspace:run-commands",
           "options": {
             "commands": ["webpack --env DEV=no"],
@@ -31,20 +40,18 @@
             "ignorePath": ".gitignore"
           }
         },
-        "test-unit": {
+        "test": {
           "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/packages/javascript-sdk"],
           "options": {
             "jestConfig": "packages/javascript-sdk/jest.unit.config.js",
             "passWithNoTests": true
-          }
-        },
-        "test-integration": {
-          "executor": "@nrwl/jest:jest",
-          "outputs": ["coverage/packages/javascript-sdk"],
-          "options": {
-            "jestConfig": "packages/javascript-sdk/jest.integration.config.js",
-            "passWithNoTests": false
+          },
+          "configurations": {
+            "integration": {
+              "jestConfig": "packages/javascript-sdk/jest.integration.config.js",
+              "passWithNoTests": true
+            }
           }
         }
       },
@@ -65,16 +72,6 @@
             "assets": ["packages/javascript-sdk-e2e/*.md"]
           }
         },
-        "tsc": {
-          "executor": "@nrwl/workspace:tsc",
-          "outputs": ["{options.outputPath}"],
-          "options": {
-            "outputPath": "dist/packages/javascript-sdk-e2e",
-            "main": "packages/javascript-sdk-e2e/src/index.ts",
-            "tsConfig": "packages/javascript-sdk-e2e/tsconfig.lib.json",
-            "assets": ["packages/javascript-sdk-e2e/*.md"]
-          }
-        },
         "lint": {
           "executor": "@nrwl/linter:eslint",
           "outputs": ["{options.outputFile}"],
@@ -82,7 +79,7 @@
             "lintFilePatterns": ["packages/javascript-sdk-e2e/**/*.ts"]
           }
         },
-        "test": {
+        "e2e": {
           "executor": "@nrwl/jest:jest",
           "outputs": ["coverage/packages/javascript-sdk-e2e"],
           "options": {
