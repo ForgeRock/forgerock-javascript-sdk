@@ -23,8 +23,8 @@ module.exports = (env) => {
       // Copy and rename non-built config files
       patterns: [
         {
-          from: '../javascript-sdk-e2e/src/e2e/env.config.ts',
-          to: '../../javascript-sdk-e2e/src/e2e/server/env.config.copy.mjs',
+          from: './javascript-sdk-e2e/src/e2e/env.config.ts',
+          to: './javascript-sdk-e2e/src/e2e/server/env.config.copy.mjs',
           force: true,
           toType: 'file',
           // minimized with value true doesn't minimize; yup, you read that right

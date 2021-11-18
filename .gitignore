@@ -36,6 +36,6 @@ samples/_static/js/*.js*
 samples/*/public/app.*
 samples/*/todos
 samples/*/users
-
+env.config.copy.mjs
 # Environment files
 .env

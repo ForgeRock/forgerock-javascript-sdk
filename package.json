@@ -12,7 +12,8 @@
     "README.md"
   ],
   "scripts": {
-    "build": "npm run clean && nx run javascript-sdk:build -- --env DEV=no",
+    "build": "npm run clean && NODE_ENV=production nx run javascript-sdk:build",
+    "build:analyze": "npm run clean && NODE_ENV=analyze nx run javascript-sdk:build -- environment=NODE_ENV=analyze",
     "build:ci": "nx affected --target=build --base=remotes/origin/develop --parallel",
     "clean": "shx rm -rf ./bundles ./docs ./lib ./lib-esm ./coverage ./dist ./tmp",
     "clean:all": "npm run clean && shx rm -rf ./node_modules ./tests/node_modules ./samples/reactjs-todo/node_modules ./samples/reactjs-todo/todos ./samples/reactjs-todo/users ./package-lock.json && git clean -fX -e \"!*.pem\" -e \"!.env\"",
@@ -25,6 +26,7 @@
     "start:server:live": "LIVE=true node packages/javascript-sdk/src/e2e/server/index.mjs",
     "start:samples": "ws -d samples -p 8443 --cors.origin null --cors.credentials --cert example.com+5.pem --key example.com+5-key.pem",
     "test": "npm run test:unit && npm run test:integration && npm run test:e2e",
+    "test:ci": "npm run test:unit:ci && npm run test:integration:ci",
     "test:e2e": "jest --testMatch=\"<rootDir>/src/e2e/**/*.test.ts\" --config=\"./packages/javascript-sdk-e2e/jest.config.js\"",
     "test:e2e:live": "LIVE=true jest --testMatch=\"<rootDir>/tests/e2e/**/*.lc.test.ts\" --config=./tests/jest.e2e.config.js",
     "test:integration": "nx affected --target=test:integration --base=develop",
@@ -36,7 +38,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run lint && npm run build",
+      "pre-commit": "npm run lint && npm run build:ci",
       "pre-push": "npm run test:unit && npm run test:integration && npm run build && npm run test:e2e"
     }
   },
