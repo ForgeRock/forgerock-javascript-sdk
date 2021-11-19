@@ -1,8 +1,13 @@
 {
   "name": "@forgerock/javascript-sdk",
   "version": "3.0.0",
+<<<<<<< HEAD
   "main": "./bundles/cjs/",
   "module": "./bundles/esm/",
+=======
+  "main": "./bundles/cjs/index.js",
+  "module": "./bundles/esm/index.js",
+>>>>>>> 2f1b756 (feature(distributed-ci-tasks): Distribute CI Tasks)
   "files": [
     "/bundles/**/*.d.ts",
     "package.json",

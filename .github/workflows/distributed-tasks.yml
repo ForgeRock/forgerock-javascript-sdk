@@ -24,7 +24,11 @@ jobs:
     needs: install-deps
     strategy:
       matrix:
+<<<<<<< HEAD
         target: ['"test --configuration=unit"', 'lint', 'build','"test --configuration=integration"' ]
+=======
+        target: ['test', 'lint', 'build']
+>>>>>>> 2f1b756 (feature(distributed-ci-tasks): Distribute CI Tasks)
         jobIndex: [1, 2, 3, 4]
     env:
       jobCount: 4
