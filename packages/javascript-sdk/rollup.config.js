@@ -3,7 +3,11 @@ const path = require('path');
 const nrwlConfig = require('@nrwl/react/plugins/bundle-rollup');
 const pkg = require('./package.json');
 const { visualizer } = require('rollup-plugin-visualizer');
+<<<<<<< HEAD
 const { terser } = require('rollup-plugin-terser');
+=======
+const { terser } = require("rollup-plugin-terser");
+>>>>>>> 01c9f05 (feature(update-targets): Update Targets in tsconfig)
 const copy = require('rollup-plugin-copy');
 
 module.exports = (config) => {
