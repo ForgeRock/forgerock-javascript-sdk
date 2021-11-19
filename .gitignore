@@ -8,6 +8,7 @@
 tmp/
 dist/*
 */dist/
+packages/*/dist/
 bundles/
 docs/
 coverage/

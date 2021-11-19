@@ -5,12 +5,26 @@
     "default": {
       "runner": "@nrwl/nx-cloud",
       "options": {
-        "cacheableOperations": ["build", "test", "lint", "package", "prepare", "test-integration", "test-unit"],
+        "cacheableOperations": [
+          "build",
+          "test",
+          "lint",
+          "package",
+          "prepare",
+          "test:integration",
+          "test:unit"
+        ],
         "accessToken": "NzU3MWE3MjgtOWRiZi00ZDczLWI4YWYtMDI5NThmNTRkNDc1fHJlYWQtd3JpdGU="
       }
     }
   },
   "targetDependencies": {
+    "test": [
+      {
+        "target": "test",
+        "projects": "dependencies"
+      }
+    ],
     "tsc": [
       {
         "target": "tsc",

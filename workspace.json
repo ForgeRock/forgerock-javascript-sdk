@@ -49,6 +49,7 @@
             "passWithNoTests": true
           },
           "configurations": {
+            "unit": {},
             "integration": {
               "jestConfig": "packages/javascript-sdk/jest.integration.config.js",
               "passWithNoTests": true
