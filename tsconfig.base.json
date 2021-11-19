@@ -1,23 +1,22 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "rootDir": ".",
     "baseUrl": ".",
     "declaration": true,
     "esModuleInterop": true,
     "lib": ["es2015", "dom"],
-    "module": "ES2020",
+    "module": "ES2015",
     "moduleResolution": "node",
     "noFallthroughCasesInSwitch": true,
     "noImplicitAny": true,
     "noImplicitReturns": true,
     "noImplicitThis": true,
     "noUnusedLocals": true,
-    "allowJs": true,
-    "noUnusedParameters": true,
-    "rootDir": ".",
+    "noUnusedParameters": true, 
     "sourceMap": true,
     "strict": true,
-    "target": "ES2016",
+    "target": "ES2015",
     "paths": {
       "@forgerock/javascript-sdk": ["packages/javascript-sdk/src/index.ts"],
       "@forgerock/javascript-sdk-e2e": ["packages/javascript-sdk-e2e/src/index.ts"]
