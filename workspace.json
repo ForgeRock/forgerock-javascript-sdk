@@ -7,6 +7,24 @@
       "projectType": "library",
       "targets": {
         "build": {
+          "executor": "@nrwl/workspace:tsc",
+          "outputs": ["{options.outputPath}"],
+          "options": {
+            "outputPath": "/packages/javascript-sdk/bundles/lib-esm/",
+            "main": "packages/javascript-sdk/src/index.ts",
+            "tsConfig": "packages/javascript-sdk/tsconfig.lib.json",
+            "assets": ["packages/javascript-sdk/*.md"]
+          }, 
+          "configurations": {
+            "commonjs": {
+            "outputPath": "/packages/javascript-sdk/bundles/lib",
+            "main": "packages/javascript-sdk/src/index.ts",
+            "tsConfig": "packages/javascript-sdk/tsconfig.cjs.json",
+            "assets": ["packages/javascript-sdk/*.md"]
+            }
+          }
+        },
+        "build:rollup": {
           "executor": "@nrwl/web:package",
           "options": {
             "entryFile": "packages/javascript-sdk/src/index.ts",
@@ -62,18 +80,19 @@
           "options": {
             "access": "public",
             "buildTarget": "production",
-            "dryRun": true
+            "dryRun": true,
+            "noBuild": true
           },
           "configurations": {
             "alpha": {
               "tag": "alpha",
               "access": "public",
-              "dryRun": "true"
+              "dryRun": true
             },
             "beta": {
               "tag": "alpha",
               "access": "public",
-              "dryRun": "true"
+              "dryRun": true
             }
           }
         }
