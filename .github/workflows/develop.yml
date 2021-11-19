@@ -41,18 +41,10 @@ jobs:
       env:
         DEBUG: pw:install
         PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
-    - name: Pull Recent Git History
-      run: git fetch origin develop
-    - name: Run Affected Unit Tests
-      shell: bash
-      run: npm run test:unit:ci
-    - name: Run Affected Integration Tests
-      run: npm run test:integration:ci
     - name: Build SDK
       run: npm run build:ci
       env: 
         NODE_ENV: production
-
     - name: Install Playwright
       run: npx playwright install --with-deps
     - name: Run e2e
@@ -96,13 +88,6 @@ jobs:
         run: npm ci
         env:
           DEBUG: pw:install
-      - name: Pull Recent Git History
-        run: git fetch origin develop
-      - name: Run Affected Unit Tests
-        shell: bash
-        run: npm run test:unit:ci
-      - name: Run Affected Integration Tests
-        run: npm run test:integration:ci
       - name: Build SDK
         run: npm run build:ci
         env: 
@@ -135,13 +120,6 @@ jobs:
       run: npm ci
       env:
         DEBUG: pw:install
-    - name: Pull Recent Git History
-      run: git fetch origin develop
-    - name: Run Affected Unit Tests        
-      shell: bash
-      run: npm run test:unit:ci
-    - name: Run Affected Integration Tests
-      run: npm run test:integration:ci
     - name: Build SDK
       run: npm run build:ci
     - name: Run E2E Tests

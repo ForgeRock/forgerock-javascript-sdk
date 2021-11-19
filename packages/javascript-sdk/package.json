@@ -1,14 +1,8 @@
 {
   "name": "@forgerock/javascript-sdk",
-<<<<<<< HEAD
   "version": "3.0.0",
-<<<<<<< HEAD
-  "main": "./bundles/cjs/index.js",
-  "module": "./bundles/esm/index.js",
-=======
-  "main": "./bundles/javascript-sdk.umd.js",
-  "module": "./bundles/javascript-sdk.esm.js",
->>>>>>> 01c9f05 (feature(update-targets): Update Targets in tsconfig)
+  "main": "./bundles/cjs/",
+  "module": "./bundles/esm/",
   "files": [
     "/bundles/**/*.d.ts",
     "package.json",
