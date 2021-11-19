@@ -10,7 +10,7 @@
           "executor": "@nrwl/web:package",
           "options": {
             "entryFile": "packages/javascript-sdk/src/index.ts",
-            "outputPath": "packages/javascript-sdk/bundles/src/index.js",
+            "outputPath": "packages/javascript-sdk/bundles/",
             "project": "packages/javascript-sdk/package.json",
             "deleteOutputPath": true,
             "tsConfig": "packages/javascript-sdk/tsconfig.lib.json",

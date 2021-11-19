@@ -144,7 +144,5 @@ jobs:
       run: npm run test:integration:ci
     - name: Build SDK
       run: npm run build:ci
-      env: 
-        NODE_ENV: production
     - name: Run E2E Tests
       run: npm run test:e2e

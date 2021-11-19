@@ -1,14 +1,32 @@
 // Rollup plugins
 const path = require('path');
 const nrwlConfig = require('@nrwl/react/plugins/bundle-rollup');
+const pkg = require('./package.json');
 const { visualizer } = require('rollup-plugin-visualizer');
+const { terser } = require('rollup-plugin-terser');
 const copy = require('rollup-plugin-copy');
 
 module.exports = (config) => {
   const nxConfig = nrwlConfig(config);
-  console.log(__dirname);
   return {
     ...nxConfig,
+    output: [
+      {
+        format: 'umd',
+        name: 'javascript-sdk.umd',
+        dir: 'packages/javascript-sdk/bundles/umd',
+      },
+      {
+        format: 'es', // the preferred format
+        dir: 'packages/javascript-sdk/bundles/esm',
+        // preserveModules: true,
+      },
+      {
+        format: 'cjs',
+        dir: 'packages/javascript-sdk/bundles/cjs',
+        // preserveModules: true,
+      },
+    ],
     plugins: [
       ...nxConfig.plugins,
       copy({
@@ -22,6 +40,7 @@ module.exports = (config) => {
         ],
       }),
       process.env.NODE_ENV === 'analyze' && visualizer({ open: true }),
+      process.env.NODE_ENV === 'production' && terser(),
     ],
   };
 };

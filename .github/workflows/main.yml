@@ -1,8 +1,7 @@
-name: Playwright Tests
+name: Main/Master Branch
 on:
   pull_request:
     branches:
-      - develop
       - master
       - release-*
 jobs:

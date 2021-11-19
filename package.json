@@ -12,10 +12,10 @@
     "README.md"
   ],
   "scripts": {
-    "build": "npm run clean && NODE_ENV=production nx run javascript-sdk:build",
-    "build:analyze": "npm run clean && NODE_ENV=analyze nx run javascript-sdk:build -- environment=NODE_ENV=analyze",
+    "build": "NODE_ENV=production nx run javascript-sdk:build",
+    "build:analyze": "npm run clean -w packages/javascript-sdk && NODE_ENV=production nx run javascript-sdk:build",
     "build:ci": "nx affected --target=build --base=remotes/origin/develop --parallel",
-    "clean": "shx rm -rf ./bundles ./docs ./lib ./lib-esm ./coverage ./dist ./tmp",
+    "clean": "shx rm -rf ./docs ./lib ./lib-esm ./coverage ./dist ./tmp",
     "clean:all": "npm run clean && shx rm -rf ./node_modules ./tests/node_modules ./samples/reactjs-todo/node_modules ./samples/reactjs-todo/todos ./samples/reactjs-todo/users ./package-lock.json && git clean -fX -e \"!*.pem\" -e \"!.env\"",
     "docs": "typedoc",
     "lint": "nx affected --base=develop --target=lint",
@@ -115,7 +115,6 @@
     "nx": "^13.1.4",
     "react": "17.0.2",
     "react-dom": "17.0.2",
-    "regenerator-runtime": "0.13.7",
-    "tslib": "^2.0.0"
+    "regenerator-runtime": "0.13.7"
   }
 }
