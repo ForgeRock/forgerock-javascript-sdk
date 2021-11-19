@@ -20,6 +20,7 @@
           },
           "outputs": ["{options.outputPath}"],
           "configurations": {
+            "production": {},
             "development": {
               "watch": true
             }
@@ -53,6 +54,26 @@
             "integration": {
               "jestConfig": "packages/javascript-sdk/jest.integration.config.js",
               "passWithNoTests": true
+            }
+          }
+        },
+        "deploy": {
+          "executor": "ngx-deploy-npm:deploy",
+          "options": {
+            "access": "public",
+            "buildTarget": "production",
+            "dryRun": true
+          },
+          "configurations": {
+            "alpha": {
+              "tag": "alpha",
+              "access": "public",
+              "dryRun": "true"
+            },
+            "beta": {
+              "tag": "alpha",
+              "access": "public",
+              "dryRun": "true"
             }
           }
         }
