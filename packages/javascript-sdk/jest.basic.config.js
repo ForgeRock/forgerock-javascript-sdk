@@ -11,14 +11,8 @@ const config = require('./jest.config');
 
 module.exports = {
   ...config,
-  collectCoverage: false,
+  collectCoverage: true,
   testEnvironment: 'jsdom',
-  globals: {
-    'ts-jest': {
-      isolatedModules: true,
-    },
-  },
-  preset: 'ts-jest',
   rootDir: './',
   setupFiles: ['jest-canvas-mock'],
 };

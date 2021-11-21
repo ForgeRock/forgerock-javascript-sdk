@@ -1,19 +1,15 @@
 {
   "name": "@forgerock/javascript-sdk",
   "version": "3.0.0",
-  "main": "./bundles/lib/",
-  "module": "./bundles/lib-esm/",
+  "main": "./lib/",
+  "module": "./lib-esm/",
   "files": [
     "/bundles/**/*",
+    "./lib/**/*",
+    "./lib-esm/**/*",
     "package.json",
     "README.md"
   ],
-  "sideEffects": false,
-  "devDependencies": {
-    "rollup-copy-plugin": "^0.1.0",
-    "rollup-plugin-terser": "^7.0.2",
-    "rollup-plugin-visualizer": "^5.5.2"
-  },
   "scripts": {
     "clean": "shx rm -rf ./bundles"
   }

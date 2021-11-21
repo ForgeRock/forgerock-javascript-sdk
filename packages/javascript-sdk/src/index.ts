@@ -12,7 +12,7 @@ import Auth from './auth';
 import { CallbackType, ErrorCode } from './auth/enums';
 import { Callback, NameValue, PolicyRequirement, Step, StepDetail } from './auth/interfaces';
 import Config, { ConfigOptions, ValidConfigOptions } from './config';
-import Dispatcher, { CallbackContainer, FREvent, Listener } from './event';
+import Dispatcher, { CallbackContainer, FREvent, Listener } from '@forgerock/event';
 import FRAuth from './fr-auth';
 import FRCallback from './fr-auth/callbacks';
 import AttributeInputCallback from './fr-auth/callbacks/attribute-input-callback';

@@ -1,5 +1,5 @@
 module.exports = {
-  displayName: 'javascript-sdk',
+  displayName: 'event',
   preset: '../../jest.preset.js',
   globals: {
     'ts-jest': {
@@ -10,5 +10,5 @@ module.exports = {
     '^.+\\.[tj]sx?$': 'ts-jest',
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
-  coverageDirectory: '../../coverage/packages/javascript-sdk',
+  coverageDirectory: '../../coverage/packages/event',
 };
