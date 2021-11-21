@@ -2,13 +2,10 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "../../dist/out-tsc",
-    "types": ["jest", "node"],
-    "strict": false,
-    "noImplicitAny": false
-
+    "module": "commonjs",
+    "types": ["jest", "node"]
   },
   "include": [
-    "tests/*",
     "**/*.test.ts",
     "**/*.spec.ts",
     "**/*.test.tsx",
@@ -18,6 +15,5 @@
     "**/*.test.jsx",
     "**/*.spec.jsx",
     "**/*.d.ts"
-  ],
-  "exclude": ["lib", "lib-esm"]
+  ]
 }

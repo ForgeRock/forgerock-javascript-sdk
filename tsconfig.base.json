@@ -18,6 +18,7 @@
     "strict": true,
     "target": "ES2015",
     "paths": {
+      "@forgerock/event": ["packages/event/src/index.ts"],
       "@forgerock/javascript-sdk": ["packages/javascript-sdk/src/index.ts"],
       "@forgerock/javascript-sdk-e2e": ["packages/javascript-sdk-e2e/src/index.ts"]
     }

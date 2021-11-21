@@ -10,5 +10,10 @@
       "path": "./tsconfig.spec.json"
     }
   ],
-  "exclude": ["lib", "lib-esm", "bundles"]
+  "compilerOptions": {
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true
+  }
 }

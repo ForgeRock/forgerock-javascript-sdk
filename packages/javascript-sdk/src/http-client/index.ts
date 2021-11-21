@@ -10,7 +10,7 @@
 
 import Config from '../config';
 import { ActionTypes } from '../config/enums';
-import Dispatcher from '../event';
+import Dispatcher from '@forgerock/event';
 import FRAuth from '../fr-auth';
 import { StepType } from '../fr-auth/enums';
 import FRStep from '../fr-auth/fr-step';

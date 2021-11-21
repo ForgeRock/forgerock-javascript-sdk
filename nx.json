@@ -19,6 +19,12 @@
     }
   },
   "targetDependencies": {
+    "test:unit": [
+      {
+        "target": "test",
+        "projects": "dependencies"
+      }
+    ],
     "test": [
       {
         "target": "test",

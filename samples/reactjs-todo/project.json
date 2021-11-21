@@ -1,0 +1,14 @@
+{
+  "root": "samples/reactjs-todo",
+  "projectType": "application",
+  "targets": {
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/samples/reactjs-todo"],
+      "options": {
+        "jestConfig": "samples/reactjs-todo/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  }
+}
