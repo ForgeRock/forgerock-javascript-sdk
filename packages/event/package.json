@@ -1,6 +1,8 @@
 {
   "name": "@forgerock/event",
   "version": "0.0.1",
+  "main": "./src/index.ts",
+  "types": "./dist/src/index.d.ts",
   "scripts": {
     "clean": "shx rm -rf ./dist"
   }

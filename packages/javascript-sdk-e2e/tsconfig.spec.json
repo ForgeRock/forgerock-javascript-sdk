@@ -1,8 +1,9 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "outDir": "../../dist/out-tsc",
-    "types": ["jest", "node"]
+    "types": ["jest", "node"],
+    "outDir": "./dist",
+    "esModuleInterop": true
   },
   "include": [
     "**/*.test.ts",
@@ -14,5 +15,6 @@
     "**/*.test.jsx",
     "**/*.spec.jsx",
     "**/*.d.ts"
-  ]
+  ], 
+  "exclude": ["dist"]
 }

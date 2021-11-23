@@ -1,7 +1,7 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "outDir": "../../dist/out-tsc",
+    "outDir": "./dist",
     "types": ["jest", "node"],
     "strict": false,
     "noImplicitAny": false
@@ -19,5 +19,5 @@
     "**/*.spec.jsx",
     "**/*.d.ts"
   ],
-  "exclude": ["lib", "lib-esm"]
+  "exclude": ["lib", "lib-esm", "dist/"]
 }

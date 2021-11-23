@@ -12,8 +12,8 @@
     "README.md"
   ],
   "scripts": {
-    "build": "NODE_ENV=production nx run javascript-sdk:build",
-    "build:analyze": "npm run clean -w packages/javascript-sdk && NODE_ENV=production nx run javascript-sdk:build",
+    "build": "nx run javascript-sdk:build --production",
+    "build:analyze": "npm run clean -ws; nx run javascript-sdk:rollup:bundle",
     "build:ci": "nx affected --target=build --base=remotes/origin/develop --parallel",
     "clean": "shx rm -rf ./docs ./lib ./lib-esm ./coverage ./dist ./tmp",
     "clean:all": "npm run clean && shx rm -rf ./node_modules ./tests/node_modules ./samples/reactjs-todo/node_modules ./samples/reactjs-todo/todos ./samples/reactjs-todo/users ./package-lock.json && git clean -fX -e \"!*.pem\" -e \"!.env\"",

@@ -18,26 +18,20 @@
           "main": "packages/javascript-sdk/src/index.ts",
           "tsConfig": "packages/javascript-sdk/tsconfig.cjs.json",
           "assets": ["packages/javascript-sdk/*.md"]
-        }
-      }
-    },
-    "build:rollup": {
-      "executor": "@nrwl/web:package",
-      "options": {
-        "entryFile": "packages/javascript-sdk/src/index.ts",
-        "outputPath": "packages/javascript-sdk/bundles/",
-        "project": "packages/javascript-sdk/package.json",
-        "deleteOutputPath": true,
-        "tsConfig": "packages/javascript-sdk/tsconfig.lib.json",
-        "cwd": "packages/javascript-sdk",
-        "parallel": true,
-        "rollupConfig": "packages/javascript-sdk/rollup.config.js"
-      },
-      "outputs": ["{options.outputPath}"],
-      "configurations": {
-        "production": {},
-        "development": {
-          "watch": true
+        },
+        "rollup": {
+          "executor": "@nrwl/web:package",
+          "options": {
+            "entryFile": "packages/javascript-sdk/src/index.ts",
+            "outputPath": "packages/javascript-sdk/bundles/",
+            "project": "packages/javascript-sdk/package.json",
+            "deleteOutputPath": true,
+            "tsConfig": "packages/javascript-sdk/tsconfig.lib.json",
+            "cwd": "packages/javascript-sdk",
+            "parallel": true,
+            "rollupConfig": "packages/javascript-sdk/rollup.config.js"
+          },
+          "outputs": ["{options.outputPath}"]
         }
       }
     },

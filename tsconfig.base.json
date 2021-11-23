@@ -21,7 +21,7 @@
       "@forgerock/event": ["packages/event/src/index.ts"],
       "@forgerock/javascript-sdk": ["packages/javascript-sdk/src/index.ts"],
       "@forgerock/javascript-sdk-e2e": ["packages/javascript-sdk-e2e/src/index.ts"],
-      "@forgerock/shared/": ["packages/shared/src/index.ts"]
+      "@forgerock/shared": ["packages/shared/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
