@@ -10,8 +10,7 @@
 
 import Config, { ServerConfig } from '../config';
 import { ActionTypes } from '../config/enums';
-import { REQUESTED_WITH } from '../shared/constants';
-import { StringDict } from '../shared/interfaces';
+import { StringDict, REQUESTED_WITH } from '@forgerock/shared';
 import { withTimeout } from '../util/timeout';
 import { getEndpointPath, resolve, stringify } from '../util/url';
 import { Step, StepOptions } from './interfaces';

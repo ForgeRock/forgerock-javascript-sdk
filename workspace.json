@@ -4,6 +4,7 @@
     "event": "packages/event",
     "javascript-sdk": "packages/javascript-sdk",
     "javascript-sdk-e2e": "packages/javascript-sdk-e2e",
-    "reactjs-todo": "samples/reactjs-todo"
+    "reactjs-todo": "samples/reactjs-todo",
+    "shared": "packages/shared"
   }
 }

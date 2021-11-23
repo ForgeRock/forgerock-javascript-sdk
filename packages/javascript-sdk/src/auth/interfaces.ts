@@ -9,7 +9,7 @@
  */
 
 import { ConfigOptions } from '../config/interfaces';
-import { StringDict } from '../shared/interfaces';
+import { StringDict } from '@forgerock/shared';
 import { CallbackType } from './enums';
 
 /**

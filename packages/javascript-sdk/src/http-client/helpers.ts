@@ -20,7 +20,7 @@ import {
   RequiresNewTokenFn,
   AuthorizationJSON,
 } from './interfaces';
-import { Tokens } from '../shared/interfaces';
+import { Tokens } from '@forgerock/shared';
 import { getEndpointPath, resolve, stringify } from '../util/url';
 
 export function addAuthzInfoToHeaders(

@@ -63,7 +63,7 @@ import OAuth2Client, {
   ResponseType,
 } from './oauth2-client';
 import SessionManager from './session-manager';
-import { Tokens } from './shared/interfaces';
+import { Tokens } from '@forgerock/shared';
 import TokenManager, { GetTokensOptions } from './token-manager';
 import TokenStorage from './token-storage';
 import UserManager from './user-manager';

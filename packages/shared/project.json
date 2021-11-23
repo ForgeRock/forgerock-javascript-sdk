@@ -1,0 +1,26 @@
+{
+  "root": "packages/shared",
+  "sourceRoot": "packages/shared/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/workspace:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "packages/shared/dist",
+        "main": "packages/shared/src/index.ts",
+        "tsConfig": "packages/shared/tsconfig.lib.json",
+        "assets": ["packages/shared/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/shared/**/*.ts"],
+        "ignorePath": ".gitignore"
+      }
+    }
+  },
+  "tags": []
+}

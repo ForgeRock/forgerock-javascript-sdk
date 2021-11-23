@@ -8,7 +8,7 @@
  * of the MIT license. See the LICENSE file for details.
  */
 
-import { Tokens } from '../shared/interfaces';
+import { Tokens } from '@forgerock/shared';
 
 /** @hidden */
 interface TokenDbEventTarget extends EventTarget {

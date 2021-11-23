@@ -7,7 +7,7 @@
       "executor": "@nrwl/workspace:tsc",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/packages/event",
+        "outputPath": "packages/event/dist",
         "main": "packages/event/src/index.ts",
         "tsConfig": "packages/event/tsconfig.lib.json",
         "assets": ["packages/event/*.md"]
@@ -17,7 +17,8 @@
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["packages/event/**/*.ts"]
+        "lintFilePatterns": ["packages/event/**/*.ts"],
+        "ignorePath": ".gitignore"
       }
     },
     "test": {

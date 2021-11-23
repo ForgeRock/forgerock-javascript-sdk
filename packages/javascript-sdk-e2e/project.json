@@ -7,7 +7,7 @@
       "executor": "@nrwl/workspace:tsc",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/packages/javascript-sdk-e2e",
+        "outputPath": "packages/javascript-sdk-e2e/dist",
         "main": "packages/javascript-sdk-e2e/src/index.ts",
         "tsConfig": "packages/javascript-sdk-e2e/tsconfig.lib.json",
         "assets": ["packages/javascript-sdk-e2e/*.md"]
@@ -17,7 +17,8 @@
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["packages/javascript-sdk-e2e/**/*.ts"]
+        "lintFilePatterns": ["packages/javascript-sdk-e2e/**/*.ts"],
+        "ignorePath": ".gitignore"
       }
     },
     "test-e2e": {
