@@ -8,7 +8,7 @@
  * of the MIT license. See the LICENSE file for details.
  */
 
-import { StringDict } from '../shared/interfaces';
+import { StringDict } from '@forgerock/shared';
 
 /**
  * @class Collector - base class for FRDevice

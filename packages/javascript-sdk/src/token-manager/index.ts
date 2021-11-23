@@ -11,7 +11,7 @@
 import Config, { ConfigOptions } from '../config';
 import middlewareWrapper from '../util/middleware';
 import OAuth2Client, { allowedErrors, OAuth2Tokens, ResponseType } from '../oauth2-client';
-import { StringDict, Tokens } from '../shared/interfaces';
+import { StringDict, Tokens } from '@forgerock/shared';
 import TokenStorage from '../token-storage';
 import PKCE from '../util/pkce';
 import { withTimeout } from '../util/timeout';

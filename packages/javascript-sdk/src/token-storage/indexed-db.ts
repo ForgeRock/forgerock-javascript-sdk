@@ -8,7 +8,7 @@
  * of the MIT license. See the LICENSE file for details.
  */
 
-import { Tokens } from '../shared/interfaces';
+import { Tokens } from '@forgerock/shared';
 import { DB_NAME, TOKEN_KEY } from './constants';
 import { TokenDbEvent } from './interfaces';
 

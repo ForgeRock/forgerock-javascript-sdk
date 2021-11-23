@@ -15,7 +15,7 @@
 import 'fake-indexeddb/auto';
 import TokenStorage from '../../src/token-storage';
 import { ConfigOptions } from '../../src/config';
-import { Tokens } from '../../src/shared/interfaces';
+import { Tokens } from '@forgerock/shared';
 import { DB_NAME, TOKEN_KEY } from '../../src/token-storage/constants';
 
 const config: ConfigOptions = {

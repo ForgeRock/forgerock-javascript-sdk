@@ -9,7 +9,7 @@
  */
 
 import Config, { ConfigOptions } from '../config/index';
-import { REQUESTED_WITH } from '../shared/constants';
+import { REQUESTED_WITH } from '@forgerock/shared';
 import { isOkOr4xx } from '../util/http';
 import { withTimeout } from '../util/timeout';
 import { ActionTypes } from '../config/enums';

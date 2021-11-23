@@ -13,7 +13,7 @@ import { TokenStoreObject } from '../config/interfaces';
 import IndexedDBWrapper from './indexed-db';
 import LocalStorageWrapper from './local-storage';
 import SessionStorageWrapper from './session-storage';
-import { Tokens } from '../shared/interfaces';
+import { Tokens } from '@forgerock/shared';
 
 /**
  * Provides access to the token storage API.
