@@ -11,7 +11,7 @@ packages/*/dist/
 bundles/
 docs/
 coverage/
-lib/
+packages/javascript-sdk/lib/
 lib-esm/
 node_modules/
 samples/_static/js/*.js*

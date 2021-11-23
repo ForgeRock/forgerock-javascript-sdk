@@ -15,5 +15,5 @@
     "strict": false,
   },
   "include": ["**/*.ts"],
-  "exclude": ["tests/", "**/*.spec.ts", "**/*.test.ts", "lib-esm", "lib", "bundles"]
+  "exclude": ["tests/", "**/*.spec.ts", "**/*.test.ts", "lib-esm", "lib", "bundles", "dist/"]
 }

@@ -11,7 +11,6 @@
     }
   ],
   "compilerOptions": {
-    "lib": ["es2016", "dom"],
     "forceConsistentCasingInFileNames": true,
     "strict": false,
     "noImplicitAny": false,

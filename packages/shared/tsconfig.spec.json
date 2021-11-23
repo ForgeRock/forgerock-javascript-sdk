@@ -1,11 +1,12 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
+    "module": "CommonJS",
     "outDir": "./dist",
-    "module": "commonjs",
     "types": ["jest", "node"]
   },
   "include": [
+    "tests/*",
     "**/*.test.ts",
     "**/*.spec.ts",
     "**/*.test.tsx",
@@ -16,5 +17,5 @@
     "**/*.spec.jsx",
     "**/*.d.ts"
   ], 
-  "exclude": ["dist/"]
+  "exclude": ["dist"]
 }
