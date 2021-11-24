@@ -1,0 +1,22 @@
+{
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+      "outDir": "./dist",
+      "strict": false,
+      "noImplicitAny": false 
+    },
+    "include": [
+      "suites/*",
+      "**/*.test.ts",
+      "**/*.spec.ts",
+      "**/*.test.tsx",
+      "**/*.spec.tsx",
+      "**/*.test.js",
+      "**/*.spec.js",
+      "**/*.test.jsx",
+      "**/*.spec.jsx",
+      "**/*.d.ts"
+    ],
+    "exclude": ["dist/"]
+  }
+  

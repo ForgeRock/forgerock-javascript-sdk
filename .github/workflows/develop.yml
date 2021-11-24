@@ -1,126 +1,160 @@
-name: Develop CI Pipeline
+name: Nx Distributed Tasks
 on:
   pull_request:
     branches:
       - develop
+
 jobs:
-  linux:
-    name: ${{ matrix.os }} E2E
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-18.04]
-        nodeversion: ['16.x']
-    runs-on: ${{ matrix.os }}
+  install-deps-mac:
+    runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-      with:
-        fetch-depth: 0
-    - uses: actions/setup-node@v2
-      with:
-        cache: npm
-        node-version: ${{ matrix.nodeversion }}
-    - name: Cache node modules
-      uses: actions/cache@v2
-      env:
-        cache-name: cache-node-modules
-      with:
-        path: ~/.npm
-        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-build-${{ env.cache-name }}-
-          ${{ runner.os }}-build-
-          ${{ runner.os }}-
-    - name: Setup custom host for sdkapp.example.com
-      run: echo "127.0.0.1 sdkapp.example.com auth.example.com api.example.com" | sudo tee -a /etc/hosts
-    - name: Install NPM
-      if: steps.node-cache.outputs.cache-hit != 'true'
-      run: npm i -g npm@8
-    - name: Install Dependencies
-      run: npm ci
-      env:
-        DEBUG: pw:install
-        PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
-    - name: Build SDK
-      run: npm run build:ci
-      env: 
-        NODE_ENV: production
-    - name: Install Playwright
-      run: npx playwright install --with-deps
-    - name: Run e2e
-      run: npm run test:e2e --project=${{ matrix.browser }}
-      env:
-        NODE_TLS_REJECT_UNAUTHORIZED: 0  
-  osx:
-    name: ${{ matrix.os }} E2E
+      - uses: actions/checkout@v2
+      - name: Cache node modules
+        id: cache
+        uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: cache-node-modules-${{ hashFiles('package-lock.json') }}
+      - name: npm install
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: npm ci
+  distributed-task-mac:
+    runs-on: macos-latest
+    needs: install-deps-mac
     strategy:
-      fail-fast: false
       matrix:
-        os: [macos-11.0]
-        nodeversion: ['16.x']
-    runs-on: ${{ matrix.os }}
+        target:
+          [
+            '"test --configuration=unit"',
+            'lint',
+            'build',
+            '"test --configuration=integration"', 
+            'e2e',
+          ]
+        jobIndex: [1, 2, 3, 4]
+        browser: [chromium, firefox]
+    env:
+      jobCount: 4
     steps:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - uses: actions/setup-node@v2
-        if: ${{ !env.ACT }}
-        with:
-          node-version: ${{ matrix.nodeversion }}
       - name: Cache node modules
         uses: actions/cache@v2
-        if: ${{ !env.ACT }}
-        env:
-          cache-name: cache-node-modules
         with:
-          path: ~/.npm
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+          path: node_modules
+          key: cache-node-modules-${{ hashFiles('package-lock.json') }}
+      - name: Cache Nx
+        uses: actions/cache@v2
+        with:
+          path: node_modules/.cache/nx
+          key: cache-nx-${{ hashFiles('package-lock.json') }}-${{ matrix.target }}-${{ matrix.jobIndex }}-${{ github.sha }}
           restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}-
-            ${{ runner.os }}-build-
-            ${{ runner.os }}-
-      - name: Setup custom host for sdkapp.example.com
-        run: echo "127.0.0.1 sdkapp.example.com auth.example.com api.example.com user.example.com" | sudo tee -a /etc/hosts
-      - name: Install NPM
-        run: npm i -g npm@8
-      - name: Install Dependencies
-        if: steps.node-cache.outputs.cache-hit != 'true'
-        run: npm ci
-        env:
-          DEBUG: pw:install
-      - name: Build SDK
-        run: npm run build:ci
-        env: 
-          NODE_ENV: production
+            cache-nx-${{ hashFiles('package-lock.json') }}-${{ matrix.target }}-${{ matrix.jobIndex }}-
+            cache-nx-${{ hashFiles('package-lock.json') }}-
+      - run: git fetch --no-tags --prune --depth=5 origin develop
+      - run: git show-ref
+      - name: nx run-many:${{ matrix.target }}
+        run: node ./tools/scripts/run-many.js ${{ matrix.target }} ${{ matrix.jobIndex }} ${{ env.jobCount }} ${{ matrix.browser }} $GITHUB_REF
 
-      - name: Run E2E Tests
-        run: npm run test:e2e
-  windows:
-    name: ${{ matrix.os }} E2E
-    strategy:
-      fail-fast: false
-      matrix:
-        browser: [chromium, msedge, firefox]
-        nodeversion: ['16']
-    runs-on: windows-latest
+  install-deps-linux:
+    runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-      with:
-        fetch-depth: 0
-    - uses: actions/setup-node@v2
-      with:
-        node-version: ${{ matrix.nodeversion }}
-    - name: Setup custom host for sdkapp.example.com
-      run: echo "127.0.0.1 sdkapp.example.com auth.example.com api.example.com" >> C:\Windows\System32\drivers\etc\hosts   #add to new line
-    - name: debug etc hosts
-      run: type C:\Windows\System32\drivers\etc\hosts
-    - name: Install NPM
-      run: npm i -g npm@8
-    - name: Install Dependencies
-      run: npm ci
+      - uses: actions/checkout@v2
+      - name: Cache node modules
+        id: cache
+        uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: cache-node-modules-${{ hashFiles('package-lock.json') }}
+      - name: npm install
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: npm ci
+
+  distributed-task-linux:
+    runs-on: ubuntu-latest
+    needs: install-deps-linux
+    strategy:
+      matrix:
+        target:
+          [
+            '"test --configuration=unit"',
+            'lint',
+            'build',
+            '"test --configuration=integration"', 'e2e',
+          ]
+        jobIndex: [1, 2, 3, 4]
+        browser: [chromium, firefox]
+    env:
+      jobCount: 4
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Cache node modules
+        uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: cache-node-modules-${{ hashFiles('package-lock.json') }}
+      - name: Cache Nx
+        uses: actions/cache@v2
+        with:
+          path: node_modules/.cache/nx
+          key: cache-nx-${{ hashFiles('package-lock.json') }}-${{ matrix.target }}-${{ matrix.jobIndex }}-${{ github.sha }}
+          restore-keys: |
+            cache-nx-${{ hashFiles('package-lock.json') }}-${{ matrix.target }}-${{ matrix.jobIndex }}-
+            cache-nx-${{ hashFiles('package-lock.json') }}-
+      - run: git fetch --no-tags --prune --depth=5 origin develop
+      - run: git show-ref
+      - name: nx run-many:${{ matrix.target }}
+        run: node ./tools/scripts/run-many.js ${{ matrix.target }} ${{ matrix.jobIndex }} ${{ env.jobCount }} ${{ matrix.browser }} $GITHUB_REF
+  install-deps-windows:
+      runs-on: windows-latest
+      steps:
+        - uses: actions/checkout@v2
+        - name: Cache node modules
+          id: cache
+          uses: actions/cache@v2
+          with:
+            path: node_modules
+            key: cache-node-modules-${{ hashFiles('package-lock.json') }}
+        - name: npm install
+          if: steps.cache.outputs.cache-hit != 'true'
+          run: npm ci
+  distributed-task-windows:
+      runs-on: windows-latest
+      needs: install-deps-windows
+      strategy:
+        matrix:
+          target:
+            [
+              '"test --configuration=unit"',
+              'lint',
+              'build',
+              '"test --configuration=integration"', 'e2e',
+            ]
+          jobIndex: [1, 2, 3, 4]
+          browser: [chromium, firefox, msedge]
       env:
-        DEBUG: pw:install
-    - name: Build SDK
-      run: npm run build:ci
-    - name: Run E2E Tests
-      run: npm run test:e2e
+        jobCount: 4
+      steps:
+        - uses: actions/checkout@v2
+          with:
+            fetch-depth: 0
+        - name: Cache node modules
+          uses: actions/cache@v2
+          with:
+            path: node_modules
+            key: cache-node-modules-${{ hashFiles('package-lock.json') }}
+        - name: Cache Nx
+          uses: actions/cache@v2
+          with:
+            path: node_modules/.cache/nx
+            key: cache-nx-${{ hashFiles('package-lock.json') }}-${{ matrix.target }}-${{ matrix.jobIndex }}-${{ github.sha }}
+            restore-keys: |
+              cache-nx-${{ hashFiles('package-lock.json') }}-${{ matrix.target }}-${{ matrix.jobIndex }}-
+              cache-nx-${{ hashFiles('package-lock.json') }}-
+        - run: git fetch --no-tags --prune --depth=5 origin develop
+        - run: git show-ref
+        - name: nx run-many:${{ matrix.target }}
+          run: node ./tools/scripts/run-many.js ${{ matrix.target }} ${{ matrix.jobIndex }} ${{ env.jobCount }} ${{ matrix.browser }} $GITHUB_REF

@@ -1,6 +1,8 @@
 module.exports = {
-  displayName: 'javascript-sdk-e2e',
+  displayName: 'javascript-sdk-app-e2e',
   preset: '../../jest.preset.js',
+  globalSetup: './src/env.setup.ts',
+  globalTeardown: './src/env.teardown.ts',
   globals: {
     'ts-jest': {
       tsconfig: '<rootDir>/tsconfig.spec.json',
@@ -12,4 +14,5 @@ module.exports = {
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
   coverageDirectory: '../../coverage/packages/javascript-sdk-e2e',
+  testPathIgnorePatterns: ['node_modules', 'dist'],
 };

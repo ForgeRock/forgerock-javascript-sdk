@@ -8,7 +8,8 @@
  * of the MIT license. See the LICENSE file for details.
  */
 
-const { setup: setupDevServer } = require('jest-dev-server');
+import { setup as setupDevServer } from 'jest-dev-server';
+
 const liveServers = [
   {
     command: 'npm run start:e2e',

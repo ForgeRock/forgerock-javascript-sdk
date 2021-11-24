@@ -12,7 +12,8 @@
           "package",
           "prepare",
           "test:integration",
-          "test:unit"
+          "test:unit",
+          "e2e"
         ],
         "accessToken": "NzU3MWE3MjgtOWRiZi00ZDczLWI4YWYtMDI5NThmNTRkNDc1fHJlYWQtd3JpdGU="
       }
@@ -73,9 +74,21 @@
         "style": "css",
         "linter": "eslint"
       }
+    },
+    "@nrwl/web:application": {
+      "style": "css",
+      "linter": "eslint",
+      "unitTestRunner": "jest",
+      "e2eTestRunner": "none"
+    },
+    "@nrwl/web:library": {
+      "style": "css",
+      "linter": "eslint",
+      "unitTestRunner": "jest"
     }
   },
   "cli": {
     "defaultCollection": "@nrwl/react"
-  }
+  },
+  "defaultProject": "javascript-sdk-app"
 }

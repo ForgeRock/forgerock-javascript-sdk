@@ -1,0 +1,28 @@
+{
+  "root": "packages/javascript-sdk-app-e2e",
+  "sourceRoot": "packages/javascript-sdk-app-e2e/src",
+  "projectType": "application",
+  "targets": {
+    "e2e": {
+      "executor": "@ns3/nx-jest-playwright:jest-playwright",
+      "options": {
+        "jestConfig": "packages/javascript-sdk-app-e2e/jest.config.js"
+      },
+      "configurations": {
+        "production": {
+          "devServerTarget": "javascript-sdk-app:serve:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/javascript-sdk-app-e2e/**/*.{js,ts}"],
+        "ignorePath": ".gitignore"
+      }
+    }
+  },
+  "tags": [],
+  "implicitDependencies": ["javascript-sdk-app"]
+}
