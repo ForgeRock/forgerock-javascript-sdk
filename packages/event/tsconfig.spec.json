@@ -16,5 +16,5 @@
     "**/*.spec.jsx",
     "**/*.d.ts"
   ], 
-  "exclude": ["dist/"]
+  "exclude": ["dist"]
 }

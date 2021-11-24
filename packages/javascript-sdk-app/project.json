@@ -1,0 +1,49 @@
+{
+  "projectType": "application",
+  "root": "packages/javascript-sdk-app",
+  "sourceRoot": "packages/javascript-sdk-app/src",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nrwl/web:build",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "outputPath": "packages/javascript-sdk-app/dist",
+        "index": "packages/javascript-sdk-app/src/app/index.html",
+        "main": "packages/javascript-sdk/src/index.ts",
+        "tsConfig": "packages/javascript-sdk-app/tsconfig.app.json",
+        "webpackConfig": "packages/javascript-sdk-app-e2e/webpack.config.js"
+      },
+      "configurations": {
+        "production": {
+          "optimization": true,
+          "webpackConfig": "packages/javascript-sdk-app-e2e/webpack.config.js"
+        },
+        "development": {
+          "watch": true,
+          "optimization": false
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nrwl/web:dev-server",
+      "options": {
+        "buildTarget": "javascript-sdk-app:build"
+      },
+      "configurations": {
+        "production": {
+          "buildTarget": "javascript-sdk-app:build:production"
+        }
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/packages/javascript-sdk-app"],
+      "options": {
+        "jestConfig": "packages/javascript-sdk-app/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  }
+}
