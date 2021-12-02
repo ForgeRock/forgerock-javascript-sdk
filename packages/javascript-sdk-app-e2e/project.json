@@ -7,8 +7,7 @@
       "executor": "@ns3/nx-jest-playwright:jest-playwright",
       "options": {
         "jestConfig": "packages/javascript-sdk-app-e2e/jest.config.js",
-        "devServerTarget": "javascript-sdk-app:serve",
-        "baseUrl": "https://sdkapp.example.com:8443"
+        "devServerTarget": "javascript-sdk-app:serve"
       },
       "configurations": {
         "live": {

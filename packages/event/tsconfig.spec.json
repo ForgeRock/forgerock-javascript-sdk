@@ -2,8 +2,9 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "./dist",
-    "module": "commonjs",
-    "types": ["jest", "node"]
+    "types": ["jest", "node"],
+    "module": "ES2015",
+    "target": "ES5"
   },
   "include": [
     "**/*.test.ts",
@@ -15,6 +16,6 @@
     "**/*.test.jsx",
     "**/*.spec.jsx",
     "**/*.d.ts"
-  ], 
-  "exclude": ["dist"]
+  ],
+  "exclude": ["lib", "lib-esm", "dist"]
 }

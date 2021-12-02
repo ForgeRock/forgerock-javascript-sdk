@@ -2,6 +2,7 @@ module.exports = {
   displayName: 'javascript-sdk-app-e2e',
   preset: '../../jest.preset.js',
   globalSetup: './src/env.setup.ts',
+  setupFiles: ['./setup-files.ts'],
   globalTeardown: './src/env.teardown.ts',
   testTimeout: 60 * 1000, // 60 seconds (must be more than the setup-and-go.ts timeout)
   globals: {

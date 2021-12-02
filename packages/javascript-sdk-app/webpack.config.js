@@ -1,12 +1,7 @@
 const { exec } = require('child_process');
-const { readFileSync } = require('fs');
-const CopyPlugin = require('copy-webpack-plugin');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
-
-const cert = readFileSync(path.resolve(__dirname, '../../node_modules/lws/ssl/lws-cert.pem'));
-const key = readFileSync(path.resolve(__dirname, '../../node_modules/lws/ssl/private-key.pem'));
 
 const banner = `
 @forgerock/javascript-sdk
@@ -39,7 +34,6 @@ const pages = [
   'misc-callbacks',
   'register-basic',
 ];
-
 module.exports = (config) => {
   const plugins = [
     ...config.plugins,
@@ -53,7 +47,7 @@ module.exports = (config) => {
       inject: true,
       template: `./src/_callback/index.html`,
       filename: `_callback/index.html`,
-      chunks: ['index', 'polyfill'],
+      chunks: ['index,', 'polyfill'],
     }),
     ...pages.map(
       (page) =>
@@ -61,24 +55,11 @@ module.exports = (config) => {
           inject: true,
           template: `./src/${page}/index.html`,
           filename: `${page}/index.html`,
-          chunks: ['index', 'polyfill'],
+          chunks: ['index,', 'polyfill'],
         }),
     ),
     new webpack.WatchIgnorePlugin({ paths: [/bundles|docs|lib|lib-esm|samples/] }),
     new webpack.BannerPlugin({ banner }),
-    new CopyPlugin({
-      // Copy and rename non-built config files
-      patterns: [
-        {
-          from: '../javascript-sdk-app-e2e/src/env.config.ts',
-          to: '../../javascript-sdk-app-e2e/src/server/env.config.copy.mjs',
-          force: true,
-          toType: 'file',
-          // minimized with value true doesn't minimize; yup, you read that right
-          info: { minimized: true },
-        },
-      ],
-    }),
     {
       apply: (compiler) => {
         // Copy built files
@@ -125,19 +106,21 @@ module.exports = (config) => {
       library: 'forgerock',
       libraryTarget: 'umd',
       path: path.resolve(__dirname, './bundles'),
+      publicPath: 'https://sdkapp.example.com:8443/',
       umdNamedDefine: true,
     },
     devServer: {
-      ...(config.devServer || {}),
-      server: {
-        type: 'https',
-        options: {
-          key, //: path.resolve(__dirname, '../../node_modules/lws/example.com+5-key.pem'),
-          cert, //: path.resolve(__dirname, '../../example.com+5.pem'),
-        },
+      ...config.devServer,
+      host: 'sdkapp.example.com',
+      allowedHosts: ['.example.com'],
+      headers: {
+        'Access-Control-Allow-Credentials': true,
+        'Access-Control-Allow-Origin': 'null',
       },
-      port: 4200,
-      allowedHosts: ['.example.com', 'user.example.com'],
+      server: 'https',
+      compress: true,
+      // devMiddleware: { publicPath: '/', stats: false },
+      port: 8443,
     },
     plugins,
     watch: config.watch,

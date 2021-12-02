@@ -13,9 +13,6 @@ import { setupAndGo } from '../utilities/setup-and-go';
 import browsers from '../utilities/browsers';
 
 describe('Test basic registration flow', () => {
-  beforeAll(() => {
-    jest.retryTimes(3);
-  });
   browsers.map((browserType) => {
     const un = v4();
     const email = `${un}@me.com`;
@@ -50,7 +47,7 @@ describe('Test basic registration flow', () => {
 
         await browser.close();
       } catch (error) {
-        throw error;
+        fail(error);
       }
     });
   });

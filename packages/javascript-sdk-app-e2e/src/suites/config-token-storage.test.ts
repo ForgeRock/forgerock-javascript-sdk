@@ -12,9 +12,6 @@ import { setupAndGo } from '../utilities/setup-and-go';
 import browsers from '../utilities/browsers';
 
 describe('Test oauth login flow with localStorage', () => {
-  beforeAll(() => {
-    jest.retryTimes(3);
-  });
   browsers.map((browserType) => {
     it(`Login successfully with ${browserType}`, async () => {
       try {
@@ -28,7 +25,7 @@ describe('Test oauth login flow with localStorage', () => {
 
         await browser.close();
       } catch (error) {
-        throw error;
+        fail(error);
       }
     });
 
@@ -44,7 +41,7 @@ describe('Test oauth login flow with localStorage', () => {
 
         await browser.close();
       } catch (error) {
-        throw error;
+        fail(error);
       }
     });
 
@@ -63,7 +60,7 @@ describe('Test oauth login flow with localStorage', () => {
 
         await browser.close();
       } catch (error) {
-        throw error;
+        fail(error);
       }
     });
   });

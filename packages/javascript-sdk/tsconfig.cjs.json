@@ -1,22 +1,21 @@
 {
-    "extends": "./tsconfig.json",
-    "compilerOptions": {
-      "outDir": "../../dist/out-tsc",
-      "declaration": true,
-      "lib": ["ES2015", "dom"],
-      "moduleResolution": "node",
-      "noFallthroughCasesInSwitch": true,
-      "noImplicitAny": false,
-      "noImplicitReturns": true,
-      "noImplicitThis": true,
-      "noUnusedLocals": true,
-      "noUnusedParameters": true,
-      "sourceMap": true,
-      "strict": false,
-      "target": "ES5",
-      "module": "CommonJS"
-    },
-    "include": ["**/*.ts"],
-    "exclude": ["tests/", "**/*.spec.ts", "**/*.test.ts"]
-  }
-  
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./dist/cjs",
+    "declaration": true,
+    "lib": ["ES2015", "dom"],
+    "moduleResolution": "node",
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitAny": false,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "sourceMap": true,
+    "strict": false,
+    "target": "ES5",
+    "module": "CommonJS"
+  },
+  "include": ["**/*.ts"],
+  "exclude": ["tests/", "**/*.spec.ts", "**/*.test.ts"]
+}

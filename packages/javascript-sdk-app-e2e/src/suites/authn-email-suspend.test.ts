@@ -12,9 +12,6 @@ import { setupAndGo } from '../utilities/setup-and-go';
 import browsers from '../utilities/browsers';
 
 describe('Test basic registration flow', () => {
-  beforeAll(() => {
-    jest.retryTimes(3);
-  });
   browsers.map((browserType) => {
     it(`should register user successfully and then log out with ${browserType}`, async () => {
       try {
@@ -30,7 +27,7 @@ describe('Test basic registration flow', () => {
 
         await browser.close();
       } catch (error) {
-        throw error;
+        fail(error);
       }
     });
   });

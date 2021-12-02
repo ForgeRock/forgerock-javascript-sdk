@@ -131,4 +131,5 @@ function autoscript() {
     });
 }
 
+autoscript();
 export default autoscript;

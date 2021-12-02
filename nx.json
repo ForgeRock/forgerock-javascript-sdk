@@ -5,16 +5,7 @@
     "default": {
       "runner": "@nrwl/nx-cloud",
       "options": {
-        "cacheableOperations": [
-          "build",
-          "test",
-          "lint",
-          "package",
-          "prepare",
-          "test:integration",
-          "test:unit",
-          "e2e"
-        ],
+        "cacheableOperations": ["build", "test", "lint", "package", "prepare", "e2e"],
         "accessToken": "NzU3MWE3MjgtOWRiZi00ZDczLWI4YWYtMDI5NThmNTRkNDc1fHJlYWQtd3JpdGU="
       }
     }
@@ -90,5 +81,5 @@
   "cli": {
     "defaultCollection": "@nrwl/react"
   },
-  "defaultProject": "javascript-sdk-app"
+  "defaultProject": "javascript-sdk"
 }

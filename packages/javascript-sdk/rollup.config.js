@@ -27,14 +27,14 @@ module.exports = (config) => {
         verbose: true,
         targets: [
           {
-            src: path.resolve(__dirname, '../javascript-sdk-e2e/src/e2e/env.config.ts'),
-            dest: path.resolve(__dirname, '../javascript-sdk-e2e/src/e2e/server/'),
+            src: path.resolve(__dirname, '../javascript-sdk-app-e2e/src/env.config.ts'),
+            dest: path.resolve(__dirname, '../javascript-sdk-app-e2e/src/server/'),
             rename: 'env.config.copy.mjs',
           },
         ],
       }),
       process.env.NODE_ENV === 'analyze' && visualizer({ open: true }),
-      process.env.NODE_ENV === 'production' && terser(),
+      (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'analyze') && terser(),
     ],
   };
 };

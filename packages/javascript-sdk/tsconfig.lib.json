@@ -13,7 +13,18 @@
     "noUnusedParameters": true,
     "sourceMap": true,
     "strict": false,
+    "module": "ES2015",
+    "target": "ES2015"
   },
   "include": ["**/*.ts"],
-  "exclude": ["tests/", "**/*.spec.ts", "**/*.test.ts", "lib-esm", "lib", "bundles", "dist/"]
+  "exclude": [
+    "jest.env.config.ts",
+    "tests/",
+    "**/*.spec.ts",
+    "**/*.test.ts",
+    "lib-esm",
+    "lib",
+    "bundles",
+    "dist/"
+  ]
 }

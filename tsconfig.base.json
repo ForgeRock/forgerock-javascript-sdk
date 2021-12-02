@@ -6,7 +6,7 @@
     "declaration": true,
     "esModuleInterop": true,
     "lib": ["es2015", "dom"],
-    "module": "ES2015",
+    "module": "CommonJS",
     "moduleResolution": "node",
     "noFallthroughCasesInSwitch": true,
     "noImplicitAny": true,
@@ -16,7 +16,7 @@
     "noUnusedParameters": true,
     "sourceMap": true,
     "strict": true,
-    "target": "ES2015",
+    "target": "ES5",
     "paths": {
       "@forgerock/event": ["packages/event/src/index.ts"],
       "@forgerock/javascript-sdk": ["packages/javascript-sdk/src/index.ts"],

@@ -36,7 +36,6 @@ function autoscript() {
     scope,
     serverConfig: {
       baseUrl: amUrl,
-      timeout: 5000,
     },
     support,
   });
@@ -84,6 +83,7 @@ function autoscript() {
         }),
         rxDelay(delay),
         map((tokens) => {
+          console.log(tokens);
           if (tokens.accessToken) {
             console.log('OAuth authorization successful');
             document.body.innerHTML = '<p class="Logged_In">Login successful</p>';
@@ -98,11 +98,11 @@ function autoscript() {
           console.log('Initiate logout');
           return forgerock.FRUser.logout();
         }),
-        rxDelay(delay),
       )
       .subscribe({
         error: (err) => {
           console.log(`Error: ${err.message}`);
+          alert(err.message);
           document.body.innerHTML = `<p class="Test_Failure">${err.message}</p>`;
         },
         complete: () => {
@@ -113,4 +113,5 @@ function autoscript() {
   }, 250);
 }
 
+autoscript();
 export default autoscript;

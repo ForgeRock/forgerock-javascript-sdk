@@ -12,9 +12,6 @@ import { setupAndGo } from '../utilities/setup-and-go';
 import browsers from '../utilities/browsers';
 
 describe('Test Social Login flow with AM nodes', () => {
-  beforeAll(() => {
-    jest.retryTimes(3);
-  });
   browsers.map((browserType) => {
     it(`Login with identity provider on  ${browserType}`, async () => {
       try {
@@ -30,7 +27,7 @@ describe('Test Social Login flow with AM nodes', () => {
 
         await browser.close();
       } catch (error) {
-        throw error;
+        fail(error);
       }
     });
   });

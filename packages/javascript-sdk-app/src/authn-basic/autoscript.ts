@@ -104,5 +104,6 @@ function autoscript() {
       });
   }, 250);
 }
+autoscript();
 
 export default autoscript;

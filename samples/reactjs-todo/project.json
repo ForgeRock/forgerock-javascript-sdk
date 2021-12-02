@@ -8,6 +8,9 @@
       "options": {
         "jestConfig": "samples/reactjs-todo/jest.config.js",
         "passWithNoTests": true
+      },
+      "configurations": {
+        "integration": {}
       }
     }
   }

@@ -15,14 +15,9 @@
         "parallel": true,
         "rollupConfig": "packages/javascript-sdk/rollup.config.js"
       },
-      "outputs": ["{options.outputPath}"]
-    },
-    "build-webpack": {
-      "executor": "@nrwl/workspace:run-commands",
-      "options": {
-        "commands": ["webpack --env DEV=no"],
-        "cwd": "packages/javascript-sdk",
-        "parallel": false
+      "outputs": ["{options.outputPath}"],
+      "configurations": {
+        "analyze": {}
       }
     },
     "lint": {

@@ -12,10 +12,7 @@
 import { WebAuthnOutcomeType } from './enums';
 import { ensureArray, getIndexOne, parsePubKeyArray, parseCredentials } from './helpers';
 import { AttestationType, UserVerificationType } from './interfaces';
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const util = require('util');
 
-if (!window) global.TextEncoder = util.TextEncoder;
 function parseWebAuthnRegisterText(text: string): PublicKeyCredentialCreationOptions {
   const txtEncoder = new TextEncoder();
 

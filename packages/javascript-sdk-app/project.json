@@ -28,6 +28,7 @@
     },
     "serve": {
       "executor": "@nrwl/web:dev-server",
+      "defaultConfiguration": "development",
       "options": {
         "buildTarget": "javascript-sdk-app:build:development"
       },
@@ -38,14 +39,6 @@
         "production": {
           "buildTarget": "javascript-sdk-app:build:production"
         }
-      }
-    },
-    "test": {
-      "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/packages/javascript-sdk-app"],
-      "options": {
-        "jestConfig": "packages/javascript-sdk-app/jest.config.js",
-        "passWithNoTests": true
       }
     }
   }

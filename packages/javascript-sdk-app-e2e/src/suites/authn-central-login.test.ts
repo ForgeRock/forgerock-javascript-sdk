@@ -11,10 +11,7 @@
 import { setupAndGo } from '../utilities/setup-and-go';
 import browsers from '../utilities/browsers';
 
-describe('Test OAuth login flow', () => {
-  beforeAll(() => {
-    jest.retryTimes(3);
-  });
+describe.only('Test OAuth login flow', () => {
   browsers.map((browserType) => {
     // eslint-disable-next-line
     it(`should use invisible iframe to request auth code, then token exchange with ${browserType}`, async () => {
@@ -35,7 +32,7 @@ describe('Test OAuth login flow', () => {
 
         await browser.close();
       } catch (error) {
-        throw error;
+        fail(error);
       }
     });
 
@@ -58,7 +55,8 @@ describe('Test OAuth login flow', () => {
 
         await browser.close();
       } catch (error) {
-        throw error;
+        console.error(error);
+        fail(error);
       }
     });
 
@@ -81,12 +79,11 @@ describe('Test OAuth login flow', () => {
           expect(networkArray.includes('/am/oauth2/realms/root/authorize, fetch')).toBe(true);
           expect(networkArray.includes('/am/oauth2/realms/root/access_token, fetch')).toBe(true);
 
-          await browser.close();
-        } catch (error) {
-          throw error;
-        }
-      });
-    }
+        await browser.close();
+      } catch (error) {
+        fail(error);
+      }
+    });
 
     // eslint-disable-next-line
     it(`should successfully take code & state params for token exchange with ${browserType}`, async () => {
@@ -109,7 +106,7 @@ describe('Test OAuth login flow', () => {
 
         await browser.close();
       } catch (error) {
-        throw error;
+        fail(error);
       }
     });
   });

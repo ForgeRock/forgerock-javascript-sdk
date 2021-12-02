@@ -10,7 +10,7 @@
 
 import { chromium, firefox, webkit } from 'playwright';
 import { AM_URL, BASE_URL, CLIENT_ID, RESOURCE_URL, SCOPE, REALM_PATH, USERS } from '../env.config';
-import 'core-js';
+import 'core-js/stable';
 
 const browsers = { chromium, firefox, webkit };
 

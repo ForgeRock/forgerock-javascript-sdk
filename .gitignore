@@ -19,6 +19,7 @@ tests/**/app/index.js*
 tests/**/ie11/ie-bundle.js*
 reports/*
 *.copy.*
+!env.config.copy.mjs
 
 # Certificates
 *.pem
@@ -36,6 +37,7 @@ samples/_static/js/*.js*
 samples/*/public/app.*
 samples/*/todos
 samples/*/users
-env.config.copy.mjs
+
 # Environment files
 .env
+*.d.ts

@@ -10,34 +10,28 @@
     "README.md"
   ],
   "scripts": {
-    "build": "npm run clean -ws; nx run javascript-sdk:build",
-    "build:analyze": "npm run clean -ws; nx run javascript-sdk:rollup:bundle",
-    "build:ci": "nx affected --target=build --base=remotes/origin/develop --parallel",
-    "clean": "shx rm -rf ./docs ./coverage ./dist ./tmp",
+    "build": "nx run javascript-sdk:build",
+    "build:analyze": "NODE_ENV=analyze nx run javascript-sdk:build --skipNxCache",
+    "clean": "shx rm -rf ./docs ./coverage ./tmp",
     "clean:all": "npm run clean -ws && shx rm -rf ./packages/javascript-sdk-app/bundles ./node_modules ./tests/node_modules ./samples/reactjs-todo/node_modules ./samples/reactjs-todo/todos ./samples/reactjs-todo/users ./package-lock.json && git clean -fX -e \"!*.pem\" -e \"!.env\"",
     "docs": "typedoc",
+    "format:staged": "pretty-quick --staged",
     "lint": "nx affected --base=develop --target=lint",
-    "lint:ci": "nx affected --target=lint --base=remotes/origin/develop --parallel",
     "prepublishOnly": "npm run clean:all && npm i && npm run build && npm t",
-    "start:e2e": "ws -d packages/javascript-sdk-app/src/bundles/ -p 8443 --cors.origin null --cors.credentials --https",
     "start:server": "node packages/javascript-sdk-app-e2e/src/server/index.mjs",
     "start:server:live": "LIVE=true node packages/javascript-sdk/src/e2e/server/index.mjs",
     "start:samples": "ws -d samples -p 8443 --cors.origin null --cors.credentials --cert example.com+5.pem --key example.com+5-key.pem",
     "test": "npm run test:unit && npm run test:integration && npm run test:e2e",
-    "test:ci": "npm run test:unit:ci && npm run test:integration:ci",
     "test:e2e": "nx run javascript-sdk-app-e2e:e2e",
     "test:e2e:live": "nx run javascript-sdk-app-e2e:e2e --configuration=live -- LIVE=true",
     "test:integration": "nx affected --target=test --base=develop --configuration=integration",
-    "test:integration:ci": "nx affected --target=test --base=remotes/origin/develop --configuration=integration",
     "test:unit": "nx affected --target=test --base=develop",
-    "test:unit:ci": "nx affected --target=test --base=remotes/origin/develop",
-    "test:unit:affected": "nx affected --base=develop --target=test",
-    "watch": "nx run javascript-sdk:build -- --env DEV=yes"
+    "watch": "nx run javascript-sdk-app:build:development"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run clean -ws && npm run lint && npm run build:ci",
-      "pre-push": "npm run test:unit && npm run test:integration && npm run build && npm run test:e2e"
+      "pre-commit": "npm run clean -ws && npm run format:staged && npm run lint && npm run build",
+      "pre-push": "npm t"
     }
   },
   "repository": {
@@ -59,7 +53,7 @@
     "@nrwl/react": "13.2.0-rc.3",
     "@nrwl/tao": "13.2.0-rc.3",
     "@nrwl/web": "13.2.0-rc.3",
-    "@nrwl/workspace": "13.2.0-rc.3",
+    "@nrwl/workspace": "13.2.3",
     "@ns3/nx-jest-playwright": "^1.3.0",
     "@testing-library/react": "12.1.2",
     "@testing-library/react-hooks": "7.0.2",
@@ -95,6 +89,7 @@
     "ngx-deploy-npm": "^3.0.5",
     "playwright": "^1.16.3",
     "prettier": "^2.1.1",
+    "pretty-quick": "^3.1.2",
     "react-test-renderer": "17.0.2",
     "rollup-copy-plugin": "^0.1.0",
     "rollup-plugin-terser": "^7.0.2",
