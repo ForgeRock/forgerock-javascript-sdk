@@ -16,12 +16,14 @@ describe('Test Social Login flow with AM nodes', () => {
     jest.retryTimes(3);
   });
   browsers.map((browserType) => {
-    it(`Login with identity provider on ${browserType}`, async () => {
+    it.only(`Login with identity provider on ${browserType}`, async () => {
       try {
+        console.log(browserType);
         const { browser, messageArray } = await setupAndGo(browserType, 'authn-social-login-am/', {
           clientId: 'IDMSocialLogin',
         });
 
+        console.log(messageArray);
         // Test assertions
         expect(messageArray.includes('Set provider on SelectIdPCallback')).toBe(true);
         expect(messageArray.includes('Redirect to ID Provider')).toBe(true);
@@ -30,7 +32,8 @@ describe('Test Social Login flow with AM nodes', () => {
 
         await browser.close();
       } catch (error) {
-        throw error;
+        console.log(error);
+        return error;
       }
     });
   });

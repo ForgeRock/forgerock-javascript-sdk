@@ -1,8 +1,9 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "outDir": "../../dist/out-tsc",
-    "types": ["node"]
+    "outDir": "dist",
+    "module": "CommonJS",
+    "target": "ES5"
   },
   "exclude": ["**/*.spec.ts"],
   "include": ["**/*.ts"]

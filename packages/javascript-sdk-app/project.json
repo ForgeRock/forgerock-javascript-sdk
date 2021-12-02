@@ -9,29 +9,32 @@
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
-        "outputPath": "packages/javascript-sdk-app/dist",
-        "index": "packages/javascript-sdk-app/src/app/index.html",
+        "outputPath": "packages/javascript-sdk-app/bundles",
+        "index": "packages/javascript-sdk-app/src/index.html",
         "main": "packages/javascript-sdk/src/index.ts",
         "tsConfig": "packages/javascript-sdk-app/tsconfig.app.json",
-        "webpackConfig": "packages/javascript-sdk-app-e2e/webpack.config.js"
+        "webpackConfig": "packages/javascript-sdk-app/webpack.config.js"
       },
       "configurations": {
-        "production": {
-          "optimization": true,
-          "webpackConfig": "packages/javascript-sdk-app-e2e/webpack.config.js"
-        },
         "development": {
-          "watch": true,
-          "optimization": false
+          "optimization": false,
+          "watch": true
+        },
+        "production": {
+          "optimized": true,
+          "watch": false
         }
       }
     },
     "serve": {
       "executor": "@nrwl/web:dev-server",
       "options": {
-        "buildTarget": "javascript-sdk-app:build"
+        "buildTarget": "javascript-sdk-app:build:development"
       },
       "configurations": {
+        "development": {
+          "buildTarget": "javascript-sdk-app:build:development"
+        },
         "production": {
           "buildTarget": "javascript-sdk-app:build:production"
         }

@@ -3,9 +3,11 @@ module.exports = {
   preset: '../../jest.preset.js',
   globalSetup: './src/env.setup.ts',
   globalTeardown: './src/env.teardown.ts',
+  testTimeout: 60 * 1000, // 60 seconds (must be more than the setup-and-go.ts timeout)
   globals: {
     'ts-jest': {
       tsconfig: '<rootDir>/tsconfig.spec.json',
+      isolatedModules: true,
     },
     browsers: ['chromium', 'webkit', 'firefox'],
   },

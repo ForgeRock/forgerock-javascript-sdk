@@ -4,36 +4,18 @@
   "projectType": "library",
   "targets": {
     "build": {
-      "executor": "@nrwl/workspace:tsc",
-      "outputs": ["{options.outputPath}"],
+      "executor": "@nrwl/web:package",
       "options": {
-        "outputPath": "packages/javascript-sdk/lib-esm/",
-        "main": "packages/javascript-sdk/src/index.ts",
+        "entryFile": "packages/javascript-sdk/src/index.ts",
+        "outputPath": "packages/javascript-sdk/bundles/",
+        "project": "packages/javascript-sdk/package.json",
+        "deleteOutputPath": true,
         "tsConfig": "packages/javascript-sdk/tsconfig.lib.json",
-        "assets": ["packages/javascript-sdk/*.md"]
+        "cwd": "packages/javascript-sdk",
+        "parallel": true,
+        "rollupConfig": "packages/javascript-sdk/rollup.config.js"
       },
-      "configurations": {
-        "commonjs": {
-          "outputPath": "packages/javascript-sdk/lib",
-          "main": "packages/javascript-sdk/src/index.ts",
-          "tsConfig": "packages/javascript-sdk/tsconfig.cjs.json",
-          "assets": ["packages/javascript-sdk/*.md"]
-        },
-        "rollup": {
-          "executor": "@nrwl/web:package",
-          "options": {
-            "entryFile": "packages/javascript-sdk/src/index.ts",
-            "outputPath": "packages/javascript-sdk/bundles/",
-            "project": "packages/javascript-sdk/package.json",
-            "deleteOutputPath": true,
-            "tsConfig": "packages/javascript-sdk/tsconfig.lib.json",
-            "cwd": "packages/javascript-sdk",
-            "parallel": true,
-            "rollupConfig": "packages/javascript-sdk/rollup.config.js"
-          },
-          "outputs": ["{options.outputPath}"]
-        }
-      }
+      "outputs": ["{options.outputPath}"]
     },
     "build-webpack": {
       "executor": "@nrwl/workspace:run-commands",

@@ -3,7 +3,12 @@
   "compilerOptions": {
     "sourceMap": false,
     "allowJs": true,
-    "types": ["jest", "node"],
+    "types": ["jest", "node"]
   },
+  "references": [
+    {
+      "path": "./tsconfig.spec.json"
+    }
+  ],
   "include": ["src/**/*.ts", "src/**/*.js"]
 }

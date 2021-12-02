@@ -11,6 +11,6 @@
     "README.md"
   ],
   "scripts": {
-    "clean": "shx rm -rf ./bundles"
+    "clean": "shx rm -rf ./bundles ./lib-esm ./lib"
   }
 }

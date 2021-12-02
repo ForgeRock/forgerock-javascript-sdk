@@ -6,11 +6,13 @@
     "e2e": {
       "executor": "@ns3/nx-jest-playwright:jest-playwright",
       "options": {
-        "jestConfig": "packages/javascript-sdk-app-e2e/jest.config.js"
+        "jestConfig": "packages/javascript-sdk-app-e2e/jest.config.js",
+        "devServerTarget": "javascript-sdk-app:serve",
+        "baseUrl": "https://sdkapp.example.com:8443"
       },
       "configurations": {
-        "production": {
-          "devServerTarget": "javascript-sdk-app:serve:production"
+        "live": {
+          "devServerTarget": ""
         }
       }
     },

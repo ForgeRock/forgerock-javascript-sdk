@@ -2,10 +2,9 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "./dist",
-    "types": ["jest", "node"],
+    "types": ["node", "jest"],
     "strict": false,
     "noImplicitAny": false
-
   },
   "include": [
     "tests/*",

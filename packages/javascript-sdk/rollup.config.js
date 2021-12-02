@@ -11,18 +11,13 @@ module.exports = (config) => {
     ...nxConfig,
     output: [
       {
-        format: 'umd',
-        name: 'javascript-sdk.umd',
-        dir: 'packages/javascript-sdk/bundles/umd',
-      },
-      {
-        format: 'es', // the preferred format
-        dir: 'packages/javascript-sdk/bundles/esm',
+        format: 'es', // ESM Module Format
+        dir: 'packages/javascript-sdk/lib-esm',
         preserveModules: true,
       },
       {
-        format: 'cjs',
-        dir: 'packages/javascript-sdk/bundles/cjs',
+        format: 'cjs', // Allow for CJS
+        dir: 'packages/javascript-sdk/lib',
         preserveModules: true,
       },
     ],

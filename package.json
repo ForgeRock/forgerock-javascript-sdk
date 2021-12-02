@@ -2,8 +2,6 @@
   "name": "@forgerock/javascript-sdk",
   "version": "3.0.0",
   "description": "ForgeRock JavaScript SDK",
-  "main": "./lib/",
-  "module": "./lib-esm/",
   "files": [
     "/bundles/**/*",
     "/lib/**/*",
@@ -12,23 +10,23 @@
     "README.md"
   ],
   "scripts": {
-    "build": "nx run javascript-sdk:build --production",
+    "build": "npm run clean -ws; nx run javascript-sdk:build",
     "build:analyze": "npm run clean -ws; nx run javascript-sdk:rollup:bundle",
     "build:ci": "nx affected --target=build --base=remotes/origin/develop --parallel",
-    "clean": "shx rm -rf ./docs ./lib ./lib-esm ./coverage ./dist ./tmp",
-    "clean:all": "npm run clean && shx rm -rf ./node_modules ./tests/node_modules ./samples/reactjs-todo/node_modules ./samples/reactjs-todo/todos ./samples/reactjs-todo/users ./package-lock.json && git clean -fX -e \"!*.pem\" -e \"!.env\"",
+    "clean": "shx rm -rf ./docs ./coverage ./dist ./tmp",
+    "clean:all": "npm run clean -ws && shx rm -rf ./packages/javascript-sdk-app/bundles ./node_modules ./tests/node_modules ./samples/reactjs-todo/node_modules ./samples/reactjs-todo/todos ./samples/reactjs-todo/users ./package-lock.json && git clean -fX -e \"!*.pem\" -e \"!.env\"",
     "docs": "typedoc",
     "lint": "nx affected --base=develop --target=lint",
     "lint:ci": "nx affected --target=lint --base=remotes/origin/develop --parallel",
     "prepublishOnly": "npm run clean:all && npm i && npm run build && npm t",
-    "start:e2e": "ws -d packages/javascript-sdk-app-e2e/src/app  -p 8443 --cors.origin null --cors.credentials --https",
+    "start:e2e": "ws -d packages/javascript-sdk-app/src/bundles/ -p 8443 --cors.origin null --cors.credentials --https",
     "start:server": "node packages/javascript-sdk-app-e2e/src/server/index.mjs",
     "start:server:live": "LIVE=true node packages/javascript-sdk/src/e2e/server/index.mjs",
     "start:samples": "ws -d samples -p 8443 --cors.origin null --cors.credentials --cert example.com+5.pem --key example.com+5-key.pem",
     "test": "npm run test:unit && npm run test:integration && npm run test:e2e",
     "test:ci": "npm run test:unit:ci && npm run test:integration:ci",
-    "test:e2e": "nx affected:e2e",
-    "test:e2e:live": "nx affected:e2e --configuration=live -- LIVE=true",
+    "test:e2e": "nx run javascript-sdk-app-e2e:e2e",
+    "test:e2e:live": "nx run javascript-sdk-app-e2e:e2e --configuration=live -- LIVE=true",
     "test:integration": "nx affected --target=test --base=develop --configuration=integration",
     "test:integration:ci": "nx affected --target=test --base=remotes/origin/develop --configuration=integration",
     "test:unit": "nx affected --target=test --base=develop",
@@ -85,6 +83,7 @@
     "eslint-plugin-react": "7.26.1",
     "eslint-plugin-react-hooks": "4.2.0",
     "express": "^4.17.1",
+    "html-webpack-plugin": "^4.5.2",
     "husky": "^4.2.5",
     "jest": "^27.3.1",
     "jest-canvas-mock": "^2.2.0",
@@ -116,11 +115,12 @@
     "packages/*"
   ],
   "dependencies": {
-    "core-js": "^3.6.5",
+    "core-js": "^3.19.2",
     "nx": "^13.1.4",
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "regenerator-runtime": "0.13.7",
+    "rxjs": "^7.4.0",
     "tslib": "^2.0.0"
   }
 }
