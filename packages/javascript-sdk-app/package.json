@@ -1,0 +1,15 @@
+{
+  "name": "@forgerock/javascript-sdk-app",
+  "version": "3.0.0",
+  "main": "./lib/index.js",
+  "module": "./lib-esm/index.js",
+  "files": [
+    "./lib/**/*",
+    "./lib-esm/**/*",
+    "package.json",
+    "README.md"
+  ],
+  "scripts": {
+    "clean": "shx rm -rf ./bundles ./lib-esm ./lib"
+  }
+}

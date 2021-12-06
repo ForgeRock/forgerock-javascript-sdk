@@ -3,6 +3,9 @@ const execSync = require('child_process').execSync;
 const target = process.argv[2];
 const jobIndex = Number(process.argv[3]);
 const jobCount = Number(process.argv[4]);
+const browserPath = process.argv[5];
+
+console.log(process.argv);
 
 const affected = execSync(
   `npx nx print-affected --base=remotes/origin/develop --target=${target}`,
@@ -18,7 +21,16 @@ const projects =
     : array.slice(sliceSize * (jobIndex - 1));
 
 if (projects.length > 0) {
-  execSync(`npx nx run-many --target=${target} --projects=${projects} --parallel`, {
-    stdio: [0, 1, 2],
-  });
+  if (target === 'e2e') {
+    execSync(
+      `npx cross-env PLAYWRIGHT_BROWSERS_PATH=${browserPath} | npx nx run-many --target=${target} --projects=${projects} --parallel`,
+      {
+        stdio: [0], // [0,1,2]
+      },
+    );
+  } else {
+    execSync(`npx nx run-many --target=${target} --projects=${projects} --parallel`, {
+      stdio: [0], // [0,1,2]
+    });
+  }
 }

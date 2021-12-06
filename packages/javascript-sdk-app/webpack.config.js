@@ -119,6 +119,9 @@ module.exports = (config) => {
       },
       server: 'https',
       compress: true,
+      client: {
+        logging: 'none',
+      },
       // devMiddleware: { publicPath: '/', stats: false },
       port: 8443,
     },

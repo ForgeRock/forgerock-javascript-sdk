@@ -7,9 +7,9 @@
       "executor": "@nrwl/web:package",
       "options": {
         "entryFile": "packages/javascript-sdk/src/index.ts",
-        "outputPath": "packages/javascript-sdk/bundles/",
-        "project": "packages/javascript-sdk/package.json",
+        "outputPath": "packages/javascript-sdk/lib-esm/",
         "deleteOutputPath": true,
+        "project": "packages/javascript-sdk/package.json",
         "tsConfig": "packages/javascript-sdk/tsconfig.lib.json",
         "cwd": "packages/javascript-sdk",
         "parallel": true,
@@ -17,7 +17,11 @@
       },
       "outputs": ["{options.outputPath}"],
       "configurations": {
-        "analyze": {}
+        "analyze": {},
+        "cjs": {
+          "outputPath": "packages/javascript-sdk/lib/",
+          "deleteOutputPath": true
+        }
       }
     },
     "lint": {
