@@ -27,6 +27,10 @@ module.exports = (config) => {
         verbose: true,
         targets: [
           {
+            src: path.resolve(__dirname, 'lib/index.js'),
+            dest: path.resolve(__dirname, '../../samples/_static/js'),
+          },
+          {
             src: path.resolve(__dirname, '../javascript-sdk-app-e2e/src/env.config.ts'),
             dest: path.resolve(__dirname, '../javascript-sdk-app-e2e/src/server/'),
             rename: 'env.config.copy.mjs',

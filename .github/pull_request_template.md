@@ -23,7 +23,9 @@ Check all that apply
 
 - [ ] Acceptance criteria is met.
 - [ ] All tasks listed in the user story have been completed.
-- [ ] Coded to standards. - [ ] Code peer-reviewed. - [ ] Ensure backward compatibility (special attention).
+- [ ] Coded to standards.
+- [ ] Code peer-reviewed.
+- [ ] Ensure backward compatibility (special attention).
 - [ ] API reference docs is updated.
 - [ ] Unit tests are written.
 - [ ] Integration tests are written.

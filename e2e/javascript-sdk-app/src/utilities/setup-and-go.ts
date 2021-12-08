@@ -98,6 +98,7 @@ export async function setupAndGo(
 
     await page.waitForSelector(config?.selector || '.Test_Complete');
   } catch (error) {
+    console.error('the error', error);
     await browser.close();
     throw error;
   }

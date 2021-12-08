@@ -3,7 +3,11 @@
   "compilerOptions": {
     "outDir": "./dist",
     "declaration": true,
-    "types": []
+    "types": [],
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true
   },
   "include": ["**/*.ts"],
   "exclude": ["**/*.spec.ts", "**/*.test.ts", "dist/**"]

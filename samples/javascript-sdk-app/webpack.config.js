@@ -65,8 +65,8 @@ module.exports = (config) => {
         // Copy built files
         compiler.hooks.afterEmit.tap('AfterEmitPlugin', () => {
           const cmds = [
-            'npx copyfiles -u 1 "bundles/index.js*" ../../javascript-sdk-app-e2e/src/',
-            'npx copyfiles -u 1 "bundles/index.js*" ../../../samples/_static/js/',
+            'npx copyfiles -u 1 "bundles/index.js*" ../../e2e/javascript-sdk-app/src/',
+            'npx copyfiles -u 1 "bundles/index.js*" /_static/js/',
           ];
           for (const cmd of cmds) {
             exec(cmd, (err, stdout, stderr) => {
@@ -112,7 +112,7 @@ module.exports = (config) => {
     devServer: {
       ...config.devServer,
       host: 'sdkapp.example.com',
-      allowedHosts: ['.example.com'],
+      allowedHosts: ['*.example.com'],
       headers: {
         'Access-Control-Allow-Credentials': true,
         'Access-Control-Allow-Origin': 'null',

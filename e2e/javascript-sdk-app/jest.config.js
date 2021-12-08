@@ -8,7 +8,6 @@ module.exports = {
   globals: {
     'ts-jest': {
       tsconfig: '<rootDir>/tsconfig.spec.json',
-      isolatedModules: true,
     },
     browsers: ['chromium', 'webkit', 'firefox'],
   },

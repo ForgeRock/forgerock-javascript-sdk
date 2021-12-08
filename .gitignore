@@ -6,13 +6,14 @@
 
 # Generated code
 tmp/
+*/dist/*
 dist/*
 packages/*/dist/
 bundles/
 docs/
 coverage/
-packages/javascript-sdk/lib/
-lib-esm/
+packages/javascript-sdk/lib/*
+packages/javascript-sdk/lib-esm/*
 node_modules/
 samples/_static/js/*.js*
 tests/**/app/index.js*
@@ -20,6 +21,7 @@ tests/**/ie11/ie-bundle.js*
 reports/*
 *.copy.*
 !env.config.copy.mjs
+lib/
 
 # Certificates
 *.pem
@@ -40,4 +42,3 @@ samples/*/users
 
 # Environment files
 .env
-*.d.ts

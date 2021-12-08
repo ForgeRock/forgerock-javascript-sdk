@@ -109,6 +109,7 @@ function autoscript() {
             console.log('Redirect to ID Provider');
             forgerock.FRAuth.redirect(step as any);
           }),
+          rxDelay(delay),
         )
         .subscribe({
           error: (err) => {
