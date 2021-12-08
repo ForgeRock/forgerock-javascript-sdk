@@ -1,7 +1,7 @@
 {
   "projectType": "application",
-  "root": "packages/javascript-sdk-app",
-  "sourceRoot": "packages/javascript-sdk-app/src",
+  "root": "samples/javascript-sdk-app",
+  "sourceRoot": "samples/javascript-sdk-app/src",
   "tags": [],
   "targets": {
     "build": {
@@ -9,11 +9,11 @@
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
-        "outputPath": "packages/javascript-sdk-app/bundles",
-        "index": "packages/javascript-sdk-app/src/index.html",
+        "outputPath": "samples/javascript-sdk-app/bundles",
+        "index": "samples/javascript-sdk-app/src/index.html",
         "main": "packages/javascript-sdk/src/index.ts",
-        "tsConfig": "packages/javascript-sdk-app/tsconfig.app.json",
-        "webpackConfig": "packages/javascript-sdk-app/webpack.config.js"
+        "tsConfig": "samples/javascript-sdk-app/tsconfig.app.json",
+        "webpackConfig": "samples/javascript-sdk-app/webpack.config.js"
       },
       "configurations": {
         "development": {

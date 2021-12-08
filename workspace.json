@@ -1,10 +1,10 @@
 {
   "version": 2,
   "projects": {
+    "e2e-javascript-sdk-app": "e2e/javascript-sdk-app",
     "event": "packages/event",
     "javascript-sdk": "packages/javascript-sdk",
-    "javascript-sdk-app": "packages/javascript-sdk-app",
-    "javascript-sdk-app-e2e": "packages/javascript-sdk-app-e2e",
+    "javascript-sdk-app": "samples/javascript-sdk-app",
     "reactjs-todo": "samples/reactjs-todo",
     "shared": "packages/shared"
   }

@@ -81,5 +81,9 @@
   "cli": {
     "defaultCollection": "@nrwl/react"
   },
-  "defaultProject": "javascript-sdk"
+  "defaultProject": "javascript-sdk",
+  "workspaceLayout": {
+    "appsDir": "",
+    "libsDir": ""
+  }
 }

@@ -121,6 +121,7 @@ module.exports = (config) => {
       compress: true,
       client: {
         logging: 'none',
+        overlay: false,
       },
       // devMiddleware: { publicPath: '/', stats: false },
       port: 8443,

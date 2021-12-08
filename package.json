@@ -10,20 +10,20 @@
     "README.md"
   ],
   "scripts": {
-    "build": "nx run javascript-sdk:build",
+    "build": "nx run javascript-sdk:build && nx run javascript-sdk:build:cjs",
     "build:analyze": "NODE_ENV=analyze nx run javascript-sdk:build --skipNxCache",
     "clean": "shx rm -rf ./docs ./coverage ./tmp",
-    "clean:all": "npm run clean -ws && shx rm -rf ./packages/javascript-sdk-app/bundles ./node_modules ./tests/node_modules ./samples/reactjs-todo/node_modules ./samples/reactjs-todo/todos ./samples/reactjs-todo/users ./package-lock.json && git clean -fX -e \"!*.pem\" -e \"!.env\"",
+    "clean:all": "npm run clean -ws && shx rm -rf samples/javascript-sdk-app/bundles ./node_modules ./tests/node_modules ./samples/reactjs-todo/node_modules ./samples/reactjs-todo/todos ./samples/reactjs-todo/users ./package-lock.json && git clean -fX -e \"!*.pem\" -e \"!.env\"",
     "docs": "typedoc",
     "format:staged": "pretty-quick --staged",
     "lint": "nx affected --base=develop --target=lint",
     "prepublishOnly": "npm run clean:all && npm i && npm run build && npm t",
-    "start:server": "node packages/javascript-sdk-app-e2e/src/server/index.mjs",
-    "start:server:live": "LIVE=true node packages/javascript-sdk/src/e2e/server/index.mjs",
+    "start:server": "node e2e/javascript-sdk-app/src/server/index.mjs",
+    "start:server:live": "LIVE=true node e2e/javascript-sdk-app/src/server/index.mjs",
     "start:samples": "ws -d samples -p 8443 --cors.origin null --cors.credentials --cert example.com+5.pem --key example.com+5-key.pem",
     "test": "npm run test:unit && npm run test:integration && npm run test:e2e",
-    "test:e2e": "nx run javascript-sdk-app-e2e:e2e",
-    "test:e2e:live": "nx run javascript-sdk-app-e2e:e2e --configuration=live -- LIVE=true",
+    "test:e2e": "nx run e2e-javascript-sdk-app:e2e",
+    "test:e2e:live": "nx run javascript-sdk-app:e2e --configuration=live -- LIVE=true",
     "test:integration": "nx affected --target=test --base=develop --configuration=integration",
     "test:unit": "nx affected --target=test --base=develop",
     "watch": "nx run javascript-sdk-app:build:development"
@@ -108,7 +108,8 @@
   },
   "workspaces": [
     "samples/*",
-    "packages/*"
+    "packages/*",
+    "e2e/*"
   ],
   "dependencies": {
     "core-js": "^3.19.2",

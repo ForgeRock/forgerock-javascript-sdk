@@ -1,5 +1,5 @@
 module.exports = {
-  displayName: 'javascript-sdk-app-e2e',
+  displayName: 'e2e-javascript-sdk-app',
   preset: '../../jest.preset.js',
   globalSetup: './src/env.setup.ts',
   setupFiles: ['./setup-files.ts'],
