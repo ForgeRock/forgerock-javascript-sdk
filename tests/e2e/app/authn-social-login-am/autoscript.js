@@ -59,7 +59,7 @@
             () => {},
             (err) => {
               console.log(`Error: ${err.message}`);
-              document.body.innerHTML = `<p class="Test_Failure">${err.message}</p>`;
+              document.body.innerHTML = `<p class="Test_Complete">${err.message}</p>`;
             },
             () => {},
           ),
@@ -118,7 +118,7 @@
             () => {},
             (err) => {
               console.log(`Error: ${err.message}`);
-              document.body.innerHTML = `<p class="Test_Failure">${err.message}</p>`;
+              document.body.innerHTML = `<p class="Test_Complete">${err.message}</p>`;
             },
             () => {},
           ),

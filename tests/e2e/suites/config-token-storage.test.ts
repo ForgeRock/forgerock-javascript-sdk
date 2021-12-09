@@ -28,7 +28,7 @@ describe('Test oauth login flow with localStorage', () => {
 
         await browser.close();
       } catch (error) {
-        return error;
+        throw error;
       }
     });
 
@@ -44,7 +44,7 @@ describe('Test oauth login flow with localStorage', () => {
 
         await browser.close();
       } catch (error) {
-        return error;
+        throw error;
       }
     });
 
@@ -63,7 +63,7 @@ describe('Test oauth login flow with localStorage', () => {
 
         await browser.close();
       } catch (error) {
-        return error;
+        throw error;
       }
     });
   });

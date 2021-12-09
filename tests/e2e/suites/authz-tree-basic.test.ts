@@ -30,7 +30,7 @@ describe('Test Transaction Authorization flow', () => {
 
         await browser.close();
       } catch (error) {
-        return error;
+        throw error;
       }
     });
   });
