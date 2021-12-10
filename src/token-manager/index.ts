@@ -9,12 +9,14 @@
  */
 
 import Config, { ConfigOptions } from '../config';
+import middlewareWrapper from '../util/middleware';
 import OAuth2Client, { allowedErrors, OAuth2Tokens, ResponseType } from '../oauth2-client';
 import { StringDict, Tokens } from '../shared/interfaces';
 import TokenStorage from '../token-storage';
 import PKCE from '../util/pkce';
 import { withTimeout } from '../util/timeout';
 import { parseQuery } from '../util/url';
+import { ActionTypes } from '../config/enums';
 
 interface GetTokensOptions extends ConfigOptions {
   forceRenew?: boolean;
@@ -65,7 +67,7 @@ abstract class TokenManager {
    */
   public static async getTokens(options?: GetTokensOptions): Promise<OAuth2Tokens | void> {
     let tokens: OAuth2Tokens | null = null;
-    const { clientId, serverConfig, support } = Config.get(options as ConfigOptions);
+    const { clientId, middleware, serverConfig, support } = Config.get(options as ConfigOptions);
 
     /**
      * First, let's see if tokens exist locally
@@ -129,15 +131,29 @@ abstract class TokenManager {
         // To support legacy browsers, iframe works best with short timeout
         parsedUrl = new URL(await OAuth2Client.getAuthCodeByIframe(authorizeUrlOptions));
       } else {
-        // Using modern `fetch` provides better redirect and error handling
-        // Downside is IE11 is not supported, *even* with the fetch polyfill
-        const response = await withTimeout(
-          fetch(authorizeUrl, {
-            credentials: 'include',
-            mode: 'cors',
-          }),
-          serverConfig.timeout,
+        /**
+         * Using modern `fetch` provides better redirect and error handling.
+         * Unfortunately, this requires the configured callback URL and the ForgeRock server
+         * have the EXACT same origin, or CORS will fail!
+         * Another downside is IE11 is not supported, *even* with the fetch polyfill.
+         */
+
+        // authorizeUrl has already been processed, but passing this in for consistency
+        const runMiddleware = middlewareWrapper(
+          {
+            url: new URL(authorizeUrl),
+            init: {
+              credentials: 'include',
+              mode: 'cors',
+            },
+          },
+          {
+            type: ActionTypes.Authorize,
+          },
         );
+        // Grab init only as authorizeUrl is already processed
+        const { init } = runMiddleware(middleware);
+        const response = await withTimeout(fetch(authorizeUrl, init), serverConfig.timeout);
 
         parsedUrl = new URL(response.url);
       }

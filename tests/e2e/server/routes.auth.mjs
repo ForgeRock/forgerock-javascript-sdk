@@ -319,7 +319,18 @@ export default function (app) {
     ) {
       return res.status(400).json({ message: 'acr_values did not match "SpecificTree"' });
     }
-    if (req.path.includes('middleware')) {
+    if (req.path.includes('middleware-modern')) {
+      if (
+        req.query['authorize-middleware'] === 'authorization' &&
+        req.headers['x-authorize-middleware'] === 'authorization' &&
+        !req.query['logout-middleware'] &&
+        !req.headers['x-logout-middleware']
+      ) {
+        res.redirect(url);
+      } else {
+        res.status(406).send('Middleware additions are missing.');
+      }
+    } else if (req.path.includes('middleware')) {
       if (
         req.query['authorize-middleware'] === 'authorization' &&
         !req.query['logout-middleware']

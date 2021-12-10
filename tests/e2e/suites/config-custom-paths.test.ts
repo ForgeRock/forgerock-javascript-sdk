@@ -26,7 +26,7 @@ describe('Test OAuth login flow with custom paths', () => {
 
         await browser.close();
       } catch (error) {
-        return error;
+        throw error;
       }
     });
   });

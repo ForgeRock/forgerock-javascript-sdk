@@ -26,7 +26,7 @@ describe('Test Basic login flow', () => {
 
         await browser.close();
       } catch (error) {
-        return error;
+        throw error;
       }
     });
   });

@@ -21,7 +21,6 @@ describe('Test bad login flow', () => {
       try {
         const { browser, messageArray } = await setupAndGo(browserType, 'authn-basic/', {
           pw: 'wrong_password_123!',
-          selector: '.Test_Failure',
         });
 
         // Test assertions
@@ -29,7 +28,7 @@ describe('Test bad login flow', () => {
 
         await browser.close();
       } catch (error) {
-        return error;
+        throw error;
       }
     });
   });

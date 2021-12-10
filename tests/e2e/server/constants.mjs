@@ -13,6 +13,7 @@ export const authPaths = {
     '/am/auth/tokenExchange',
     '/am/oauth2/realms/root/access_token',
     '/am/oauth2/realms/root/realms/middleware/access_token',
+    '/am/oauth2/realms/root/realms/middleware-modern/access_token',
   ],
   authenticate: [
     '/am/auth/authenticate',
@@ -24,6 +25,7 @@ export const authPaths = {
     '/am/auth/authorize',
     '/am/oauth2/realms/root/authorize',
     '/am/oauth2/realms/root/realms/middleware/authorize',
+    '/am/oauth2/realms/root/realms/middleware-modern/authorize',
   ],
   endSession: [
     '/am/auth/endSession',

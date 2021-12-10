@@ -30,7 +30,7 @@ describe('Test Social Login flow with AM nodes', () => {
 
         await browser.close();
       } catch (error) {
-        return error;
+        throw error;
       }
     });
   });

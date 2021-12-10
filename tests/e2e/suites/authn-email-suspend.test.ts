@@ -30,7 +30,7 @@ describe('Test basic registration flow', () => {
 
         await browser.close();
       } catch (error) {
-        return error;
+        throw error;
       }
     });
   });

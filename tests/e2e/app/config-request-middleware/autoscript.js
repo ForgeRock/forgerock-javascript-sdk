@@ -24,6 +24,7 @@
   const setMiddleware = url.searchParams.get('middleware') || 'atConfig';
   const tree = url.searchParams.get('tree') || 'UsernamePassword';
   const un = url.searchParams.get('un') || 'sdkuser';
+  const support = url.searchParams.get('support') || 'legacy';
 
   const middleware = [
     (req, action, next) => {
@@ -38,6 +39,11 @@
           break;
         case 'AUTHORIZE':
           req.url.searchParams.set('authorize-middleware', 'authorization');
+          if (support === 'modern') {
+            req.init.headers = {
+              'x-authorize-middleware': 'authorization',
+            };
+          }
           break;
         case 'EXCHANGE_TOKEN':
           req.url.searchParams.set('exchange-token-middleware', 'exchange-token');
@@ -107,9 +113,12 @@
         } else if (step.payload.tokenId) {
           console.log('Auth tree successfully completed');
           console.log('Get OAuth tokens');
-          const tokens = forgerock.TokenManager.getTokens(
-            setMiddleware === 'atCallSite' ? { middleware } : null,
-          );
+          const configObj = {
+            ...(setMiddleware === 'atCallSite' ? { middleware } : null),
+            ...(support === 'modern' ? { realmPath: 'middleware-modern' } : null),
+            support,
+          };
+          const tokens = forgerock.TokenManager.getTokens(configObj);
           return tokens;
         } else {
           throw new Error('Something went wrong');
@@ -160,7 +169,7 @@
         () => {},
         (err) => {
           console.log(`Error: ${err.message}`);
-          document.body.innerHTML = `<p class="Test_Failure">${err.message}</p>`;
+          document.body.innerHTML = `<p class="Test_Complete">${err.message}</p>`;
         },
         () => {},
       ),

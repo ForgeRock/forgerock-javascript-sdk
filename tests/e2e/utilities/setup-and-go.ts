@@ -20,21 +20,27 @@ export async function setupAndGo(
     allowGeo?: boolean;
     amUrl?: string;
     clientId?: string;
+    code?: string;
     dialogInput?: string;
     email?: string;
     middleware?: string;
+    preAuthenticated?: string;
     pw?: string;
     realmPath?: string;
     resourceUrl?: string;
     selector?: string;
     scope?: string;
+    state?: string;
+    support?: string;
     tokenStore?: string;
     tree?: string;
     un?: string;
   },
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): Promise<{ browser: any; messageArray: string[]; networkArray: string[] }> {
-  const browser = await browsers[browserType].launch({ headless: true });
+  const browser = await browsers[browserType].launch({
+    headless: true,
+  });
   const messageArray = [];
   const networkArray = [];
 
@@ -53,12 +59,16 @@ export async function setupAndGo(
 
     url.searchParams.set('amUrl', (config && config.amUrl) || AM_URL);
     url.searchParams.set('clientId', (config && config.clientId) || CLIENT_ID);
+    config && config.code && url.searchParams.set('code', (config && config.code) || '');
     url.searchParams.set('email', (config && config.email) || '');
     url.searchParams.set('middleware', (config && config.middleware) || '');
+    url.searchParams.set('preAuthenticated', (config && config.preAuthenticated) || '');
     url.searchParams.set('pw', (config && config.pw) || USERS[0].pw);
     url.searchParams.set('realmPath', (config && config.realmPath) || REALM_PATH);
     url.searchParams.set('resourceUrl', (config && config.resourceUrl) || RESOURCE_URL);
     url.searchParams.set('scope', (config && config.scope) || SCOPE);
+    config && config.state && url.searchParams.set('state', (config && config.state) || '');
+    url.searchParams.set('support', (config && config.support) || '');
     url.searchParams.set('tokenStore', (config && config.tokenStore) || '');
     url.searchParams.set('tree', (config && config.tree) || '');
     url.searchParams.set('un', (config && config.un) || USERS[0].un);

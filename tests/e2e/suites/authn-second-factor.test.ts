@@ -27,7 +27,7 @@ describe('Test Second Factor login flow', () => {
 
         await browser.close();
       } catch (error) {
-        return error;
+        throw error;
       }
     });
   });
