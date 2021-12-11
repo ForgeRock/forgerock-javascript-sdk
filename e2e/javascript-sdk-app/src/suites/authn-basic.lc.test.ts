@@ -7,26 +7,17 @@
  * This software may be modified and distributed under the terms
  * of the MIT license. See the LICENSE file for details.
  */
-
+import { test, expect } from '@playwright/test';
 import { setupAndGo } from '../utilities/setup-and-go';
-import browsers from '../utilities/browsers';
 
-describe('Test Basic login flow', () => {
-  browsers.map((browserType) => {
-    it(`should login successfully and then log out with ${browserType}`, async () => {
-      try {
-        const { browser, messageArray } = await setupAndGo(browserType, 'authn-basic/');
+test.describe('Test Basic login flow', () => {
+  test(`should login successfully and then log out`, async ({ browserName, page }) => {
+    const { messageArray } = await setupAndGo(page, browserName, 'authn-basic/');
 
-        // Test assertions
-        expect(messageArray.includes('Basic login successful')).toBe(true);
-        expect(messageArray.includes('Logout successful')).toBe(true);
-        expect(messageArray.includes('Starting authentication with service')).toBe(true);
-        expect(messageArray.includes('Continuing authentication with service')).toBe(true);
-
-        await browser.close();
-      } catch (error) {
-        fail(error);
-      }
-    });
+    // Test assertions
+    expect(messageArray.includes('Basic login successful')).toBe(true);
+    expect(messageArray.includes('Logout successful')).toBe(true);
+    expect(messageArray.includes('Starting authentication with service')).toBe(true);
+    expect(messageArray.includes('Continuing authentication with service')).toBe(true);
   });
 });

@@ -3,9 +3,11 @@
   "compilerOptions": {
     "outDir": "./dist",
     "strict": false,
+    "composite": true,
     "noImplicitAny": false
   },
   "include": [
+    "utilities/*",
     "suites/*",
     "**/*.test.ts",
     "**/*.spec.ts",

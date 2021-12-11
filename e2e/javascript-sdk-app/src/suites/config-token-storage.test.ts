@@ -8,60 +8,40 @@
  * of the MIT license. See the LICENSE file for details.
  */
 
+import { test, expect } from '@playwright/test';
 import { setupAndGo } from '../utilities/setup-and-go';
-import browsers from '../utilities/browsers';
 
-describe('Test oauth login flow with localStorage', () => {
-  browsers.map((browserType) => {
-    it(`Login successfully with ${browserType}`, async () => {
-      try {
-        const { browser, messageArray } = await setupAndGo(browserType, 'config-token-storage/', {
-          tokenStore: 'sessionStorage',
-        });
-
-        // Test assertions
-        expect(messageArray.includes('Access token is correct')).toBe(true);
-        expect(messageArray.includes('Logout successful')).toBe(true);
-
-        await browser.close();
-      } catch (error) {
-        fail(error);
-      }
+test.describe('Test oauth login flow with localStorage', () => {
+  test(`Login successful`, async ({ page, browserName }) => {
+    const { messageArray } = await setupAndGo(page, browserName, 'config-token-storage/', {
+      tokenStore: 'sessionStorage',
     });
 
-    it(`Login successfully with ${browserType}`, async () => {
-      try {
-        const { browser, messageArray } = await setupAndGo(browserType, 'config-token-storage/', {
-          tokenStore: 'indexedDB',
-        });
+    // Test assertions
+    expect(messageArray.includes('Access token is correct')).toBe(true);
+    expect(messageArray.includes('Logout successful')).toBe(true);
+  });
 
-        // Test assertions
-        expect(messageArray.includes('Access token is correct')).toBe(true);
-        expect(messageArray.includes('Logout successful')).toBe(true);
-
-        await browser.close();
-      } catch (error) {
-        fail(error);
-      }
+  test(`Login successfull `, async ({ page, browserName }) => {
+    const { messageArray } = await setupAndGo(page, browserName, 'config-token-storage/', {
+      tokenStore: 'indexedDB',
     });
 
-    it(`Login successfully with ${browserType}`, async () => {
-      try {
-        const { browser, messageArray } = await setupAndGo(browserType, 'config-token-storage/', {
-          tokenStore: 'customStore',
-        });
+    // Test assertions
+    expect(messageArray.includes('Access token is correct')).toBe(true);
+    expect(messageArray.includes('Logout successful')).toBe(true);
+  });
 
-        // Test assertions
-        expect(messageArray.includes('Custom token setter used.')).toBe(true);
-        expect(messageArray.includes('Custom token getter used.')).toBe(true);
-        expect(messageArray.includes('Custom token remover used.')).toBe(true);
-        expect(messageArray.includes('Access token is correct')).toBe(true);
-        expect(messageArray.includes('Logout successful')).toBe(true);
-
-        await browser.close();
-      } catch (error) {
-        fail(error);
-      }
+  test(`Login successfully`, async ({ page, browserName }) => {
+    const { messageArray } = await setupAndGo(page, browserName, 'config-token-storage/', {
+      tokenStore: 'customStore',
     });
+
+    // Test assertions
+    expect(messageArray.includes('Custom token setter used.')).toBe(true);
+    expect(messageArray.includes('Custom token getter used.')).toBe(true);
+    expect(messageArray.includes('Custom token remover used.')).toBe(true);
+    expect(messageArray.includes('Access token is correct')).toBe(true);
+    expect(messageArray.includes('Logout successful')).toBe(true);
   });
 });

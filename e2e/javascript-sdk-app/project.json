@@ -4,15 +4,19 @@
   "projectType": "application",
   "targets": {
     "e2e": {
-      "executor": "@ns3/nx-jest-playwright:jest-playwright",
+      "executor": "@nrwl/workspace:run-commands",
       "options": {
-        "jestConfig": "e2e/javascript-sdk-app/jest.config.js",
-        "devServerTarget": "javascript-sdk-app:serve"
+        "commands": [
+          {
+            "command": "concurrently \"npm run start:server\" \"playwright test\" ",
+            "description": "run e2e setup"
+          }
+        ],
+        "readyWhen": "finished running test suite",
+        "parallel": true
       },
       "configurations": {
-        "live": {
-          "devServerTarget": ""
-        }
+        "live": {}
       }
     },
     "lint": {

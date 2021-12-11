@@ -118,12 +118,14 @@ function autoscript() {
             support,
           };
           const tokens = forgerock.TokenManager.getTokens(configObj);
+
           return tokens;
         } else {
           throw new Error('Something went wrong');
         }
       }),
       map((tokens) => {
+        console.log('TOKENS', tokens);
         if (tokens.accessToken) {
           console.log('OAuth login successful');
           document.body.innerHTML = '<p class="Logged_In">Login successful</p>';
@@ -168,7 +170,7 @@ function autoscript() {
     .subscribe({
       error: (err) => {
         console.log(`Error: ${err.message}`);
-        document.body.innerHTML = `<p class="Test_Failure">${err.message}</p>`;
+        document.body.innerHTML = `<p class="Test_Complete">${err.message}</p>`;
       },
       complete: () => {
         console.log('Test script complete');

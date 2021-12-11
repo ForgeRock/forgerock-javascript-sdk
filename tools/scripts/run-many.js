@@ -3,6 +3,7 @@ const execSync = require('child_process').execSync;
 const target = process.argv[2];
 const jobIndex = Number(process.argv[3]);
 const jobCount = Number(process.argv[4]);
+const browser = String(process.argv[5]);
 
 const affected = execSync(
   `npx nx print-affected --base=remotes/origin/develop --target=${target}`,

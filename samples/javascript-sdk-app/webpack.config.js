@@ -112,10 +112,10 @@ module.exports = (config) => {
     devServer: {
       ...config.devServer,
       host: 'sdkapp.example.com',
-      allowedHosts: ['*.example.com'],
       headers: {
         'Access-Control-Allow-Credentials': true,
         'Access-Control-Allow-Origin': 'null',
+        'Access-Control-Allow-Headers': 'x-authorize-middleware',
       },
       server: 'https',
       compress: true,
@@ -123,7 +123,6 @@ module.exports = (config) => {
         logging: 'none',
         overlay: false,
       },
-      // devMiddleware: { publicPath: '/', stats: false },
       port: 8443,
     },
     plugins,

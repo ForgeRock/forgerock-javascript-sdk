@@ -30,9 +30,9 @@ jobs:
       matrix:
         target:
           ['"test --configuration=unit"', 'build', '"test --configuration=integration"', 'e2e']
-        jobIndex: [1]
+        jobIndex: [1, 2, 3, 4]
     env:
-      jobCount: 1
+      jobCount: 4
     steps:
       - uses: actions/checkout@v2
         with:
@@ -57,8 +57,16 @@ jobs:
             cache-nx-${{ hashFiles('package-lock.json') }}-${{ matrix.target }}-${{ matrix.jobIndex }}-
             cache-nx-${{ hashFiles('package-lock.json') }}-
 
-      - if: ${{ !env.ACT }}
       - run: git fetch --no-tags --prune --depth=5 origin develop
+        if: ${{ !env.ACT }}
 
       - name: nx run-many:${{ matrix.target }}
         run: node ./tools/scripts/run-many.js ${{ matrix.target }} ${{ matrix.jobIndex }} ${{ env.jobCount }}
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v2
+        if: ${{ failure() || success() }}
+        with:
+          name: 'E2E Artifacts'
+          path: test-results/
+          retention-days: 5

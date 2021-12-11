@@ -8,27 +8,19 @@
  * of the MIT license. See the LICENSE file for details.
  */
 
+import { test, expect } from '@playwright/test';
 import { setupAndGo } from '../utilities/setup-and-go';
-import browsers from '../utilities/browsers';
 
-describe('Test Social Login flow with AM nodes', () => {
-  browsers.map((browserType) => {
-    it(`Login with identity provider on  ${browserType}`, async () => {
-      try {
-        const { browser, messageArray } = await setupAndGo(browserType, 'authn-social-login-idm/', {
-          clientId: 'IDMSocialLogin',
-        });
-
-        // Test assertions
-        expect(messageArray.includes('Set provider on SelectIdPCallback')).toBe(true);
-        expect(messageArray.includes('Redirect to ID Provider')).toBe(true);
-        expect(messageArray.includes('Returning from provider')).toBe(true);
-        expect(messageArray.includes('Social Login successful')).toBe(true);
-
-        await browser.close();
-      } catch (error) {
-        fail(error);
-      }
+test.describe('Test Social Login flow with AM nodes', () => {
+  test(`Login with identity provider`, async ({ page, browserName }) => {
+    const { messageArray } = await setupAndGo(page, browserName, 'authn-social-login-idm/', {
+      clientId: 'IDMSocialLogin',
     });
+
+    // Test assertions
+    expect(messageArray.includes('Set provider on SelectIdPCallback')).toBe(true);
+    expect(messageArray.includes('Redirect to ID Provider')).toBe(true);
+    expect(messageArray.includes('Returning from provider')).toBe(true);
+    expect(messageArray.includes('Social Login successful')).toBe(true);
   });
 });

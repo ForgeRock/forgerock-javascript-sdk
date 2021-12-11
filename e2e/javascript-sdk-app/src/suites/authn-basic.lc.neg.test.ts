@@ -7,25 +7,16 @@
  * This software may be modified and distributed under the terms
  * of the MIT license. See the LICENSE file for details.
  */
-
+import { test, expect } from '@playwright/test';
 import { setupAndGo } from '../utilities/setup-and-go';
-import browsers from '../utilities/browsers';
 
-describe('Test bad login flow', () => {
-  browsers.map((browserType) => {
-    it(`Login UNsuccessfully with ${browserType}`, async () => {
-      try {
-        const { browser, messageArray } = await setupAndGo(browserType, 'authn-basic/', {
-          pw: 'wrong_password_123!',
-        });
-
-        // Test assertions
-        expect(messageArray.includes('Error: Auth_Error')).toBe(true);
-
-        await browser.close();
-      } catch (error) {
-        fail(error);
-      }
+test.describe('Test bad login flow', () => {
+  test(`Login UNsuccessfully`, async ({ page, browserName }) => {
+    const { messageArray } = await setupAndGo(page, browserName, 'authn-basic/', {
+      pw: 'wrong_password_123!',
     });
+
+    // Test assertions
+    expect(messageArray.includes('Error: Auth_Error')).toBe(true);
   });
 });

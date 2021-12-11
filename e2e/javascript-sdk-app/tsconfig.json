@@ -9,6 +9,5 @@
     {
       "path": "./tsconfig.spec.json"
     }
-  ],
-  "include": ["src/**/*.ts", "src/**/*.js"]
+  ]
 }

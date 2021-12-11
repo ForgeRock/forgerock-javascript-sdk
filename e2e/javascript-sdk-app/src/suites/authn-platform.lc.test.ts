@@ -8,23 +8,15 @@
  * of the MIT license. See the LICENSE file for details.
  */
 
+import { test, expect } from '@playwright/test';
 import { setupAndGo } from '../utilities/setup-and-go';
-import browsers from '../utilities/browsers';
 
-describe('Test Basic login flow', () => {
-  browsers.map((browserType) => {
-    it(`should login successfully and then log out with ${browserType}`, async () => {
-      try {
-        const { browser, messageArray } = await setupAndGo(browserType, 'authn-platform/');
+test.describe('Test Basic login flow', () => {
+  test(`should login successfully and then log out with`, async ({ page, browserName }) => {
+    const { messageArray } = await setupAndGo(page, browserName, 'authn-platform/');
 
-        // Test assertions
-        expect(messageArray.includes('Basic login with platform nodes successful')).toBe(true);
-        expect(messageArray.includes('Logout successful')).toBe(true);
-
-        await browser.close();
-      } catch (error) {
-        fail(error);
-      }
-    });
+    // Test assertions
+    expect(messageArray.includes('Basic login with platform nodes successful')).toBe(true);
+    expect(messageArray.includes('Logout successful')).toBe(true);
   });
 });

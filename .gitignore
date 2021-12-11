@@ -33,6 +33,7 @@ lib/
 tests/**/app/index.js*
 tests/**/ie11/autoscript.js*
 reports/*
+test-results
 
 # Sample code
 samples/_static/js/*.js*

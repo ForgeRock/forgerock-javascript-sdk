@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-escape */
 /*
  * @forgerock/javascript-sdk
  *
@@ -10,7 +11,7 @@
 
 import { CallbackType } from '../auth/enums';
 
-/* eslint-disable max-len, no-useless-escape */
+/* eslint-disable max-len */
 const displayRecoveryCodes = `/*
 * Copyright 2018 ForgeRock AS. All Rights Reserved
 *

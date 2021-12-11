@@ -31,7 +31,8 @@ Check all that apply
 - [ ] Integration tests are written.
 - [ ] e2e tests are written.
 - [ ] CI build passing on the feature branch.
-- [ ] Functional spec is written/updated - [ ] contains example code snippets.
+- [ ] Functional spec is written/updated
+- [ ] contains example code snippets.
 - [ ] Change log updated.
 - [ ] Documentation story is created and tracked.
 - [ ] UI is completed or ticket is created.

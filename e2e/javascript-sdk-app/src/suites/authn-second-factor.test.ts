@@ -7,25 +7,19 @@
  * This software may be modified and distributed under the terms
  * of the MIT license. See the LICENSE file for details.
  */
-
+import { test, expect } from '@playwright/test';
 import { setupAndGo } from '../utilities/setup-and-go';
-import browsers from '../utilities/browsers';
 
-describe('Test Second Factor login flow', () => {
-  browsers.map((browserType) => {
-    it(`should login successfully with OTP and then log out with ${browserType}`, async () => {
-      try {
-        const { browser, messageArray } = await setupAndGo(browserType, 'authn-second-factor/');
+test.describe('Test Second Factor login flow', () => {
+  test(`should login successfully with OTP and then log out with`, async ({
+    page,
+    browserName,
+  }) => {
+    const { messageArray } = await setupAndGo(page, browserName, 'authn-second-factor/');
 
-        // Test assertions
-        expect(messageArray.includes('Set given OTP to password callback')).toBe(true);
-        expect(messageArray.includes('Logout successful')).toBe(true);
-        expect(messageArray.includes('Second Factor login successful')).toBe(true);
-
-        await browser.close();
-      } catch (error) {
-        fail(error);
-      }
-    });
+    // Test assertions
+    expect(messageArray.includes('Set given OTP to password callback')).toBe(true);
+    expect(messageArray.includes('Logout successful')).toBe(true);
+    expect(messageArray.includes('Second Factor login successful')).toBe(true);
   });
 });

@@ -10,7 +10,6 @@
 
 /**
  * Known errors that can occur during authentication.
- *
  */
 enum ErrorCode {
   BadRequest = 'BAD_REQUEST',
