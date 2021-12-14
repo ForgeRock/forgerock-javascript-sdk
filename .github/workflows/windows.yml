@@ -1,76 +1,48 @@
 name: ForgeRock Windows CI
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - develop
+      - master
+  pull_request:
+
+env:
+  NX_CLOUD_DISTRIBUTED_EXECUTION: true
 
 jobs:
-  install-deps-windows:
+  pr:
     runs-on: windows-latest
+    if: ${{ github.event_name == 'pull_request' }}
     steps:
       - uses: actions/checkout@v2
-      - name: Cache node modules
-        id: cache
-        uses: actions/cache@v2
-        if: ${{ !env.ACT }}
         with:
-          path: node_modules
-          key: cache-node-modules-${{ hashFiles('package-lock.json') }}
+          ref: ${{ github.event.pull_request.head.ref }}
+          repository: ${{github.event.pull_request.head.repo.full_name}}
+          fetch-depth: 0
+
       - uses: actions/setup-node@v2
         with:
           node-version: '14'
+          cache: 'npm'
+      
       - name: npm install
-        if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
         env:
           DEBUG: pw:install
           PLAYWRIGHT_BROWSERS_PATH: 0
           PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
 
-  distributed-task-windows:
-    runs-on: windows-latest
-    needs: install-deps-windows
-    strategy:
-      matrix:
-        target:
-          [
-            '"test --configuration=unit"',
-            'build',
-            '"test --configuration=integration"',
-            'e2e',
-          ]
-        jobIndex: [1, 2, 3, 4]
-    env:
-      jobCount: 4
-    steps:
-      - uses: actions/checkout@v2
+      - name: Derive appropriate SHAs for base and head for `nx affected` commands
+        uses: nrwl/nx-set-shas@v2
         with:
-          fetch-depth: 0
+          main-branch-name: 'develop'
 
-      - name: Setup custom host for sdkapp.example.com
-        if: ${{ matrix.target == 'e2e' }}
-        run: echo "127.0.0.1 sdkapp.example.com auth.example.com api.example.com user.example.com" >> C:\Windows\System32\drivers\etc\hosts #add to new line
-
-      - name: Cache node modules
-        uses: actions/cache@v2
-        with:
-          path: node_modules
-          key: cache-node-modules-${{ hashFiles('package-lock.json') }}
-
-      - name: Cache Nx
-        uses: actions/cache@v2
-        with:
-          path: node_modules/.cache/nx
-          key: cache-nx-${{ hashFiles('package-lock.json') }}-${{ matrix.target }}-${{ matrix.jobIndex }}-${{ github.sha }}
-          restore-keys: |
-            cache-nx-${{ hashFiles('package-lock.json') }}-${{ matrix.target }}-${{ matrix.jobIndex }}-
-            cache-nx-${{ hashFiles('package-lock.json') }}-
-
-      - run: git fetch --no-tags --prune --depth=5 origin develop
-        if: ${{ !env.ACT }}
-
-      - run: npx playwright install chromium firefox webkit
-        if: ${{ matrix.target == 'e2e' }}
-
-      - name: nx run-many:${{ matrix.target }}
-        run: node ./tools/scripts/run-many.js ${{ matrix.target }} ${{ matrix.jobIndex }} ${{ env.jobCount }}
+      - run: npx nx-cloud start-ci-run
+      - run: npx nx affected --target=build --parallel --max-parallel=3
+      - run: npx nx affected --target=test --parallel --max-parallel=2
+      - run: npx nx affected --target=test --configuration=integration --parallel --max-parallel=2
+      - run: npx nx affected --target=e2e  --parallel --max-parallel=2
+      - run: npx nx-cloud stop-all-agents
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
@@ -79,3 +51,31 @@ jobs:
           name: 'E2E Artifacts'
           path: test-results/
           retention-days: 5
+  agents:
+    runs-on: windows-latest
+    name: Agent Windows
+    strategy:
+      matrix:
+        agent: [1, 2, 3]
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          repository: ${{github.event.pull_request.head.repo.full_name}}
+          fetch-depth: 0
+
+
+
+
+        
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+          cache: 'npm'
+      - name: Setup custom host for sdkapp.example.com
+        run: echo "127.0.0.1 sdkapp.example.com auth.example.com api.example.com user.example.com" >> C:\Windows\System32\drivers\etc\hosts #add to new line
+      - run: npm ci
+        env:
+          PLAYWRIGHT_BROWSERS_PATH: 0
+      - name: Start Nx Agent ${{ matrix.agent }}
+        run: npx nx-cloud start-agent

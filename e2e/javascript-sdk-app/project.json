@@ -8,9 +8,11 @@
       "options": {
         "commands": [
           {
-            "command": "concurrently -s 'first' --kill-others npm:start:server npm:playwright-test"
+            "command": "concurrently -k \"npm run start:server\" \"playwright test\"",
+            "description": "run e2e setup"
           }
-        ]
+        ],
+        "parallel": true
       },
       "configurations": {
         "live": {
