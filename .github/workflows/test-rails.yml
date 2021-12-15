@@ -1,0 +1,22 @@
+name: "Regression Suite"
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - closed
+    branches:
+      - master
+jobs:
+  regression:
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Create TestRail testrun for PR
+        uses: luzlab/testrail-createTestrun-action@2
+        with:
+          testrail_token: ${{ secrets.TESTRAIL_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          testrail_user: "stoyan.petrov@forgerock.com"
+          testrail_URL: "https://forgerock.testrail.io/"
+          testrail_suite: 1
+          testrail_project: 1
