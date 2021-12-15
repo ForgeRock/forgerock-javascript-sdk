@@ -1,0 +1,44 @@
+apiVersion: v1alpha
+kind: playwright
+defaults:
+  mode: sauce
+sauce:
+  region: us-west-1
+  concurrency: 10 # Controls how many suites are executed at the same time.
+  metadata:
+    tags:
+      - e2e
+      - release team
+      - other tag
+    build: Release $CI_COMMIT_SHORT_SHA
+docker:
+  # Affects how test files are transferred to the docker container when using the docker mode.
+  fileTransfer: copy # Choose between mount|copy.
+playwright:
+  version: 1.17.1 # See https://docs.saucelabs.com/testrunner-toolkit for a list of supported versions.
+# Controls what files are available in the context of a test run (unless explicitly excluded by .sauceignore).
+rootDir: ./
+suites:
+  - name: "Firefox E2E Run" # Since the suite doesn't specify the `mode`, it'll inherit the mode specified via `defaults.mode` (see line number 3 and 4 of this config file).
+    platformName: "Windows 10" # Only relevant when running a test against the sauce cloud.
+    testMatch: ['tests/e2e/*.spec.js', 'tests/e2e/*.spec.ts']
+    params:
+      browserName: "firefox"
+  - name: "Chrome E2E Run" 
+    platformName: "Windows 10" # Only relevant when running a test against the sauce cloud.
+    testMatch: ['tests/e2e/*.spec.js', 'tests/e2e/*.spec.ts']
+    params:
+      browserName: "chromium"
+  - name: "Webkit E2E Run" 
+    platformName: "Windows 10" # Only relevant when running a test against the sauce cloud.
+    testMatch: ['tests/e2e/*.spec.js', 'tests/e2e/*.spec.ts']
+    params:
+      browserName: "webkit"
+
+# Controls what artifacts to fetch when the suite on Sauce Cloud has finished.
+# artifacts:
+#   download:
+#     when: always
+#     match:
+#       - console.log
+#     directory: ./artifacts/
