@@ -10,6 +10,26 @@ env:
   NX_CLOUD_DISTRIBUTED_EXECUTION: true
 
 jobs:
+  master:
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name != 'pull_request' }}
+    steps:
+      - uses: actions/checkout@v2
+        name: Checkout [master]
+        with:
+          fetch-depth: 0
+      - name: Derive appropriate SHAs for base and head for `nx affected` commands
+        uses: nrwl/nx-set-shas@v2
+      - uses: actions/setup-node@v2 
+        with: 
+          node-version: '14'
+          cache: 'npm'
+
+      - run: npm ci
+      - run: npx nx-cloud start-ci-run    
+      - run: npx nx affected --target=build --parallel --max-parallel=3
+      - run: npx nx affected --target=test --parallel --max-parallel=2
+      - run: npx nx-cloud stop-all-agents
   pr:
     runs-on: macos-latest
     if: ${{ github.event_name == 'pull_request' }}
@@ -44,7 +64,7 @@ jobs:
       - run: npx nx affected --target=lint --parallel --max-parallel=3
       - run: npx nx affected --target=test --parallel --max-parallel=2
       - run: npx nx affected --target=test --configuration=integration --parallel --max-parallel=2
-      - run: npx nx affected --target=e2e  --parallel --max-parallel=2
+      - run: npx nx affected --target=e2e  --parallel
       - run: npx nx-cloud stop-all-agents
 
       - name: Upload Artifacts
@@ -73,5 +93,9 @@ jobs:
       - run: npm ci
         env:
           PLAYWRIGHT_BROWSERS_PATH: 0
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
+
+      - run: npx playwright install chromium firefox webkit
+
       - name: Start Nx Agent ${{ matrix.agent }}
         run: npx nx-cloud start-agent

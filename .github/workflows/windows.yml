@@ -1,81 +1,77 @@
-name: ForgeRock Windows CI
-on:
-  push:
-    branches:
-      - develop
-      - master
-  pull_request:
+# Commenting out until bug fixed in set sha's
+# name: ForgeRock Windows CI
+# on:
+#   push:
+#     branches:
+#       - develop
+#       - master
+#   pull_request:
 
-env:
-  NX_CLOUD_DISTRIBUTED_EXECUTION: true
+# env:
+#   NX_CLOUD_DISTRIBUTED_EXECUTION: true
 
-jobs:
-  pr:
-    runs-on: windows-latest
-    if: ${{ github.event_name == 'pull_request' }}
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          ref: ${{ github.event.pull_request.head.ref }}
-          repository: ${{github.event.pull_request.head.repo.full_name}}
-          fetch-depth: 0
+# jobs:
+#   pr:
+#     runs-on: windows-latest
+#     if: ${{ github.event_name == 'pull_request' }}
+#     steps:
+#       - uses: actions/checkout@v2
+#         with:
+#           ref: ${{ github.event.pull_request.head.ref }}
+#           repository: ${{github.event.pull_request.head.repo.full_name}}
+#           fetch-depth: 0
 
-      - uses: actions/setup-node@v2
-        with:
-          node-version: '14'
-          cache: 'npm'
+#       - uses: actions/setup-node@v2
+#         with:
+#           node-version: '14'
+#           cache: 'npm'
       
-      - name: npm install
-        run: npm ci
-        env:
-          DEBUG: pw:install
-          PLAYWRIGHT_BROWSERS_PATH: 0
-          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
+#       - name: npm install
+#         run: npm ci
+#         env:
+#           DEBUG: pw:install
+#           PLAYWRIGHT_BROWSERS_PATH: 0
 
-      - name: Derive appropriate SHAs for base and head for `nx affected` commands
-        uses: nrwl/nx-set-shas@v2
-        with:
-          main-branch-name: 'develop'
+#       - name: Derive appropriate SHAs for base and head for `nx affected` commands
+#         uses: nrwl/nx-set-shas@v2
+#         with:
+#           main-branch-name: 'develop'
 
-      - run: npx nx-cloud start-ci-run
-      - run: npx nx affected --target=build --parallel --max-parallel=3
-      - run: npx nx affected --target=test --parallel --max-parallel=2
-      - run: npx nx affected --target=test --configuration=integration --parallel --max-parallel=2
-      - run: npx nx affected --target=e2e  --parallel --max-parallel=2
-      - run: npx nx-cloud stop-all-agents
+#       - run: npx nx-cloud start-ci-run
+#       - run: npx nx affected --target=build --parallel --max-parallel=3
+#       - run: npx nx affected --target=test --parallel --max-parallel=2
+#       - run: npx nx affected --target=test --configuration=integration --parallel --max-parallel=2
+#       - run: npx nx affected --target=e2e  --parallel --max-parallel=2
+#       - run: npx nx-cloud stop-all-agents
 
-      - name: Upload Artifacts
-        uses: actions/upload-artifact@v2
-        if: ${{ failure() || success() }}
-        with:
-          name: 'E2E Artifacts'
-          path: test-results/
-          retention-days: 5
-  agents:
-    runs-on: windows-latest
-    name: Agent Windows
-    strategy:
-      matrix:
-        agent: [1, 2, 3]
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          ref: ${{ github.event.pull_request.head.ref }}
-          repository: ${{github.event.pull_request.head.repo.full_name}}
-          fetch-depth: 0
-
-
-
-
+#       - name: Upload Artifacts
+#         uses: actions/upload-artifact@v2
+#         if: ${{ failure() || success() }}
+#         with:
+#           name: 'E2E Artifacts'
+#           path: test-results/
+#           retention-days: 5
+#   agents:
+#     runs-on: windows-latest
+#     name: Agent Windows
+#     strategy:
+#       matrix:
+#         agent: [1, 2, 3]
+#     steps:
+#       - uses: actions/checkout@v2
+#         with:
+#           ref: ${{ github.event.pull_request.head.ref }}
+#           repository: ${{github.event.pull_request.head.repo.full_name}}
+#           fetch-depth: 0
         
-      - uses: actions/setup-node@v2
-        with:
-          node-version: '14'
-          cache: 'npm'
-      - name: Setup custom host for sdkapp.example.com
-        run: echo "127.0.0.1 sdkapp.example.com auth.example.com api.example.com user.example.com" >> C:\Windows\System32\drivers\etc\hosts #add to new line
-      - run: npm ci
-        env:
-          PLAYWRIGHT_BROWSERS_PATH: 0
-      - name: Start Nx Agent ${{ matrix.agent }}
-        run: npx nx-cloud start-agent
+#       - uses: actions/setup-node@v2
+#         with:
+#           node-version: '14'
+#           cache: 'npm'
+#       - name: Setup custom host for sdkapp.example.com
+#         run: echo "127.0.0.1 sdkapp.example.com auth.example.com api.example.com user.example.com" >> C:\Windows\System32\drivers\etc\hosts #add to new line
+#       - run: npm ci
+#         env:
+#           PLAYWRIGHT_BROWSERS_PATH: 0
+#       - name: Start Nx Agent ${{ matrix.agent }}
+#         run: npx nx-cloud start-agent
