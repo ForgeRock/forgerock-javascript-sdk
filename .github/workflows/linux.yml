@@ -29,7 +29,12 @@ jobs:
     strategy:
       matrix:
         target:
-          ['"test --configuration=unit"', 'build', '"test --configuration=integration"', 'e2e']
+          [
+            '"test --configuration=unit"',
+            'build',
+            '"test --configuration=integration"',
+            'e2e',
+          ]
         jobIndex: [1, 2, 3, 4]
     env:
       jobCount: 4

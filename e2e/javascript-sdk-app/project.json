@@ -8,14 +8,24 @@
       "options": {
         "commands": [
           {
-            "command": "concurrently -k \"npm run start:server\" \"playwright test\" ",
-            "description": "run e2e setup"
+            "command": "concurrently -s 'first' --kill-others npm:start:server npm:playwright-test"
           }
-        ],
-        "parallel": true
+        ]
       },
       "configurations": {
-        "live": {}
+        "live": {
+          "commands": [
+            {
+              "command": "npm run start:server:live",
+              "description": "run api setup"
+            },
+            {
+              "command": "playwright test",
+              "description": "run e2e setup"
+            }
+          ]
+        },
+        "parallel": true
       }
     },
     "lint": {

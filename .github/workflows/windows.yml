@@ -22,6 +22,7 @@ jobs:
         env:
           DEBUG: pw:install
           PLAYWRIGHT_BROWSERS_PATH: 0
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 1
 
   distributed-task-windows:
     runs-on: windows-latest
@@ -29,7 +30,12 @@ jobs:
     strategy:
       matrix:
         target:
-          ['"test --configuration=unit"', 'build', '"test --configuration=integration"', 'e2e']
+          [
+            '"test --configuration=unit"',
+            'build',
+            '"test --configuration=integration"',
+            'e2e',
+          ]
         jobIndex: [1, 2, 3, 4]
     env:
       jobCount: 4
@@ -59,6 +65,9 @@ jobs:
 
       - run: git fetch --no-tags --prune --depth=5 origin develop
         if: ${{ !env.ACT }}
+
+      - run: npx playwright install chromium firefox webkit
+        if: ${{ matrix.target == 'e2e' }}
 
       - name: nx run-many:${{ matrix.target }}
         run: node ./tools/scripts/run-many.js ${{ matrix.target }} ${{ matrix.jobIndex }} ${{ env.jobCount }}

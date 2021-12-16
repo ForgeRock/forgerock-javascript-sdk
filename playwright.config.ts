@@ -2,8 +2,10 @@ import { PlaywrightTestConfig, devices } from '@playwright/test';
 
 const config: PlaywrightTestConfig = {
   forbidOnly: !!process.env.CI,
+  globalTeardown: './e2e/javascript-sdk-app/teardown',
   retries: process.env.CI ? 2 : 0,
   testDir: 'e2e/',
+  outputDir: 'test-results/',
   timeout: 30000,
   webServer: {
     command: 'nx run javascript-sdk-app:serve',

@@ -45,10 +45,15 @@ if (env.LIVE === 'true') {
     pw: '7fh9sj7*NP$%F6978',
   });
 }
+
 authRoutes(app);
 resourceRoutes(app);
 
 env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0;
-createServer({ key, cert }, app).listen(MOCK_PORT);
+const server = createServer({ key, cert }, app).listen(MOCK_PORT);
 
 console.log(`Listening to HTTPS on secure port: ${MOCK_PORT}`);
+
+process.on('SIGTERM', () => {
+  server.close(() => process.exit(0));
+});
