@@ -8,11 +8,10 @@
       "options": {
         "commands": [
           {
-            "command": "concurrently \"npm run start:server\" \"playwright test\" ",
+            "command": "concurrently -k \"npm run start:server\" \"playwright test\" ",
             "description": "run e2e setup"
           }
         ],
-        "readyWhen": "finished running test suite",
         "parallel": true
       },
       "configurations": {

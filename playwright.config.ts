@@ -1,7 +1,6 @@
 import { PlaywrightTestConfig, devices } from '@playwright/test';
 
 const config: PlaywrightTestConfig = {
-  globalTeardown: require.resolve('./e2e/javascript-sdk-app/global-teardown.ts'),
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
   testDir: 'e2e/',
