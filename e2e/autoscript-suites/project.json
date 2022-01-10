@@ -1,0 +1,43 @@
+{
+  "root": "e2e/autoscript-suites",
+  "sourceRoot": "e2e/autoscript-suites/src",
+  "projectType": "application",
+  "targets": {
+    "e2e": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "commands": [
+          {
+            "command": "concurrently --kill-others --success first  \"playwright test\" \"npm run start:server\"",
+            "description": "run e2e setup"
+          }
+        ],
+        "parallel": true
+      },
+      "configurations": {
+        "live": {
+          "commands": [
+            {
+              "command": "npm run start:server:live",
+              "description": "run api setup"
+            },
+            {
+              "command": "playwright test",
+              "description": "run e2e setup"
+            }
+          ]
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["e2e/autoscript-suites/**/*.{js,ts}"],
+        "ignorePath": ".gitignore"
+      }
+    }
+  },
+  "tags": [],
+  "implicitDependencies": ["autoscript-apps"]
+}

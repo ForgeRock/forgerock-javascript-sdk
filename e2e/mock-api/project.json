@@ -1,0 +1,56 @@
+{
+  "root": "e2e/mock-api",
+  "sourceRoot": "e2e/mock-api/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/node:build",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/e2e/mock-api",
+        "main": "e2e/mock-api/src/index.mjs",
+        "tsConfig": "e2e/mock-api/tsconfig.app.json",
+        "assets": ["e2e/mock-api/src/assets"]
+      },
+      "configurations": {
+        "production": {
+          "optimization": true,
+          "extractLicenses": true,
+          "inspect": false,
+          "fileReplacements": [
+            {
+              "replace": "e2e/mock-api/src/environments/environment.ts",
+              "with": "e2e/mock-api/src/environments/environment.prod.ts"
+            }
+          ]
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nrwl/node:execute",
+      "options": {
+        "buildTarget": "mock-api:build",
+        "watch": true
+      },
+      "configurations": {
+        "live": {}
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["e2e/mock-api/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/e2e/mock-api"],
+      "options": {
+        "jestConfig": "e2e/mock-api/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

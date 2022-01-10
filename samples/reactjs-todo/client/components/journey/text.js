@@ -31,8 +31,7 @@ export default function Text({ callback, inputName }) {
    ************************************************************************* */
   if (DEBUGGER) debugger;
   const existingValue = callback.getInputValue();
-  const failedPolicies =
-    callback.getFailedPolicies && callback.getFailedPolicies();
+  const failedPolicies = callback.getFailedPolicies && callback.getFailedPolicies();
   const policies = callback.getPolicies && callback.getPolicies();
   const textInputLabel = callback.getPrompt();
   const stringAttributeName = callback.getName && callback.getName();

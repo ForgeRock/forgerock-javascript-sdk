@@ -22,20 +22,14 @@ import VerifiedIcon from '../icons/verified-icon';
 export default function Alert({ message, type }) {
   if (type === 'error') {
     return (
-      <p
-        className="alert alert-danger d-flex align-items-center mt-1"
-        role="alert"
-      >
+      <p className="alert alert-danger d-flex align-items-center mt-1" role="alert">
         <AlertIcon classes="cstm_alert-icon col-1" />
         <span className="ps-2">{message}</span>
       </p>
     );
   } else if (type === 'success') {
     return (
-      <p
-        className="alert alert-success d-flex align-items-center mt-5"
-        role="alert"
-      >
+      <p className="alert alert-success d-flex align-items-center mt-5" role="alert">
         <VerifiedIcon classes="cstm_verified-alert-icon" size="36px" />
         <span className="ps-2">{message}</span>
       </p>

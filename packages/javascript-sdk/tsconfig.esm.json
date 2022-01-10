@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    "outDir": "lib-esm",
+    "declaration": true,
+    "baseUrl": "./src",
+    "lib": ["ES2015", "dom"],
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitAny": false,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "sourceMap": true,
+    "skipLibCheck": true,
+    "strict": false,
+    "module": "ES2015",
+    "target": "ES2015"
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": [
+    "jest.env.config.ts",
+    "tests/",
+    "./package.json",
+    "**/*.spec.ts",
+    "**/*.test.ts",
+    "lib-esm",
+    "lib",
+    "bundles",
+    "dist/"
+  ]
+}

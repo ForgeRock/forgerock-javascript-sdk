@@ -16,17 +16,6 @@ This sample code is provided "as is" and is not a supported product of ForgeRock
 
 Once you have the 5 requirements above met, we can build the project.
 
-### Security Certificates
-
-This project requires HTTPS (secure protocol) which means security (SSL/TLS) certificates are necessary. For local development, it's common to generate your own self-signed certificates. You're free to use any method to do this, but if you need assistance in generating your own certs, the following can be helpful:
-
-- Using [this utility (`mkcert`) can help simplify the process of creating trusted certs](https://github.com/FiloSottile/mkcert)
-- After following `mkcert`'s installation guide and simple example of creating certs, you should have two files: `example.com+5.pem` & `example.com+5-key.pem`
-
-  (Ensure these two files are at the root of this project; you can name them whatever you want since you configure them in your `.env` file)
-
-> **WARNING: Self-signed certificates or certificates not from an industry-recognized, certificate authority (CA) should never be used in production.**
-
 ### Setup Your AM Instance
 
 #### Configure CORS
@@ -65,31 +54,27 @@ Change the name of `.env.example` to `.env` and replace the bracketed values (e.
 Example with annotations:
 
 ```text
-AM_URL=https://example-am-instance.forgerock.com/am (include the /am)
-APP_URL=https://react.example.com:8443 (your SPA's URL)
-API_URL=https://api.example.com:9443 (your resource API server's URL)
+AM_URL=<<<URL to your AM instance>>>
+APP_URL=https://react.example.com:8443
+API_URL=https://api.example.com:9443
 DEBUGGER_OFF=false
-DEVELOPMENT=true
-JOURNEY_LOGIN=Login (name of journey/tree for Login)
-JOURNEY_REGISTER=Registration (name of journey/tree for Register)
-SEC_KEY_FILE=key-file.pem
-SEC_CERT_FILE=cer-filet.pem
-REALM_PATH=alpha
-REST_OAUTH_CLIENT=sample-app-server (name of private OAuth 2.0 client/application)
-REST_OAUTH_SECRET=secret (the secret for the private OAuth 2.0 client/application)
-WEB_OAUTH_CLIENT=example-react-app (the name of the public OAuth 2.0 client/application)
+JOURNEY_LOGIN=Login
+JOURNEY_REGISTER=Registration
+REALM_PATH=<<<Realm path of AM>>>
+WEB_OAUTH_CLIENT=<<<Your Web OAuth client name/ID>>>
 ```
 
 ### Installing Dependencies and Run Build
 
-**Run from root of repo**: since this sample app uses npm's workspaces, we recommend running the npm commands from the root of the repo. You can run this sample app's scripts from the root with the `-w` option to specify this sample app.
+**Run from root of repo**: since this sample app uses npm's workspaces, we recommend running the npm commands from the root of the repo.
 
 ```sh
 # Install all dependencies (no need to pass the -w option)
 npm install
 
-# Build this sample app project
-npm run build -w reactjs-todo
+# run sample app project
+# only if you want to see the app build, the serve command will do this for you
+npx nx run reactjs-todo:build:dev
 ```
 
 ### Update Your `/etc/hosts` File
@@ -112,12 +97,12 @@ Now, run the below commands to start the processes needed for building the appli
 ```sh
 # In one terminal window, run the following watch command
 # This "watches" the client source files for changes and rebuilds when needed
-npm run watch -w reactjs-todo
+npx nx run reactjs-todo:serve
 ```
 
 ```sh
 # In another terminal window, run the dev servers for both client and server
-npm run start -w reactjs-todo
+npx nx run todo-api:serve
 ```
 
 Now, you should be able to visit `https://react.example.com:8443`, which is your web app or client (the Relying Party in OAuth terms). This client will make requests to your AM instance, (the Authorization Server in OAuth terms), which will be running on whatever domain you set, and `https://api.example.com:9443` as the REST API for your todos (the Resource Server).

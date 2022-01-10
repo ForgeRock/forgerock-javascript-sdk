@@ -20,11 +20,7 @@ import { AppContext } from '../../global-state';
  * @param {Function} props.editTodo - The function to add the edited todo back to the collection
  * @returns {Object} - React component object
  */
-export default function Edit({
-  selectedEditTodo,
-  setSelectedEditTodo,
-  editTodo,
-}) {
+export default function Edit({ selectedEditTodo, setSelectedEditTodo, editTodo }) {
   const [state] = useContext(AppContext);
   const textInput = useRef(null);
 
@@ -57,9 +53,7 @@ export default function Edit({
           className={`modal-content  ${state.theme.cardBgClass} ${state.theme.textClass} ${state.theme.borderClass}`}
         >
           <div className={`modal-header ${state.theme.borderClass}`}>
-            <h4 className={`modal-title ${state.theme.textClass}`}>
-              Edit Todo
-            </h4>
+            <h4 className={`modal-title ${state.theme.textClass}`}>Edit Todo</h4>
           </div>
           <form onSubmit={(e) => submit(e, 'form')} className="modal-body">
             <div className="cstm_todos-input cstm_form-floating form-floating flex-grow-1">

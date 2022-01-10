@@ -41,9 +41,7 @@ export default function Register() {
             action={{ type: 'register' }}
             followUp={initUserInDb}
             topMessage={
-              <p
-                className={`text-center text-secondary pb-2 ${state.theme.textClass}`}
-              >
+              <p className={`text-center text-secondary pb-2 ${state.theme.textClass}`}>
                 Already have an account? <Link to="/login">Sign in here!</Link>
               </p>
             }

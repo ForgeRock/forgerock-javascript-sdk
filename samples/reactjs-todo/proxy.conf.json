@@ -1,0 +1,6 @@
+{
+  "/api": {
+    "target": "https://api.example.com:9443",
+    "secure": true
+  }
+}

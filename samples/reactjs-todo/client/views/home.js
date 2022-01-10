@@ -29,22 +29,16 @@ export default function Home() {
 
   const createAccountText = !state.isAuthenticated ? (
     <Fragment>
-      <h2 className={`fs-4 fw-normal pt-3 pb-1 ${state.theme.textClass}`}>
-        Getting started
-      </h2>
+      <h2 className={`fs-4 fw-normal pt-3 pb-1 ${state.theme.textClass}`}>Getting started</h2>
       <p>
-        To use this app, <Link to="/register">create an account now</Link>!
-        Already have an account? <Link to="/login">Sign in</Link> to get things
-        done!
+        To use this app, <Link to="/register">create an account now</Link>! Already have an account?{' '}
+        <Link to="/login">Sign in</Link> to get things done!
       </p>
     </Fragment>
   ) : null;
 
   const LoginAlert = state.isAuthenticated ? (
-    <p
-      className="alert alert-success d-flex align-items-center mt-5"
-      role="alert"
-    >
+    <p className="alert alert-success d-flex align-items-center mt-5" role="alert">
       <VerifiedIcon classes="cstm_verified-alert-icon" size="36px" />
       <span className="ps-2">
         Welcome back, {state.username}!{' '}
@@ -63,14 +57,9 @@ export default function Home() {
         Protect with ForgeRock; Develop with React.js
       </h1>
 
-      <p
-        className={`cstm_subhead-text fs-3 mb-4 fw-bold ${state.theme.textMutedClass}`}
-      >
+      <p className={`cstm_subhead-text fs-3 mb-4 fw-bold ${state.theme.textMutedClass}`}>
         Learn how to develop ForgeRock protected, web apps with the{' '}
-        <a
-          className={`${state.theme.textMutedClass}`}
-          href="https://reactjs.org/"
-        >
+        <a className={`${state.theme.textMutedClass}`} href="https://reactjs.org/">
           React.js
         </a>{' '}
         library and our{' '}
@@ -82,20 +71,16 @@ export default function Home() {
         </a>
         .
       </p>
-      <h2 className={`fs-4 fw-normal pt-3 pb-1 ${state.theme.textClass}`}>
-        About this project
-      </h2>
+      <h2 className={`fs-4 fw-normal pt-3 pb-1 ${state.theme.textClass}`}>About this project</h2>
       <p>
-        The purpose of this sample web app is to demonstrate how the ForgeRock
-        JavaScript SDK is implemented within a fully-functional application
-        using a popular framework. The source code for{' '}
+        The purpose of this sample web app is to demonstrate how the ForgeRock JavaScript SDK is
+        implemented within a fully-functional application using a popular framework. The source code
+        for{' '}
         <a href="https://github.com/ForgeRock/forgerock-javascript-sdk/tree/master/samples/reactjs-todos">
           this project can be found on Github
         </a>{' '}
         and run locally for experimentation. For more on our SDKs,{' '}
-        <a href="https://sdks.forgerock.com/">
-          you can find our official SDK documentation here.
-        </a>
+        <a href="https://sdks.forgerock.com/">you can find our official SDK documentation here.</a>
       </p>
       {createAccountText}
     </div>

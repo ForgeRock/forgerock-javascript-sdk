@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "outDir": "lib",
+    "baseUrl": "./src",
+    "declaration": true,
+    "lib": ["ES2015", "dom"],
+    "moduleResolution": "node",
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitAny": false,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "strict": false,
+    "target": "ES5",
+    "module": "CommonJS"
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["tests/", "**/*.spec.ts", "**/*.test.ts", "./package.json"]
+}

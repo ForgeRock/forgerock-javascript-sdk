@@ -23,13 +23,16 @@ Check all that apply
 
 - [ ] Acceptance criteria is met.
 - [ ] All tasks listed in the user story have been completed.
-- [ ] Coded to standards. - [ ] Code peer-reviewed. - [ ] Ensure backward compatibility (special attention).
+- [ ] Coded to standards.
+- [ ] Code peer-reviewed.
+- [ ] Ensure backward compatibility (special attention).
 - [ ] API reference docs is updated.
 - [ ] Unit tests are written.
 - [ ] Integration tests are written.
 - [ ] e2e tests are written.
 - [ ] CI build passing on the feature branch.
-- [ ] Functional spec is written/updated - [ ] contains example code snippets.
+- [ ] Functional spec is written/updated
+- [ ] contains example code snippets.
 - [ ] Change log updated.
 - [ ] Documentation story is created and tracked.
 - [ ] UI is completed or ticket is created.

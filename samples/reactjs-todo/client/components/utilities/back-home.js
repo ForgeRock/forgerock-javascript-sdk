@@ -16,8 +16,7 @@ import LeftArrowIcon from '../icons/left-arrow-icon';
 
 export default function BackHome() {
   const [state] = useContext(AppContext);
-  const bootstrapClasses =
-    'btn btn-sm text-bold text-decoration-none d-inline-block fs-6 my-2';
+  const bootstrapClasses = 'btn btn-sm text-bold text-decoration-none d-inline-block fs-6 my-2';
 
   return (
     <Link
