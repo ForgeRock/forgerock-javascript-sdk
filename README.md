@@ -1,5 +1,5 @@
 [![npm (scoped)](https://img.shields.io/npm/v/@forgerock/javascript-sdk?color=%23f46200&label=Version&style=flat-square)](CHANGELOG.md)
-[![Build Status](https://jenkins.petrov.ca/buildStatus/icon?job=01-JS-Core-SDK-BUILD&style=flat-square)](https://jenkins.petrov.ca/job/01-JS-Core-SDK-BUILD/)
+[![Develop CI Status](https://github.com/ForgeRock/forgerock-javascript-sdk/actions/workflows/macos.yml/badge.svg)](https://github.com/ForgeRock/forgerock-javascript-sdk/actions/workflows/macos.yml)
 
 <p align="center">
   <a href="https://github.com/ForgeRock">
