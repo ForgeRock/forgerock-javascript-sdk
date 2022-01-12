@@ -1,5 +1,26 @@
 # Changelog
 
+## [3.2.0] - 2022-1-31
+
+### Fixed
+
+- `/authorize` call not honoring middleware overwrites
+- expand middleware passing to call-site so that it overwrites middleware set in `config`
+
+### Added:
+
+- Refactor of end-to-end test suite to use playwright test runner instead of jest
+- Upgrade rxjs version from 6 to 7 in `autoscript` files for e2e tests
+- Remove SSL certificate dependency in CI
+- Move to using Github Actions for CI
+- Convert to monorepo using `nx`
+- Add react sample app to the repo
+- Remove certificate dependency across all sample apps
+- Replaced development bundle with a rollup production bundle in javascript-sdk package
+- Update Readme's in all packages / samples
+- Added a CONTRIBUTING.MD file
+- Added a pull request template for contributors
+
 ## [3.0.0] - 2021-6-24
 
 ### Added
@@ -7,8 +28,8 @@
 - "Native" Social Login callbacks for both the original AM nodes in 6.5 and the new IDM nodes in 7.0
 - SDK Social Login feature officially supports Apple, Facebook and Google
 - New `FRAuth` methods for handing redirection to provider and resuming an authentication journey
-    - `FRAuth.redirect` for redirecting to an Identity Provider for authentication
-    - `FRAuth.resume` supports both return from an IdP and returning from Email Suspend node
+  - `FRAuth.redirect` for redirecting to an Identity Provider for authentication
+  - `FRAuth.resume` supports both return from an IdP and returning from Email Suspend node
 - New `FRAuth.start` method that aliases `FRAuth.next` to align native mobile SDKs
 - E2E test pages will now follow your OS's dark mode setting
 
