@@ -10,24 +10,35 @@ env:
   NX_CLOUD_DISTRIBUTED_EXECUTION: true
 
 jobs:
-  main:
+  merge:
     runs-on: ubuntu-latest
     if: ${{ github.event_name != 'pull_request' }}
     steps:
       - uses: actions/checkout@v2
-        name: Checkout [main]
+        name: Checkout [develop]
         with:
           fetch-depth: 0
       - name: Derive appropriate SHAs for base and head for `nx affected` commands
         uses: nrwl/nx-set-shas@v2
-      - uses: actions/setup-node@v1
+      - uses: actions/setup-node@v2
         with:
-          node-version: '14'
+          node-version: '16.13.1'
+          cache: 'npm'
+          cache-dependency-path: '**/package-lock.json'
       - run: npm install
       - run: npx nx-cloud start-ci-run
       - run: npx nx affected --target=build --parallel --max-parallel=3
       - run: npx nx affected --target=test --parallel --max-parallel=2
       - run: npx nx-cloud stop-all-agents
+
+      - name: Send Slack Notification
+        id: slack
+        uses: slackapi/slack-github-action@v1.17.0
+        with:
+          channel-id: 'C02TUQX5GBE'
+          slack-message: "GitHub build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}"
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
   pr:
     runs-on: macos-latest
     if: ${{ github.event_name == 'pull_request' }}
@@ -77,6 +88,26 @@ jobs:
           name: 'E2E Artifacts'
           path: ${{ env.GITHUB_WORKSPACE }}/test-results
           retention-days: 5
+      - name: Send Slack Notification
+        id: slack
+        uses: slackapi/slack-github-action@v1.16.0
+        with:
+          channel-id: 'C02TUQX5GBE'
+          payload: |
+            {
+              "text": "${{ github.event.pull_request.title }} build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "GitHub Action build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}"
+                  }
+                }
+              ]
+            }
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
   agents:
     runs-on: macos-latest
     name: Agent Mac
