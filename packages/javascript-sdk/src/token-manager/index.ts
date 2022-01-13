@@ -74,7 +74,6 @@ abstract class TokenManager {
      */
     try {
       tokens = await TokenStorage.get();
-      console.log('here?', tokens);
     } catch (error) {
       console.info('No stored tokens available', error);
     }
