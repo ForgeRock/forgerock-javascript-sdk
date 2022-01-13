@@ -37,8 +37,8 @@ function middlewareWrapper(
     const mwareCopy = middleware.map((fn) => fn);
 
     function iterator(): RequestObj {
-      const next = mwareCopy.shift();
-      next && next(request, actionCopy, iterator);
+      const nextMiddlewareToBeCalled = mwareCopy.shift();
+      nextMiddlewareToBeCalled && nextMiddlewareToBeCalled(request, actionCopy, iterator);
       return request;
     }
 
