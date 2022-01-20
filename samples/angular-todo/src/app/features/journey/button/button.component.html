@@ -1,0 +1,22 @@
+<!--
+angular-todo-prototype
+
+button.component.html
+
+Copyright (c) 2021 ForgeRock. All rights reserved.
+This software may be modified and distributed under the terms
+of the MIT license. See the LICENSE file for details.
+-->
+
+<button type="submit" class="btn btn-primary w-100" [disabled]="submittingForm ? 'disabled' : null">
+  <!--
+    Render a small spinner during submission calls
+  -->
+  <span
+    *ngIf="submittingForm"
+    class="spinner-border spinner-border-sm"
+    role="status"
+    aria-hidden="true"
+  ></span>
+  <span> {{ buttonText }}</span>
+</button>

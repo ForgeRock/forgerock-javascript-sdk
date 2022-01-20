@@ -35,9 +35,7 @@ export default function Login() {
           <Form
             action={{ type: 'login' }}
             bottomMessage={
-              <p
-                className={`text-center text-secondary p-3 ${state.theme.textClass}`}
-              >
+              <p className={`text-center text-secondary p-3 ${state.theme.textClass}`}>
                 Don’t have an account? <Link to="/register">Sign up here!</Link>
               </p>
             }
