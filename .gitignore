@@ -39,9 +39,10 @@ samples/_static/js/*.js*
 samples/_static/js/*
 samples/*/public/app.*
 samples/*/todos
+!samples/angular-todo/*/todos
 samples/*/users
-todos/
-users/
+./todos/
+./users/
 
 # Environment files
 .env

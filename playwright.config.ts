@@ -2,7 +2,6 @@ import { PlaywrightTestConfig, devices } from '@playwright/test';
 
 const config: PlaywrightTestConfig = {
   forbidOnly: !!process.env.CI,
-  globalTeardown: './e2e/autoscript-suites/teardown',
   workers: process.env.CI ? 2 : 4,
   retries: process.env.CI ? 2 : 0,
   testDir: 'e2e',

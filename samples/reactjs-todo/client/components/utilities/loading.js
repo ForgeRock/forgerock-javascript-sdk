@@ -25,14 +25,9 @@ export default function Loading({ classes, message }) {
     <div className="container">
       <p className={classes}>
         <span className="d-flex justify-content-center my-2">
-          <span
-            className="cstm_loading-spinner spinner-border text-primary"
-            role="status"
-          ></span>
+          <span className="cstm_loading-spinner spinner-border text-primary" role="status"></span>
         </span>
-        <span
-          className={`d-flex justify-content-center p-3 fs-5 ${state.theme.textClass}`}
-        >
+        <span className={`d-flex justify-content-center p-3 fs-5 ${state.theme.textClass}`}>
           {message}
         </span>
       </p>

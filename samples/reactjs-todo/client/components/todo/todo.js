@@ -21,12 +21,7 @@ import TodoIcon from '../icons/todo-icon';
  * @param {Object} props.todo - The todo object passed from the parent component
  * @returns {Object} - React JSX view
  */
-export default function Todo({
-  completeTodo,
-  setSelectedDeleteTodo,
-  setSelectedEditTodo,
-  item,
-}) {
+export default function Todo({ completeTodo, setSelectedDeleteTodo, setSelectedEditTodo, item }) {
   const [state] = useContext(AppContext);
 
   /**
@@ -58,11 +53,7 @@ export default function Todo({
             }}
           />
           <label htmlFor={todo._id} className={todoClasses}>
-            <TodoIcon
-              classes="me-2 col-1"
-              completed={todo.completed}
-              size="36px"
-            />
+            <TodoIcon classes="me-2 col-1" completed={todo.completed} size="36px" />
             {todo.title}
           </label>
         </div>

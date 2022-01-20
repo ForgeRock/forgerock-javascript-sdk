@@ -24,9 +24,8 @@ export default function Footer() {
       <small
         className={`border-top d-block mt-5 py-5 ${state.theme.textClass} ${state.theme.borderHighContrastClass}`}
       >
-        The React name and logomark are properties of{' '}
-        <a href="https://reactjs.org">Facebook</a>, and their use herein is for
-        learning and illustrative purposes only.
+        The React name and logomark are properties of <a href="https://reactjs.org">Facebook</a>,
+        and their use herein is for learning and illustrative purposes only.
       </small>
     </div>
   );

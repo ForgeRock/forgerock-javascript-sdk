@@ -7,6 +7,7 @@
  * This software may be modified and distributed under the terms
  * of the MIT license. See the LICENSE file for details.
  */
+// eslint-disable-next-line no-unused-vars
 import { API_URL, DEBUGGER } from '../constants';
 
 /**

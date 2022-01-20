@@ -1,0 +1,167 @@
+<!--
+angular-todo-prototype
+
+todos.component.html
+
+Copyright (c) 2021 ForgeRock. All rights reserved.
+This software may be modified and distributed under the terms
+of the MIT license. See the LICENSE file for details.
+-->
+
+<app-header></app-header>
+<div class="cstm_container container-fluid">
+  <h1 class="mt-5">Your Todos</h1>
+  <p class="fs-6 text-muted">Create and manage your todos.</p>
+
+  <div class="card shadow-sm mb-5">
+    <!--
+      Allow the user to easily create a new Todo
+    -->
+    <form (ngSubmit)="create(newTodo)" #newTodoForm="ngForm" class="p-3 d-flex" ngNativeValidate>
+      <div class="cstm_todos-input cstm_form-floating form-floating flex-grow-1">
+        <input
+          id="newTodo"
+          type="text"
+          class="cstm_form-control form-control bg-transparent"
+          placeholder="What needs doing?"
+          required=""
+          [(ngModel)]="newTodo.title"
+          name="title"
+        />
+        <label for="newTodo">What needs doing?</label>
+      </div>
+      <button type="submit" class="btn btn-primary ms-2">Create</button>
+    </form>
+
+    <!--
+      Display list of existing Todos
+    -->
+    <ng-container [ngTemplateOutlet]="todos.length > 0 ? todolist : empty">
+      <ng-template #todolist>
+        <ul class="list-group list-group-flush">
+          <!--
+            For each Todo observe their outputs for completed, edit or delete events.
+          -->
+          <app-todo
+            *ngFor="let todo of todos"
+            [todo]="todo"
+            (completed)="complete(todo)"
+            (edit)="setEditTodo(todo)"
+            (delete)="setDeleteTodo(todo)"
+          ></app-todo>
+        </ul>
+
+        <!--
+          If a child Todo component has indicated that it is ready for editing, display a modal allowing the user to edit and submit or cancel.
+          This is triggered from the Todo component using the modal ID.
+        -->
+        <div
+          class="modal fade"
+          data-bs-backdrop="static"
+          id="editModal"
+          tabIndex="-1"
+          aria-modal="true"
+          role="dialog"
+        >
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h4 class="modal-title">Edit Todo</h4>
+              </div>
+              <form class="modal-body" (ngSubmit)="update(editTodo)" *ngIf="editTodo">
+                <div class="cstm_todos-input cstm_form-floating form-floating flex-grow-1">
+                  <input
+                    id="editTodo"
+                    type="text"
+                    class="cstm_form-control form-control bg-transparent"
+                    [defaultValue]="editTodo.title"
+                    [(ngModel)]="editTodo.title"
+                    required="required"
+                  />
+                  <label htmlFor="newTodo">Update todo text</label>
+                </div>
+              </form>
+              <div class="modal-footer" *ngIf="editTodo">
+                <button
+                  id="closeEditModalBtn"
+                  type="button"
+                  data-bs-toggle="modal"
+                  data-bs-target="#editModal"
+                  class="btn btn-secondary"
+                >
+                  Close
+                </button>
+                <button
+                  type="button"
+                  data-bs-toggle="modal"
+                  data-bs-target="#editModal"
+                  class="btn btn-primary"
+                  (click)="update(editTodo)"
+                >
+                  Update Todo
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!--
+          If a child Todo component has indicated that it is ready for deletion, display a modal asking for confirmation that they meant to do this.
+          This is triggered from the Todo component using the modal ID.
+        -->
+        <div
+          class="modal fade"
+          data-bs-backdrop="static"
+          id="deleteModal"
+          tabIndex="-1"
+          aria-modal="true"
+          role="dialog"
+        >
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-body pt-4 px-4">
+                <p>Are you sure you want to delete this todo?</p>
+              </div>
+              <div class="modal-footer p-3">
+                <button
+                  type="button"
+                  data-bs-toggle="modal"
+                  data-bs-target="#deleteModal"
+                  class="btn btn-secondary"
+                >
+                  Close
+                </button>
+                <button
+                  *ngIf="deleteTodo"
+                  type="button"
+                  data-bs-toggle="modal"
+                  data-bs-target="#deleteModal"
+                  class="btn btn-danger"
+                  (click)="delete(deleteTodo)"
+                >
+                  Delete Todo
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+
+      <!--
+        No Todos to show
+      -->
+      <ng-template #empty>
+        <ul class="list-group list-group-flush mb-1">
+          <li class="cstm_todo-item list-group-item list-group-item-action p-0">
+            <div class="row">
+              <p class="col d-flex align-items-center fs-5 text-muted w-100 ms-3 p-3">
+                No todos yet. Create one above!
+              </p>
+            </div>
+          </li>
+        </ul>
+      </ng-template>
+    </ng-container>
+  </div>
+</div>
+<app-footer></app-footer>
