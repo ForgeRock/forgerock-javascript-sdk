@@ -1,0 +1,66 @@
+<!--
+angular-todo-prototype
+
+form.component.html
+
+Copyright (c) 2021 ForgeRock. All rights reserved.
+This software may be modified and distributed under the terms
+of the MIT license. See the LICENSE file for details.
+-->
+
+<!--
+  Render conditions for presenting appropriate views to user.
+  First, we need to handle no "step", which means we are waiting for the initial response from AM for authentication.
+  Once we have a step, we then need to ensure we don't already have a success or failure. If we have a step but don't have a success or failure, we will likely have callbacks that we will need to present to the user in their render component form.
+-->
+<ng-container
+              [ngTemplateOutlet]="
+    success
+      ? successMessage
+      : failure
+      ? failureMessage
+      : step
+      ? callbacks
+      : loading
+  ">
+  <ng-template #loading>
+    <!--
+      Since there is no step information we need to call AM to retrieve the instructions for rendering the login form.
+    -->
+    <app-loading [message]="'Checking your session ...'"></app-loading>
+  </ng-template>
+
+  <ng-template #successMessage>
+    <app-loading [message]="'Success! Redirecting ...'"></app-loading>
+  </ng-template>
+
+  <ng-template #failureMessage>
+    <app-alert [message]="failure?.getMessage()" [type]="'error'"></app-alert>
+  </ng-template>
+
+  <ng-template #callbacks>
+    <!--
+     The step to render has callbacks, so we need to collect additional data from user. Show a form for the callbacks in this step.
+    -->
+    <div>
+      <h1 class="text-center fs-2 mb-3" *ngIf="title">{{ title }}</h1>
+      <div id="callbacks">
+        <form #callbackForm (ngSubmit)="nextStep(step)" ngNativeValidate class="cstm_form">
+          <div *ngFor="let callback of step?.callbacks" v-bind:key="callback.payload._id">
+            <container-element [ngSwitch]="callback.getType()">
+              <app-text *ngSwitchCase="'NameCallback'" [callback]="$any(callback)" [name]="callback?.payload?.input?.[0]?.name" (updatedCallback)="$any(callback).setName($event)">
+              </app-text>
+
+              <app-password *ngSwitchCase="'PasswordCallback'" [callback]="$any(callback)" [name]="callback?.payload?.input?.[0]?.name" (updatedCallback)="$any(callback).setPassword($event)">
+              </app-password>
+
+              <app-unknown *ngSwitchDefault [callback]="callback"></app-unknown>
+            </container-element>
+          </div>
+          <app-button [buttonText]="buttonText" [submittingForm]="submittingForm">
+          </app-button>
+        </form>
+      </div>
+    </div>
+  </ng-template>
+</ng-container>
