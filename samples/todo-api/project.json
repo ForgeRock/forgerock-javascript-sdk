@@ -1,0 +1,55 @@
+{
+  "root": "samples/todo-api",
+  "sourceRoot": "samples/todo-api/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/node:build",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/samples/todo-api",
+        "generatePackageJson": true,
+        "main": "samples/todo-api/src/index.js",
+        "tsConfig": "samples/todo-api/tsconfig.app.json",
+        "assets": ["samples/todo-api/src/assets"]
+      },
+      "configurations": {
+        "production": {
+          "optimization": true,
+          "generatePackageJson": true,
+          "extractLicenses": true,
+          "inspect": false,
+          "fileReplacements": [
+            {
+              "replace": "samples/todo-api/src/environments/environment.ts",
+              "with": "samples/todo-api/src/environments/environment.prod.ts"
+            }
+          ]
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nrwl/node:execute",
+      "options": {
+        "buildTarget": "todo-api:build",
+        "watch": true
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["samples/todo-api/**/*.js", "samples/todo-api/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/samples/todo-api"],
+      "options": {
+        "jestConfig": "samples/todo-api/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

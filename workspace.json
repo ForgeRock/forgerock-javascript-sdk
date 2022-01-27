@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "projects": {
+    "autoscript-apps": "e2e/autoscript-apps",
+    "autoscript-suites": "e2e/autoscript-suites",
+    "javascript-sdk": "packages/javascript-sdk",
+    "mock-api": "e2e/mock-api",
+    "reactjs-todo": "samples/reactjs-todo",
+    "todo-api": "samples/todo-api"
+  }
+}

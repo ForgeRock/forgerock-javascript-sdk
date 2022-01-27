@@ -1,0 +1,77 @@
+{
+  "root": "packages/javascript-sdk",
+  "sourceRoot": "packages/javascript-sdk/src",
+  "projectType": "library",
+  "targets": {
+    "tsc": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "tsc --project packages/javascript-sdk/tsconfig.esm.json"
+      },
+      "configurations": {
+        "cjs": {
+          "command": "tsc --project packages/javascript-sdk/tsconfig.cjs.json"
+        }
+      }
+    },
+    "build": {
+      "executor": "@nrwl/web:rollup",
+      "options": {
+        "compiler": "babel",
+        "entryFile": "packages/javascript-sdk/src/index.ts",
+        "outputPath": "samples/_static/js",
+        "deleteOutputPath": true,
+        "project": "packages/javascript-sdk/package.json",
+        "tsConfig": "packages/javascript-sdk/tsconfig.lib.json",
+        "cwd": "packages/javascript-sdk",
+        "parallel": true,
+        "rollupConfig": "packages/javascript-sdk/rollup.config.js"
+      },
+      "outputs": ["{options.outputPath}"]
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/javascript-sdk/**/*.ts"],
+        "ignorePath": ".gitignore"
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/packages/javascript-sdk"],
+      "options": {
+        "jestConfig": "packages/javascript-sdk/jest.unit.config.js",
+        "passWithNoTests": true
+      },
+      "configurations": {
+        "unit": {},
+        "integration": {
+          "jestConfig": "packages/javascript-sdk/jest.integration.config.js",
+          "passWithNoTests": true
+        }
+      }
+    },
+    "deploy": {
+      "executor": "ngx-deploy-npm:deploy",
+      "options": {
+        "access": "public",
+        "noBuild": true,
+        "dryRun": true
+      },
+      "configurations": {
+        "alpha": {
+          "tag": "alpha",
+          "access": "public",
+          "dryRun": true
+        },
+        "beta": {
+          "tag": "alpha",
+          "access": "public",
+          "dryRun": true
+        }
+      }
+    }
+  },
+  "tags": []
+}
