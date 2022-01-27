@@ -1,7 +1,7 @@
 {
   "name": "@forgerock/javascript-sdk",
   "description": "ForgeRock JavaScript SDK",
-  "version": "3.2.1",
+  "version": "3.2.2",
   "scripts": {
     "build": "nx run javascript-sdk:tsc && nx run javascript-sdk:tsc:cjs && nx run javascript-sdk:build",
     "build:analyze": "NODE_ENV=analyze nx run javascript-sdk:build --skipNxCache",

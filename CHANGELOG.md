@@ -1,6 +1,18 @@
 # Changelog
 
+## [3.2.2] - 2022-1-31
+
+### Fixed
+
+- Fixed typescript transpilation bug in esmodule config
+
 ## [3.2.1] - 2022-1-31
+
+### Fixed
+
+- Updated readme
+
+## [3.2.0] - 2022-1-31
 
 ### Fixed
 

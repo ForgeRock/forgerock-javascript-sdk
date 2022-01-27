@@ -15,8 +15,8 @@
     "sourceMap": true,
     "skipLibCheck": true,
     "strict": false,
-    "module": "ES2015",
-    "target": "ES2015"
+    "module": "ES6",
+    "target": "ES5"
   },
   "include": ["src/**/*.ts"],
   "exclude": [
