@@ -1,9 +1,9 @@
 {
   "name": "@forgerock/javascript-sdk",
-  "version": "3.0.0",
+  "version": "3.2.2",
   "description": "ForgeRock JavaScript SDK",
   "module": "./lib-esm/index.js",
-  "main": "./lilb/index.js",
+  "main": "./lib/index.js",
   "files": [
     "bundles/**",
     "lib/**",

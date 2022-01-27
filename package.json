@@ -1,24 +1,15 @@
 {
   "name": "@forgerock/javascript-sdk",
-  "version": "3.0.0",
   "description": "ForgeRock JavaScript SDK",
-  "main": "./index.js",
-  "module": "./index.js",
-  "files": [
-    "/bundles/**/*",
-    "/lib/**/*",
-    "/lib-esm/**/*",
-    "package.json",
-    "README.md"
-  ],
+  "version": "3.2.2",
   "scripts": {
     "build": "nx run javascript-sdk:tsc && nx run javascript-sdk:tsc:cjs && nx run javascript-sdk:build",
     "build:analyze": "NODE_ENV=analyze nx run javascript-sdk:build --skipNxCache",
     "clean": "shx rm -rf ./{coverage,bundles,dist,docs,lib,lib-esm,node_modules,tests,tmp,todos,users}/ ./samples/*/node_modules/ ./samples/_static/js/*/ ./samples/todo-api/{todos,users} ./packages/*/{bundles,lib,lib-esm}/ && git clean -fX -e \"!.env\"",
-    "docs": "typedoc",
+    "docs": "typedoc packages/javascript-sdk",
     "format:staged": "pretty-quick --staged",
     "lint": "nx affected --target=lint",
-    "prepublishOnly": "npm run clean:all && npm i && npm run build && npm t",
+    "prepublishOnly": "npm run clean && npm i && npm run build && npm t",
     "playwright-test": "playwright test",
     "start:e2e": "nx run autoscript-apps:serve",
     "start:samples": "ws -d samples -p 8443 --cors.origin null --cors.credentials --https",
