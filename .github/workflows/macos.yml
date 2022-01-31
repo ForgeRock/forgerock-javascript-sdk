@@ -51,6 +51,23 @@ jobs:
           ref: ${{ github.event.pull_request.head.ref }}
           repository: ${{github.event.pull_request.head.repo.full_name}}
           fetch-depth: 0
+      - name: Slack Notify
+        id: slack
+        uses: slackapi/slack-github-action@v1.18.0
+        with:
+          payload: |
+            {
+              "author": "${{ github.event.pull_request.user.login }}",
+              "title": "${{ github.event.pull_request.title }}",
+              "status": "${{ job.status }}",
+              "url": "${{ github.event.pull_request.html_url }}"
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+
+      - run: test -n "${{ steps.slack.outputs.time }}"
+
       - uses: actions/setup-node@v2
         with:
           node-version: '16.13.1'
