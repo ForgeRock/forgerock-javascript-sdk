@@ -11,6 +11,7 @@
 import { Injectable } from '@angular/core';
 import { Todo } from '../features/todo/todo';
 import { environment } from '../../environments/environment';
+import { HttpClient } from '@forgerock/javascript-sdk';
 
 /**
  * Used to define interactions with the backend
@@ -72,6 +73,16 @@ export class TodoService {
    * @returns Response from the request
    */
   request(resource: string, method: string, data?: Todo): Promise<Response> {
-    return new Promise((resolve, reject) => reject('Method not implemented'));
+    return HttpClient.request({
+      url: resource,
+      init: {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+        method: method,
+      },
+      timeout: 5000,
+    });
   }
 }

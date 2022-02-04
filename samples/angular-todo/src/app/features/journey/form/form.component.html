@@ -25,9 +25,13 @@ of the MIT license. See the LICENSE file for details.
     <app-loading [message]="'Checking your session ...'"></app-loading>
   </ng-template>
 
-  <ng-template #successMessage> </ng-template>
+  <ng-template #successMessage>
+    <app-loading [message]="'Success! Redirecting ...'"></app-loading>
+  </ng-template>
 
-  <ng-template #failureMessage> </ng-template>
+  <ng-template #failureMessage>
+    <app-alert [message]="failure?.getMessage()" [type]="'error'"></app-alert>
+  </ng-template>
 
   <ng-template #callbacks>
     <!--
@@ -35,7 +39,32 @@ of the MIT license. See the LICENSE file for details.
     -->
     <div>
       <h1 class="text-center fs-2 mb-3" *ngIf="title">{{ title }}</h1>
-      <div id="callbacks"></div>
+      <div id="callbacks">
+        <form #callbackForm (ngSubmit)="nextStep(step)" ngNativeValidate class="cstm_form">
+          <div *ngFor="let callback of step?.callbacks" v-bind:key="callback.payload._id">
+            <container-element [ngSwitch]="callback.getType()">
+              <app-text
+                *ngSwitchCase="'NameCallback'"
+                [callback]="$any(callback)"
+                [name]="callback?.payload?.input?.[0]?.name"
+                (updatedCallback)="$any(callback).setName($event)"
+              >
+              </app-text>
+
+              <app-password
+                *ngSwitchCase="'PasswordCallback'"
+                [callback]="$any(callback)"
+                [name]="callback?.payload?.input?.[0]?.name"
+                (updatedCallback)="$any(callback).setPassword($event)"
+              >
+              </app-password>
+
+              <app-unknown *ngSwitchDefault [callback]="callback"></app-unknown>
+            </container-element>
+          </div>
+          <app-button [buttonText]="buttonText" [submittingForm]="submittingForm"> </app-button>
+        </form>
+      </div>
     </div>
   </ng-template>
 </ng-container>

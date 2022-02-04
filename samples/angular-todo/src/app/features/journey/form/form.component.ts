@@ -11,8 +11,15 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { environment } from '../../../../environments/environment';
-import { FRLoginFailure, FRLoginSuccess, FRStep } from '@forgerock/javascript-sdk';
 import { UserService } from '../../../services/user.service';
+import {
+  FRAuth,
+  FRLoginFailure,
+  FRLoginSuccess,
+  FRStep,
+  TokenManager,
+  UserManager,
+} from '@forgerock/javascript-sdk';
 
 /**
  * Used to display a login / registration form to the user, with authentication callbacks dynamically rendered based on the tree / journey
@@ -75,6 +82,28 @@ export class FormComponent implements OnInit {
    */
   async nextStep(step?: FRStep): Promise<void> {
     this.submittingForm = true;
+
+    try {
+      const nextStep = await FRAuth.next(step, { tree: this.tree });
+
+      switch (nextStep.type) {
+        case 'LoginFailure':
+          this.handleFailure(nextStep);
+          break;
+        case 'LoginSuccess':
+          this.handleSuccess(nextStep);
+          break;
+        case 'Step':
+          this.handleStep(nextStep);
+          break;
+        default:
+          this.handleFailure();
+      }
+    } catch (err) {
+      console.log(err);
+    } finally {
+      this.submittingForm = false;
+    }
   }
 
   handleFailure(failure?: FRLoginFailure) {
@@ -87,6 +116,19 @@ export class FormComponent implements OnInit {
    */
   async handleSuccess(success?: FRLoginSuccess) {
     this.success = success;
+
+    try {
+      await TokenManager.getTokens({ forceRenew: true });
+
+      const info = await UserManager.getCurrentUser();
+
+      this.userService.info = info;
+      this.userService.isAuthenticated = true;
+
+      this.router.navigateByUrl('/');
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   /**
