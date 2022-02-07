@@ -7,6 +7,7 @@
  * This software may be modified and distributed under the terms
  * of the MIT license. See the LICENSE file for details.
  */
+import { Config, TokenStorage } from '@forgerock/javascript-sdk';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
@@ -20,6 +21,18 @@ import { AppContext, useGlobalStateMgmt } from './global-state';
  */
 import './styles/index.scss';
 
+Config.set({
+  clientId: WEB_OAUTH_CLIENT,
+  redirectUri: `${APP_URL}/callback`,
+  scope: 'openid profile email',
+  serverConfig: {
+    baseUrl: AM_URL,
+    timeout: '5000',
+  },
+  realmPath: REALM_PATH,
+  tree: JOURNEY_LOGIN,
+});
+
 /**
  * Initialize the React application
  * This is an IIFE (Immediately Invoked Function Expression),
@@ -27,6 +40,12 @@ import './styles/index.scss';
  */
 (async function initAndHydrate() {
   let isAuthenticated;
+  try {
+    isAuthenticated = !!(await TokenStorage.get());
+  } catch (err) {
+    console.error(`Error: token retrieval for hydration; ${err}`);
+  }
+
   const prefersDarkTheme = window.matchMedia('(prefers-color-scheme: dark)').matches;
   const email = window.sessionStorage.getItem('sdk_email');
   const username = window.sessionStorage.getItem('sdk_username');

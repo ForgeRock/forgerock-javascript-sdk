@@ -17,6 +17,7 @@ import Home from './views/home';
 import Login from './views/login';
 import Logout from './views/logout';
 import Register from './views/register';
+import { ProtectedRoute } from './utilities/route';
 import Todos from './views/todos';
 
 function ScrollToTop() {
@@ -43,11 +44,11 @@ export default function Router() {
         <Route path="/register">
           <Register />
         </Route>
-        <Route path="/todos">
+        <ProtectedRoute path="/todos">
           <Header />
           <Todos />
           <Footer />
-        </Route>
+        </ProtectedRoute>
         <Route path="/logout">
           <Logout />
         </Route>
