@@ -15,6 +15,8 @@
     "start:samples": "ws -d samples -p 8443 --cors.origin null --cors.credentials --https",
     "start:server": "nx run mock-api:serve",
     "start:server:live": "NODE_ENV=LIVE nx run mock-api:serve:live",
+    "start:angular-todo": "nx run angular-todo:config && nx run-many --target=serve --projects=todo-api,angular-todo",
+    "start:reactjs-todo": "nx run-many --target=serve --projects=todo-api,reactjs-todo",
     "test": "npm run test:unit -- --skipNxCache && npm run test:integration -- --skipNxCache && npm run test:e2e -- --skipNxCache",
     "test:e2e": "nx affected:e2e",
     "test:e2e:live": "nx run autoscript-suites:e2e --configuration=live",

@@ -4,11 +4,6 @@ import { writeFile } from 'fs';
 let targetPath = 'samples/angular-todo/src/environments/environment.ts';
 let production = false;
 
-if (process.env.DEVELOPMENT && process.env.DEVELOPMENT.toLowerCase() === 'false') {
-  targetPath = 'samples/angular-todo/environments/environment-prod.ts';
-  production = true;
-}
-
 const envConfigFile = `export const environment = {
    AM_URL: '${process.env.AM_URL}',
    REALM_PATH: '${process.env.REALM_PATH}',
