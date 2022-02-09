@@ -17,6 +17,7 @@ import {
   Router,
 } from '@angular/router';
 import { UserService } from '../services/user.service';
+import { Tokens, TokenStorage } from '@forgerock/javascript-sdk';
 
 @Injectable({
   providedIn: 'root',
@@ -35,6 +36,18 @@ export class AuthGuard implements CanActivate {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot,
   ): Promise<true | UrlTree> {
-    return true;
+    const loginUrl = this.router.parseUrl('/login');
+    try {
+      // Assume user is likely authenticated if there are tokens
+      const tokens: Tokens = await TokenStorage.get();
+      if (tokens === undefined) {
+        return loginUrl;
+      }
+      return true;
+    } catch (err) {
+      // User likely not authenticated
+      console.log(err);
+      return loginUrl;
+    }
   }
 }
