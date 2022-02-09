@@ -11,7 +11,7 @@
 import { Component, OnInit } from '@angular/core';
 import { environment } from '../environments/environment';
 import { UserService } from './services/user.service';
-import { Config, UserManager } from '@forgerock/javascript-sdk';
+import { Config, Tokens, TokenStorage, UserManager } from '@forgerock/javascript-sdk';
 
 @Component({
   selector: 'app-root',
@@ -39,10 +39,13 @@ export class AppComponent implements OnInit {
     });
 
     try {
-      // Assume user is likely authenticated if there are tokens
-      const info = await UserManager.getCurrentUser();
-      this.userService.isAuthenticated = true;
-      this.userService.info = info;
+      const tokens: Tokens = await TokenStorage.get();
+      if (tokens !== undefined) {
+        // Assume user is likely authenticated if there are tokens
+        const info = await UserManager.getCurrentUser();
+        this.userService.isAuthenticated = true;
+        this.userService.info = info;
+      }
     } catch (err) {
       // User likely not authenticated
       console.log(err);
