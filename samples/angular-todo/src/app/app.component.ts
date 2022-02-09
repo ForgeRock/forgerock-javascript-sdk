@@ -12,6 +12,14 @@ import { Component, OnInit } from '@angular/core';
 import { environment } from '../environments/environment';
 import { UserService } from './services/user.service';
 import { Config, Tokens, TokenStorage, UserManager } from '@forgerock/javascript-sdk';
+import {
+  NavigationCancel,
+  NavigationEnd,
+  NavigationError,
+  NavigationStart,
+  Router,
+} from '@angular/router';
+import { filter, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -19,8 +27,25 @@ import { Config, Tokens, TokenStorage, UserManager } from '@forgerock/javascript
 })
 export class AppComponent implements OnInit {
   title = 'angular-todo-prototype';
+  loading = false;
 
-  constructor(public userService: UserService) {}
+  constructor(public userService: UserService, private router: Router) {
+    const navStart = router.events.pipe(
+      filter((evt) => evt instanceof NavigationStart),
+    ) as Observable<NavigationStart>;
+
+    const navEnd: Observable<NavigationStart> = router.events.pipe(
+      filter(
+        (evt) =>
+          evt instanceof NavigationEnd ||
+          evt instanceof NavigationCancel ||
+          evt instanceof NavigationError,
+      ),
+    ) as Observable<NavigationStart>;
+
+    navStart.subscribe(() => (this.loading = true));
+    navEnd.subscribe(() => (this.loading = false));
+  }
 
   /**
    * Initialise the SDK and try to load the user when the app loads
