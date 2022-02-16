@@ -1,14 +1,14 @@
 /*
  * @forgerock/javascript-sdk
  *
- * responses.mjs
+ * responses.js
  *
  * Copyright (c) 2020 ForgeRock. All rights reserved.
  * This software may be modified and distributed under the terms
  * of the MIT license. See the LICENSE file for details.
  */
 
-import { AM_URL, RESOURCE_URL } from './env.config.copy.mjs';
+import { AM_URL, RESOURCE_URL } from './env.config';
 
 export const oauthTokens = {
   access_token: 'baz',

@@ -1,7 +1,7 @@
 /*
  * @forgerock/javascript-sdk
  *
- * routes.auth.mjs
+ * routes.auth.js
  *
  * Copyright (c) 2020 ForgeRock. All rights reserved.
  * This software may be modified and distributed under the terms
@@ -9,8 +9,8 @@
  */
 
 import { v4 } from 'uuid';
-import { authPaths } from './constants.mjs';
-import { AM_URL, USERS } from './env.config.copy.mjs';
+import { authPaths } from './constants';
+import { AM_URL, USERS } from './env.config';
 import {
   oauthTokens,
   authFail,
@@ -33,9 +33,9 @@ import {
   secondFactorChoiceCallback,
   selectIdPCallback,
   userInfo,
-} from './responses.mjs';
-import initialRegResponse from './response.registration.mjs';
-import wait from './wait.mjs';
+} from './responses';
+import initialRegResponse from './response.registration';
+import wait from './wait';
 
 console.log(`Your user password from 'env.config' file: ${USERS[0].pw}`);
 

@@ -1,7 +1,7 @@
 /*
  * @forgerock/javascript-sdk
  *
- * app.auth.mjs
+ * app.auth.js
  *
  * Copyright (c) 2020 ForgeRock. All rights reserved.
  * This software may be modified and distributed under the terms
@@ -9,8 +9,8 @@
  */
 
 import request from 'superagent';
-import { key, cert } from './app.certs.mjs';
-import { AM_URL, REALM_PATH } from './env.config.copy.mjs';
+import { key, cert } from './app.certs';
+import { AM_URL, REALM_PATH } from './env.config';
 
 export let session;
 
