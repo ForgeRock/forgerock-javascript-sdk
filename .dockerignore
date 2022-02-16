@@ -1,0 +1,8 @@
+tmp
+.vscode
+node_modules
+.devcontainer
+.github
+.git
+docker-compose.yml
+dist/

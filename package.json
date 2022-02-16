@@ -39,7 +39,6 @@
   },
   "homepage": "https://github.com/ForgeRock/forgerock-javascript-sdk#readme",
   "devDependencies": {
-    "@nrwl/angular": "^13.3.11",
     "@nrwl/cli": "^13.3.9",
     "@nrwl/eslint-plugin-nx": "^13.3.9",
     "@nrwl/express": "^13.3.9",

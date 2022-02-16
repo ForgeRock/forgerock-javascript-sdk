@@ -8,9 +8,10 @@
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/e2e/mock-api",
-        "main": "e2e/mock-api/src/index.mjs",
+        "main": "e2e/mock-api/src/index.js",
         "tsConfig": "e2e/mock-api/tsconfig.app.json",
-        "assets": ["e2e/mock-api/src/assets"]
+        "assets": ["e2e/mock-api/src/assets"],
+        "generatePackageJson": true
       },
       "configurations": {
         "production": {
@@ -33,14 +34,29 @@
         "watch": true
       },
       "configurations": {
-        "live": {}
+        "live": {},
+        "production": {
+          "buildTarget": "mock-api:build:production",
+          "args": ["MOCK_PORT=9443"]
+        }
+      }
+    },
+    "deploy": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "commands": [
+          "nx build mock-api --prod",
+          "docker build -f ./e2e/mock-api/Dockerfile . -t mock-api"
+        ],
+        "parallel": false
       }
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["e2e/mock-api/**/*.ts"]
+        "lintFilePatterns": ["e2e/mock-api/**/*.ts"],
+        "ignorePath": ".gitignore"
       }
     },
     "test": {

@@ -27,6 +27,9 @@
         "parallel": true,
         "rollupConfig": "packages/javascript-sdk/rollup.config.js"
       },
+      "configurations": {
+        "production": {}
+      },
       "outputs": ["{options.outputPath}"]
     },
     "lint": {
