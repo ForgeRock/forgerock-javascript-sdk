@@ -49,6 +49,7 @@ if (env.NODE_ENV === 'LIVE') {
 
 authRoutes(app);
 resourceRoutes(app);
+app.get('/', (req, res) => res.status(200).send('ok'));
 
 app.get('/healthcheck', (req, res) => res.status(200).send('ok'));
 
