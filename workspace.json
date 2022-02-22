@@ -7,6 +7,7 @@
     "central-login": "samples/central-login",
     "embedded-login": "samples/embedded-login",
     "javascript-sdk": "packages/javascript-sdk",
+    "update-cors-cloud": "lib/update-cors-cloud",
     "mock-api": "e2e/mock-api",
     "reactjs-todo": "samples/reactjs-todo",
     "todo-api": "samples/todo-api"

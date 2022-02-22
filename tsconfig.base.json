@@ -18,7 +18,8 @@
     "strict": true,
     "target": "ES5",
     "paths": {
-      "@forgerock/javascript-sdk": ["packages/javascript-sdk/src/index.ts"]
+      "@forgerock/javascript-sdk": ["packages/javascript-sdk/src/index.ts"],
+      "@forgerock/update-cors-cloud": ["lib/update-cors-cloud/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp", "samples/angular-todo"]
