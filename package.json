@@ -57,6 +57,9 @@
     "@nrwl/web": "^13.3.9",
     "@nrwl/workspace": "^13.3.9",
     "@playwright/test": "^1.17.1",
+    "@swc/cli": "~0.1.52",
+    "@swc/core": "1.2.118",
+    "@swc/helpers": "~0.2.14",
     "@testing-library/react": "12.1.2",
     "@testing-library/react-hooks": "7.0.2",
     "@types/express": "^4.17.0",
@@ -101,12 +104,14 @@
   "workspaces": [
     "samples/*",
     "packages/*",
-    "e2e/*"
+    "e2e/*",
+    "lib/*"
   ],
   "dependencies": {
     "core-js": "^3.19.2",
     "nx": "^13.1.4",
     "regenerator-runtime": "0.13.7",
-    "rxjs": "^7.4.0"
+    "rxjs": "^7.4.0",
+    "tslib": "^2.0.0"
   }
 }
