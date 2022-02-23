@@ -5,6 +5,5 @@ export const environment = {
   JOURNEY_LOGIN: '',
   JOURNEY_REGISTER: '',
   API_URL: '',
-  APP_URL: '',
-  production: '',
+  production: false,
 };

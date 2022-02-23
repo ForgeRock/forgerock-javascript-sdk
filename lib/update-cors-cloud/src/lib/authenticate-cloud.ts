@@ -16,7 +16,7 @@ async function authenticateCloud({
   AM_URL,
   username,
   password,
-}: AuthenticateCloudParams): Promise<AxiosResponse<CloudAuth, unknown>> {
+}: AuthenticateCloudParams): Promise<AxiosResponse<CloudAuth>> {
   try {
     const config: AxiosRequestConfig = {
       baseURL: AM_URL.slice(-2),
@@ -28,7 +28,7 @@ async function authenticateCloud({
         'X-OpenAM-Password': password,
       },
     };
-    const response = await axios.request<CloudAuth, AxiosPromise<CloudAuth>, unknown>(config);
+    const response = await axios.request<CloudAuth, AxiosPromise<CloudAuth>>(config);
 
     return response;
   } catch (error) {

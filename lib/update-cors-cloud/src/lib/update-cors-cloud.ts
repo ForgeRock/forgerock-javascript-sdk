@@ -7,9 +7,13 @@ interface CorsConfigValues {
   ssoToken: string;
 }
 
-export async function updateCorsConfig({ AM_URL, origin, ssoToken }: CorsConfigValues) {
+export async function updateCorsConfig({
+  AM_URL,
+  origin,
+  ssoToken,
+}: CorsConfigValues): Promise<Error | { id: string }> {
   if (!AM_URL) {
-    return new Promise((_res, rej) => rej('You must provide an AM_URL'));
+    return Promise.reject('You must provide an AM_URL');
   }
   try {
     /*
@@ -33,13 +37,14 @@ export async function updateCorsConfig({ AM_URL, origin, ssoToken }: CorsConfigV
     });
 
     if (response.status === 201) {
-      return { success: 'ok', id: response.data._id };
+      return { id: response.data._id };
     }
     if (response.status === 401) {
-      return new Promise((_res, rej) => rej('You must provide an SSO token for authorization'));
+      return new Error('You must provide an SSO token for authorization');
     }
-    return { success: false };
+    return new Error('Request did not return a 201 status code');
   } catch (err) {
-    return { success: false };
+    if (err instanceof Error) return new Error(err.message);
+    return new Error(String(err));
   }
 }

@@ -21,6 +21,7 @@ reports/*
 *.copy.*
 !env.config.copy.mjs
 packages/javascript-sdk/lib/
+.swc
 
 # Certificates
 *.pem
