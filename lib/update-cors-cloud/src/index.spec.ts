@@ -1,3 +1,4 @@
+import * as github from '@actions/github';
 import { update } from './index';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
@@ -21,19 +22,14 @@ describe('should test the flow from auth to update', () => {
       successUrl: '/success',
       realm: 'alpha',
     });
-  });
-  it('should authenticate and update with an origin', async () => {
-    await update();
-    expect(authenticateCloud).toHaveBeenCalledWith({
-      AM_URL: 'some-am-url',
-      username: 'admin',
-      password: 'password',
-      realm: 'alpha',
-    });
-    expect(updateCorsConfig).toHaveBeenCalledWith({
-      AM_URL: 'some-am-url',
-      origin: ['http://someurl.com/'],
-      ssoToken: 'token1',
+    Object.defineProperty(github, 'context', {
+      value: {
+        payload: {
+          pull_request: {
+            number: 12,
+          },
+        },
+      },
     });
   });
   it('should authenticate and update with an origin', async () => {
@@ -46,7 +42,13 @@ describe('should test the flow from auth to update', () => {
     });
     expect(updateCorsConfig).toHaveBeenCalledWith({
       AM_URL: 'some-am-url',
-      origin: ['http://someurl.com/'],
+      origin: [
+        'https://reactjs-todo-12-forgerock.cloud.okteto.com',
+        'https://angular-todo-12-forgerock.cloud.okteto.com',
+        'https://todo-api-12-forgerock.cloud.okteto.com',
+        'https://mock-api-12-forgerock.cloud.okteto.com',
+        'https://autoscript-apps-12-forgerock.cloud.okteto.com',
+      ],
       ssoToken: 'token1',
     });
   });

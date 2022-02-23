@@ -25,7 +25,8 @@
       "outputs": ["coverage/lib/update-cors-cloud"],
       "options": {
         "jestConfig": "lib/update-cors-cloud/jest.config.js",
-        "passWithNoTests": true
+        "passWithNoTests": true,
+        "codeCoverage": true
       }
     }
   },
