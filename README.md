@@ -108,11 +108,17 @@ ForgeRock provides these samples to help demonstrate SDK functionality/implement
 
   You can run this sample app with the `npm run start:samples` command. Please [see the Getting Started instructions](#getting-started) for more details.
 
-- **React todos - `/samples/reactjs-todos`**
+- **React todos - `/samples/reactjs-todo`**
 
   A sample React JS application is provided to demonstrate how the JavaScript SDK can be implemented within a React context. You can read more about this application by [visiting its README.md file](samples/reactjs-todo/README.md).
 
   Since this sample app uses npm's workspaces feature, npm 7 or higher is required. When on npm 7+, dependencies are already installed when running `npm install`. You can run this sample app with: `npx nx run reactjs-todo:serve`.
+
+- **Angular todos - `/samples/angular-todo`**
+
+  Similar in functionality to the React JS sample above, a sample Angular application is provided to demonstrate how the JavaScript SDK can be implemented within an Angular context. You can read more about this application by [visiting its README.md file](samples/angular-todo/README.md).
+
+  Since this sample app uses npm's workspaces feature, npm 7 or higher is required. When on npm 7+, dependencies are already installed when running `npm install`. You can run this sample app with: `npx nx run angular-todo:serve`.
 
 <!------------------------------------------------------------------------------------------------------------------------------------>
 <!-- DOCS - Link off to the AM-centric documentation at sdks.forgerock.com. -->
