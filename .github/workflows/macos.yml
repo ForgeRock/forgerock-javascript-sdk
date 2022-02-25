@@ -25,11 +25,26 @@ jobs:
           node-version: '16.13.1'
           cache: 'npm'
           cache-dependency-path: '**/package-lock.json'
+      - name: Cache npm dependencies
+        uses: actions/cache@v2
+        with:
+          path: '~/.npm'
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-npm-
       - run: npm ci
       - run: npx nx-cloud start-ci-run
       - run: npx nx affected --target=build --parallel --max-parallel=3
       - run: npx nx affected --target=test --parallel --max-parallel=2
       - run: npx nx-cloud stop-all-agents
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v2
+        if: always()
+        with:
+          name: 'E2E Artifacts'
+          retention-days: 5
+          path: ${{ env.GITHUB_WORKSPACE }}/**/test-results
+
   pr:
     runs-on: macos-latest
     if: ${{ github.event_name == 'pull_request' }}
@@ -44,12 +59,20 @@ jobs:
           node-version: '16.13.1'
           cache: 'npm'
           cache-dependency-path: '**/package-lock.json'
-
+      - name: Cache npm dependencies
+        id: cache
+        uses: actions/cache@v2
+        with:
+          path: '~/.npm'
+          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-npm-
       - name: Setup custom host for sdkapp.example.com
         run: sudo echo "127.0.0.1 sdkapp.example.com auth.example.com api.example.com user.example.com" | sudo tee -a /etc/hosts
       - run: cat /etc/hosts
 
       - name: npm install
+        if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
         env:
           DEBUG: pw:install
@@ -73,11 +96,13 @@ jobs:
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
-        if: always()
+        if: failure()
         with:
           name: 'E2E Artifacts'
-          path: ${{ env.GITHUB_WORKSPACE }}/test-results
           retention-days: 5
+          path: |
+            ${{ env.GITHUB_WORKSPACE }}/e2e/**/test-results
+
   agents:
     runs-on: macos-latest
     name: Agent Mac
@@ -95,6 +120,13 @@ jobs:
           node-version: '16.13.1'
           cache: 'npm'
           cache-dependency-path: '**/package-lock.json'
+      - name: Cache npm dependencies
+        uses: actions/cache@v2
+        with:
+          path: '~/.npm'
+          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-npm-
       - run: npm ci
         env:
           # PLAYWRIGHT_BROWSERS_PATH: 0

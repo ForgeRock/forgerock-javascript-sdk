@@ -47,8 +47,9 @@ function autoscript() {
   }
 
   console.log('Initiate first step with `undefined`');
+
   // Wrapping in setTimeout to give the test time to bind listener to console.log
-  setTimeout(function () {
+  setTimeout(() => {
     from([1])
       .pipe(
         map(() => {

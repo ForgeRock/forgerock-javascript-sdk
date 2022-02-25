@@ -3,7 +3,7 @@ import { PlaywrightTestConfig, devices } from '@playwright/test';
 const config: PlaywrightTestConfig = {
   forbidOnly: !!process.env.CI,
   globalTeardown: './teardown',
-  workers: 2,
+  workers: process.env.CI ? 2 : 8,
   retries: process.env.CI ? 2 : 0,
   testDir: './src/suites',
   webServer: {
