@@ -10,6 +10,7 @@ packages/*/dist/
 packages/javascript-sdk/lib-esm
 packages/javascript-sdk/lib
 packages/javascript-sdk/bundle/
+.svelte-kit
 bundles/
 docs/
 coverage/
@@ -50,3 +51,8 @@ users/
 samples/**/.env.local
 samples/**/.env
 samples/angularjs-todo/.env.local
+
+
+# storybook
+storybook-static
+.swc

@@ -34,7 +34,9 @@
         "watch": true
       },
       "configurations": {
-        "live": {},
+        "live": {
+          "watch": false
+        },
         "production": {
           "buildTarget": "mock-api:build:production",
           "args": ["MOCK_PORT=9443"]

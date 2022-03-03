@@ -1,0 +1,73 @@
+{
+  "root": "packages/login-widget",
+  "projectType": "application",
+  "sourceRoot": "packages/login-widget/src",
+  "targets": {
+    "build": {
+      "executor": "@nxext/sveltekit:sveltekit",
+      "options": {
+        "command": "build"
+      },
+      "configurations": {
+        "production": {
+          "command": "build"
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nxext/sveltekit:sveltekit",
+      "options": {
+        "command": "dev --https"
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/login-widget/**/*.{ts,svelte,spec.ts}"]
+      }
+    },
+    "test": {
+      "executor": "@nxext/vitest:vitest",
+      "options": {
+        "command": "run"
+      },
+      "configurations": {
+        "watch": {
+          "command": "watch"
+        },
+        "related": {
+          "command": "related"
+        },
+        "dev": {
+          "command": "dev"
+        },
+        "ui": {
+          "command": "--ui"
+        }
+      }
+    },
+    "build-storybook": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "npm run build-storybook",
+        "cwd": "packages/login-widget"
+      }
+    },
+    "storybook": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "start-storybook -p 6006",
+        "cwd": "packages/login-widget"
+      }
+    },
+    "test-storybook": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "test-storybook",
+        "cwd": "packages/login-widget"
+      }
+    }
+  },
+  "tags": []
+}

@@ -7,8 +7,7 @@
   },
   "private": true,
   "scripts": {
-    "build": "nx run javascript-sdk:tsc && nx run javascript-sdk:tsc:cjs && nx run javascript-sdk:build",
-    "build:analyze": "NODE_ENV=analyze nx run javascript-sdk:build --skipNxCache",
+    "build": "nx run javascript-sdk:tsc && nx run javascript-sdk:tsc:cjs && nx affected --target=build",
     "clean": "shx rm -rf ./{coverage,bundles,dist,docs,lib,lib-esm,node_modules,tests,tmp,todos,users}/ ./samples/*/node_modules/ ./samples/_static/js/*/ ./samples/todo-api/{todos,users} ./packages/*/{bundles,lib,lib-esm}/ && git clean -fX -e \"!.env\"",
     "docs": "typedoc packages/javascript-sdk",
     "format:staged": "pretty-quick --staged",
@@ -21,7 +20,7 @@
     "start:reactjs-todo": "nx run-many --target=serve --projects=reactjs-todo, todo-api",
     "start:server": "nx run mock-api:serve",
     "start:server:live": "NODE_ENV=LIVE nx run mock-api:serve:live",
-    "test": "npm run test:unit -- --skipNxCache && npm run test:integration -- --skipNxCache && npm run test:e2e -- --skipNxCache",
+    "test": "npm run test:unit && npm run test:integration && npm run test:e2e",
     "test:e2e": "nx affected:e2e",
     "test:e2e:live": "nx run autoscript-suites:e2e --configuration=live",
     "test:integration": "nx affected --target=test --configuration=integration",
@@ -31,7 +30,7 @@
   "husky": {
     "hooks": {
       "pre-commit": "shx rm -rf dist/ && npm run format:staged && npm run lint && nx affected:build",
-      "pre-push": "npm t"
+      "pre-push": "nx affected:test && nx affected:test --configuration=integration && nx affected:e2e"
     }
   },
   "repository": {
@@ -44,6 +43,7 @@
   },
   "homepage": "https://github.com/ForgeRock/forgerock-javascript-sdk#readme",
   "devDependencies": {
+    "@babel/core": "^7.17.5",
     "@nrwl/cli": "13.9.6",
     "@nrwl/eslint-plugin-nx": "13.9.6",
     "@nrwl/express": "13.9.6",
@@ -55,6 +55,10 @@
     "@nrwl/react": "13.9.6",
     "@nrwl/web": "13.9.6",
     "@nrwl/workspace": "13.9.6",
+    "@nxext/svelte": "^13.3.0",
+    "@nxext/sveltekit": "^13.0.0-next.2",
+    "@nxext/vitest": "^13.0.0",
+    "@playwright/test": "^1.17.1",
     "@swc/cli": "^0.1.55",
     "@swc/core": "^1.2.145",
     "@swc/helpers": "^0.3.5",
@@ -90,5 +94,8 @@
     "e2e/*",
     "packages/*",
     "samples/*"
-  ]
+  ],
+  "dependencies": {
+    "@storybook/client-api": "^6.5.0-alpha.25"
+  }
 }
