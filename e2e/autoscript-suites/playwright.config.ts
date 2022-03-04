@@ -2,10 +2,10 @@ import { PlaywrightTestConfig, devices } from '@playwright/test';
 
 const config: PlaywrightTestConfig = {
   forbidOnly: !!process.env.CI,
-  globalTeardown: './e2e/autoscript-suites/teardown',
-  workers: process.env.CI ? 2 : 4,
+  globalTeardown: './teardown',
+  workers: process.env.CI ? 2 : 8,
   retries: process.env.CI ? 2 : 0,
-  testDir: 'e2e',
+  testDir: './src/suites',
   webServer: {
     command: 'nx run autoscript-apps:serve',
     port: 8443,
@@ -38,4 +38,5 @@ const config: PlaywrightTestConfig = {
     },
   ],
 };
+
 export default config;

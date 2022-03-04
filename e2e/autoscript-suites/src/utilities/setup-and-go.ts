@@ -69,12 +69,8 @@ export async function setupAndGo(
   await page.goto(url.toString());
 
   // Listen for events on page
-  page.on('console', (msg) => {
-    messageArray.push(msg.text());
-  });
-
-  page.on('console', (msg) => {
-    messageArray.push(msg.text());
+  page.on('console', async (msg) => {
+    return messageArray.push(msg.text());
   });
 
   page.on('request', (req) => {
