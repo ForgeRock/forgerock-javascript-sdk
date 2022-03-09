@@ -14,6 +14,7 @@ interface StringDict<T> {
 
 interface Tokens {
   accessToken: string;
+  expiresIn: number;
   idToken?: string;
   refreshToken?: string;
 }

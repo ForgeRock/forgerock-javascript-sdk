@@ -17,6 +17,7 @@ import { ResponseType } from './enums';
  */
 interface OAuth2Tokens {
   accessToken: string;
+  expiresIn: number;
   idToken?: string;
   refreshToken?: string;
 }
@@ -26,6 +27,7 @@ interface OAuth2Tokens {
  */
 interface AccessTokenResponse {
   access_token: string;
+  expires_in: number;
   id_token: string;
   refresh_token: string;
 }

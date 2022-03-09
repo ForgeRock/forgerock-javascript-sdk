@@ -1,174 +1,176 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Custom UI | ForgeRock JavaScript SDK Samples</title>
-  <link rel="shortcut icon" href="../_static/img/fr-ico.png" type="image/png">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-  <style>
-    body {
-      padding: 2rem;
-    }
-    #steps {
-      position: relative;
-    }
-    #steps > div {
-      left: -20000px;
-      position: absolute;
-    }
-    #steps > div.active {
-      left: 0;
-    }
-  </style>
-</head>
+  <head>
+    <title>Custom UI | ForgeRock JavaScript SDK Samples</title>
+    <link rel="shortcut icon" href="../_static/img/fr-ico.png" type="image/png" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    />
+    <style>
+      body {
+        padding: 2rem;
+      }
+      #steps {
+        position: relative;
+      }
+      #steps > div {
+        left: -20000px;
+        position: absolute;
+      }
+      #steps > div.active {
+        left: 0;
+      }
+    </style>
+  </head>
 
-<body>
-  <div id="steps">
-    <div id="loader" class="active">Loading...</div>
-    <div id="UsernamePassword">
-      <input class="form-control" type="text" placeholder="Username" />
-      <input class="form-control" type="password" placeholder="Password" />
-      <button class="btn btn-primary">Sign In</button>
-    </div>
-    <div id="User">
-      <p>Your user information:
+  <body>
+    <div id="steps">
+      <div id="loader" class="active">Loading...</div>
+      <div id="UsernamePassword">
+        <input class="form-control" type="text" placeholder="Username" />
+        <input class="form-control" type="password" placeholder="Password" />
+        <button class="btn btn-primary">Sign In</button>
+      </div>
+      <div id="User">
+        <p>Your user information:</p>
         <pre></pre>
-      </p>
-      <button class="btn btn-primary">Sign Out</button>
+        <button class="btn btn-primary">Sign Out</button>
+      </div>
+      <div id="Error">
+        <p>Error code: <span></span></p>
+        <p><a href="javascript:nextStep()">Start over</a></p>
+      </div>
+      <div id="Fatal">
+        <p>Something unexpected happened. Check the console for details.</p>
+        <p><a href="javascript:nextStep()">Start over</a></p>
+      </div>
     </div>
-    <div id="Error">
-      <p>Error code: <span></span></p>
-      <p><a href="javascript:nextStep()">Start over</a></p>
-    </div>
-    <div id="Fatal">
-      <p>Something unexpected happened. Check the console for details.</p>
-      <p><a href="javascript:nextStep()">Start over</a></p>
-    </div>
-  </div>
 
-  <script src="../_static/js/index.js"></script>
-  <script>
-    /*
-     * @forgerock/javascript-sdk
-     *
-     * index.html
-     *
-     * Copyright (c) 2020 ForgeRock. All rights reserved.
-     * This software may be modified and distributed under the terms
-     * of the MIT license. See the LICENSE file for details.
-     */
+    <script src="../_static/js/index.js"></script>
+    <script>
+      /*
+       * @forgerock/javascript-sdk
+       *
+       * index.html
+       *
+       * Copyright (c) 2020 ForgeRock. All rights reserved.
+       * This software may be modified and distributed under the terms
+       * of the MIT license. See the LICENSE file for details.
+       */
 
-    const FATAL = 'Fatal';
+      const FATAL = 'Fatal';
 
-    forgerock.Config.set({
-      clientId: '<Your OAuth Client>', // e.g. 'ForgeRockSDKClient'
-      redirectUri: '<Your Redirect/Callback URL>', // e.g. 'https://sdkapp.example.com:8443/_callback'
-      scope: '<Your OAuth Scopes>', // e.g. 'openid profile me.read'
-      serverConfig: {
-        baseUrl: '<Your AM URL>', // e.g. 'https://openam.example.com:9443/openam/'
-        timeout: '<Your Timeout (milliseconds)>' // 90000 or less
-      },
-      realmPath: '<Your Realm>', // e.g. 'root'
-      tree: '<Your Auth Tree>', // e.g. 'Login'
-    });
-
-    // Define custom handlers to render and submit each expected step
-    const handlers = {
-      UsernamePassword: (step) => {
-        const panel = document.querySelector('#UsernamePassword');
-        panel.querySelector('.btn').addEventListener('click', () => {
-          const nameCallback = step.getCallbackOfType('NameCallback');
-          const passwordCallback = step.getCallbackOfType('PasswordCallback');
-          nameCallback.setName(panel.querySelector('input[type=text]').value);
-          passwordCallback.setPassword(panel.querySelector('input[type=password]').value);
-          nextStep(step);
-        })
-      },
-      Error: (step) => {
-        document.querySelector('#Error span').innerHTML = step.getCode();
-      },
-      [FATAL]: (step) => { }
-    }
-
-    // Show only the view for this handler
-    const showStep = (handler) => {
-      document.querySelectorAll('#steps > div').forEach(x => x.classList.remove('active'));
-      const panel = document.getElementById(handler);
-      if (!panel) {
-        console.error(`No panel with ID "${handler}"" found`);
-        return false;
-      }
-      document.getElementById(handler).classList.add('active');
-      return true;
-    }
-
-    const showUser = (user) => {
-      document.querySelector('#User pre').innerHTML = JSON.stringify(user, null, 2);
-      const panel = document.querySelector('#User');
-      panel.querySelector('.btn').addEventListener('click', () => {
-        logout();
+      forgerock.Config.set({
+        clientId: 'WebOAuthClient', // e.g. 'ForgeRockSDKClient'
+        redirectUri: 'https://sdkapp.example.com:8443/_callback/', // e.g. 'https://sdkapp.example.com:8443/_callback'
+        scope: 'openid profile me.read', // e.g. 'openid profile me.read'
+        serverConfig: {
+          baseUrl: 'https://openam-crbrl-01.forgeblocks.com/am/', // e.g. 'https://openam.example.com:9443/openam/'
+          timeout: 3000, // 90000 or less
+        },
+        realmPath: 'alpha', // e.g. 'root'
+        tree: 'Login', // e.g. 'Login'
       });
-      showStep('User')
-    }
 
-    const getStage = (step) => {
-      // Check if the step contains callbacks for capturing username and password
-      const usernameCallbacks = step.getCallbacksOfType('NameCallback');
-      const passwordCallbacks = step.getCallbacksOfType('PasswordCallback');
+      // Define custom handlers to render and submit each expected step
+      const handlers = {
+        UsernamePassword: (step) => {
+          const panel = document.querySelector('#UsernamePassword');
+          panel.querySelector('.btn').addEventListener('click', () => {
+            const nameCallback = step.getCallbackOfType('NameCallback');
+            const passwordCallback = step.getCallbackOfType('PasswordCallback');
+            nameCallback.setName(panel.querySelector('input[type=text]').value);
+            passwordCallback.setPassword(panel.querySelector('input[type=password]').value);
+            nextStep(step);
+          });
+        },
+        Error: (step) => {
+          document.querySelector('#Error span').innerHTML = step.getCode();
+        },
+        [FATAL]: (step) => {},
+      };
 
-      if (usernameCallbacks.length && passwordCallbacks.length) {
-        return "UsernamePassword";
-      }
+      // Show only the view for this handler
+      const showStep = (handler) => {
+        document.querySelectorAll('#steps > div').forEach((x) => x.classList.remove('active'));
+        const panel = document.getElementById(handler);
+        if (!panel) {
+          console.error(`No panel with ID "${handler}"" found`);
+          return false;
+        }
+        document.getElementById(handler).classList.add('active');
+        return true;
+      };
 
-      return undefined;
-    };
+      const showUser = (user) => {
+        document.querySelector('#User pre').innerHTML = JSON.stringify(user, null, 2);
+        const panel = document.querySelector('#User');
+        panel.querySelector('.btn').addEventListener('click', () => {
+          logout();
+        });
+        showStep('User');
+      };
 
-    // Display and bind the handler for this stage
-    const handleStep = async (step) => {
-      switch (step.type) {
-        case 'LoginSuccess':
-          // If we have a session token, get user information
-          const sessionToken = step.getSessionToken();
-          const tokens = await forgerock.TokenManager.getTokens();
-          const user = await forgerock.UserManager.getCurrentUser();
-          return showUser(user);
+      const getStage = (step) => {
+        // Check if the step contains callbacks for capturing username and password
+        const usernameCallbacks = step.getCallbacksOfType('NameCallback');
+        const passwordCallbacks = step.getCallbacksOfType('PasswordCallback');
 
-        case 'LoginFailure':
-          showStep('Error');
-          handlers['Error'](step);
-          return;
+        if (usernameCallbacks.length && passwordCallbacks.length) {
+          return 'UsernamePassword';
+        }
 
-        default:
-          const stage = getStage(step) || FATAL;
-          if (!showStep(stage)) {
-            showStep(FATAL);
-            handlers[FATAL](step);
-          } else {
-            handlers[stage](step);
-          }
-      }
-    }
+        return undefined;
+      };
 
-    const handleFatalError = (err) => {
-      console.error('Fatal error', err);
-      showStep(FATAL);
-    }
+      // Display and bind the handler for this stage
+      const handleStep = async (step) => {
+        switch (step.type) {
+          case 'LoginSuccess':
+            // If we have a session token, get user information
+            const sessionToken = step.getSessionToken();
+            const tokens = await forgerock.TokenManager.getTokens();
+            const user = await forgerock.UserManager.getCurrentUser();
+            return showUser(user);
 
-    // Get the next step using the FRAuth API
-    const nextStep = (step) => {
-      forgerock.FRAuth.next(step).then(handleStep).catch(handleFatalError);
-    }
+          case 'LoginFailure':
+            showStep('Error');
+            handlers['Error'](step);
+            return;
 
-    const logout = async () => {
-      try {
-        await forgerock.FRUser.logout();
-        location.reload(true);
-      } catch (error) {
-        console.error(error)
-      }
-    }
+          default:
+            const stage = getStage(step) || FATAL;
+            if (!showStep(stage)) {
+              showStep(FATAL);
+              handlers[FATAL](step);
+            } else {
+              handlers[stage](step);
+            }
+        }
+      };
 
-    // Begin the login flow
-    nextStep();
-  </script>
-</body>
+      const handleFatalError = (err) => {
+        console.error('Fatal error', err);
+        showStep(FATAL);
+      };
+
+      // Get the next step using the FRAuth API
+      const nextStep = (step) => {
+        forgerock.FRAuth.next(step).then(handleStep).catch(handleFatalError);
+      };
+
+      const logout = async () => {
+        try {
+          await forgerock.FRUser.logout();
+          location.reload(true);
+        } catch (error) {
+          console.error(error);
+        }
+      };
+
+      // Begin the login flow
+      nextStep();
+    </script>
+  </body>
 </html>

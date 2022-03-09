@@ -172,6 +172,7 @@ abstract class OAuth2Client {
 
     return {
       accessToken: responseObject.access_token,
+      expiresIn: responseObject.expires_in,
       idToken: responseObject.id_token,
       refreshToken: responseObject.refresh_token,
     };
