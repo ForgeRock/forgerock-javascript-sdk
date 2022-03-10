@@ -44,7 +44,8 @@ jobs:
         with:
           name: 'E2E Artifacts'
           retention-days: 5
-          path: ${{ env.GITHUB_WORKSPACE }}/**/test-results
+          path: |
+            ${{ env.GITHUB_WORKSPACE }}/e2e/**/test-results
 
   pr:
     runs-on: macos-latest
