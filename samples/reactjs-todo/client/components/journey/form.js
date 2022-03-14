@@ -108,6 +108,6 @@ export default function Form() {
       </form>
     );
   } else {
-    return <Alert message={step.payload.message} />;
+    return <Alert type={'error'} message={step.payload.message} />;
   }
 }
