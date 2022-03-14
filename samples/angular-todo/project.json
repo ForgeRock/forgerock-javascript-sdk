@@ -55,10 +55,10 @@
           "namedChunks": true
         }
       },
-      "defaultConfiguration": "production"
+      "defaultConfiguration": "development"
     },
     "serve": {
-      "executor": "@angular-devkit/build-angular:dev-server",
+      "executor": "@nrwl/angular:webpack-server",
       "options": {
         "open": true,
         "ssl": true,
@@ -86,6 +86,7 @@
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "options": {
+        "fix": true,
         "lintFilePatterns": [
           "samples/angular-todo/src/**/*.ts",
           "samples/angular-todo/src/**/*.html"

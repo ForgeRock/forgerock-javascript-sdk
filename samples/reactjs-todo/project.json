@@ -9,13 +9,13 @@
       "options": {
         "outputPath": "dist/samples/reactjs-todo",
         "generatePackageJson": true,
+        "generateIndexHtml": true,
         "index": "samples/reactjs-todo/public/index.html",
         "main": "samples/reactjs-todo/client/index.js",
         "tsConfig": "samples/reactjs-todo/tsconfig.app.json",
         "webpackConfig": "samples/reactjs-todo/webpack.config.js",
-        "stylePreprocessorOptions": {
-          "includePaths": ["samples/reactjs-todo/public", "samples/reactjs-todo/client"]
-        }
+        "optimization": false,
+        "styles": ["samples/reactjs-todo/client/styles/index.scss"]
       },
       "configurations": {}
     },
@@ -23,6 +23,7 @@
       "executor": "@nrwl/web:dev-server",
       "defaultConfiguration": "development",
       "options": {
+        "hmr": true,
         "buildTarget": "reactjs-todo:build",
         "open": true,
         "watch": true,
