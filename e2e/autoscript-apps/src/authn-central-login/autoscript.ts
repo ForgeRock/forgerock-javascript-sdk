@@ -102,7 +102,6 @@ function autoscript() {
       .subscribe({
         error: (err) => {
           console.log(`Error: ${err.message}`);
-          alert(err.message);
           document.body.innerHTML = `<p class="Test_Complete">${err.message}</p>`;
         },
         complete: () => {
