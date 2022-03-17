@@ -1,0 +1,24 @@
+{
+  "name": "@forgerock/autoscript-apps",
+  "dependencies": {
+    "rxjs": "^7.4.0"
+  },
+  "devDependencies": {
+    "core-js": "^3.21.1",
+    "html-webpack-plugin": "^4.5.2",
+    "regenerator-runtime": "0.13.7"
+  },
+  "version": "0.0.0",
+  "private": true,
+  "description": "apps for e2e on js sdk",
+  "main": "./src/index.ts",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ryanbas21/forgerock-javascript-sdk.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ryanbas21/forgerock-javascript-sdk/issues"
+  },
+  "homepage": "https://github.com/ryanbas21/forgerock-javascript-sdk#readme"
+}

@@ -13,7 +13,7 @@
     "cors": "^2.8.5",
     "express": "4.17.2",
     "pouchdb": "^7.2.2",
-    "superagent": "^6.1.0",
+    "superagent": "^7.0.1",
     "util": "^0.12.3",
     "uuid": "^8.3.2"
   }
