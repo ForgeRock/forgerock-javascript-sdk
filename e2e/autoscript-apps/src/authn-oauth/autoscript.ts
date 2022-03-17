@@ -14,6 +14,7 @@ import { from } from 'rxjs';
 
 function autoscript() {
   const delay = 0;
+  const tokenExpiredDelay = 2000;
 
   const url = new URL(window.location.href);
   const amUrl = url.searchParams.get('amUrl') || 'https://auth.example.com:9443/am';
@@ -23,6 +24,7 @@ function autoscript() {
   const un = url.searchParams.get('un') || 'sdkuser';
   const pw = url.searchParams.get('pw') || 'password';
   const tree = url.searchParams.get('tree') || 'UsernamePassword';
+  const oauthThreshold = url.searchParams.get('oauthThreshold');
 
   console.log('Configure the SDK');
   forgerock.Config.set({
@@ -47,6 +49,7 @@ function autoscript() {
     serverConfig: {
       baseUrl: amUrl,
     },
+    oauthThreshold: oauthThreshold,
   });
 
   try {
@@ -107,6 +110,21 @@ function autoscript() {
             console.log('New OAuth tokens retrieved');
           } else {
             throw new Error('Force_Renew_Error');
+          }
+          return newTokens;
+        },
+      ),
+      rxDelay(tokenExpiredDelay),
+      mergeMap(
+        (tokens) => {
+          console.log('Proactively refresh tokens if expiring soon');
+          return forgerock.TokenManager.getTokens();
+        },
+        (oldTokens, newTokens) => {
+          if (oldTokens.accessToken === newTokens.accessToken) {
+            console.log('OAuth tokens not expiring soon; not refreshed');
+          } else {
+            console.log('OAuth tokens expiring soon; proactively refreshed');
           }
           return newTokens;
         },

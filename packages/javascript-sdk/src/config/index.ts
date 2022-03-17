@@ -8,8 +8,20 @@
  * of the MIT license. See the LICENSE file for details.
  */
 
-import { DEFAULT_TIMEOUT } from './constants';
+import { DEFAULT_TIMEOUT, DEFAULT_OAUTH_THRESHOLD } from './constants';
 import { ConfigOptions, ServerConfig, ValidConfigOptions } from './interfaces';
+
+/**
+ * Sets defaults for options that are required but have no supplied value
+ * @param options The options to set defaults for
+ * @returns options The options with defaults
+ */
+function setDefaults(options: ConfigOptions): ConfigOptions {
+  return {
+    ...options,
+    oauthThreshold: options.oauthThreshold || DEFAULT_OAUTH_THRESHOLD,
+  };
+}
 
 /**
  * Utility for merging configuration defaults with one-off options.
@@ -43,7 +55,9 @@ abstract class Config {
     if (options.serverConfig) {
       this.validateServerConfig(options.serverConfig);
     }
-    this.options = { ...options };
+    this.options = {
+      ...setDefaults(options),
+    };
   }
 
   /**
