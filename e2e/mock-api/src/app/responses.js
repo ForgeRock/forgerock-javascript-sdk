@@ -115,6 +115,17 @@ export const idpChoiceCallback = {
     },
   ],
 };
+export const nameCallback = {
+  authId: 'foo',
+  callbacks: [
+    {
+      type: 'NameCallback',
+      output: [{ name: 'prompt', value: 'User Name' }],
+      input: [{ name: 'IDToken1', value: '' }],
+      _id: 0,
+    },
+  ],
+};
 
 export const initialBasicLogin = {
   authId: 'foo',
@@ -354,7 +365,42 @@ export const redirectCallback = {
     },
   ],
 };
-
+export const redirectCallbackSaml = {
+  authId: 'foo',
+  callbacks: [
+    {
+      type: 'RedirectCallback',
+      output: [
+        {
+          name: 'redirectUrl',
+          value:
+            // eslint-disable-next-line max-len
+            'https://user.example.com:9443/SAMLTest/',
+        },
+        { name: 'redirectMethod', value: 'GET' },
+        { name: 'trackingCookie', value: true },
+      ],
+    },
+  ],
+};
+export const redirectCallbackFailureSaml = {
+  authId: 'foo',
+  callbacks: [
+    {
+      type: 'RedirectCallback',
+      output: [
+        {
+          name: 'redirectUrl',
+          value:
+            // eslint-disable-next-line max-len
+            'https://user.example.com:9443/SAMLFailure',
+        },
+        { name: 'redirectMethod', value: 'GET' },
+        { name: 'trackingCookie', value: true },
+      ],
+    },
+  ],
+};
 export const initialAuthz = {
   authId: 'bar',
   callbacks: [
