@@ -15,10 +15,10 @@
   "license": "ISC",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ryanbas21/forgerock-javascript-sdk.git"
+    "url": "git+https://github.com/ForgeRock/forgerock-javascript-sdk.git"
   },
   "bugs": {
-    "url": "https://github.com/ryanbas21/forgerock-javascript-sdk/issues"
+    "url": "https://github.com/ForgeRock/forgerock-javascript-sdk/issues"
   },
-  "homepage": "https://github.com/ryanbas21/forgerock-javascript-sdk#readme"
+  "homepage": "https://github.com/ForgeRock/forgerock-javascript-sdk#readme"
 }

@@ -1,0 +1,43 @@
+{
+  "projectType": "application",
+  "root": "samples/embedded-login",
+  "sourceRoot": "samples/embedded-login/src",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nrwl/web:webpack",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/samples/embedded-login",
+        "compiler": "swc",
+        "index": "samples/embedded-login/src/index.html",
+        "baseHref": "/",
+        "main": "samples/embedded-login/src/main.js",
+        "tsConfig": "samples/embedded-login/tsconfig.app.json",
+        "assets": [],
+        "runtimeChunk": false,
+        "vendorChunk": false,
+        "styles": ["samples/embedded-login/src/styles.css"],
+        "scripts": [],
+        "webpackConfig": "samples/embedded-login/webpack.config.js"
+      }
+    },
+    "serve": {
+      "executor": "@nrwl/web:dev-server",
+      "options": {
+        "buildTarget": "embedded-login:build",
+        "port": 8443,
+        "ssl": true,
+        "open": true,
+        "host": "sdkapp.example.com"
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["samples/embedded-login/**/*.ts"]
+      }
+    }
+  }
+}

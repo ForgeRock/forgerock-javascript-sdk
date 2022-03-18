@@ -14,8 +14,11 @@
     "format:staged": "pretty-quick --staged",
     "lint": "nx affected --target=lint",
     "prepublishOnly": "npm run clean && npm i && npm run build && npm t",
+    "build:reactjs-todo": "nx run reactjs-todo:build",
     "start:e2e": "nx run autoscript-apps:serve",
-    "start:samples": "ws -d samples -p 8443 --cors.origin null --cors.credentials --https",
+    "start:embedded-login": "nx serve embedded-login",
+    "start:central-login": "nx serve central-login",
+    "start:reactjs-todo": "nx run-many --target=serve --projects=reactjs-todo, todo-api",
     "start:server": "nx run mock-api:serve",
     "start:server:live": "NODE_ENV=LIVE nx run mock-api:serve:live",
     "test": "npm run test:unit -- --skipNxCache && npm run test:integration -- --skipNxCache && npm run test:e2e -- --skipNxCache",
@@ -85,12 +88,9 @@
     "webpack-cli": "^4.7.2"
   },
   "workspaces": [
-    "samples/reactjs-todo",
-    "samples/todo-api",
-    "packages/javascript-sdk",
-    "e2e/autoscript-apps",
-    "e2e/autoscript-suites",
-    "e2e/mock-api"
+    "e2e/**",
+    "packages/**",
+    "samples/**"
   ],
   "dependencies": {
     "nx": "^13.1.4"

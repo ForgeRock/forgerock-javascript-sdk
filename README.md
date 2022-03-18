@@ -46,73 +46,19 @@ Use the SDKs to leverage _[Intelligent Authentication](https://www.forgerock.com
 npm install @forgerock/javascript-sdk
 ```
 
-<!------------------------------------------------------------------------------------------------------------------------------------>
-<!-- QUICK START - Get one of the included samples up and running in as few steps as possible. -->
-
-## Getting Started
-
-To try out the ForgeRock JavaScript SDK, perform these steps:
-
-1. Setup CORS support in an Access Management (AM) instance.
-
-   See [Enabling CORS Support](https://sdks.forgerock.com/js/01_prepare-am/#enabling-cors-support) in the Documentation.
-
-2. Create an authentication tree in AM.
-
-   See [Creating a User Authentication Tree](https://sdks.forgerock.com/js/01_prepare-am/#creating-a-user-authentication-tree) in the Documentation.
-
-3. Clone this repo:
-
-   ```
-   git clone https://github.com/ForgeRock/forgerock-javascript-sdk.git
-   ```
-
-4. In the root folder of the repo, use NPM to install dependencies:
-
-   ```
-   npm install
-   ```
-
-5. Build the ForgeRock JavaScript SDK:
-
-   ```
-   npm run build
-   ```
-
-6. Open `samples/embedded-login/index.html` and edit the configuration values to match your AM instance.
-
-7. Serve the `samples` directory by using a simple HTTP server.
-
-   - Run `npm run start:samples`
-
-8. Edit your `/etc/hosts` file to point your localhost (e.g. `127.0.0.1`) to `sdkapp.example.com`
-
-9. In a [supported web browser](#requirements), navigate to `https://sdkapp.example.com:8443`, and then click **Embedded Login**.
-
-<!------------------------------------------------------------------------------------------------------------------------------------>
-<!-- SAMPLES - List the samples we include with the SDKs, where they are, briefly what they show. -->
-
 ## Samples
 
 ForgeRock provides these samples to help demonstrate SDK functionality/implementation. They are provided "as is" and are not official products of ForgeRock and are not officially supported.
 
-- **Embedded login - `/samples/embedded-login`**
+To try out the ForgeRock JavaScript SDK please look at one of our samples:
 
-  In most real-world scenarios, you will want to have full control over the UI. In these cases, you can use `FRAuth` to obtain typed callback instances from authentication trees and render the UI in whatever way makes sense for your application.
+- [**Embedded login - `/samples/embedded-login`**](./samples/embedded-login/README.md)
 
-  You can run this sample app with the `npm run start:samples` command. Please [see the Getting Started instructions](#getting-started) for more details.
+- [**Central login - `/samples/central-login`**](./samples/embedded-login/README.md)
 
-- **Central login - `/samples/central-login`**
+- [**React Todo - `/samples/reactjs-todo`**](./samples/reactjs-todo/README.md).
 
-  In cases in which a centralized login application is desired, in contrast to an embedded login form, the SDK provides a method for leveraging an OAuth flow known as Authorization Code Flow (with PKCE). By using an option (login of "redirect") provided by `TokenManager` to request OAuth/OIDC tokens, when the user is not authenticated, the SDK will redirect the user to the configured login application with the ForgeRock platform. Once authenticated, the user will be redirected back to the original application to attain OAuth/OIDC tokens to complete the user flow.
-
-  You can run this sample app with the `npm run start:samples` command. Please [see the Getting Started instructions](#getting-started) for more details.
-
-- **React todos - `/samples/reactjs-todos`**
-
-  A sample React JS application is provided to demonstrate how the JavaScript SDK can be implemented within a React context. You can read more about this application by [visiting its README.md file](samples/reactjs-todo/README.md).
-
-  Since this sample app uses npm's workspaces feature, npm 7 or higher is required. When on npm 7+, dependencies are already installed when running `npm install`. You can run this sample app with: `npx nx run reactjs-todo:serve`.
+Since this sample app uses npm's workspaces feature, npm 7 or higher is required. When on npm 7+, dependencies are already installed when running `npm install`. You can run this sample app with: `npm run start:reactjs-todo`.
 
 <!------------------------------------------------------------------------------------------------------------------------------------>
 <!-- DOCS - Link off to the AM-centric documentation at sdks.forgerock.com. -->
