@@ -108,8 +108,13 @@ abstract class FRAuth {
   ): Promise<FRStep | FRLoginSuccess | FRLoginFailure> {
     const parsedUrl = new URL(url);
     const code = parsedUrl.searchParams.get('code');
+    const error = parsedUrl.searchParams.get('error');
+    const errorCode = parsedUrl.searchParams.get('errorCode');
+    const errorMessage = parsedUrl.searchParams.get('errorMessage');
     const form_post_entry = parsedUrl.searchParams.get('form_post_entry');
     const nonce = parsedUrl.searchParams.get('nonce');
+    const RelayState = parsedUrl.searchParams.get('RelayState');
+    const responsekey = parsedUrl.searchParams.get('responsekey');
     const scope = parsedUrl.searchParams.get('scope');
     const state = parsedUrl.searchParams.get('state');
     const suspendedId = parsedUrl.searchParams.get('suspendedId');
@@ -117,7 +122,7 @@ abstract class FRAuth {
     let previousStep;
 
     function requiresPreviousStep() {
-      return (code && state) || form_post_entry;
+      return (code && state) || form_post_entry || responsekey;
     }
 
     /**
@@ -149,13 +154,19 @@ abstract class FRAuth {
       ...options,
       query: {
         // Conditionally spread properties into object. Don't spread props with undefined/null.
-        ...(options && options.query),
         ...(code && { code }),
+        ...(error && { error }),
+        ...(errorCode && { errorCode }),
+        ...(errorMessage && { errorMessage }),
         ...(form_post_entry && { form_post_entry }),
         ...(nonce && { nonce }),
+        ...(RelayState && { RelayState }),
+        ...(responsekey && { responsekey }),
         ...(scope && { scope }),
         ...(state && { state }),
         ...(suspendedId && { suspendedId }),
+        // Allow developer to add or override params with their own.
+        ...(options && options.query),
       },
     };
 
