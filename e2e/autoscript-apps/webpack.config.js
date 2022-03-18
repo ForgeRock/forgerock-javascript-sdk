@@ -20,6 +20,7 @@ const pages = [
   'authn-no-session',
   'authn-oauth',
   'authn-platform',
+  'authn-saml',
   'authn-second-factor',
   'authn-social-login-am',
   'authn-social-login-idm',

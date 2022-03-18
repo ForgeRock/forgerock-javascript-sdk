@@ -61,5 +61,5 @@ export const authPaths = {
     '/am/json/realms/root/realms/tokens-expiring-soon/sessions',
     '/am/json/realms/root/realms/tokens-expired/sessions',
   ],
-  accounts: ['/o/oauth2/v2/auth'],
+  accounts: ['/o/oauth2/v2/auth', '/SAMLFailure', '/SAMLTest'],
 };
