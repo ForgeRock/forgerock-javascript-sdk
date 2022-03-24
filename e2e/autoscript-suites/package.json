@@ -1,17 +1,15 @@
 {
-  "name": "@forgerock/autoscript-apps",
-  "dependencies": {
-    "rxjs": "^7.4.0"
-  },
+  "name": "@forgerock/autoscript-suites",
+  "description": "ForgeRock JavaScript SDK E2E Suites",
+  "private": true,
   "devDependencies": {
-    "core-js": "^3.21.1",
-    "html-webpack-plugin": "^4.5.2",
-    "regenerator-runtime": "0.13.7"
+    "concurrently": "^6.4.0",
+    "@playwright/test": "^1.19.2",
+    "playwright": "^1.19.2"
   },
   "version": "0.0.0",
-  "private": true,
-  "description": "apps for e2e on js sdk",
-  "main": "./src/index.ts",
+  "main": "index.js",
+  "author": "",
   "license": "ISC",
   "repository": {
     "type": "git",

@@ -54,26 +54,6 @@
           "passWithNoTests": true
         }
       }
-    },
-    "deploy": {
-      "executor": "ngx-deploy-npm:deploy",
-      "options": {
-        "access": "public",
-        "noBuild": true,
-        "dryRun": true
-      },
-      "configurations": {
-        "alpha": {
-          "tag": "alpha",
-          "access": "public",
-          "dryRun": true
-        },
-        "beta": {
-          "tag": "alpha",
-          "access": "public",
-          "dryRun": true
-        }
-      }
     }
   },
   "tags": []
