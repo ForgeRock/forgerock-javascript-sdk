@@ -54,9 +54,9 @@ To try out the ForgeRock JavaScript SDK please look at one of our samples:
 
 - [**Embedded login - `/samples/embedded-login`**](./samples/embedded-login/README.md)
 
-- [**Central login - `/samples/central-login`**](./samples/embedded-login/README.md)
+- [**Central login - `/samples/central-login`**](./samples/central-login/README.md)
 
-- [**React Todo - `/samples/reactjs-todo`**](./samples/reactjs-todo/README.md).
+- [**React Todo - `/samples/reactjs-todo`**](./samples/reactjs-todo/README.md)
 
 Since this sample app uses npm's workspaces feature, npm 7 or higher is required. When on npm 7+, dependencies are already installed when running `npm install`. You can run this sample app with: `npm run start:reactjs-todo`.
 
