@@ -66,7 +66,7 @@ export async function setupAndGo(
     console.log(url.toString());
   }
 
-  await page.goto(url.toString());
+  await page.goto(url.toString(), { waitUntil: 'commit' });
 
   // Listen for events on page
   page.on('console', async (msg) => {

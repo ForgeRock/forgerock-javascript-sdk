@@ -46,6 +46,8 @@ jobs:
           retention-days: 5
           path: |
             ${{ env.GITHUB_WORKSPACE }}/e2e/**/test-results
+            test-results
+            ${{ env.GITHUB_WORKSPACE }}/test-results
 
   pr:
     runs-on: macos-latest
@@ -105,6 +107,8 @@ jobs:
           retention-days: 5
           path: |
             ${{ env.GITHUB_WORKSPACE }}/e2e/**/test-results
+            test-results
+            ${{ env.GITHUB_WORKSPACE }}/test-results
 
   agents:
     runs-on: macos-latest

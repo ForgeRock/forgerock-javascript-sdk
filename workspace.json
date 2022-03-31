@@ -6,6 +6,8 @@
     "javascript-sdk": "packages/javascript-sdk",
     "mock-api": "e2e/mock-api",
     "reactjs-todo": "samples/reactjs-todo",
+    "central-login": "samples/central-login",
+    "embedded-login": "samples/embedded-login",
     "todo-api": "samples/todo-api"
   }
 }

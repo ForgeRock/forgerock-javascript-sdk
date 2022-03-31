@@ -1,20 +1,19 @@
 {
-  "name": "@forgerock/autoscript-suites",
-  "description": "ForgeRock JavaScript SDK E2E Suites",
-  "private": true,
-  "devDependencies": {
-    "concurrently": "^6.4.0",
-    "@playwright/test": "^1.19.2",
-    "playwright": "^1.19.2"
-  },
+  "name": "central-login",
   "version": "0.0.0",
-  "main": "index.js",
-  "author": "",
-  "license": "ISC",
+  "description": "Central Login Sample Application",
+  "private": true,
+  "dependencies": {
+    "core-js": "^3.6.5",
+    "regenerator-runtime": "0.13.7",
+    "tslib": "^2.0.0"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ForgeRock/forgerock-javascript-sdk.git"
   },
+  "author": "",
+  "license": "ISC",
   "bugs": {
     "url": "https://github.com/ForgeRock/forgerock-javascript-sdk/issues"
   },

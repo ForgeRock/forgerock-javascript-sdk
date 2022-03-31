@@ -74,7 +74,7 @@ npm install
 
 # run sample app project
 # only if you want to see the app build, the serve command will do this for you
-npx nx run reactjs-todo:build:dev
+npm run build:reactjs-todo
 ```
 
 ### Update Your `/etc/hosts` File
@@ -96,13 +96,7 @@ Now, run the below commands to start the processes needed for building the appli
 
 ```sh
 # In one terminal window, run the following watch command
-# This "watches" the client source files for changes and rebuilds when needed
-npx nx run reactjs-todo:serve
-```
-
-```sh
-# In another terminal window, run the dev servers for both client and server
-npx nx run todo-api:serve
+npm run start:reactjs-todo
 ```
 
 Now, you should be able to visit `https://react.example.com:8443`, which is your web app or client (the Relying Party in OAuth terms). This client will make requests to your AM instance, (the Authorization Server in OAuth terms), which will be running on whatever domain you set, and `https://api.example.com:9443` as the REST API for your todos (the Resource Server).

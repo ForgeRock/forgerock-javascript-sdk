@@ -348,6 +348,10 @@ export default function (app) {
         url.searchParams.set('state', req.query.state);
         res.redirect(url);
       } else if (req.headers.accept.includes('html')) {
+        // we set auth because we are mimicking the html document from central login
+        // this helps our test know it is ready to evaluate the page
+        // and not to evaluate when we have the 401 below
+        url.searchParams.set('auth', true);
         res.redirect(url);
       } else {
         res.status(401).send('Unauthorized');

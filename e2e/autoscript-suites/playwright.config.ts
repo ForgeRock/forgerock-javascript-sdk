@@ -3,7 +3,7 @@ import { PlaywrightTestConfig, devices } from '@playwright/test';
 const config: PlaywrightTestConfig = {
   forbidOnly: !!process.env.CI,
   globalTeardown: './teardown.ts',
-  workers: process.env.CI ? 2 : 8,
+  workers: process.env.CI ? 2 : 2,
   retries: process.env.CI ? 2 : 0,
   testDir: './src/suites',
   webServer: {
@@ -21,7 +21,7 @@ const config: PlaywrightTestConfig = {
     geolocation: { latitude: 24.9884, longitude: -87.3459 },
     permissions: [],
     bypassCSP: true,
-    trace: 'on-first-retry',
+    trace: 'retain-on-failure',
   },
   projects: [
     {

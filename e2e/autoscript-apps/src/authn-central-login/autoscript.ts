@@ -25,6 +25,9 @@ function autoscript() {
   const state = url.searchParams.get('state') || '';
   const support = url.searchParams.get('support') || 'legacy';
   const acr_values = url.searchParams.get('acr') || 'SpecificTree';
+  // in central login we use an auth query param for the return of our mock 401 request
+  // this is to prevent the evaluation of the page before we have technically authenticated
+  const auth = url.searchParams.get('auth') || false;
 
   console.log('Configure the SDK');
   forgerock.Config.set({
@@ -67,7 +70,6 @@ function autoscript() {
         }),
         rxDelay(delay),
         mergeMap((step) => {
-          console.log('Get OAuth tokens');
           let tokens;
           if (code && state) {
             tokens = forgerock.TokenManager.getTokens({
@@ -82,7 +84,6 @@ function autoscript() {
           }
           return tokens;
         }),
-        rxDelay(delay),
         map((tokens) => {
           if (tokens.accessToken) {
             console.log('OAuth authorization successful');
@@ -101,6 +102,16 @@ function autoscript() {
       )
       .subscribe({
         error: (err) => {
+          /*
+           * We added this because Playwright was too fast for the dom element.
+           * When we make a request to central login we have to force a 401 page to mimick the real life scenario of the page being requested
+           * If we do this, we append a query param of auth to make sure we don't complete the flow until we are redirected from that page
+           * By saying we have !auth query param value, we are essentially mimicking the idea that we are waiting for the central login redirect
+           * to complete the redirect.
+           */
+          if (!auth) {
+            return;
+          }
           console.log(`Error: ${err.message}`);
           document.body.innerHTML = `<p class="Test_Complete">${err.message}</p>`;
         },

@@ -1,0 +1,14 @@
+/* You can add global styles to this file, and also import other style files */
+body {
+  padding: 2rem;
+}
+#steps {
+  position: relative;
+}
+#steps > * {
+  left: -20000px;
+  position: absolute;
+}
+#steps > .active {
+  left: 0;
+}
