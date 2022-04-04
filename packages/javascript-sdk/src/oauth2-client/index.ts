@@ -170,10 +170,16 @@ abstract class OAuth2Client {
       throw new Error('Access token not found in response');
     }
 
+    let tokenExpiry: number | undefined = undefined;
+    if (responseObject.expires_in) {
+      tokenExpiry = Date.now() + responseObject.expires_in * 1000;
+    }
+
     return {
       accessToken: responseObject.access_token,
       idToken: responseObject.id_token,
       refreshToken: responseObject.refresh_token,
+      tokenExpiry: tokenExpiry,
     };
   }
 

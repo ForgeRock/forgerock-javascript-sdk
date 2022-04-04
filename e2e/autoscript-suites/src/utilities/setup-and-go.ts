@@ -35,6 +35,7 @@ export async function setupAndGo(
     tokenStore?: string;
     tree?: string;
     un?: string;
+    oauthThreshold?: string;
   },
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): Promise<{ messageArray: string[]; networkArray: string[] }> {
@@ -59,6 +60,7 @@ export async function setupAndGo(
   url.searchParams.set('tokenStore', (config && config.tokenStore) || '');
   url.searchParams.set('tree', (config && config.tree) || '');
   url.searchParams.set('un', (config && config.un) || USERS[0].un);
+  url.searchParams.set('oauthThreshold', (config && config.oauthThreshold) || '');
 
   // log out the URL used for the test, but only for chromium;
   // the other browser URLs would just be duplicates

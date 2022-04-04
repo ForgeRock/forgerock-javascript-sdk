@@ -17,6 +17,7 @@ import PKCE from '../util/pkce';
 import { withTimeout } from '../util/timeout';
 import { parseQuery } from '../util/url';
 import { ActionTypes } from '../config/enums';
+import { tokensWillExpireWithinThreshold } from './helpers';
 
 interface GetTokensOptions extends ConfigOptions {
   forceRenew?: boolean;
@@ -67,7 +68,9 @@ abstract class TokenManager {
    */
   public static async getTokens(options?: GetTokensOptions): Promise<OAuth2Tokens | void> {
     let tokens: OAuth2Tokens | null = null;
-    const { clientId, middleware, serverConfig, support } = Config.get(options as ConfigOptions);
+    const { clientId, middleware, serverConfig, support, oauthThreshold } = Config.get(
+      options as ConfigOptions,
+    );
 
     /**
      * First, let's see if tokens exist locally
@@ -79,15 +82,20 @@ abstract class TokenManager {
     }
 
     /**
-     * If tokens are stored and no option for `forceRenew` or `query` object with `code`,
+     * If tokens are stored, no option for `forceRenew` or `query` object with `code`, and do not expire within the configured threshold,
      * immediately return the stored tokens
      */
-    if (tokens && !options?.forceRenew && !options?.query?.code) {
+    if (
+      tokens &&
+      !options?.forceRenew &&
+      !options?.query?.code &&
+      !tokensWillExpireWithinThreshold(oauthThreshold, tokens.tokenExpiry)
+    ) {
       return tokens;
     }
 
     /**
-     * If we are still here because of forceRenew or we have an authorization code,
+     * If we are still here because of forceRenew or we have an authorization code, or the tokens expire within the configured threshold,
      * revoke and delete existing tokens to prepare for the new ones
      */
     if (tokens) {

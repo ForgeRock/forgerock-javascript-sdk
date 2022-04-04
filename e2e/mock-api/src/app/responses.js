@@ -18,6 +18,22 @@ export const oauthTokens = {
   expires_in: 3598,
 };
 
+export const oauthTokensExpiringSoon = {
+  access_token: 'baz',
+  scope: 'openid profile me.read',
+  id_token: 'mox',
+  token_type: 'Bearer',
+  expires_in: 20,
+};
+
+export const oauthTokensExpired = {
+  access_token: 'baz',
+  scope: 'openid profile me.read',
+  id_token: 'mox',
+  token_type: 'Bearer',
+  expires_in: 1,
+};
+
 export const authFail = {
   code: 401,
   message: 'Authentication Failed For Given Credentials',

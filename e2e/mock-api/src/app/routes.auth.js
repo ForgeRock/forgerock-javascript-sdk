@@ -33,6 +33,8 @@ import {
   secondFactorChoiceCallback,
   selectIdPCallback,
   userInfo,
+  oauthTokensExpiringSoon,
+  oauthTokensExpired,
 } from './responses';
 import initialRegResponse from './response.registration';
 import wait from './wait';
@@ -289,6 +291,12 @@ export default function (app) {
       } else {
         res.status(406).send('Middleware header is missing.');
       }
+    } else if (req.path.includes('tokens-expiring-soon')) {
+      const tokensExpiringSoon = { ...oauthTokensExpiringSoon, access_token };
+      res.json(tokensExpiringSoon);
+    } else if (req.path.includes('tokens-expired')) {
+      const tokensExpired = { ...oauthTokensExpired, access_token };
+      res.json(tokensExpired);
     } else {
       res.json(tokens);
     }
