@@ -1,6 +1,7 @@
 {
   "version": 2,
   "projects": {
+    "angular-todo": "samples/angular-todo",
     "autoscript-apps": "e2e/autoscript-apps",
     "autoscript-suites": "e2e/autoscript-suites",
     "javascript-sdk": "packages/javascript-sdk",

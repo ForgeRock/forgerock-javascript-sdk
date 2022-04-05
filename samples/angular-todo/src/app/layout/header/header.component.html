@@ -1,0 +1,106 @@
+<!--
+angular-todo-prototype
+
+header.component.html
+
+Copyright (c) 2021 ForgeRock. All rights reserved.
+This software may be modified and distributed under the terms
+of the MIT license. See the LICENSE file for details.
+-->
+
+<nav class="navbar navbar-expand navbar-light bg-white py-0 border-bottom">
+  <div class="cstm_container container-fluid d-flex align-items-stretch">
+    <a
+      [routerLink]="'/'"
+      class="cstm_navbar-brand navbar-brand py-3 pe-4 me-4"
+      [ngClass]="{
+        'cstm_navbar-brand_auth d-none d-sm-none d-md-block': userService.isAuthenticated
+      }"
+    >
+      <app-forgerock-icon size="31px"></app-forgerock-icon> +
+      <app-angular-icon size="40px"></app-angular-icon>
+    </a>
+    <div class="navbar-collapse d-flex align-items-stretch" id="navbarNav">
+      <!--
+        Show simple navigation with login / register links, or links relevant to current route
+      -->
+      <ng-container [ngTemplateOutlet]="userService.info ? navigation : loginOrRegister">
+        <ng-template #navigation>
+          <!--
+            Show navigation links relevant to the current route
+          -->
+          <ul class="navbar-nav d-flex align-items-stretch me-auto">
+            <li
+              key="home"
+              class="cstm_nav-item nav-item mx-1"
+              [ngClass]="{
+                'cstm_nav-item_active': router.url === '/' || router.url === '/home'
+              }"
+            >
+              <a
+                class="cstm_nav-link nav-link d-flex align-items-center h-100 p-0 ps-1"
+                [routerLink]="'/home'"
+              >
+                <app-home-icon></app-home-icon>
+                <span class="px-2 fs-6">Home</span>
+              </a>
+            </li>
+            <li
+              key="todos"
+              class="cstm_nav-item nav-item mx-1"
+              [ngClass]="{ 'cstm_nav-item_active': router.url === '/todos' }"
+            >
+              <a
+                class="cstm_nav-link nav-link d-flex align-items-center h-100 p-0 ps-2"
+                [routerLink]="'/todos'"
+              >
+                <app-todos-icon></app-todos-icon>
+                <span class="px-2 fs-6">Todos</span>
+              </a>
+            </li>
+          </ul>
+
+          <div class="d-flex align-items-center">
+            <div class="dropdown text-end">
+              <button
+                aria-expanded="false"
+                class="btn h-auto p-0"
+                data-bs-toggle="dropdown"
+                id="account_dropdown"
+              >
+                <app-account-icon size="48px"></app-account-icon>
+              </button>
+              <ul
+                class="dropdown-menu dropdown-menu-end shadow-sm pb-0"
+                aria-labelledby="account_dropdown"
+              >
+                <!--
+                  Show user info from user service
+                -->
+                <li>
+                  <div class="dropdown-header border-bottom">
+                    <p class="fw-bold fs-6 mb-0 text-dark">
+                      {{ userService.info.name }}
+                    </p>
+                    <p class="mb-2">{{ userService.info.email }}</p>
+                  </div>
+                </li>
+                <li>
+                  <a class="dropdown-item py-2" [routerLink]="'/logout'"> Sign Out </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </ng-template>
+
+        <ng-template #loginOrRegister>
+          <ul class="navbar-nav d-flex align-items-stretch me-auto"></ul>
+          <div class="d-flex py-3">
+            <a [routerLink]="'/login'" class="cstm_login-link py-2 px-3 mx-1"> Sign In </a>
+            <a class="btn btn-primary" [routerLink]="'/register'"> Sign Up </a>
+          </div>
+        </ng-template>
+      </ng-container>
+    </div>
+  </div>
+</nav>

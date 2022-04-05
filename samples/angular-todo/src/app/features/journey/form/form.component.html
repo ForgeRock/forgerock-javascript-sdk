@@ -1,0 +1,171 @@
+<!--
+angular-todo-prototype
+
+form.component.html
+
+Copyright (c) 2021 ForgeRock. All rights reserved.
+This software may be modified and distributed under the terms
+of the MIT license. See the LICENSE file for details.
+-->
+
+<!--
+  Render conditions for presenting appropriate views to user.
+  First, we need to handle no "step", which means we are waiting for the initial response from AM for authentication.
+  Once we have a step, we then need to ensure we don't already have a success or failure. If we have a step but don't have a success or failure, we will likely have callbacks that we will need to present to the user in their render component form.
+-->
+<ng-container
+  [ngTemplateOutlet]="
+    success ? successMessage : failure ? failureMessage : step ? callbacks : loading
+  "
+>
+  <ng-template #loading>
+    <!--
+      Since there is no step information we need to call AM to retrieve the instructions for rendering the login form.
+    -->
+    <app-loading [message]="'Checking your session ...'"></app-loading>
+  </ng-template>
+
+  <ng-template #successMessage>
+    <!--
+      Since we have successfully authenticated, show a success message to user while we complete the process and redirect to home page.
+    -->
+    <app-loading [message]="'Success! Redirecting ...'"></app-loading>
+  </ng-template>
+
+  <ng-template #failureMessage>
+    <!--
+      We have failed to authenticate, show a failure message to the user.
+    -->
+    <app-alert [message]="failure?.getMessage()" [type]="'error'"></app-alert>
+  </ng-template>
+
+  <ng-template #callbacks>
+    <!--
+     The step to render has callbacks, so we need to collect additional data from user. Show a form for the callbacks in this step.
+    -->
+    <div>
+      <h1 class="text-center fs-2 mb-3" *ngIf="title">{{ title }}</h1>
+      <div id="callbacks">
+        <form #callbackForm (ngSubmit)="nextStep(step)" ngNativeValidate class="cstm_form">
+          <!--
+            Iterate through callbacks received from AM and invoke the callback to the appropriate callback component.
+            The input to each component will be the callback and callback name, and the outputs will be the events emitted by the component.
+            Events emitted by each component are handled by an expression mapping them to SDK functions, e.g. to set the password on the callback using the emitted value.
+          -->
+          <div *ngFor="let callback of step?.callbacks" v-bind:key="callback.payload._id">
+            <!--
+            ************************************************************************
+            * SDK INTEGRATION POINT
+            * Summary:SDK callback method for getting the callback type
+            * ----------------------------------------------------------------------
+            * Details: This method is helpful in quickly identifying the callback
+            * when iterating through an unknown list of AM callbacks
+            ************************************************************************
+            -->
+
+            <container-element [ngSwitch]="callback.getType()">
+              <!--
+                ***************************************************************************
+                * SDK INTEGRATION POINT
+                * Summary: SDK callback methods for setting values
+                * ------------------------------------------------------------------------
+                * Details: Each callback is wrapped by the SDK to provide helper methods
+                * for writing values to the callbacks received from AM
+                ***************************************************************************
+              -->
+
+              <!--
+                Any callbacks of type NameCallback, ValidatedCreateUsernameCallback, and StringAttributeInputCallback can all be handled by the Text component.
+              -->
+              <app-text
+                *ngSwitchCase="'NameCallback'"
+                [callback]="$any(callback)"
+                [name]="callback?.payload?.input?.[0]?.name"
+                (updatedCallback)="$any(callback).setName($event)"
+              ></app-text>
+              <app-text
+                *ngSwitchCase="'ValidatedCreateUsernameCallback'"
+                [callback]="$any(callback)"
+                [name]="callback?.payload?.input?.[0]?.name"
+                (updatedCallback)="$any(callback).setName($event)"
+              ></app-text>
+              <app-text
+                *ngSwitchCase="'StringAttributeInputCallback'"
+                [callback]="$any(callback)"
+                [name]="callback?.payload?.input?.[0]?.name"
+                (updatedCallback)="$any(callback).setValue($event)"
+              ></app-text>
+
+              <!--
+                Any callbacks of type PasswordCallback or ValidatedCreatePasswordCallback can all be handled by the Text component
+              -->
+              <app-password
+                *ngSwitchCase="'PasswordCallback'"
+                [callback]="$any(callback)"
+                [name]="callback?.payload?.input?.[0]?.name"
+                (updatedCallback)="$any(callback).setPassword($event)"
+              ></app-password>
+              <app-password
+                *ngSwitchCase="'ValidatedCreatePasswordCallback'"
+                [callback]="$any(callback)"
+                [name]="callback?.payload?.input?.[0]?.name"
+                (updatedCallback)="$any(callback).setPassword($event)"
+              ></app-password>
+
+              <!--
+                Handle a BooleanAttributeInputCallback using the Boolean component.
+              -->
+              <app-boolean
+                *ngSwitchCase="'BooleanAttributeInputCallback'"
+                [callback]="$any(callback)"
+                [name]="callback?.payload?.input?.[0]?.name"
+                (updatedCallback)="$any(callback).setValue($event)"
+              ></app-boolean>
+
+              <!--
+                Handle a ChoiceCallback using the Choice component.
+              -->
+              <app-choice
+                *ngSwitchCase="'ChoiceCallback'"
+                [callback]="$any(callback)"
+                [name]="callback?.payload?.input?.[0]?.name"
+                (updatedCallback)="$any(callback).setChoiceValue($event)"
+              ></app-choice>
+
+              <!--
+                Handle a TermsAndConditionsCallback using the TermsConditions component.
+              -->
+              <app-terms-conditions
+                *ngSwitchCase="'TermsAndConditionsCallback'"
+                [callback]="$any(callback)"
+                [name]="callback?.payload?.input?.[0]?.name"
+                (updatedCallback)="$any(callback).setAccepted($event)"
+              ></app-terms-conditions>
+
+              <!--
+                Handle a KbaCreateCallback using the Kba component.
+                Emitted questions and answers are used to set the values on the callback.
+              -->
+              <app-kba
+                *ngSwitchCase="'KbaCreateCallback'"
+                [callback]="$any(callback)"
+                [name]="callback?.payload?.input?.[0]?.name"
+                (setQuestion)="$any(callback).setQuestion($event)"
+                (setAnswer)="$any(callback).setAnswer($event)"
+              ></app-kba>
+
+              <!--
+                 If current callback is not supported, render a warning message
+              -->
+              <app-unknown *ngSwitchDefault [callback]="callback"></app-unknown>
+            </container-element>
+          </div>
+          <!--
+            Show a button to submit the form
+          -->
+          <app-button [buttonText]="buttonText" [submittingForm]="submittingForm"></app-button>
+        </form>
+      </div>
+    </div>
+  </ng-template>
+</ng-container>

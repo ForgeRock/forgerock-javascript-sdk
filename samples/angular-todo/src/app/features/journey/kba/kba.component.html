@@ -1,0 +1,68 @@
+<!--
+angular-todo-prototype
+
+kba.component.html
+
+Copyright (c) 2021 ForgeRock. All rights reserved.
+This software may be modified and distributed under the terms
+of the MIT license. See the LICENSE file for details.
+-->
+
+<div>
+  <hr class="cstm_hr d-flex mt-5" />
+  <div class="cstm_hr-lock_light d-flex justify-content-center">
+    <app-lock-icon></app-lock-icon>
+  </div>
+  <h2 class="fs-6 mt-5 fw-normal">Provide security question(s) & answer(s) below</h2>
+  <div class="cstm_form-floating form-floating mb-3">
+    <select
+      class="cstm_form-select form-select bg-transparent"
+      [id]="name"
+      [name]="name"
+      (input)="questionSet($event)"
+      required="true"
+    >
+      <option value="">No selection</option>
+
+      <!--
+        ****************************************************************************
+        * SDK INTEGRATION POINT
+        * Summary: SDK callback methods for getting values
+        * --------------------------------------------------------------------------
+        * Details: Each callback is wrapped by the SDK to provide helper methods
+        * for accessing values from the callbacks received from AM
+        ****************************************************************************
+      -->
+      <option
+        *ngFor="let question of callback?.getPredefinedQuestions()"
+        v-bind:key="question"
+        [selected]="callback?.payload?.input?.[0]?.value === question"
+      >
+        {{ question }}
+      </option>
+    </select>
+    <label [for]="name">{{ callback?.getPrompt() }}</label>
+  </div>
+  <div class="cstm_form-floating form-floating pb-5 mb-5 border-bottom pb-3">
+    <!--
+      ****************************************************************************
+      * SDK INTEGRATION POINT
+      * Summary: SDK callback methods for getting values
+      * --------------------------------------------------------------------------
+      * Details: Each callback is wrapped by the SDK to provide helper methods
+      * for accessing values from the callbacks received from AM
+      ****************************************************************************
+    -->
+    <input
+      class="cstm_form-control form-control bg-transparent"
+      [id]="callback?.payload?.input?.[1]?.name"
+      [name]="callback?.payload?.input?.[1]?.name"
+      (input)="answerSet($event)"
+      placeholder="Security Answer"
+      required="true"
+      type="text"
+      [defaultValue]="callback?.payload?.input?.[1]?.value"
+    />
+    <label [for]="callback?.payload?.input?.[1]?.name">Security Answer</label>
+  </div>
+</div>
