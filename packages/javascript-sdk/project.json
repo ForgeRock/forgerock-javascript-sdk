@@ -44,13 +44,15 @@
       "outputs": ["coverage/packages/javascript-sdk"],
       "options": {
         "jestConfig": "packages/javascript-sdk/jest.unit.config.js",
+        "codeCoverage": true,
         "passWithNoTests": true
       },
       "configurations": {
         "unit": {},
         "integration": {
           "jestConfig": "packages/javascript-sdk/jest.integration.config.js",
-          "passWithNoTests": true
+          "passWithNoTests": true,
+          "codeCoverage": true
         }
       }
     }

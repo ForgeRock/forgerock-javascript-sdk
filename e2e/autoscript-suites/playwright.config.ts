@@ -26,15 +26,42 @@ const config: PlaywrightTestConfig = {
   projects: [
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      use: {
+        ...devices['Desktop Chrome'],
+        ...devices['Desktop Chrome HiDPI'],
+        ...devices['Desktop Edge'],
+        ...devices['Desktop Edge HiDPI'],
+      },
     },
     {
       name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
+      use: { ...devices['Desktop Firefox'], ...devices['Desktop Firefox HiDPI'] },
     },
     {
       name: 'webkit',
-      use: { ...devices['Desktop Safari'] },
+      use: { ...devices['Desktop Safari'], ...devices['iPad (gen 7)'] },
+    },
+    {
+      name: 'Android Web',
+      use: {
+        ...devices['Pixel 4a (5G) landscape'],
+        ...devices['Pixel 4a (5G)'],
+        ...devices['Pixel 5'],
+        ...devices['Pixel 5 landscape'],
+      },
+    },
+    {
+      name: 'Apple Mobile',
+      use: {
+        ...devices['iPhone X'],
+        ...devices['iPhone XR'],
+        ...devices['iPhone XR landscape'],
+        ...devices['iPhone SE landscape'],
+        ...devices['iPhone SE'],
+        ...devices['iPhone X landscape'],
+        ...devices['iPhone 13 Pro Max'],
+        ...devices['iPhone 13 Pro Max landscape'],
+      },
     },
   ],
 };
