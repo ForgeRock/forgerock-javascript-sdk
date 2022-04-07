@@ -17,7 +17,7 @@
     "start:e2e": "nx run autoscript-apps:serve",
     "start:embedded-login": "nx serve embedded-login",
     "start:central-login": "nx serve central-login",
-    "start:reactjs-todo": "nx run-many --target=serve --projects=reactjs-todo, todo-api",
+    "start:reactjs-todo": "nx run-many --target=serve --projects=reactjs-todo,todo-api",
     "start:server": "nx run mock-api:serve",
     "start:server:live": "NODE_ENV=LIVE nx run mock-api:serve:live",
     "test": "npm run test:unit && npm run test:integration && npm run test:e2e",

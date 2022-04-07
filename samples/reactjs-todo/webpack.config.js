@@ -41,6 +41,7 @@ module.exports = (config) => {
         overlay: false,
       },
       port: 8443,
+      host: 'react.example.com',
     },
   };
   return conf;
