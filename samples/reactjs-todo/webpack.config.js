@@ -25,23 +25,21 @@ module.exports = (config) => {
   );
   const conf = {
     ...config,
-    plugins: config.plugins.slice(1),
-    devtool: 'source-map',
-
     devServer: {
       ...config.devServer,
+      client: {
+        logging: 'none',
+        overlay: false,
+      },
+      compress: true,
       headers: {
         'Access-Control-Allow-Credentials': true,
         'Access-Control-Allow-Origin': 'null',
       },
       server: 'https',
-      compress: true,
-      client: {
-        logging: 'none',
-        overlay: false,
-      },
-      port: 8443,
     },
+    devtool: 'source-map',
+    plugins: config.plugins.slice(1),
   };
   return conf;
 };
