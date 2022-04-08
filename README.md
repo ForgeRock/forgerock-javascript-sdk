@@ -29,11 +29,15 @@ Use the SDKs to leverage _[Intelligent Authentication](https://www.forgerock.com
   - Access Management (AM) 6.5.2+
 
 - Browsers:
+
   - Chrome 87
   - Firefox 84
   - Safari 14
   - Edge 87 (Chromium)
   - Edge 44 (Legacy): requires one polyfill for TextEncoder, [`fast-text-encoding` is recommended](https://www.npmjs.com/package/fast-text-encoding)
+
+- npm
+  - npm 7+ is required to use this project and the sample apps, since npm workspaces are used to install dependencies in sub-projects such as the sample apps
 
 > **Tip**: Older browsers (like IE11) may require multiple [polyfills, which can be found in our documentation](https://sdks.forgerock.com/javascript/polyfills/).
 
@@ -58,7 +62,7 @@ To try out the ForgeRock JavaScript SDK please look at one of our samples:
 
 - [**React Todo - `/samples/reactjs-todo`**](./samples/reactjs-todo/README.md)
 
-Since this sample app uses npm's workspaces feature, npm 7 or higher is required. When on npm 7+, dependencies are already installed when running `npm install`. You can run this sample app with: `npm run start:reactjs-todo`.
+- [**Angular Todo - `/samples/angular-todo`**](./samples/angular-todo/README.md)
 
 <!------------------------------------------------------------------------------------------------------------------------------------>
 <!-- DOCS - Link off to the AM-centric documentation at sdks.forgerock.com. -->

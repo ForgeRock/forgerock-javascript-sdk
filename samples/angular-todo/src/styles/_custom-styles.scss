@@ -1,0 +1,413 @@
+/*
+ * angular-todo-prototype
+ * 
+ * _custom-styles.scss
+ * 
+ * Copyright (c) 2021 ForgeRock. All rights reserved.
+ * This software may be modified and distributed under the terms
+ * of the MIT license. See the LICENSE file for details.
+ */
+
+@use 'sass:color';
+
+/** *********************************************
+ * Non-bootstrap variables
+ */
+$cstm_link-light-color: $primary;
+$cstm_link-light-color_hover: color.scale($primary, $blackness: 20%);
+$cstm_link-dark-color: color.scale($primary, $lightness: 40%);
+$cstm_link-dark-color_hover: color.scale($primary, $lightness: 60%);
+
+/** *********************************************
+ * Root and container element fixes
+ */
+
+// Fix for 100% height styling
+html,
+body,
+.cstm_root {
+  height: 100%;
+  min-height: 100%;
+}
+
+// Fix for Bootstrap modal causing right padding to body in mobile
+body {
+  padding-right: 0 !important;
+}
+
+// Keep max width much smaller than Bootstrap's default
+.cstm_container,
+.cstm_container_v-centered {
+  max-width: 540px;
+}
+.cstm_container_v-centered {
+  min-height: 100%;
+}
+
+/** *********************************************
+ * Utilities
+ */
+
+.cstm_border_black {
+  border-color: $black !important;
+}
+.cstm_card-dark {
+  background-color: $gray-800;
+}
+.cstm_list-group_dark > li {
+  background-color: $gray-800;
+
+  &:hover {
+    background-color: $gray-700;
+  }
+}
+.cstm_hr {
+  opacity: 1;
+}
+.cstm_hr-lock_light,
+.cstm_hr-lock_dark {
+  margin-top: -2rem;
+
+  svg {
+    fill: $secondary;
+    background-color: $white;
+  }
+}
+.cstm_hr-lock_dark {
+  svg {
+    fill: $light;
+    background-color: $gray-800;
+  }
+}
+
+/** *********************************************
+ * Home page styling
+ */
+
+.cstm_head-text {
+  letter-spacing: -0.01em;
+  margin: 5rem 0;
+}
+.cstm_subhead-text {
+  letter-spacing: -0.01em;
+}
+
+/** *********************************************
+ * Verified alert banner on home page
+ */
+
+.cstm_verified-alert-link.cstm_verified-alert-link {
+  color: color.scale($teal, $lightness: -50%);
+
+  &:hover {
+    color: inherit;
+    text-decoration: none;
+  }
+}
+.cstm_verified-alert-icon {
+  fill: $cyan;
+}
+
+/** *********************************************
+ * Large spinner styling
+ */
+
+.cstm_loading-spinner {
+  width: 10rem;
+  height: 10rem;
+}
+
+/** *********************************************
+ * Header/navbar styling
+ */
+
+.cstm_navbar-brand.cstm_navbar-brand {
+  color: $gray-700;
+  font-weight: bold;
+
+  // Altering navbar-brand when user is authenticated
+  &.cstm_navbar-brand_auth {
+    border-right: 1px solid $gray-200;
+    margin-left: -7.5rem;
+    width: 7.5rem;
+  }
+
+  svg {
+    fill: $gray-600;
+    padding: 0 0.25rem;
+  }
+}
+.cstm_nav-item {
+  border-top: 5px solid $gray-200;
+
+  &:hover {
+    background-color: $light-cyan;
+    border-top-color: $gray-400;
+  }
+  .cstm_nav-link.cstm_nav-link {
+    color: $gray-900;
+    padding: 0;
+    min-height: 65px;
+  }
+  svg {
+    fill: $gray-500;
+  }
+}
+.cstm_navbar-dark .cstm_nav-item {
+  &:hover {
+    background-color: $gray-800;
+    border-top-color: $gray-400;
+  }
+  .cstm_nav-link.cstm_nav-link {
+    color: $gray-300;
+  }
+}
+.cstm_nav-item_active.cstm_nav-item_active {
+  border-top-color: $primary;
+  transition: background-color 0.25s;
+
+  &:hover {
+    background-color: inherit;
+    border-top-color: $primary;
+  }
+  .cstm_nav-link {
+    cursor: default;
+  }
+
+  svg {
+    fill: $primary;
+  }
+}
+.cstm_login-link {
+  color: $primary;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+.cstm_login-link_dark {
+  color: color.scale($primary, $lightness: 40%);
+
+  &:hover {
+    color: color.scale($primary, $lightness: 60%);
+  }
+}
+
+/** *********************************************
+ * Account Dropdown
+ */
+
+.cstm_profile-icon {
+  fill: $gray-500;
+
+  &:hover {
+    fill: $primary;
+  }
+}
+.cstm_profile-name {
+  color: $gray-900;
+}
+
+/** *********************************************
+ * Form Styling
+ */
+
+.cstm_bg-dark .cstm_form-floating > input {
+  &:-webkit-autofill,
+  &:-webkit-autofill:hover,
+  &:-webkit-autofill:focus,
+  &:-webkit-autofill:active {
+    box-shadow: 0 0 0 30px $gray-800 inset !important;
+    -webkit-text-fill-color: $white !important;
+  }
+}
+.cstm_form {
+  button[type='submit'] {
+    padding: 0.75rem 1.25rem;
+  }
+}
+.cstm_form-floating > .cstm_form-select {
+  padding-bottom: $form-select-padding-y;
+  transition: background-color 0.5s;
+}
+.bg-dark .cstm_form-select {
+  &:focus {
+    color: $gray-900 !important;
+    background-color: $gray-400 !important;
+  }
+  &:focus + label {
+    color: $gray-900;
+  }
+}
+
+/** *********************************************
+ * Link styling
+ */
+
+.cstm_bg-dark a:not([class]) {
+  color: color.scale($primary, $lightness: 40%);
+
+  &:hover {
+    color: color.scale($primary, $lightness: 60%);
+  }
+}
+
+/** *********************************************
+ * Icon styling
+ */
+
+.cstm_alert-icon {
+  fill: color.scale($red, $saturation: 80%, $lightness: -40%);
+}
+.cstm_form-icon {
+  fill: $gray-400;
+}
+.cstm_input-icon {
+  fill: $gray-600;
+}
+// Remove Edge's native password toggle, since we're providing our own
+.cstm_input-password::-ms-reveal {
+  display: none;
+}
+// Corrects an issue caused from the combination of floating labels and input group:
+// https://github.com/twbs/bootstrap/blob/main/scss/forms/_input-group.scss
+.cstm_form-floating.cstm_form-floating > .cstm_form-control:focus ~ label {
+  z-index: 4; // Needs to be 1 more than the value found in bootstrap's CSS
+}
+.cstm_back-home {
+  background-color: transparent;
+  color: $link-color;
+
+  svg {
+    fill: $link-color;
+    margin-top: -0.25rem;
+    padding-left: 0.25rem;
+  }
+  &:hover {
+    background-color: $gray-200;
+
+    svg {
+      fill: $link-hover-color;
+    }
+  }
+}
+.cstm_back-home_dark {
+  color: color.scale($primary, $lightness: 40%);
+
+  svg {
+    fill: color.scale($primary, $lightness: 40%);
+  }
+  &:hover {
+    background-color: $gray-700;
+    color: color.scale($primary, $lightness: 60%);
+
+    svg {
+      fill: color.scale($primary, $lightness: 60%);
+    }
+  }
+}
+
+/** *********************************************
+ * Todo styling
+ */
+
+.cstm_todos-input {
+  > label {
+    opacity: 0.5;
+  }
+}
+.cstm_todo-item {
+  transition: background-color 0.4s;
+}
+.cstm_todo-label {
+  cursor: pointer;
+}
+.cstm_todo-icon_complete,
+.cstm_todo-icon_incomplete {
+  transition: fill 0.4s;
+  width: 10%;
+}
+.cstm_todo-icon_complete {
+  fill: $gray-400;
+}
+.cstm_todo-icon_incomplete {
+  fill: $gray-500;
+}
+.cstm_todo-label_complete {
+  color: $gray-500;
+  font-style: italic;
+  text-decoration: line-through;
+  text-decoration-color: rgba($color: #000000, $alpha: 0.25);
+}
+.text-white .cstm_todo-icon_complete {
+  fill: $gray-600;
+}
+.text-white .cstm_todo-icon_incomplete {
+  fill: $gray-400;
+}
+.text-white .cstm_todo-label_incomplete {
+  color: $gray-200;
+}
+.cstm_todo-label_incomplete:hover {
+  color: $gray-900;
+
+  > .cstm_todo-icon_incomplete {
+    fill: $teal;
+  }
+}
+.cstm_todo-label_complete:hover {
+  color: $gray-600;
+
+  > .cstm_todo-icon_complete {
+    fill: $gray-600;
+  }
+}
+.cstm_form-check:focus + .cstm_todo-label {
+  box-shadow: $input-btn-focus-box-shadow;
+}
+.cstm_form-check:focus + .cstm_todo-label {
+  .cstm_todo-icon_complete {
+    fill: $gray-600;
+  }
+  &.cstm_todo-label_complete {
+    color: $gray-700;
+  }
+  .cstm_todo-icon_incomplete {
+    fill: $teal;
+  }
+  &.cstm_todo-label_incomplete {
+    color: $black;
+  }
+}
+.text-white .cstm_form-check:focus + .cstm_todo-label,
+.text-white .cstm_todo-label:hover {
+  .cstm_todo-icon_complete {
+    fill: $gray-200;
+  }
+  &.cstm_todo-label_complete {
+    color: $gray-200;
+  }
+  .cstm_todo-icon_incomplete {
+    fill: $teal;
+  }
+  &.cstm_todo-label_incomplete {
+    color: $white;
+  }
+}
+
+/** *********************************************
+ * Actions dropdown styling
+ */
+
+.cstm_dropdown-actions {
+  fill: $gray-600;
+}
+.cstm_dropdown-actions:hover,
+.cstm_dropdown-actions:focus {
+  fill: $gray-900;
+}
+.text-white .cstm_dropdown-actions:hover,
+.text-white .cstm_dropdown-actions:focus {
+  fill: $gray-200;
+}

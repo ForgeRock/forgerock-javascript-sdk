@@ -1,0 +1,67 @@
+<!--
+angular-todo-prototype
+
+home.component.html
+
+Copyright (c) 2021 ForgeRock. All rights reserved.
+This software may be modified and distributed under the terms
+of the MIT license. See the LICENSE file for details.
+-->
+
+<app-header></app-header>
+<div>
+  <!--
+    Display a personalised welcome if the user is authenticated
+  -->
+  <div *ngIf="userService.info">
+    <div class="cstm_container container-fluid" *ngIf="userService.info">
+      <p class="alert alert-success d-flex align-items-center mt-5" role="alert">
+        <app-verified-icon size="36px"></app-verified-icon>
+        <span class="ps-2">
+          Welcome back, {{ userService.info.name }}!
+          <a class="cstm_verified-alert-link" [routerLink]="'/todos'"> Manage your todos here </a>
+        </span>
+      </p>
+    </div>
+  </div>
+
+  <div class="cstm_container container-fluid">
+    <h1 class="cstm_head-text text-center">Protect with ForgeRock; Develop with Angular</h1>
+
+    <p class="cstm_subhead-text fs-3 mb-4 fw-bold text-muted">
+      Learn how to develop ForgeRock protected, web apps with the
+      <a class="text-muted" href="https://angular.io/"> Angular </a>
+      framework and our
+      <a class="text-muted" href="https://github.com/ForgeRock/forgerock-javascript-sdk">
+        JavaScript SDK
+      </a>
+      .
+    </p>
+    <h2 class="fs-4 fw-normal pt-3 pb-1">About this project</h2>
+    <p>
+      The purpose of this sample web app is to demonstrate how the ForgeRock JavaScript SDK is
+      implemented within a fully-functional application using a popular framework. The source code
+      for
+      <a
+        href="https://github.com/ForgeRock/forgerock-javascript-sdk/tree/master/samples/angular-todo"
+      >
+        this project can be found on Github
+      </a>
+      and run locally for experimentation. For more on our SDKs,
+      <a href="https://sdks.forgerock.com/"> you can find our official SDK documentation here. </a>
+    </p>
+
+    <!-- 
+      Display prompts to sign in or register if the user is not authenticated
+     -->
+    <div *ngIf="!userService.info">
+      <h2 class="fs-4 fw-normal pt-3 pb-1">Getting started</h2>
+      <p>
+        To use this app,
+        <a [routerLink]="'/register'">create an account now</a>! Already have an account?
+        <a [routerLink]="'/login'">Sign in</a> to get things done!
+      </p>
+    </div>
+  </div>
+</div>
+<app-footer></app-footer>

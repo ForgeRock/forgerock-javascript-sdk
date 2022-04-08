@@ -1,0 +1,82 @@
+<!--
+angular-todo-prototype
+
+todo.component.html
+
+Copyright (c) 2021 ForgeRock. All rights reserved.
+This software may be modified and distributed under the terms
+of the MIT license. See the LICENSE file for details.
+-->
+
+<!--
+  A single todo included as a child component in the parent list
+-->
+<li *ngIf="todo" class="cstm_todo-item list-group-item list-group-item-action d-flex p-0">
+  <div class="flex-grow-1">
+    <!--
+      Mark as completed
+    -->
+    <input
+      [id]="todo._id"
+      class="cstm_form-check form-check-input visually-hidden"
+      type="checkbox"
+      [checked]="todo.completed"
+      (change)="setComplete(todo)"
+    />
+    <label
+      [for]="todo._id"
+      class="cstm_todo-label col d-flex align-items-center fs-5 w-100 p-3"
+      [ngClass]="{
+        'cstm_todo-label_incomplete': !todo.completed,
+        'cstm_todo-label_complete': todo.completed
+      }"
+    >
+      <app-todo-icon [completed]="todo.completed" [size]="'36px'"></app-todo-icon>
+      {{ todo.title }}
+    </label>
+  </div>
+
+  <div class="dropdown text-end d-flex align-items-center" aria-expanded="true">
+    <!--
+      Open actions menu
+    -->
+    <button
+      class="cstm_dropdown-actions btn h-auto"
+      data-bs-toggle="dropdown"
+      [id]="'todo_action_' + todo._id"
+    >
+      <app-action-icon></app-action-icon>
+    </button>
+    <ul
+      class="dropdown-menu dropdown-menu-end shadow-sm"
+      aria-labelledby="'todo_action_' + todo._id"
+    >
+      <li>
+        <!--
+          Mark this for editing
+        -->
+        <button
+          class="dropdown-item"
+          data-bs-toggle="modal"
+          data-bs-target="#editModal"
+          (click)="setEdit(todo)"
+        >
+          Edit
+        </button>
+      </li>
+      <!--
+        Mark this for deletion
+      -->
+      <li>
+        <button
+          class="dropdown-item"
+          data-bs-toggle="modal"
+          data-bs-target="#deleteModal"
+          (click)="setDelete(todo)"
+        >
+          Delete
+        </button>
+      </li>
+    </ul>
+  </div>
+</li>

@@ -1,0 +1,26 @@
+<div class="cstm_form-floating form-floating mb-3">
+  <select
+    (change)="setValue($event)"
+    [id]="name"
+    name="selected"
+    class="cstm_form-select form-select bg-transparent"
+  >
+    <!--
+        ****************************************************************************
+        * SDK INTEGRATION POINT
+        * Summary: SDK callback methods for getting values
+        * --------------------------------------------------------------------------
+        * Details: Each callback is wrapped by the SDK to provide helper methods
+        * for accessing values from the callbacks received from AM
+        ****************************************************************************
+        -->
+    <option
+      *ngFor="let option of callback?.getChoices()"
+      [selected]="callback?.getChoices()?.indexOf(option) === callback?.getDefaultChoice()"
+      v-bind:key="option"
+    >
+      {{ option }}
+    </option>
+  </select>
+  <label [for]="name">{{ callback?.getPrompt() }}</label>
+</div>
