@@ -96,6 +96,11 @@ export default function (app) {
     }
   });
 
+  app.get('/resource/reflect-authz-header', wait, authorization, async (req, res) => {
+    // Respond with the value of the authorization header to assist in testing http client
+    res.json({ message: req.headers['authorization'] });
+  });
+
   app.get('/resource/ig/*', wait, authorization, async (req, res) => {
     if (req.hostname === FORGEOPS) {
       // Calls are coming from IG, so Auth is already enforced
