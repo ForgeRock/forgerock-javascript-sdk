@@ -33,14 +33,12 @@
       "executor": "@nrwl/web:dev-server",
       "defaultConfiguration": "development",
       "options": {
-        "buildTarget": "reactjs-todo:build"
-      },
-      "configurations": {
-        "development": {
-          "open": true,
-          "watch": true,
-          "ssl": true
-        }
+        "buildTarget": "reactjs-todo:build",
+        "host": "react.example.com",
+        "port": 8443,
+        "open": true,
+        "ssl": true,
+        "watch": true
       }
     },
     "test": {
