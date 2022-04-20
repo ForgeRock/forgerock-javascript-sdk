@@ -14,25 +14,31 @@ import { ensureArray, getIndexOne, parsePubKeyArray, parseCredentials } from './
 import { AttestationType, UserVerificationType } from './interfaces';
 
 function parseWebAuthnRegisterText(text: string): PublicKeyCredentialCreationOptions {
+  Date.now();
   const txtEncoder = new TextEncoder();
 
   // TODO: Incrementally move to `*` instead of `{0,}`
   // e.g. `attestation: "none"`
-  const attestation = getIndexOne(text.match(/attestation"{0,}:\s{0,}"(\w+)"/)) as AttestationType;
+  // https://regex101.com/r/WYoiUJ/1
+  const attestation = getIndexOne(
+    text.match(/attestation"{0,}:\s{0,}"(none|indirect|direct)"/),
+  ) as AttestationType;
   // e.g. `timeout: 60000`
   const timeout = Number(getIndexOne(text.match(/timeout"{0,}:\s{0,}(\d+)/)));
   // e.g. from 7.0: `"userVerification":"preferred"`
   // e.g. from 6.5: `userVerification: "preferred"`
+  // https://regex101.com/r/AexkQu/1
   const userVerification = getIndexOne(
-    text.match(/userVerification"{0,}:\s{0,}"(\w+)"/),
+    text.match(/userVerification"{0,}:\s{0,}"(discouraged|preferred|required)"/),
   ) as UserVerificationType;
   // e.g. `"requireResidentKey":true`
   const requireResidentKey = getIndexOne(
     text.match(/requireResidentKey"{0,}:\s{0,}(\w+)/),
   ) as string;
   // e.g. `"authenticatorAttachment":"cross-platform"`
+  // https://regex101.com/r/862tpW/1
   const authenticatorAttachment = getIndexOne(
-    text.match(/authenticatorAttachment"{0,}:\s{0,}"([\w-]+)/),
+    text.match(/authenticatorAttachment"{0,}:\s{0,}"(cross-platform|platform)/),
   ) as AuthenticatorAttachment;
 
   // e.g. `rp: {\n id: \"https://user.example.com:3002\",\n name: \"ForgeRock\"\n }`
