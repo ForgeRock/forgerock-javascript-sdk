@@ -1,0 +1,40 @@
+name: ForgeRock Develop CI
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+      # https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#example-including-and-excluding-branches
+      - '!blog/build-protected-app/**'
+
+env:
+  NX_CLOUD_DISTRIBUTED_EXECUTION: true
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  develop:
+    name: ForgeRock Javascript CI Master
+    uses: nrwl/ci/.github/workflows/nx-cloud-main.yml@v0.2
+    with:
+      main-branch-name: master
+      npm-version: 8.3.0
+      node-version: 16.13.1
+      init-commands: |
+        sudo echo "127.0.0.1 sdkapp.example.com auth.example.com api.example.com user.example.com" | sudo tee -a /etc/hosts
+      parallel-commands-on-agents: |
+        npx nx affected --target=lint --parallel=3
+        npx nx affected --target=test --parallel=3 --ci --code-coverage
+        npx nx affected --target=test --configuration=integration --parallel=3 --ci --code-coverage
+        npx nx affected --target=build --parallel=3
+      final-commands: |
+        npx nx affected --target=e2e --parallel=3
+  agents:
+    name: Forgerock CI Agents
+    uses: nrwl/ci/.github/workflows/nx-cloud-agents.yml@v0.2
+    with:
+      number-of-agents: 3
