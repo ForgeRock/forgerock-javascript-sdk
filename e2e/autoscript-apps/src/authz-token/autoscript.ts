@@ -90,31 +90,41 @@ function autoscript() {
         }
         return tokens;
       }),
-      rxDelay(delay),
+      rxDelay(tokenExpiredDelay),
       mergeMap(
         (tokens) => {
-          console.log('Get user info from OAuth endpoint');
-          const user = forgerock.UserManager.getCurrentUser();
-          return user;
+          console.log('Proactively refresh tokens if expiring soon');
+          return forgerock.TokenManager.getTokens();
         },
-        (tokens, user) => {
-          console.log(`User's given name: ${user.family_name}`);
-          return tokens;
+        (oldTokens, newTokens) => {
+          if (oldTokens.accessToken === newTokens.accessToken) {
+            console.log('OAuth tokens not expiring soon; not refreshed');
+          } else {
+            console.log('OAuth tokens expiring soon; proactively refreshed');
+          }
+          return newTokens;
         },
       ),
       rxDelay(delay),
       mergeMap(
         (tokens) => {
-          console.log('Force renew OAuth tokens');
-          return forgerock.TokenManager.getTokens({ forceRenew: true });
+          console.log('Retrieve a resource');
+          return forgerock.HttpClient.request({
+            url: `${igUrl ? igUrl : resourceOrigin + '/reflect-authz-header'}`,
+            init: {
+              method: 'GET',
+              credentials: 'include',
+            },
+          });
         },
-        (oldTokens, newTokens) => {
-          if (oldTokens.accessToken !== newTokens.accessToken) {
-            console.log('New OAuth tokens retrieved');
+        async (storedTokens, response) => {
+          const authorizationHeaderValue = await response.text();
+          if (authorizationHeaderValue.includes(storedTokens.accessToken)) {
+            console.log('OAuth tokens not expiring soon; not refreshed by HttpClient call');
           } else {
-            throw new Error('Force_Renew_Error');
+            console.log('OAuth tokens expiring soon; proactively refreshed by HttpClient call');
           }
-          return newTokens;
+          return storedTokens;
         },
       ),
       rxDelay(delay),
