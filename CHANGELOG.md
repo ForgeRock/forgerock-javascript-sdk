@@ -1,6 +1,6 @@
 # Changelog
 
-## [3.3.0] - TBD (not yet released)
+## [3.3.0] - 2022-04-25
 
 ### Added:
 
