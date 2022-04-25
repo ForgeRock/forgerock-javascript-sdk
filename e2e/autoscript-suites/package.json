@@ -1,0 +1,22 @@
+{
+  "name": "@forgerock/autoscript-suites",
+  "description": "ForgeRock JavaScript SDK E2E Suites",
+  "private": true,
+  "devDependencies": {
+    "concurrently": "^6.4.0",
+    "@playwright/test": "^1.19.2",
+    "playwright": "^1.19.2"
+  },
+  "version": "0.0.0",
+  "main": "index.js",
+  "author": "",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ForgeRock/forgerock-javascript-sdk.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ForgeRock/forgerock-javascript-sdk/issues"
+  },
+  "homepage": "https://github.com/ForgeRock/forgerock-javascript-sdk#readme"
+}

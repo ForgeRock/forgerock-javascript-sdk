@@ -38,10 +38,9 @@ test-results
 samples/_static/js/*.js*
 samples/_static/js/*
 samples/*/public/app.*
-samples/*/todos
 samples/*/users
-todos/
-users/
+!samples/angular-todo/*/todos
+!samples/reactjs-todo/*/todos
 
 # Environment files
 .env
@@ -49,4 +48,5 @@ users/
 .angular
 samples/**/.env.local
 samples/**/.env
-samples/angularjs-todo/.env.local
+todos/*
+users/*

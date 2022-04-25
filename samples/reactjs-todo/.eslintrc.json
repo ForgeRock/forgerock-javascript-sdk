@@ -4,7 +4,7 @@
   "overrides": [
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
-      "plugins": ["jsx", "react", "react-hooks"],
+      "plugins": ["react", "react-hooks"],
       "rules": {
         "no-debugger": 0,
         "no-unused-vars": [2, { "varsIgnorePattern": "_" }],

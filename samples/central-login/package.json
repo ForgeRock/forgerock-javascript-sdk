@@ -1,0 +1,21 @@
+{
+  "name": "central-login",
+  "version": "0.0.0",
+  "description": "Central Login Sample Application",
+  "private": true,
+  "dependencies": {
+    "core-js": "^3.6.5",
+    "regenerator-runtime": "0.13.7",
+    "tslib": "^2.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ForgeRock/forgerock-javascript-sdk.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ForgeRock/forgerock-javascript-sdk/issues"
+  },
+  "homepage": "https://github.com/ForgeRock/forgerock-javascript-sdk#readme"
+}

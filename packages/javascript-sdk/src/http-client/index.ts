@@ -207,25 +207,7 @@ abstract class HttpClient extends Dispatcher {
     }
     init.headers = headers;
 
-    let response;
-    try {
-      response = await withTimeout(fetch(url, init), timeout);
-    } catch (err) {
-      /**
-       * If the above fetch fails due to the following conditions:
-       *
-       * 1. Preflight
-       * 2. Authorization header
-       * 3. Redirection
-       *
-       * The request will need to be refetched as a "simple request".
-       * For more information, see:
-       * https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS#Preflighted_requests_and_redirects
-       */
-
-      response = await withTimeout(fetch(url, { method: 'GET' }), timeout);
-    }
-    return response as Response;
+    return withTimeout(fetch(url, init), timeout);
   }
 }
 

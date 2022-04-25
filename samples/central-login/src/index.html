@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Custom UI | ForgeRock JavaScript SDK Samples</title>
+    <base href="/" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    />
+  </head>
+  <body>
+    <div id="steps">
+      <div class="active">
+        <button id="loginBtn" class="btn btn-primary">Login</button>
+        <button id="forceRenewBtn" class="btn btn-primary">Force Renew</button>
+      </div>
+      <div id="User">
+        <div>
+          <p>Your user information:</p>
+          <pre></pre>
+        </div>
+        <button class="btn btn-primary">Sign Out</button>
+      </div>
+      <div id="Error">
+        <p>Error code: <span></span></p>
+        <p><a href="javascript:nextStep()">Start over</a></p>
+      </div>
+      <div id="Fatal">
+        <p>Something unexpected happened. Check the console for details.</p>
+        <p><a href="javascript:nextStep()">Start over</a></p>
+      </div>
+    </div>
+  </body>
+</html>

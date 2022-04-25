@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.3.0] - 2022-04-25
+
+### Added:
+
+- OAuth token threshold config property and proactive refresh of tokens expiring soon
+- Add Angular sample app to the repo
+
 ## [3.2.2] - 2022-1-31
 
 ### Fixed

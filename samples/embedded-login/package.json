@@ -1,0 +1,23 @@
+{
+  "name": "embedded-login",
+  "version": "0.0.0",
+  "description": "- **Embedded login - `/samples/embedded-login`**",
+  "main": "main.js",
+  "private": true,
+  "dependencies": {
+    "core-js": "^3.6.5",
+    "regenerator-runtime": "0.13.7",
+    "tslib": "^2.0.0"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ForgeRock/forgerock-javascript-sdk.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ForgeRock/forgerock-javascript-sdk/issues"
+  },
+  "homepage": "https://github.com/ForgeRock/forgerock-javascript-sdk#readme"
+}

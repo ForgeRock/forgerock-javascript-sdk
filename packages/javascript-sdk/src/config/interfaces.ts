@@ -33,6 +33,7 @@ interface ConfigOptions {
   tokenStore?: TokenStoreObject | 'indexedDB' | 'sessionStorage' | 'localStorage';
   tree?: string;
   type?: string;
+  oauthThreshold?: number;
 }
 
 type ConfigurablePaths = keyof CustomPathConfig;

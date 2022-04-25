@@ -1,0 +1,44 @@
+{
+  "projectType": "application",
+  "root": "samples/central-login",
+  "sourceRoot": "samples/central-login/src",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nrwl/web:webpack",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/samples/central-login",
+        "compiler": "swc",
+        "index": "samples/central-login/src/index.html",
+        "baseHref": "/",
+        "main": "samples/central-login/src/main.js",
+        "polyfills": "samples/central-login/src/polyfills.ts",
+        "tsConfig": "samples/central-login/tsconfig.app.json",
+        "assets": [],
+        "styles": ["samples/central-login/src/styles.css"],
+        "vendorChunk": true,
+        "scripts": [],
+        "webpackConfig": "samples/central-login/webpack.config.js"
+      }
+    },
+    "serve": {
+      "executor": "@nrwl/web:dev-server",
+      "options": {
+        "buildTarget": "central-login:build",
+        "port": 8443,
+        "ssl": true,
+        "open": true,
+        "host": "sdkapp.example.com",
+        "liveReload": true
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["samples/central-login/**/*.ts"]
+      }
+    }
+  }
+}

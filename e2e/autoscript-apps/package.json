@@ -1,12 +1,24 @@
 {
   "name": "@forgerock/autoscript-apps",
-  "version": "3.0.0",
-  "main": "./lib/index.js",
-  "module": "./lib-esm/index.js",
-  "files": [
-    "./lib/**/*",
-    "./lib-esm/**/*",
-    "package.json",
-    "README.md"
-  ]
+  "dependencies": {
+    "rxjs": "^7.4.0"
+  },
+  "devDependencies": {
+    "core-js": "^3.21.1",
+    "html-webpack-plugin": "^4.5.2",
+    "regenerator-runtime": "0.13.7"
+  },
+  "version": "0.0.0",
+  "private": true,
+  "description": "apps for e2e on js sdk",
+  "main": "./src/index.ts",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ForgeRock/forgerock-javascript-sdk.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ForgeRock/forgerock-javascript-sdk/issues"
+  },
+  "homepage": "https://github.com/ForgeRock/forgerock-javascript-sdk#readme"
 }

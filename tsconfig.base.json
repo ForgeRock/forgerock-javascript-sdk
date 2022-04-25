@@ -21,5 +21,5 @@
       "@forgerock/javascript-sdk": ["packages/javascript-sdk/src/index.ts"]
     }
   },
-  "exclude": ["node_modules", "tmp"]
+  "exclude": ["node_modules", "tmp", "samples/angular-todo"]
 }
