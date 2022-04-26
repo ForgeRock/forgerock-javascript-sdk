@@ -1,0 +1,29 @@
+CI:
+  - .github/*
+  - .github/**/*
+
+docs:
+  - '*.md'
+  - '**/*.md'
+
+NX:
+  - nx.json
+  - workspace.json
+  - '**/**/project.json'
+root:
+  - '*'
+
+samples:
+  - samples/**/*
+
+sdk:
+  - packages/javascript-sdk/*
+  - packages/javascript-sdk/**/*
+
+test:
+  - e2e/**/*
+  - jest*
+  - packages/**/*.test.ts
+  - packages/**/*.test.js
+  - samples/**/*.test.ts
+  - samples/**/*.test.js

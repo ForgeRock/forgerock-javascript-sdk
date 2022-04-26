@@ -4,7 +4,7 @@ on:
     branches:
       - develop
       - master
-  pull_request:
+  pull_request_target:
 
 env:
   NX_CLOUD_DISTRIBUTED_EXECUTION: true
@@ -59,7 +59,10 @@ jobs:
       - name: Setup custom host for sdkapp.example.com
         run: sudo echo "127.0.0.1 sdkapp.example.com auth.example.com api.example.com user.example.com" | sudo tee -a /etc/hosts
       - run: cat /etc/hosts
-
+      - uses: actions/labeler@v4
+        with:
+          repo-token: '${{ secrets.GITHUB_TOKEN }}'
+          sync-labels: true
       - name: npm install
         if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
