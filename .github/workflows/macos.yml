@@ -12,7 +12,7 @@ env:
 jobs:
   develop:
     runs-on: macos-latest # if using act, you have to use ubuntu-latest
-    if: ${{ github.event_name != 'pull_request' }}
+    if: ${{ github.event_name != 'pull_request_target' }}
     steps:
       - uses: actions/checkout@v2
         name: Checkout [develop]
@@ -44,7 +44,7 @@ jobs:
 
   pr:
     runs-on: macos-latest
-    if: ${{ github.event_name == 'pull_request' }}
+    if: ${{ github.event_name == 'pull_request_target' }}
     steps:
       - uses: actions/checkout@v2
         with:
