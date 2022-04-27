@@ -10,9 +10,9 @@ env:
   NX_CLOUD_DISTRIBUTED_EXECUTION: true
 
 jobs:
-  slack:
+  slack-pr:
     runs-on: ubuntu-latest
-    if: ${{ always() }}
+    if: ${{ github.event_name == 'pull_request_target' }}
     steps:
       - name: Slack Notify
         id: slack
