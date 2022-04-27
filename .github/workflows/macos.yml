@@ -77,8 +77,8 @@ jobs:
           # present in your default branch (e.g. master) before adding
           # conventional commit checks.
           firstParent: true
-          env:
-            NODE_PATH: ${{ github.workspace }}/node_modules
+        env:
+          NODE_PATH: ${{ github.workspace }}/node_modules
       - uses: actions/setup-node@v2
         with:
           node-version: '16.13.1'
