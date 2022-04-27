@@ -11,6 +11,7 @@
 import { parseWebAuthnAuthenticateText, parseWebAuthnRegisterText } from './script-parser';
 import {
   authenticateInputWithRpidAndAllowCredentials,
+  authenticateInputWithRpidAndAllowCredentialsAndAllowRecoveryCode,
   authenticateInputWithRpidAllowCredentialsAndQuotes,
   authenticateInputWithoutRpidAndAllowCredentials,
   authenticateInputWithAcceptableCredentialsWithoutRpid,
@@ -31,7 +32,16 @@ describe('Parsing of the WebAuthn script type text', () => {
     expect(obj.timeout).toBe(60000);
     expect(obj.rpId).toBe('example.com');
   });
-
+  it('should parse the WebAuthn authenticate block of text with rpid and allow credentials & Allow recovery code', () => {
+    const obj = parseWebAuthnAuthenticateText(
+      authenticateInputWithRpidAndAllowCredentialsAndAllowRecoveryCode,
+    );
+    expect(obj.allowCredentials[0].type).toBe('public-key');
+    expect(obj.allowCredentials[0].id.byteLength > 0).toBe(true);
+    expect(obj.challenge.byteLength > 0).toBe(true);
+    expect(obj.timeout).toBe(60000);
+    expect(obj.userVerification).toBe('preferred');
+  });
   it('should parse the WebAuthn authenticate block of text with quoted keys', () => {
     const obj = parseWebAuthnAuthenticateText(authenticateInputWithRpidAllowCredentialsAndQuotes);
     expect(obj.allowCredentials[0].type).toBe('public-key');
