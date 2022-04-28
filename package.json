@@ -16,6 +16,7 @@
     "prepublishOnly": "npm run clean && npm i && npm run build && npm t",
     "build:reactjs-todo": "nx run reactjs-todo:build",
     "build:angular-todo": "nx run angular-todo:build",
+    "prepare": "husky install",
     "start:e2e": "nx run autoscript-apps:serve",
     "start:embedded-login": "nx serve embedded-login",
     "start:central-login": "nx serve central-login",
@@ -29,12 +30,6 @@
     "test:integration": "nx affected --target=test --configuration=integration",
     "test:unit": "nx affected --target=test",
     "watch": "nx run autoscript-apps:build:development"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "shx rm -rf dist/ && npm run format:staged && npm run lint && nx affected:build",
-      "pre-push": "npm t"
-    }
   },
   "repository": {
     "type": "git",
