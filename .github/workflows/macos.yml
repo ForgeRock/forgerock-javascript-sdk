@@ -14,6 +14,9 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'pull_request_target' }}
     steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
       - uses: wagoid/commitlint-github-action@v4
         with:
           # When set to true, we follow only the first parent commit
