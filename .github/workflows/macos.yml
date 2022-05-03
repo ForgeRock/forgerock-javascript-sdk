@@ -18,16 +18,8 @@ jobs:
         with:
           fetch-depth: 0
       - uses: wagoid/commitlint-github-action@v4
-        with:
-          # When set to true, we follow only the first parent commit
-          # when seeing a merge commit.
-          # This helps to ignore errors in commits that were already
-          # present in your default branch (e.g. master) before adding
-          # conventional commit checks.
-          firstParent: true
         env:
           NODE_PATH: ${{ github.workspace }}/node_modules
-
   slack-pr:
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'pull_request_target' }}
