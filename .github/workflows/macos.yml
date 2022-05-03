@@ -10,54 +10,17 @@ env:
   NX_CLOUD_DISTRIBUTED_EXECUTION: true
 
 jobs:
-  commit-check:
-    runs-on: ubuntu-latest
-    if: ${{ github.event_name == 'pull_request_target' }}
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - uses: actions/setup-node@v2
-        with:
-          node-version: '16.13.1'
-          cache: 'npm'
-          cache-dependency-path: '**/package-lock.json'
-      - name: npm install
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: npm ci
-
-      - uses: wagoid/commitlint-github-action@v4
-        env:
-          NODE_PATH: ${{ github.workspace }}/node_modules
-  slack-pr:
-    runs-on: ubuntu-latest
-    if: ${{ github.event_name == 'pull_request_target' }}
-    steps:
-      - name: Slack Notify
-        id: slack
-        uses: slackapi/slack-github-action@v1.18.0
-        with:
-          payload: |
-            {
-              "author": "${{ github.event.pull_request.user.login }}",
-              "title": "${{ github.event.pull_request.title }}",
-              "status": "${{ job.status }}",
-              "url": "${{ github.event.pull_request.html_url }}"
-            }
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
   develop:
     runs-on: macos-latest # if using act, you have to use ubuntu-latest
-    if: ${{ github.event_name != 'pull_request_target' }}
+    if: github.event.pull_request.merged == true
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         name: Checkout [develop]
         with:
           fetch-depth: 0
       - name: Derive appropriate SHAs for base and head for `nx affected` commands
         uses: nrwl/nx-set-shas@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/setup-node@v3
         with:
           node-version: '16.13.1'
           cache: 'npm'
@@ -67,7 +30,16 @@ jobs:
       - run: npx nx affected --target=build --parallel --max-parallel=3
       - run: npx nx affected --target=test --parallel --max-parallel=2
       - run: npx nx-cloud stop-all-agents
+      - name: Run Whitesource Action
+        uses: TheAxZim/Whitesource-Scan-Action@v1.0.0
+        with:
+          wssURL: https://saas.whitesourcesoftware.com/agent
+          apiKey: ${{ secrets.WSS_API_KEY }}
+          configFile: 'wss-unified-agent.config'
+
       - uses: codecov/codecov-action@v2
+        with:
+          token: ${{ secrets.CODE_COV_UPLOAD_TOKEN }}
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
         if: always()
