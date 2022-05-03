@@ -1,0 +1,45 @@
+name: ForgeRock Ubuntu CI
+on:
+  pull_request:
+  push:
+    branches:
+      - develop
+      - master
+jobs:
+  commit-check:
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'pull_request' }}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16.13.1'
+          cache: 'npm'
+          cache-dependency-path: '**/package-lock.json'
+      - name: npm install
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: npm ci
+
+      - uses: wagoid/commitlint-github-action@v4
+        env:
+          NODE_PATH: ${{ github.workspace }}/node_modules
+  slack-pr:
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'pull_request_target' && github.event.action == 'opened' }}
+    steps:
+      - name: Slack Notify
+        id: slack
+        uses: slackapi/slack-github-action@v1.18.0
+        with:
+          payload: |
+            {
+              "author": "${{ github.event.pull_request.user.login }}",
+              "title": "${{ github.event.pull_request.title }}",
+              "status": "${{ job.status }}",
+              "url": "${{ github.event.pull_request.html_url }}"
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
