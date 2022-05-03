@@ -1,66 +1,21 @@
-name: ForgeRock Mac CI
+name: ForgeRock CI
 on:
-  push:
-    branches:
-      - develop
-      - master
   pull_request_target:
 
 env:
   NX_CLOUD_DISTRIBUTED_EXECUTION: true
 
 jobs:
-  develop:
-    runs-on: macos-latest # if using act, you have to use ubuntu-latest
-    if: ${{ github.event_name != 'pull_request_target' && github.event_name != 'pull_request' }}
-    steps:
-      - uses: actions/checkout@v3
-        name: Checkout [develop]
-        with:
-          fetch-depth: 0
-      - name: Derive appropriate SHAs for base and head for `nx affected` commands
-        uses: nrwl/nx-set-shas@v2
-      - uses: actions/setup-node@v3
-        with:
-          node-version: '16.13.1'
-          cache: 'npm'
-          cache-dependency-path: '**/package-lock.json'
-      - run: npm ci
-      - run: npx nx-cloud start-ci-run
-      - run: npx nx affected --target=build --parallel --max-parallel=3
-      - run: npx nx affected --target=test --parallel --max-parallel=2
-      - run: npx nx-cloud stop-all-agents
-      - name: Run Whitesource Action
-        uses: TheAxZim/Whitesource-Scan-Action@v1.0.0
-        with:
-          wssURL: https://saas.whitesourcesoftware.com/agent
-          apiKey: ${{ secrets.WSS_API_KEY }}
-          configFile: 'wss-unified-agent.config'
-
-      - uses: codecov/codecov-action@v2
-        with:
-          token: ${{ secrets.CODE_COV_UPLOAD_TOKEN }}
-      - name: Upload Artifacts
-        uses: actions/upload-artifact@v2
-        if: always()
-        with:
-          name: 'E2E Artifacts'
-          retention-days: 5
-          path: |
-            ${{ env.GITHUB_WORKSPACE }}/e2e/**/test-results
-            test-results
-            ${{ env.GITHUB_WORKSPACE }}/test-results
-
   pr:
     runs-on: macos-latest
     if: ${{ github.event_name == 'pull_request_target' }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           ref: ${{ github.event.pull_request.head.ref }}
           repository: ${{github.event.pull_request.head.repo.full_name}}
           fetch-depth: 0
-      - uses: actions/setup-node@v2
+      - uses: actions/setup-node@v3
         with:
           node-version: '16.13.1'
           cache: 'npm'
@@ -114,12 +69,12 @@ jobs:
       matrix:
         agent: [1, 2, 3]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           ref: ${{ github.event.pull_request.head.ref }}
           repository: ${{github.event.pull_request.head.repo.full_name}}
           fetch-depth: 0
-      - uses: actions/setup-node@v2
+      - uses: actions/setup-node@v3
         with:
           node-version: '16.13.1'
           cache: 'npm'
