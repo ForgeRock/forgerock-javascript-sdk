@@ -4,7 +4,7 @@
     "autoscript-apps": "e2e/autoscript-apps",
     "autoscript-suites": "e2e/autoscript-suites",
     "javascript-sdk": "packages/javascript-sdk",
-    "login-widget": "packages/login-widget",
+    "login-widget": "labs/login-widget",
     "mock-api": "e2e/mock-api",
     "reactjs-todo": "samples/reactjs-todo",
     "central-login": "samples/central-login",

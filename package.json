@@ -92,6 +92,7 @@
   },
   "workspaces": [
     "e2e/*",
+    "labs/*",
     "packages/*",
     "samples/*"
   ],
