@@ -6,6 +6,10 @@ on:
     branches:
       - develop
       - master
+
+env:
+  NX_CLOUD_DISTRIBUTED_EXECUTION: true
+
 jobs:
   commit-check:
     runs-on: ubuntu-latest
@@ -59,12 +63,6 @@ jobs:
           node-version: '16.13.1'
           cache: 'npm'
           cache-dependency-path: '**/package-lock.json'
-      - name: Export WhiteSource UserKey
-        run: |
-          echo "export WS_USERKEY=${{secrets.WS_USER_KEY}} \nsudo apt install pipenv">wss.sh
-      - name: Pipenv
-        run: |
-          sudo apt install pipenv
       - run: npm ci
       - run: npx nx-cloud start-ci-run
       - run: npx nx affected --target=build --parallel --max-parallel=3
@@ -76,8 +74,8 @@ jobs:
           wssURL: https://saas.whitesourcesoftware.com/agent
           apiKey: ${{ secrets.WSS_API_KEY }}
           configFile: 'wss-unified-agent.config'
-          extraCommandsFile: ./wss.sh
-
+        env:
+          WS_USERKEY: ${{ secrets.WS_USER_KEY }}
       - uses: codecov/codecov-action@v2
         with:
           token: ${{ secrets.CODE_COV_UPLOAD_TOKEN }}
