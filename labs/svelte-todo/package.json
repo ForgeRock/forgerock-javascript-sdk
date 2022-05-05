@@ -1,0 +1,8 @@
+{
+  "name": "svelte-todo",
+  "version": "0.0.1",
+  "type": "module",
+  "devDependencies": {
+    "svelte": "../node_modules/svelte"
+  }
+}

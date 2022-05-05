@@ -1,10 +1,11 @@
-import svelte from 'rollup-plugin-svelte';
-import commonjs from '@rollup/plugin-commonjs';
-import resolve from '@rollup/plugin-node-resolve';
-import livereload from 'rollup-plugin-livereload';
-import { terser } from 'rollup-plugin-terser';
-import css from 'rollup-plugin-css-only';
-
+const svelte = require('rollup-plugin-svelte');
+const commonjs = require('@rollup/plugin-commonjs');
+const { default: resolve } = require('@rollup/plugin-node-resolve');
+const livereload = require('rollup-plugin-livereload');
+const { terser } = require('rollup-plugin-terser');
+const { tsConfigPaths: tsPaths } = require('rollup-plugin-tsconfig-paths');
+const css = require('rollup-plugin-css-only');
+const child_process = require('child_process');
 const production = !process.env.ROLLUP_WATCH;
 
 function serve() {
@@ -17,7 +18,7 @@ function serve() {
   return {
     writeBundle() {
       if (server) return;
-      server = require('child_process').spawn('npm', ['run', 'start', '--', '--dev'], {
+      server = child_process.spawn('npm', ['run', 'start', '--', '--dev'], {
         stdio: ['ignore', 'inherit', 'inherit'],
         shell: true,
       });
@@ -28,7 +29,7 @@ function serve() {
   };
 }
 
-export default {
+module.exports = {
   input: 'src/lib/main.ts',
   output: {
     sourcemap: true,
@@ -37,6 +38,7 @@ export default {
     file: 'package/widget.js',
   },
   plugins: [
+    tsPaths(),
     svelte({
       compilerOptions: {
         // enable run-time checks when not in production

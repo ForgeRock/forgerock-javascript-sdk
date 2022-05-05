@@ -3,12 +3,13 @@
   "projects": {
     "autoscript-apps": "e2e/autoscript-apps",
     "autoscript-suites": "e2e/autoscript-suites",
+    "central-login": "samples/central-login",
+    "embedded-login": "samples/embedded-login",
     "javascript-sdk": "packages/javascript-sdk",
     "login-widget": "labs/login-widget",
     "mock-api": "e2e/mock-api",
     "reactjs-todo": "samples/reactjs-todo",
-    "central-login": "samples/central-login",
-    "embedded-login": "samples/embedded-login",
+    "svelte-todo": "labs/svelte-todo",
     "todo-api": "samples/todo-api"
   }
 }

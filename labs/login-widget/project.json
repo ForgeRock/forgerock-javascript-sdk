@@ -3,15 +3,22 @@
   "projectType": "application",
   "sourceRoot": "labs/login-widget/src",
   "targets": {
+    "package": {
+      "executor": "@nrwl/workspace:run-commands",
+      "options": {
+        "command": "rollup -c rollup.config.cjs",
+        "cwd": "labs/login-widget"
+      },
+      "configurations": {
+        "watch": {
+          "watch": true
+        }
+      }
+    },
     "build": {
       "executor": "@nxext/sveltekit:sveltekit",
       "options": {
         "command": "build"
-      },
-      "configurations": {
-        "production": {
-          "command": "build"
-        }
       }
     },
     "serve": {

@@ -20,6 +20,12 @@
     }
   },
   "targetDependencies": {
+    "compile": [
+      {
+        "target": "package",
+        "projects": "self"
+      }
+    ],
     "test:unit": [
       {
         "target": "test",

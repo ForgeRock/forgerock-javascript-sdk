@@ -18,7 +18,8 @@
     "strict": true,
     "target": "ES5",
     "paths": {
-      "@forgerock/javascript-sdk": ["packages/javascript-sdk/src/index.ts"]
+      "@forgerock/javascript-sdk": ["packages/javascript-sdk/src/index.ts"],
+      "@forgerock/svelte-journey": ["labs/svelte-journey/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

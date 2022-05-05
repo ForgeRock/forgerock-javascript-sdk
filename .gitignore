@@ -51,7 +51,7 @@ users/
 samples/**/.env.local
 samples/**/.env
 samples/angularjs-todo/.env.local
-
+**/login-widget/package/*.js*
 
 # storybook
 storybook-static
