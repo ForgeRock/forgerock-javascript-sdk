@@ -1,6 +1,5 @@
 {
   "projectType": "application",
-  "root": "samples/central-login",
   "sourceRoot": "samples/central-login/src",
   "tags": [],
   "targets": {
@@ -20,7 +19,11 @@
         "vendorChunk": true,
         "scripts": [],
         "webpackConfig": "samples/central-login/webpack.config.js"
-      }
+      },
+      "configurations": {
+        "development": {}
+      },
+      "defaultConfiguration": "production"
     },
     "serve": {
       "executor": "@nrwl/web:dev-server",
@@ -31,7 +34,11 @@
         "open": true,
         "host": "sdkapp.example.com",
         "liveReload": true
-      }
+      },
+      "configurations": {
+        "development": {}
+      },
+      "defaultConfiguration": "development"
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",

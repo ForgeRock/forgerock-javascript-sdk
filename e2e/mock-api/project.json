@@ -1,5 +1,4 @@
 {
-  "root": "e2e/mock-api",
   "sourceRoot": "e2e/mock-api/src",
   "projectType": "application",
   "targets": {
@@ -14,6 +13,7 @@
         "generatePackageJson": true
       },
       "configurations": {
+        "development": {},
         "production": {
           "optimization": true,
           "extractLicenses": true,
@@ -35,6 +35,7 @@
       },
       "configurations": {
         "live": {},
+        "development": {},
         "production": {
           "buildTarget": "mock-api:build:production",
           "args": ["MOCK_PORT=9443"]
@@ -63,7 +64,7 @@
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/e2e/mock-api"],
       "options": {
-        "jestConfig": "e2e/mock-api/jest.config.js",
+        "jestConfig": "e2e/mock-api/jest.config.ts",
         "passWithNoTests": true
       }
     }

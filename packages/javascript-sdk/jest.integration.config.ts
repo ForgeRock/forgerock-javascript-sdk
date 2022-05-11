@@ -1,6 +1,6 @@
-const jestBasic = require('./jest.basic.config');
+import jestBasic from './jest.basic.config';
 
-module.exports = {
+export default {
   ...jestBasic,
   testMatch: ['<rootDir>/tests/integration/**/*.test.ts'],
 };
