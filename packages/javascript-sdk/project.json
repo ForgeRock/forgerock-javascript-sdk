@@ -1,5 +1,4 @@
 {
-  "root": "packages/javascript-sdk",
   "sourceRoot": "packages/javascript-sdk/src",
   "projectType": "library",
   "targets": {
@@ -43,14 +42,14 @@
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/packages/javascript-sdk"],
       "options": {
-        "jestConfig": "packages/javascript-sdk/jest.unit.config.js",
+        "jestConfig": "packages/javascript-sdk/jest.unit.config.ts",
         "codeCoverage": true,
         "passWithNoTests": true
       },
       "configurations": {
         "unit": {},
         "integration": {
-          "jestConfig": "packages/javascript-sdk/jest.integration.config.js",
+          "jestConfig": "packages/javascript-sdk/jest.integration.config.ts",
           "passWithNoTests": true,
           "codeCoverage": true
         }
