@@ -26,6 +26,8 @@
     "lib-esm",
     "lib",
     "bundles",
-    "dist/"
+    "dist/",
+    "jest.config.ts",
+    "jest.*.config.ts"
   ]
 }
