@@ -1,7 +1,5 @@
 name: ForgeRock Ubuntu CI
 on:
-  pull_request_target:
-  pull_request:
   push:
     branches:
       - develop
@@ -9,65 +7,39 @@ on:
 
 env:
   NX_CLOUD_DISTRIBUTED_EXECUTION: true
-
 jobs:
-  commit-check:
-    runs-on: ubuntu-latest
-    if: ${{ github.event_name == 'pull_request' }}
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-      - uses: actions/setup-node@v3
-        with:
-          node-version: '16.13.1'
-          cache: 'npm'
-          cache-dependency-path: '**/package-lock.json'
-      - name: npm install
-        if: steps.cache.outputs.cache-hit != 'true'
-        run: npm ci
-
-      - uses: wagoid/commitlint-github-action@v4
-        env:
-          NODE_PATH: ${{ github.workspace }}/node_modules
-  slack-pr:
-    runs-on: ubuntu-latest
-    if: ${{ github.event_name == 'pull_request_target' && github.event.action == 'opened' }}
-    steps:
-      - name: Slack Notify
-        id: slack
-        uses: slackapi/slack-github-action@v1.18.0
-        with:
-          payload: |
-            {
-              "author": "${{ github.event.pull_request.user.login }}",
-              "title": "${{ github.event.pull_request.title }}",
-              "status": "${{ job.status }}",
-              "url": "${{ github.event.pull_request.html_url }}"
-            }
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
   merge:
     runs-on: ubuntu-latest # we run on ubuntu because some actions in this job do not work on mac
-    if: ${{ github.event_name != 'pull_request_target' && github.event_name != 'pull_request' }}
     steps:
       - uses: actions/checkout@v3
         name: Checkout Merged Branch
         with:
           fetch-depth: 0
-      - name: Derive appropriate SHAs for base and head for `nx affected` commands
-        uses: nrwl/nx-set-shas@v2
       - uses: actions/setup-node@v3
+        id: cache
         with:
           node-version: '16.13.1'
           cache: 'npm'
           cache-dependency-path: '**/package-lock.json'
       - run: npm ci
+      - uses: nrwl/last-successful-commit-action@v1
+        with:
+          id: last_successful_commit
+          workflow_id: 'merge.yml' # name of file
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
+
       - run: npx nx-cloud start-ci-run
-      - run: npx nx affected --target=build --parallel --max-parallel=3
-      - run: npx nx affected --target=test --parallel --max-parallel=2
-      - run: npx nx-cloud stop-all-agents
+      - run: npx nx affected --target=build --parallel --max-parallel=3 --base=${{ steps.last_successful_commit.outputs.commit_hash }}
+      - run: npx nx affected --target=test --parallel --max-parallel=2 --coverage --base=${{ steps.last_successful_commit.outputs.commit_hash }}
+      - run: npx nx affected --target=test --configuration=integration --parallel --coverage  --base=${{ steps.last_successful_commit.outputs.commit_hash }}
+      - run: npx nx affected --target=e2e  --parallel --base=HEAD~1 --base=${{ steps.last_successful_commit.outputs.commit_hash }}
+
+        # It's important that we always run this step, otherwise in the case of any failures in preceding non-Nx steps, the agents will keep running and waste billable minutes
+      - name: Stop All Agents
+        if: ${{ always() }}
+        run: npx nx-cloud stop-all-agents
+
       - name: Run Whitesource Action
         uses: TheAxZim/Whitesource-Scan-Action@v1.0.0
         with:
@@ -79,6 +51,8 @@ jobs:
       - uses: codecov/codecov-action@v2
         with:
           token: ${{ secrets.CODE_COV_UPLOAD_TOKEN }}
+          directory: ${{ github.workspace }}/coverage
+
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
         if: always()
@@ -86,12 +60,11 @@ jobs:
           name: 'E2E Artifacts'
           retention-days: 5
           path: |
-            ${{ env.GITHUB_WORKSPACE }}/e2e/**/test-results
+            ${{ github.workspace }}/e2e/**/test-results
             test-results
-            ${{ env.GITHUB_WORKSPACE }}/test-results
+            ${{ github.workspace }}/test-results
   agents:
     runs-on: ubuntu-latest
-    if: ${{ github.event_name != 'pull_request_target' && github.event_name != 'pull_request' }}
     name: Agent Ubuntu
     strategy:
       matrix:
@@ -119,3 +92,27 @@ jobs:
       - run: npx playwright install chromium firefox webkit
       - name: Start Nx Agent ${{ matrix.agent }}
         run: npx nx-cloud start-agent
+  publish:
+    if: ${{ github.ref == 'refs/heads/develop' }} # just so we only publish on develop for now (beta)
+    needs: merge
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16.x'
+          scope: '@forgerock'
+      - run: npm ci
+      - run: npm run build
+      - name: Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_NPM_TOKEN: ${{ secrets.GH_TOKEN }}
+          PUBLIC_NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.GH_TOKEN }}
+          GITHUB_NPM_CONFIG_REGISTRY: https://npm.pkg.github.com/
+          PUBLIC_NPM_CONFIG_REGISTRY: https://registry.npmjs.org
+        run: npx multi-semantic-release -ignore-private-packages

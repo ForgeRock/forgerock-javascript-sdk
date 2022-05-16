@@ -13,6 +13,9 @@
   ],
   "author": "ForgeRock",
   "license": "MIT",
+  "repository": {
+    "url": "https://github.com/ForgeRock/forgerock-javascript-sdk/packages/javascript-sdk"
+  },
   "bugs": {
     "url": "https://github.com/ForgeRock/forgerock-javascript-sdk/issues"
   },
