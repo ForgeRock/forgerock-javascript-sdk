@@ -33,7 +33,7 @@ jobs:
       - run: npx nx affected --target=build --parallel --max-parallel=3 --base=${{ steps.last_successful_commit.outputs.commit_hash }}
       - run: npx nx affected --target=test --parallel --max-parallel=2 --coverage --base=${{ steps.last_successful_commit.outputs.commit_hash }}
       - run: npx nx affected --target=test --configuration=integration --parallel --coverage  --base=${{ steps.last_successful_commit.outputs.commit_hash }}
-      - run: npx nx affected --target=e2e  --parallel --base=HEAD~1 --base=${{ steps.last_successful_commit.outputs.commit_hash }}
+      - run: npx nx affected --target=e2e  --parallel --base=${{ steps.last_successful_commit.outputs.commit_hash }}
 
         # It's important that we always run this step, otherwise in the case of any failures in preceding non-Nx steps, the agents will keep running and waste billable minutes
       - name: Stop All Agents
