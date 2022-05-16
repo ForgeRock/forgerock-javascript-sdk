@@ -8,8 +8,8 @@
  * of the MIT license. See the LICENSE file for details.
  */
 
-import HttpClient from '../../src/http-client/index';
-import TokenStorage from '../../src/token-storage';
+import { HttpClient } from '@forgerock/libs/http-client';
+import { TokenStorage } from '@forgerock/libs/token-storage';
 import {
   authzByTreeReqOptionsForREST,
   authzByTreeReqOptionsForIG,
@@ -22,12 +22,12 @@ import {
   authzByTreeResFromREST,
   authzByTxnResFromIG,
   authzByTxnResFromREST,
-} from '../../src/http-client/http-client.mock.data';
+} from '@forgerock/libs/http-client';
 
 // TODO: figure out how to move these mock functions in separate file
 // Because Jest hoists mocks above the imports, importing doesn't work :(
-jest.mock('../../src/token-storage');
-jest.mock('../../src/config', () => {
+jest.mock('@forgerock/libs/token-storage');
+jest.mock('@forgerock/libs/config', () => {
   return {
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     get() {
@@ -40,26 +40,29 @@ jest.mock('../../src/config', () => {
     },
   };
 });
-jest.mock('../../src/http-client/index', () => {
-  const originalHttpClient = jest.requireActual('../../src/http-client/index');
+jest.mock('@forgerock/libs/http-client', () => {
+  const originalHttpClient = jest.requireActual('@forgerock/libs/http-client');
   return {
-    request: originalHttpClient.default.request,
-    stepIterator: jest.fn().mockResolvedValue({}),
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    _request: jest.fn(function (options: any): Promise<Response> {
-      if (options.url === 'https://request-auth-by-tree.com/ig') {
-        return Promise.resolve(authzByTreeResFromIG);
-      } else if (options.url === 'https://request-auth-by-tree.com/rest') {
-        return Promise.resolve(authzByTreeResFromREST);
-      } else if (options.url === 'https://request-auth-by-txn.com/ig') {
-        return Promise.resolve(authzByTxnResFromIG);
-      } else if (options.url === 'https://request-auth-by-txn.com/rest') {
-        return Promise.resolve(authzByTxnResFromREST);
-      }
-      {
-        return Promise.resolve(responseFromAM);
-      }
-    }),
+    ...originalHttpClient,
+    HttpClient: {
+      request: originalHttpClient.HttpClient.request,
+      stepIterator: jest.fn().mockResolvedValue({}),
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      _request: jest.fn(function (options: any): Promise<Response> {
+        if (options.url === 'https://request-auth-by-tree.com/ig') {
+          return Promise.resolve(authzByTreeResFromIG);
+        } else if (options.url === 'https://request-auth-by-tree.com/rest') {
+          return Promise.resolve(authzByTreeResFromREST);
+        } else if (options.url === 'https://request-auth-by-txn.com/ig') {
+          return Promise.resolve(authzByTxnResFromIG);
+        } else if (options.url === 'https://request-auth-by-txn.com/rest') {
+          return Promise.resolve(authzByTxnResFromREST);
+        }
+        {
+          return Promise.resolve(responseFromAM);
+        }
+      }),
+    },
   };
 });
 

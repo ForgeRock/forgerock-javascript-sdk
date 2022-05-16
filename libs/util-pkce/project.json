@@ -1,0 +1,32 @@
+{
+  "root": "libs/util-pkce",
+  "sourceRoot": "libs/util-pkce/src",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:swc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist//libs/util-pkce",
+        "main": "libs/util-pkce/src/index.ts",
+        "tsConfig": "libs/util-pkce/tsconfig.lib.json",
+        "assets": ["libs/util-pkce/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/util-pkce/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/util-pkce"],
+      "options": {
+        "jestConfig": "libs/util-pkce/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

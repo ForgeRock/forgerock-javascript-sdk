@@ -13,10 +13,9 @@
  */
 
 import 'fake-indexeddb/auto';
-import TokenStorage from '../../src/token-storage';
-import { ConfigOptions } from '../../src/config';
-import { Tokens } from '@forgerock/shared';
-import { DB_NAME, TOKEN_KEY } from '../../src/token-storage/constants';
+import { TokenStorage, DB_NAME, TOKEN_KEY } from '@forgerock/libs/token-storage';
+import { ConfigOptions } from '@forgerock/libs/config';
+import { Tokens } from '@forgerock/libs/shared';
 
 const config: ConfigOptions = {
   clientId: 'mockClientId',

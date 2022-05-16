@@ -8,8 +8,8 @@
  * of the MIT license. See the LICENSE file for details.
  */
 
-import { CallbackType } from '../../src/auth/enums';
-import { Step } from '../../src/auth/interfaces';
+import { CallbackType } from '@forgerock/libs/fr-callback';
+import { Step } from '@forgerock/libs/step-types';
 
 export const jsonResponse: Step = {
   authId: 'unused',

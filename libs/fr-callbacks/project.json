@@ -1,0 +1,32 @@
+{
+  "root": "libs/fr-callbacks",
+  "sourceRoot": "libs/fr-callbacks/src",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:swc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist//libs/fr-callbacks",
+        "main": "libs/fr-callbacks/src/index.ts",
+        "tsConfig": "libs/fr-callbacks/tsconfig.lib.json",
+        "assets": ["libs/fr-callbacks/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/fr-callbacks/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/fr-callbacks"],
+      "options": {
+        "jestConfig": "libs/fr-callbacks/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

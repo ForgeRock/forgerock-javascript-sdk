@@ -1,0 +1,32 @@
+{
+  "root": "libs/fr-user",
+  "sourceRoot": "libs/fr-user/src",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:swc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist//libs/fr-user",
+        "main": "libs/fr-user/src/index.ts",
+        "tsConfig": "libs/fr-user/tsconfig.lib.json",
+        "assets": ["libs/fr-user/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/fr-user/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/fr-user"],
+      "options": {
+        "jestConfig": "libs/fr-user/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

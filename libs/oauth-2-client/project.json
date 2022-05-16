@@ -1,0 +1,32 @@
+{
+  "root": "libs/oauth-2-client",
+  "sourceRoot": "libs/oauth-2-client/src",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:swc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist//libs/oauth-2-client",
+        "main": "libs/oauth-2-client/src/index.ts",
+        "tsConfig": "libs/oauth-2-client/tsconfig.lib.json",
+        "assets": ["libs/oauth-2-client/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/oauth-2-client/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/oauth-2-client"],
+      "options": {
+        "jestConfig": "libs/oauth-2-client/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

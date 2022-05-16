@@ -8,68 +8,82 @@
  * of the MIT license. See the LICENSE file for details.
  */
 
-import Auth from './auth';
-import { CallbackType, ErrorCode } from './auth/enums';
-import { Callback, NameValue, PolicyRequirement, Step, StepDetail } from './auth/interfaces';
-import Config, { ConfigOptions, ValidConfigOptions } from './config';
-import Dispatcher, { CallbackContainer, FREvent, Listener } from './event';
-import FRAuth from './fr-auth';
-import FRCallback from './fr-auth/callbacks';
-import AttributeInputCallback from './fr-auth/callbacks/attribute-input-callback';
-import ChoiceCallback from './fr-auth/callbacks/choice-callback';
-import ConfirmationCallback from './fr-auth/callbacks/confirmation-callback';
-import DeviceProfileCallback from './fr-auth/callbacks/device-profile-callback';
-import { FRCallbackFactory } from './fr-auth/callbacks/factory';
-import HiddenValueCallback from './fr-auth/callbacks/hidden-value-callback';
-import KbaCreateCallback from './fr-auth/callbacks/kba-create-callback';
-import MetadataCallback from './fr-auth/callbacks/metadata-callback';
-import NameCallback from './fr-auth/callbacks/name-callback';
-import PasswordCallback from './fr-auth/callbacks/password-callback';
-import PollingWaitCallback from './fr-auth/callbacks/polling-wait-callback';
-import ReCaptchaCallback from './fr-auth/callbacks/recaptcha-callback';
-import RedirectCallback from './fr-auth/callbacks/redirect-callback';
-import SelectIdPCallback, { IdPValue } from './fr-auth/callbacks/select-idp-callback';
-import SuspendedTextOutputCallback from './fr-auth/callbacks/suspended-text-output-callback';
-import TermsAndConditionsCallback from './fr-auth/callbacks/terms-and-conditions-callback';
-import TextOutputCallback from './fr-auth/callbacks/text-output-callback';
-// eslint-disable-next-line max-len
-import ValidatedCreatePasswordCallback from './fr-auth/callbacks/validated-create-password-callback';
-// eslint-disable-next-line max-len
-import ValidatedCreateUsernameCallback from './fr-auth/callbacks/validated-create-username-callback';
-import { StepType } from './fr-auth/enums';
-import FRLoginFailure from './fr-auth/fr-login-failure';
-import FRLoginSuccess from './fr-auth/fr-login-success';
-import FRStep, { FRStepHandler } from './fr-auth/fr-step';
-import { AuthResponse, FailureDetail } from './fr-auth/interfaces';
-import FRDevice from './fr-device';
-import FRPolicy, { MessageCreator, PolicyKey, ProcessedPropertyError } from './fr-policy';
-import defaultMessageCreator from './fr-policy/message-creator';
-import FRRecoveryCodes from './fr-recovery-codes';
-import FRUI from './fr-ui';
-import FRUser from './fr-user';
-import FRWebAuthn, {
+import { Auth, CallbackType, ErrorCode } from '@forgerock/libs/auth';
+import type { PolicyRequirement, Step, StepDetail } from '@forgerock/libs/step-types';
+import Config, { ConfigOptions, ValidConfigOptions } from '@forgerock/libs/config';
+import Dispatcher, { CallbackContainer, FREvent, Listener } from '@forgerock/libs/event';
+import { FRAuth } from '@forgerock/libs/fr-auth';
+import type {
+  FRCallbackFactory,
+  FRCallback,
+  NameValue,
+  Callback,
+} from '@forgerock/libs/fr-callback';
+import {
+  AttributeInputCallback,
+  ChoiceCallback,
+  ConfirmationCallback,
+  DeviceProfileCallback,
+  HiddenValueCallback,
+  KbaCreateCallback,
+  MetadataCallback,
+  NameCallback,
+  PasswordCallback,
+  PollingWaitCallback,
+  ReCaptchaCallback,
+  RedirectCallback,
+  SelectIdPCallback,
+  IdPValue,
+  SuspendedTextOutputCallback,
+  TermsAndConditionsCallback,
+  TextOutputCallback,
+  ValidatedCreatePasswordCallback,
+  ValidatedCreateUsernameCallback,
+} from '@forgerock/libs/fr-callbacks';
+import {
+  StepType,
+  FRLoginFailure,
+  FRLoginSuccess,
+  FRStep,
+  FRStepHandler,
+  AuthResponse,
+  FailureDetail,
+} from '@forgerock/libs/fr-auth';
+import { FRDevice } from '@forgerock/libs/fr-device';
+import {
+  FRPolicy,
+  MessageCreator,
+  PolicyKey,
+  ProcessedPropertyError,
+  defaultMessageCreator,
+} from '@forgerock/libs/fr-policy';
+import { FRRecoveryCodes } from '@forgerock/libs/fr-recovery-codes';
+import { FRUI } from '@forgerock/libs/fr-ui';
+import { FRUser } from '@forgerock/libs/fr-user';
+import {
+  FRWebAuthn,
   RelyingParty,
   WebAuthnAuthenticationMetadata,
   WebAuthnCallbacks,
   WebAuthnOutcome,
   WebAuthnRegistrationMetadata,
   WebAuthnStepType,
-} from './fr-webauthn';
-import HttpClient from './http-client';
-import OAuth2Client, {
+} from '@forgerock/libs/fr-webauthn';
+import { HttpClient } from '@forgerock/libs/http-client';
+import {
+  OAuth2Client,
   GetAuthorizationUrlOptions,
   GetOAuth2TokensOptions,
   OAuth2Tokens,
   ResponseType,
-} from './oauth2-client';
-import SessionManager from './session-manager';
-import { Tokens } from './shared/interfaces';
-import TokenManager, { GetTokensOptions } from './token-manager';
-import TokenStorage from './token-storage';
-import UserManager from './user-manager';
-import Deferred from './util/deferred';
-import PKCE from './util/pkce';
-import LocalStorage from './util/storage';
+} from '@forgerock/libs/oauth-2-client';
+import { SessionManager } from '@forgerock/libs/session-manager';
+import { Tokens } from '@forgerock/libs/shared';
+import { TokenManager, GetTokensOptions } from '@forgerock/libs/token-manager';
+import { TokenStorage } from '@forgerock/libs/token-storage';
+import { UserManager } from '@forgerock/libs/user-manager';
+import { Deferred, LocalStorage } from '@forgerock/libs/util';
+import { PKCE } from '@forgerock/libs/util-pkce';
 
 export {
   defaultMessageCreator,

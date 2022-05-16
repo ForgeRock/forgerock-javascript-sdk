@@ -1,0 +1,32 @@
+{
+  "root": "libs/event",
+  "sourceRoot": "libs/event/src",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:swc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/event",
+        "main": "libs/event/src/index.ts",
+        "tsConfig": "libs/event/tsconfig.lib.json",
+        "assets": ["libs/event/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/event/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/event"],
+      "options": {
+        "jestConfig": "libs/event/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

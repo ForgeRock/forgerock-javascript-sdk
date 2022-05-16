@@ -3,23 +3,12 @@
   "sourceRoot": "packages/javascript-sdk/src",
   "projectType": "library",
   "targets": {
-    "tsc": {
-      "executor": "@nrwl/workspace:run-commands",
-      "options": {
-        "command": "tsc --project packages/javascript-sdk/tsconfig.esm.json"
-      },
-      "configurations": {
-        "cjs": {
-          "command": "tsc --project packages/javascript-sdk/tsconfig.cjs.json"
-        }
-      }
-    },
     "build": {
       "executor": "@nrwl/web:rollup",
       "options": {
         "compiler": "babel",
         "entryFile": "packages/javascript-sdk/src/index.ts",
-        "outputPath": "packages/javascript-sdk/bundles",
+        "outputPath": "dist/packages/javascript-sdk",
         "deleteOutputPath": true,
         "project": "packages/javascript-sdk/package.json",
         "tsConfig": "packages/javascript-sdk/tsconfig.lib.json",

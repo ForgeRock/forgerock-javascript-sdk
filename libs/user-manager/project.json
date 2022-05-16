@@ -1,0 +1,32 @@
+{
+  "root": "libs/user-manager",
+  "sourceRoot": "libs/user-manager/src",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:swc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist//libs/user-manager",
+        "main": "libs/user-manager/src/index.ts",
+        "tsConfig": "libs/user-manager/tsconfig.lib.json",
+        "assets": ["libs/user-manager/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/user-manager/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/user-manager"],
+      "options": {
+        "jestConfig": "libs/user-manager/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

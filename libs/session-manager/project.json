@@ -1,0 +1,32 @@
+{
+  "root": "libs/session-manager",
+  "sourceRoot": "libs/session-manager/src",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:swc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist//libs/session-manager",
+        "main": "libs/session-manager/src/index.ts",
+        "tsConfig": "libs/session-manager/tsconfig.lib.json",
+        "assets": ["libs/session-manager/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/session-manager/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/session-manager"],
+      "options": {
+        "jestConfig": "libs/session-manager/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

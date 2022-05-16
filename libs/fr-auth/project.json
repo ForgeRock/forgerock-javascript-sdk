@@ -1,0 +1,32 @@
+{
+  "root": "libs/fr-auth",
+  "sourceRoot": "libs/fr-auth/src",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:swc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist//libs/fr-auth",
+        "main": "libs/fr-auth/src/index.ts",
+        "tsConfig": "libs/fr-auth/tsconfig.lib.json",
+        "assets": ["libs/fr-auth/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/fr-auth/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/fr-auth"],
+      "options": {
+        "jestConfig": "libs/fr-auth/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

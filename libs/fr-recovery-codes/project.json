@@ -1,0 +1,32 @@
+{
+  "root": "libs/fr-recovery-codes",
+  "sourceRoot": "libs/fr-recovery-codes/src",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:swc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist//libs/fr-recovery-codes",
+        "main": "libs/fr-recovery-codes/src/index.ts",
+        "tsConfig": "libs/fr-recovery-codes/tsconfig.lib.json",
+        "assets": ["libs/fr-recovery-codes/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/fr-recovery-codes/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/fr-recovery-codes"],
+      "options": {
+        "jestConfig": "libs/fr-recovery-codes/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

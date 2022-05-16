@@ -1,0 +1,32 @@
+{
+  "root": "libs/fr-webauthn",
+  "sourceRoot": "libs/fr-webauthn/src",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:swc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist//libs/fr-webauthn",
+        "main": "libs/fr-webauthn/src/index.ts",
+        "tsConfig": "libs/fr-webauthn/tsconfig.lib.json",
+        "assets": ["libs/fr-webauthn/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/fr-webauthn/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/fr-webauthn"],
+      "options": {
+        "jestConfig": "libs/fr-webauthn/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

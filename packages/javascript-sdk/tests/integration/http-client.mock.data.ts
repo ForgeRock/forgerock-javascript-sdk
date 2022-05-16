@@ -8,7 +8,7 @@
  * of the MIT license. See the LICENSE file for details.
  */
 
-import { HandleStep } from '../../src/http-client/interfaces';
+import { HandleStep } from '@forgerock/libs/http-client';
 
 export const authzByTreeReqOptionsForIG = {
   init: {

@@ -1,0 +1,32 @@
+{
+  "root": "libs/http-client",
+  "sourceRoot": "libs/http-client/src",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:swc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist//libs/http-client",
+        "main": "libs/http-client/src/index.ts",
+        "tsConfig": "libs/http-client/tsconfig.lib.json",
+        "assets": ["libs/http-client/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/http-client/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/http-client"],
+      "options": {
+        "jestConfig": "libs/http-client/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

@@ -1,0 +1,32 @@
+{
+  "root": "libs/fr-device",
+  "sourceRoot": "libs/fr-device/src",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:swc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist//libs/fr-device",
+        "main": "libs/fr-device/src/index.ts",
+        "tsConfig": "libs/fr-device/tsconfig.lib.json",
+        "assets": ["libs/fr-device/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/fr-device/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/fr-device"],
+      "options": {
+        "jestConfig": "libs/fr-device/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

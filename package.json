@@ -7,7 +7,7 @@
   },
   "private": true,
   "scripts": {
-    "build": "nx run javascript-sdk:tsc && nx run javascript-sdk:tsc:cjs && nx run javascript-sdk:build",
+    "build": "nx run javascript-sdk:build",
     "build:analyze": "NODE_ENV=analyze nx run javascript-sdk:build --skipNxCache",
     "clean": "shx rm -rf ./{coverage,bundles,dist,docs,lib,lib-esm,node_modules,tests,tmp,todos,users}/ ./samples/*/node_modules/ ./samples/_static/js/*/ ./samples/todo-api/{todos,users} ./packages/*/{bundles,lib,lib-esm}/ && git clean -fX -e \"!.env\"",
     "docs": "typedoc packages/javascript-sdk",
@@ -58,6 +58,7 @@
     "@swc/cli": "^0.1.55",
     "@swc/core": "^1.2.145",
     "@swc/helpers": "^0.3.5",
+    "@swc/jest": "0.2.15",
     "@types/express": "4.17.13",
     "@types/jest": "^27.0.0",
     "@types/jest-dev-server": "^5.0.0",
@@ -78,7 +79,7 @@
     "nx": "13.10.2",
     "prettier": "2.5.1",
     "pretty-quick": "^3.1.2",
-    "shx": "^0.3.2",
+    "shx": "^0.3.4",
     "swc-loader": "^0.1.15",
     "ts-jest": "^27.0.7",
     "ts-loader": "^8.0.17",
@@ -91,5 +92,8 @@
     "e2e/*",
     "packages/*",
     "samples/*"
-  ]
+  ],
+  "dependencies": {
+    "tslib": "^2.0.0"
+  }
 }

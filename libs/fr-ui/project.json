@@ -1,0 +1,32 @@
+{
+  "root": "libs/fr-ui",
+  "sourceRoot": "libs/fr-ui/src",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:swc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist//libs/fr-ui",
+        "main": "libs/fr-ui/src/index.ts",
+        "tsConfig": "libs/fr-ui/tsconfig.lib.json",
+        "assets": ["libs/fr-ui/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/fr-ui/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/fr-ui"],
+      "options": {
+        "jestConfig": "libs/fr-ui/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

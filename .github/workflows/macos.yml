@@ -4,6 +4,7 @@ on:
     branches:
       - develop
       - master
+      - next
   pull_request_target:
 
 env:

@@ -1,0 +1,32 @@
+{
+  "root": "libs/token-manager",
+  "sourceRoot": "libs/token-manager/src",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:swc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist//libs/token-manager",
+        "main": "libs/token-manager/src/index.ts",
+        "tsConfig": "libs/token-manager/tsconfig.lib.json",
+        "assets": ["libs/token-manager/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/token-manager/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/token-manager"],
+      "options": {
+        "jestConfig": "libs/token-manager/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

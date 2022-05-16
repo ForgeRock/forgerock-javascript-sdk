@@ -1,0 +1,32 @@
+{
+  "root": "libs/step-types",
+  "sourceRoot": "libs/step-types/src",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:swc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist//libs/step-types",
+        "main": "libs/step-types/src/index.ts",
+        "tsConfig": "libs/step-types/tsconfig.lib.json",
+        "assets": ["libs/step-types/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/step-types/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/step-types"],
+      "options": {
+        "jestConfig": "libs/step-types/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

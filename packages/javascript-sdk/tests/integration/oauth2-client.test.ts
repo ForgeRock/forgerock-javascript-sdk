@@ -1,8 +1,7 @@
-import OAuth2Client from '../../src/oauth2-client';
-import PKCE from '../../src/util/pkce';
-import { ResponseType } from '../../src/oauth2-client';
+import { OAuth2Client, ResponseType } from '@forgerock/libs/oauth-2-client';
+import { PKCE } from '@forgerock/libs/util-pkce';
 
-jest.mock('../../src/config', () => {
+jest.mock('@forgerock/libs/config', () => {
   return {
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     get() {
@@ -20,16 +19,18 @@ jest.mock('../../src/config', () => {
     },
   };
 });
-jest.mock('../../src/util/pkce', () => {
+jest.mock('@forgerock/libs/util-pkce', () => {
   return {
-    createVerifier(): string {
-      return 'abcd';
-    },
-    createState(): string {
-      return '1234';
-    },
-    createChallenge(): string {
-      return 'wxyz';
+    PKCE: {
+      createVerifier(): string {
+        return 'abcd';
+      },
+      createState(): string {
+        return '1234';
+      },
+      createChallenge(): string {
+        return 'wxyz';
+      },
     },
   };
 });

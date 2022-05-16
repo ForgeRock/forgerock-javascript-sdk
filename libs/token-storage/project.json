@@ -1,0 +1,32 @@
+{
+  "root": "libs/token-storage",
+  "sourceRoot": "libs/token-storage/src",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:swc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist//libs/token-storage",
+        "main": "libs/token-storage/src/index.ts",
+        "tsConfig": "libs/token-storage/tsconfig.lib.json",
+        "assets": ["libs/token-storage/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/token-storage/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/token-storage"],
+      "options": {
+        "jestConfig": "libs/token-storage/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

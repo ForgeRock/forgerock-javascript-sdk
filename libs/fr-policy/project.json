@@ -1,0 +1,32 @@
+{
+  "root": "libs/fr-policy",
+  "sourceRoot": "libs/fr-policy/src",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:swc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist//libs/fr-policy",
+        "main": "libs/fr-policy/src/index.ts",
+        "tsConfig": "libs/fr-policy/tsconfig.lib.json",
+        "assets": ["libs/fr-policy/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/fr-policy/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/fr-policy"],
+      "options": {
+        "jestConfig": "libs/fr-policy/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}
