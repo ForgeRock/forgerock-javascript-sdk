@@ -107,6 +107,8 @@ jobs:
           scope: '@forgerock'
       - run: npm ci
       - run: npm run build
+        env:
+          NX_CLOUD_DISTRIBUTED_EXECUTION: false
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
