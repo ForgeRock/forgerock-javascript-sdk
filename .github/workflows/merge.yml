@@ -117,4 +117,4 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.GH_TOKEN }}
           GITHUB_NPM_CONFIG_REGISTRY: https://npm.pkg.github.com/
           PUBLIC_NPM_CONFIG_REGISTRY: https://registry.npmjs.org
-        run: npx multi-semantic-release -ignore-private-packages
+        run: npx multi-semantic-release -ignore-private-packages=true
