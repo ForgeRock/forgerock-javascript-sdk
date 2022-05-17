@@ -34,6 +34,7 @@ const pages = [
   'config-token-storage',
   'misc-callbacks',
   'register-basic',
+  'umd-bundle-check',
 ];
 
 module.exports = (config) => {

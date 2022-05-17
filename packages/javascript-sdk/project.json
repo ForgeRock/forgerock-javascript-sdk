@@ -20,6 +20,7 @@
         "entryFile": "packages/javascript-sdk/src/index.ts",
         "outputPath": "packages/javascript-sdk/bundles",
         "deleteOutputPath": true,
+        "rollupConfig": "packages/javascript-sdk/rollup.config.js",
         "project": "packages/javascript-sdk/package.json",
         "tsConfig": "packages/javascript-sdk/tsconfig.lib.json",
         "cwd": "packages/javascript-sdk",
