@@ -13,7 +13,6 @@
     "docs": "typedoc packages/javascript-sdk",
     "format:staged": "pretty-quick --staged",
     "lint": "nx affected --target=lint",
-    "prepublishOnly": "npm run clean && npm i && npm run build && npm t",
     "build:reactjs-todo": "nx run reactjs-todo:build",
     "build:angular-todo": "nx run angular-todo:build",
     "prepare": "husky install",
