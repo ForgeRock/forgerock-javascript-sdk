@@ -8,7 +8,7 @@
  * of the MIT license. See the LICENSE file for details.
  */
 // @ts-nocheck
-import '@forgerock/javascript-sdk/bundles/index.umd.js';
+import * as forgerock from '@forgerock/javascript-sdk/bundles/index.umd.js';
 
 function autoscript() {
   const delay = 0;

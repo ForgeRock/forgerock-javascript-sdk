@@ -2,8 +2,6 @@ FROM node:alpine as base
 
 WORKDIR /app/builder
 
-RUN npm i -g nx
-
 COPY . /app/builder 
 
 RUN npm install --ignore-scripts
@@ -35,13 +33,9 @@ ENV TIMEOUT=$TIMEOUT
 ARG TREE=$TREE
 ENV TREE=$TREE
 
-RUN nx build reactjs-todo --parallel --prod --skipNxCache
+RUN npx nx build todo-api --parallel --prod --skipNxCache
 
-FROM nginx:1.19.2
+ENV PORT=$PORT
+EXPOSE $PORT 
 
-WORKDIR /usr/share/nginx/html
-
-COPY --from=base /app/builder/samples/reactjs-todo/public ./public
-COPY --from=base /app/builder/dist/samples/reactjs-todo .
-
-EXPOSE 8443
+CMD ["node", "dist/samples/todo-api/main.js"]

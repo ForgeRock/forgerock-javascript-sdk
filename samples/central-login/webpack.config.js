@@ -1,4 +1,5 @@
 const webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 
 module.exports = (config) => {
@@ -8,7 +9,6 @@ module.exports = (config) => {
   const AM_URL = process.env.AM_URL;
   const TIMEOUT = process.env.TIMEOUT;
   const REALM_PATH = process.env.REALM_PATH;
-  const TREE = process.env.TREE;
 
   config.plugins.push(
     new webpack.DefinePlugin({
@@ -23,17 +23,36 @@ module.exports = (config) => {
   );
   const conf = {
     ...config,
+    output: {
+      ...config.output,
+      publicPath: '/',
+    },
     devServer: {
       ...config.devServer,
       headers: {
         'Access-Control-Allow-Credentials': true,
         'Access-Control-Allow-Origin': 'null',
       },
-      server: 'https',
+      https: true,
+      historyApiFallback: true,
       static: {
-        directory: path.join(__dirname, '../../_static'),
+        directory: path.join(__dirname, './src/callback'),
       },
     },
+    optimization: {
+      ...config.optimization,
+    },
   };
+  config.plugins.push(
+    new HtmlWebpackPlugin({
+      inject: 'body',
+      template: './src/index.html',
+      filename: 'index.html',
+    }),
+    new HtmlWebpackPlugin({
+      template: './src/callback/index.html',
+      filename: './callback/index.html',
+    }),
+  );
   return conf;
 };

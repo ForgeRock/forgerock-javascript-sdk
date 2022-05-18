@@ -8,7 +8,7 @@
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/e2e/autoscript-apps",
-        "compiler": "swc",
+        "compiler": "babel",
         "index": "e2e/autoscript-apps/src/index.html",
         "main": "packages/javascript-sdk/src/index.ts",
         "tsConfig": "e2e/autoscript-apps/tsconfig.app.json",

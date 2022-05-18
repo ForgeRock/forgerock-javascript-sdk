@@ -55,7 +55,7 @@ Example with annotations:
 
 ```text
 AM_URL=<<<URL to your AM instance>>>
-APP_URL=https://react.example.com:8443
+APP_URL=https://react.example.com:8443 # in develop we do not use this variable for dynamic deployment reasons
 API_URL=https://api.example.com:9443
 DEBUGGER_OFF=false
 JOURNEY_LOGIN=Login

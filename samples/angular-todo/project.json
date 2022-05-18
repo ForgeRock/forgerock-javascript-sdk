@@ -25,6 +25,11 @@
       },
       "configurations": {
         "production": {
+          "buildOptimizer": true,
+          "vendorChunk": true,
+          "namedChunks": true,
+          "commonChunk": true,
+          "optimization": true,
           "budgets": [
             {
               "type": "initial",

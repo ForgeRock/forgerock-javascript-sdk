@@ -1,12 +1,12 @@
 {
-  "sourceRoot": "samples/reactjs/client",
+  "sourceRoot": "samples/reactjs-todo/client",
   "projectType": "application",
   "targets": {
     "build": {
       "executor": "@nrwl/web:webpack",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "compiler": "swc",
+        "compiler": "babel",
         "outputPath": "dist/samples/reactjs-todo",
         "index": "samples/reactjs-todo/public/index.html",
         "main": "samples/reactjs-todo/client/index.js",
@@ -21,6 +21,7 @@
         "production": {
           "optimization": true,
           "watch": false,
+          "vendorChunk": true,
           "webpackConfig": "samples/reactjs-todo/webpack.config.js",
           "outputPath": "dist/samples/reactjs-todo",
           "index": "samples/reactjs-todo/public/index.html",
@@ -28,21 +29,26 @@
           "tsConfig": "samples/reactjs-todo/tsconfig.app.json"
         }
       },
-      "defaultConfiguration": "production"
+      "defaultConfiguration": "development"
     },
     "serve": {
       "executor": "@nrwl/web:dev-server",
       "defaultConfiguration": "development",
-      "options": {
-        "buildTarget": "reactjs-todo:build",
-        "host": "react.example.com",
-        "port": 8443,
-        "open": true,
-        "ssl": true,
-        "watch": true
-      },
+      "options": {},
       "configurations": {
-        "development": {}
+        "development": {
+          "buildTarget": "reactjs-todo:build",
+          "host": "react.example.com",
+          "port": 8443,
+          "open": true,
+          "ssl": true,
+          "watch": true
+        },
+        "production": {
+          "watch": false,
+          "port": 8443,
+          "buildTarget": "reactjs-todo:build:production"
+        }
       }
     },
     "test": {
