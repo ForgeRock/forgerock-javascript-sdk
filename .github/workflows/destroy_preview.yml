@@ -1,0 +1,19 @@
+Name: 'Destroy preview env'
+on:
+  pull_request_target:
+    types:
+      - closed
+
+jobs:
+  closed:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Context
+        uses: okteto/context@latest
+        with:
+          token: ${{ secrets.OKTETO_TOKEN }}
+
+      - name: Destroy preview environment
+        uses: okteto/destroy-preview@latest
+        with:
+          name: forgerock-pr-${{ github.event.pull_request.user.login }}

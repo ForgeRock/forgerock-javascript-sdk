@@ -1,10 +1,8 @@
 name: Slack Notification
 # Only trigger, when the build workflow succeeded
 on:
-  workflow_run:
-    workflows: ['ForgeRock Pull Request CI']
-    types:
-      - completed
+  pull_request:
+
 jobs:
   slack-pr:
     runs-on: ubuntu-latest
@@ -21,11 +19,10 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "CI Results: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}"
+                    "text": "Build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}"
                   }
                 }
               ]
             }
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK

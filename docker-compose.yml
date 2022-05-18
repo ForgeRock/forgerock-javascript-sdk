@@ -1,63 +1,96 @@
 services:
-  mock-api:
-    container_name: mock-api
-    hostname: mock-api
-    build:
-      context: ./
-      dockerfile: ./Dockerfile
-    command: node /app/builder/dist/e2e/mock-api/main.js
-    ports:
-      - 9443:9443
-
-  autoscript-apps:
-    container_name: autoscript-apps
-    build:
-      context: ./
-      dockerfile: ./e2e/autoscript-apps/Dockerfile
-    ports:
-      - 8082:8082
-
+  # mock-api:
+  #   container_name: mock-api
+  #   hostname: mock-api
+  #   build:
+  #     context: ./
+  #     dockerfile: ./Dockerfile
+  #   command: node /app/builder/dist/e2e/mock-api/main.js
+  #   ports:
+  #     - 9443
+  #
+  # autoscript-apps:
+  #   container_name: autoscript-apps
+  #   build:
+  #     context: ./
+  #     dockerfile: ./e2e/autoscript-apps/Dockerfile
+  #   ports:
+  #     - 8082:8082
+  #
   todo-api:
     container_name: todo-api
-    hostname: todo-api
     build:
       context: ./
       dockerfile: ./Dockerfile
     command: node /app/builder/dist/samples/todo-api/main.js
     ports:
-      - 8081:8081
+      - 8081
     environment:
       PORT: 8081
-      AM_URL: $AM_URL
-      APP_URL: https://reactjs-todo-${APP_URL}.cloud.okteto.net
-      API_URL: https://todo-api-${API_URL}.cloud.okteto.net
-      DEBUGGER_OFF: $DEBUGGER-OFF
-      REALM_PATH: $REALM_PATH
-      JOURNEY_LOGIN: $JOURNEY_LOGIN
-      JOURNEY_REGISTER: $JOURNEY_REGISTER
-      WEB_OAUTH_CLIENT: $WEB_OAUTH_CLIENT
-      REST_OAUTH_CLIENT: $REST_OAUTH_CLIENT
-      REST_OAUTH_SECRET: $REST_OAUTH_SECRET
+      AM_URL: ${AM_URL}
+      DEBUGGER_OFF: ${DEBUGGER-OFF}
+      REALM_PATH: ${REALM_PATH}
+      JOURNEY_LOGIN: ${JOURNEY_LOGIN}
+      JOURNEY_REGISTER: ${JOURNEY_REGISTER}
+      WEB_OAUTH_CLIENT: ${WEB_OAUTH_CLIENT}
+      REST_OAUTH_CLIENT: ${REST_OAUTH_CLIENT}
+      REST_OAUTH_SECRET: ${REST_OAUTH_SECRET}
     restart: on-failure
-
+    networks:
+      - api
+  angular-todo:
+    container_name: angular-todo
+    depends_on:
+      - 'todo-api'
+    build:
+      context: ./
+      dockerfile: ./samples/angular-todo/Dockerfile
+      args:
+        AM_URL: ${AM_URL}
+        API_URL: ${API_URL}
+        DEBUGGER_OFF: ${DEBUGGER_OFF}
+        REALM_PATH: ${REALM_PATH}
+        JOURNEY_LOGIN: ${JOURNEY_LOGIN}
+        JOURNEY_REGISTER: ${JOURNEY_REGISTER}
+        WEB_OAUTH_CLIENT: ${WEB_OAUTH_CLIENT}
+        REST_OAUTH_CLIENT: ${REST_OAUTH_CLIENT}
+        REST_OAUTH_SECRET: ${REST_OAUTH_SECRET}
+    ports:
+      - '8000:80'
+    links:
+      - 'todo-api'
+    restart: on-failure
+  embedded-login:
+    container_name: embedded-login
+    build:
+      context: ./
+      dockerfile: ./samples/embedded-login/Dockerfile
+      args:
+        AM_URL: ${AM_URL}
+        REALM_PATH: ${REALM_PATH}
+        SCOPE: ${SCOPE}
+        TIMEOUT: ${TIMEOUT}
+        TREE: ${TREE}
+    ports:
+      - 8001:80
+    restart: on-failure
   reactjs-todo:
     container_name: reactjs-todo
+    depends_on:
+      - 'todo-api'
     build:
       context: ./
       dockerfile: ./samples/reactjs-todo/Dockerfile
       args:
-        AM_URL: $AM_URL
-        APP_URL: https://reactjs-todo-${APP_URL}.cloud.okteto.net
-        API_URL: https://todo-api-${API_URL}.cloud.okteto.net
-        DEBUGGER_OFF: $DEBUGGER_OFF
-        REALM_PATH: $REALM_PATH
-        JOURNEY_LOGIN: $JOURNEY_LOGIN
-        JOURNEY_REGISTER: $JOURNEY_REGISTER
-        WEB_OAUTH_CLIENT: $WEB_OAUTH_CLIENT
-        REST_OAUTH_CLIENT: $REST_OAUTH_CLIENT
-        REST_OAUTH_SECRET: $REST_OAUTH_SECRET
+        AM_URL: ${AM_URL}
+        API_URL: ${API_URL}
+        DEBUGGER_OFF: ${DEBUGGER_OFF}
+        REALM_PATH: ${REALM_PATH }
+        JOURNEY_LOGIN: ${JOURNEY_LOGIN}
+        JOURNEY_REGISTER: ${JOURNEY_REGISTER}
+        WEB_OAUTH_CLIENT: ${WEB_OAUTH_CLIENT}
+        REST_OAUTH_CLIENT: ${REST_OAUTH_CLIENT}
+        REST_OAUTH_SECRET: ${REST_OAUTH_SECRET}
     ports:
-      - 8443:8443
-    links:
-      - 'todo-api'
+      - '8443:80'
     restart: on-failure

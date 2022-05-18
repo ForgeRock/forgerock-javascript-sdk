@@ -13,14 +13,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import Router from './router';
-import {
-  AM_URL,
-  APP_URL,
-  DEBUGGER,
-  JOURNEY_LOGIN,
-  REALM_PATH,
-  WEB_OAUTH_CLIENT,
-} from './constants';
+import { AM_URL, DEBUGGER, JOURNEY_LOGIN, REALM_PATH, WEB_OAUTH_CLIENT } from './constants';
 import { AppContext, useGlobalStateMgmt } from './global-state';
 
 /**
@@ -47,7 +40,7 @@ import './styles/index.scss';
 if (DEBUGGER) debugger;
 Config.set({
   clientId: WEB_OAUTH_CLIENT,
-  redirectUri: `${APP_URL}/callback`,
+  redirectUri: `${window.location.href}/callback`,
   scope: 'openid profile email',
   serverConfig: {
     baseUrl: AM_URL,

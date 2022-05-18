@@ -1,0 +1,20 @@
+name: forgerock-javascript-sdk
+image: okteto/node:14
+command: bash
+sync:
+  - .:/usr/src/app
+forward:
+  - 9229:9229
+  - 3000:3000
+autocreate: true
+# dev:
+#   reactjs-todo:
+#     command: ['bash']
+#     forward:
+#       - 8443:80
+#     sync:
+#       - reactjs-todo:/app/builder
+#   frontend:
+#     command: node /app/builder/dist/todo-api/main.js
+#     sync:
+#       - todo-api:/app/builder

@@ -1,0 +1,25 @@
+name: 'Preview Env'
+on:
+  pull_request:
+    branches:
+      - develop
+      - next
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    environment:
+      name: Preview
+    steps:
+      - name: Context
+        uses: okteto/context@latest
+        with:
+          token: ${{ secrets.OKTETO_TOKEN }}
+
+      - name: Deploy preview environment
+        uses: okteto/deploy-preview@latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          name: forgerock-pr-${{ github.event.pull_request.user.login }}
+          timeout: 15m

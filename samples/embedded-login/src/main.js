@@ -11,7 +11,6 @@ import * as forgerock from '@forgerock/javascript-sdk';
  */
 
 const FATAL = 'Fatal';
-
 forgerock.Config.set({
   clientId: process.env.WEB_OAUTH_CLIENT, // e.g. 'ForgeRockSDKClient'
   redirectUri: process.env.REDIRECT_URI, // e.g. 'https://sdkapp.example.com:8443/_callback'
