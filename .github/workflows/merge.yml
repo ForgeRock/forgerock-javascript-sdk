@@ -51,8 +51,16 @@ jobs:
       - uses: codecov/codecov-action@v2
         with:
           token: ${{ secrets.CODE_COV_UPLOAD_TOKEN }}
-          directory: ${{ github.workspace }}/coverage
-
+          directory: ${{ github.workspace }}/packages/javascript-sdk/coverage
+      - name: Checkmarx CxFlow Action
+        uses: checkmarx-ts/checkmarx-cxflow-github-action@v1.3
+        with:
+          project: ${{ secrets.CHECKMARX_PROJECT }}
+          team: ${{ secrets.CHECKMARX_TEAM }}
+          checkmarx_url: ${{ secrets.CHECKMARX_URL }}
+          checkmarx_username: ${{ secrets.CHECKMARX_USERNAME }}
+          checkmarx_password: ${{ secrets.CHECKMARX_PASSWORD }}
+          checkmarx_client_secret: ${{ secrets.CHECKMARX_CLIENT_SECRET }}
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
         if: always()
