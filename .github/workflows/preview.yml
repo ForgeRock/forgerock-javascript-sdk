@@ -1,0 +1,29 @@
+on:
+  pull_request_target:
+    branches:
+      - develop
+      - next
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    environment:
+      name: Preview
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{github.event.pull_request.head.ref}}
+          repository: ${{github.event.pull_request.head.repo.full_name}}
+
+      - name: Context
+        uses: okteto/context@latest
+        with:
+          token: ${{ secrets.OKTETO_TOKEN }}
+
+      - name: Deploy preview environment
+        uses: okteto/deploy-preview@latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          name: forgerock-pr-${{ github.event.pull_request.user.login }}
+          timeout: 15m
