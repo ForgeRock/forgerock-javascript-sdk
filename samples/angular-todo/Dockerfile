@@ -35,13 +35,15 @@ ENV TIMEOUT=$TIMEOUT
 ARG TREE=$TREE
 ENV TREE=$TREE
 
-RUN nx build reactjs-todo --parallel --prod --skipNxCache
+RUN nx run-many --target=config --projects=angular-todo --skipNxCache
 
-FROM nginx:1.19.2
+RUN nx build angular-todo --parallel --prod --skipNxCache
+
+FROM nginx:1.21.6
 
 WORKDIR /usr/share/nginx/html
 
-COPY --from=base /app/builder/samples/reactjs-todo/public ./public
-COPY --from=base /app/builder/dist/samples/reactjs-todo .
+COPY --from=base /app/builder/dist/samples/angular-todo  .
 
-EXPOSE 8443
+ENV PORT=8082
+EXPOSE ${PORT}

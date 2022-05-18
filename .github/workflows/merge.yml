@@ -113,6 +113,7 @@ jobs:
           scope: '@forgerock'
 
       - run: npm ci
+      - run: npm install @nrwl/nx-cloud
       - run: npm run build
         env:
           NX_CLOUD_DISTRIBUTED_EXECUTION: false

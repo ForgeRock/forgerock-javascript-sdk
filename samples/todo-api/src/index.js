@@ -60,7 +60,7 @@ if (!AM_URL) {
 } else {
   // Prod uses Nginx, so run regular server
   console.log('Creating Node HTTP server');
-  createServer(app).listen(PORT);
+  createServer(app).listen(PORT, '0.0.0.0');
 
   console.log(`Node server listening on port: ${PORT}.`);
 }

@@ -95,6 +95,7 @@
   "workspaces": [
     "e2e/*",
     "packages/*",
-    "samples/*"
+    "samples/*",
+    "lib/*"
   ]
 }
