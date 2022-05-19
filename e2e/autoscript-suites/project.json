@@ -1,5 +1,4 @@
 {
-  "root": "e2e/autoscript-suites",
   "sourceRoot": "e2e/autoscript-suites/src",
   "projectType": "application",
   "targets": {

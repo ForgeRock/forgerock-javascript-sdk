@@ -3,6 +3,7 @@
   "compilerOptions": {
     "outDir": "dist",
     "module": "CommonJS",
+    "allowUmdGlobalAccess": true,
     "target": "ES5"
   },
   "exclude": ["**/*.spec.ts"],

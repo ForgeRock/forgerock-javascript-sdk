@@ -1,6 +1,5 @@
 {
   "projectType": "application",
-  "root": "samples/embedded-login",
   "sourceRoot": "samples/embedded-login/src",
   "tags": [],
   "targets": {
@@ -20,7 +19,11 @@
         "styles": ["samples/embedded-login/src/styles.css"],
         "scripts": [],
         "webpackConfig": "samples/embedded-login/webpack.config.js"
-      }
+      },
+      "configurations": {
+        "development": {}
+      },
+      "defaultConfiguration": "production"
     },
     "serve": {
       "executor": "@nrwl/web:dev-server",
@@ -30,7 +33,11 @@
         "ssl": true,
         "open": true,
         "host": "sdkapp.example.com"
-      }
+      },
+      "configurations": {
+        "development": {}
+      },
+      "defaultConfiguration": "development"
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",

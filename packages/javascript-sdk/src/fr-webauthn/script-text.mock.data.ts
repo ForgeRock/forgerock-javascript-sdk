@@ -414,3 +414,51 @@ export const registerOutputWithExcludeCreds = {
     name: '57a5b4e4-6999-4b45-bf86-a4f2e5d4b629',
   },
 };
+
+export const authenticateInputWithRpidAndAllowCredentialsAndAllowRecoveryCode = `/*
+ * Copyright 2018-2022 ForgeRock AS. All Rights Reserved
+ *
+ * Use of this code requires a commercial software license with ForgeRock AS.
+ * or with one of its affiliates. All use shall be exclusively subject
+ * to such license between the licensee and ForgeRock AS.
+ */
+
+if (!window.PublicKeyCredential) {
+    document.getElementById('webAuthnOutcome').value = "unsupported";
+    document.getElementById("loginButton_0").click();
+}
+
+var options = {
+    
+    challenge: new Int8Array([-17, -117, -10, 120, -90, 127, 70, -73, 114, -37, -94, 126, -96, -111, -65, 78, -84, 53, 74, -18, 93, 102, 24, -77, -97, -6, -106, -10, -101, -29, 36, -33]).buffer,
+    timeout: 60000,
+    userVerification: "preferred",
+    allowCredentials: [{ "type": "public-key", "id": new Int8Array([-33, 59, -68, 121, 57, -27, -33, -40, 55, 8, -65, -15, -40, -103, 73, 61, 49, 56, 65, -84, -27, -86, -103, -115, 15, 43, -64, -60, -105, 81, -111, 115, 105, 111, -105, 64, 73, 55, -35, 35, 38, 59, -91, 95, 64, 30, -10, -6, -91, -59, 26, 19, -3, 2, -39, 71, 112, 124, -66, -89, -10, -35, 122, 103]).buffer }]
+};
+
+navigator.credentials.get({ "publicKey" : options })
+    .then(function (assertion) {
+        var clientData = String.fromCharCode.apply(null, new Uint8Array(assertion.response.clientDataJSON));
+        var authenticatorData = new Int8Array(assertion.response.authenticatorData).toString();
+        var signature = new Int8Array(assertion.response.signature).toString();
+        var rawId = assertion.id;
+        var userHandle = String.fromCharCode.apply(null, new Uint8Array(assertion.response.userHandle));
+        document.getElementById('webAuthnOutcome').value = clientData + "::" + authenticatorData + "::" + signature + "::" + rawId + "::" + userHandle;
+        document.getElementById("loginButton_0").click();
+    }).catch(function (err) {
+        document.getElementById('webAuthnOutcome').value = "ERROR" + "::" + err;
+        var allowRecoveryCode = 'true' === "true";
+        if (allowRecoveryCode) {
+            var loginButton = document.getElementById("loginButton_0");
+            if (loginButton) {
+                var prev = loginButton.previousElementSibling;
+                if (prev && prev.nodeName == "DIV") {
+                    prev.getElementsByTagName("div")[0].innerHTML = "<i class="fa fa-times-circle text-primary"> "
+                        + err + "</i>";
+                }
+            }
+        } else {
+            document.getElementById("loginButton_0").click();
+        }
+    });
+`;

@@ -1,5 +1,4 @@
 {
-  "root": "samples/todo-api",
   "sourceRoot": "samples/todo-api/src",
   "projectType": "application",
   "targets": {
@@ -14,6 +13,7 @@
         "assets": ["samples/todo-api/src/assets"]
       },
       "configurations": {
+        "development": {},
         "production": {
           "optimization": true,
           "generatePackageJson": true,
@@ -55,7 +55,7 @@
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/samples/todo-api"],
       "options": {
-        "jestConfig": "samples/todo-api/jest.config.js",
+        "jestConfig": "samples/todo-api/jest.config.ts",
         "passWithNoTests": true
       }
     }

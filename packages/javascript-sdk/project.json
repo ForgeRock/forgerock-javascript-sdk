@@ -1,5 +1,4 @@
 {
-  "root": "packages/javascript-sdk",
   "sourceRoot": "packages/javascript-sdk/src",
   "projectType": "library",
   "targets": {
@@ -21,6 +20,7 @@
         "entryFile": "packages/javascript-sdk/src/index.ts",
         "outputPath": "packages/javascript-sdk/bundles",
         "deleteOutputPath": true,
+        "rollupConfig": "packages/javascript-sdk/rollup.config.js",
         "project": "packages/javascript-sdk/package.json",
         "tsConfig": "packages/javascript-sdk/tsconfig.lib.json",
         "cwd": "packages/javascript-sdk",
@@ -43,14 +43,14 @@
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/packages/javascript-sdk"],
       "options": {
-        "jestConfig": "packages/javascript-sdk/jest.unit.config.js",
+        "jestConfig": "packages/javascript-sdk/jest.unit.config.ts",
         "codeCoverage": true,
         "passWithNoTests": true
       },
       "configurations": {
         "unit": {},
         "integration": {
-          "jestConfig": "packages/javascript-sdk/jest.integration.config.js",
+          "jestConfig": "packages/javascript-sdk/jest.integration.config.ts",
           "passWithNoTests": true,
           "codeCoverage": true
         }

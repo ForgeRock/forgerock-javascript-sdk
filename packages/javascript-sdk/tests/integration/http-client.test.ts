@@ -15,13 +15,19 @@ import {
   authzByTreeReqOptionsForIG,
   authzByTxnReqOptionsForREST,
   authzByTxnReqOptionsForIG,
-  responseFromAM,
+  responseFromAM as mockResponseFromAM,
 } from './http-client.mock.data';
 import {
-  authzByTreeResFromIG,
-  authzByTreeResFromREST,
-  authzByTxnResFromIG,
-  authzByTxnResFromREST,
+  /* jest requires mock variables guaranteed to be initialized out of scope of the mock
+   * to be prefixed with mock
+   * see: The module factory of `jest.mock()` is not allowed to reference any out-of-scope variables.
+   * Note: This is a precaution to guard against uninitialized mock variables.
+   * If it is ensured that the mock is required lazily, variable names prefixed with `mock`(case insensitive) are permitted.
+   */
+  authzByTreeResFromIG as mockAuthzByTreeResFromIG,
+  authzByTreeResFromREST as mockAuthzByTreeResFromREST,
+  authzByTxnResFromIG as mockAuthzByTxnResFromIG,
+  authzByTxnResFromREST as mockAuthzByTxnResFromREST,
 } from '../../src/http-client/http-client.mock.data';
 
 // TODO: figure out how to move these mock functions in separate file
@@ -42,24 +48,25 @@ jest.mock('../../src/config', () => {
 });
 jest.mock('../../src/http-client/index', () => {
   const originalHttpClient = jest.requireActual('../../src/http-client/index');
+  const mockResponse = jest.fn(function (options: any): Promise<Response> {
+    if (options.url === 'https://request-auth-by-tree.com/ig') {
+      return Promise.resolve(mockAuthzByTreeResFromIG);
+    } else if (options.url === 'https://request-auth-by-tree.com/rest') {
+      return Promise.resolve(mockAuthzByTreeResFromREST);
+    } else if (options.url === 'https://request-auth-by-txn.com/ig') {
+      return Promise.resolve(mockAuthzByTxnResFromIG);
+    } else if (options.url === 'https://request-auth-by-txn.com/rest') {
+      return Promise.resolve(mockAuthzByTxnResFromREST);
+    }
+    {
+      return Promise.resolve(mockResponseFromAM);
+    }
+  });
   return {
     request: originalHttpClient.default.request,
     stepIterator: jest.fn().mockResolvedValue({}),
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    _request: jest.fn(function (options: any): Promise<Response> {
-      if (options.url === 'https://request-auth-by-tree.com/ig') {
-        return Promise.resolve(authzByTreeResFromIG);
-      } else if (options.url === 'https://request-auth-by-tree.com/rest') {
-        return Promise.resolve(authzByTreeResFromREST);
-      } else if (options.url === 'https://request-auth-by-txn.com/ig') {
-        return Promise.resolve(authzByTxnResFromIG);
-      } else if (options.url === 'https://request-auth-by-txn.com/rest') {
-        return Promise.resolve(authzByTxnResFromREST);
-      }
-      {
-        return Promise.resolve(responseFromAM);
-      }
-    }),
+    _request: mockResponse,
   };
 });
 

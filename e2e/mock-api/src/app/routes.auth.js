@@ -28,6 +28,7 @@ import {
   noSessionSuccess,
   pollingCallback,
   redirectCallback,
+  redirectCallbackSaml,
   requestDeviceProfile,
   secondFactorCallback,
   secondFactorChoiceCallback,
@@ -35,6 +36,8 @@ import {
   userInfo,
   oauthTokensExpiringSoon,
   oauthTokensExpired,
+  nameCallback,
+  redirectCallbackFailureSaml,
 } from './responses';
 import initialRegResponse from './response.registration';
 import wait from './wait';
@@ -63,6 +66,11 @@ export default function (app) {
         } else {
           res.json(initialLoginWithEmailResponse);
         }
+      } else if (
+        req.query.authIndexValue === 'SAMLTest' ||
+        req.query.authIndexValue === 'SAMLFailure'
+      ) {
+        res.json(nameCallback);
       } else if (req.query.authIndexValue === 'IDMSocialLogin') {
         res.json(selectIdPCallback);
       } else if (req.query.authIndexValue === 'AMSocialLogin') {
@@ -85,6 +93,34 @@ export default function (app) {
       }
     } else if (req.query.authIndexValue === 'LoginWithEmail') {
       res.json(emailSuspend);
+    } else if (req.query.authIndexValue === 'SAMLTestFailure') {
+      if (req.body.callbacks.find((cb) => cb.type === 'RedirectCallback')) {
+        if (
+          req.query.error === 'true' &&
+          req.query.errorCode === '401' &&
+          req.body.errorMessage === 'errorSaml'
+        ) {
+          res.json(authFail);
+        } else {
+          res.json(authSuccess);
+        }
+      } else {
+        res.json(redirectCallbackFailureSaml);
+      }
+    } else if (req.query.authIndexValue === 'SAMLTest') {
+      if (req.body.callbacks.find((cb) => cb.type === 'RedirectCallback')) {
+        if (
+          req.query.RelayState === 'https://forgerock.com' &&
+          req.query.responsekey === '885cae87-f88b-4d75-a0fd-0ae1400b766f' &&
+          req.body.authId === 'foo'
+        ) {
+          res.json(authSuccess);
+        } else {
+          res.json(authFail);
+        }
+      } else {
+        res.json(redirectCallbackSaml);
+      }
     } else if (req.query.authIndexValue === 'MiscCallbacks') {
       if (req.body.callbacks.find((cb) => cb.type === 'NameCallback')) {
         const cb = req.body.callbacks.find((cb) => cb.type === 'NameCallback');
@@ -303,14 +339,31 @@ export default function (app) {
   });
 
   app.get(authPaths.accounts, wait, async (req, res) => {
-    const referrer = new URL(req.get('Referer'));
-    const additionalQueryParams =
-      // eslint-disable-next-line max-len
-      'state=rtu8pz65dbg6baw985d532myfbbnf5v&code=4%2F0AY0e-g5vHGhzfggdAuIofxnblW-iR1Y30G5lN5RvbrU8Zv5ZmtUVheTzSX7YMJF_usbzUA&scope=email+profile+openid+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile&authuser=0&hd=forgerock.com&prompt=none';
-    const redirectUrl = `${referrer.href}${
-      referrer.href.includes('?') ? '&' : '?'
-    }${additionalQueryParams}`;
-    res.redirect(redirectUrl);
+    if (req.url.includes('SAMLFailure')) {
+      const referrer = new URL(req.get('Referer'));
+      const additionalQueryParams = 'error=true&errorCode=401&errorMessage=errorSaml';
+      const redirectUrl = `${referrer.href}${
+        referrer.href.includes('?') ? '&' : '?'
+      }${additionalQueryParams}`;
+      return res.redirect(redirectUrl);
+    } else if (req.url.includes('SAMLTest')) {
+      const referrer = new URL(req.get('Referer'));
+      const additionalQueryParams =
+        'responsekey=885cae87-f88b-4d75-a0fd-0ae1400b766f&RelayState=https://forgerock.com';
+      const redirectUrl = `${referrer.href}${
+        referrer.href.includes('?') ? '&' : '?'
+      }${additionalQueryParams}`;
+      return res.redirect(redirectUrl);
+    } else {
+      const referrer = new URL(req.get('Referer'));
+      const additionalQueryParams =
+        // eslint-disable-next-line max-len
+        'state=rtu8pz65dbg6baw985d532myfbbnf5v&code=4%2F0AY0e-g5vHGhzfggdAuIofxnblW-iR1Y30G5lN5RvbrU8Zv5ZmtUVheTzSX7YMJF_usbzUA&scope=email+profile+openid+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile&authuser=0&hd=forgerock.com&prompt=none';
+      const redirectUrl = `${referrer.href}${
+        referrer.href.includes('?') ? '&' : '?'
+      }${additionalQueryParams}`;
+      res.redirect(redirectUrl);
+    }
   });
 
   app.get(authPaths.authorize, wait, async (req, res) => {
