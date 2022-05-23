@@ -1,6 +1,6 @@
 {
   "name": "reactjs-todo",
-  "version": "1.4.3",
+  "private": true,
   "description": "A ForgeRock authenticated sample web app written in React",
   "scripts": {
     "clean": "shx rm -rf \"./public/app*\" ./node_modules ./package-lock.json"
