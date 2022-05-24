@@ -76,6 +76,7 @@ jobs:
           repository: ${{github.event.pull_request.head.repo.full_name}}
           fetch-depth: 0
       - uses: actions/setup-node@v3
+        id: cache
         with:
           node-version: '16.13.1'
           cache: 'npm'
@@ -105,7 +106,7 @@ jobs:
           fetch-depth: 0
 
       - uses: actions/setup-node@v3
-        if: cache
+        id: cache
         with:
           node-version: '16.x'
           scope: '@forgerock'
