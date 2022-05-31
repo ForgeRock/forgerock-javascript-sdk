@@ -26,6 +26,7 @@ jobs:
       - name: Derive appropriate SHAs for base and head for `nx affected` commands
         id: sha
         uses: nrwl/nx-set-shas@v2
+      - run: npm install @nrwl/nx-cloud
 
       - run: npx nx-cloud start-ci-run
       - run: npx nx affected --target=build --parallel --max-parallel=3 --base=${{ steps.sha.outputs.base }} head=${{ steps.sha.outputs.head }}
@@ -86,7 +87,7 @@ jobs:
         env:
           # PLAYWRIGHT_BROWSERS_PATH: 0
           PLAYWRIGHT_SKIP_BROWSERS_DOWNLOAD: 1
-
+      - run: npm install @nrwl/nx-cloud
       - name: Setup custom host for sdkapp.example.com
         run: sudo echo "127.0.0.1 sdkapp.example.com auth.example.com api.example.com user.example.com" | sudo tee -a /etc/hosts
 
