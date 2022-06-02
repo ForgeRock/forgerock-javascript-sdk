@@ -1,13 +1,13 @@
 services:
-  # mock-api:
-  #   container_name: mock-api
-  #   hostname: mock-api
-  #   build:
-  #     context: ./
-  #     dockerfile: ./Dockerfile
-  #   command: node /app/builder/dist/e2e/mock-api/main.js
-  #   ports:
-  #     - 9443
+  mock-api:
+    container_name: mock-api
+    hostname: mock-api
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+    command: node /app/builder/dist/e2e/mock-api/main.js
+    ports:
+      - 9443
   #
   # autoscript-apps:
   #   container_name: autoscript-apps

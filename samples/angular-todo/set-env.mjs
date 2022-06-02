@@ -1,9 +1,10 @@
 import { writeFile } from 'fs';
 
 // Assume development
-let targetPath = process.env.NODE_ENV
-  ? 'samples/angular-todo/src/environments/environment.prod.ts'
-  : 'samples/angular-todo/src/environments/environment.ts';
+let targetPath =
+  process.env.NODE_ENV === 'production'
+    ? 'samples/angular-todo/src/environments/environment.prod.ts'
+    : 'samples/angular-todo/src/environments/environment.ts';
 
 const envConfigFile = `export const environment = {
    AM_URL: '${process.env.AM_URL}',
