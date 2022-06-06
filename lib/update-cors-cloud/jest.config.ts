@@ -1,6 +1,6 @@
 module.exports = {
   displayName: 'lib-update-cors-cloud',
-  preset: '../../jest.preset.js',
+  preset: '../../jest.preset.ts',
   setupFiles: ['./test/setup-env.ts'],
   globals: {
     'ts-jest': {

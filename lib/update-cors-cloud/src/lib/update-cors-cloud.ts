@@ -1,19 +1,58 @@
-import axios from 'axios';
-import { ADD_CONFIG } from './constants';
+import axios, { AxiosResponse } from 'axios';
+import { ADD_CONFIG, GET_CONFIG } from './constants';
+
+function handleOrigins(originsToAdd: string[], origins: string[], remove: boolean) {
+  if (remove) {
+    return origins.filter((origin: string) => !originsToAdd.includes(origin));
+  } else {
+    return origins.concat(originsToAdd);
+  }
+}
+interface CorsStructure {
+  maxAge: number;
+  exposedHeaders: string[];
+  acceptedHeaders: string[];
+  allowedCredentials: boolean;
+  acceptedMethods: string[];
+  acceptedOrigins: string[];
+  enabled: boolean;
+  _id: string;
+  _type: {
+    _id: string;
+    name: string;
+    collection: boolean;
+  };
+}
+
+interface CorsResponse {
+  data: {
+    results: CorsStructure[];
+  };
+}
 
 interface CorsConfigValues {
   AM_URL: string;
-  origin: string[];
+  originsToAdd: string[];
   ssoToken: string;
+  remove: boolean;
 }
 
 export async function updateCorsConfig({
   AM_URL,
-  origin,
+  originsToAdd,
   ssoToken,
-}: CorsConfigValues): Promise<Error | { id: string }> {
+  remove = false, // default to not remove origins
+}: CorsConfigValues): Promise<Error | { acceptedOrigins: string[]; id: string }> {
   if (!AM_URL) {
     return Promise.reject('You must provide an AM_URL');
+  }
+  if (!originsToAdd) {
+    return new Error('You must provide a list of origins to update the cors config with');
+  }
+  if (!ssoToken) {
+    return new Error(
+      'No SSO Token provided to update the cors config, exiting without a network call',
+    );
   }
   try {
     /*
@@ -24,6 +63,15 @@ export async function updateCorsConfig({
      * the configuration with additional REST calls.
      * The new settings take effect immediately.
      */
+    const { data }: AxiosResponse<CorsResponse, unknown> = await axios({
+      baseURL: AM_URL,
+      url: GET_CONFIG.url,
+      method: GET_CONFIG.type,
+      headers: { iPlanetDirectoryPro: ssoToken },
+    });
+    const [{ acceptedOrigins: existingOrigins }] = data.data.results;
+    const origins = handleOrigins(originsToAdd, existingOrigins, remove);
+
     const response = await axios({
       baseURL: AM_URL,
       url: ADD_CONFIG.url,
@@ -32,12 +80,12 @@ export async function updateCorsConfig({
       data: {
         //  https://backstage.forgerock.com/docs/am/7.1/security-guide/enable-cors-support.html#add-cors-config
         enabled: true,
-        acceptedOrigins: origin,
+        acceptedOrigins: origins, // probably need to concat the existing origins here also
       },
     });
 
     if (response.status === 201) {
-      return { id: response.data._id };
+      return { id: response.data._id, acceptedOrigins: response.data.acceptedOrigins };
     }
     if (response.status === 401) {
       return new Error('You must provide an SSO token for authorization');

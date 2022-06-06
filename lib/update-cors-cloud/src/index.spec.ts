@@ -5,7 +5,7 @@ import MockAdapter from 'axios-mock-adapter';
 import { authenticateCloud } from './lib/authenticate-cloud';
 import { updateCorsConfig } from './lib/update-cors-cloud';
 
-const mock = new MockAdapter(axios);
+const mock = new MockAdapter(axios as any);
 
 jest.mock('./lib/authenticate-cloud', () => ({
   authenticateCloud: jest.fn(() => ({ data: { tokenId: 'token1' } })),
@@ -39,10 +39,18 @@ describe('should test the flow from auth to update', () => {
       username: 'admin',
       password: 'password',
       realm: 'alpha',
+      origins: [
+        'https://reactjs-todo-12-forgerock.cloud.okteto.com',
+        'https://angular-todo-12-forgerock.cloud.okteto.com',
+        'https://todo-api-12-forgerock.cloud.okteto.com',
+        'https://mock-api-12-forgerock.cloud.okteto.com',
+        'https://autoscript-apps-12-forgerock.cloud.okteto.com',
+      ],
+      remove_origins: false,
     });
     expect(updateCorsConfig).toHaveBeenCalledWith({
       AM_URL: 'some-am-url',
-      origin: [
+      originsToAdd: [
         'https://reactjs-todo-12-forgerock.cloud.okteto.com',
         'https://angular-todo-12-forgerock.cloud.okteto.com',
         'https://todo-api-12-forgerock.cloud.okteto.com',
@@ -50,6 +58,7 @@ describe('should test the flow from auth to update', () => {
         'https://autoscript-apps-12-forgerock.cloud.okteto.com',
       ],
       ssoToken: 'token1',
+      remove_origins: false,
     });
   });
 });

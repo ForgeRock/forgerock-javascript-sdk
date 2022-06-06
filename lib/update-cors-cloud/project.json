@@ -4,13 +4,17 @@
   "projectType": "library",
   "targets": {
     "build": {
-      "executor": "@nrwl/js:tsc",
+      "executor": "@nrwl/workspace:run-commands",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist//lib/update-cors-cloud",
-        "main": "lib/update-cors-cloud/src/index.ts",
-        "tsConfig": "lib/update-cors-cloud/tsconfig.lib.json",
-        "assets": ["lib/update-cors-cloud/*.md"]
+        "command": "ncc build lib/update-cors-cloud/src/index.ts -o dist/lib/update-cors-cloud"
+      }
+    },
+    "serve": {
+      "executor": "@nrwl/workspace:run-commands",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "command": "ncc run dist/lib/update-cors-cloud/index.js"
       }
     },
     "lint": {
@@ -24,7 +28,7 @@
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/lib/update-cors-cloud"],
       "options": {
-        "jestConfig": "lib/update-cors-cloud/jest.config.js",
+        "jestConfig": "lib/update-cors-cloud/jest.config.ts",
         "passWithNoTests": true,
         "codeCoverage": true
       }

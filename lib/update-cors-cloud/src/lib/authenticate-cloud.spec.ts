@@ -2,7 +2,7 @@ import axios from 'axios';
 import { authenticateCloud } from './authenticate-cloud';
 import MockAdapter from 'axios-mock-adapter';
 
-const mock = new MockAdapter(axios);
+const mock = new MockAdapter(axios as any);
 describe('should test the authentication through AM', () => {
   it('should call the authenticate endpoint with username and password', async () => {
     mock.onPost('/openam/json/realms/root/realms/alpha/authenticate').reply(200, {

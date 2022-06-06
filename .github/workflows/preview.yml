@@ -4,22 +4,48 @@ on:
     branches:
       - develop
       - next
+      - '!dependabot/**'
 
 jobs:
   preview:
     runs-on: ubuntu-latest
     environment:
       name: Preview
+    container:
+      image: okteto/okteto:2.3.2
     steps:
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16.x'
+
       - name: Context
         uses: okteto/context@latest
         with:
           token: ${{ secrets.OKTETO_TOKEN }}
 
       - name: Deploy preview environment
+        id: preview
         uses: okteto/deploy-preview@latest
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           name: forgerock-pr-${{ github.event.pull_request.user.login }}
           timeout: 15m
+
+      - name: Get Preview Endpoints
+        id: urls
+        run: |
+          URLS=okteto preview endpoints forgerock-forgerock-javascript-sdk-pr-${{ github.event.pull_request.number }} -o json
+          echo "::set-output name=preview_urls::$URLS"
+
+      - name: build cors action
+        run: nx build update-cors-cloud
+
+      - name: Update Cors
+        uses: node './dist/lib/update-cors-cloud'
+        with:
+          AM_URL: ${{ secrets.AM_URL }}
+          username: ${{ secrets.AM_USERNAME }}
+          password: ${{ secrets.AM_PASSWORD }}
+          realm: ${{ secrets.AM_REALM }}
+          origins: steps.outputs.urls.preview_urls
