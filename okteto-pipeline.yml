@@ -1,9 +1,0 @@
-deploy:
-  # - envsubst < .env.example > .env
-  - okteto build -t okteto.dev/base .
-  - okteto build -t okteto.dev/react:${OKTETO_GIT_COMMIT} samples/reactjs-todo
-  - okteto build -t okteto.dev/angular:${OKTETO_GIT_COMMIT} samples/angular-todo
-  - okteto build -t okteto.dev/embedded-login:${OKTETO_GIT_COMMIT} samples/embedded-login
-  - okteto build -t okteto.dev/central-login:${OKTETO_GIT_COMMIT} samples/central-login
-  - okteto build -t okteto.dev/embedded-login:${OKTETO_GIT_COMMIT} samples/embedded-login
-  # - okteto stack deploy --build

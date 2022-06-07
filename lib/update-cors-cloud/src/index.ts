@@ -4,9 +4,9 @@ import { authenticateCloud } from './lib/authenticate-cloud';
 // import { constructUrls } from './lib/construct-urls';
 
 const AM_URL = core.getInput('AM_URL');
-const username = core.getInput('username');
-const password = core.getInput('password');
-const realm = core.getInput('realm_path');
+const username = core.getInput('USERNAME');
+const password = core.getInput('PASSWORD');
+const realm = core.getInput('REALM_PATH');
 const origins = core.getInput('origins'); // this is json as input
 const remove = Boolean(core.getInput('remove_origins'));
 
