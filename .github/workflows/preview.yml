@@ -5,6 +5,8 @@ on:
       - develop
       - next
       - '!dependabot/**'
+env:
+  NX_CLOUD_DISTRIBUTED_EXECUTION: true
 
 jobs:
   preview:
@@ -13,11 +15,9 @@ jobs:
       name: Preview
     container:
       image: okteto/okteto:2.3.2
+    outputs:
+      urls: ${{ steps.urls.outputs.preview_urls }}
     steps:
-      - uses: actions/setup-node@v3
-        with:
-          node-version: '16.x'
-
       - name: Context
         uses: okteto/context@latest
         with:
@@ -35,17 +35,57 @@ jobs:
       - name: Get Preview Endpoints
         id: urls
         run: |
-          URLS=okteto preview endpoints forgerock-forgerock-javascript-sdk-pr-${{ github.event.pull_request.number }} -o json
+          URLS=$(okteto preview endpoints forgerock-forgerock-javascript-sdk-pr-${{ github.event.pull_request.number }} -o json)
           echo "::set-output name=preview_urls::$URLS"
 
-      - name: build cors action
-        run: nx build update-cors-cloud
+  agents:
+    runs-on: macos-latest
+    name: Agent Mac
+    strategy:
+      matrix:
+        agent: [1, 2, 3]
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          repository: ${{github.event.pull_request.head.repo.full_name}}
+          fetch-depth: 0
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16.13.1'
+          cache: 'npm'
+          cache-dependency-path: '**/package-lock.json'
+      - run: npm ci
+        if: steps.cache.outputs.cache-hit != 'true'
+        env:
+          # PLAYWRIGHT_BROWSERS_PATH: 0
+          PLAYWRIGHT_SKIP_BROWSERS_DOWNLOAD: 1
 
+      - run: npx playwright install chromium firefox webkit
+      - name: Start Nx Agent ${{ matrix.agent }}
+        run: npx nx-cloud start-agent
+  cors:
+    needs: preview
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16.x'
+      - run: npm ci
+
+      - run: npm install @nrwl/nx-cloud
+
+      - name: build cors action
+        run: npx nx build update-cors-cloud
+
+      - uses: actions/checkout@v3
       - name: Update Cors
-        uses: node './dist/lib/update-cors-cloud'
+        uses: './dist/lib/update-cors-cloud'
         with:
           AM_URL: ${{ secrets.AM_URL }}
           username: ${{ secrets.AM_USERNAME }}
           password: ${{ secrets.AM_PASSWORD }}
           realm: ${{ secrets.AM_REALM }}
-          origins: steps.outputs.urls.preview_urls
+          origins: ${{ needs.preview.outputs.urls }}

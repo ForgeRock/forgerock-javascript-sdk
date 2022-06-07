@@ -8,7 +8,7 @@
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/samples/embedded-login",
-        "compiler": "swc",
+        "compiler": "babel",
         "index": "samples/embedded-login/src/index.html",
         "baseHref": "/",
         "main": "samples/embedded-login/src/main.js",

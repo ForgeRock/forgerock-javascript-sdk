@@ -17,7 +17,9 @@ async function update(): Promise<void> {
       data: { tokenId: ssoToken },
     } = await authenticateCloud({ AM_URL, realm, username, password });
 
-    const originsToAdd = JSON.parse(origins);
+    const originsToAdd = JSON.parse(origins)
+      .map((val: { url: string; private: boolean }) => val?.url ?? '')
+      .filter(Boolean);
 
     // we need to build our origins as well from the endpoints we are making
     const output = await updateCorsConfig({ AM_URL, originsToAdd, ssoToken, remove });

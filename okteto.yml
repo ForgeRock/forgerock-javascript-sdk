@@ -1,88 +1,78 @@
+name: forgerock-javascript-sdk
+# The build section defines how to build the images of your development environment
+# More info: https://www.okteto.com/docs/reference/manifest/#build
+build:
+  # You can use the following env vars to refer to this image in your deploy commands:
+  #  - OKTETO_BUILD_REACTJS-TODO_REGISTRY: image registry
+  #  - OKTETO_BUILD_REACTJS-TODO_REPOSITORY: image repo
+  #  - OKTETO_BUILD_REACTJS-TODO_IMAGE: image name
+  #  - OKTETO_BUILD_REACTJS-TODO_TAG: image tag
+  reactjs-todo:
+    context: .
+    dockerfile: samples/reactjs-todo/Dockerfile
+    args:
+      - AM_URL=$AM_URL
+      - API_URL=$API_URL
+      - DEBUGGER_OFF=$DEBUGGER_OFF
+      - JOURNEY_LOGIN=$JOURNEY_LOGIN
+      - JOURNEY_REGISTER=$JOURNEY_REGISTER
+      - REALM_PATH=$REALM_PATH
+      - REST_OAUTH_CLIENT=$REST_OAUTH_CLIENT
+      - REST_OAUTH_SECRET=$REST_OAUTH_SECRET
+      - WEB_OAUTH_CLIENT=$WEB_OAUTH_CLIENT
+
+  # You can use the following env vars to refer to this image in your deploy commands:
+  #  - OKTETO_BUILD_TODO-API_REGISTRY: image registry
+  #  - OKTETO_BUILD_TODO-API_REPOSITORY: image repo
+  #  - OKTETO_BUILD_TODO-API_IMAGE: image name
+  #  - OKTETO_BUILD_TODO-API_TAG: image tag
+  todo-api:
+    context: .
+    dockerfile: Dockerfile
+
+# The deploy section defines how to deploy your development environment
+# More info: https://www.okteto.com/docs/reference/manifest/#deploy
+deploy:
+  compose:
+    file: docker-compose.yml
+
+# The dependencies section defines other git repositories to be deployed as part of your development environment
+# More info: https://www.okteto.com/docs/reference/manifest/#dependencies
+# dependencies:
+#   - https://github.com/okteto/sample
+
+# The dev section defines how to activate a development container
+# More info: https://www.okteto.com/docs/reference/manifest/#dev
 dev:
+  angular-todo:
+    image: okteto/node:16
+    command: bash
+    workdir: /usr/share/nginx/html
+    sync:
+      - .:/usr/share/nginx/html
+    forward:
+      - 9229:9229
+  embedded-login:
+    image: okteto/node:16
+    command: bash
+    workdir: /usr/share/nginx/html
+    sync:
+      - .:/usr/share/nginx/html
+    forward:
+      - 9229:9229
+  reactjs-todo:
+    image: okteto/node:16
+    command: bash
+    workdir: /usr/share/nginx/html
+    sync:
+      - .:/usr/share/nginx/html
+    forward:
+      - 9229:9229
   todo-api:
     image: okteto/node:16
     command: bash
+    workdir: /app/builder
     sync:
-      - .:/samples/todo-api
-  reactjs-todo:
-    image: okteto/node:16
-    command: bash
-    sync:
-      - .:/samples/reactjs-todo
-  angular-todo:
-    image: okteto/node:16
-    command: bash
-    sync:
-      - .:/samples/angular-todo
-  embedded-login:
-    image: okteto/node:16
-    command: bash
-    sync:
-      - .:/samples/embedded-login
-  mock-api:
-    image: okteto/node:16
-    command: bash
-    sync:
-      - .:/e2e/mock-api
-  autoscript-apps:
-    image: okteto/node:16
-    command: bash
-    sync:
-      - .:/e2e/autoscript-apps
-  autoscript-suites:
-    image: okteto/node:16
-    command: bash
-    sync:
-      - .:/e2e/autoscript-suites
-build:
-  base:
-    context: ./
-    dockerfile: ./Dockerfile
-    args:
-      AM_URL: $AM_URL
-      DEVELOPMENT: $DEVELOPMENT
-      REALM_PATH: $REALM_PATH
-      REST_OAUTH_CLIENT: $REST_OAUTH_CLIENT
-      REST_OAUTH_SECRET: $REST_OAUTH_SECRET
-      API_URL: $API_URL
-      DEBUGGER_OFF: $DEBUGGER_OFF
-      JOURNEY_LOGIN: $JOURNEY_LOGIN
-      JOURNEY_REGISTER: $JOURNEY_REGISTER
-      WEB_OAUTH_CLIENT: $WEB_OAUTH_CLIENT
-
-  reactjs-todo:
-    context: ./samples/reactjs-todo
-    dockerfile: ./samples/reactjs-todo/Dockerfile
-    target: base
-  angular-todo:
-    context: ./
-    dockerfile: ./samples/angular-todo/Dockerfile
-    target: base
-  embedded-login:
-    context: ./
-    dockerfile: ./samples/embedded-login/Dockerfile
-    target: base
-    args:
-      AM_URL: $AM_URL
-      REALM_PATH: $REALM_PATH
-      SCOPE: $SCOPE
-      TIMEOUT: $TIMEOUT
-      TREE: $TREE
-deploy:
-  compose:
-    - docker-compose.yml
-  commands:
-    - envsubst < .env.example > .env
-    - okteto build -t AM_URL=$AM_URL okteto.dev/base .
-
-  endpoints:
-    - path: /reactjs-todo
-      service: reactjs-todo
-    - path: /angular-todo
-      service: angular-todo
-    - path: /embedded-login
-      service: embedded-login
-    - path: /mock-api
-      service: mock-api
-    - path: /todo-api
-      service: todo-api
+      - .:/app/builder
+    forward:
+      - 9229:9229

@@ -8,7 +8,7 @@
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/samples/central-login",
-        "compiler": "swc",
+        "compiler": "babel",
         "index": "samples/central-login/src/index.html",
         "baseHref": "/",
         "main": "samples/central-login/src/main.js",

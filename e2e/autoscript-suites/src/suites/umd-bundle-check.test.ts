@@ -12,7 +12,7 @@ import { test, expect } from '@playwright/test';
 import { setupAndGo } from '../utilities/setup-and-go';
 
 test.describe('Test basic registration flow', () => {
-  test(`should load the umd bundle`, async ({ page, browserName }) => {
+  test.skip(`should load the umd bundle`, async ({ page, browserName }) => {
     const { messageArray } = await setupAndGo(page, browserName, 'umd-bundle-check/');
     // Test assertions
     expect(messageArray.includes('Config was loaded')).toBe(true);

@@ -6,7 +6,7 @@
       "executor": "@nrwl/web:webpack",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "compiler": "swc",
+        "compiler": "babel",
         "outputPath": "dist/samples/reactjs-todo",
         "index": "samples/reactjs-todo/public/index.html",
         "main": "samples/reactjs-todo/client/index.js",
