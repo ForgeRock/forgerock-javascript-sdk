@@ -2,7 +2,6 @@
 
 ## [3.3.1] - 2022-05-18
 
-- Added support for SAML in sdk
 - Fixed issue where UMD bundle namespace changed
 
 ## [3.3.0] - 2022-04-25
