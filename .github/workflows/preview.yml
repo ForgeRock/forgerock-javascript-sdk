@@ -80,12 +80,13 @@ jobs:
       - name: build cors action
         run: npx nx build update-cors-cloud
 
-      - uses: actions/checkout@v3
-      - name: Update Cors
-        uses: './dist/lib/update-cors-cloud'
+      - uses: ryanbas21/update-am
         with:
           AM_URL: ${{ secrets.AM_URL }}
-          username: ${{ secrets.AM_USERNAME }}
-          password: ${{ secrets.AM_PASSWORD }}
-          realm: ${{ secrets.AM_REALM }}
-          origins: ${{ needs.preview.outputs.urls }}
+          USERNAME: ${{ secrets.AM_USERNAME }}
+          PASSWORD: ${{ secrets.AM_PASSWORD }}
+          REALM: ${{ secrets.AM_REALM }}
+          ORIGINS: ${{ needs.preview.outputs.urls }}
+          COOKIE_NAME: ${{ secrets.COOKIE_NAME }}
+          REDIRECTION_URIS: ${{ secrets.REDIRECTION_URIS }}
+          remove: false
