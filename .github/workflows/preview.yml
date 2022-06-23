@@ -1,22 +1,20 @@
 name: 'Preview Env'
+
 on:
   pull_request:
     branches:
       - develop
       - next
       - '!dependabot/**'
-env:
-  NX_CLOUD_DISTRIBUTED_EXECUTION: true
-
 jobs:
   preview:
     runs-on: ubuntu-latest
     environment:
       name: Preview
     container:
-      image: okteto/okteto:2.3.2
+      image: ghcr.io/ryanbas21/update-cors-am-github-action:main
     outputs:
-      urls: ${{ steps.urls.outputs.preview_urls }}
+      urls: ${{ steps.preview_urls.outputs.preview_urls }}
     steps:
       - name: Context
         uses: okteto/context@latest
@@ -29,41 +27,13 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          name: forgerock-pr-${{ github.event.pull_request.user.login }}
+          name: pr-${{ github.event.number }}-${{ github.user.login }}
           timeout: 15m
-
       - name: Get Preview Endpoints
-        id: urls
+        id: preview_urls
         run: |
-          URLS=$(okteto preview endpoints forgerock-forgerock-javascript-sdk-pr-${{ github.event.pull_request.number }} -o json)
+          URLS=$(okteto preview endpoints forgerock-forgerock-javascript-sdk-pr-${{ github.event.number }} -o json | jq -c)
           echo "::set-output name=preview_urls::$URLS"
-
-  agents:
-    runs-on: macos-latest
-    name: Agent Mac
-    strategy:
-      matrix:
-        agent: [1, 2, 3]
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          ref: ${{ github.event.pull_request.head.ref }}
-          repository: ${{github.event.pull_request.head.repo.full_name}}
-          fetch-depth: 0
-      - uses: actions/setup-node@v3
-        with:
-          node-version: '16.13.1'
-          cache: 'npm'
-          cache-dependency-path: '**/package-lock.json'
-      - run: npm ci
-        if: steps.cache.outputs.cache-hit != 'true'
-        env:
-          # PLAYWRIGHT_BROWSERS_PATH: 0
-          PLAYWRIGHT_SKIP_BROWSERS_DOWNLOAD: 1
-
-      - run: npx playwright install chromium firefox webkit
-      - name: Start Nx Agent ${{ matrix.agent }}
-        run: npx nx-cloud start-agent
   cors:
     needs: preview
     runs-on: ubuntu-latest
@@ -73,20 +43,15 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '16.x'
-      - run: npm ci
-
-      - run: npm install @nrwl/nx-cloud
-
-      - name: build cors action
-        run: npx nx build update-cors-cloud
-
-      - uses: ryanbas21/update-am
+      - run: echo ${{ needs.preview.outputs.urls }}
+      - uses: ryanbas21/update-cors-am-github-action@latest
         with:
           AM_URL: ${{ secrets.AM_URL }}
           USERNAME: ${{ secrets.AM_USERNAME }}
           PASSWORD: ${{ secrets.AM_PASSWORD }}
-          REALM: ${{ secrets.AM_REALM }}
+          REALM_PATH: ${{ secrets.AM_REALM }}
           ORIGINS: ${{ needs.preview.outputs.urls }}
           COOKIE_NAME: ${{ secrets.COOKIE_NAME }}
           REDIRECTION_URIS: ${{ secrets.REDIRECTION_URIS }}
-          remove: false
+          REMOVE: false
+          CORS_CONFIG_NAME: 'ForgeRockSDK'

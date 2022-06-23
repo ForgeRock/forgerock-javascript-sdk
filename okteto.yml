@@ -11,15 +11,15 @@ build:
     context: .
     dockerfile: samples/reactjs-todo/Dockerfile
     args:
-      - AM_URL=$AM_URL
-      - API_URL=$API_URL
-      - DEBUGGER_OFF=$DEBUGGER_OFF
-      - JOURNEY_LOGIN=$JOURNEY_LOGIN
-      - JOURNEY_REGISTER=$JOURNEY_REGISTER
-      - REALM_PATH=$REALM_PATH
-      - REST_OAUTH_CLIENT=$REST_OAUTH_CLIENT
-      - REST_OAUTH_SECRET=$REST_OAUTH_SECRET
-      - WEB_OAUTH_CLIENT=$WEB_OAUTH_CLIENT
+      - $AM_URL
+      - $API_URL
+      - $DEBUGGER_OFF
+      - $JOURNEY_LOGIN
+      - $JOURNEY_REGISTER
+      - $REALM_PATH
+      - $REST_OAUTH_CLIENT
+      - $REST_OAUTH_SECRET
+      - $WEB_OAUTH_CLIENT
 
   # You can use the following env vars to refer to this image in your deploy commands:
   #  - OKTETO_BUILD_TODO-API_REGISTRY: image registry

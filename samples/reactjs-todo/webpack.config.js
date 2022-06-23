@@ -8,7 +8,15 @@ module.exports = (config) => {
   const JOURNEY_REGISTER = process.env.JOURNEY_REGISTER;
   const WEB_OAUTH_CLIENT = process.env.WEB_OAUTH_CLIENT;
   const REALM_PATH = process.env.REALM_PATH;
-
+  console.log({
+    AM_URL,
+    API_URL,
+    DEBUGGER_OFF,
+    JOURNEY_LOGIN,
+    JOURNEY_REGISTER,
+    WEB_OAUTH_CLIENT,
+    REALM_PATH,
+  });
   config.plugins.push(
     new webpack.DefinePlugin({
       // Inject all the environment variable into the Webpack build
