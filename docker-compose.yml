@@ -38,42 +38,42 @@ services:
     restart: on-failure
     networks:
       - api
-  # angular-todo:
-  #   container_name: angular-todo
-  #   depends_on:
-  #     - 'todo-api'
-  #   build:
-  #     context: ./
-  #     dockerfile: ./samples/angular-todo/Dockerfile
-  #     args:
-  #       AM_URL: ${AM_URL}
-  #       API_URL: ${API_URL}
-  #       DEBUGGER_OFF: ${DEBUGGER_OFF}
-  #       REALM_PATH: ${REALM_PATH}
-  #       JOURNEY_LOGIN: ${JOURNEY_LOGIN}
-  #       JOURNEY_REGISTER: ${JOURNEY_REGISTER}
-  #       WEB_OAUTH_CLIENT: ${WEB_OAUTH_CLIENT}
-  #       REST_OAUTH_CLIENT: ${REST_OAUTH_CLIENT}
-  #       REST_OAUTH_SECRET: ${REST_OAUTH_SECRET}
-  #   ports:
-  #     - '8000:80'
-  #   links:
-  #     - 'todo-api'
-  #   restart: on-failure
-  # embedded-login:
-  #   container_name: embedded-login
-  #   build:
-  #     context: ./
-  #     dockerfile: ./samples/embedded-login/Dockerfile
-  #     args:
-  #       AM_URL: ${AM_URL}
-  #       REALM_PATH: ${REALM_PATH}
-  #       SCOPE: ${SCOPE}
-  #       TIMEOUT: ${TIMEOUT}
-  #       TREE: ${TREE}
-  #   ports:
-  #     - 8001:80
-  #   restart: on-failure
+  angular-todo:
+    container_name: angular-todo
+    depends_on:
+      - 'todo-api'
+    build:
+      context: ./
+      dockerfile: ./samples/angular-todo/Dockerfile
+      args:
+        AM_URL: ${AM_URL}
+        API_URL: ${API_URL}
+        DEBUGGER_OFF: ${DEBUGGER_OFF}
+        REALM_PATH: ${REALM_PATH}
+        JOURNEY_LOGIN: ${JOURNEY_LOGIN}
+        JOURNEY_REGISTER: ${JOURNEY_REGISTER}
+        WEB_OAUTH_CLIENT: ${WEB_OAUTH_CLIENT}
+        REST_OAUTH_CLIENT: ${REST_OAUTH_CLIENT}
+        REST_OAUTH_SECRET: ${REST_OAUTH_SECRET}
+    ports:
+      - '8000:80'
+    links:
+      - 'todo-api'
+    restart: on-failure
+  embedded-login:
+    container_name: embedded-login
+    build:
+      context: ./
+      dockerfile: ./samples/embedded-login/Dockerfile
+      args:
+        AM_URL: ${AM_URL}
+        REALM_PATH: ${REALM_PATH}
+        SCOPE: ${SCOPE}
+        TIMEOUT: ${TIMEOUT}
+        TREE: ${TREE}
+    ports:
+      - 8001:80
+    restart: on-failure
   reactjs-todo:
     container_name: reactjs-todo
     depends_on:
