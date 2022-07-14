@@ -14,14 +14,13 @@ jobs:
       image: ghcr.io/ryanbas21/update-cors-am-github-action:main
     runs-on: ubuntu-latest
     steps:
-      - name: Context
-        uses: okteto/context@latest
+      - uses: okteto/context@latest
         with:
           token: ${{ secrets.OKTETO_TOKEN }}
       - name: Get Preview Endpoints
         id: preview_urls
         run: |
-          URLS=$(okteto preview endpoints forgerock-forgerock-javascript-sdk-pr-${{ github.event.number }} -o json | jq -c)
+          URLS=$(okteto preview endpoints pr-${{ github.event.number }}-${{ github.actor }} -o json | jq -c)
           echo "::set-output name=preview_urls::$URLS"
       - uses: ryanbas21/update-cors-am-github-action@latest
         with:
@@ -37,4 +36,4 @@ jobs:
       - name: Destroy preview environment
         uses: okteto/destroy-preview@latest
         with:
-          name: forgerock-pr-${{ github.event.pull_request.user.login }}
+          name: pr-${{ github.event.number }}-${{ github.actor }}
