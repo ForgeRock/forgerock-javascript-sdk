@@ -1,4 +1,4 @@
-Name: 'Destroy preview env'
+name: 'Destroy preview env'
 on:
   pull_request:
     branches:
