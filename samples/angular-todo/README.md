@@ -55,7 +55,7 @@ Here’s a hypothetical example; your values may vary:
 
 ```text
 AM_URL=https://auth.forgerock.com/am
-APP_URL=https://angular.example.com:8443
+APP_URL=https://angular.example.com:8443 # in develop we do not use this url for dynamic deployment reasons
 API_URL=http://localhost:9443
 DEBUGGER_OFF=true
 JOURNEY_LOGIN=Login

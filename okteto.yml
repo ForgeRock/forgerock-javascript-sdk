@@ -1,0 +1,146 @@
+name: forgerock-javascript-sdk
+
+# The build section defines how to build the images of your development environment
+# More info: https://www.okteto.com/docs/reference/manifest/#build
+build:
+  dev:
+    context: .
+    dockerfile: ./Dockerfile
+    args:
+      AM_URL: $AM_URL
+      API_URL: $API_URL
+      DEBUGGER_OFF: $DEBUGGER-OFF
+      REALM_PATH: $REALM_PATH
+      JOURNEY_LOGIN: $JOURNEY_LOGIN
+      JOURNEY_REGISTER: $JOURNEY_REGISTER
+      WEB_OAUTH_CLIENT: $WEB_OAUTH_CLIENT
+      REST_OAUTH_CLIENT: $REST_OAUTH_CLIENT
+      REST_OAUTH_SECRET: $REST_OAUTH_SECRET
+
+  # You can use the following env vars to refer to this image in your deploy commands:
+  #  - OKTETO_BUILD_ANGULAR-TODO_REGISTRY: image registry
+  #  - OKTETO_BUILD_ANGULAR-TODO_REPOSITORY: image repo
+  #  - OKTETO_BUILD_ANGULAR-TODO_IMAGE: image name
+  #  - OKTETO_BUILD_ANGULAR-TODO_TAG: image tag
+  angular-todo:
+    context: .
+    dockerfile: samples/angular-todo/Dockerfile
+    args:
+      AM_URL: $AM_URL
+      API_URL: $API_URL
+      DEBUGGER_OFF: $DEBUGGER-OFF
+      REALM_PATH: $REALM_PATH
+      JOURNEY_LOGIN: $JOURNEY_LOGIN
+      JOURNEY_REGISTER: $JOURNEY_REGISTER
+      WEB_OAUTH_CLIENT: $WEB_OAUTH_CLIENT
+      REST_OAUTH_CLIENT: $REST_OAUTH_CLIENT
+      REST_OAUTH_SECRET: $REST_OAUTH_SECRET
+  # You can use the following env vars to refer to this image in your deploy commands:
+  #  - OKTETO_BUILD_CENTRAL-LOGIN_REGISTRY: image registry
+  #  - OKTETO_BUILD_CENTRAL-LOGIN_REPOSITORY: image repo
+  #  - OKTETO_BUILD_CENTRAL-LOGIN_IMAGE: image name
+  #  - OKTETO_BUILD_CENTRAL-LOGIN_TAG: image tag
+  central-login:
+    context: .
+    dockerfile: samples/central-login/Dockerfile
+    args:
+      AM_URL: $AM_URL
+      DEBUGGER_OFF: $DEBUGGER-OFF
+      REALM_PATH: $REALM_PATH
+      TIMEOUT: 5000
+      JOURNEY_LOGIN: $JOURNEY_LOGIN
+      JOURNEY_REGISTER: $JOURNEY_REGISTER
+      SCOPE: $SCOPE
+      WEB_OAUTH_CLIENT: $CENTRAL_LOGIN_CLIENT
+
+  # You can use the following env vars to refer to this image in your deploy commands:
+  #  - OKTETO_BUILD_EMBEDDED-LOGIN_REGISTRY: image registry
+  #  - OKTETO_BUILD_EMBEDDED-LOGIN_REPOSITORY: image repo
+  #  - OKTETO_BUILD_EMBEDDED-LOGIN_IMAGE: image name
+  #  - OKTETO_BUILD_EMBEDDED-LOGIN_TAG: image tag
+  embedded-login:
+    context: .
+    dockerfile: samples/embedded-login/Dockerfile
+    args:
+      AM_URL: $AM_URL
+      REALM_PATH: $REALM_PATH
+      SCOPE: $SCOPE
+      TIMEOUT: 5000
+      WEB_OAUTH_CLIENT: $WEB_OAUTH_CLIENT
+      TREE: $TREE
+
+  # You can use the following env vars to refer to this image in your deploy commands:
+  #  - OKTETO_BUILD_REACTJS-TODO_REGISTRY: image registry
+  #  - OKTETO_BUILD_REACTJS-TODO_REPOSITORY: image repo
+  #  - OKTETO_BUILD_REACTJS-TODO_IMAGE: image name
+  #  - OKTETO_BUILD_REACTJS-TODO_TAG: image tag
+  reactjs-todo:
+    context: .
+    dockerfile: samples/reactjs-todo/Dockerfile
+    args:
+      AM_URL: $AM_URL
+      API_URL: $API_URL
+      DEBUGGER_OFF: $DEBUGGER-OFF
+      REALM_PATH: $REALM_PATH
+      JOURNEY_LOGIN: $JOURNEY_LOGIN
+      JOURNEY_REGISTER: $JOURNEY_REGISTER
+      WEB_OAUTH_CLIENT: $WEB_OAUTH_CLIENT
+      REST_OAUTH_CLIENT: $REST_OAUTH_CLIENT
+      REST_OAUTH_SECRET: $REST_OAUTH_SECRET
+
+  todo-api:
+    context: .
+    dockerfile: samples/todo-api/Dockerfile
+
+# The deploy section defines how to deploy your development environment
+# More info: https://www.okteto.com/docs/reference/manifest/#deploy
+deploy:
+  compose:
+    file: docker-compose.yml
+
+# The dev section defines how to activate a development container
+# More info: https://www.okteto.com/docs/reference/manifest/#dev
+dev:
+  angular-todo:
+    image: okteto.dev/base
+    command: sh
+    workdir: /usr/app/builder
+    sync:
+      - .:/usr/app/builder
+    forward:
+      - 9229:9229
+      - 8082:80
+      - 8443:80
+
+  reactjs-todo:
+    image: okteto.dev/base
+    command: sh
+    workdir: /usr/app/builder
+    sync:
+      - .:/usr/app/builder
+    forward:
+      - 9229:9229
+      - 8081:80
+      - 8443:80
+
+  central-login:
+    image: okteto.dev/base
+    command: sh
+    workdir: /usr/app/builder
+    sync:
+      - .:/usr/app/builder
+    forward:
+      - 9229:9229
+      - 8002:80
+      - 8443:80
+
+  embedded-login:
+    image: okteto.dev/base
+    command: sh
+    workdir: /usr/app/builder
+    sync:
+      - .:/usr/app/builder
+    forward:
+      - 9229:9229
+      - 8001:80
+      - 8443:80

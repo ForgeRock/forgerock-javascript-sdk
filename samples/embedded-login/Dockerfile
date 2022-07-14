@@ -1,3 +1,4 @@
+# FROM okteto.dev/base as base
 FROM node:alpine as base
 
 WORKDIR /app/builder
@@ -6,9 +7,7 @@ RUN npm i -g nx
 
 COPY . /app/builder 
 
-RUN npm install --ignore-scripts
-
-ENV NODE_ENV production
+RUN npm install --ignore-scripts --include=dev
 
 ARG AM_URL=$AM_URL
 ENV AM_URL=$AM_URL
@@ -35,13 +34,15 @@ ENV TIMEOUT=$TIMEOUT
 ARG TREE=$TREE
 ENV TREE=$TREE
 
-RUN nx build reactjs-todo --parallel --prod --skipNxCache
+RUN nx build embedded-login --parallel --prod --skipNxCache
 
 FROM nginx:1.19.2
 
 WORKDIR /usr/share/nginx/html
 
-COPY --from=base /app/builder/samples/reactjs-todo/public ./public
-COPY --from=base /app/builder/dist/samples/reactjs-todo .
+ENV PORT=8001
 
-EXPOSE 8443
+COPY --from=base /app/builder/dist/samples/embedded-login .
+
+EXPOSE 8001
+

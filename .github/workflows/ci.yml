@@ -44,6 +44,7 @@ jobs:
       - run: npx nx affected --target=test --parallel --max-parallel=2
       - run: npx nx affected --target=test --configuration=integration --parallel --max-parallel=2
       - run: npx nx affected --target=e2e  --parallel --max-parallel=2
+
       # It's important that we always run this step, otherwise in the case of any failures in preceding non-Nx steps, the agents will keep running and waste billable minutes
       - name: Stop All Agents
         if: ${{ always() }}

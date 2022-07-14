@@ -9,7 +9,6 @@
  */
 
 export const AM_URL = process.env.AM_URL;
-export const APP_URL = process.env.APP_URL;
 export const API_URL = process.env.API_URL;
 // Yes, the debugger boolean is intentionally reversed
 export const DEBUGGER = process.env.DEBUGGER_OFF === 'true' ? false : true;

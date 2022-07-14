@@ -8,7 +8,7 @@
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/samples/embedded-login",
-        "compiler": "swc",
+        "compiler": "babel",
         "index": "samples/embedded-login/src/index.html",
         "baseHref": "/",
         "main": "samples/embedded-login/src/main.js",
@@ -21,7 +21,13 @@
         "webpackConfig": "samples/embedded-login/webpack.config.js"
       },
       "configurations": {
-        "development": {}
+        "development": {},
+        "production": {
+          "vendorChunk": true,
+          "optimization": true,
+          "commonChunk": true,
+          "watch": false
+        }
       },
       "defaultConfiguration": "production"
     },
@@ -35,7 +41,11 @@
         "host": "sdkapp.example.com"
       },
       "configurations": {
-        "development": {}
+        "development": {},
+        "production": {
+          "hmr": false,
+          "watch": false
+        }
       },
       "defaultConfiguration": "development"
     },

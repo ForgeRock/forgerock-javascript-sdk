@@ -1,8 +1,14 @@
 tmp
 .vscode
-node_modules
 .devcontainer
 .github
 .git
+.angular
+coverage
+.github
+test-results
+.husky
+.devcontainer
 docker-compose.yml
+node_modules
 dist/
