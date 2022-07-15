@@ -35,7 +35,7 @@ ENV TREE=$TREE
 
 RUN npx nx build todo-api --parallel --prod --skipNxCache
 
-ENV PORT=$PORT
-EXPOSE $PORT 
+ENV PORT=8081
+EXPOSE 8081
 
 CMD ["node", "dist/samples/todo-api/main.js"]

@@ -63,7 +63,7 @@
         "dryRun": true,
         "push": true,
         "tagPrefix": "v",
-        "postTargets": ["javascript-sdk:publish", "javascript-sdk:github"]
+        "postTargets": ["javascript-sdk:deploy", "javascript-sdk:github"]
       },
       "configurations": {
         "beta": {

@@ -24,7 +24,7 @@ services:
       dockerfile: ./samples/todo-api/Dockerfile
     command: node /app/builder/dist/samples/todo-api/main.js
     ports:
-      - '8081'
+      - '8081:8081'
     environment:
       PORT: 8081
       AM_URL: $AM_URL
@@ -36,12 +36,8 @@ services:
       REST_OAUTH_CLIENT: $REST_OAUTH_CLIENT
       REST_OAUTH_SECRET: $REST_OAUTH_SECRET
     restart: on-failure
-    networks:
-      - api
   angular-todo:
     container_name: angular-todo
-    networks:
-      - api
     build:
       context: ./
       dockerfile: ./samples/angular-todo/Dockerfile
@@ -78,7 +74,6 @@ services:
       context: ./
       dockerfile: ./samples/embedded-login/Dockerfile
       args:
-        PORT: 8081
         AM_URL: $AM_URL
         DEBUGGER_OFF: $DEBUGGER-OFF
         REALM_PATH: $REALM_PATH
@@ -92,8 +87,6 @@ services:
       - '8001:80'
     restart: on-failure
   reactjs-todo:
-    networks:
-      - api
     container_name: reactjs-todo
     build:
       context: ./
@@ -109,5 +102,3 @@ services:
     ports:
       - '8443:80'
     restart: on-failure
-networks:
-  api:
