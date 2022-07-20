@@ -111,6 +111,9 @@ dev:
       - 9229:9229
       - 8082:80
       - 8443:80
+    persistentVolume:
+      enabled: true
+      size: 10Gi
 
   reactjs-todo:
     image: okteto.dev/base
