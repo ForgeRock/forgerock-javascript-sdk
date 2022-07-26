@@ -96,6 +96,11 @@
       "options": {
         "access": "public",
         "buildTarget": "production"
+      },
+      "configurations": {
+        "beta": {
+          "tag": "beta"
+        }
       }
     }
   },
