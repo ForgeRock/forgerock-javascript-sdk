@@ -1,6 +1,5 @@
 [![npm (scoped)](https://img.shields.io/npm/v/@forgerock/javascript-sdk?color=%23f46200&label=Version&style=flat-square)](CHANGELOG.md)
 [![ForgeRock CI](https://github.com/ForgeRock/forgerock-javascript-sdk/actions/workflows/ci.yml/badge.svg)](https://github.com/ForgeRock/forgerock-javascript-sdk/actions/workflows/ci.yml)
-[![ForgeRock Ubuntu CI](https://github.com/ForgeRock/forgerock-javascript-sdk/actions/workflows/ubuntu.yml/badge.svg)](https://github.com/ForgeRock/forgerock-javascript-sdk/actions/workflows/ubuntu.yml)
 
 <p align="center">
   <a href="https://github.com/ForgeRock">
@@ -20,7 +19,7 @@ The ForgeRock JavaScript SDK enables you to quickly integrate the [ForgeRock Ide
 
 Use the SDKs to leverage _[Intelligent Authentication](https://www.forgerock.com/platform/access-management/intelligent-authentication)_ in [ForgeRock's Access Management (AM)](https://www.forgerock.com/platform/access-management) product, to easily step through each stage of an authentication tree by using callbacks.
 
-<!------------------------------------------------------------------------------------------------------------------------------------>
+ <!------------------------------------------------------------------------------------------------------------------------------------>
 <!-- REQUIREMENTS - Supported AM versions, API versions, any other requirements. -->
 
 ## Requirements
@@ -57,13 +56,13 @@ ForgeRock provides these samples to help demonstrate SDK functionality/implement
 
 To try out the ForgeRock JavaScript SDK please look at one of our samples:
 
-- [**Embedded login - `/samples/embedded-login`**](./samples/embedded-login/README.md)
+- [**Embedded login - `samples/embedded-login`**](./samples/embedded-login/README.md)
 
-- [**Central login - `/samples/central-login`**](./samples/central-login/README.md)
+- [**Central login - `samples/central-login`**](./samples/central-login/README.md)
 
-- [**React Todo - `/samples/reactjs-todo`**](./samples/reactjs-todo/README.md)
+- [**React Todo - `samples/reactjs-todo`**](./samples/reactjs-todo/README.md)
 
-- [**Angular Todo - `/samples/angular-todo`**](./samples/angular-todo/README.md)
+- [**Angular Todo - `samples/angular-todo`**](./samples/angular-todo/README.md)
 
 <!------------------------------------------------------------------------------------------------------------------------------------>
 <!-- DOCS - Link off to the AM-centric documentation at sdks.forgerock.com. -->

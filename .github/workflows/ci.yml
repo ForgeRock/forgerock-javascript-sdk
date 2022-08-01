@@ -58,6 +58,21 @@ jobs:
           path: |
             ${{ github.workspace }}/test-results
             ${{ github.workspace }}/coverage
+      - name: Slack Notify
+        id: slack
+        uses: slackapi/slack-github-action@v1.18.0
+        with:
+          payload: |
+            {
+              "title": "${{ github.event.pull_request.title }}",
+              "author": "${{ github.event.pull_request.user.login }}",
+              "status": "${{ job.status }}",
+              "pr_description": ${{ toJSON(github.event.pull_request.body) }},
+              "pr_number": "${{ github.event.pull_request.number}}",
+              "url": "${{ github.event.pull_request.html_url }}"
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
   agents:
     runs-on: macos-latest
