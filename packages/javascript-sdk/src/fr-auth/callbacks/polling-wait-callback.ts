@@ -30,7 +30,7 @@ class PollingWaitCallback extends FRCallback {
   }
 
   /**
-   * Gets the polling interval in seconds.
+   * Gets the polling interval in milliseconds.
    */
   public getWaitTime(): number {
     return Number(this.getOutputByName<number>('waitTime', 0));
