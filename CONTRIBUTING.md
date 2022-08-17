@@ -21,8 +21,8 @@ Fork the repo to your own github account. From there, you can add the ForgeRock 
 - [ ] When your PR is ready to merge please rebase your commit into 1 commit.
 - [ ] Commits should be verified (meaning you cannot squash your commit on github).
 - [ ] Please ensure your code is passing CI in order to get a review.
-- [ ] Structure your commit messages similarly to the [Angular Commit Conventions](https://www.conventionalcommits.org/en/v1.0.0-beta.4/#summary).
-- [ ] We will only review a PR once a successful CI build is passing.
+- [ ] Structure your commit messages similarly to the [Conventional Commit Conventions](https://www.conventionalcommits.org/en/v1.0.0-beta.4/#summary).
+- [ ] Some d
 
 ```bash
     <type>(<scope>): <short summary>
