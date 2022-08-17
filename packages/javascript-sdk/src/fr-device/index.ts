@@ -72,7 +72,7 @@ class FRDevice extends Collector {
   }
 
   getBrowserMeta(): { [key: string]: string } {
-    if (!navigator) {
+    if (typeof navigator === 'undefined') {
       console.warn('Cannot collect browser metadata. navigator is not defined.');
       return {};
     }
@@ -80,7 +80,7 @@ class FRDevice extends Collector {
   }
 
   getBrowserPluginsNames(): string {
-    if (!(navigator && navigator.plugins)) {
+    if (!(typeof navigator !== 'undefined' && navigator.plugins)) {
       console.warn('Cannot collect browser plugin information. navigator.plugins is not defined.');
       return '';
     }
@@ -88,7 +88,7 @@ class FRDevice extends Collector {
   }
 
   getDeviceName(): string {
-    if (!navigator) {
+    if (typeof navigator === 'undefined') {
       console.warn('Cannot collect device name. navigator is not defined.');
       return '';
     }
@@ -114,14 +114,15 @@ class FRDevice extends Collector {
   }
 
   getDisplayMeta(): { [key: string]: string | number | null } {
-    if (!screen) {
+    if (typeof screen === 'undefined') {
       console.warn('Cannot collect screen information. screen is not defined.');
+      return {};
     }
     return this.reduceToObject(this.config.displayProps, screen);
   }
 
   getHardwareMeta(): { [key: string]: string } {
-    if (!navigator) {
+    if (typeof navigator === 'undefined') {
       console.warn('Cannot collect OS metadata. Navigator is not defined.');
       return {};
     }
@@ -129,7 +130,7 @@ class FRDevice extends Collector {
   }
 
   getIdentifier(): string {
-    if (!(window.crypto && window.crypto.getRandomValues)) {
+    if (!(typeof globalThis.crypto !== 'undefined' && globalThis.crypto.getRandomValues)) {
       console.warn('Cannot generate profile ID. Crypto and/or getRandomValues is not supported.');
       return '';
     }
@@ -140,13 +141,17 @@ class FRDevice extends Collector {
     let id = localStorage.getItem('profile-id');
     if (!id) {
       // generate ID, 3 sections of random numbers: "714524572-2799534390-3707617532"
-      id = window.crypto.getRandomValues(new Uint32Array(3)).join('-');
+      id = globalThis.crypto.getRandomValues(new Uint32Array(3)).join('-');
       localStorage.setItem('profile-id', id);
     }
     return id;
   }
 
   getInstalledFonts(): string {
+    if (typeof document === undefined) {
+      console.warn('Cannot collect font data. Global document object is undefined.');
+      return '';
+    }
     const canvas = document.createElement('canvas');
     if (!canvas) {
       console.warn('Cannot collect font data. Browser does not support canvas element');
@@ -176,7 +181,7 @@ class FRDevice extends Collector {
   }
 
   async getLocationCoordinates(): Promise<Geolocation | Record<string, unknown>> {
-    if (!(navigator && navigator.geolocation)) {
+    if (!(typeof navigator !== 'undefined' && navigator.geolocation)) {
       console.warn('Cannot collect geolocation information. navigator.geolocation is not defined.');
       return Promise.resolve({});
     }
@@ -204,7 +209,7 @@ class FRDevice extends Collector {
   }
 
   getOSMeta(): { [key: string]: string } {
-    if (!navigator) {
+    if (typeof navigator === 'undefined') {
       console.warn('Cannot collect OS metadata. navigator is not defined.');
       return {};
     }
