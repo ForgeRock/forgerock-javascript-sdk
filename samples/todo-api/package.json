@@ -9,12 +9,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "cookie-parser": "^1.4.6",
-    "cors": "^2.8.5",
-    "express": "4.17.2",
-    "pouchdb": "^7.2.2",
-    "superagent": "^6.1.0",
-    "util": "^0.12.3",
-    "uuid": "^8.3.2"
+    "cookie-parser": "1.4.6",
+    "cors": "2.8.5",
+    "express": "4.18.1",
+    "pouchdb": "7.3.0",
+    "superagent": "8.0.0",
+    "util": "0.12.4",
+    "uuid": "8.3.2"
   }
 }
