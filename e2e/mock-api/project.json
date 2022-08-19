@@ -1,5 +1,5 @@
 {
-  "root": "e2e/mock-api",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "e2e/mock-api/src",
   "projectType": "application",
   "targets": {
@@ -47,7 +47,7 @@
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/e2e/mock-api"],
       "options": {
-        "jestConfig": "e2e/mock-api/jest.config.js",
+        "jestConfig": "e2e/mock-api/jest.config.ts",
         "passWithNoTests": true
       }
     }

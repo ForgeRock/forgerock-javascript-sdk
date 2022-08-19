@@ -1,3 +1,4 @@
+/* eslint-disable */
 const jestBasic = require('./jest.basic.config');
 
 module.exports = {

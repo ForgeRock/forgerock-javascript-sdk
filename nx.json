@@ -1,51 +1,13 @@
 {
-  "extends": "@nrwl/workspace/presets/npm.json",
+  "extends": "nx/presets/npm.json",
   "npmScope": "forgerock",
   "tasksRunnerOptions": {
     "default": {
-      "runner": "@nrwl/workspace/tasks-runners/default",
+      "runner": "nx/tasks-runners/default",
       "options": {
         "cacheableOperations": ["build", "lint", "test", "e2e"]
       }
     }
-  },
-  "targetDependencies": {
-    "test:unit": [
-      {
-        "target": "test",
-        "projects": "dependencies"
-      }
-    ],
-    "test": [
-      {
-        "target": "test",
-        "projects": "dependencies"
-      }
-    ],
-    "tsc": [
-      {
-        "target": "tsc",
-        "projects": "dependencies"
-      }
-    ],
-    "build": [
-      {
-        "target": "build",
-        "projects": "dependencies"
-      }
-    ],
-    "prepare": [
-      {
-        "target": "prepare",
-        "projects": "dependencies"
-      }
-    ],
-    "package": [
-      {
-        "target": "package",
-        "projects": "dependencies"
-      }
-    ]
   },
   "affected": {
     "defaultBase": "develop"
@@ -97,5 +59,26 @@
     "appsDir": "",
     "libsDir": ""
   },
-  "defaultProject": "javascript-sdk"
+  "defaultProject": "javascript-sdk",
+  "$schema": "./node_modules/nx/schemas/nx-schema.json",
+  "targetDefaults": {
+    "test:unit": {
+      "dependsOn": ["^test"]
+    },
+    "test": {
+      "dependsOn": ["^test"]
+    },
+    "tsc": {
+      "dependsOn": ["^tsc"]
+    },
+    "build": {
+      "dependsOn": ["^build"]
+    },
+    "prepare": {
+      "dependsOn": ["^prepare"]
+    },
+    "package": {
+      "dependsOn": ["^package"]
+    }
+  }
 }

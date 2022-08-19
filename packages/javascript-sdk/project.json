@@ -1,5 +1,5 @@
 {
-  "root": "packages/javascript-sdk",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "packages/javascript-sdk/src",
   "projectType": "library",
   "targets": {
@@ -41,34 +41,15 @@
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/packages/javascript-sdk"],
       "options": {
-        "jestConfig": "packages/javascript-sdk/jest.unit.config.js",
+        "jestConfig": "packages/javascript-sdk/jest.unit.config.ts",
         "passWithNoTests": true
       },
       "configurations": {
         "unit": {},
         "integration": {
-          "jestConfig": "packages/javascript-sdk/jest.integration.config.js",
+          "jestConfig": "packages/javascript-sdk/jest.unit.config.js",
+          "testNamePattern": "<rootDir>/tests/integration/**/*.test.ts",
           "passWithNoTests": true
-        }
-      }
-    },
-    "deploy": {
-      "executor": "ngx-deploy-npm:deploy",
-      "options": {
-        "access": "public",
-        "noBuild": true,
-        "dryRun": true
-      },
-      "configurations": {
-        "alpha": {
-          "tag": "alpha",
-          "access": "public",
-          "dryRun": true
-        },
-        "beta": {
-          "tag": "alpha",
-          "access": "public",
-          "dryRun": true
         }
       }
     }

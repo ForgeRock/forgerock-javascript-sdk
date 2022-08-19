@@ -1,5 +1,5 @@
 {
-  "root": "samples/reactjs-todo",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "samples/reactjs/client",
   "projectType": "application",
   "targets": {
@@ -17,7 +17,15 @@
         "optimization": false,
         "styles": ["samples/reactjs-todo/client/styles/index.scss"]
       },
-      "configurations": {}
+      "configurations": {
+        "development": {
+          "extractLicenses": false,
+          "optimization": false,
+          "sourceMap": true,
+          "vendorChunk": true
+        }
+      },
+      "defaultConfiguration": "production"
     },
     "serve": {
       "executor": "@nrwl/web:dev-server",
@@ -38,7 +46,7 @@
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/samples/reactjs-todo"],
       "options": {
-        "jestConfig": "samples/reactjs-todo/jest.config.js",
+        "jestConfig": "samples/reactjs-todo/jest.config.ts",
         "passWithNoTests": true
       },
       "configurations": {

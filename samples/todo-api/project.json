@@ -1,5 +1,5 @@
 {
-  "root": "samples/todo-api",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "samples/todo-api/src",
   "projectType": "application",
   "targets": {
@@ -46,7 +46,7 @@
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/samples/todo-api"],
       "options": {
-        "jestConfig": "samples/todo-api/jest.config.js",
+        "jestConfig": "samples/todo-api/jest.config.ts",
         "passWithNoTests": true
       }
     }
