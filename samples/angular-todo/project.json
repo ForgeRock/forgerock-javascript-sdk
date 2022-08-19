@@ -23,7 +23,8 @@
         "inlineStyleLanguage": "scss",
         "assets": ["samples/angular-todo/src/favicon.ico", "samples/angular-todo/src/assets"],
         "styles": ["samples/angular-todo/src/styles.scss"],
-        "scripts": []
+        "scripts": [],
+        "preserveSymlinks": true
       },
       "configurations": {
         "production": {
