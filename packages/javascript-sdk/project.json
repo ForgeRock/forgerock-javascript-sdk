@@ -1,5 +1,5 @@
 {
-  "root": "packages/javascript-sdk",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "packages/javascript-sdk/src",
   "projectType": "library",
   "targets": {
@@ -19,15 +19,14 @@
       "options": {
         "compiler": "babel",
         "entryFile": "packages/javascript-sdk/src/index.ts",
-        "outputPath": "samples/_static/js",
+        "outputPath": "packages/javascript-sdk/bundles",
         "deleteOutputPath": true,
+        "rollupConfig": "packages/javascript-sdk/rollup.config.js",
         "project": "packages/javascript-sdk/package.json",
         "tsConfig": "packages/javascript-sdk/tsconfig.lib.json",
         "cwd": "packages/javascript-sdk",
-        "parallel": true,
-        "rollupConfig": "packages/javascript-sdk/rollup.config.js"
-      },
-      "outputs": ["{options.outputPath}"]
+        "parallel": true
+      }
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",
@@ -41,34 +40,15 @@
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/packages/javascript-sdk"],
       "options": {
-        "jestConfig": "packages/javascript-sdk/jest.unit.config.js",
+        "jestConfig": "packages/javascript-sdk/jest.unit.config.ts",
+        "testPathPattern": ["packages/javascript-sdk/src/"],
         "passWithNoTests": true
       },
       "configurations": {
         "unit": {},
         "integration": {
-          "jestConfig": "packages/javascript-sdk/jest.integration.config.js",
+          "testPathPattern": ["packages/javascript-sdk/tests/integration"],
           "passWithNoTests": true
-        }
-      }
-    },
-    "deploy": {
-      "executor": "ngx-deploy-npm:deploy",
-      "options": {
-        "access": "public",
-        "noBuild": true,
-        "dryRun": true
-      },
-      "configurations": {
-        "alpha": {
-          "tag": "alpha",
-          "access": "public",
-          "dryRun": true
-        },
-        "beta": {
-          "tag": "alpha",
-          "access": "public",
-          "dryRun": true
         }
       }
     }

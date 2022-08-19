@@ -8,7 +8,7 @@
  * of the MIT license. See the LICENSE file for details.
  */
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 
 import Router from './router';
 import { AM_URL, APP_URL, JOURNEY_LOGIN, REALM_PATH, WEB_OAUTH_CLIENT } from './constants';
@@ -63,7 +63,7 @@ import './styles/index.scss';
       </AppContext.Provider>
     );
   }
-
+  const root = createRoot(rootEl);
   // Mounts the React app to the existing root element
-  ReactDOM.render(<Init />, rootEl);
+  root.render(<Init />);
 })();

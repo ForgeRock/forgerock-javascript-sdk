@@ -8,5 +8,6 @@
     "mock-api": "e2e/mock-api",
     "reactjs-todo": "samples/reactjs-todo",
     "todo-api": "samples/todo-api"
-  }
+  },
+  "$schema": "./node_modules/nx/schemas/workspace-schema.json"
 }

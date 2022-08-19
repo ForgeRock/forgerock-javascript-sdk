@@ -19,6 +19,7 @@
   },
   "include": ["**/*.ts"],
   "exclude": [
+    "jest*",
     "jest.env.config.ts",
     "tests/",
     "**/*.spec.ts",
@@ -26,6 +27,7 @@
     "lib-esm",
     "lib",
     "bundles",
-    "dist/"
+    "dist/",
+    "jest.config.ts"
   ]
 }

@@ -20,7 +20,8 @@
     "**/*.test.jsx",
     "**/*.spec.jsx",
     "**/*.d.ts",
-    "./jest.env.config.ts"
+    "./jest.env.config.ts",
+    "jest.config.ts"
   ],
   "exclude": ["lib", "lib-esm", "dist/"]
 }

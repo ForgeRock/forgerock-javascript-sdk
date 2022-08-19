@@ -9,8 +9,8 @@
  */
 
 import React, { useContext, useEffect, useState } from 'react';
-import { Route, Redirect } from 'react-router-dom';
-import { TokenStorage } from '@forgerock/javascript-sdk';
+import { Navigate } from 'react-router-dom';
+import { UserManager } from '@forgerock/javascript-sdk';
 
 import Loading from '../components/utilities/loading';
 import { AppContext } from '../global-state';
@@ -39,7 +39,7 @@ function useAuthValidation(auth, setAuth) {
          * If we they have been authenticated, validate that assumption
          */
         try {
-          await TokenStorage.get();
+          await UserManager.getCurrentUser();
           setValid('valid');
         } catch (err) {
           console.info(`Info: route validation; ${err}`);
@@ -76,28 +76,21 @@ function useAuthValidation(auth, setAuth) {
  * @param string[] path - React-Router path prop
  * @returns {Object} - Wrapped React Router component
  */
-export function ProtectedRoute({ children, path }) {
+export function ProtectedRoute({ children }) {
   // Get "global" state from Context API
   const [{ isAuthenticated }, { setAuthentication }] = useContext(AppContext);
   // Custom hook for validating user's access token
   const [{ isValid }] = useAuthValidation(isAuthenticated, setAuthentication);
 
-  return (
-    <Route
-      path={path}
-      render={() => {
-        switch (isValid) {
-          case 'valid':
-            // Access token has been confirmed to be valid
-            return children;
-          case 'invalid':
-            // Access token has been confirmed to be invalid
-            return <Redirect to="/login" />;
-          default:
-            // State is 'unknown', so we are waiting on token validation
-            return <Loading classes="pt-5" message="Verifying access ... " />;
-        }
-      }}
-    />
-  );
+  switch (isValid) {
+    case 'valid':
+      // Access token has been confirmed to be valid
+      return children;
+    case 'invalid':
+      // Access token has been confirmed to be invalid
+      return <Navigate to="/login" />;
+    default:
+      // State is 'unknown', so we are waiting on token validation
+      return <Loading classes="pt-5" message="Verifying access ... " />;
+  }
 }

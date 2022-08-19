@@ -1,6 +1,6 @@
 {
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
-  "root": "samples/angular-todo",
   "sourceRoot": "samples/angular-todo/src",
   "prefix": "app",
   "targets": {
@@ -97,7 +97,7 @@
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/samples/angular-todo"],
       "options": {
-        "jestConfig": "samples/angular-todo/jest.config.js",
+        "jestConfig": "samples/angular-todo/jest.config.ts",
         "passWithNoTests": true
       }
     }

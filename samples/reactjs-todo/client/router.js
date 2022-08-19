@@ -9,7 +9,7 @@
  */
 
 import React, { useEffect } from 'react';
-import { BrowserRouter, Switch, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom';
 
 import Footer from './components/layout/footer';
 import Header from './components/layout/header';
@@ -17,6 +17,7 @@ import Home from './views/home';
 import Login from './views/login';
 import Logout from './views/logout';
 import Register from './views/register';
+import { ProtectedRoute } from './utilities/route';
 import Todos from './views/todos';
 
 function ScrollToTop() {
@@ -36,28 +37,32 @@ function ScrollToTop() {
 export default function Router() {
   return (
     <BrowserRouter>
-      <Switch>
-        <Route path="/login">
-          <Login />
-        </Route>
-        <Route path="/register">
-          <Register />
-        </Route>
-        <Route path="/todos">
-          <Header />
-          <Todos />
-          <Footer />
-        </Route>
-        <Route path="/logout">
-          <Logout />
-        </Route>
-        <Route path="/">
-          <ScrollToTop />
-          <Header />
-          <Home />
-          <Footer />
-        </Route>
-      </Switch>
+      <Routes>
+        <Route path="login" element={<Login />} />
+        <Route path="register" element={<Register />} />
+        <Route
+          path="todos"
+          element={
+            <ProtectedRoute>
+              <Header />
+              <Todos />
+              <Footer />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="logout" element={<Logout />} />
+        <Route
+          path="/"
+          element={
+            <>
+              <ScrollToTop />
+              <Header />
+              <Home />
+              <Footer />
+            </>
+          }
+        />
+      </Routes>
     </BrowserRouter>
   );
 }

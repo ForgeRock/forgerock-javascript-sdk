@@ -1,6 +1,6 @@
 {
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
-  "root": "e2e/autoscript-apps",
   "sourceRoot": "e2e/autoscript-apps/src",
   "tags": [],
   "targets": {
@@ -24,7 +24,8 @@
           "optimized": true,
           "watch": false
         }
-      }
+      },
+      "defaultConfiguration": "production"
     },
     "serve": {
       "executor": "@nrwl/web:dev-server",
