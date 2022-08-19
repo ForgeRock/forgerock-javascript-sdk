@@ -9,7 +9,7 @@
  */
 import { Config, TokenStorage } from '@forgerock/javascript-sdk';
 import React from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom/client';
 
 import Router from './router';
 import { AM_URL, APP_URL, JOURNEY_LOGIN, REALM_PATH, WEB_OAUTH_CLIENT } from './constants';
@@ -84,5 +84,6 @@ Config.set({
   }
 
   // Mounts the React app to the existing root element
-  ReactDOM.render(<Init />, rootEl);
+  const root = ReactDOM.createRoot(rootEl);
+  root.render(<Init />);
 })();

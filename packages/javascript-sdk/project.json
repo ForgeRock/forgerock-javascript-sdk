@@ -19,15 +19,14 @@
       "options": {
         "compiler": "babel",
         "entryFile": "packages/javascript-sdk/src/index.ts",
-        "outputPath": "samples/_static/js",
+        "outputPath": "packages/javascript-sdk/bundles",
         "deleteOutputPath": true,
+        "rollupConfig": "packages/javascript-sdk/rollup.config.js",
         "project": "packages/javascript-sdk/package.json",
         "tsConfig": "packages/javascript-sdk/tsconfig.lib.json",
         "cwd": "packages/javascript-sdk",
-        "parallel": true,
-        "rollupConfig": "packages/javascript-sdk/rollup.config.js"
-      },
-      "outputs": ["{options.outputPath}"]
+        "parallel": true
+      }
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",
@@ -42,13 +41,13 @@
       "outputs": ["coverage/packages/javascript-sdk"],
       "options": {
         "jestConfig": "packages/javascript-sdk/jest.unit.config.ts",
+        "testPathPattern": ["packages/javascript-sdk/src/"],
         "passWithNoTests": true
       },
       "configurations": {
         "unit": {},
         "integration": {
-          "jestConfig": "packages/javascript-sdk/jest.unit.config.js",
-          "testNamePattern": "<rootDir>/tests/integration/**/*.test.ts",
+          "testPathPattern": ["packages/javascript-sdk/tests/integration"],
           "passWithNoTests": true
         }
       }

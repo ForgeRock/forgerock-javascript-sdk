@@ -26,7 +26,6 @@ export default function Home() {
    * and index 1 having the "setter" method to set new state values.
    */
   const [state] = useContext(AppContext);
-
   const createAccountText = !state.isAuthenticated ? (
     <Fragment>
       <h2 className={`fs-4 fw-normal pt-3 pb-1 ${state.theme.textClass}`}>Getting started</h2>

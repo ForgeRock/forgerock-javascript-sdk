@@ -9,7 +9,7 @@
  */
 import { FRUser } from '@forgerock/javascript-sdk';
 import React, { useContext, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import { AppContext } from '../global-state';
 import Loading from '../components/utilities/loading';
@@ -20,7 +20,7 @@ import Loading from '../components/utilities/loading';
  */
 export default function Logout() {
   const [_, { setAuthentication, setEmail, setUser }] = useContext(AppContext);
-  const history = useHistory();
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function logout() {
@@ -31,7 +31,7 @@ export default function Logout() {
         setEmail('');
         setUser('');
 
-        history.push('/');
+        navigate('/');
       } catch (err) {
         console.error(`Error: logout; ${err}`);
       }

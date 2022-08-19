@@ -9,7 +9,7 @@
  */
 import { FRAuth, TokenManager, UserManager } from '@forgerock/javascript-sdk';
 import React, { useContext, useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import Alert from './alert';
 import { AppContext } from '../../global-state';
@@ -26,13 +26,12 @@ export default function Form() {
   const [step, setStep] = useState(null);
   const [isAuthenticated, setAuthentication] = useState(false);
   const [_, methods] = useContext(AppContext);
-  const history = useHistory();
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function getStep() {
       try {
         const initialStep = await FRAuth.start();
-        console.log(initialStep);
         setStep(initialStep);
       } catch (err) {
         console.error(`Error: request for initial step; ${err}`);
@@ -53,7 +52,7 @@ export default function Form() {
         methods.setEmail(user.email);
         methods.setAuthentication(true);
 
-        history.push('/');
+        navigate('/');
       } catch (err) {
         console.error(`Error: token or userinfo request; ${err}`);
       }
@@ -61,6 +60,7 @@ export default function Form() {
     if (isAuthenticated) {
       oauthFlow();
     }
+    // eslint-disable-next-line
   }, [isAuthenticated]);
 
   function mapCallbacksToComponents(cb, idx) {
@@ -92,7 +92,6 @@ export default function Form() {
               if (nextStep.type === 'LoginSuccess') {
                 setAuthentication(true);
               }
-              console.log(nextStep);
               setStep(nextStep);
             } catch (err) {
               console.error(`Error: form submission; ${err}`);
