@@ -1,4 +1,5 @@
 {
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "samples/todo-api/src",
   "projectType": "application",
   "targets": {
@@ -39,6 +40,7 @@
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
+        "fix": true,
         "lintFilePatterns": ["samples/todo-api/**/*.js", "samples/todo-api/**/*.ts"]
       }
     },

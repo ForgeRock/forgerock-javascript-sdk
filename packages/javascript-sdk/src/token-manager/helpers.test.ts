@@ -20,7 +20,7 @@ describe('Test Token Manager utils', () => {
   // We want to avoid race conditions between expected and actual date values
   beforeAll(() => {
     // Override date functions to return a static date temporarily
-    jest.useFakeTimers('modern');
+    jest.useFakeTimers();
     jest.setSystemTime(new Date('25 Mar 2022 16:50:00 GMT').getTime());
   });
 

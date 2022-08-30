@@ -1,25 +1,28 @@
 /*
  * @forgerock/javascript-sdk
  *
- * jest.env.config.js
+ * jest.env.config.ts
  *
  * Copyright (c) 2020 ForgeRock. All rights reserved.
  * This software may be modified and distributed under the terms
  * of the MIT license. See the LICENSE file for details.
  */
-import Environment from 'jest-environment-jsdom';
+import { TestEnvironment } from 'jest-environment-jsdom';
+import { TextEncoder } from 'util';
 
 /**
  * A custom environment to set the TextEncoder that is required by TensorFlow.js.
  */
-class CustomTestEnvironment extends Environment {
+class CustomTestEnvironment extends TestEnvironment {
+  constructor(config, ctx) {
+    super(config, ctx);
+  }
+
   async setup() {
     await super.setup();
-    if (typeof this.global.TextEncoder === 'undefined') {
-      const { TextEncoder } = await import('util');
-      this.global.TextEncoder = TextEncoder;
-    }
+    this.global.TextEncoder = TextEncoder;
+    this.global.TextDecoder = TextDecoder;
   }
 }
 
-module.exports = CustomTestEnvironment;
+export default CustomTestEnvironment;

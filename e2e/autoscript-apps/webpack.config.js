@@ -83,13 +83,6 @@ module.exports = (config) => {
         filename: './_pollyfills/fast-text-encoder.js',
       },
     },
-    output: {
-      library: 'forgerock',
-      libraryTarget: 'umd',
-      path: path.resolve(__dirname, '../../dist/e2e/autoscript-apps'),
-      publicPath: 'https://sdkapp.example.com:8443/',
-      umdNamedDefine: true,
-    },
     devServer: {
       ...config.devServer,
       host: 'sdkapp.example.com',
