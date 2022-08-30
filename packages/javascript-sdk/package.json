@@ -21,7 +21,6 @@
   },
   "homepage": "https://github.com/ForgeRock/forgerock-javascript-sdk#readme",
   "devDependencies": {
-    "rollup-plugin-terser": "^7.0.2",
     "rollup-plugin-visualizer": "^5.5.2"
   }
 }

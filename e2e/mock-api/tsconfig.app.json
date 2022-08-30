@@ -3,6 +3,8 @@
   "compilerOptions": {
     "outDir": "../../dist/out-tsc",
     "module": "commonjs",
+    "allowUmdGlobalAccess": true,
+    "target": "ES2015",
     "allowJs": true,
     "types": ["node", "express"]
   },

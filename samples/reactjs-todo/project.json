@@ -1,4 +1,5 @@
 {
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "samples/reactjs-todo/client",
   "projectType": "application",
   "targets": {
@@ -67,6 +68,7 @@
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": ["samples/reactjs-todo/**/*.js"],
+        "fix": true,
         "ignorePath": ".gitignore"
       }
     }

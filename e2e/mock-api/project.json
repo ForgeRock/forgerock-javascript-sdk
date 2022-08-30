@@ -1,4 +1,5 @@
 {
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "e2e/mock-api/src",
   "projectType": "application",
   "targets": {
@@ -13,7 +14,9 @@
         "generatePackageJson": true
       },
       "configurations": {
-        "development": {},
+        "development": {
+          "watch": true
+        },
         "production": {
           "optimization": true,
           "extractLicenses": true,
@@ -57,6 +60,7 @@
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": ["e2e/mock-api/**/*.ts"],
+        "fix": true,
         "ignorePath": ".gitignore"
       }
     },

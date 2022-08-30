@@ -41,8 +41,8 @@ jobs:
       - run: npx nx-cloud start-ci-run
       - run: npx nx affected --target=build --parallel --max-parallel=3
       - run: npx nx affected --target=lint --parallel --max-parallel=3
-      - run: npx nx affected --target=test --parallel --max-parallel=2
-      - run: npx nx affected --target=test --configuration=integration --parallel --max-parallel=2
+      - run: npx nx affected --target=test --parallel --max-parallel=3
+      - run: npx nx affected --target=test --configuration=integration
       - run: npx nx affected --target=e2e  --parallel --max-parallel=2
 
       # It's important that we always run this step, otherwise in the case of any failures in preceding non-Nx steps, the agents will keep running and waste billable minutes
@@ -58,6 +58,21 @@ jobs:
           path: |
             ${{ github.workspace }}/test-results
             ${{ github.workspace }}/coverage
+      - name: Slack Notify
+        id: slack
+        uses: slackapi/slack-github-action@v1.18.0
+        with:
+          payload: |
+            {
+              "title": "${{ github.event.pull_request.title }}",
+              "author": "${{ github.event.pull_request.user.login }}",
+              "status": "${{ job.status }}",
+              "pr_description": ${{ toJSON(github.event.pull_request.body) }},
+              "pr_number": "${{ github.event.pull_request.number}}",
+              "url": "${{ github.event.pull_request.html_url }}"
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
   agents:
     runs-on: macos-latest

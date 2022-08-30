@@ -9,7 +9,7 @@
  */
 
 import React, { Fragment, useEffect, useContext, useReducer } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import Boolean from './boolean';
 import { DEBUGGER } from '../../constants';
@@ -48,7 +48,7 @@ export default function Form({ action, bottomMessage, followUp, topMessage }) {
   // Map action to form metadata: title, button text and tree
   const [form] = useReducer(treeReducer, treeReducer(null, action));
   // Used for redirection after success
-  const history = useHistory();
+  const navigate = useNavigate();
 
   /**
    * Custom "hook" for handling form orchestration
@@ -80,7 +80,7 @@ export default function Form({ action, bottomMessage, followUp, topMessage }) {
         followUp && (await followUp());
 
         // Redirect back to the home page
-        history.push('/');
+        navigate('/');
       }
     }
 
