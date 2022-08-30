@@ -108,7 +108,7 @@ $font-family-sans-serif: 'Open Sans', 'Segoe UI', 'Helvetica Neue', Arial, 'Noto
   'Liberation Sans', sans-serif;
 
 // Override Headers styles and sizes
-$headings-margin-bottom: ($spacer / 2);
+$headings-margin-bottom: ($spacer * 0.5);
 $headings-font-family: inherit;
 $headings-font-weight: $font-weight-light;
 $headings-line-height: 1.2;

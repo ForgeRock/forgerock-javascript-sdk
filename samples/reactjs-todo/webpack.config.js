@@ -36,6 +36,9 @@ module.exports = (config) => {
       },
       server: 'https',
     },
+    stats: {
+      warnings: false,
+    },
     devtool: 'source-map',
     plugins: config.plugins.slice(1),
   };

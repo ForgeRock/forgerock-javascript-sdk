@@ -3,7 +3,11 @@
   "compilerOptions": {
     "sourceMap": false,
     "allowJs": true,
-    "types": ["jest", "node"]
+    "types": ["jest", "node"],
+    "outDir": "dist",
+    "module": "ES2015",
+    "allowUmdGlobalAccess": true,
+    "target": "ES2015"
   },
   "references": [
     {

@@ -2,9 +2,9 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "dist",
-    "module": "CommonJS",
+    "module": "ES2015",
     "allowUmdGlobalAccess": true,
-    "target": "ES5"
+    "target": "ES2015"
   },
   "exclude": ["**/*.spec.ts"],
   "include": ["**/*.ts"]

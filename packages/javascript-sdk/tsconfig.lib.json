@@ -4,13 +4,8 @@
     "outDir": "../../dist/packages/javascript-sdk",
     "declaration": true,
     "lib": ["ES2015", "dom"],
-    "moduleResolution": "node",
-    "noFallthroughCasesInSwitch": true,
-    "noImplicitAny": false,
-    "noImplicitReturns": true,
-    "noImplicitThis": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
+    "moduleResolution": "Node",
+    "composite": true,
     "sourceMap": true,
     "skipLibCheck": true,
     "strict": false,
@@ -19,7 +14,6 @@
   },
   "include": ["**/*.ts"],
   "exclude": [
-    "jest.env.config.ts",
     "tests/",
     "**/*.spec.ts",
     "**/*.test.ts",
@@ -27,7 +21,6 @@
     "lib",
     "bundles",
     "dist/",
-    "jest.config.ts",
-    "jest.*.config.ts"
+    "jest*"
   ]
 }
