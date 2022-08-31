@@ -39,6 +39,7 @@ enum CallbackType {
   StringAttributeInputCallback = 'StringAttributeInputCallback',
   SuspendedTextOutputCallback = 'SuspendedTextOutputCallback',
   TermsAndConditionsCallback = 'TermsAndConditionsCallback',
+  TextInputCallback = 'TextInputCallback',
   TextOutputCallback = 'TextOutputCallback',
   ValidatedCreatePasswordCallback = 'ValidatedCreatePasswordCallback',
   ValidatedCreateUsernameCallback = 'ValidatedCreateUsernameCallback',
