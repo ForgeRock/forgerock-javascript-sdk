@@ -26,6 +26,7 @@ import RedirectCallback from './redirect-callback';
 import SelectIdPCallback from './select-idp-callback';
 import SuspendedTextOutputCallback from './suspended-text-output-callback';
 import TermsAndConditionsCallback from './terms-and-conditions-callback';
+import TextInputCallback from './text-input-callback';
 import TextOutputCallback from './text-output-callback';
 import ValidatedCreatePasswordCallback from './validated-create-password-callback';
 import ValidatedCreateUsernameCallback from './validated-create-username-callback';
@@ -71,6 +72,8 @@ function createCallback(callback: Callback): FRCallback {
       return new SuspendedTextOutputCallback(callback);
     case CallbackType.TermsAndConditionsCallback:
       return new TermsAndConditionsCallback(callback);
+    case CallbackType.TextInputCallback:
+      return new TextInputCallback(callback);
     case CallbackType.TextOutputCallback:
       return new TextOutputCallback(callback);
     case CallbackType.ValidatedCreatePasswordCallback:
