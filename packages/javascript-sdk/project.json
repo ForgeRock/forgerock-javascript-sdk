@@ -64,6 +64,7 @@
       "executor": "@jscutlery/semver:version",
       "options": {
         "preset": "conventional",
+        "baseBranch": "master",
         "dryRun": true,
         "push": true,
         "tagPrefix": "v",
@@ -73,6 +74,7 @@
         "beta": {
           "releaseAs": "prerelease",
           "preid": "beta",
+          "baseBranch": "develop",
           "skipRootChangelog": true,
           "skipProjectChangelog": true,
           "push": true,
