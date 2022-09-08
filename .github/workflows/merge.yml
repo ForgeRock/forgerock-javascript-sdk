@@ -103,6 +103,11 @@ jobs:
       - name: Derive appropriate SHAs for base and head for `nx affected` commands
         id: sha
         uses: nrwl/nx-set-shas@v2
+      # Configure Git
+      - name: Git configuration
+        run: |
+          git config --global user.email "ryan.basmajian@forgerock.com"
+          git config --global user.name "SDK Pipeline"
 
       - name: Version Beta
         if: ${{ github.ref == 'refs/heads/develop' }}
