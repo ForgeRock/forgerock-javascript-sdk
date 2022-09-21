@@ -68,15 +68,18 @@
         "dryRun": true,
         "push": true,
         "tagPrefix": "v",
-        "postTargets": ["javascript-sdk:publish", "javascript-sdk:github"]
+        "postTargets": []
       },
       "configurations": {
         "beta": {
           "releaseAs": "prerelease",
           "preid": "beta",
           "baseBranch": "develop",
+          "noVerify": true,
           "skipRootChangelog": true,
           "skipProjectChangelog": true,
+          "commitMessageFormat": "release: ${version} [skip ci]",
+          "remote": "origin",
           "push": true,
           "postTargets": ["javascript-sdk:deploy:beta"],
           "dryRun": false
@@ -93,6 +96,7 @@
         "beta": {
           "draft": false,
           "prerelease": true,
+          "tag": "${tag}",
           "notes": "${notes}"
         }
       }
@@ -105,7 +109,8 @@
       },
       "configurations": {
         "beta": {
-          "tag": "beta"
+          "tag": "beta",
+          "access": "public"
         }
       }
     }
