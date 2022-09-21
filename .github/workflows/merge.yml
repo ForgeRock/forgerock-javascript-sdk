@@ -118,12 +118,12 @@ jobs:
           PUBLIC_NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.GH_TOKEN }}
 
-      - name: Tag beta
-        if: ${{ github.ref == 'refs/heads/develop' }}
-        shell: bash
-        run: |
-          git tag -f beta          
-          git push origin beta --force
+      # - name: Tag beta
+      #   if: ${{ github.ref == 'refs/heads/develop' }}
+      #   shell: bash
+      #   run: |
+      #     git tag -f beta
+      #     git push origin beta --force
 
       # keep commented out for now
       # - name: Tag last-release
@@ -132,6 +132,9 @@ jobs:
       #   run: |
       #     git tag -f last-release
       #     git push origin last-release --force
+
+      - name: Github Release
+        run: NX_CLOUD_DISTRIBUTED_EXECUTION=false npx nx run javascript-sdk:github --configuration=beta
 
       - uses: actions/setup-node@v3
         if: ${{ github.ref == 'refs/heads/develop' }}
