@@ -38,6 +38,7 @@ import {
   oauthTokensExpired,
   nameCallback,
   redirectCallbackFailureSaml,
+  textInputCallback,
 } from './responses';
 import initialRegResponse from './response.registration';
 import wait from './wait';
@@ -125,6 +126,13 @@ export default function (app) {
       if (req.body.callbacks.find((cb) => cb.type === 'NameCallback')) {
         const cb = req.body.callbacks.find((cb) => cb.type === 'NameCallback');
         if (cb.input[0].value !== USERS[0].un) {
+          res.json(authFail);
+        } else {
+          res.json(textInputCallback);
+        }
+      } else if (req.body.callbacks.find((cb) => cb.type === 'TextInputCallback')) {
+        const cb = req.body.callbacks.find((cb) => cb.type === 'TextInputCallback');
+        if (cb.input[0].value !== 'Text Input String') {
           res.json(authFail);
         } else {
           res.json(passwordCallback);

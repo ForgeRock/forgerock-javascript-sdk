@@ -52,6 +52,14 @@ function autoscript() {
         }),
         rxDelay(delay),
         mergeMap((step) => {
+          console.log('Handle Text Input Callback');
+          const cb = step.getCallbackOfType('TextInputCallback');
+          console.log(`Prompt from TextInputCallback is ${cb.getPrompt()}`);
+          cb.setInput('Text Input String');
+          return forgerock.FRAuth.next(step);
+        }),
+        rxDelay(delay),
+        mergeMap((step) => {
           console.log('Handle Password Callback');
           const cb = step.getCallbackOfType('PasswordCallback');
           console.log(`Prompt from PasswordCallback is ${cb.getPrompt()}`);
