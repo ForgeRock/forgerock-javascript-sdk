@@ -17,6 +17,9 @@ test.describe('Test Basic login flow', () => {
 
     // Test assertions
     expect(messageArray.includes('Prompt from NameCallback is User Name')).toBe(true);
+    expect(
+      messageArray.includes('Prompt from TextInputCallback is Provide a nickname for this account'),
+    ).toBe(true);
     expect(messageArray.includes('Prompt from PasswordCallback is Password')).toBe(true);
     expect(messageArray.includes('Choose your color')).toBe(true);
     expect(messageArray.includes('Value of "green" is set')).toBe(true);

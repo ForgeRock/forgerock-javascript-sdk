@@ -31,6 +31,7 @@ import RedirectCallback from './fr-auth/callbacks/redirect-callback';
 import SelectIdPCallback, { IdPValue } from './fr-auth/callbacks/select-idp-callback';
 import SuspendedTextOutputCallback from './fr-auth/callbacks/suspended-text-output-callback';
 import TermsAndConditionsCallback from './fr-auth/callbacks/terms-and-conditions-callback';
+import TextInputCallback from './fr-auth/callbacks/text-input-callback';
 import TextOutputCallback from './fr-auth/callbacks/text-output-callback';
 // eslint-disable-next-line max-len
 import ValidatedCreatePasswordCallback from './fr-auth/callbacks/validated-create-password-callback';
@@ -134,6 +135,7 @@ export {
   StepType,
   SuspendedTextOutputCallback,
   TermsAndConditionsCallback,
+  TextInputCallback,
   TextOutputCallback,
   TokenManager,
   Tokens,
