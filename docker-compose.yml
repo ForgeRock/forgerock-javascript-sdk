@@ -24,7 +24,7 @@ services:
       dockerfile: ./samples/todo-api/Dockerfile
     command: node /app/builder/dist/samples/todo-api/main.js
     ports:
-      - '8081'
+      - '8081:8081'
     environment:
       PORT: 8081
       AM_URL: $AM_URL
@@ -71,7 +71,6 @@ services:
     ports:
       - '8002:80'
     restart: on-failure
-
   embedded-login:
     container_name: embedded-login
     build:
@@ -87,7 +86,6 @@ services:
         WEB_OAUTH_CLIENT: $WEB_OAUTH_CLIENT
         TREE: $TREE
         SCOPE: $SCOPE
-
     ports:
       - '8001:80'
     restart: on-failure
