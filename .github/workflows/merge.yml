@@ -109,14 +109,6 @@ jobs:
       - name: Derive appropriate SHAs for base and head for `nx affected` commands
         id: sha
         uses: nrwl/nx-set-shas@v2
-      # Configure Git
-      - name: Git configuration
-        run: |
-          git config --global user.email "luis.sanches@forgerock.com"
-          git config --global user.name "Luis Sanches"
-          git config --global commit.gpgsign true
-        env:
-          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
       - name: Version Beta
         if: ${{ github.ref == 'refs/heads/develop' }}
         run: NX_CLOUD_DISTRIBUTED_EXECUTION=false npx nx affected --target=version --configuration=beta --base=beta
