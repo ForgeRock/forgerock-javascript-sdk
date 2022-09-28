@@ -9,9 +9,10 @@
  */
 
 import { Component, OnInit } from '@angular/core';
-import { FRUser } from '@forgerock/javascript-sdk';
 import { Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
+// @ts-ignore
+import { user } from '../../../../package/modal';
 
 /**
  * Used to log the user out whilst a spinner and message are displayed
@@ -44,7 +45,7 @@ export class LogoutComponent implements OnInit {
        * APIs are called and we get a 401 response, but here we respond to user
        * input clicking logout.
        ********************************************************************* */
-      await FRUser.logout();
+      await user.logout();
       this.userService.info = undefined;
       this.userService.isAuthenticated = false;
       setTimeout(() => this.redirectToHome(), 1000);

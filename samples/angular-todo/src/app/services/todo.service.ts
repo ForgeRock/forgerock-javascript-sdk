@@ -11,7 +11,8 @@
 import { Injectable } from '@angular/core';
 import { Todo } from '../features/todo/todo';
 import { environment } from '../../environments/environment';
-import { HttpClient } from '@forgerock/javascript-sdk';
+// @ts-ignore
+import { request } from '../../../package/modal';
 
 /**
  * Used to define interactions with the backend
@@ -82,7 +83,7 @@ export class TodoService {
      * requests to protected resource APIs. It's a wrapper around the native
      * fetch method.
      *********************************************************************** */
-    return HttpClient.request({
+    return request({
       url: resource,
       init: {
         headers: {

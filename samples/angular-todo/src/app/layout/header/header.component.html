@@ -9,6 +9,7 @@ of the MIT license. See the LICENSE file for details.
 -->
 
 <nav class="navbar navbar-expand navbar-light bg-white py-0 border-bottom">
+  <!-- <div id="login-widget-modal"></div> -->
   <div class="cstm_container container-fluid d-flex align-items-stretch">
     <a
       [routerLink]="'/'"
@@ -96,7 +97,9 @@ of the MIT license. See the LICENSE file for details.
         <ng-template #loginOrRegister>
           <ul class="navbar-nav d-flex align-items-stretch me-auto"></ul>
           <div class="d-flex py-3">
-            <a [routerLink]="'/login'" class="cstm_login-link py-2 px-3 mx-1"> Sign In </a>
+            <a role="button" class="cstm_login-link py-2 px-3 mx-1" (click)="launchWidget()">
+              Sign In
+            </a>
             <a class="btn btn-primary" [routerLink]="'/register'"> Sign Up </a>
           </div>
         </ng-template>

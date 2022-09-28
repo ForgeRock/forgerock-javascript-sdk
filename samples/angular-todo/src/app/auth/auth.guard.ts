@@ -17,7 +17,8 @@ import {
   Router,
 } from '@angular/router';
 import { UserService } from '../services/user.service';
-import { Tokens, TokenStorage, UserManager } from '@forgerock/javascript-sdk';
+// @ts-ignore
+import { user } from '../../../package/modal';
 
 @Injectable({
   providedIn: 'root',
@@ -36,7 +37,7 @@ export class AuthGuard implements CanActivate {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot,
   ): Promise<true | UrlTree> {
-    const loginUrl = this.router.parseUrl('/login');
+    const loginUrl = this.router.parseUrl('/?login=true');
     try {
       // Assume user is likely authenticated if there are tokens
 
@@ -49,12 +50,13 @@ export class AuthGuard implements CanActivate {
        * In this case, we are calling the userinfo endpoint to
        * ensure valid tokens before continuing, but it's optional.
        ***************************************************************** */
-      const tokens: Tokens = await TokenStorage.get();
-      const info = await UserManager.getCurrentUser();
-      if (tokens === undefined || info === undefined) {
-        return loginUrl;
+
+      const authorized = await user.authorized();
+      console.log('authorized: ' + authorized);
+      if (authorized) {
+        return true;
       }
-      return true;
+      return loginUrl;
     } catch (err) {
       // User likely not authenticated
       console.log(err);
