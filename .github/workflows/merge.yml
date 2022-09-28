@@ -112,8 +112,8 @@ jobs:
       # Configure Git
       - name: Git configuration
         run: |
-          git config --global user.email "lsanches@forgerock.com"
-          git config --global user.name "lsanches"
+          git config --global user.email "luis.sanches@forgerock.com"
+          git config --global user.name "Luis Sanches"
           git config --global commit.gpgsign true
         env:
           GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
