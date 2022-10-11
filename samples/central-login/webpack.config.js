@@ -45,11 +45,6 @@ module.exports = (config) => {
   };
   config.plugins.push(
     new HtmlWebpackPlugin({
-      inject: 'body',
-      template: './src/index.html',
-      filename: 'index.html',
-    }),
-    new HtmlWebpackPlugin({
       template: './src/callback/index.html',
       filename: './callback/index.html',
     }),
