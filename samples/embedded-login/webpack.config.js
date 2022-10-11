@@ -39,6 +39,7 @@ module.exports = (config) => {
       },
       https: true,
     },
+    stats: { warnings: false },
   };
 
   config.plugins.push(
