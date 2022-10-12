@@ -42,13 +42,9 @@ module.exports = (config) => {
     optimization: {
       ...config.optimization,
     },
+    stats: { warnings: false },
   };
   config.plugins.push(
-    new HtmlWebpackPlugin({
-      inject: 'body',
-      template: './src/index.html',
-      filename: 'index.html',
-    }),
     new HtmlWebpackPlugin({
       template: './src/callback/index.html',
       filename: './callback/index.html',
