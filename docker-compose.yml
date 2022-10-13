@@ -24,7 +24,7 @@ services:
       dockerfile: ./samples/todo-api/Dockerfile
     command: node /app/builder/dist/samples/todo-api/main.js
     ports:
-      - '8081:8081'
+      - '8081'
     environment:
       PORT: 8081
       AM_URL: $AM_URL
