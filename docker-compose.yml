@@ -36,12 +36,8 @@ services:
       REST_OAUTH_CLIENT: $REST_OAUTH_CLIENT
       REST_OAUTH_SECRET: $REST_OAUTH_SECRET
     restart: on-failure
-    networks:
-      - api
   angular-todo:
     container_name: angular-todo
-    networks:
-      - api
     build:
       context: ./
       dockerfile: ./samples/angular-todo/Dockerfile
@@ -90,8 +86,6 @@ services:
       - '8001:80'
     restart: on-failure
   reactjs-todo:
-    networks:
-      - api
     container_name: reactjs-todo
     build:
       context: ./
@@ -107,5 +101,8 @@ services:
     ports:
       - '8443:80'
     restart: on-failure
-networks:
-  api:
+
+endpoints:
+  - path: /api
+    service: api
+    port: 8081
