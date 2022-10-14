@@ -70,10 +70,10 @@ abstract class Auth {
       body: step ? JSON.stringify(step) : undefined,
       credentials: 'include',
       headers: new Headers({
-        accept: 'application/json',
-        'accept-api-version': 'protocol=1.0,resource=2.1',
-        'content-type': 'application/json',
-        'x-requested-with': REQUESTED_WITH,
+        Accept: 'application/json',
+        'Accept-API-Version': 'protocol=1.0,resource=2.1',
+        'Content-Type': 'application/json',
+        'X-Requested-With': REQUESTED_WITH,
       }),
       method: 'POST',
     };
