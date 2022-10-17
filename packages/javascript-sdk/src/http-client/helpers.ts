@@ -31,13 +31,13 @@ export function addAuthzInfoToHeaders(
   const headers = new Headers(init.headers);
 
   if (advices.AuthenticateToServiceConditionAdvice) {
-    headers.set('x-tree', advices.AuthenticateToServiceConditionAdvice[0]);
+    headers.set('X-Tree', advices.AuthenticateToServiceConditionAdvice[0]);
   } else if (advices.TransactionConditionAdvice) {
-    headers.set('x-txid', advices.TransactionConditionAdvice[0]);
+    headers.set('X-TxID', advices.TransactionConditionAdvice[0]);
   }
 
   if (tokens && tokens.idToken) {
-    headers.set('x-idtoken', tokens.idToken);
+    headers.set('X-IdToken', tokens.idToken);
   }
   return headers;
 }

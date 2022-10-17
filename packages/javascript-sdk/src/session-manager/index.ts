@@ -28,8 +28,8 @@ abstract class SessionManager {
     const init: RequestInit = {
       credentials: 'include',
       headers: new Headers({
-        'accept-api-version': 'protocol=1.0,resource=2.0',
-        'x-requested-with': REQUESTED_WITH,
+        'Accept-API-Version': 'protocol=1.0,resource=2.0',
+        'X-Requested-With': REQUESTED_WITH,
       }),
       method: 'POST',
     };

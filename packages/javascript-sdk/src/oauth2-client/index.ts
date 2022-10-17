@@ -148,8 +148,8 @@ abstract class OAuth2Client {
     const init = {
       body,
       headers: new Headers({
-        'content-length': body.length.toString(),
-        'content-type': 'application/x-www-form-urlencoded',
+        'Content-Length': body.length.toString(),
+        'Content-Type': 'application/x-www-form-urlencoded',
       }),
       method: 'POST',
     };
@@ -224,7 +224,7 @@ abstract class OAuth2Client {
     const init: RequestInit = {
       body: stringify({ client_id: clientId, token: accessToken }),
       credentials: 'include',
-      headers: new Headers({ 'content-type': 'application/x-www-form-urlencoded' }),
+      headers: new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' }),
       method: 'POST',
     };
 
@@ -264,7 +264,7 @@ abstract class OAuth2Client {
       const { accessToken } = await TokenStorage.get();
       init.credentials = 'include';
       init.headers = (init.headers || new Headers()) as Headers;
-      init.headers.set('authorization', `Bearer ${accessToken}`);
+      init.headers.set('Authorization', `Bearer ${accessToken}`);
     }
     const runMiddleware = middlewareWrapper(
       { url: new URL(url), init },
@@ -283,7 +283,7 @@ abstract class OAuth2Client {
   }
 
   private static async getBody<T>(response: Response): Promise<T | string> {
-    const contentType = response.headers.get('content-type');
+    const contentType = response.headers.get('Content-Type');
     if (contentType && contentType.indexOf('application/json') > -1) {
       return await response.json();
     }

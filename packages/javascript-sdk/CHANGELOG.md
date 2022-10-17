@@ -1,5 +1,9 @@
 # Changelog
 
+## [Unreleased]
+
+- Fixed HTTP headers by capitalizing all header names
+
 ## [3.3.1] - 2022-05-18
 
 - Fixed issue where UMD bundle namespace changed
