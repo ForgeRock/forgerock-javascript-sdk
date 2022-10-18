@@ -1,8 +1,10 @@
 # Changelog
 
-## [Unreleased]
+## [3.4.0] - 2022-10-18
 
 - Fixed HTTP headers by capitalizing all header names
+- Add support for TextInput Callback
+- Fix object checks for device profile callback and use globalThis instead of window
 
 ## [3.3.1] - 2022-05-18
 
