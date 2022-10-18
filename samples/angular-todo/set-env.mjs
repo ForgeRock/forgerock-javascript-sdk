@@ -1,8 +1,10 @@
 import { writeFile } from 'fs';
 
 // Assume development
-let targetPath = 'samples/angular-todo/src/environments/environment.ts';
-let production = false;
+let targetPath =
+  process.env.NODE_ENV === 'production'
+    ? 'samples/angular-todo/src/environments/environment.prod.ts'
+    : 'samples/angular-todo/src/environments/environment.ts';
 
 const envConfigFile = `export const environment = {
    AM_URL: '${process.env.AM_URL}',
@@ -11,8 +13,7 @@ const envConfigFile = `export const environment = {
    JOURNEY_LOGIN: '${process.env.JOURNEY_LOGIN}',
    JOURNEY_REGISTER: '${process.env.JOURNEY_REGISTER}',
    API_URL: '${process.env.API_URL}',
-   APP_URL: '${process.env.APP_URL}',
-   production: '${production}'
+   production: '${process.env.NODE_ENV}'
 };
 `;
 console.log(`The file ${targetPath} will be written with the following content: \n`);

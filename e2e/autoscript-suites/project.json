@@ -1,4 +1,5 @@
 {
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "e2e/autoscript-suites/src",
   "projectType": "application",
   "targets": {
@@ -33,6 +34,7 @@
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": ["e2e/autoscript-suites/**/*.{js,ts}"],
+        "fix": true,
         "ignorePath": ".gitignore"
       }
     }

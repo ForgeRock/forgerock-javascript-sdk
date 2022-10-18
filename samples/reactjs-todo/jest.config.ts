@@ -1,4 +1,5 @@
-module.exports = {
+/* eslint-disable */
+export default {
   displayName: '..-samples--react-js',
 
   transform: {
@@ -7,5 +8,5 @@ module.exports = {
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
   coverageDirectory: '../../coverage/packages/../samples/react-js',
-  preset: '../../jest.preset.ts',
+  preset: '../../jest.preset.js',
 };

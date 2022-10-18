@@ -11,14 +11,13 @@ import * as forgerock from '@forgerock/javascript-sdk';
  */
 
 const FATAL = 'Fatal';
-
 forgerock.Config.set({
   clientId: process.env.WEB_OAUTH_CLIENT, // e.g. 'ForgeRockSDKClient'
-  redirectUri: process.env.REDIRECT_URI, // e.g. 'https://sdkapp.example.com:8443/_callback'
+  redirectUri: `${window.location.origin}/callback`, // e.g. 'https://sdkapp.example.com:8443/_callback'
   scope: process.env.SCOPE, // e.g. 'openid profile me.read'
   serverConfig: {
     baseUrl: process.env.AM_URL, // e.g. 'https://openam.example.com:9443/openam/'
-    timeout: process.env.TIMEOUT, // 90000 or less
+    timeout: parseInt(process.env.TIMEOUT), // 90000 or less
   },
   realmPath: process.env.REALM_PATH, // e.g. 'root'
   tree: process.env.TREE, // e.g. 'Login'
@@ -127,4 +126,5 @@ const logout = async () => {
 nextStep();
 
 document.getElementById('Error').addEventListener('click', nextStep);
+document.getElementById('start-over').addEventListener('click', nextStep);
 document.getElementById('Fatal').addEventListener('click', nextStep);

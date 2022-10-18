@@ -3,11 +3,10 @@
   "compilerOptions": {
     "rootDir": ".",
     "baseUrl": ".",
-    "declaration": true,
     "esModuleInterop": true,
     "lib": ["es2015", "dom"],
-    "module": "CommonJS",
     "moduleResolution": "node",
+    "skipLibCheck": true,
     "noFallthroughCasesInSwitch": true,
     "noImplicitAny": true,
     "noImplicitReturns": true,
@@ -15,11 +14,9 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "sourceMap": true,
-    "strict": true,
-    "target": "ES5",
     "paths": {
       "@forgerock/javascript-sdk": ["packages/javascript-sdk/src/index.ts"]
     }
   },
-  "exclude": ["node_modules", "tmp", "samples/angular-todo"]
+  "exclude": ["node_modules", "tmp"]
 }

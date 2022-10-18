@@ -2,6 +2,7 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "../../dist/out-tsc",
+    "moduleResolution": "node",
     "types": [],
     "target": "ES2017"
   },

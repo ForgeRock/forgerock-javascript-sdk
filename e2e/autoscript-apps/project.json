@@ -1,4 +1,5 @@
 {
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
   "sourceRoot": "e2e/autoscript-apps/src",
   "tags": [],
@@ -8,7 +9,7 @@
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/e2e/autoscript-apps",
-        "compiler": "swc",
+        "compiler": "babel",
         "index": "e2e/autoscript-apps/src/index.html",
         "main": "packages/javascript-sdk/src/index.ts",
         "tsConfig": "e2e/autoscript-apps/tsconfig.app.json",
@@ -29,14 +30,21 @@
     },
     "serve": {
       "executor": "@nrwl/web:dev-server",
-      "defaultConfiguration": "development",
+      "defaultConfiguration": "production",
       "options": {
-        "buildTarget": "autoscript-apps:build",
-        "port": 8443
+        "port": 8443,
+        "host": "sdkapp.example.com"
       },
       "configurations": {
+        "production": {
+          "buildTarget": "autoscript-apps:build",
+          "open": false,
+          "hmr": false
+        },
         "development": {
-          "buildTarget": "autoscript-apps:build:development"
+          "buildTarget": "autoscript-apps:build:development",
+          "open": true,
+          "hmr": true
         }
       }
     }

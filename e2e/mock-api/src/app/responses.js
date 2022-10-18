@@ -126,6 +126,26 @@ export const nameCallback = {
     },
   ],
 };
+export const textInputCallback = {
+  authId: 'foo',
+  callbacks: [
+    {
+      type: 'TextInputCallback',
+      output: [
+        {
+          name: 'prompt',
+          value: 'Provide a nickname for this account',
+        },
+      ],
+      input: [
+        {
+          name: 'IDToken1',
+          value: '',
+        },
+      ],
+    },
+  ],
+};
 
 export const initialBasicLogin = {
   authId: 'foo',

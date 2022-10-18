@@ -9,7 +9,7 @@
  */
 
 import { useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import apiRequest from '../../utilities/request';
 
@@ -21,7 +21,7 @@ import apiRequest from '../../utilities/request';
  * @returns {undefined} - this doesn't directly return anything, but calls dispatch to set data
  */
 export default function useTodoFetch(dispatch, setFetched) {
-  const history = useHistory();
+  const navigate = useNavigate();
 
   /**
    * Since we are making an API call, which is a side-effect,
@@ -35,7 +35,7 @@ export default function useTodoFetch(dispatch, setFetched) {
 
       // TODO: improve error handling
       if (fetchedTodos.error) {
-        return history.push('/login');
+        return navigate('/login');
       }
       setFetched(true);
       dispatch({ type: 'init-todos', payload: { todos: fetchedTodos } });

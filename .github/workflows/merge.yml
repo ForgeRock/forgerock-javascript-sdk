@@ -4,7 +4,6 @@ on:
     branches:
       - develop
       - master
-
 env:
   NX_CLOUD_DISTRIBUTED_EXECUTION: true
 jobs:
@@ -22,24 +21,14 @@ jobs:
           cache: 'npm'
           cache-dependency-path: '**/package-lock.json'
       - run: npm ci
-      - uses: nrwl/last-successful-commit-action@v1
-        with:
-          id: last_successful_commit
-          workflow_id: 'merge.yml' # name of file
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.ref }}
-
+      - name: Derive appropriate SHAs for base and head for `nx affected` commands
+        id: sha
+        uses: nrwl/nx-set-shas@v2
+      - run: npm install @nrwl/nx-cloud
       - run: npx nx-cloud start-ci-run
-      - run: npx nx affected --target=build --parallel --max-parallel=3 --base=${{ steps.last_successful_commit.outputs.commit_hash }}
-      - run: npx nx affected --target=test --parallel --max-parallel=2 --coverage --base=${{ steps.last_successful_commit.outputs.commit_hash }}
-      - run: npx nx affected --target=test --configuration=integration --parallel --coverage  --base=${{ steps.last_successful_commit.outputs.commit_hash }}
-      - run: npx nx affected --target=e2e  --parallel --base=${{ steps.last_successful_commit.outputs.commit_hash }}
-
-        # It's important that we always run this step, otherwise in the case of any failures in preceding non-Nx steps, the agents will keep running and waste billable minutes
-      - name: Stop All Agents
+      - run: npx nx affected --target=build --parallel --max-parallel=3
+      - run: npx nx-cloud stop-all-agents
         if: ${{ always() }}
-        run: npx nx-cloud stop-all-agents
-
       - name: Run Whitesource Action
         uses: TheAxZim/Whitesource-Scan-Action@v1.0.0
         with:
@@ -48,11 +37,6 @@ jobs:
           configFile: 'wss-unified-agent.config'
         env:
           WS_USERKEY: ${{ secrets.WS_USER_KEY }}
-      - uses: codecov/codecov-action@v2
-        with:
-          token: ${{ secrets.CODE_COV_UPLOAD_TOKEN }}
-          directory: ${{ github.workspace }}/coverage
-
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
         if: always()
@@ -76,6 +60,7 @@ jobs:
           repository: ${{github.event.pull_request.head.repo.full_name}}
           fetch-depth: 0
       - uses: actions/setup-node@v3
+        id: cache
         with:
           node-version: '16.13.1'
           cache: 'npm'
@@ -85,11 +70,7 @@ jobs:
         env:
           # PLAYWRIGHT_BROWSERS_PATH: 0
           PLAYWRIGHT_SKIP_BROWSERS_DOWNLOAD: 1
-
-      - name: Setup custom host for sdkapp.example.com
-        run: sudo echo "127.0.0.1 sdkapp.example.com auth.example.com api.example.com user.example.com" | sudo tee -a /etc/hosts
-
-      - run: npx playwright install chromium firefox webkit
+      - run: npm install @nrwl/nx-cloud
       - name: Start Nx Agent ${{ matrix.agent }}
         run: npx nx-cloud start-agent
   publish:
@@ -101,20 +82,53 @@ jobs:
       packages: write
     steps:
       - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          # needs to be set so we can change token
+          persist-credentials: false # Whether to configure the token or SSH key with the local git config
+          token: ${{ secrets.RELEASE_TOKEN }} # this is the token for our "release user"
+      - name: Import bot's GPG key for signing commits
+        id: import-gpg
+        uses: crazy-max/ghaction-import-gpg@v4
+        with:
+          gpg_private_key: ${{ secrets.RELEASE_GPG_PRIVATE_KEY }}
+          passphrase: ${{ secrets.RELEASE_GPG_PASSPHRASE }}
+          git_config_global: true
+          git_user_signingkey: true
+          git_commit_gpgsign: true
       - uses: actions/setup-node@v3
+        id: cache
         with:
           node-version: '16.x'
           scope: '@forgerock'
       - run: npm ci
+      - run: npm install @nrwl/nx-cloud
       - run: npm run build
         env:
           NX_CLOUD_DISTRIBUTED_EXECUTION: false
-      - name: Release
+      - name: Derive appropriate SHAs for base and head for `nx affected` commands
+        id: sha
+        uses: nrwl/nx-set-shas@v2
+      - name: Version Beta
+        if: ${{ github.ref == 'refs/heads/develop' }}
+        run: NX_CLOUD_DISTRIBUTED_EXECUTION=false npx nx affected --target=version --configuration=beta --base=beta
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_NPM_TOKEN: ${{ secrets.GH_TOKEN }}
           PUBLIC_NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.GH_TOKEN }}
-          GITHUB_NPM_CONFIG_REGISTRY: https://npm.pkg.github.com/
-          PUBLIC_NPM_CONFIG_REGISTRY: https://registry.npmjs.org
-        run: npx multi-semantic-release -ignore-private-packages --ignore-packages=samples/**,e2e/** --dry-run
+      - name: Run Github Pushes
+        run: NX_CLOUD_DISTRIBUTED_EXECUTION=false npx nx run javascript-sdk:github --configuration=beta
+      - uses: actions/setup-node@v3
+        if: ${{ github.ref == 'refs/heads/develop' }}
+        with:
+          registry-url: 'https://npm.pkg.github.com'
+          scope: '@forgerock'
+      - name: Release Beta GPR
+        if: ${{ github.ref == 'refs/heads/develop' }}
+        run: npx nx affected --target=deploy --configuration=beta
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_NPM_TOKEN: ${{ secrets.GH_TOKEN }}
+          PUBLIC_NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.GH_TOKEN }}

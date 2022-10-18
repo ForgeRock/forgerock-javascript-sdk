@@ -1,4 +1,5 @@
 {
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
   "sourceRoot": "samples/central-login/src",
   "tags": [],
@@ -8,7 +9,7 @@
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/samples/central-login",
-        "compiler": "swc",
+        "compiler": "babel",
         "index": "samples/central-login/src/index.html",
         "baseHref": "/",
         "main": "samples/central-login/src/main.js",
@@ -21,7 +22,13 @@
         "webpackConfig": "samples/central-login/webpack.config.js"
       },
       "configurations": {
-        "development": {}
+        "development": {},
+        "production": {
+          "optimization": true,
+          "vendorChunk": true,
+          "verbose": true,
+          "watch": false
+        }
       },
       "defaultConfiguration": "production"
     },
@@ -44,6 +51,7 @@
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
+        "fix": true,
         "lintFilePatterns": ["samples/central-login/**/*.ts"]
       }
     }

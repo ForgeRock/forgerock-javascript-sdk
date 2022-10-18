@@ -1,4 +1,5 @@
-module.exports = {
+/* eslint-disable */
+export default {
   displayName: 'mock-server',
 
   globals: {
@@ -12,5 +13,5 @@ module.exports = {
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
   coverageDirectory: '../../coverage/samples/mock-server',
-  preset: '../../jest.preset.ts',
+  preset: '../../jest.preset.js',
 };

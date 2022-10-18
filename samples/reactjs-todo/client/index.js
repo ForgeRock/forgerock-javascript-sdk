@@ -10,17 +10,10 @@
 
 import { Config, TokenStorage } from '@forgerock/javascript-sdk';
 import React from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom/client';
 
 import Router from './router';
-import {
-  AM_URL,
-  APP_URL,
-  DEBUGGER,
-  JOURNEY_LOGIN,
-  REALM_PATH,
-  WEB_OAUTH_CLIENT,
-} from './constants';
+import { AM_URL, DEBUGGER, JOURNEY_LOGIN, REALM_PATH, WEB_OAUTH_CLIENT } from './constants';
 import { AppContext, useGlobalStateMgmt } from './global-state';
 
 /**
@@ -47,7 +40,7 @@ import './styles/index.scss';
 if (DEBUGGER) debugger;
 Config.set({
   clientId: WEB_OAUTH_CLIENT,
-  redirectUri: `${APP_URL}/callback`,
+  redirectUri: `${window.location.origin}/callback`,
   scope: 'openid profile email',
   serverConfig: {
     baseUrl: AM_URL,
@@ -117,6 +110,7 @@ Config.set({
     );
   }
 
+  const root = ReactDOM.createRoot(rootEl);
   // Mounts the React app to the existing root element
-  ReactDOM.render(<Init />, rootEl);
+  root.render(<Init />);
 })();

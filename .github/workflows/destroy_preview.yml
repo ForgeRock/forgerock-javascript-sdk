@@ -1,0 +1,39 @@
+name: 'Destroy preview env'
+on:
+  pull_request:
+    branches:
+      - develop
+      - next
+      - '!dependabot/**'
+    types:
+      - closed
+
+jobs:
+  closed:
+    container:
+      image: ghcr.io/ryanbas21/update-cors-am-github-action:main
+    runs-on: ubuntu-latest
+    steps:
+      - uses: okteto/context@latest
+        with:
+          token: ${{ secrets.OKTETO_TOKEN }}
+      - name: Get Preview Endpoints
+        id: preview_urls
+        run: |
+          URLS=$(okteto preview endpoints pr-${{ github.event.number }}-${{ github.actor }} -o json | jq -c)
+          echo "::set-output name=preview_urls::$URLS"
+      - uses: ryanbas21/update-cors-am-github-action@latest
+        with:
+          AM_URL: ${{ secrets.AM_URL }}
+          USERNAME: ${{ secrets.AM_USERNAME }}
+          PASSWORD: ${{ secrets.AM_PASSWORD }}
+          REALM_PATH: ${{ secrets.AM_REALM }}
+          ORIGINS: ${{ steps.preview_urls.outputs.preview_urls }}
+          COOKIE_NAME: ${{ secrets.COOKIE_NAME }}
+          REDIRECTION_URIS: ${{ secrets.REDIRECTION_URIS }}
+          REMOVE: true
+          CORS_CONFIG_NAME: 'ForgeRockSDK'
+      - name: Destroy preview environment
+        uses: okteto/destroy-preview@latest
+        with:
+          name: pr-${{ github.event.number }}-${{ github.actor }}

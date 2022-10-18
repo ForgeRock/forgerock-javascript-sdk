@@ -9,7 +9,7 @@
  */
 
 import React, { useContext, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import { AppContext } from '../global-state';
 import Loading from '../components/utilities/loading';
@@ -23,8 +23,8 @@ export default function Logout() {
    * The destructing of the hook's array results in index 0 having the state value,
    * and index 1 having the "setter" method to set new state values.
    */
-  const [_, { setAuthentication, setEmail, setUser }] = useContext(AppContext);
-  const history = useHistory();
+  const [, { setAuthentication, setEmail, setUser }] = useContext(AppContext);
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function logout() {
@@ -39,7 +39,7 @@ export default function Logout() {
         setUser('');
 
         // Allow for enough time to communicate the action
-        setTimeout(() => history.push('/?action=logout'), 1000);
+        setTimeout(() => navigate('/?action=logout'), 1000);
       } catch (error) {
         console.error(`Error: logout; ${error}`);
       }

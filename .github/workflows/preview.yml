@@ -1,0 +1,53 @@
+name: 'Preview Environment'
+on:
+  pull_request:
+    branches:
+      - develop
+      - next
+      - '!dependabot/**'
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    environment:
+      name: Preview
+    container:
+      image: ghcr.io/ryanbas21/update-cors-am-github-action:main
+    outputs:
+      urls: ${{ steps.preview_urls.outputs.preview_urls }}
+    steps:
+      - uses: okteto/context@latest
+        with:
+          token: ${{ secrets.OKTETO_TOKEN }}
+      - name: Deploy preview environment
+        uses: okteto/deploy-preview@latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          name: pr-${{ github.event.number }}-ryanbas21
+          timeout: 30m
+          scope: 'personal'
+      - name: Get Preview Endpoints
+        id: preview_urls
+        run: |
+          URLS=$(okteto preview endpoints pr-${{ github.event.number }}-ryanbas21 -o json | jq -c)
+          echo "::set-output name=preview_urls::$URLS"
+  cors:
+    needs: preview
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16.x'
+      - run: echo ${{ needs.preview.outputs.urls }}
+      - uses: ryanbas21/update-cors-am-github-action@latest
+        with:
+          AM_URL: ${{ secrets.AM_URL }}
+          USERNAME: ${{ secrets.AM_USERNAME }}
+          PASSWORD: ${{ secrets.AM_PASSWORD }}
+          REALM_PATH: ${{ secrets.AM_REALM }}
+          ORIGINS: ${{ needs.preview.outputs.urls }}
+          COOKIE_NAME: ${{ secrets.COOKIE_NAME }}
+          REDIRECTION_URIS: ${{ secrets.REDIRECTION_URIS }}
+          REMOVE: false
+          CORS_CONFIG_NAME: 'ForgeRockSDK'

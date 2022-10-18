@@ -1,5 +1,21 @@
 # Changelog
 
+## [3.4.0] - 2022-10-18
+
+### Fixed:
+
+- Fixed HTTP headers by capitalizing all header names
+- Fix object checks for device profile callback and use globalThis instead of window
+
+### CI
+
+- Fixes CI pipeline for entire repo
+
+### Added:
+
+- Added changes for releases (still WIP)
+- Add support for TextInput Callback
+
 ## [3.3.1] - 2022-05-18
 
 - Fixed issue where UMD bundle namespace changed
