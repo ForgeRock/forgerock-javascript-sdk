@@ -516,4 +516,5 @@ export default function (app) {
     }
   });
   app.get('/callback', (req, res) => res.status(200).send('ok'));
+  app.get('/healthcheck', (req, res) => res.status(200).send('ok'));
 }

@@ -1,69 +1,114 @@
-import { PlaywrightTestConfig, devices } from '@playwright/test';
+import type { PlaywrightTestConfig } from '@playwright/test';
+import { devices } from '@playwright/test';
 
+/**
+ * Read environment variables from file.
+ * https://github.com/motdotla/dotenv
+ */
+// require('dotenv').config();
+
+/**
+ * See https://playwright.dev/docs/test-configuration.
+ */
 const config: PlaywrightTestConfig = {
-  forbidOnly: !!process.env.CI,
-  globalTeardown: './teardown.ts',
-  workers: process.env.CI ? 2 : 2,
-  retries: process.env.CI ? 2 : 0,
   testDir: './src/suites',
-  webServer: {
-    command: 'nx run autoscript-apps:serve',
-    port: 8443,
-    timeout: 100000,
+  /* Maximum time one test can run for. */
+  timeout: 30 * 1000,
+  expect: {
+    /**
+     * Maximum time expect() should wait for the condition to be met.
+     * For example in `await expect(locator).toHaveText();`
+     */
+    timeout: 5000,
   },
+  /* Run tests in files in parallel */
+  fullyParallel: true,
+  /* Fail the build on CI if you accidentally left test.only in the source code. */
+  forbidOnly: !!process.env.CI,
+  /* Retry on CI only */
+  retries: process.env.CI ? 2 : 0,
+  /* Opt out of parallel tests on CI. */
+  workers: process.env.CI ? 1 : undefined,
+  /* Reporter to use. See https://playwright.dev/docs/test-reporters */
+  reporter: 'html',
+  /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
-    headless: true,
-    navigationTimeout: 50000,
-    screenshot: process.env.CI ? 'only-on-failure' : 'off',
-    video: process.env.CI ? 'retain-on-failure' : 'off',
+    /* Maximum time each action such as `click()` can take. Defaults to 0 (no limit). */
+    actionTimeout: 0,
+    /* Base URL to use in actions like `await page.goto('/')`. */
     baseURL: 'https://sdkapp.example.com:8443',
+
+    /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
+    trace: 'on-first-retry',
     ignoreHTTPSErrors: true,
     geolocation: { latitude: 24.9884, longitude: -87.3459 },
     permissions: [],
     bypassCSP: true,
-    trace: 'retain-on-failure',
+    headless: true,
+    navigationTimeout: 5000,
+    screenshot: process.env.CI ? 'only-on-failure' : 'off',
   },
+
+  /* Configure projects for major browsers */
   projects: [
     {
       name: 'chromium',
       use: {
         ...devices['Desktop Chrome'],
-        ...devices['Desktop Chrome HiDPI'],
-        ...devices['Desktop Edge'],
-        ...devices['Desktop Edge HiDPI'],
       },
     },
+
     {
       name: 'firefox',
-      use: { ...devices['Desktop Firefox'], ...devices['Desktop Firefox HiDPI'] },
+      use: {
+        ...devices['Desktop Firefox'],
+      },
     },
+
     {
       name: 'webkit',
-      use: { ...devices['Desktop Safari'], ...devices['iPad (gen 7)'] },
-    },
-    {
-      name: 'Android Web',
       use: {
-        ...devices['Pixel 4a (5G) landscape'],
-        ...devices['Pixel 4a (5G)'],
-        ...devices['Pixel 5'],
-        ...devices['Pixel 5 landscape'],
+        ...devices['Desktop Safari'],
       },
     },
     {
-      name: 'Apple Mobile',
+      name: 'Mobile Chrome',
       use: {
-        ...devices['iPhone X'],
-        ...devices['iPhone XR'],
-        ...devices['iPhone XR landscape'],
-        ...devices['iPhone SE landscape'],
-        ...devices['iPhone SE'],
-        ...devices['iPhone X landscape'],
-        ...devices['iPhone 13 Pro Max'],
-        ...devices['iPhone 13 Pro Max landscape'],
+        ...devices['Pixel 5'],
+      },
+    },
+    {
+      name: 'Mobile Safari',
+      use: {
+        ...devices['iPhone 12'],
+      },
+    },
+
+    {
+      name: 'Microsoft Edge',
+      use: {
+        channel: 'msedge',
+      },
+    },
+    {
+      name: 'Google Chrome',
+      use: {
+        channel: 'chrome',
       },
     },
   ],
+
+  /* Folder for test artifacts such as screenshots, videos, traces, etc. */
+  outputDir: '../../test-results/',
+
+  /* Run your local dev server before starting the tests */
+  webServer: {
+    command: 'nx serve autoscript-apps',
+    timeout: 10000,
+    ignoreHTTPSErrors: true,
+    reuseExistingServer: !process.env.CI,
+    url: 'https://auth.example.com:9443/healthcheck',
+  },
 };
 
 export default config;

@@ -23,7 +23,7 @@ jobs:
       - run: npm ci
       - name: Derive appropriate SHAs for base and head for `nx affected` commands
         id: sha
-        uses: nrwl/nx-set-shas@v2
+        uses: nrwl/nx-set-shas@v3
       - run: npm install @nrwl/nx-cloud
       - run: npx nx-cloud start-ci-run
       - run: npx nx affected --target=build --parallel --max-parallel=3
@@ -96,6 +96,8 @@ jobs:
           git_config_global: true
           git_user_signingkey: true
           git_commit_gpgsign: true
+          git_tag_gpgsign: true
+          git_push_gpgsign: true
       - uses: actions/setup-node@v3
         id: cache
         with:
@@ -108,7 +110,7 @@ jobs:
           NX_CLOUD_DISTRIBUTED_EXECUTION: false
       - name: Derive appropriate SHAs for base and head for `nx affected` commands
         id: sha
-        uses: nrwl/nx-set-shas@v2
+        uses: nrwl/nx-set-shas@v3
       - name: Version Beta
         if: ${{ github.ref == 'refs/heads/develop' }}
         run: NX_CLOUD_DISTRIBUTED_EXECUTION=false npx nx affected --target=version --configuration=beta --base=beta
@@ -118,6 +120,7 @@ jobs:
           PUBLIC_NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.GH_TOKEN }}
       - name: Run Github Pushes
+        if: ${{ github.ref == 'refs/heads/develop' }}
         run: NX_CLOUD_DISTRIBUTED_EXECUTION=false npx nx run javascript-sdk:github --configuration=beta
       - uses: actions/setup-node@v3
         if: ${{ github.ref == 'refs/heads/develop' }}

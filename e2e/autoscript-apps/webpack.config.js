@@ -98,6 +98,9 @@ module.exports = (config) => {
         overlay: false,
       },
     },
+    stats: {
+      warnings: false,
+    },
     plugins,
     watch: config.watch,
     mode: config.watch ? 'development' : 'production',

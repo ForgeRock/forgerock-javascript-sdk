@@ -1,22 +1,4 @@
 services:
-  # mock-api:
-  #   container_name: mock-api
-  #   hostname: mock-api
-  #   build:
-  #     context: ./
-  #     dockerfile: ./Dockerfile
-  #   command: node /app/builder/dist/e2e/mock-api/main.js
-  #   ports:
-  #     - 9443
-  #
-  # autoscript-apps:
-  #   container_name: autoscript-apps
-  #   build:
-  #     context: ./
-  #     dockerfile: ./e2e/autoscript-apps/Dockerfile
-  #   ports:
-  #     - 8082:8082
-  #
   todo-api:
     container_name: todo-api
     build:
@@ -101,8 +83,3 @@ services:
     ports:
       - '8443:80'
     restart: on-failure
-
-endpoints:
-  - path: /api
-    service: api
-    port: 8081

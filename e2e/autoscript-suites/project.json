@@ -8,7 +8,7 @@
       "options": {
         "commands": [
           {
-            "command": "concurrently --kill-others --success first  \"playwright test --config=./e2e/autoscript-suites/playwright.config.ts\" \"npm run start:server\"",
+            "command": "concurrently --kill-others --success first  \"npm run start:server\" \"playwright test --config=./e2e/autoscript-suites/playwright.config.ts\" ",
             "description": "run e2e setup"
           }
         ],

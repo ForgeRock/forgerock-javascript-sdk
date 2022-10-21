@@ -3,9 +3,9 @@
   "description": "ForgeRock JavaScript SDK E2E Suites",
   "private": true,
   "devDependencies": {
+    "@playwright/test": "^1.27.1",
     "concurrently": "^6.4.0",
-    "@playwright/test": "^1.19.2",
-    "playwright": "^1.19.2"
+    "playwright": "^1.27.1"
   },
   "version": "0.0.0",
   "main": "index.js",
@@ -18,5 +18,6 @@
   "bugs": {
     "url": "https://github.com/ForgeRock/forgerock-javascript-sdk/issues"
   },
-  "homepage": "https://github.com/ForgeRock/forgerock-javascript-sdk#readme"
+  "homepage": "https://github.com/ForgeRock/forgerock-javascript-sdk#readme",
+  "scripts": {}
 }

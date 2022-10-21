@@ -51,3 +51,9 @@ samples/**/.env.local
 samples/**/.env
 todos/*
 users/*
+
+#playwright
+**/test-results/
+**/playwright-report/
+**/playwright/.cache/
+
