@@ -13,14 +13,14 @@ import * as forgerock from '@forgerock/javascript-sdk';
 const FATAL = 'Fatal';
 forgerock.Config.set({
   clientId: process.env.WEB_OAUTH_CLIENT, // e.g. 'ForgeRockSDKClient'
-  redirectUri: `${window.location.origin}/callback`, // e.g. 'https://sdkapp.example.com:8443/_callback'
-  scope: process.env.SCOPE, // e.g. 'openid profile me.read'
+  redirectUri: `${window.location.origin}/callback`, // e.g. 'https://sdkapp.example.com:8443/callback'
+  scope: process.env.SCOPE, // e.g. 'openid profile email address phone'
   serverConfig: {
-    baseUrl: process.env.AM_URL, // e.g. 'https://openam.example.com:9443/openam/'
+    baseUrl: process.env.AM_URL, // e.g. 'https://myorg.forgeblocks.com/am' or 'https://openam.example.com:8443/openam'
     timeout: parseInt(process.env.TIMEOUT), // 90000 or less
   },
-  realmPath: process.env.REALM_PATH, // e.g. 'root'
-  tree: process.env.TREE, // e.g. 'Login'
+  realmPath: process.env.REALM_PATH, // e.g. 'alpha' or 'root'
+  tree: process.env.TREE, // e.g. 'sdkAuthenticationTree' or 'Login'
 });
 
 // Define custom handlers to render and submit each expected step

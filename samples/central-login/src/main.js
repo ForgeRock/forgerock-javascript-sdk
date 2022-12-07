@@ -14,13 +14,13 @@ const FATAL = 'Fatal';
 
 forgerock.Config.set({
   clientId: process.env.WEB_OAUTH_CLIENT, // e.g. 'ForgeRockSDKClient'
-  redirectUri: `${window.location.origin}`, // e.g. 'https://sdkapp.example.com:8443/central-login/'
-  scope: process.env.SCOPE, // e.g. 'openid profile me.read'
+  redirectUri: `${window.location.origin}`, // Redirect back to your app, e.g. 'https://sdkapp.example.com:8443'
+  scope: process.env.SCOPE, // e.g. 'openid profile email address phone me.read'
   serverConfig: {
-    baseUrl: process.env.AM_URL, // e.g. 'https://openam.example.com:9443/openam/'
+    baseUrl: process.env.AM_URL, // e.g. 'https://myorg.forgeblocks.com/am' or 'https://openam.example.com:8443/openam'
     timeout: process.env.TIMEOUT, // 3000 to 5000 is good, this impacts the redirect time to login
   },
-  realmPath: process.env.REALM_PATH, // e.g. 'root'
+  realmPath: process.env.REALM_PATH, // e.g. 'alpha' or 'root'
 });
 
 // Show only the view for this handler
