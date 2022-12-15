@@ -4,7 +4,6 @@ const path = require('path');
 
 module.exports = (config) => {
   const WEB_OAUTH_CLIENT = process.env.WEB_OAUTH_CLIENT;
-  const REDIRECT_URI = process.env.REDIRECT_URI;
   const SCOPE = process.env.SCOPE;
   const AM_URL = process.env.AM_URL;
   const TIMEOUT = process.env.TIMEOUT;
@@ -14,7 +13,6 @@ module.exports = (config) => {
     new webpack.DefinePlugin({
       // Inject all the environment variables into the Webpack build
       'process.env.WEB_OAUTH_CLIENT': JSON.stringify(WEB_OAUTH_CLIENT),
-      'process.env.REDIRECT_URI': JSON.stringify(REDIRECT_URI),
       'process.env.SCOPE': JSON.stringify(SCOPE),
       'process.env.AM_URL': JSON.stringify(AM_URL),
       'process.env.TIMEOUT': JSON.stringify(TIMEOUT),
