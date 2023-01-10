@@ -13,7 +13,7 @@ import { setupAndGo } from '../utilities/setup-and-go';
 
 test.describe('Test Transaction Authorization flow', () => {
   test(`Trigger Txn Auth appropriately`, async ({ page, browserName }) => {
-    const { messageArray } = await setupAndGo(page, browserName, 'authz-txn-basic/');
+    const { messageArray } = await setupAndGo(page, browserName, 'authz-txn-basic-redirect/');
 
     // Test assertions
     expect(messageArray.includes('IG resource requires additional authorization')).toBe(true);
