@@ -27,6 +27,7 @@ const pages = [
   'authn-webauthn',
   'authz-token',
   'authz-tree-basic',
+  'authz-txn-basic-json',
   'authz-txn-basic-redirect',
   'authz-txn-oauth',
   'config-custom-paths',
