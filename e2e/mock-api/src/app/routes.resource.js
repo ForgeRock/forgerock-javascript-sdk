@@ -13,7 +13,12 @@ import request from 'superagent';
 import { session } from './app.auth';
 import { key, cert } from './app.certs';
 import { AM_URL, AM_PORT, FORGEOPS, REALM_PATH } from './env.config';
-import { authByTreeResponse, authByTxnResponse, createStepUpUrl } from './responses';
+import {
+  authByTreeResponse,
+  authByTxnResponse,
+  createStepUpHeader,
+  createStepUpUrl,
+} from './responses';
 import { baz } from './routes.auth';
 import wait from './wait';
 
@@ -115,7 +120,13 @@ export default function (app) {
         baz.canWithdraw = false;
         res.json({ message: 'Successfully retrieved resource!' });
       } else {
-        res.redirect(307, createStepUpUrl(req.headers.referer));
+        if (req.headers['x-forgerock-sdk']) {
+          res.setHeader('WWW-Authenticate', createStepUpHeader(req.headers.referer));
+          res.setHeader('Access-Control-Expose-Headers', 'www-authenticate');
+          res.send(401, null);
+        } else {
+          res.redirect(307, createStepUpUrl(req.headers.referer));
+        }
       }
     }
   });

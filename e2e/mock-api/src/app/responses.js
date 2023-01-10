@@ -63,6 +63,20 @@ export const createStepUpUrl = (url) => {
   return redirectUrl.toString();
 };
 
+export const createStepUpHeader = (url) => {
+  // Grab the client's desired AM URL
+  const referer = new URL(url);
+  const amUrl = referer.searchParams.get('amUrl') || AM_URL;
+
+  // Base 64 of {"TransactionConditionAdvice":["39dfdd15-59a3-473c-a7fc-ecda3bbc3bc8"]}
+  const advices =
+    'eyJUcmFuc2FjdGlvbkNvbmRpdGlvbkFkdmljZSI6WyIzOWRmZGQxNS01OWEzLTQ3M2MtYTdmYy1lY2RhM2JiYzNiYzgiXX0=';
+  const format = '1';
+  const realm = '/';
+  const headerValue = `ForgeRock realm="${realm}",am_uri="${amUrl}",advices="${advices}",format_hint="${format}"`;
+  return headerValue;
+};
+
 export const authByTreeResponse = {
   resource: '',
   actions: {},
