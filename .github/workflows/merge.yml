@@ -48,27 +48,6 @@ jobs:
           git_committer_email: 'ryan.basmajian@forgerock.com'
           git_push_gpgsign: false
           git_config_global: true
-      - name: Version Beta
-        if: github.ref == 'refs/heads/develop'
-        run: |
-          node ./scripts/update-package-json-workspaces.js
-          npm install
-          npx changeset version
-          npx changeset tag
-          npx changeset publish
-          node ./scripts/remove-workspaces-edits.js
-          npm install
-          git config --global user.name "github-actions[bot]"
-          git add .
-          git commit -m 'chore: release beta versions [skip ci]'
-          git push --follow-tags
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-          HUSKY: 0
-          NX_CLOUD_DISTRIBUTED_EXECUTION: false
 
       - name: Version Stable Release
         if: github.ref == 'refs/heads/master'
