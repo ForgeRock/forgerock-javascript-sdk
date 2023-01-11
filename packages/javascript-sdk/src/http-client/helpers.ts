@@ -120,6 +120,11 @@ export function examineForIGAuthz(res: Response): boolean {
   return type.includes('html') && res.url.includes('composite_advice');
 }
 
+export function examineForIGAuthzHeader(res: Response): boolean {
+  const authnHeader = res.headers.get('WWW-Authenticate') || '';
+  return authnHeader.includes('advices');
+}
+
 export async function examineForRESTAuthz(res: Response): Promise<boolean> {
   const clone = res.clone();
   const json = await clone.json();
@@ -134,6 +139,21 @@ function getXMLValueFromURL(urlString: string): string {
   const doc = parser.parseFromString(decodedValue, 'application/xml');
   const el = doc.querySelector('Value');
   return el ? el.innerHTML : '';
+}
+
+export function getAdvicesFromHeader(header: string): Advices {
+  const headerArr = header.split(',') || [];
+  const advicesSubstr = headerArr.find((substr) => substr.includes('advices')) || '';
+  const advicesValueArray = advicesSubstr.match(/"(\S+)"/);
+  const advicesValue = advicesValueArray ? advicesValueArray[1] : '';
+  const advicesValueDecoded = atob(advicesValue);
+  let advicesValueParsed: Advices;
+  try {
+    advicesValueParsed = JSON.parse(advicesValueDecoded);
+  } catch (err) {
+    console.error('Could not parse advices value from WWW-Authenticate header');
+  }
+  return advicesValueParsed;
 }
 
 export function hasAuthzAdvice(json: AuthorizationJSON): boolean {
@@ -178,6 +198,19 @@ export function normalizeIGJSON(res: Response): AuthorizationJSON {
     actions: {},
     attributes: {},
     advices,
+    ttl: 0,
+  };
+}
+
+export function normalizeNewIGJSON(res: Response): AuthorizationJSON {
+  const authHeader = res.headers.get('WWW-Authenticate') || '';
+  const advicesObject = getAdvicesFromHeader(authHeader);
+
+  return {
+    resource: '',
+    actions: {},
+    attributes: {},
+    advices: advicesObject,
     ttl: 0,
   };
 }
