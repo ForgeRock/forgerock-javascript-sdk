@@ -39,10 +39,7 @@ function autoscript() {
             }
             break;
           case 'AUTHENTICATE':
-            if (
-              action.payload.type === 'composite_advice' &&
-              typeof action.payload.tree === 'string'
-            ) {
+            if (action.payload.tree === '') {
               console.log('Continuing authentication with composite advice');
             }
             break;
