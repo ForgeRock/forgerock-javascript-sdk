@@ -12,6 +12,7 @@ import {
   buildAuthzOptions,
   examineForIGAuthz,
   examineForRESTAuthz,
+  normalizeIGJSONResponseToAdviceJSON,
   normalizeIGRedirectResponseToAdviceJSON,
 } from './helpers';
 import {
@@ -74,7 +75,7 @@ describe('Test HttpClient utils', () => {
     expect(output).toStrictEqual(expected);
   });
 
-  it('normalizes IG redirect to JSON', async () => {
+  it('normalizes IG redirect to advice JSON', async () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const res: any = {
       // eslint-disable-next-line max-len, prettier/prettier
@@ -82,6 +83,22 @@ describe('Test HttpClient utils', () => {
     };
     const expected = authzTxnJSON;
     const output = await normalizeIGRedirectResponseToAdviceJSON(res);
+    expect(output).toStrictEqual(expected);
+  });
+
+  it('normalizes IG JSON to advice JSON', async () => {
+    const advices = btoa('{"TransactionConditionAdvice":["abc"]}');
+    const headers = new Headers();
+    headers.append(
+      'WWW-Authenticate',
+      `ForgeRock realm="/",am_uri="https://openam.example.com/am",advices="${advices}",format_hint="1"`,
+    );
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const res: any = {
+      headers: headers,
+    };
+    const expected = authzTxnJSON;
+    const output = await normalizeIGJSONResponseToAdviceJSON(res);
     expect(output).toStrictEqual(expected);
   });
 });
