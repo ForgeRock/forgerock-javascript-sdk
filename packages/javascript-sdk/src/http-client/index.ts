@@ -33,8 +33,8 @@ import {
   hasAuthzAdvice,
   isAuthzStep,
   newTokenRequired,
-  normalizeIGJSON,
-  normalizeNewIGJSON,
+  normalizeIGRedirectResponseToAdviceJSON,
+  normalizeIGJSONResponseToAdviceJSON,
   normalizeRESTJSON,
 } from './helpers';
 import middlewareWrapper from '../util/middleware';
@@ -79,10 +79,10 @@ abstract class HttpClient extends Dispatcher {
     if (options.authorization && options.authorization.handleStep) {
       if (res.status === 401 && examineForIGAuthzHeader(res)) {
         hasIG = true;
-        authorizationJSON = normalizeNewIGJSON(res);
+        authorizationJSON = normalizeIGJSONResponseToAdviceJSON(res);
       } else if (res.redirected && examineForIGAuthz(res)) {
         hasIG = true;
-        authorizationJSON = normalizeIGJSON(res);
+        authorizationJSON = normalizeIGRedirectResponseToAdviceJSON(res);
       } else if (await examineForRESTAuthz(res)) {
         authorizationJSON = await normalizeRESTJSON(res);
       }

@@ -186,7 +186,7 @@ export function newTokenRequired(res: Response, requiresNewToken?: RequiresNewTo
   return res.status === 401;
 }
 
-export function normalizeIGJSON(res: Response): AuthorizationJSON {
+export function normalizeIGRedirectResponseToAdviceJSON(res: Response): AuthorizationJSON {
   const advices: Advices = {};
   if (res.url.includes('AuthenticateToServiceConditionAdvice')) {
     advices.AuthenticateToServiceConditionAdvice = [getXMLValueFromURL(res.url)];
@@ -202,7 +202,7 @@ export function normalizeIGJSON(res: Response): AuthorizationJSON {
   };
 }
 
-export function normalizeNewIGJSON(res: Response): AuthorizationJSON {
+export function normalizeIGJSONResponseToAdviceJSON(res: Response): AuthorizationJSON {
   const authHeader = res.headers.get('WWW-Authenticate') || '';
   const advicesObject = getAdvicesFromHeader(authHeader);
 
