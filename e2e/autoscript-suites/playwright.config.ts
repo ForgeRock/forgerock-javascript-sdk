@@ -3,14 +3,9 @@ import { PlaywrightTestConfig, devices } from '@playwright/test';
 const config: PlaywrightTestConfig = {
   forbidOnly: !!process.env.CI,
   globalTeardown: './teardown.ts',
-  workers: process.env.CI ? 2 : 2,
-  retries: process.env.CI ? 2 : 0,
+  workers: process.env.CI ? 1 : 8,
+  retries: process.env.CI ? 1 : 0,
   testDir: './src/suites',
-  webServer: {
-    command: 'nx run autoscript-apps:serve',
-    port: 8443,
-    timeout: 100000,
-  },
   use: {
     headless: true,
     navigationTimeout: 50000,
@@ -28,14 +23,12 @@ const config: PlaywrightTestConfig = {
       name: 'chromium',
       use: {
         ...devices['Desktop Chrome'],
-        ...devices['Desktop Chrome HiDPI'],
         ...devices['Desktop Edge'],
-        ...devices['Desktop Edge HiDPI'],
       },
     },
     {
       name: 'firefox',
-      use: { ...devices['Desktop Firefox'], ...devices['Desktop Firefox HiDPI'] },
+      use: { ...devices['Desktop Firefox'] },
     },
     {
       name: 'webkit',
@@ -44,10 +37,8 @@ const config: PlaywrightTestConfig = {
     {
       name: 'Android Web',
       use: {
-        ...devices['Pixel 4a (5G) landscape'],
         ...devices['Pixel 4a (5G)'],
         ...devices['Pixel 5'],
-        ...devices['Pixel 5 landscape'],
       },
     },
     {
@@ -55,12 +46,8 @@ const config: PlaywrightTestConfig = {
       use: {
         ...devices['iPhone X'],
         ...devices['iPhone XR'],
-        ...devices['iPhone XR landscape'],
-        ...devices['iPhone SE landscape'],
         ...devices['iPhone SE'],
-        ...devices['iPhone X landscape'],
         ...devices['iPhone 13 Pro Max'],
-        ...devices['iPhone 13 Pro Max landscape'],
       },
     },
   ],

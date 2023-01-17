@@ -10,8 +10,8 @@ jobs:
   merge:
     runs-on: ubuntu-latest # we run on ubuntu because some actions in this job do not work on mac
     steps:
-      - uses: actions/checkout@v3
-        name: Checkout Merged Branch
+      - name: Checkout Merged Branch
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - uses: actions/setup-node@v3
@@ -34,7 +34,7 @@ jobs:
         with:
           wssURL: https://saas.whitesourcesoftware.com/agent
           apiKey: ${{ secrets.WSS_API_KEY }}
-          configFile: 'wss-unified-agent.config'
+          configFile: '.whitesource'
         env:
           WS_USERKEY: ${{ secrets.WS_USER_KEY }}
       - name: Upload Artifacts
@@ -87,15 +87,6 @@ jobs:
           # needs to be set so we can change token
           persist-credentials: false # Whether to configure the token or SSH key with the local git config
           token: ${{ secrets.RELEASE_TOKEN }} # this is the token for our "release user"
-      - name: Import bot's GPG key for signing commits
-        id: import-gpg
-        uses: crazy-max/ghaction-import-gpg@v4
-        with:
-          gpg_private_key: ${{ secrets.RELEASE_GPG_PRIVATE_KEY }}
-          passphrase: ${{ secrets.RELEASE_GPG_PASSPHRASE }}
-          git_config_global: true
-          git_user_signingkey: true
-          git_commit_gpgsign: true
       - uses: actions/setup-node@v3
         id: cache
         with:
