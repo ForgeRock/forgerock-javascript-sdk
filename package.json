@@ -57,6 +57,8 @@
     "@nrwl/react": "14.5.10",
     "@nrwl/web": "14.5.10",
     "@nrwl/workspace": "14.5.10",
+    "@nx-extend/e2e-runner": "^2.3.0",
+    "@nx-extend/playwright": "^1.1.1",
     "@swc/cli": "^0.1.55",
     "@swc/core": "^1.2.145",
     "@swc/helpers": "^0.3.5",
