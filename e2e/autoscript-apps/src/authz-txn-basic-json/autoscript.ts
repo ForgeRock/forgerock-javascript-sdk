@@ -90,7 +90,6 @@ function autoscript() {
             init: {
               method: 'GET',
               credentials: 'include',
-              headers: { 'X-ForgeRock-SDK': true },
             },
             authorization: {
               handleStep: async (step) => {

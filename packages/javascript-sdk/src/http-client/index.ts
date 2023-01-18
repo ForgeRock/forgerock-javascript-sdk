@@ -202,6 +202,10 @@ abstract class HttpClient extends Dispatcher {
     const { url, init, timeout } = options;
     let headers = new Headers(init.headers || {});
 
+    if (options.authorization) {
+      headers.set('X-ForgeRock-SDK', 'true');
+    }
+
     if (!options.bypassAuthentication) {
       headers = await this.setAuthHeaders(headers, forceRenew);
     }
