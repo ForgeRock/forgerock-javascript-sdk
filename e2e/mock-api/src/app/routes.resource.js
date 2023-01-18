@@ -122,7 +122,6 @@ export default function (app) {
       } else {
         if (req.headers['x-forgerock-sdk']) {
           res.setHeader('WWW-Authenticate', createStepUpHeader(req.headers.referer));
-          res.setHeader('Access-Control-Expose-Headers', 'www-authenticate');
           res.send(401, null);
         } else {
           res.redirect(307, createStepUpUrl(req.headers.referer));
