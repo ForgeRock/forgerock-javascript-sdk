@@ -26,6 +26,7 @@ const pages = [
   'authn-social-login-idm',
   'authn-webauthn',
   'authz-token',
+  'authz-tree-basic-json',
   'authz-tree-basic-redirect',
   'authz-txn-basic-json',
   'authz-txn-basic-redirect',
