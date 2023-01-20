@@ -45,7 +45,7 @@ export const authSuccess = {
   realm: '/',
 };
 
-export const createStepUpUrl = (url) => {
+export const createTxnStepUpUrl = (url) => {
   // Grab the client's desired AM URL
   const referer = new URL(url);
   const amUrl = referer.searchParams.get('amUrl');
@@ -63,7 +63,25 @@ export const createStepUpUrl = (url) => {
   return redirectUrl.toString();
 };
 
-export const createStepUpHeader = (url) => {
+export const createTreeStepUpUrl = (url) => {
+  // Grab the client's desired AM URL
+  const referer = new URL(url);
+  const amUrl = referer.searchParams.get('amUrl');
+  // Create the redirect URL
+  const redirectUrl = new URL(amUrl || AM_URL);
+  redirectUrl.searchParams.set('goto', `${RESOURCE_URL}/ig`);
+  redirectUrl.searchParams.set('realm', '/');
+  redirectUrl.searchParams.set('authIndexType', 'composite_advice');
+  redirectUrl.searchParams.set(
+    'authIndexValue',
+    // eslint-disable-next-line max-len
+    '%3CAdvices%3E%3CAttributeValuePair%3E%3CAttribute%20name=%22AuthenticateToServiceConditionAdvice%22/%3E%3CValue%3E/sdk:ConfirmPassword%3C/Value%3E%3C/AttributeValuePair%3E%3C/Advices%3E',
+  );
+
+  return redirectUrl.toString();
+};
+
+export const createTxnStepUpHeader = (url) => {
   // Grab the client's desired AM URL
   const referer = new URL(url);
   const amUrl = referer.searchParams.get('amUrl') || AM_URL;
@@ -71,6 +89,20 @@ export const createStepUpHeader = (url) => {
   // Base 64 of {"TransactionConditionAdvice":["39dfdd15-59a3-473c-a7fc-ecda3bbc3bc8"]}
   const advices =
     'eyJUcmFuc2FjdGlvbkNvbmRpdGlvbkFkdmljZSI6WyIzOWRmZGQxNS01OWEzLTQ3M2MtYTdmYy1lY2RhM2JiYzNiYzgiXX0=';
+  const format = '1';
+  const realm = '/';
+  const headerValue = `ForgeRock realm="${realm}",am_uri="${amUrl}",advices="${advices}",format_hint="${format}"`;
+  return headerValue;
+};
+
+export const createTreeStepUpHeader = (url) => {
+  // Grab the client's desired AM URL
+  const referer = new URL(url);
+  const amUrl = referer.searchParams.get('amUrl') || AM_URL;
+
+  // Base 64 of {"AuthenticateToServiceConditionAdvice":["/sdk:ConfirmPassword"]}
+  const advices =
+    'eyJBdXRoZW50aWNhdGVUb1NlcnZpY2VDb25kaXRpb25BZHZpY2UiOlsiL3NkazpDb25maXJtUGFzc3dvcmQiXX0=';
   const format = '1';
   const realm = '/';
   const headerValue = `ForgeRock realm="${realm}",am_uri="${amUrl}",advices="${advices}",format_hint="${format}"`;
@@ -435,7 +467,7 @@ export const redirectCallbackFailureSaml = {
     },
   ],
 };
-export const initialAuthz = {
+export const txnAuthz = {
   authId: 'bar',
   callbacks: [
     {
@@ -446,6 +478,18 @@ export const initialAuthz = {
     },
   ],
   stage: 'TransactionAuthorization',
+};
+export const treeAuthz = {
+  authId: 'bar',
+  callbacks: [
+    {
+      type: 'PasswordCallback',
+      output: [{ name: 'prompt', value: 'Password' }],
+      input: [{ name: 'IDToken2', value: '' }],
+      _id: 1,
+    },
+  ],
+  stage: 'TreeBasedAuthorization',
 };
 
 export const userInfo = {
