@@ -3,7 +3,8 @@ on:
   push:
     branches:
       - develop
-      - master env:
+      - master
+env:
   NX_CLOUD_DISTRIBUTED_EXECUTION: true
 jobs:
   merge:
