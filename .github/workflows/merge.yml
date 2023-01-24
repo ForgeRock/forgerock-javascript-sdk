@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest # we run on ubuntu because some actions in this job do not work on mac
     steps:
       - name: Checkout Merged Branch
-        uses: actions/checkout@3
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - uses: actions/setup-node@v3
@@ -72,7 +72,7 @@ jobs:
       contents: write
       packages: write
     steps:
-      - uses: actions/checkout@3
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
           # needs to be set so we can change token
