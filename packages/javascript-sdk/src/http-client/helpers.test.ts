@@ -11,14 +11,17 @@
 import {
   buildAuthzOptions,
   examineForIGAuthz,
+  examineForIGAuthzHeader,
   examineForRESTAuthz,
   normalizeIGJSONResponseToAdviceJSON,
   normalizeIGRedirectResponseToAdviceJSON,
 } from './helpers';
 import {
   authzByTxnResFromIG,
+  authzByTxnResFromIGHeader,
   authzByTxnResFromREST,
   authzByTreeResFromIG,
+  authzByTreeResFromIGHeader,
   authzByTreeResFromREST,
   authzTreeJSON,
   authzTxnJSON,
@@ -49,6 +52,11 @@ describe('Test HttpClient utils', () => {
     expect(output).toBe(true);
   });
 
+  it('examines response for IG auth by tree using header', async () => {
+    const output = await examineForIGAuthzHeader(authzByTreeResFromIGHeader);
+    expect(output).toBe(true);
+  });
+
   it('examines response for REST auth by tree', async () => {
     const output = await examineForRESTAuthz(authzByTreeResFromREST);
     expect(output).toBe(true);
@@ -56,6 +64,11 @@ describe('Test HttpClient utils', () => {
 
   it('examines response for IG auth by txn', async () => {
     const output = await examineForIGAuthz(authzByTxnResFromIG);
+    expect(output).toBe(true);
+  });
+
+  it('examines response for IG auth by txn using header', async () => {
+    const output = await examineForIGAuthzHeader(authzByTxnResFromIGHeader);
     expect(output).toBe(true);
   });
 

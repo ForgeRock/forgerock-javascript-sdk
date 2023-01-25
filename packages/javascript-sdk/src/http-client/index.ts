@@ -77,7 +77,7 @@ abstract class HttpClient extends Dispatcher {
     }
 
     if (options.authorization && options.authorization.handleStep) {
-      if (res.status === 401 && examineForIGAuthzHeader(res)) {
+      if (res.status === 401 && examineForIGAuthzHeader(res.headers)) {
         hasIG = true;
         authorizationJSON = normalizeIGJSONResponseToAdviceJSON(res);
       } else if (res.redirected && examineForIGAuthz(res)) {

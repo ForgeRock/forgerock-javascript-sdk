@@ -120,8 +120,8 @@ export function examineForIGAuthz(res: Response): boolean {
   return type.includes('html') && res.url.includes('composite_advice');
 }
 
-export function examineForIGAuthzHeader(res: Response): boolean {
-  const authnHeader = res.headers.get('WWW-Authenticate') || '';
+export function examineForIGAuthzHeader(headers: Headers): boolean {
+  const authnHeader = headers.get('WWW-Authenticate') || '';
   return authnHeader.includes('advices');
 }
 

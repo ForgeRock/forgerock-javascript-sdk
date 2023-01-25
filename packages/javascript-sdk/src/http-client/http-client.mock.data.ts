@@ -20,6 +20,19 @@ export const authzByTreeResFromIG = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 } as any;
 
+export const authzByTreeResFromIGHeader = {
+  get(name: string): string {
+    const headerValue =
+      'ForgeRock realm="/",am_uri="https://auth.example.com:9443/am",advices="eyJBdXRoZW50aWNhdGVUb1NlcnZpY2VDb25kaXRpb25BZHZpY2UiOlsiL3NkazpDb25maXJtUGFzc3dvcmQiXX0=",format_hint="1"';
+    switch (name) {
+      case 'WWW-Authenticate':
+        return headerValue;
+      default:
+        return headerValue;
+    }
+  },
+} as any;
+
 export const authzByTxnResFromIG = {
   headers: {
     get(): string {
@@ -30,6 +43,19 @@ export const authzByTxnResFromIG = {
   // eslint-disable-next-line max-len, prettier/prettier
   url: 'https://openam.example.com/am/json/realms/root/authenticate?authIndexType=composite_advice&authIndexValue=%3CAdvices%3E%3CAttributeValuePair%3E%3CAttribute%20name%3D%22TransactionConditionAdvice%22%2F%3E%3CValue%3Eabc%3C%2FValue%3E%3C%2FAttributeValuePair%3E%3C%2FAdvices%3E',
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
+} as any;
+
+export const authzByTxnResFromIGHeader = {
+  get(name: string): string {
+    const headerValue =
+      'ForgeRock realm="/",am_uri="https://auth.example.com:9443/am",advices="eyJUcmFuc2FjdGlvbkNvbmRpdGlvbkFkdmljZSI6WyIzOWRmZGQxNS01OWEzLTQ3M2MtYTdmYy1lY2RhM2JiYzNiYzgiXX0=",format_hint="1"';
+    switch (name) {
+      case 'WWW-Authenticate':
+        return headerValue;
+      default:
+        return headerValue;
+    }
+  },
 } as any;
 
 export const authzTreeJSON = {
