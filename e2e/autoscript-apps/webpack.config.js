@@ -39,7 +39,6 @@ const pages = [
 
 module.exports = (config) => {
   const plugins = [
-    ...config.plugins,
     new HtmlWebpackPlugin({
       inject: true,
       template: `./src/index.html`,
@@ -93,10 +92,15 @@ module.exports = (config) => {
         'Access-Control-Allow-Origin': 'null',
         'Access-Control-Allow-Headers': 'x-authorize-middleware',
       },
+
       client: {
         logging: 'none',
         overlay: false,
       },
+    },
+    output: {
+      ...config.output,
+      scriptType: 'text/javascript',
     },
     plugins,
     watch: config.watch,

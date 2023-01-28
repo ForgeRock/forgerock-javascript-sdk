@@ -6,6 +6,7 @@
   "targets": {
     "build": {
       "executor": "@nrwl/web:webpack",
+      "dependsOn": ["^build", "^tsc"],
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/e2e/autoscript-apps",
@@ -30,6 +31,7 @@
     },
     "serve": {
       "executor": "@nrwl/web:dev-server",
+      "dependsOn": ["^build", "^tsc"],
       "defaultConfiguration": "production",
       "options": {
         "port": 8443,

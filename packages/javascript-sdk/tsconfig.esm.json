@@ -28,6 +28,7 @@
     "lib-esm",
     "lib",
     "bundles",
-    "dist/"
+    "dist/",
+    "**/*.mock.data.ts"
   ]
 }
