@@ -21,6 +21,7 @@
     "lib",
     "bundles",
     "dist/",
-    "jest*"
+    "jest*",
+    "**/*.mock.data.ts"
   ]
 }

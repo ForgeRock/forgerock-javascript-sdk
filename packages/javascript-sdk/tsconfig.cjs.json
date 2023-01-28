@@ -18,5 +18,5 @@
     "module": "CommonJS"
   },
   "include": ["src/**/*.ts"],
-  "exclude": ["tests/", "**/*.spec.ts", "**/*.test.ts", "./package.json"]
+  "exclude": ["tests/", "**/*.spec.ts", "**/*.test.ts", "./package.json", "**/*.mock.data.ts"]
 }

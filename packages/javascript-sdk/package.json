@@ -1,6 +1,6 @@
 {
   "name": "@forgerock/javascript-sdk",
-  "version": "3.4.1-beta.0",
+  "version": "3.4.0",
   "description": "ForgeRock JavaScript SDK",
   "module": "./lib-esm/index.js",
   "main": "./lib/index.js",
@@ -19,8 +19,5 @@
   "bugs": {
     "url": "https://github.com/ForgeRock/forgerock-javascript-sdk/issues"
   },
-  "homepage": "https://github.com/ForgeRock/forgerock-javascript-sdk#readme",
-  "devDependencies": {
-    "rollup-plugin-visualizer": "^5.5.2"
-  }
+  "homepage": "https://github.com/ForgeRock/forgerock-javascript-sdk#readme"
 }
