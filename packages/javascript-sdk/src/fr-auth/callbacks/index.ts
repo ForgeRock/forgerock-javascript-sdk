@@ -8,6 +8,7 @@
  * of the MIT license. See the LICENSE file for details.
  */
 
+import { CallbackType } from '../../auth/enums';
 import { Callback, NameValue } from '../../auth/interfaces';
 
 /**
@@ -22,7 +23,7 @@ class FRCallback {
   /**
    * Gets the name of this callback type.
    */
-  public getType(): string {
+  public getType(): CallbackType {
     return this.payload.type;
   }
 
