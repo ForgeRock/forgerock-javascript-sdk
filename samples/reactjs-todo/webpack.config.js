@@ -28,6 +28,9 @@ module.exports = (config) => {
       client: {
         logging: 'none',
         overlay: false,
+        webSocketURL: {
+          port: 443,
+        },
       },
       compress: true,
       headers: {

@@ -1,8 +1,9 @@
-FROM node:lts
+FROM node:16.17.0
 
 WORKDIR /app/builder
 
 ENV NODE_ENV=development
+ENV PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1
 
 COPY . /app/builder/
 
@@ -32,6 +33,3 @@ ARG TIMEOUT=$TIMEOUT
 ENV TIMEOUT=$TIMEOUT
 ARG TREE=$TREE
 ENV TREE=$TREE
-
-RUN npx nx run-many --target=config --projects=angular-todo
-RUN npx nx run-many --target=build --all

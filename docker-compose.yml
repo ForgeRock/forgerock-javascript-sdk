@@ -1,22 +1,4 @@
 services:
-  # mock-api:
-  #   container_name: mock-api
-  #   hostname: mock-api
-  #   build:
-  #     context: ./
-  #     dockerfile: ./Dockerfile
-  #   command: node /app/builder/dist/e2e/mock-api/main.js
-  #   ports:
-  #     - 9443
-  #
-  # autoscript-apps:
-  #   container_name: autoscript-apps
-  #   build:
-  #     context: ./
-  #     dockerfile: ./e2e/autoscript-apps/Dockerfile
-  #   ports:
-  #     - 8082:8082
-  #
   todo-api:
     container_name: todo-api
     build:
@@ -36,12 +18,8 @@ services:
       REST_OAUTH_CLIENT: $REST_OAUTH_CLIENT
       REST_OAUTH_SECRET: $REST_OAUTH_SECRET
     restart: on-failure
-    networks:
-      - api
   angular-todo:
     container_name: angular-todo
-    networks:
-      - api
     build:
       context: ./
       dockerfile: ./samples/angular-todo/Dockerfile
@@ -90,8 +68,6 @@ services:
       - '8001:80'
     restart: on-failure
   reactjs-todo:
-    networks:
-      - api
     container_name: reactjs-todo
     build:
       context: ./
@@ -107,5 +83,3 @@ services:
     ports:
       - '8443:80'
     restart: on-failure
-networks:
-  api:

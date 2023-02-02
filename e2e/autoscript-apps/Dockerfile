@@ -1,4 +1,6 @@
-FROM okteto.dev/base as builder
+ARG SOURCE_IMAGE=$SOURCE_IMAGE
+
+FROM $SOURCE_IMAGE as builder
 
 FROM nginx:1.19.2
 

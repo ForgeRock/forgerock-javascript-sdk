@@ -38,21 +38,19 @@ jobs:
       - run: npx nx affected --target=lint --parallel --max-parallel=3
       - run: npx nx affected --target=test --parallel --max-parallel=3
       - run: npx nx affected --target=test --configuration=integration
+      - run: npx nx affected --target=e2e --parallel --max-parallel=3
       # It's important that we always run this step, otherwise in the case of any failures in preceding non-Nx steps, the agents will keep running and waste billable minutes
       - name: Stop All Agents
         if: ${{ always() }}
         run: npx nx-cloud stop-all-agents
 
-      # sometimes this timesout so we will just run it without cloud every time until i know why
-      - run: NX_CLOUD_DISTRIBUTED_EXECUTION=false npx nx e2e autoscript-suites
       - name: 'Artifacts'
         uses: actions/upload-artifact@v3
         with:
           retention-days: 5
           if-no-files-found: ignore
           path: |
-            ${{ github.workspace }}/test-results
-            ${{ github.workspace }}/coverage
+            ${{ github.workspace }}/e2e/autoscript-suites/test-results
       - name: Slack Notify
         id: slack
         uses: slackapi/slack-github-action@v1.18.0
