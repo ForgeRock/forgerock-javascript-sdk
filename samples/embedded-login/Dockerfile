@@ -1,4 +1,3 @@
-# FROM okteto.dev/base as base
 FROM node:alpine as base
 
 WORKDIR /app/builder
