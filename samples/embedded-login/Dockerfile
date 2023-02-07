@@ -1,5 +1,5 @@
 # FROM okteto.dev/base as base
-FROM node:alpine as base
+FROM node:16.17.0 as base
 
 WORKDIR /app/builder
 
