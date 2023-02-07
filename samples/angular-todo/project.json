@@ -74,6 +74,10 @@
         "browserTarget": "angular-todo:build:development"
       },
       "configurations": {
+        "okteto": {
+          "host": "0.0.0.0",
+          "allowedHosts": "all"
+        },
         "production": {
           "browserTarget": "angular-todo:build:production"
         },

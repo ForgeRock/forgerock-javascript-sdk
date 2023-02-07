@@ -100,6 +100,8 @@ build:
     context: .
     dockerfile: samples/todo-api/Dockerfile
     depends_on: dev
+    args:
+      SOURCE_IMAGE: ${OKTETO_BUILD_DEV_IMAGE}
 
 # The deploy section defines how to deploy your development environment
 # More info: https://www.okteto.com/docs/reference/manifest/#deploy
@@ -110,45 +112,54 @@ deploy:
 # The dev section defines how to activate a development container
 # More info: https://www.okteto.com/docs/reference/manifest/#dev
 dev:
-  angular-todo:
-    image: okteto.dev/forgerock-javascript-sdk:base
-    command: sh
-    workdir: /usr/app/builder
+  todo-api:
+    image: ${OKTETO_BUILD_DEV_IMAGE}
+    command: npx nx serve todo-api --configuration=okteto
+    workdir: /app/builder
     sync:
-      - .:/usr/app/builder
+      - .:/app/builder
+    forward:
+      - 8081:8081
+      - 8443:80
+  angular-todo:
+    image: ${OKTETO_BUILD_DEV_IMAGE}
+    command: npx nx serve angular-todo --configuration=okteto
+    workdir: /app/builder
+    sync:
+      - .:/app/builder
     forward:
       - 9229:9229
       - 8082:80
       - 8443:80
 
   reactjs-todo:
-    image: okteto.dev/forgerock-javascript-sdk:base
-    command: sh
-    workdir: /usr/app/builder
+    image: ${OKTETO_BUILD_DEV_IMAGE}
+    command: npx nx serve reactjs-todo --configuration=okteto
+    workdir: /app/builder
     sync:
-      - .:/usr/app/builder
+      - .:/app/builder
     forward:
       - 9229:9229
       - 8081:80
       - 8443:80
 
   central-login:
-    image: okteto.dev/forgerock-javascript-sdk:base
-    command: sh
-    workdir: /usr/app/builder
+    image: ${OKTETO_BUILD_DEV_IMAGE}
+    command: npx nx serve central-login --configuration=okteto
+    workdir: /app/builder
     sync:
-      - .:/usr/app/builder
+      - .:/app/builder
     forward:
       - 9229:9229
       - 8002:80
       - 8443:80
 
   embedded-login:
-    image: okteto.dev/forgerock-javascript-sdk:base
-    command: sh
-    workdir: /usr/app/builder
+    image: ${OKTETO_BUILD_DEV_IMAGE}
+    command: npx nx serve embedded-login --configuration=okteto
+    workdir: /app/builder
     sync:
-      - .:/usr/app/builder
+      - .:/app/builder
     forward:
       - 9229:9229
       - 8001:80

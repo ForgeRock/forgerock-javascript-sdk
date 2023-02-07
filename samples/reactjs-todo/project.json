@@ -18,6 +18,10 @@
         }
       },
       "configurations": {
+        "okteto": {
+          "host": "0.0.0.0",
+          "allowedHosts": "all"
+        },
         "development": {},
         "production": {
           "optimization": true,
@@ -37,6 +41,10 @@
       "defaultConfiguration": "development",
       "options": {},
       "configurations": {
+        "okteto": {
+          "host": "0.0.0.0",
+          "allowedHosts": "all"
+        },
         "development": {
           "buildTarget": "reactjs-todo:build",
           "host": "react.example.com",

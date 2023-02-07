@@ -1,4 +1,4 @@
-FROM node:16.17.0
+FROM okteto/node:16 as builder
 
 WORKDIR /app/builder
 

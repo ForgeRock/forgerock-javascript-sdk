@@ -5,13 +5,13 @@ WORKDIR /app/builder
 
 RUN npx nx build central-login --parallel --prod
 
-FROM nginx:1.19.2
+FROM nginx:1.23.3-alpine
 
 WORKDIR /usr/share/nginx/html
 
 ENV PORT=8002
 
-COPY --from=base /app/builder/dist/samples/central-login .
+COPY --from=builder /app/builder/dist/samples/central-login .
 
 EXPOSE 8002
 
