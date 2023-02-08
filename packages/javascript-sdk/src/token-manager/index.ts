@@ -9,14 +9,11 @@
  */
 
 import Config, { ConfigOptions } from '../config';
-import middlewareWrapper from '../util/middleware';
 import OAuth2Client, { allowedErrors, OAuth2Tokens, ResponseType } from '../oauth2-client';
 import { StringDict, Tokens } from '../shared/interfaces';
 import TokenStorage from '../token-storage';
 import PKCE from '../util/pkce';
-import { withTimeout } from '../util/timeout';
 import { parseQuery } from '../util/url';
-import { ActionTypes } from '../config/enums';
 import { tokensWillExpireWithinThreshold } from './helpers';
 
 interface GetTokensOptions extends ConfigOptions {
@@ -38,7 +35,6 @@ abstract class TokenManager {
    const tokens = forgerock.TokenManager.getTokens({
      forceRenew: true, // If you want to get new tokens, despite existing ones
      login: 'embedded', // If user authentication is handled in-app
-     support: 'legacy', // Set globally or locally; `"legacy"` or `undefined` will use iframe
      serverConfig: {
        timeout: 5000, // If using "legacy", use a short timeout to catch error
      },
@@ -51,7 +47,6 @@ abstract class TokenManager {
    const tokens = forgerock.TokenManager.getTokens({
      forceRenew: false, // Will immediately return stored tokens, if they exist
      login: 'redirect', // If user authentication is handled in external Web app
-     support: 'modern', // Set globally or locally; `"modern"` will use native fetch
    });
    ```
 
@@ -68,9 +63,7 @@ abstract class TokenManager {
    */
   public static async getTokens(options?: GetTokensOptions): Promise<OAuth2Tokens | void> {
     let tokens: OAuth2Tokens | null = null;
-    const { clientId, middleware, serverConfig, support, oauthThreshold } = Config.get(
-      options as ConfigOptions,
-    );
+    const { clientId, oauthThreshold } = Config.get(options as ConfigOptions);
 
     /**
      * First, let's see if tokens exist locally
@@ -132,39 +125,9 @@ abstract class TokenManager {
      * Attempt to call the authorize URL to retrieve authorization code
      */
     try {
-      let parsedUrl;
-
       // Check expected browser support
-      if (support === 'legacy' || support === undefined) {
-        // To support legacy browsers, iframe works best with short timeout
-        parsedUrl = new URL(await OAuth2Client.getAuthCodeByIframe(authorizeUrlOptions));
-      } else {
-        /**
-         * Using modern `fetch` provides better redirect and error handling.
-         * Unfortunately, this requires the configured callback URL and the ForgeRock server
-         * have the EXACT same origin, or CORS will fail!
-         * Another downside is IE11 is not supported, *even* with the fetch polyfill.
-         */
-
-        // authorizeUrl has already been processed, but passing this in for consistency
-        const runMiddleware = middlewareWrapper(
-          {
-            url: new URL(authorizeUrl),
-            init: {
-              credentials: 'include',
-              mode: 'cors',
-            },
-          },
-          {
-            type: ActionTypes.Authorize,
-          },
-        );
-        // Grab init only as authorizeUrl is already processed
-        const { init } = runMiddleware(middleware);
-        const response = await withTimeout(fetch(authorizeUrl, init), serverConfig.timeout);
-
-        parsedUrl = new URL(response.url);
-      }
+      // To support legacy browsers, iframe works best with short timeout
+      const parsedUrl = new URL(await OAuth2Client.getAuthCodeByIframe(authorizeUrlOptions));
 
       // Throw if we have an error param or have no authorization code
       if (parsedUrl.searchParams.get('error')) {
