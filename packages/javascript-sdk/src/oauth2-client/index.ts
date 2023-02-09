@@ -38,6 +38,9 @@ const allowedErrors = {
   NetworkError: 'NetworkError when attempting to fetch resource.',
   // Webkit browser error
   CORSError: 'Cross-origin redirection',
+
+  //Prompt error
+  PromptError: 'User is not authenticated or session cookie not sent to the server',
 };
 
 /**
@@ -50,6 +53,7 @@ abstract class OAuth2Client {
     const requestParams: StringDict<string | undefined> = {
       ...options.query,
       client_id: clientId,
+      prompt: options.login ? options.login : 'none',
       redirect_uri: redirectUri,
       response_type: options.responseType,
       scope,
@@ -158,6 +162,12 @@ abstract class OAuth2Client {
     const responseBody = await this.getBody<unknown>(response);
 
     if (response.status !== 200) {
+      const error_description_query_param =
+        new URL(response.url).searchParams.get('error_description') !== undefined;
+
+      if (error_description_query_param) {
+        throw new Error(allowedErrors.PromptError);
+      }
       const message =
         typeof responseBody === 'string'
           ? `Expected 200, received ${response.status}`

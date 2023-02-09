@@ -11,6 +11,7 @@
 import { StringDict } from '../shared/interfaces';
 import { ConfigOptions } from '../config';
 import { ResponseType } from './enums';
+import { GetTokensOptions } from '../token-manager';
 
 /**
  * Tokens returned after successful authentication.
@@ -35,7 +36,7 @@ interface AccessTokenResponse {
 /**
  * Options used when requesting the authorization URL.
  */
-interface GetAuthorizationUrlOptions extends ConfigOptions {
+interface GetAuthorizationUrlOptions extends GetTokensOptions {
   responseType: ResponseType;
   state?: string;
   verifier?: string;
