@@ -118,9 +118,12 @@ abstract class TokenManager {
      */
     const verifier = PKCE.createVerifier();
     const state = PKCE.createState();
-    const authorizeUrlOptions = { ...options, responseType: ResponseType.Code, state, verifier };
-    const authorizeUrl = await OAuth2Client.createAuthorizeUrl(authorizeUrlOptions);
-
+    const authorizeUrlOptions = {
+      ...options,
+      responseType: ResponseType.Code,
+      state,
+      verifier,
+    };
     /**
      * Attempt to call the authorize URL to retrieve authorization code
      */
@@ -155,6 +158,7 @@ abstract class TokenManager {
         allowedErrors.AuthorizationTimeout !== err.message &&
         allowedErrors.FailedToFetch !== err.message &&
         allowedErrors.NetworkError !== err.message &&
+        allowedErrors.InteractionNotAllowed !== err.message &&
         // Safari has a very long error message, so we check for a substring
         !err.message.includes(allowedErrors.CORSError)
       ) {
@@ -165,6 +169,9 @@ abstract class TokenManager {
 
       // Since `login` is configured for "redirect", store authorize values and redirect
       window.sessionStorage.setItem(clientId as string, JSON.stringify(authorizeUrlOptions));
+
+      const authorizeUrl = await OAuth2Client.createAuthorizeUrl(authorizeUrlOptions);
+
       return window.location.assign(authorizeUrl);
     }
 
