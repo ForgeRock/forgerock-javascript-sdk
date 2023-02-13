@@ -25,7 +25,9 @@ build:
   angular-todo:
     context: .
     dockerfile: samples/angular-todo/Dockerfile
+    depends_on: dev
     args:
+      SOURCE_IMAGE: ${OKTETO_BUILD_DEV_IMAGE}
       AM_URL: $AM_URL
       API_URL: $API_URL
       DEBUGGER_OFF: $DEBUGGER-OFF
@@ -43,7 +45,9 @@ build:
   central-login:
     context: .
     dockerfile: samples/central-login/Dockerfile
+    depends_on: dev
     args:
+      SOURCE_IMAGE: ${OKTETO_BUILD_DEV_IMAGE}
       AM_URL: $AM_URL
       DEBUGGER_OFF: $DEBUGGER-OFF
       REALM_PATH: $REALM_PATH
@@ -61,7 +65,9 @@ build:
   embedded-login:
     context: .
     dockerfile: samples/embedded-login/Dockerfile
+    depends_on: dev
     args:
+      SOURCE_IMAGE: ${OKTETO_BUILD_DEV_IMAGE}
       AM_URL: $AM_URL
       REALM_PATH: $REALM_PATH
       SCOPE: $SCOPE
@@ -77,7 +83,9 @@ build:
   reactjs-todo:
     context: .
     dockerfile: samples/reactjs-todo/Dockerfile
+    depends_on: dev
     args:
+      SOURCE_IMAGE: ${OKTETO_BUILD_DEV_IMAGE}
       AM_URL: $AM_URL
       API_URL: $API_URL
       DEBUGGER_OFF: $DEBUGGER-OFF
@@ -91,6 +99,9 @@ build:
   todo-api:
     context: .
     dockerfile: samples/todo-api/Dockerfile
+    depends_on: dev
+    args:
+      SOURCE_IMAGE: ${OKTETO_BUILD_DEV_IMAGE}
 
 # The deploy section defines how to deploy your development environment
 # More info: https://www.okteto.com/docs/reference/manifest/#deploy
@@ -101,45 +112,54 @@ deploy:
 # The dev section defines how to activate a development container
 # More info: https://www.okteto.com/docs/reference/manifest/#dev
 dev:
-  angular-todo:
-    image: okteto.dev/base
-    command: sh
-    workdir: /usr/app/builder
+  todo-api:
+    image: ${OKTETO_BUILD_DEV_IMAGE}
+    command: npx nx serve todo-api --configuration=okteto
+    workdir: /app/builder
     sync:
-      - .:/usr/app/builder
+      - .:/app/builder
+    forward:
+      - 8081:8081
+      - 8443:80
+  angular-todo:
+    image: ${OKTETO_BUILD_DEV_IMAGE}
+    command: npx nx serve angular-todo --configuration=okteto
+    workdir: /app/builder
+    sync:
+      - .:/app/builder
     forward:
       - 9229:9229
       - 8082:80
       - 8443:80
 
   reactjs-todo:
-    image: okteto.dev/base
-    command: sh
-    workdir: /usr/app/builder
+    image: ${OKTETO_BUILD_DEV_IMAGE}
+    command: npx nx serve reactjs-todo --configuration=okteto
+    workdir: /app/builder
     sync:
-      - .:/usr/app/builder
+      - .:/app/builder
     forward:
       - 9229:9229
       - 8081:80
       - 8443:80
 
   central-login:
-    image: okteto.dev/base
-    command: sh
-    workdir: /usr/app/builder
+    image: ${OKTETO_BUILD_DEV_IMAGE}
+    command: npx nx serve central-login --configuration=okteto
+    workdir: /app/builder
     sync:
-      - .:/usr/app/builder
+      - .:/app/builder
     forward:
       - 9229:9229
       - 8002:80
       - 8443:80
 
   embedded-login:
-    image: okteto.dev/base
-    command: sh
-    workdir: /usr/app/builder
+    image: ${OKTETO_BUILD_DEV_IMAGE}
+    command: npx nx serve embedded-login --configuration=okteto
+    workdir: /app/builder
     sync:
-      - .:/usr/app/builder
+      - .:/app/builder
     forward:
       - 9229:9229
       - 8001:80

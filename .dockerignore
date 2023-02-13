@@ -12,3 +12,21 @@ test-results
 docker-compose.yml
 node_modules
 dist/
+
+# for now we dont need this directory!
+
+.husky
+coverage
+todos/
+users/
+.editorconfig
+.whitesource
+CHANGELOG.md
+commitlint.config.js
+Dockerfile
+THIRD_PARTY_NOTICES.md
+typedoc.json
+wss-unified-agent.config.json
+.eslintignore
+.eslintrc.json
+

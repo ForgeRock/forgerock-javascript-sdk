@@ -42,6 +42,10 @@
         "host": "sdkapp.example.com"
       },
       "configurations": {
+        "okteto": {
+          "host": "0.0.0.0",
+          "allowedHosts": "all"
+        },
         "development": {},
         "production": {
           "hmr": false,

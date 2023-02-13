@@ -43,6 +43,10 @@
         "liveReload": true
       },
       "configurations": {
+        "okteto": {
+          "host": "0.0.0.0",
+          "allowedHosts": "all"
+        },
         "development": {}
       },
       "defaultConfiguration": "development"

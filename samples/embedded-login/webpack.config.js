@@ -29,6 +29,12 @@ module.exports = (config) => {
     },
     devServer: {
       ...config.devServer,
+      client: {
+        ...(config.devServer?.client ?? {}),
+        webSocketURL: {
+          port: 443,
+        },
+      },
       headers: {
         'Access-Control-Allow-Credentials': true,
         'Access-Control-Allow-Origin': 'null',

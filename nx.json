@@ -14,6 +14,7 @@
           "prepare",
           "e2e",
           "version",
+          "config",
           "tsc"
         ],
         "useDaemonProcess": true,
