@@ -78,9 +78,6 @@ jobs:
           ssh-key: ${{ secrets.SSH_KEY }}
           # needs to be set so we can change token
           persist-credentials: false # Whether to configure the token or SSH key with the local git config
-      - uses: webfactory/ssh-agent@v0.7.0
-        with:
-          ssh-private-key: ${{ secrets.SSH_KEY }}
       - name: Set git config username and email
         run: git config user.email "ryan.basmajian@forgerock.com" && git config user.name "ryanbas21"
         shell: bash
@@ -103,8 +100,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_NPM_TOKEN: ${{ secrets.GH_TOKEN }}
-          PUBLIC_NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-          NODE_AUTH_TOKEN: ${{ secrets.GH_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       - name: Run Github Pushes
         run: NX_CLOUD_DISTRIBUTED_EXECUTION=false npx nx run javascript-sdk:github --configuration=beta
       - uses: actions/setup-node@v3
@@ -117,6 +113,4 @@ jobs:
         run: NX_CLOUD_DISTRIBUTED_EXECUTION=false npx nx affected --target=deploy --configuration=beta
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_NPM_TOKEN: ${{ secrets.GH_TOKEN }}
-          PUBLIC_NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.GH_TOKEN }}
