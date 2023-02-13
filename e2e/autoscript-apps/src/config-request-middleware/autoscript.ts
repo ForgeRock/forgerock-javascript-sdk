@@ -39,11 +39,6 @@ function autoscript() {
           break;
         case 'AUTHORIZE':
           req.url.searchParams.set('authorize-middleware', 'authorization');
-          if (support === 'modern') {
-            req.init.headers = {
-              'x-authorize-middleware': 'authorization',
-            };
-          }
           break;
         case 'EXCHANGE_TOKEN':
           req.url.searchParams.set('exchange-token-middleware', 'exchange-token');
@@ -83,8 +78,7 @@ function autoscript() {
     // options call that is made by the modern call.
     // The api server will respond with a 200 so that the
     // preflight and actual request successfull resolve
-    redirectUri:
-      support === 'modern' ? `https://auth.example.com:9443/callback/` : `${url.origin}/_callback/`,
+    redirectUri: `${url.origin}/_callback/`,
     realmPath,
     scope,
     serverConfig: {
@@ -119,8 +113,6 @@ function autoscript() {
           console.log('Get OAuth tokens');
           const configObj = {
             ...(setMiddleware === 'atCallSite' ? { middleware } : null),
-            ...(support === 'modern' ? { realmPath: 'middleware-modern' } : null),
-            support,
           };
           const tokens = forgerock.TokenManager.getTokens(configObj);
 

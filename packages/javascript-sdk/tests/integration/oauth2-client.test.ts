@@ -14,7 +14,6 @@ jest.mock('../../src/config', () => {
           baseUrl: 'https://openam.example.com/am/',
           timeout: '3000',
         },
-        support: 'modern',
         realmPath: '/alpha',
       };
     },

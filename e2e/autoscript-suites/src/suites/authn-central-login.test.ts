@@ -33,49 +33,6 @@ test.describe('Test OAuth login flow', () => {
     expect(networkArray.includes('/am/oauth2/realms/root/access_token, fetch')).toBe(true);
   });
 
-  // eslint-disable-next-line
-  test(`should use fetch to request auth code, then token exchange`, async ({
-    page,
-    browserName,
-  }) => {
-    const { messageArray, networkArray } = await setupAndGo(
-      page,
-      browserName,
-      'authn-central-login/',
-      { support: 'modern' },
-    );
-
-    // Test assertions
-    // Test log messages
-    expect(messageArray.includes('OAuth authorization successful')).toBe(true);
-    expect(messageArray.includes('Test script complete')).toBe(true);
-    // Test network requests
-    expect(networkArray.includes('/am/oauth2/realms/root/authorize, fetch')).toBe(true);
-    expect(networkArray.includes('/am/oauth2/realms/root/access_token, fetch')).toBe(true);
-  });
-  test(`should full redirect for login to request auth code, then token exchange`, async ({
-    browserName,
-    page,
-  }) => {
-    // Disable Firefox as it reports a errant CORS error
-    if (browserName !== 'firefox') {
-      const { messageArray, networkArray } = await setupAndGo(
-        page,
-        browserName,
-        'authn-central-login/',
-        { support: 'modern', preAuthenticated: 'false' },
-      );
-
-      // Test assertions
-      // Test log messages
-      expect(messageArray.includes('OAuth authorization successful')).toBe(true);
-      expect(messageArray.includes('Test script complete')).toBe(true);
-      // Test network requests
-      expect(networkArray.includes('/am/oauth2/realms/root/authorize, fetch')).toBe(true);
-      expect(networkArray.includes('/am/oauth2/realms/root/access_token, fetch')).toBe(true);
-    }
-  });
-  // eslint-disable-next-line
   test(`should successfully take code & state params for token exchange with browser`, async ({
     page,
     browserName,
