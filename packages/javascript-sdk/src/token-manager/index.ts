@@ -118,8 +118,9 @@ abstract class TokenManager {
      */
     const verifier = PKCE.createVerifier();
     const state = PKCE.createState();
+    const { forceRenew, login, query, ...config } = options;
     const authorizeUrlOptions = {
-      ...options,
+      ...config,
       responseType: ResponseType.Code,
       state,
       verifier,

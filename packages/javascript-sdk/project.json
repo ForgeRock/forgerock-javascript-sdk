@@ -68,7 +68,7 @@
         "dryRun": true,
         "push": true,
         "tagPrefix": "v",
-        "postTargets": []
+        "postTargets": ["javascript-sdk:deploy", "javascript-sdk:github"]
       },
       "configurations": {
         "beta": {
@@ -81,7 +81,7 @@
           "commitMessageFormat": "release: ${version} [skip ci]",
           "remote": "origin",
           "push": true,
-          "postTargets": ["javascript-sdk:deploy:beta"],
+          "postTargets": ["javascript-sdk:deploy:beta", "javascript-sdk:github:beta"],
           "dryRun": false
         }
       }
