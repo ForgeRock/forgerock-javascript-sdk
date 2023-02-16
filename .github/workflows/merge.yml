@@ -75,9 +75,10 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
-          ssh-key: ${{ secrets.SSH_KEY }}
-          # needs to be set so we can change token
-          persist-credentials: false # Whether to configure the token or SSH key with the local git config
+          persist-credentials: false
+      - uses: webfactory/ssh-agent@v0.5.4
+        with:
+          ssh-private-key: ${{ secrets.SSH_KEY }}
       - name: Set git config username and email
         run: git config user.email "ryan.basmajian@forgerock.com" && git config user.name "ryanbas21"
         shell: bash
