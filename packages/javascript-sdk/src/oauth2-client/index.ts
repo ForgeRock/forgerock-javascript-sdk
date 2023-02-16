@@ -38,6 +38,9 @@ const allowedErrors = {
   NetworkError: 'NetworkError when attempting to fetch resource.',
   // Webkit browser error
   CORSError: 'Cross-origin redirection',
+
+  // prompt=none errors
+  InteractionNotAllowed: 'The request requires some interaction that is not allowed.',
 };
 
 /**
@@ -46,7 +49,6 @@ const allowedErrors = {
 abstract class OAuth2Client {
   public static async createAuthorizeUrl(options: GetAuthorizationUrlOptions): Promise<string> {
     const { clientId, middleware, redirectUri, scope } = Config.get(options);
-
     const requestParams: StringDict<string | undefined> = {
       ...options.query,
       client_id: clientId,
@@ -54,6 +56,7 @@ abstract class OAuth2Client {
       response_type: options.responseType,
       scope,
       state: options.state,
+      ...(options.prompt ? { prompt: options.prompt } : {}),
     };
 
     if (options.verifier) {
@@ -82,7 +85,8 @@ abstract class OAuth2Client {
    * New Name: getAuthCodeByIframe
    */
   public static async getAuthCodeByIframe(options: GetAuthorizationUrlOptions): Promise<string> {
-    const url = await this.createAuthorizeUrl(options);
+    const url = await this.createAuthorizeUrl({ ...options, prompt: 'none' });
+
     const { serverConfig } = Config.get(options);
 
     return new Promise((resolve, reject) => {

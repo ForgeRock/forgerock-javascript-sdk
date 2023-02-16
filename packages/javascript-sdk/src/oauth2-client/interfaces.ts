@@ -40,6 +40,7 @@ interface GetAuthorizationUrlOptions extends ConfigOptions {
   state?: string;
   verifier?: string;
   query?: StringDict<string>;
+  prompt?: 'none' | 'login' | 'consent';
 }
 
 /**
