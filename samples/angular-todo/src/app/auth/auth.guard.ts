@@ -17,8 +17,8 @@ import {
   Router,
 } from '@angular/router';
 import { UserService } from '../services/user.service';
-// @ts-ignore
-import { user } from '../../../package/modal';
+import { user, configuration } from '@forgerock/login-widget/modal';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -50,6 +50,18 @@ export class AuthGuard implements CanActivate {
        * In this case, we are calling the userinfo endpoint to
        * ensure valid tokens before continuing, but it's optional.
        ***************************************************************** */
+
+      configuration.set({
+        clientId: environment.WEB_OAUTH_CLIENT,
+        redirectUri: environment.APP_URL,
+        scope: 'openid profile email',
+        serverConfig: {
+          baseUrl: environment.AM_URL,
+          timeout: 30000, // 90000 or less
+        },
+        realmPath: environment.REALM_PATH,
+        tree: environment.JOURNEY_REGISTER,
+      });
 
       const authorized = await user.authorized();
       console.log('authorized: ' + authorized);

@@ -12,8 +12,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
 import { environment } from '../../../environments/environment';
-// @ts-ignore
-import Widget, { modal, journey } from '../../../../package/modal';
+// Import the modal form factor
+import Widget, { configuration, modal } from '@forgerock/login-widget/modal';
 
 /**
  * Used to show a navigation bar with router links and user info
@@ -43,16 +43,23 @@ export class HeaderComponent implements OnInit {
   }
 
   launchWidget() {
-    modal.open();
+    configuration.set({
+      clientId: environment.WEB_OAUTH_CLIENT,
+      redirectUri: environment.APP_URL,
+      scope: 'openid profile email',
+      serverConfig: {
+        baseUrl: environment.AM_URL,
+        timeout: 30000, // 90000 or less
+      },
+      realmPath: environment.REALM_PATH,
+      tree: environment.JOURNEY_REGISTER,
+    });
 
-    journey.onSuccess((userData: any) => {
-      console.log(userData);
-      this.userService.info = userData.user.response;
-      this.userService.isAuthenticated = true;
-      modal.close();
+    // Instatiate the widget
+    const widget = new Widget({
+      target: document.getElementById('widget-root'),
     });
-    journey.onFailure((error: any) => {
-      console.log(error);
-    });
+
+    modal.open();
   }
 }

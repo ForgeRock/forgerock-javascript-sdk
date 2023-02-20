@@ -11,8 +11,7 @@
 import { Injectable } from '@angular/core';
 import { Todo } from '../features/todo/todo';
 import { environment } from '../../environments/environment';
-// @ts-ignore
-import { request } from '../../../package/modal';
+import { request } from '@forgerock/login-widget/modal';
 
 /**
  * Used to define interactions with the backend

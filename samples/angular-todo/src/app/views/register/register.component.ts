@@ -10,8 +10,7 @@
 
 import { Component, OnInit } from '@angular/core';
 import { environment } from '../../../environments/environment';
-// @ts-ignore
-import Widget, { journey } from '../../../../package/inline';
+import Widget, { journey, configuration } from '@forgerock/login-widget/inline';
 import { UserService } from '../../services/user.service';
 import { Router } from '@angular/router';
 
@@ -41,6 +40,25 @@ export class RegisterComponent implements OnInit {
           tree: environment.JOURNEY_REGISTER,
         },
       },
+    });
+
+    // Configure SDK options
+    // These are used by both the SDK and the login widget
+    configuration.set({
+      clientId: environment.WEB_OAUTH_CLIENT,
+      redirectUri: environment.APP_URL,
+      scope: 'openid profile email',
+      serverConfig: {
+        baseUrl: environment.AM_URL,
+        timeout: 30000, // 90000 or less
+      },
+      realmPath: environment.REALM_PATH,
+      tree: environment.JOURNEY_REGISTER,
+    });
+
+    // Instatiate the widget
+    const widget = new Widget({
+      target: document.getElementById('widget-root'),
     });
 
     journey.start();
