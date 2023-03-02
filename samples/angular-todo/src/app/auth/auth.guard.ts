@@ -38,6 +38,18 @@ export class AuthGuard implements CanActivate {
     state: RouterStateSnapshot,
   ): Promise<true | UrlTree> {
     const loginUrl = this.router.parseUrl('/?login=true');
+
+    configuration.set({
+      clientId: environment.WEB_OAUTH_CLIENT,
+      redirectUri: environment.APP_URL,
+      scope: 'openid profile email',
+      serverConfig: {
+        baseUrl: environment.AM_URL,
+        timeout: 30000, // 90000 or less
+      },
+      realmPath: environment.REALM_PATH,
+    });
+
     try {
       // Assume user is likely authenticated if there are tokens
 
@@ -51,19 +63,7 @@ export class AuthGuard implements CanActivate {
        * ensure valid tokens before continuing, but it's optional.
        ***************************************************************** */
 
-      configuration.set({
-        clientId: environment.WEB_OAUTH_CLIENT,
-        redirectUri: environment.APP_URL,
-        scope: 'openid profile email',
-        serverConfig: {
-          baseUrl: environment.AM_URL,
-          timeout: 30000, // 90000 or less
-        },
-        realmPath: environment.REALM_PATH,
-        tree: environment.JOURNEY_REGISTER,
-      });
-
-      const authorized = await user.authorized();
+      const authorized = await user.authorized(true);
       console.log('authorized: ' + authorized);
       if (authorized) {
         return true;

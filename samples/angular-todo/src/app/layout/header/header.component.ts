@@ -13,7 +13,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
 import { environment } from '../../../environments/environment';
 // Import the modal form factor
-import Widget, { configuration, modal } from '@forgerock/login-widget/modal';
+import Widget, { configuration, journey, modal, user } from '@forgerock/login-widget/modal';
 
 /**
  * Used to show a navigation bar with router links and user info
@@ -52,7 +52,6 @@ export class HeaderComponent implements OnInit {
         timeout: 30000, // 90000 or less
       },
       realmPath: environment.REALM_PATH,
-      tree: environment.JOURNEY_REGISTER,
     });
 
     // Instatiate the widget
@@ -61,5 +60,17 @@ export class HeaderComponent implements OnInit {
     });
 
     modal.open();
+
+    journey.onSuccess(async (response) => {
+      try {
+        // Assume user is likely authenticated if there are tokens
+        const info = await user.info(true);
+        this.userService.isAuthenticated = false;
+        this.userService.info = info;
+      } catch (err) {
+        // User likely not authenticated
+        console.log(err);
+      }
+    });
   }
 }

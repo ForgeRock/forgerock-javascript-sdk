@@ -25,25 +25,6 @@ export class RegisterComponent implements OnInit {
   constructor(public userService: UserService, public router: Router) {}
 
   ngOnInit() {
-    new Widget({
-      target: document.getElementById('login-widget-inline'), // Any existing element from static HTML file
-      props: {
-        config: {
-          clientId: environment.WEB_OAUTH_CLIENT,
-          redirectUri: environment.APP_URL,
-          scope: 'openid profile email',
-          serverConfig: {
-            baseUrl: environment.AM_URL,
-            timeout: 30000, // 90000 or less
-          },
-          realmPath: environment.REALM_PATH,
-          tree: environment.JOURNEY_REGISTER,
-        },
-      },
-    });
-
-    // Configure SDK options
-    // These are used by both the SDK and the login widget
     configuration.set({
       clientId: environment.WEB_OAUTH_CLIENT,
       redirectUri: environment.APP_URL,
@@ -53,15 +34,19 @@ export class RegisterComponent implements OnInit {
         timeout: 30000, // 90000 or less
       },
       realmPath: environment.REALM_PATH,
-      tree: environment.JOURNEY_REGISTER,
     });
 
     // Instatiate the widget
     const widget = new Widget({
-      target: document.getElementById('widget-root'),
+      target: document.getElementById('login-widget-inline'),
+      props: {
+        links: {
+          termsAndConditions: 'https://www.forgerock.com/terms',
+        },
+      },
     });
 
-    journey.start();
+    journey.start({ journey: 'Register' });
 
     journey.onSuccess((userData: any) => {
       console.log(userData);

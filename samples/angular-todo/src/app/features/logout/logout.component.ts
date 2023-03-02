@@ -36,6 +36,17 @@ export class LogoutComponent implements OnInit {
    * Log the user out and redirect to the home page
    */
   async logout() {
+    configuration.set({
+      clientId: environment.WEB_OAUTH_CLIENT,
+      redirectUri: environment.APP_URL,
+      scope: 'openid profile email',
+      serverConfig: {
+        baseUrl: environment.AM_URL,
+        timeout: 30000, // 90000 or less
+      },
+      realmPath: environment.REALM_PATH,
+    });
+
     try {
       /** *********************************************************************
        * SDK INTEGRATION POINT
@@ -47,19 +58,7 @@ export class LogoutComponent implements OnInit {
        * input clicking logout.
        ********************************************************************* */
 
-      configuration.set({
-        clientId: environment.WEB_OAUTH_CLIENT,
-        redirectUri: environment.APP_URL,
-        scope: 'openid profile email',
-        serverConfig: {
-          baseUrl: environment.AM_URL,
-          timeout: 30000, // 90000 or less
-        },
-        realmPath: environment.REALM_PATH,
-        tree: environment.JOURNEY_REGISTER,
-      });
-
-      await user.logout();
+      user.logout();
       this.userService.info = undefined;
       this.userService.isAuthenticated = false;
       setTimeout(() => this.redirectToHome(), 1000);
