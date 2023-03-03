@@ -10,7 +10,7 @@
 
 import { Component, OnInit } from '@angular/core';
 import { environment } from '../../../environments/environment';
-import Widget, { journey, configuration } from '@forgerock/login-widget/inline';
+import Widget, { journey, configuration } from '../../../../package/inline';
 import { UserService } from '../../services/user.service';
 import { Router } from '@angular/router';
 
@@ -25,37 +25,41 @@ export class RegisterComponent implements OnInit {
   constructor(public userService: UserService, public router: Router) {}
 
   ngOnInit() {
-    configuration.set({
-      clientId: environment.WEB_OAUTH_CLIENT,
-      redirectUri: environment.APP_URL,
-      scope: 'openid profile email',
-      serverConfig: {
-        baseUrl: environment.AM_URL,
-        timeout: 30000, // 90000 or less
+    configuration().set({
+      config: {
+        clientId: environment.WEB_OAUTH_CLIENT,
+        redirectUri: environment.APP_URL,
+        scope: 'openid profile email',
+        serverConfig: {
+          baseUrl: environment.AM_URL,
+          timeout: 30000, // 90000 or less
+        },
+        realmPath: environment.REALM_PATH,
       },
-      realmPath: environment.REALM_PATH,
+      links: {
+        termsAndConditions: 'https://www.forgerock.com/terms',
+      },
     });
 
     // Instatiate the widget
     const widget = new Widget({
       target: document.getElementById('login-widget-inline'),
-      props: {
-        links: {
-          termsAndConditions: 'https://www.forgerock.com/terms',
-        },
-      },
     });
 
-    journey.start({ journey: 'Register' });
+    const journeyEvents = journey();
+    journeyEvents.start({ journey: 'Register' });
+    journeyEvents.subscribe((event) => {
+      console.log(event);
+    });
 
-    journey.onSuccess((userData: any) => {
-      console.log(userData);
-      this.userService.info = userData.user.response;
-      this.userService.isAuthenticated = true;
-      this.router.navigateByUrl('/');
-    });
-    journey.onFailure((error: any) => {
-      console.log(error);
-    });
+    // journey.onSuccess((userData: any) => {
+    //   console.log(userData);
+    //   this.userService.info = userData.user.response;
+    //   this.userService.isAuthenticated = true;
+    //   this.router.navigateByUrl('/');
+    // });
+    // journey.onFailure((error: any) => {
+    //   console.log(error);
+    // });
   }
 }

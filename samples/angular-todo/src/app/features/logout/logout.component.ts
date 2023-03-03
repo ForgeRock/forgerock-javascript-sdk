@@ -11,7 +11,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
-import { configuration, user } from '@forgerock/login-widget/modal';
+import { configuration, user } from '../../../../package/modal';
 // eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
 import { environment } from 'samples/angular-todo/src/environments/environment';
 
@@ -36,15 +36,17 @@ export class LogoutComponent implements OnInit {
    * Log the user out and redirect to the home page
    */
   async logout() {
-    configuration.set({
-      clientId: environment.WEB_OAUTH_CLIENT,
-      redirectUri: environment.APP_URL,
-      scope: 'openid profile email',
-      serverConfig: {
-        baseUrl: environment.AM_URL,
-        timeout: 30000, // 90000 or less
+    configuration().set({
+      config: {
+        clientId: environment.WEB_OAUTH_CLIENT,
+        redirectUri: environment.APP_URL,
+        scope: 'openid profile email',
+        serverConfig: {
+          baseUrl: environment.AM_URL,
+          timeout: 30000, // 90000 or less
+        },
+        realmPath: environment.REALM_PATH,
       },
-      realmPath: environment.REALM_PATH,
     });
 
     try {

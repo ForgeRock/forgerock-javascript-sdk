@@ -17,7 +17,7 @@ import {
   Router,
 } from '@angular/router';
 import { UserService } from '../services/user.service';
-import { user, configuration } from '@forgerock/login-widget/modal';
+import { user, configuration } from '../../../package/inline';
 import { environment } from '../../environments/environment';
 
 @Injectable({
@@ -39,15 +39,17 @@ export class AuthGuard implements CanActivate {
   ): Promise<true | UrlTree> {
     const loginUrl = this.router.parseUrl('/?login=true');
 
-    configuration.set({
-      clientId: environment.WEB_OAUTH_CLIENT,
-      redirectUri: environment.APP_URL,
-      scope: 'openid profile email',
-      serverConfig: {
-        baseUrl: environment.AM_URL,
-        timeout: 30000, // 90000 or less
+    configuration().set({
+      config: {
+        clientId: environment.WEB_OAUTH_CLIENT,
+        redirectUri: environment.APP_URL,
+        scope: 'openid profile email',
+        serverConfig: {
+          baseUrl: environment.AM_URL,
+          timeout: 30000, // 90000 or less
+        },
+        realmPath: environment.REALM_PATH,
       },
-      realmPath: environment.REALM_PATH,
     });
 
     try {
@@ -63,12 +65,10 @@ export class AuthGuard implements CanActivate {
        * ensure valid tokens before continuing, but it's optional.
        ***************************************************************** */
 
-      const authorized = await user.authorized(true);
-      console.log('authorized: ' + authorized);
-      if (authorized) {
-        return true;
-      }
-      return loginUrl;
+      const userEvents = user.tokens();
+      await userEvents.get();
+      this.userService.isAuthenticated = true;
+      return true;
     } catch (err) {
       // User likely not authenticated
       console.log(err);

@@ -13,7 +13,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
 import { environment } from '../../../environments/environment';
 // Import the modal form factor
-import Widget, { configuration, journey, modal, user } from '@forgerock/login-widget/modal';
+import Widget, { configuration, journey, modal, user } from '../../../../package/modal';
 
 /**
  * Used to show a navigation bar with router links and user info
@@ -43,15 +43,17 @@ export class HeaderComponent implements OnInit {
   }
 
   launchWidget() {
-    configuration.set({
-      clientId: environment.WEB_OAUTH_CLIENT,
-      redirectUri: environment.APP_URL,
-      scope: 'openid profile email',
-      serverConfig: {
-        baseUrl: environment.AM_URL,
-        timeout: 30000, // 90000 or less
+    configuration().set({
+      config: {
+        clientId: environment.WEB_OAUTH_CLIENT,
+        redirectUri: environment.APP_URL,
+        scope: 'openid profile email',
+        serverConfig: {
+          baseUrl: environment.AM_URL,
+          timeout: 30000, // 90000 or less
+        },
+        realmPath: environment.REALM_PATH,
       },
-      realmPath: environment.REALM_PATH,
     });
 
     // Instatiate the widget
@@ -61,16 +63,13 @@ export class HeaderComponent implements OnInit {
 
     modal.open();
 
-    journey.onSuccess(async (response) => {
-      try {
-        // Assume user is likely authenticated if there are tokens
-        const info = await user.info(true);
-        this.userService.isAuthenticated = false;
-        this.userService.info = info;
-      } catch (err) {
-        // User likely not authenticated
-        console.log(err);
-      }
+    const journeyEvents = journey();
+    journeyEvents.start({ journey: 'Login' });
+    journeyEvents.subscribe((event) => {
+      console.log(event);
+      this.userService.isAuthenticated = event?.journey.completed && event?.journey.successful;
+      this.userService.info = event?.user.response;
+      console.log(event?.user);
     });
   }
 }
