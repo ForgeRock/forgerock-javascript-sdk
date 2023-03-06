@@ -10,11 +10,9 @@
 
 import { ConfigOptions } from '../config';
 import FRStep, { FRStepHandler } from '../fr-auth/fr-step';
-import FRUI from '../fr-ui';
 import OAuth2Client from '../oauth2-client';
 import SessionManager from '../session-manager';
 import TokenManager from '../token-manager';
-import UserManager from '../user-manager';
 
 /**
  * High-level API for logging a user in/out and getting profile information.
@@ -34,24 +32,6 @@ abstract class FRUser {
   ): Promise<FRStep | T> {
     console.info(handler, options); // Avoid lint errors
     throw new Error('FRUser.login() not implemented');
-  }
-
-  /**
-   * Logs the user in with the specified UI, acquires OAuth tokens, and retrieves user profile.
-   *
-   * @typeparam T The type of user object expected
-   * @param ui The UI instance to use to acquire a session
-   * @param options Configuration overrides
-   */
-  public static async loginWithUI<T>(ui: FRUI, options?: ConfigOptions): Promise<T> {
-    try {
-      await ui.getSession(options);
-      await TokenManager.getTokens({ forceRenew: true });
-      const currentUser = await UserManager.getCurrentUser();
-      return currentUser as T;
-    } catch (error) {
-      throw new Error('Login failed');
-    }
   }
 
   /**

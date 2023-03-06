@@ -12,7 +12,6 @@ import Auth from './auth';
 import { CallbackType, ErrorCode } from './auth/enums';
 import { Callback, NameValue, PolicyRequirement, Step, StepDetail } from './auth/interfaces';
 import Config, { ConfigOptions, ValidConfigOptions } from './config';
-import Dispatcher, { CallbackContainer, FREvent, Listener } from './event';
 import FRAuth from './fr-auth';
 import FRCallback from './fr-auth/callbacks';
 import AttributeInputCallback from './fr-auth/callbacks/attribute-input-callback';
@@ -46,7 +45,6 @@ import FRDevice from './fr-device';
 import FRPolicy, { MessageCreator, PolicyKey, ProcessedPropertyError } from './fr-policy';
 import defaultMessageCreator from './fr-policy/message-creator';
 import FRRecoveryCodes from './fr-recovery-codes';
-import FRUI from './fr-ui';
 import FRUser from './fr-user';
 import FRWebAuthn, {
   RelyingParty,
@@ -78,7 +76,6 @@ export {
   Auth,
   AuthResponse,
   Callback,
-  CallbackContainer,
   CallbackType,
   ChoiceCallback,
   Config,
@@ -86,21 +83,18 @@ export {
   ConfirmationCallback,
   Deferred,
   DeviceProfileCallback,
-  Dispatcher,
   ErrorCode,
   FailureDetail,
   FRAuth,
   FRCallback,
   FRCallbackFactory,
   FRDevice,
-  FREvent,
   FRLoginFailure,
   FRLoginSuccess,
   FRPolicy,
   FRRecoveryCodes,
   FRStep,
   FRStepHandler,
-  FRUI,
   FRUser,
   FRWebAuthn,
   GetAuthorizationUrlOptions,
@@ -110,7 +104,6 @@ export {
   HttpClient,
   IdPValue,
   KbaCreateCallback,
-  Listener,
   LocalStorage,
   MessageCreator,
   MetadataCallback,
