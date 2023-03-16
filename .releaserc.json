@@ -1,0 +1,49 @@
+{
+  "branches": [
+    "+([0-9])?(.{+([0-9]),x}).x",
+    "master",
+    { "name": "develop", "prerelease": true },
+    { "name": "beta", "prerelease": true }
+  ],
+  "ci": true,
+  "repositoryUrl": "https://github.com/ForgeRock/forgerock-javascript-sdk.git",
+  "plugins": [
+    "@semantic-release/commit-analyzer",
+    "@semantic-release/release-notes-generator",
+    [
+      "@semantic-release/changelog",
+      {
+        "changelogFile": "packages/javascript-sdk/CHANGELOG.md"
+      }
+    ],
+    [
+      "@semantic-release/npm",
+      {
+        "pkgRoot": "packages/javascript-sdk"
+      }
+    ],
+    [
+      "@semantic-release/git",
+      {
+        "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}",
+        "assets": [
+          "packages/javascript-sdk/lib-esm",
+          "packages/javascript-sdk/bundles",
+          "packages/javascript-sdk/lib",
+          "!.gitignore"
+        ]
+      }
+    ],
+    [
+      "@semantic-release/github",
+      {
+        "assets": [
+          "packages/javascript-sdk/lib-esm",
+          "packages/javascript-sdk/bundles",
+          "packages/javascript-sdk/lib",
+          "!.gitignore"
+        ]
+      }
+    ]
+  ]
+}
