@@ -64,20 +64,16 @@
       "defaultConfiguration": "development"
     },
     "serve": {
-      "executor": "@nrwl/angular:webpack-server",
+      "executor": "@nrwl/angular:webpack-dev-server",
       "options": {
-        "open": true,
         "ssl": true,
         "watch": true,
         "port": 8443,
         "host": "angular.example.com",
-        "browserTarget": "angular-todo:build:development"
+        "browserTarget": "angular-todo:build:development",
+        "open": true
       },
       "configurations": {
-        "okteto": {
-          "host": "0.0.0.0",
-          "allowedHosts": "all"
-        },
         "production": {
           "browserTarget": "angular-todo:build:production"
         },
