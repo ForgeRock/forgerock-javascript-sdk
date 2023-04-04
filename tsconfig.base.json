@@ -17,7 +17,9 @@
     "paths": {
       "@forgerock/javascript-sdk": ["packages/javascript-sdk/src/index.ts"],
       "@forgerock/javascript-sdk/*": ["packages/javascript-sdk/src/*"],
-      "@forgerock/javascript-sdk/bundles/*": ["packages/javascript-sdk/bundles/*"]
+      "@forgerock/javascript-sdk/bundles/*": [
+        "packages/javascript-sdk/bundles/*"
+      ]
     }
   },
   "exclude": ["node_modules", "tmp"]
