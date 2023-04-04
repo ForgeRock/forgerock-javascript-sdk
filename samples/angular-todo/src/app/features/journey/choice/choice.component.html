@@ -16,9 +16,7 @@
         -->
     <option
       *ngFor="let option of callback?.getChoices()"
-      [selected]="
-        callback?.getChoices()?.indexOf(option) === callback?.getDefaultChoice()
-      "
+      [selected]="callback?.getChoices()?.indexOf(option) === callback?.getDefaultChoice()"
       v-bind:key="option"
     >
       {{ option }}

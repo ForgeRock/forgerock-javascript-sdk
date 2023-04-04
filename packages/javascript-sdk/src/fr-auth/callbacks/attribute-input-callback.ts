@@ -18,9 +18,7 @@ import { StringDict } from '../../shared/interfaces';
  * @typeparam T Maps to StringAttributeInputCallback, NumberAttributeInputCallback and
  *     BooleanAttributeInputCallback, respectively
  */
-class AttributeInputCallback<
-  T extends string | number | boolean
-> extends FRCallback {
+class AttributeInputCallback<T extends string | number | boolean> extends FRCallback {
   /**
    * @param payload The raw payload returned by OpenAM
    */

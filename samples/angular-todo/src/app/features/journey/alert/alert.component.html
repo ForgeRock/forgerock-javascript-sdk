@@ -12,11 +12,7 @@ of the MIT license. See the LICENSE file for details.
   Display the message in a danger or success style alert depending on the type
 -->
 <container-element [ngSwitch]="type">
-  <p
-    *ngSwitchCase="'error'"
-    class="alert alert-danger d-flex align-items-center mt-1"
-    role="alert"
-  >
+  <p *ngSwitchCase="'error'" class="alert alert-danger d-flex align-items-center mt-1" role="alert">
     <app-alert-icon></app-alert-icon>
     <span class="ps-2">{{ message }}</span>
   </p>

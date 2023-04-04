@@ -13,9 +13,7 @@ import FRDevice from './index';
 Object.defineProperty(window, 'crypto', {
   writable: true,
   value: {
-    getRandomValues: jest
-      .fn()
-      .mockImplementation(() => ['714524572', '2799534390', '3707617532']),
+    getRandomValues: jest.fn().mockImplementation(() => ['714524572', '2799534390', '3707617532']),
   },
 });
 

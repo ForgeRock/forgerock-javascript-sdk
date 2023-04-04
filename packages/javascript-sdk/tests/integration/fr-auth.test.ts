@@ -31,15 +31,11 @@ describe('Test FRAuth.next functionality', () => {
 
     const step = await FRAuth.next();
     const stage = (step as FRStep).getStage();
+    ((step as FRStep).getCallbackOfType(CallbackType.NameCallback) as NameCallback).setName(
+      'jsmith',
+    );
     (
-      (step as FRStep).getCallbackOfType(
-        CallbackType.NameCallback
-      ) as NameCallback
-    ).setName('jsmith');
-    (
-      (step as FRStep).getCallbackOfType(
-        CallbackType.PasswordCallback
-      ) as PasswordCallback
+      (step as FRStep).getCallbackOfType(CallbackType.PasswordCallback) as PasswordCallback
     ).setPassword('Password1!');
 
     expect(stage).toBe('UsernamePassword');

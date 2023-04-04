@@ -42,10 +42,7 @@
       "outputs": ["{options.outputFile}"],
       "options": {
         "fix": true,
-        "lintFilePatterns": [
-          "samples/todo-api/**/*.js",
-          "samples/todo-api/**/*.ts"
-        ]
+        "lintFilePatterns": ["samples/todo-api/**/*.js", "samples/todo-api/**/*.ts"]
       }
     },
     "test": {

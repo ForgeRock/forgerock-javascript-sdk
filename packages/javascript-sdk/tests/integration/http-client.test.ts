@@ -102,9 +102,7 @@ describe('Test HttpClient request for txn auth', () => {
     const mockedHttpClientRequest = HttpClient['_request'] as any;
     await HttpClient.request(authzByTreeReqOptionsForIG);
     expect(mockedHttpClientRequest).toBeCalledTimes(3);
-    expect(mockedHttpClientRequest.mock.calls[1][0].url).toStrictEqual(
-      expectedTxnReq.url
-    );
+    expect(mockedHttpClientRequest.mock.calls[1][0].url).toStrictEqual(expectedTxnReq.url);
   });
 
   it('should construct proper authz by tree request from REST response', async () => {
@@ -112,9 +110,7 @@ describe('Test HttpClient request for txn auth', () => {
     const mockedHttpClientRequest = HttpClient['_request'] as any;
     await HttpClient.request(authzByTreeReqOptionsForREST);
     expect(mockedHttpClientRequest).toBeCalledTimes(3);
-    expect(mockedHttpClientRequest.mock.calls[1][0].url).toStrictEqual(
-      expectedTxnReq.url
-    );
+    expect(mockedHttpClientRequest.mock.calls[1][0].url).toStrictEqual(expectedTxnReq.url);
   });
 
   it('should construct proper authz by txn request from IG response', async () => {
@@ -122,9 +118,7 @@ describe('Test HttpClient request for txn auth', () => {
     const mockedHttpClientRequest = HttpClient['_request'] as any;
     await HttpClient.request(authzByTxnReqOptionsForIG);
     expect(mockedHttpClientRequest).toBeCalledTimes(3);
-    expect(mockedHttpClientRequest.mock.calls[1][0].url).toStrictEqual(
-      expectedTxnReq.url
-    );
+    expect(mockedHttpClientRequest.mock.calls[1][0].url).toStrictEqual(expectedTxnReq.url);
   });
 
   it('should construct proper authz by txn request from REST response', async () => {
@@ -132,8 +126,6 @@ describe('Test HttpClient request for txn auth', () => {
     const mockedHttpClientRequest = HttpClient['_request'] as any;
     await HttpClient.request(authzByTxnReqOptionsForREST);
     expect(mockedHttpClientRequest).toBeCalledTimes(3);
-    expect(mockedHttpClientRequest.mock.calls[1][0].url).toStrictEqual(
-      expectedTxnReq.url
-    );
+    expect(mockedHttpClientRequest.mock.calls[1][0].url).toStrictEqual(expectedTxnReq.url);
   });
 });

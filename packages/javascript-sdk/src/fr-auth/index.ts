@@ -56,12 +56,9 @@ abstract class FRAuth {
    */
   public static async next(
     previousStep?: FRStep,
-    options?: StepOptions
+    options?: StepOptions,
   ): Promise<FRStep | FRLoginSuccess | FRLoginFailure> {
-    const nextPayload = await Auth.next(
-      previousStep ? previousStep.payload : undefined,
-      options
-    );
+    const nextPayload = await Auth.next(previousStep ? previousStep.payload : undefined, options);
 
     if (nextPayload.authId) {
       // If there's an authId, tree has not been completed
@@ -88,9 +85,7 @@ abstract class FRAuth {
    * ```
    */
   public static redirect(step: FRStep): void {
-    const cb = step.getCallbackOfType(
-      CallbackType.RedirectCallback
-    ) as RedirectCallback;
+    const cb = step.getCallbackOfType(CallbackType.RedirectCallback) as RedirectCallback;
     const redirectUrl = cb.getRedirectUrl();
 
     window.localStorage.setItem(this.previousStepKey, JSON.stringify(step));
@@ -109,7 +104,7 @@ abstract class FRAuth {
    */
   public static async resume(
     url: string,
-    options?: StepOptions
+    options?: StepOptions,
   ): Promise<FRStep | FRLoginSuccess | FRLoginFailure> {
     const parsedUrl = new URL(url);
     const code = parsedUrl.searchParams.get('code');
@@ -123,8 +118,7 @@ abstract class FRAuth {
     const scope = parsedUrl.searchParams.get('scope');
     const state = parsedUrl.searchParams.get('state');
     const suspendedId = parsedUrl.searchParams.get('suspendedId');
-    const authIndexValue =
-      parsedUrl.searchParams.get('authIndexValue') ?? undefined;
+    const authIndexValue = parsedUrl.searchParams.get('authIndexValue') ?? undefined;
 
     let previousStep;
 
@@ -138,22 +132,16 @@ abstract class FRAuth {
      * If suspendedId is present, no previous step data is needed, so skip below conditional.
      */
     if (requiresPreviousStep()) {
-      const redirectStepString = window.localStorage.getItem(
-        this.previousStepKey
-      );
+      const redirectStepString = window.localStorage.getItem(this.previousStepKey);
 
       if (!redirectStepString) {
-        throw new Error(
-          'Error: could not retrieve original redirect information.'
-        );
+        throw new Error('Error: could not retrieve original redirect information.');
       }
 
       try {
         previousStep = JSON.parse(redirectStepString);
       } catch (err) {
-        throw new Error(
-          'Error: could not parse redirect params or step information'
-        );
+        throw new Error('Error: could not parse redirect params or step information');
       }
 
       window.localStorage.removeItem(this.previousStepKey);
@@ -197,7 +185,7 @@ abstract class FRAuth {
    * @return The next step in the authentication tree
    */
   public static async start(
-    options?: StepOptions
+    options?: StepOptions,
   ): Promise<FRStep | FRLoginSuccess | FRLoginFailure> {
     return await FRAuth.next(undefined, options);
   }

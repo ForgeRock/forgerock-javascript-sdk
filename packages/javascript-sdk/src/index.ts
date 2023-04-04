@@ -10,13 +10,7 @@
 
 import Auth from './auth';
 import { CallbackType, ErrorCode } from './auth/enums';
-import {
-  Callback,
-  NameValue,
-  PolicyRequirement,
-  Step,
-  StepDetail,
-} from './auth/interfaces';
+import { Callback, NameValue, PolicyRequirement, Step, StepDetail } from './auth/interfaces';
 import Config, { ConfigOptions, ValidConfigOptions } from './config';
 import FRAuth from './fr-auth';
 import FRCallback from './fr-auth/callbacks';
@@ -33,9 +27,7 @@ import PasswordCallback from './fr-auth/callbacks/password-callback';
 import PollingWaitCallback from './fr-auth/callbacks/polling-wait-callback';
 import ReCaptchaCallback from './fr-auth/callbacks/recaptcha-callback';
 import RedirectCallback from './fr-auth/callbacks/redirect-callback';
-import SelectIdPCallback, {
-  IdPValue,
-} from './fr-auth/callbacks/select-idp-callback';
+import SelectIdPCallback, { IdPValue } from './fr-auth/callbacks/select-idp-callback';
 import SuspendedTextOutputCallback from './fr-auth/callbacks/suspended-text-output-callback';
 import TermsAndConditionsCallback from './fr-auth/callbacks/terms-and-conditions-callback';
 import TextInputCallback from './fr-auth/callbacks/text-input-callback';
@@ -50,11 +42,7 @@ import FRLoginSuccess from './fr-auth/fr-login-success';
 import FRStep, { FRStepHandler } from './fr-auth/fr-step';
 import { AuthResponse, FailureDetail } from './fr-auth/interfaces';
 import FRDevice from './fr-device';
-import FRPolicy, {
-  MessageCreator,
-  PolicyKey,
-  ProcessedPropertyError,
-} from './fr-policy';
+import FRPolicy, { MessageCreator, PolicyKey, ProcessedPropertyError } from './fr-policy';
 import defaultMessageCreator from './fr-policy/message-creator';
 import FRRecoveryCodes from './fr-recovery-codes';
 import FRUser from './fr-user';

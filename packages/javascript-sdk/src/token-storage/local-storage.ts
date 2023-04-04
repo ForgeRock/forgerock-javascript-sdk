@@ -25,7 +25,7 @@ abstract class LocalStorageWrapper {
       return Promise.resolve(JSON.parse(tokenString || ''));
     } catch (err) {
       console.warn(
-        'Could not parse token from localStorage. This could be due to accessing a removed token'
+        'Could not parse token from localStorage. This could be due to accessing a removed token',
       );
       // Original behavior had an untyped return of undefined for no token
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment

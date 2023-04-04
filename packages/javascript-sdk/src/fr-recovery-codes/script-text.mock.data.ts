@@ -106,9 +106,4 @@ const otherResponse = {
   ],
 };
 
-export {
-  displayRecoveryCodes,
-  displayRecoveryCodesResponse,
-  expectedRecoveryCodes,
-  otherResponse,
-};
+export { displayRecoveryCodes, displayRecoveryCodesResponse, expectedRecoveryCodes, otherResponse };

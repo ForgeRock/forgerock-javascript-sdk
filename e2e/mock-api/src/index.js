@@ -31,7 +31,7 @@ app.use(
     origin: function (origin, callback) {
       return callback(null, true);
     },
-  })
+  }),
 );
 app.use((req, res, next) => {
   console.log(`${req.method} ${req.path}`);

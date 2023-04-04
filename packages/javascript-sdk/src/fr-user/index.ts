@@ -28,7 +28,7 @@ abstract class FRUser {
    */
   public static async login<T>(
     handler: FRStepHandler,
-    options?: ConfigOptions
+    options?: ConfigOptions,
   ): Promise<FRStep | T> {
     console.info(handler, options); // Avoid lint errors
     throw new Error('FRUser.login() not implemented');

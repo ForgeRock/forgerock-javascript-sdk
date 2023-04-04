@@ -23,7 +23,7 @@ import { ActionTypes } from '../config/enums';
 function middlewareWrapper(
   request: RequestObj,
   // eslint-disable-next-line
-  { type, payload }: { type: ActionTypes; payload?: any }
+  { type, payload }: { type: ActionTypes; payload?: any },
 ): (middleware: RequestMiddleware[] | undefined) => RequestObj {
   // no mutation and no reassignment
   const actionCopy = Object.freeze({ type, payload });
@@ -38,8 +38,7 @@ function middlewareWrapper(
 
     function iterator(): RequestObj {
       const nextMiddlewareToBeCalled = mwareCopy.shift();
-      nextMiddlewareToBeCalled &&
-        nextMiddlewareToBeCalled(request, actionCopy, iterator);
+      nextMiddlewareToBeCalled && nextMiddlewareToBeCalled(request, actionCopy, iterator);
       return request;
     }
 
