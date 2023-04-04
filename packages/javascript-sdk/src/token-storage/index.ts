@@ -10,7 +10,6 @@
 
 import Config from '../config/index';
 import { TokenStoreObject } from '../config/interfaces';
-import IndexedDBWrapper from './indexed-db';
 import LocalStorageWrapper from './local-storage';
 import SessionStorageWrapper from './session-storage';
 import { Tokens } from '../shared/interfaces';
@@ -24,20 +23,23 @@ abstract class TokenStorage {
   /**
    * Gets stored tokens.
    */
-  public static async get(): Promise<Tokens> {
+  public static async get(): Promise<Tokens | void> {
     const { clientId, tokenStore } = this.getClientConfig();
 
     if (tokenStore === 'sessionStorage') {
       return await SessionStorageWrapper.get(clientId);
     } else if (tokenStore === 'localStorage') {
       return await LocalStorageWrapper.get(clientId);
+
+      // Preserving this condition for communicating its removal
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
     } else if (tokenStore === 'indexedDB') {
-      return await IndexedDBWrapper.get(clientId);
+      console.warn('IndexedDB is not supported in this version.');
     } else if (tokenStore && tokenStore.get) {
       // User supplied token store
       return await tokenStore.get(clientId);
     }
-    // if tokenStore is undefined, default to localStorage
     return await LocalStorageWrapper.get(clientId);
   }
 
@@ -51,13 +53,16 @@ abstract class TokenStorage {
       return await SessionStorageWrapper.set(clientId, tokens);
     } else if (tokenStore === 'localStorage') {
       return await LocalStorageWrapper.set(clientId, tokens);
+
+      // Preserving this condition for communicating its removal
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
     } else if (tokenStore === 'indexedDB') {
-      return await IndexedDBWrapper.set(clientId, tokens);
+      console.warn('IndexedDB is not supported in this version.');
     } else if (tokenStore && tokenStore.set) {
       // User supplied token store
       return await tokenStore.set(clientId, tokens);
     }
-    // if tokenStore is undefined, default to localStorage
     return await LocalStorageWrapper.set(clientId, tokens);
   }
 
@@ -71,24 +76,25 @@ abstract class TokenStorage {
       return await SessionStorageWrapper.remove(clientId);
     } else if (tokenStore === 'localStorage') {
       return await LocalStorageWrapper.remove(clientId);
+
+      // Preserving this condition for communicating its removal
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
     } else if (tokenStore === 'indexedDB') {
-      return await IndexedDBWrapper.remove(clientId);
+      console.warn('IndexedDB is not supported in this version.');
     } else if (tokenStore && tokenStore.remove) {
       // User supplied token store
       return await tokenStore.remove(clientId);
     }
-    // if tokenStore is undefined, default to localStorage
     return await LocalStorageWrapper.remove(clientId);
   }
 
   private static getClientConfig(): {
     clientId: string;
-    tokenStore: TokenStoreObject | 'indexedDB' | 'sessionStorage' | 'localStorage' | undefined;
+    tokenStore: TokenStoreObject | 'sessionStorage' | 'localStorage' | undefined;
   } {
-    const { clientId, tokenStore } = Config.get();
-    if (!clientId) {
-      throw new Error('clientId is required to manage token storage');
-    }
+    const { clientId = 'unconfiguredClient', tokenStore = 'localStorage' } = Config.get();
+
     return { clientId, tokenStore };
   }
 }

@@ -98,10 +98,10 @@ abstract class OAuth2Client {
       };
       let onLoad: Noop = noop;
       let cleanUp: Noop = noop;
-      let timeout = 0;
+      let timeout: number | ReturnType<typeof setTimeout> = 0;
 
       cleanUp = (): void => {
-        window.clearTimeout(timeout);
+        clearTimeout(timeout);
         iframe.removeEventListener('load', onLoad);
         iframe.remove();
       };
@@ -119,7 +119,7 @@ abstract class OAuth2Client {
         }
       };
 
-      timeout = window.setTimeout(() => {
+      timeout = setTimeout(() => {
         cleanUp();
         reject(new Error(allowedErrors.AuthorizationTimeout));
       }, serverConfig.timeout);
@@ -204,7 +204,8 @@ abstract class OAuth2Client {
    * Invokes the OIDC end session endpoint.
    */
   public static async endSession(options?: ConfigOptions): Promise<Response> {
-    const { idToken } = await TokenStorage.get();
+    const tokens = await TokenStorage.get();
+    const idToken = tokens && tokens.idToken;
 
     const query: StringDict<string | undefined> = {};
     if (idToken) {
@@ -223,7 +224,8 @@ abstract class OAuth2Client {
    */
   public static async revokeToken(options?: ConfigOptions): Promise<Response> {
     const { clientId } = Config.get(options);
-    const { accessToken } = await TokenStorage.get();
+    const tokens = await TokenStorage.get();
+    const accessToken = tokens && tokens.accessToken;
 
     const init: RequestInit = {
       body: stringify({ client_id: clientId, token: accessToken }),
@@ -267,7 +269,8 @@ abstract class OAuth2Client {
     init = init || ({} as RequestInit);
 
     if (includeToken) {
-      const { accessToken } = await TokenStorage.get();
+      const tokens = await TokenStorage.get();
+      const accessToken = tokens && tokens.accessToken;
       init.credentials = 'include';
       init.headers = (init.headers || new Headers()) as Headers;
       init.headers.set('Authorization', `Bearer ${accessToken}`);

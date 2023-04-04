@@ -9,6 +9,7 @@
  */
 
 import Config, { ConfigOptions } from '../config';
+import { PREFIX } from '../config/constants';
 import OAuth2Client, { allowedErrors, OAuth2Tokens, ResponseType } from '../oauth2-client';
 import { StringDict, Tokens } from '../shared/interfaces';
 import TokenStorage from '../token-storage';
@@ -62,17 +63,13 @@ abstract class TokenManager {
    ```
    */
   public static async getTokens(options?: GetTokensOptions): Promise<OAuth2Tokens | void> {
-    let tokens: OAuth2Tokens | null = null;
     const { clientId, oauthThreshold } = Config.get(options as ConfigOptions);
+    const storageKey = `${PREFIX}-${clientId}`;
 
     /**
      * First, let's see if tokens exist locally
      */
-    try {
-      tokens = await TokenStorage.get();
-    } catch (error) {
-      console.info('No stored tokens available', error);
-    }
+    const tokens = await TokenStorage.get();
 
     /**
      * If tokens are stored, no option for `forceRenew` or `query` object with `code`, and do not expire within the configured threshold,
@@ -105,8 +102,8 @@ abstract class TokenManager {
      * and return acquired tokens
      */
     if (options?.query?.code && options?.query?.state) {
-      const storedString = window.sessionStorage.getItem(clientId as string);
-      window.sessionStorage.removeItem(clientId as string);
+      const storedString = sessionStorage.getItem(storageKey);
+      sessionStorage.removeItem(storageKey);
       const storedValues: { state: string; verifier: string } = JSON.parse(storedString as string);
 
       return await this.tokenExchange(options, storedValues);
@@ -172,11 +169,11 @@ abstract class TokenManager {
       }
 
       // Since `login` is configured for "redirect", store authorize values and redirect
-      window.sessionStorage.setItem(clientId as string, JSON.stringify(authorizeUrlOptions));
+      sessionStorage.setItem(storageKey, JSON.stringify(authorizeUrlOptions));
 
       const authorizeUrl = await OAuth2Client.createAuthorizeUrl(authorizeUrlOptions);
 
-      return window.location.assign(authorizeUrl);
+      return location.assign(authorizeUrl);
     }
     /**
      * Exchange authorization code for tokens
