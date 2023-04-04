@@ -21,8 +21,6 @@ import { MOCK_PORT } from './app/env.config';
 import authRoutes from './app/routes.auth';
 import resourceRoutes from './app/routes.resource';
 
-const __dirname = path.dirname(new URL(import.meta.url).pathname);
-
 const app = express();
 app.use(express.json());
 app.use('/am/XUI/images', express.static(path.join(__dirname, 'public')));
@@ -33,7 +31,7 @@ app.use(
     origin: function (origin, callback) {
       return callback(null, true);
     },
-  }),
+  })
 );
 app.use((req, res, next) => {
   console.log(`${req.method} ${req.path}`);

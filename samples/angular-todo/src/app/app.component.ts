@@ -19,8 +19,8 @@ import {
   NavigationStart,
   Router,
 } from '@angular/router';
-import { filter, Observable } from 'rxjs';
-
+import { Observable } from 'rxjs';
+import { filter } from 'rxjs/operators';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -31,7 +31,7 @@ export class AppComponent implements OnInit {
 
   constructor(public userService: UserService, private router: Router) {
     const navStart = router.events.pipe(
-      filter((evt: any) => evt instanceof NavigationStart),
+      filter((evt: any) => evt instanceof NavigationStart)
     ) as Observable<NavigationStart>;
 
     const navEnd: Observable<NavigationStart> = router.events.pipe(
@@ -39,8 +39,8 @@ export class AppComponent implements OnInit {
         (evt: any) =>
           evt instanceof NavigationEnd ||
           evt instanceof NavigationCancel ||
-          evt instanceof NavigationError,
-      ),
+          evt instanceof NavigationError
+      )
     ) as Observable<NavigationStart>;
 
     navStart.subscribe(() => (this.loading = true));

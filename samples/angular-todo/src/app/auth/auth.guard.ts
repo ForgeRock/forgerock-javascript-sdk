@@ -34,7 +34,7 @@ export class AuthGuard implements CanActivate {
    */
   async canActivate(
     next: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot,
+    state: RouterStateSnapshot
   ): Promise<true | UrlTree> {
     const loginUrl = this.router.parseUrl('/login');
     try {

@@ -1,10 +1,11 @@
 {
+  "name": "todo-api",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "samples/todo-api/src",
   "projectType": "application",
   "targets": {
     "build": {
-      "executor": "@nrwl/node:webpack",
+      "executor": "@nrwl/esbuild:esbuild",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/samples/todo-api",
@@ -41,7 +42,10 @@
       "outputs": ["{options.outputFile}"],
       "options": {
         "fix": true,
-        "lintFilePatterns": ["samples/todo-api/**/*.js", "samples/todo-api/**/*.ts"]
+        "lintFilePatterns": [
+          "samples/todo-api/**/*.js",
+          "samples/todo-api/**/*.ts"
+        ]
       }
     },
     "test": {

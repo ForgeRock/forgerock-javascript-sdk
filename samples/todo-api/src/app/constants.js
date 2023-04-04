@@ -19,14 +19,14 @@ export const AM_URL = (() => {
     return process.env.AM_URL;
   } catch (err) {
     console.error(
-      'AM * ERROR: Missing .env value. Ensure you have an .env file within the dir of this sample app.',
+      'AM * ERROR: Missing .env value. Ensure you have an .env file within the dir of this sample app.'
     );
     return '';
   }
 })();
 
 export const CONFIDENTIAL_CLIENT = Buffer.from(
-  `${process.env.REST_OAUTH_CLIENT}:${process.env.REST_OAUTH_SECRET}`,
+  `${process.env.REST_OAUTH_CLIENT}:${process.env.REST_OAUTH_SECRET}`
 ).toString('base64');
 
 export const PORT = process.env.PORT || 9443;

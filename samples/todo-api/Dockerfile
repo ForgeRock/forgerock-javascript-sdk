@@ -7,4 +7,4 @@ RUN npx nx build todo-api --prod
 
 EXPOSE 8081
 
-CMD ["node", "dist/samples/todo-api/main.js"]
+CMD ["node", "dist/samples/todo-api/index.js"]

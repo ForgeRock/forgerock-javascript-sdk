@@ -16,7 +16,7 @@
 
 export function tokensWillExpireWithinThreshold(
   oauthThreshold?: number,
-  tokenExpiry?: number,
+  tokenExpiry?: number
 ): boolean {
   if (oauthThreshold && tokenExpiry) {
     return tokenExpiry - oauthThreshold < Date.now();

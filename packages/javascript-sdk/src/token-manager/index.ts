@@ -9,7 +9,11 @@
  */
 
 import Config, { ConfigOptions } from '../config';
-import OAuth2Client, { allowedErrors, OAuth2Tokens, ResponseType } from '../oauth2-client';
+import OAuth2Client, {
+  allowedErrors,
+  OAuth2Tokens,
+  ResponseType,
+} from '../oauth2-client';
 import { StringDict, Tokens } from '../shared/interfaces';
 import TokenStorage from '../token-storage';
 import PKCE from '../util/pkce';
@@ -61,7 +65,9 @@ abstract class TokenManager {
    });
    ```
    */
-  public static async getTokens(options?: GetTokensOptions): Promise<OAuth2Tokens | void> {
+  public static async getTokens(
+    options?: GetTokensOptions
+  ): Promise<OAuth2Tokens | void> {
     let tokens: OAuth2Tokens | null = null;
     const { clientId, oauthThreshold } = Config.get(options as ConfigOptions);
 
@@ -107,7 +113,9 @@ abstract class TokenManager {
     if (options?.query?.code && options?.query?.state) {
       const storedString = window.sessionStorage.getItem(clientId as string);
       window.sessionStorage.removeItem(clientId as string);
-      const storedValues: { state: string; verifier: string } = JSON.parse(storedString as string);
+      const storedValues: { state: string; verifier: string } = JSON.parse(
+        storedString as string
+      );
 
       return await this.tokenExchange(options, storedValues);
     }
@@ -118,6 +126,9 @@ abstract class TokenManager {
      */
     const verifier = PKCE.createVerifier();
     const state = PKCE.createState();
+
+    /** strict mode requires us to be smarter about destructuring */
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { forceRenew, login, ...config } = options;
     const authorizeUrlOptions = {
       ...config,
@@ -131,7 +142,9 @@ abstract class TokenManager {
     try {
       // Check expected browser support
       // To support legacy browsers, iframe works best with short timeout
-      const parsedUrl = new URL(await OAuth2Client.getAuthCodeByIframe(authorizeUrlOptions));
+      const parsedUrl = new URL(
+        await OAuth2Client.getAuthCodeByIframe(authorizeUrlOptions)
+      );
 
       // Throw if we have an error param or have no authorization code
       if (parsedUrl.searchParams.get('error')) {
@@ -169,13 +182,17 @@ abstract class TokenManager {
       }
 
       // Since `login` is configured for "redirect", store authorize values and redirect
-      window.sessionStorage.setItem(clientId as string, JSON.stringify(authorizeUrlOptions));
+      window.sessionStorage.setItem(
+        clientId as string,
+        JSON.stringify(authorizeUrlOptions)
+      );
 
-      const authorizeUrl = await OAuth2Client.createAuthorizeUrl(authorizeUrlOptions);
+      const authorizeUrl = await OAuth2Client.createAuthorizeUrl(
+        authorizeUrlOptions
+      );
 
       return window.location.assign(authorizeUrl);
     }
-
     /**
      * Exchange authorization code for tokens
      */
@@ -188,7 +205,7 @@ abstract class TokenManager {
 
   private static async tokenExchange(
     options: GetTokensOptions,
-    stored: { state: string; verifier: string },
+    stored: { state: string; verifier: string }
   ): Promise<Tokens> {
     /**
      * Ensure incoming state and stored state are equal and authorization code exists

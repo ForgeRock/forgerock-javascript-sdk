@@ -188,7 +188,8 @@ export class FormComponent implements OnInit {
       }
       case 'register': {
         this.title = 'Sign Up';
-        (this.buttonText = 'Register'), (this.tree = environment.JOURNEY_REGISTER);
+        (this.buttonText = 'Register'),
+          (this.tree = environment.JOURNEY_REGISTER);
         break;
       }
       default: {

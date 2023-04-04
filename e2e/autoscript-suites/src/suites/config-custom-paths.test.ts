@@ -12,8 +12,15 @@ import { test, expect } from '@playwright/test';
 import { setupAndGo } from '../utilities/setup-and-go';
 
 test.describe('Test OAuth login flow with custom paths', () => {
-  test(`should login successfully and then log out with`, async ({ page, browserName }) => {
-    const { messageArray } = await setupAndGo(page, browserName, 'config-custom-paths/');
+  test(`should login successfully and then log out with`, async ({
+    page,
+    browserName,
+  }) => {
+    const { messageArray } = await setupAndGo(
+      page,
+      browserName,
+      'config-custom-paths/'
+    );
 
     // Test assertions
     expect(messageArray.includes('OAuth login successful')).toBe(true);

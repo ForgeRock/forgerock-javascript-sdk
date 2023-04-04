@@ -64,7 +64,9 @@ abstract class HttpClient {
    *
    * @param options The options to use when making the request
    */
-  public static async request(options: HttpClientRequestOptions): Promise<Response> {
+  public static async request(
+    options: HttpClientRequestOptions
+  ): Promise<Response> {
     let res = await this._request(options, false);
     let authorizationJSON: AuthorizationJSON | undefined;
     let hasIG = false;
@@ -82,13 +84,15 @@ abstract class HttpClient {
       }
 
       if (authorizationJSON && authorizationJSON.advices) {
-        const { middleware, realmPath, serverConfig } = Config.get(options.authorization.config);
+        const { middleware, realmPath, serverConfig } = Config.get(
+          options.authorization.config
+        );
         const authzOptions = buildAuthzOptions(
           authorizationJSON,
           serverConfig.baseUrl,
           options.timeout,
           realmPath,
-          serverConfig.paths,
+          serverConfig.paths
         );
 
         const url = new URL(authzOptions.url);
@@ -102,7 +106,7 @@ abstract class HttpClient {
           {
             type: ActionTypes.StartAuthenticate,
             payload: { type, tree },
-          },
+          }
         );
         const { url: authUrl, init: authInit } = runMiddleware(middleware);
         authzOptions.url = authUrl.toString();
@@ -110,14 +114,21 @@ abstract class HttpClient {
         const initialStep = await this._request(authzOptions, false);
 
         if (!(await isAuthzStep(initialStep))) {
-          throw new Error('Error: Initial response from auth server not a "step".');
+          throw new Error(
+            'Error: Initial response from auth server not a "step".'
+          );
         }
         if (!hasAuthzAdvice(authorizationJSON)) {
           throw new Error(`Error: Transactional or Service Advice is empty.`);
         }
 
         // Walk through auth tree
-        await this.stepIterator(initialStep, options.authorization.handleStep, type, tree);
+        await this.stepIterator(
+          initialStep,
+          options.authorization.handleStep,
+          type,
+          tree
+        );
         // See if OAuth tokens are being used
         let tokens;
         try {
@@ -127,13 +138,17 @@ abstract class HttpClient {
         }
         if (hasIG) {
           // Update URL with IDs and tokens for IG
-          options.url = addAuthzInfoToURL(options.url, authorizationJSON.advices, tokens);
+          options.url = addAuthzInfoToURL(
+            options.url,
+            authorizationJSON.advices,
+            tokens
+          );
         } else {
           // Update headers with IDs and tokens for REST API
           options.init.headers = addAuthzInfoToHeaders(
             options.init,
             authorizationJSON.advices,
-            tokens,
+            tokens
           );
         }
         // Retry original resource request
@@ -144,7 +159,10 @@ abstract class HttpClient {
     return res;
   }
 
-  private static async setAuthHeaders(headers: Headers, forceRenew: boolean): Promise<Headers> {
+  private static async setAuthHeaders(
+    headers: Headers,
+    forceRenew: boolean
+  ): Promise<Headers> {
     let tokens;
     try {
       tokens = await TokenStorage.get();
@@ -170,7 +188,7 @@ abstract class HttpClient {
     res: Response,
     handleStep: HandleStep,
     type: string,
-    tree: string,
+    tree: string
   ): Promise<void> {
     const jsonRes = await res.json();
     const initialStep = new FRStep(jsonRes);
@@ -196,7 +214,7 @@ abstract class HttpClient {
 
   private static async _request(
     options: HttpClientRequestOptions,
-    forceRenew: boolean,
+    forceRenew: boolean
   ): Promise<Response> {
     const { url, init, timeout } = options;
     let headers = new Headers(init.headers || {});

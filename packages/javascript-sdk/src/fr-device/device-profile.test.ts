@@ -13,14 +13,19 @@ import FRDevice from './index';
 Object.defineProperty(window, 'crypto', {
   writable: true,
   value: {
-    getRandomValues: jest.fn().mockImplementation(() => ['714524572', '2799534390', '3707617532']),
+    getRandomValues: jest
+      .fn()
+      .mockImplementation(() => ['714524572', '2799534390', '3707617532']),
   },
 });
 
 describe('Test DeviceProfile', () => {
   it('should return basic metadata', async () => {
     const device = new FRDevice();
-    const profile = await device.getProfile({ location: false, metadata: true });
+    const profile = await device.getProfile({
+      location: false,
+      metadata: true,
+    });
     const userAgent = profile.metadata.browser.userAgent as string;
     const appName = profile.metadata.browser.appName as string;
     const appVersion = profile.metadata.browser.appVersion as string;
@@ -38,7 +43,10 @@ describe('Test DeviceProfile', () => {
 
   it('should return metadata without any display props', async () => {
     const device = new FRDevice({ displayProps: [] });
-    const profile = await device.getProfile({ location: false, metadata: true });
+    const profile = await device.getProfile({
+      location: false,
+      metadata: true,
+    });
     const userAgent = profile.metadata.browser.userAgent as string;
     const display = profile.metadata.hardware.display;
     const deviceName = profile.metadata.platform.deviceName as string;
@@ -50,7 +58,10 @@ describe('Test DeviceProfile', () => {
 
   it('should return metadata according to narrowed browser props', async () => {
     const device = new FRDevice({ browserProps: ['userAgent'] });
-    const profile = await device.getProfile({ location: false, metadata: true });
+    const profile = await device.getProfile({
+      location: false,
+      metadata: true,
+    });
     const userAgent = profile.metadata.browser.userAgent as string;
     const appName = profile.metadata.browser.appName as string;
     const appVersion = profile.metadata.browser.appVersion as string;

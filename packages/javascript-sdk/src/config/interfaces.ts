@@ -29,7 +29,11 @@ interface ConfigOptions {
   redirectUri?: string;
   scope?: string;
   serverConfig?: ServerConfig;
-  tokenStore?: TokenStoreObject | 'indexedDB' | 'sessionStorage' | 'localStorage';
+  tokenStore?:
+    | TokenStoreObject
+    | 'indexedDB'
+    | 'sessionStorage'
+    | 'localStorage';
   tree?: string;
   type?: string;
   oauthThreshold?: number;
@@ -50,7 +54,11 @@ interface CustomPathConfig {
   sessions?: string;
 }
 
-type RequestMiddleware = (req: RequestObj, action: Action, next: () => RequestObj) => void;
+type RequestMiddleware = (
+  req: RequestObj,
+  action: Action,
+  next: () => RequestObj
+) => void;
 
 interface RequestObj {
   url: URL;

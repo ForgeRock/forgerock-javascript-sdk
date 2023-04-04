@@ -20,7 +20,7 @@ test.describe('Test OAuth login flow', () => {
     const { messageArray, networkArray } = await setupAndGo(
       page,
       browserName,
-      'authn-central-login/',
+      'authn-central-login/'
     );
 
     // Test assertions
@@ -29,8 +29,12 @@ test.describe('Test OAuth login flow', () => {
     expect(messageArray.includes('Test script complete')).toBe(true);
     // Test network requests
     // Authorize endpoint should use iframe, which is type "document"
-    expect(networkArray.includes('/am/oauth2/realms/root/authorize, document')).toBe(true);
-    expect(networkArray.includes('/am/oauth2/realms/root/access_token, fetch')).toBe(true);
+    expect(
+      networkArray.includes('/am/oauth2/realms/root/authorize, document')
+    ).toBe(true);
+    expect(
+      networkArray.includes('/am/oauth2/realms/root/access_token, fetch')
+    ).toBe(true);
   });
 
   test(`should successfully take code & state params for token exchange with browser`, async ({
@@ -41,7 +45,7 @@ test.describe('Test OAuth login flow', () => {
       page,
       browserName,
       'authn-central-login/?state=abc&code=xyz',
-      { state: 'abc', code: 'xyz' },
+      { state: 'abc', code: 'xyz' }
     );
 
     // Test assertions
@@ -50,8 +54,14 @@ test.describe('Test OAuth login flow', () => {
     expect(messageArray.includes('Test script complete')).toBe(true);
     // Test network requests
     // Authorize endpoint should NOT be called using document or fetch
-    expect(networkArray.includes('/am/oauth2/realms/root/authorize, document')).toBe(false);
-    expect(networkArray.includes('/am/oauth2/realms/root/authorize, fetch')).toBe(false);
-    expect(networkArray.includes('/am/oauth2/realms/root/access_token, fetch')).toBe(true);
+    expect(
+      networkArray.includes('/am/oauth2/realms/root/authorize, document')
+    ).toBe(false);
+    expect(
+      networkArray.includes('/am/oauth2/realms/root/authorize, fetch')
+    ).toBe(false);
+    expect(
+      networkArray.includes('/am/oauth2/realms/root/access_token, fetch')
+    ).toBe(true);
   });
 });

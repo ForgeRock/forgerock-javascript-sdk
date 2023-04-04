@@ -8,7 +8,12 @@
  * of the MIT license. See the LICENSE file for details.
  */
 
-type Category = 'fontNames' | 'displayProps' | 'browserProps' | 'hardwareProps' | 'platformProps';
+type Category =
+  | 'fontNames'
+  | 'displayProps'
+  | 'browserProps'
+  | 'hardwareProps'
+  | 'platformProps';
 
 interface CollectParameters {
   location: boolean;

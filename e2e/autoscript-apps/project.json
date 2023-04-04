@@ -1,4 +1,5 @@
 {
+  "name": "autoscript-apps",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
   "sourceRoot": "e2e/autoscript-apps/src",
@@ -30,8 +31,8 @@
       "defaultConfiguration": "production"
     },
     "serve": {
-      "executor": "@nrwl/web:dev-server",
-      "dependsOn": ["^build", "^tsc"],
+      "executor": "@nrwl/webpack:dev-server",
+      "dependsOn": ["^build"],
       "defaultConfiguration": "production",
       "options": {
         "port": 8443,

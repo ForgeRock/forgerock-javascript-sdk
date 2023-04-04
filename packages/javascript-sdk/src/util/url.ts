@@ -28,7 +28,7 @@ function getBaseUrl(url: URL): string {
 function getEndpointPath(
   endpoint: ConfigurablePaths,
   realmPath?: string,
-  customPaths?: CustomPathConfig,
+  customPaths?: CustomPathConfig
 ): string {
   const realmUrlPath = getRealmUrlPath(realmPath);
   const defaultPaths = {

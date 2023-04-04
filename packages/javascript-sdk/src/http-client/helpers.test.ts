@@ -30,7 +30,11 @@ describe('Test HttpClient utils', () => {
       // eslint-disable-next-line max-len, prettier/prettier
       'https://openam.example.com/am/json/realms/root/authenticate?authIndexType=composite_advice&authIndexValue=%3CAdvices%3E%3CAttributeValuePair%3E%3CAttribute%20name%3D%22AuthenticateToServiceConditionAdvice%22%2F%3E%3CValue%3Eabc%3C%2FValue%3E%3C%2FAttributeValuePair%3E%3C%2FAdvices%3E';
 
-    const output = buildAuthzOptions(txnAuthObj, 'https://openam.example.com/am/', 0);
+    const output = buildAuthzOptions(
+      txnAuthObj,
+      'https://openam.example.com/am/',
+      0
+    );
     expect(output.url).toStrictEqual(expectedUrl);
   });
 
@@ -39,7 +43,11 @@ describe('Test HttpClient utils', () => {
     const expectedUrl =
       // eslint-disable-next-line max-len, prettier/prettier
       'https://openam.example.com/am/json/realms/root/authenticate?authIndexType=composite_advice&authIndexValue=%3CAdvices%3E%3CAttributeValuePair%3E%3CAttribute%20name%3D%22TransactionConditionAdvice%22%2F%3E%3CValue%3Eabc%3C%2FValue%3E%3C%2FAttributeValuePair%3E%3C%2FAdvices%3E';
-    const output = buildAuthzOptions(txnAuthObj, 'https://openam.example.com/am/', 0);
+    const output = buildAuthzOptions(
+      txnAuthObj,
+      'https://openam.example.com/am/',
+      0
+    );
     expect(output.url).toStrictEqual(expectedUrl);
   });
 

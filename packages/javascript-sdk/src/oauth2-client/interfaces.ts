@@ -51,4 +51,9 @@ interface GetOAuth2TokensOptions extends ConfigOptions {
   verifier?: string;
 }
 
-export { AccessTokenResponse, GetAuthorizationUrlOptions, GetOAuth2TokensOptions, OAuth2Tokens };
+export {
+  AccessTokenResponse,
+  GetAuthorizationUrlOptions,
+  GetOAuth2TokensOptions,
+  OAuth2Tokens,
+};

@@ -1,4 +1,5 @@
 {
+  "name": "reactjs-todo",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "samples/reactjs-todo/client",
   "projectType": "application",

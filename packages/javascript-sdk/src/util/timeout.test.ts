@@ -22,6 +22,8 @@ describe('withTimeout function', () => {
   });
   it('should return the window timeout', async () => {
     const promise = new Promise(() => 'ok');
-    await withTimeout(promise, 1).catch((res) => expect(res).toEqual(new Error('Timeout')));
+    await withTimeout(promise, 1).catch((res) =>
+      expect(res).toEqual(new Error('Timeout'))
+    );
   });
 });

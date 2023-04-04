@@ -32,7 +32,7 @@
       "@semantic-release/git",
       {
         "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}",
-        "assets": ["lib-esm", "bundles", "lib", "../../!.gitignore"]
+        "assets": ["lib-esm", "bundles", "lib", "../../!.gitignore", "package.json"]
       }
     ],
     [

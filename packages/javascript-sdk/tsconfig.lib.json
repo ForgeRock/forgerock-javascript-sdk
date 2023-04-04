@@ -3,25 +3,24 @@
   "compilerOptions": {
     "outDir": "../../dist/packages/javascript-sdk",
     "declaration": true,
-    "lib": ["ES2015", "dom"],
-    "moduleResolution": "Node",
+    "lib": ["dom"],
+    "moduleResolution": "node",
     "composite": true,
     "sourceMap": true,
-    "skipLibCheck": true,
+    "skipLibCheck": false,
     "strict": false,
-    "module": "ES2015",
-    "target": "ES2015"
+    "module": "ES2020",
+    "target": "ES2020"
   },
   "include": ["**/*.ts"],
   "exclude": [
-    "tests/",
     "**/*.spec.ts",
     "**/*.test.ts",
-    "lib-esm",
-    "lib",
+    "**/*.mock.ts",
+    "tests/*",
     "bundles",
-    "dist/",
-    "jest*",
+    "jest.env.config.ts",
+    "jest.config.ts",
     "**/*.mock.data.ts"
   ]
 }

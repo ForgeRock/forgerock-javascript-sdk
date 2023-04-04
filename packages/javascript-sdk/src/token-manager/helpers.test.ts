@@ -27,7 +27,7 @@ describe('Test Token Manager utils', () => {
   it('Should return true if tokens expire within configured threshold', () => {
     const expiresSoon = tokensWillExpireWithinThreshold(
       oauthThreshold,
-      Date.now() + tokenExpiryWithinThreshold,
+      Date.now() + tokenExpiryWithinThreshold
     );
     expect(expiresSoon).toBe(true);
   });
@@ -35,7 +35,7 @@ describe('Test Token Manager utils', () => {
   it('Should return false if tokens expire outside configured threshold', () => {
     const expiresSoon = tokensWillExpireWithinThreshold(
       oauthThreshold,
-      Date.now() + tokenExpiryOutsideThreshold,
+      Date.now() + tokenExpiryOutsideThreshold
     );
     expect(expiresSoon).toBe(false);
   });
@@ -43,7 +43,7 @@ describe('Test Token Manager utils', () => {
   it('Should return false if token expiry is not set', () => {
     const expiresSoon = tokensWillExpireWithinThreshold(
       oauthThreshold,
-      Date.now() + tokenExpiryNotSet,
+      Date.now() + tokenExpiryNotSet
     );
     expect(expiresSoon).toBe(false);
   });

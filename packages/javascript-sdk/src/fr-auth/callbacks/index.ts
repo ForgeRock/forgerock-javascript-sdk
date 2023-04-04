@@ -43,7 +43,10 @@ class FRCallback {
    *
    * @param selector The index position or name of the desired element
    */
-  public setInputValue(value: unknown, selector: number | string | RegExp = 0): void {
+  public setInputValue(
+    value: unknown,
+    selector: number | string | RegExp = 0
+  ): void {
     this.getArrayElement(this.payload.input, selector).value = value;
   }
 
@@ -70,10 +73,12 @@ class FRCallback {
 
   private getArrayElement(
     array: NameValue[] | undefined,
-    selector: number | string | RegExp = 0,
+    selector: number | string | RegExp = 0
   ): NameValue {
     if (array === undefined) {
-      throw new Error(`No NameValue array was provided to search (selector ${selector})`);
+      throw new Error(
+        `No NameValue array was provided to search (selector ${selector})`
+      );
     }
 
     if (typeof selector === 'number') {
@@ -92,7 +97,11 @@ class FRCallback {
     }
 
     // Duck typing for RegEx
-    if (typeof selector === 'object' && selector.test && selector.exec) {
+    if (
+      typeof selector === 'object' &&
+      selector.test &&
+      Boolean(selector.exec)
+    ) {
       const input = array.find((x) => selector.test(x.name));
       if (!input) {
         throw new Error(`Missing callback input entry "${selector}"`);

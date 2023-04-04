@@ -26,7 +26,7 @@ import { getEndpointPath, resolve, stringify } from '../util/url';
 export function addAuthzInfoToHeaders(
   init: RequestInit,
   advices: Advices,
-  tokens?: Tokens,
+  tokens?: Tokens
 ): Headers {
   const headers = new Headers(init.headers);
 
@@ -42,7 +42,11 @@ export function addAuthzInfoToHeaders(
   return headers;
 }
 
-export function addAuthzInfoToURL(url: string, advices: Advices, tokens?: Tokens): string {
+export function addAuthzInfoToURL(
+  url: string,
+  advices: Advices,
+  tokens?: Tokens
+): string {
   const updatedURL = new URL(url);
 
   // Only modify URL for Transactional Authorization
@@ -66,10 +70,12 @@ export function buildAuthzOptions(
   baseURL: string,
   timeout: number,
   realmPath?: string,
-  customPaths?: CustomPathConfig,
+  customPaths?: CustomPathConfig
 ): HttpClientRequestOptions {
-  const treeAuthAdvices = authzObj.advices && authzObj.advices.AuthenticateToServiceConditionAdvice;
-  const txnAuthAdvices = authzObj.advices && authzObj.advices.TransactionConditionAdvice;
+  const treeAuthAdvices =
+    authzObj.advices && authzObj.advices.AuthenticateToServiceConditionAdvice;
+  const txnAuthAdvices =
+    authzObj.advices && authzObj.advices.TransactionConditionAdvice;
   let attributeValue = '';
   let attributeName = '';
 
@@ -159,7 +165,10 @@ export async function isAuthzStep(res: Response): Promise<boolean> {
   return !!json.callbacks;
 }
 
-export function newTokenRequired(res: Response, requiresNewToken?: RequiresNewTokenFn): boolean {
+export function newTokenRequired(
+  res: Response,
+  requiresNewToken?: RequiresNewTokenFn
+): boolean {
   if (typeof requiresNewToken === 'function') {
     return requiresNewToken(res);
   }
@@ -169,7 +178,9 @@ export function newTokenRequired(res: Response, requiresNewToken?: RequiresNewTo
 export function normalizeIGJSON(res: Response): AuthorizationJSON {
   const advices: Advices = {};
   if (res.url.includes('AuthenticateToServiceConditionAdvice')) {
-    advices.AuthenticateToServiceConditionAdvice = [getXMLValueFromURL(res.url)];
+    advices.AuthenticateToServiceConditionAdvice = [
+      getXMLValueFromURL(res.url),
+    ];
   } else {
     advices.TransactionConditionAdvice = [getXMLValueFromURL(res.url)];
   }
@@ -182,6 +193,8 @@ export function normalizeIGJSON(res: Response): AuthorizationJSON {
   };
 }
 
-export async function normalizeRESTJSON(res: Response): Promise<AuthorizationJSON> {
+export async function normalizeRESTJSON(
+  res: Response
+): Promise<AuthorizationJSON> {
   return await res.json();
 }

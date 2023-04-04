@@ -56,7 +56,10 @@ describe('The IDM error handling', () => {
   it('error handling is extensible by customer', () => {
     const test = {
       customMessage: {
-        CUSTOM_POLICY: (property: string, params: { policyRequirement: string }): string =>
+        CUSTOM_POLICY: (
+          property: string,
+          params: { policyRequirement: string }
+        ): string =>
           `this is a custom message for "${params.policyRequirement}" policy of ${property}`,
       },
       expectedString: `this is a custom message for "CUSTOM_POLICY" policy of ${property}`,
@@ -64,7 +67,11 @@ describe('The IDM error handling', () => {
         policyRequirement: 'CUSTOM_POLICY',
       },
     };
-    const message = FRPolicy.parsePolicyRequirement(property, test.policy, test.customMessage);
+    const message = FRPolicy.parsePolicyRequirement(
+      property,
+      test.policy,
+      test.customMessage
+    );
     expect(message).toBe(test.expectedString);
   });
 
@@ -79,7 +86,11 @@ describe('The IDM error handling', () => {
         policyRequirement: 'UNIQUE',
       },
     };
-    const message = FRPolicy.parsePolicyRequirement(property, test.policy, test.customMessage);
+    const message = FRPolicy.parsePolicyRequirement(
+      property,
+      test.policy,
+      test.customMessage
+    );
     expect(message).toBe(test.expectedString);
   });
 
@@ -154,7 +165,10 @@ describe('The IDM error handling', () => {
     const customMessage = {
       [PolicyKey.Unique]: (property: string): string =>
         `this is a custom message for "UNIQUE" policy of ${property}`,
-      CUSTOM_POLICY: (property: string, params: { policyRequirement: string }): string =>
+      CUSTOM_POLICY: (
+        property: string,
+        params: { policyRequirement: string }
+      ): string =>
         `this is a custom message for "${params.policyRequirement}" policy of ${property}`,
     };
     const expected = [
@@ -180,7 +194,10 @@ describe('The IDM error handling', () => {
         ],
         detail: {
           policyRequirements: [
-            { params: { numCaps: 1 }, policyRequirement: 'AT_LEAST_X_CAPITAL_LETTERS' },
+            {
+              params: { numCaps: 1 },
+              policyRequirement: 'AT_LEAST_X_CAPITAL_LETTERS',
+            },
             { params: { minLength: 6 }, policyRequirement: 'MIN_LENGTH' },
           ],
           property: 'password',

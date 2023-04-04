@@ -13,9 +13,14 @@ import { setupAndGo } from '../utilities/setup-and-go';
 
 test.describe('Test oauth login flow with localStorage', () => {
   test(`Login successful`, async ({ page, browserName }) => {
-    const { messageArray } = await setupAndGo(page, browserName, 'config-token-storage/', {
-      tokenStore: 'sessionStorage',
-    });
+    const { messageArray } = await setupAndGo(
+      page,
+      browserName,
+      'config-token-storage/',
+      {
+        tokenStore: 'sessionStorage',
+      }
+    );
 
     // Test assertions
     expect(messageArray.includes('Access token is correct')).toBe(true);
@@ -23,9 +28,14 @@ test.describe('Test oauth login flow with localStorage', () => {
   });
 
   test(`Login successfull `, async ({ page, browserName }) => {
-    const { messageArray } = await setupAndGo(page, browserName, 'config-token-storage/', {
-      tokenStore: 'indexedDB',
-    });
+    const { messageArray } = await setupAndGo(
+      page,
+      browserName,
+      'config-token-storage/',
+      {
+        tokenStore: 'indexedDB',
+      }
+    );
 
     // Test assertions
     expect(messageArray.includes('Access token is correct')).toBe(true);
@@ -33,9 +43,14 @@ test.describe('Test oauth login flow with localStorage', () => {
   });
 
   test(`Login successfully`, async ({ page, browserName }) => {
-    const { messageArray } = await setupAndGo(page, browserName, 'config-token-storage/', {
-      tokenStore: 'customStore',
-    });
+    const { messageArray } = await setupAndGo(
+      page,
+      browserName,
+      'config-token-storage/',
+      {
+        tokenStore: 'customStore',
+      }
+    );
 
     // Test assertions
     expect(messageArray.includes('Custom token setter used.')).toBe(true);

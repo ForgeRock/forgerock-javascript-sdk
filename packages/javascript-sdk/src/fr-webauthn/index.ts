@@ -12,7 +12,11 @@ import { CallbackType } from '../auth/enums';
 import HiddenValueCallback from '../fr-auth/callbacks/hidden-value-callback';
 import MetadataCallback from '../fr-auth/callbacks/metadata-callback';
 import FRStep from '../fr-auth/fr-step';
-import { WebAuthnOutcome, WebAuthnOutcomeType, WebAuthnStepType } from './enums';
+import {
+  WebAuthnOutcome,
+  WebAuthnOutcomeType,
+  WebAuthnStepType,
+} from './enums';
 import {
   arrayBufferToString,
   parseCredentials,
@@ -27,10 +31,15 @@ import {
   WebAuthnTextOutputRegistration,
 } from './interfaces';
 import TextOutputCallback from '../fr-auth/callbacks/text-output-callback';
-import { parseWebAuthnAuthenticateText, parseWebAuthnRegisterText } from './script-parser';
+import {
+  parseWebAuthnAuthenticateText,
+  parseWebAuthnRegisterText,
+} from './script-parser';
 
 // JSON-based WebAuthn
-type WebAuthnMetadata = WebAuthnAuthenticationMetadata | WebAuthnRegistrationMetadata;
+type WebAuthnMetadata =
+  | WebAuthnAuthenticationMetadata
+  | WebAuthnRegistrationMetadata;
 // Script-based WebAuthn
 type WebAuthnTextOutput = WebAuthnTextOutputRegistration;
 /**
@@ -63,7 +72,9 @@ abstract class FRWebAuthn {
     const textOutputCallback = this.getTextOutputCallback(step);
 
     if (outcomeCallback && metadataCallback) {
-      const metadata = metadataCallback.getOutputValue('data') as { pubKeyCredParams?: [] };
+      const metadata = metadataCallback.getOutputValue('data') as {
+        pubKeyCredParams?: [];
+      };
       if (metadata?.pubKeyCredParams) {
         return WebAuthnStepType.Registration;
       }
@@ -88,17 +99,22 @@ abstract class FRWebAuthn {
    * @return The populated step
    */
   public static async authenticate(step: FRStep): Promise<FRStep> {
-    const { hiddenCallback, metadataCallback, textOutputCallback } = this.getCallbacks(step);
+    const { hiddenCallback, metadataCallback, textOutputCallback } =
+      this.getCallbacks(step);
     if (hiddenCallback && (metadataCallback || textOutputCallback)) {
       let outcome: string;
 
       try {
         let publicKey: PublicKeyCredentialRequestOptions;
         if (metadataCallback) {
-          const meta = metadataCallback.getOutputValue('data') as WebAuthnAuthenticationMetadata;
+          const meta = metadataCallback.getOutputValue(
+            'data'
+          ) as WebAuthnAuthenticationMetadata;
           publicKey = this.createAuthenticationPublicKey(meta);
         } else if (textOutputCallback) {
-          publicKey = parseWebAuthnAuthenticateText(textOutputCallback.getMessage());
+          publicKey = parseWebAuthnAuthenticateText(
+            textOutputCallback.getMessage()
+          );
         }
         // TypeScript doesn't like `publicKey` being assigned in conditionals above
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -112,7 +128,9 @@ abstract class FRWebAuthn {
           hiddenCallback.setInputValue(WebAuthnOutcome.Unsupported);
           throw error;
         }
-        hiddenCallback.setInputValue(`${WebAuthnOutcome.Error}::${error.name}:${error.message}`);
+        hiddenCallback.setInputValue(
+          `${WebAuthnOutcome.Error}::${error.name}:${error.message}`
+        );
         throw error;
       }
 
@@ -121,7 +139,9 @@ abstract class FRWebAuthn {
     } else {
       const e = new Error('Incorrect callbacks for WebAuthn authentication');
       e.name = WebAuthnOutcomeType.DataError;
-      hiddenCallback?.setInputValue(`${WebAuthnOutcome.Error}::${e.name}:${e.message}`);
+      hiddenCallback?.setInputValue(
+        `${WebAuthnOutcome.Error}::${e.name}:${e.message}`
+      );
       throw e;
     }
   }
@@ -133,17 +153,22 @@ abstract class FRWebAuthn {
    * @return The populated step
    */
   public static async register(step: FRStep): Promise<FRStep> {
-    const { hiddenCallback, metadataCallback, textOutputCallback } = this.getCallbacks(step);
+    const { hiddenCallback, metadataCallback, textOutputCallback } =
+      this.getCallbacks(step);
     if (hiddenCallback && (metadataCallback || textOutputCallback)) {
       let outcome: string;
 
       try {
         let publicKey: PublicKeyCredentialRequestOptions;
         if (metadataCallback) {
-          const meta = metadataCallback.getOutputValue('data') as WebAuthnRegistrationMetadata;
+          const meta = metadataCallback.getOutputValue(
+            'data'
+          ) as WebAuthnRegistrationMetadata;
           publicKey = this.createRegistrationPublicKey(meta);
         } else if (textOutputCallback) {
-          publicKey = parseWebAuthnRegisterText(textOutputCallback.getMessage());
+          publicKey = parseWebAuthnRegisterText(
+            textOutputCallback.getMessage()
+          );
         }
         // TypeScript doesn't like `publicKey` being assigned in conditionals above
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -157,7 +182,9 @@ abstract class FRWebAuthn {
           hiddenCallback.setInputValue(WebAuthnOutcome.Unsupported);
           throw error;
         }
-        hiddenCallback.setInputValue(`${WebAuthnOutcome.Error}::${error.name}:${error.message}`);
+        hiddenCallback.setInputValue(
+          `${WebAuthnOutcome.Error}::${error.name}:${error.message}`
+        );
         throw error;
       }
 
@@ -166,7 +193,9 @@ abstract class FRWebAuthn {
     } else {
       const e = new Error('Incorrect callbacks for WebAuthn registration');
       e.name = WebAuthnOutcomeType.DataError;
-      hiddenCallback?.setInputValue(`${WebAuthnOutcome.Error}::${e.name}:${e.message}`);
+      hiddenCallback?.setInputValue(
+        `${WebAuthnOutcome.Error}::${e.name}:${e.message}`
+      );
       throw e;
     }
   }
@@ -200,12 +229,19 @@ abstract class FRWebAuthn {
    * @param step The step that contains WebAuthn callbacks
    * @return The metadata callback
    */
-  public static getMetadataCallback(step: FRStep): MetadataCallback | undefined {
-    return step.getCallbacksOfType<MetadataCallback>(CallbackType.MetadataCallback).find((x) => {
-      const cb = x.getOutputByName<WebAuthnMetadata | undefined>('data', undefined);
-      // eslint-disable-next-line no-prototype-builtins
-      return cb && cb.hasOwnProperty('relyingPartyId');
-    });
+  public static getMetadataCallback(
+    step: FRStep
+  ): MetadataCallback | undefined {
+    return step
+      .getCallbacksOfType<MetadataCallback>(CallbackType.MetadataCallback)
+      .find((x) => {
+        const cb = x.getOutputByName<WebAuthnMetadata | undefined>(
+          'data',
+          undefined
+        );
+        // eslint-disable-next-line no-prototype-builtins
+        return cb && cb.hasOwnProperty('relyingPartyId');
+      });
   }
 
   /**
@@ -214,7 +250,9 @@ abstract class FRWebAuthn {
    * @param step The step that contains WebAuthn callbacks
    * @return The hidden value callback
    */
-  public static getOutcomeCallback(step: FRStep): HiddenValueCallback | undefined {
+  public static getOutcomeCallback(
+    step: FRStep
+  ): HiddenValueCallback | undefined {
     return step
       .getCallbacksOfType<HiddenValueCallback>(CallbackType.HiddenValueCallback)
       .find((x) => x.getOutputByName<string>('id', '') === 'webAuthnOutcome');
@@ -227,11 +265,16 @@ abstract class FRWebAuthn {
    * @param step The step that contains WebAuthn callbacks
    * @return The metadata callback
    */
-  public static getTextOutputCallback(step: FRStep): TextOutputCallback | undefined {
+  public static getTextOutputCallback(
+    step: FRStep
+  ): TextOutputCallback | undefined {
     return step
       .getCallbacksOfType<TextOutputCallback>(CallbackType.TextOutputCallback)
       .find((x) => {
-        const cb = x.getOutputByName<WebAuthnTextOutput | undefined>('message', undefined);
+        const cb = x.getOutputByName<WebAuthnTextOutput | undefined>(
+          'message',
+          undefined
+        );
         return cb && cb.includes('webAuthnOutcome');
       });
   }
@@ -243,7 +286,7 @@ abstract class FRWebAuthn {
    * @return The credential
    */
   public static async getAuthenticationCredential(
-    options: PublicKeyCredentialRequestOptions,
+    options: PublicKeyCredentialRequestOptions
   ): Promise<PublicKeyCredential | null> {
     // Feature check before we attempt registering a device
     if (!window.PublicKeyCredential) {
@@ -261,7 +304,9 @@ abstract class FRWebAuthn {
    * @param credential The credential to convert
    * @return The outcome string
    */
-  public static getAuthenticationOutcome(credential: PublicKeyCredential | null): string {
+  public static getAuthenticationOutcome(
+    credential: PublicKeyCredential | null
+  ): string {
     if (credential === null) {
       const e = new Error('No credential generated from authentication');
       e.name = WebAuthnOutcomeType.UnknownError;
@@ -269,9 +314,14 @@ abstract class FRWebAuthn {
     }
 
     try {
-      const clientDataJSON = arrayBufferToString(credential.response.clientDataJSON);
-      const assertionResponse = credential.response as AuthenticatorAssertionResponse;
-      const authenticatorData = new Int8Array(assertionResponse.authenticatorData).toString();
+      const clientDataJSON = arrayBufferToString(
+        credential.response.clientDataJSON
+      );
+      const assertionResponse =
+        credential.response as AuthenticatorAssertionResponse;
+      const authenticatorData = new Int8Array(
+        assertionResponse.authenticatorData
+      ).toString();
       const signature = new Int8Array(assertionResponse.signature).toString();
 
       // Current native typing for PublicKeyCredential does not include `userHandle`
@@ -299,7 +349,7 @@ abstract class FRWebAuthn {
    * @return The credential
    */
   public static async getRegistrationCredential(
-    options: PublicKeyCredentialCreationOptions,
+    options: PublicKeyCredentialCreationOptions
   ): Promise<PublicKeyCredential | null> {
     // Feature check before we attempt registering a device
     if (!window.PublicKeyCredential) {
@@ -307,7 +357,9 @@ abstract class FRWebAuthn {
       e.name = WebAuthnOutcomeType.NotSupportedError;
       throw e;
     }
-    const credential = await navigator.credentials.create({ publicKey: options });
+    const credential = await navigator.credentials.create({
+      publicKey: options,
+    });
     return credential as PublicKeyCredential;
   }
 
@@ -317,7 +369,9 @@ abstract class FRWebAuthn {
    * @param credential The credential to convert
    * @return The outcome string
    */
-  public static getRegistrationOutcome(credential: PublicKeyCredential | null): string {
+  public static getRegistrationOutcome(
+    credential: PublicKeyCredential | null
+  ): string {
     if (credential === null) {
       const e = new Error('No credential generated from registration');
       e.name = WebAuthnOutcomeType.UnknownError;
@@ -325,9 +379,14 @@ abstract class FRWebAuthn {
     }
 
     try {
-      const clientDataJSON = arrayBufferToString(credential.response.clientDataJSON);
-      const attestationResponse = credential.response as AuthenticatorAttestationResponse;
-      const attestationObject = new Int8Array(attestationResponse.attestationObject).toString();
+      const clientDataJSON = arrayBufferToString(
+        credential.response.clientDataJSON
+      );
+      const attestationResponse =
+        credential.response as AuthenticatorAttestationResponse;
+      const attestationObject = new Int8Array(
+        attestationResponse.attestationObject
+      ).toString();
       return `${clientDataJSON}::${attestationObject}::${credential.id}`;
     } catch (error) {
       const e = new Error('Transforming credential object to string failed');
@@ -344,7 +403,7 @@ abstract class FRWebAuthn {
    * @return The Web Authentication API request options
    */
   public static createAuthenticationPublicKey(
-    metadata: WebAuthnAuthenticationMetadata,
+    metadata: WebAuthnAuthenticationMetadata
   ): PublicKeyCredentialRequestOptions {
     const {
       acceptableCredentials,
@@ -355,10 +414,13 @@ abstract class FRWebAuthn {
       userVerification,
     } = metadata;
     const rpId = parseRelyingPartyId(relyingPartyId);
-    const allowCredentialsValue = parseCredentials(allowCredentials || acceptableCredentials || '');
+    const allowCredentialsValue = parseCredentials(
+      allowCredentials || acceptableCredentials || ''
+    );
 
     return {
-      challenge: Uint8Array.from(atob(challenge), (c) => c.charCodeAt(0)).buffer,
+      challenge: Uint8Array.from(atob(challenge), (c) => c.charCodeAt(0))
+        .buffer,
       timeout,
       // only add key-value pair if proper value is provided
       ...(allowCredentialsValue && { allowCredentials: allowCredentialsValue }),
@@ -375,12 +437,14 @@ abstract class FRWebAuthn {
    * @return The Web Authentication API request options
    */
   public static createRegistrationPublicKey(
-    metadata: WebAuthnRegistrationMetadata,
+    metadata: WebAuthnRegistrationMetadata
   ): PublicKeyCredentialCreationOptions {
     const { pubKeyCredParams: pubKeyCredParamsString } = metadata;
     const pubKeyCredParams = parsePubKeyArray(pubKeyCredParamsString);
     if (!pubKeyCredParams) {
-      const e = new Error('Missing pubKeyCredParams property from registration options');
+      const e = new Error(
+        'Missing pubKeyCredParams property from registration options'
+      );
       e.name = WebAuthnOutcomeType.DataError;
       throw e;
     }
@@ -406,14 +470,17 @@ abstract class FRWebAuthn {
     return {
       attestation: attestationPreference,
       authenticatorSelection: JSON.parse(authenticatorSelection),
-      challenge: Uint8Array.from(atob(challenge), (c) => c.charCodeAt(0)).buffer,
+      challenge: Uint8Array.from(atob(challenge), (c) => c.charCodeAt(0))
+        .buffer,
       ...(excludeCredentials.length && { excludeCredentials }),
       pubKeyCredParams,
       rp,
       timeout,
       user: {
         displayName: displayName || userName,
-        id: Int8Array.from(userId.split('').map((c: string) => c.charCodeAt(0))),
+        id: Int8Array.from(
+          userId.split('').map((c: string) => c.charCodeAt(0))
+        ),
         name: userName,
       },
     };

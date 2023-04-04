@@ -28,7 +28,7 @@ app.use(
       // DON'T DO THIS IN PRODUCTION!
       return callback(null, true);
     },
-  }),
+  })
 );
 
 /**
@@ -51,10 +51,10 @@ if (!AM_URL) {
   createServer(() => null).listen(PORT);
 
   console.error(
-    'ERROR: Missing .env value. Ensure you have an .env file within the dir of this sample app.',
+    'ERROR: Missing .env value. Ensure you have an .env file within the dir of this sample app.'
   );
   console.error(
-    'Ensure you have a .env file with appropriate values and the proper security certificate and key.',
+    'Ensure you have a .env file with appropriate values and the proper security certificate and key.'
   );
   console.error('Please stop this process.');
 } else {

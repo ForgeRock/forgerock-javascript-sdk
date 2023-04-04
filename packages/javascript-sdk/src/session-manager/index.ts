@@ -34,15 +34,22 @@ abstract class SessionManager {
       method: 'POST',
     };
 
-    const path = `${getEndpointPath('sessions', realmPath, serverConfig.paths)}?_action=logout`;
+    const path = `${getEndpointPath(
+      'sessions',
+      realmPath,
+      serverConfig.paths
+    )}?_action=logout`;
     const url = resolve(serverConfig.baseUrl, path);
 
     const runMiddleware = middlewareWrapper(
       { url: new URL(url), init },
-      { type: ActionTypes.Logout },
+      { type: ActionTypes.Logout }
     );
     const req = runMiddleware(middleware);
-    const response = await withTimeout(fetch(req.url.toString(), req.init), serverConfig.timeout);
+    const response = await withTimeout(
+      fetch(req.url.toString(), req.init),
+      serverConfig.timeout
+    );
     if (!isOkOr4xx(response)) {
       throw new Error(`Failed to log out; received ${response.status}`);
     }
