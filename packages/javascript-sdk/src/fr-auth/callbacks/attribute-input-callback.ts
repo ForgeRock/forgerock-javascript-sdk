@@ -51,7 +51,11 @@ class AttributeInputCallback<T extends string | number | boolean> extends FRCall
    * Gets the callback's failed policies.
    */
   public getFailedPolicies(): PolicyRequirement[] {
-    return this.getOutputByName<PolicyRequirement[]>('failedPolicies', []);
+    const failedPolicies = this.getOutputByName<PolicyRequirement[]>(
+      'failedPolicies',
+      [],
+    ) as unknown as string[];
+    return failedPolicies.map((v) => JSON.parse(v)) as PolicyRequirement[];
   }
 
   /**

@@ -57,13 +57,7 @@ export default function Text({ callback, inputName }) {
   }
 
   if (failedPolicies?.length) {
-    const validationFailure = failedPolicies.reduce((prev, curr) => {
-      let failureObj;
-      try {
-        failureObj = JSON.parse(curr);
-      } catch (err) {
-        console.log(`Parsing failure for ${textInputLabel}`);
-      }
+    const validationFailure = failedPolicies.reduce((prev, failureObj) => {
       switch (failureObj.policyRequirement) {
         case 'VALID_USERNAME':
           prev = `${prev}Please choose a different username. `;

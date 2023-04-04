@@ -48,7 +48,7 @@ describe('AttributeInputCallback', () => {
       },
       {
         name: 'failedPolicies',
-        value: ['c', 'd'],
+        value: [JSON.stringify({ failedPolicies: { c: 'c', d: 'd' } })],
       },
       {
         name: 'validateOnly',
@@ -68,7 +68,7 @@ describe('AttributeInputCallback', () => {
     expect(cb.getPrompt()).toBe('First Name:');
     expect(cb.isRequired()).toBe(true);
     expect(cb.getPolicies().policyRequirements).toStrictEqual(['a', 'b']);
-    expect(cb.getFailedPolicies()).toStrictEqual(['c', 'd']);
+    expect(cb.getFailedPolicies()).toStrictEqual([{ failedPolicies: { c: 'c', d: 'd' } }]);
     expect(cb.getInputValue()).toBe('Clark');
     expect(cb.payload.input[1].value).toBe(true);
   });
