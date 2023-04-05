@@ -10,7 +10,6 @@
 
 import Config from '../config';
 import { ActionTypes } from '../config/enums';
-import Dispatcher from '../event';
 import FRAuth from '../fr-auth';
 import { StepType } from '../fr-auth/enums';
 import FRStep from '../fr-auth/fr-step';
@@ -59,7 +58,7 @@ import middlewareWrapper from '../util/middleware';
  * });
  * ```
  */
-abstract class HttpClient extends Dispatcher {
+abstract class HttpClient {
   /**
    * Makes a request using the specified options.
    *
