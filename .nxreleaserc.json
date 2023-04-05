@@ -1,0 +1,28 @@
+{
+  "changelog": true,
+  "npm": true,
+  "github": true,
+  "ci": true,
+  "commitMessage": "chore(release-${PROJECT_NAME}): ${nextRelease.version} [skip ci]",
+  "packageJsonDir": "dist/packages/${PROJECT_NAME}",
+  "gitAssets": [
+    "dist/packages/${PROJECT_NAME}/*",
+    "packages/${PROJECT_NAME}/README.md",
+    "packages/${PROJECT_NAME}/CHANGELOG.md"
+  ],
+  "buildTarget": "${PROJECT_NAME}:build",
+  "outputPath": "dist/packages/${PROJECT_NAME}",
+  "repositoryUrl": "https://github.com/ForgeRock/forgerock-javascript-sdk.git",
+  "branches": [
+    "+([0-9])?(.{+([0-9]),x}).x",
+    "master",
+    {
+      "name": "develop",
+      "prerelease": "beta"
+    },
+    {
+      "name": "beta",
+      "prerelease": true
+    }
+  ]
+}

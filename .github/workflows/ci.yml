@@ -59,8 +59,6 @@ jobs:
             {
               "title": "${{ github.event.pull_request.title }}",
               "author": "${{ github.event.pull_request.user.login }}",
-              "status": "${{ job.status }}",
-              "pr_description": ${{ toJSON(github.event.pull_request.body) }},
               "pr_number": "${{ github.event.pull_request.number}}",
               "url": "${{ github.event.pull_request.html_url }}"
             }

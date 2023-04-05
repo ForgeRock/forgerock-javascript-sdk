@@ -80,5 +80,5 @@
       }
     }
   },
-  "tags": ["e2e"]
+  "tags": ["scope:e2e"]
 }

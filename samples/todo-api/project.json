@@ -5,11 +5,13 @@
   "projectType": "application",
   "targets": {
     "build": {
-      "executor": "@nrwl/esbuild:esbuild",
+      "executor": "@nrwl/webpack:webpack",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/samples/todo-api",
         "generatePackageJson": true,
+        "format": ["cjs"],
+        "platform": "node",
         "main": "samples/todo-api/src/index.js",
         "tsConfig": "samples/todo-api/tsconfig.app.json",
         "assets": ["samples/todo-api/src/assets"]
@@ -35,6 +37,11 @@
       "options": {
         "buildTarget": "todo-api:build",
         "watch": true
+      },
+      "configurations": {
+        "production": {
+          "watch": false
+        }
       }
     },
     "lint": {
@@ -54,5 +61,5 @@
       }
     }
   },
-  "tags": []
+  "tags": ["scope:sample"]
 }

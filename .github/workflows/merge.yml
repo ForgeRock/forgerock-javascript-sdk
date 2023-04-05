@@ -79,7 +79,7 @@ jobs:
       - uses: actions/setup-node@v3
         id: cache
         with:
-          node-version: '16.x'
+          node-version: '18.x'
           scope: '@forgerock'
       - name: Import GPG
         uses: crazy-max/ghaction-import-gpg@v5.2.0
@@ -92,9 +92,6 @@ jobs:
           git_config_global: true
       - run: npm ci
       - run: npm install @nrwl/nx-cloud
-      - run: npm run build
-        env:
-          NX_CLOUD_DISTRIBUTED_EXECUTION: false
       - name: Derive appropriate SHAs for base and head for `nx affected` commands
         id: sha
         uses: nrwl/nx-set-shas@v2

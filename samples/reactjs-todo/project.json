@@ -3,6 +3,7 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "samples/reactjs-todo/client",
   "projectType": "application",
+  "tags": ["scope:sample"],
   "targets": {
     "build": {
       "executor": "@nrwl/web:webpack",

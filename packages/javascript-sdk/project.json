@@ -9,7 +9,7 @@
       "options": {
         "compiler": "babel",
         "entryFile": "packages/javascript-sdk/src/index.ts",
-        "outputPath": "packages/javascript-sdk/bundles",
+        "outputPath": "dist/packages/javascript-sdk",
         "format": ["esm", "cjs"],
         "deleteOutputPath": true,
         "generateExportsField": true,
@@ -51,6 +51,9 @@
         }
       }
     },
+    "publish": {
+      "executor": "@theunderscorer/nx-semantic-release:semantic-release"
+    },
     "typedoc": {
       "executor": "@enio.ai/typedoc:typedoc",
       "outputs": ["docs/packages/javascript-sdk"],
@@ -58,7 +61,16 @@
         "options": "typedoc.json"
       },
       "configurations": {}
+    },
+    "release": {
+      "executor": "@theunderscorer/nx-semantic-release:semantic-release",
+      "options": {
+        "github": true,
+        "changelog": true,
+        "npm": true,
+        "tagFormat": "v${VERSION}"
+      }
     }
   },
-  "tags": ["sdk"]
+  "tags": ["scope:sdk"]
 }

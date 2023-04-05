@@ -79,7 +79,8 @@
           "version",
           "config",
           "tsc",
-          "typedoc"
+          "typedoc",
+          "release"
         ],
         "useDaemonProcess": true,
         "accessToken": "NzU3MWE3MjgtOWRiZi00ZDczLWI4YWYtMDI5NThmNTRkNDc1fHJlYWQtd3JpdGU="
