@@ -1,3 +1,19 @@
+# [4.0.0-beta.2](https://github.com/ForgeRock/forgerock-javascript-sdk/compare/v4.0.0-beta.1...v4.0.0-beta.2) (2023-04-12)
+
+
+### Bug Fixes
+
+* **javascript-sdk:** removes-rogue-package-updates-infra ([77dd8da](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/77dd8da94074591f72e4767de66d035383d4b485))
+
+
+* fix(javascript-sdk)!: remove-modules-unneeded ([bd2e1fe](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/bd2e1feb2ff926ff9c9eb984907c2d2bd9cc8027))
+
+
+### BREAKING CHANGES
+
+* remove the frui and event classes / folders and
+references.
+
 # Changelog
 
 ## [3.4.0] - 2022-10-18
