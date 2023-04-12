@@ -169,7 +169,9 @@ abstract class FRAuth {
         // Allow developer to add or override params with their own.
         ...(options && options.query),
       },
-      ...((options?.tree ?? authIndexValue) && { tree: options?.tree ?? authIndexValue }),
+      ...((options?.tree ?? authIndexValue) && {
+        tree: options?.tree ?? authIndexValue,
+      }),
     };
 
     return await this.next(previousStep, nextOptions);

@@ -1,25 +1,26 @@
 {
-  "$schema": "./node_modules/nx/schemas/nx-schema.json",
   "npmScope": "forgerock",
-  "defaultProject": "javascript-sdk",
-  "tasksRunnerOptions": {
-    "default": {
-      "runner": "@nrwl/nx-cloud",
-      "options": {
-        "cacheableOperations": [
-          "build",
-          "test",
-          "lint",
-          "package",
-          "prepare",
-          "e2e",
-          "version",
-          "config",
-          "tsc"
-        ],
-        "useDaemonProcess": true,
-        "accessToken": "NzU3MWE3MjgtOWRiZi00ZDczLWI4YWYtMDI5NThmNTRkNDc1fHJlYWQtd3JpdGU="
-      }
+  "targetDefaults": {
+    "test:unit": {
+      "dependsOn": ["^test"]
+    },
+    "test": {
+      "dependsOn": ["^test"]
+    },
+    "tsc": {
+      "dependsOn": ["^tsc"]
+    },
+    "build": {
+      "dependsOn": ["^build"]
+    },
+    "prepare": {
+      "dependsOn": ["^prepare"]
+    },
+    "package": {
+      "dependsOn": ["^package"]
+    },
+    "lint": {
+      "inputs": ["default", "{workspaceRoot}/.eslintrc.json"]
     }
   },
   "targetDependencies": {
@@ -60,8 +61,37 @@
       }
     ]
   },
+  "workspaceLayout": {
+    "appsDir": "",
+    "libsDir": ""
+  },
+  "tasksRunnerOptions": {
+    "default": {
+      "runner": "@nrwl/nx-cloud",
+      "options": {
+        "cacheableOperations": [
+          "build",
+          "test",
+          "lint",
+          "package",
+          "prepare",
+          "e2e",
+          "version",
+          "config",
+          "tsc",
+          "typedoc",
+          "release"
+        ],
+        "useDaemonProcess": true,
+        "accessToken": "NzU3MWE3MjgtOWRiZi00ZDczLWI4YWYtMDI5NThmNTRkNDc1fHJlYWQtd3JpdGU="
+      }
+    }
+  },
   "affected": {
     "defaultBase": "develop"
+  },
+  "cli": {
+    "defaultCollection": "@nrwl/react"
   },
   "generators": {
     "@nrwl/react": {
@@ -103,31 +133,5 @@
       "style": "css"
     }
   },
-  "cli": {
-    "defaultCollection": "@nrwl/react"
-  },
-  "workspaceLayout": {
-    "appsDir": "",
-    "libsDir": ""
-  },
-  "targetDefaults": {
-    "test:unit": {
-      "dependsOn": ["^test"]
-    },
-    "test": {
-      "dependsOn": ["^test"]
-    },
-    "tsc": {
-      "dependsOn": ["^tsc"]
-    },
-    "build": {
-      "dependsOn": ["^build"]
-    },
-    "prepare": {
-      "dependsOn": ["^prepare"]
-    },
-    "package": {
-      "dependsOn": ["^package"]
-    }
-  }
+  "defaultProject": "javascript-sdk"
 }

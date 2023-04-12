@@ -228,7 +228,9 @@ abstract class OAuth2Client {
     const init: RequestInit = {
       body: stringify({ client_id: clientId, token: accessToken }),
       credentials: 'include',
-      headers: new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' }),
+      headers: new Headers({
+        'Content-Type': 'application/x-www-form-urlencoded',
+      }),
       method: 'POST',
     };
 

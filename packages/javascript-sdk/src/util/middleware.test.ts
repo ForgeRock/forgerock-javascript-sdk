@@ -21,7 +21,9 @@ describe('Middleware should be called with an action', () => {
       },
     );
     const newReq = runMiddleware(middleware);
-    expect(newReq.init).toStrictEqual({ headers: { 'x-letter': 'true', 'x-char': 'a' } });
+    expect(newReq.init).toStrictEqual({
+      headers: { 'x-letter': 'true', 'x-char': 'a' },
+    });
     expect(newReq.url.toString()).toBe('https://www.example.com/?letter=true&char=a');
   });
   it('should run all middleware testing action for number and "1"', () => {
@@ -32,7 +34,9 @@ describe('Middleware should be called with an action', () => {
       },
     );
     const newReq = runMiddleware(middleware);
-    expect(newReq.init).toStrictEqual({ headers: { 'x-letter': 'false', 'x-char': '1' } });
+    expect(newReq.init).toStrictEqual({
+      headers: { 'x-letter': 'false', 'x-char': '1' },
+    });
     expect(newReq.url.toString()).toBe('https://www.example.com/?letter=false&char=1');
   });
   it('should run all middleware testing action for no match', () => {
@@ -48,14 +52,19 @@ describe('Middleware should be called with an action', () => {
   });
   it('should run all middleware testing add action with payload', () => {
     const runMiddleware = middlewareWrapper(
-      { url: new URL('https://www.example.com'), init: { headers: { 'x-number': '3' } } },
+      {
+        url: new URL('https://www.example.com'),
+        init: { headers: { 'x-number': '3' } },
+      },
       {
         type: 'ADD' as ActionTypes,
         payload: 'b',
       },
     );
     const newReq = runMiddleware(middleware);
-    expect(newReq.init).toStrictEqual({ headers: { 'x-number': '3', 'x-char': 'a,b' } });
+    expect(newReq.init).toStrictEqual({
+      headers: { 'x-number': '3', 'x-char': 'a,b' },
+    });
   });
   it('should not allow middleware to reassign `req`', () => {
     const runMiddleware = middlewareWrapper(

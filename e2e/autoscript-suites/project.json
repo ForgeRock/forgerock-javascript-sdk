@@ -1,4 +1,5 @@
 {
+  "name": "autoscript-suites",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "e2e/autoscript-suites/src",
   "projectType": "application",

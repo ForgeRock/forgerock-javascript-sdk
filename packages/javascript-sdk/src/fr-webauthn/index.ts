@@ -63,7 +63,9 @@ abstract class FRWebAuthn {
     const textOutputCallback = this.getTextOutputCallback(step);
 
     if (outcomeCallback && metadataCallback) {
-      const metadata = metadataCallback.getOutputValue('data') as { pubKeyCredParams?: [] };
+      const metadata = metadataCallback.getOutputValue('data') as {
+        pubKeyCredParams?: [];
+      };
       if (metadata?.pubKeyCredParams) {
         return WebAuthnStepType.Registration;
       }
@@ -307,7 +309,9 @@ abstract class FRWebAuthn {
       e.name = WebAuthnOutcomeType.NotSupportedError;
       throw e;
     }
-    const credential = await navigator.credentials.create({ publicKey: options });
+    const credential = await navigator.credentials.create({
+      publicKey: options,
+    });
     return credential as PublicKeyCredential;
   }
 

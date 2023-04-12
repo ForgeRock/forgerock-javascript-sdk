@@ -1,17 +1,24 @@
 {
+  "name": "mock-api",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "e2e/mock-api/src",
   "projectType": "application",
   "targets": {
     "build": {
-      "executor": "@nrwl/node:webpack",
+      "executor": "@nrwl/esbuild:esbuild",
       "outputs": ["{options.outputPath}"],
       "options": {
+        "platform": "node",
         "outputPath": "dist/e2e/mock-api",
+        "format": ["cjs"],
+        "bundle": true,
         "main": "e2e/mock-api/src/index.js",
         "tsConfig": "e2e/mock-api/tsconfig.app.json",
         "assets": ["e2e/mock-api/src/assets"],
-        "generatePackageJson": true
+        "generatePackageJson": true,
+        "esbuildOptions": {
+          "sourcemap": true
+        }
       },
       "configurations": {
         "development": {
@@ -31,7 +38,7 @@
       }
     },
     "serve": {
-      "executor": "@nrwl/node:node",
+      "executor": "@nrwl/js:node",
       "options": {
         "buildTarget": "mock-api:build",
         "watch": true
@@ -73,5 +80,5 @@
       }
     }
   },
-  "tags": []
+  "tags": ["scope:e2e"]
 }

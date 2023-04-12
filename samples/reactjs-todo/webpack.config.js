@@ -32,6 +32,7 @@ module.exports = (config) => {
           port: 443,
         },
       },
+      allowedHosts: ['.example.com', 'localhost'],
       compress: true,
       headers: {
         'Access-Control-Allow-Credentials': true,
@@ -45,5 +46,6 @@ module.exports = (config) => {
     devtool: 'source-map',
     plugins: config.plugins.slice(1),
   };
+  console.log(config);
   return conf;
 };

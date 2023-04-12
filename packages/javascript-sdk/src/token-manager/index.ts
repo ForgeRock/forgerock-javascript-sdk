@@ -118,6 +118,9 @@ abstract class TokenManager {
      */
     const verifier = PKCE.createVerifier();
     const state = PKCE.createState();
+
+    /** strict mode requires us to be smarter about destructuring */
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { forceRenew, login, ...config } = options;
     const authorizeUrlOptions = {
       ...config,
@@ -175,7 +178,6 @@ abstract class TokenManager {
 
       return window.location.assign(authorizeUrl);
     }
-
     /**
      * Exchange authorization code for tokens
      */

@@ -37,7 +37,11 @@ describe('Test OAuth2Client methods', () => {
   it('should construct proper authorization URL', async () => {
     const verifier = PKCE.createVerifier();
     const state = PKCE.createState();
-    const authorizeUrlOptions = { responseType: ResponseType.Code, state, verifier };
+    const authorizeUrlOptions = {
+      responseType: ResponseType.Code,
+      state,
+      verifier,
+    };
     const authorizeUrl = await OAuth2Client.createAuthorizeUrl(authorizeUrlOptions);
     console.log(authorizeUrl);
     // eslint-disable-next-line

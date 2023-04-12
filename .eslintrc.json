@@ -1,6 +1,6 @@
 {
   "root": true,
-  "plugins": ["@nrwl/nx", "@typescript-eslint"],
+  "plugins": ["@typescript-eslint", "@nrwl/nx"],
   "overrides": [
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
@@ -9,11 +9,23 @@
           "error",
           {
             "enforceBuildableLibDependency": true,
-            "allow": [],
+            "allow": ["@angular/router", "@angular/forms"],
             "depConstraints": [
               {
-                "sourceTag": "*",
-                "onlyDependOnLibsWithTags": ["*"]
+                "sourceTag": "scope:sample",
+                "onlyDependOnLibsWithTags": ["scope:sdk"]
+              },
+              {
+                "sourceTag": "scope:app",
+                "onlyDependOnLibsWithTags": ["scope:sdk"]
+              },
+              {
+                "sourceTag": "scope:e2e",
+                "onlyDependOnLibsWithTags": ["scope:sdk, scope:app"]
+              },
+              {
+                "sourceTag": "scope:sdk",
+                "onlyDependOnLibsWithTags": []
               }
             ]
           }

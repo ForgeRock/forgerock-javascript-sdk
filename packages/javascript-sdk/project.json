@@ -1,28 +1,19 @@
 {
+  "name": "javascript-sdk",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "packages/javascript-sdk/src",
   "projectType": "library",
   "targets": {
-    "tsc": {
-      "executor": "@nrwl/workspace:run-commands",
-      "options": {
-        "command": "tsc --project packages/javascript-sdk/tsconfig.esm.json"
-      },
-      "configurations": {
-        "cjs": {
-          "command": "tsc --project packages/javascript-sdk/tsconfig.cjs.json"
-        }
-      }
-    },
     "build": {
-      "executor": "@nrwl/web:rollup",
+      "executor": "@nrwl/rollup:rollup",
       "options": {
         "compiler": "babel",
         "entryFile": "packages/javascript-sdk/src/index.ts",
-        "outputPath": "packages/javascript-sdk/bundles",
+        "outputPath": "dist/packages/javascript-sdk",
+        "format": ["esm", "cjs"],
         "deleteOutputPath": true,
-        "rollupConfig": "packages/javascript-sdk/rollup.config.js",
-        "format": ["esm", "umd"],
+        "generateExportsField": true,
+        "updateBuildableProjectDepsInPackageJson": false,
         "project": "packages/javascript-sdk/package.json",
         "tsConfig": "packages/javascript-sdk/tsconfig.lib.json",
         "cwd": "packages/javascript-sdk",
@@ -59,7 +50,27 @@
           "codeCoverage": true
         }
       }
+    },
+    "publish": {
+      "executor": "@theunderscorer/nx-semantic-release:semantic-release"
+    },
+    "typedoc": {
+      "executor": "@enio.ai/typedoc:typedoc",
+      "outputs": ["docs/packages/javascript-sdk"],
+      "options": {
+        "options": "typedoc.json"
+      },
+      "configurations": {}
+    },
+    "release": {
+      "executor": "@theunderscorer/nx-semantic-release:semantic-release",
+      "options": {
+        "github": true,
+        "changelog": true,
+        "npm": true,
+        "tagFormat": "v${VERSION}"
+      }
     }
   },
-  "tags": []
+  "tags": ["scope:sdk"]
 }

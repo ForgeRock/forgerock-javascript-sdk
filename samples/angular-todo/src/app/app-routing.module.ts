@@ -23,7 +23,7 @@ const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'todos', canActivate: [AuthGuard], component: TodosComponent },
   { path: 'logout', component: LogoutComponent },
-  { path: '', redirectTo: 'home', pathMatch: 'full' },
+  { path: '/', redirectTo: 'home', pathMatch: 'full' },
 ];
 
 /**

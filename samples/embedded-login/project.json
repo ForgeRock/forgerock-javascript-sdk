@@ -1,8 +1,9 @@
 {
+  "name": "embedded-login",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
   "sourceRoot": "samples/embedded-login/src",
-  "tags": [],
+  "tags": ["scope:sample"],
   "targets": {
     "build": {
       "executor": "@nrwl/web:webpack",

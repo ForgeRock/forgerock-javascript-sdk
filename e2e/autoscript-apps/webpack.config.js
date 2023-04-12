@@ -34,7 +34,6 @@ const pages = [
   'config-token-storage',
   'misc-callbacks',
   'register-basic',
-  'umd-bundle-check',
 ];
 
 module.exports = (config) => {
@@ -60,7 +59,9 @@ module.exports = (config) => {
           chunks: ['index,', 'polyfill'],
         }),
     ),
-    new webpack.WatchIgnorePlugin({ paths: [/bundles|docs|lib|lib-esm|samples/] }),
+    new webpack.WatchIgnorePlugin({
+      paths: [/bundles|docs|lib|lib-esm|samples/],
+    }),
     new webpack.BannerPlugin({ banner }),
   ];
   return {

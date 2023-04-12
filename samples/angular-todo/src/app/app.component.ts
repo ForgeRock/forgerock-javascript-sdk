@@ -19,8 +19,8 @@ import {
   NavigationStart,
   Router,
 } from '@angular/router';
-import { filter, Observable } from 'rxjs';
-
+import { Observable } from 'rxjs';
+import { filter } from 'rxjs/operators';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
