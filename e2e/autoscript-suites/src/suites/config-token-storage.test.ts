@@ -11,8 +11,8 @@
 import { test, expect } from '@playwright/test';
 import { setupAndGo } from '../utilities/setup-and-go';
 
-test.describe('Test oauth login flow with localStorage', () => {
-  test(`Login successful`, async ({ page, browserName }) => {
+test.describe('Test oauth login flow with tokenStore configurations', () => {
+  test(`store tokens in sessionStorage`, async ({ page, browserName }) => {
     const { messageArray } = await setupAndGo(page, browserName, 'config-token-storage/', {
       tokenStore: 'sessionStorage',
     });
@@ -22,17 +22,7 @@ test.describe('Test oauth login flow with localStorage', () => {
     expect(messageArray.includes('Logout successful')).toBe(true);
   });
 
-  test(`Login successfull `, async ({ page, browserName }) => {
-    const { messageArray } = await setupAndGo(page, browserName, 'config-token-storage/', {
-      tokenStore: 'indexedDB',
-    });
-
-    // Test assertions
-    expect(messageArray.includes('Access token is correct')).toBe(true);
-    expect(messageArray.includes('Logout successful')).toBe(true);
-  });
-
-  test(`Login successfully`, async ({ page, browserName }) => {
+  test(`store tokens in customStore`, async ({ page, browserName }) => {
     const { messageArray } = await setupAndGo(page, browserName, 'config-token-storage/', {
       tokenStore: 'customStore',
     });

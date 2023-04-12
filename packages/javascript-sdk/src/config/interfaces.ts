@@ -29,7 +29,7 @@ interface ConfigOptions {
   redirectUri?: string;
   scope?: string;
   serverConfig?: ServerConfig;
-  tokenStore?: TokenStoreObject | 'indexedDB' | 'sessionStorage' | 'localStorage';
+  tokenStore?: TokenStoreObject | 'sessionStorage' | 'localStorage';
   tree?: string;
   type?: string;
   oauthThreshold?: number;
@@ -63,7 +63,7 @@ interface RequestObj {
 interface ServerConfig {
   baseUrl: string;
   paths?: CustomPathConfig;
-  timeout: number;
+  timeout?: number;
 }
 
 /**

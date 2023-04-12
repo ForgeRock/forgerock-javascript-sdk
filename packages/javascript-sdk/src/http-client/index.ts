@@ -119,12 +119,8 @@ abstract class HttpClient {
         // Walk through auth tree
         await this.stepIterator(initialStep, options.authorization.handleStep, type, tree);
         // See if OAuth tokens are being used
-        let tokens;
-        try {
-          tokens = await TokenStorage.get();
-        } catch (err) {
-          // No OAuth Tokens
-        }
+        const tokens = await TokenStorage.get();
+
         if (hasIG) {
           // Update URL with IDs and tokens for IG
           options.url = addAuthzInfoToURL(options.url, authorizationJSON.advices, tokens);
@@ -145,12 +141,7 @@ abstract class HttpClient {
   }
 
   private static async setAuthHeaders(headers: Headers, forceRenew: boolean): Promise<Headers> {
-    let tokens;
-    try {
-      tokens = await TokenStorage.get();
-    } catch (err) {
-      // No OAuth Tokens
-    }
+    let tokens = await TokenStorage.get();
 
     /**
      * Condition to see if Auth is session based or OAuth token based

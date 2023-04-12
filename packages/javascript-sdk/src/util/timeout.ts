@@ -18,7 +18,7 @@ import { DEFAULT_TIMEOUT } from '../config';
 function withTimeout<T>(promise: Promise<T>, timeout: number = DEFAULT_TIMEOUT): Promise<T> {
   const effectiveTimeout = timeout || DEFAULT_TIMEOUT;
   const timeoutP = new Promise<T>((_, reject) =>
-    window.setTimeout(() => reject(new Error('Timeout')), effectiveTimeout),
+    setTimeout(() => reject(new Error('Timeout')), effectiveTimeout),
   );
 
   return Promise.race([promise, timeoutP]);

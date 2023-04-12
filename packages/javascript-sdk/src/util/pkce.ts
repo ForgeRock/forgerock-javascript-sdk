@@ -45,7 +45,7 @@ abstract class PKCE {
    */
   public static base64UrlEncode(array: Uint8Array): string {
     const numbers = Array.prototype.slice.call(array);
-    const ascii = window.btoa(String.fromCharCode.apply(null, numbers));
+    const ascii = btoa(String.fromCharCode.apply(null, numbers));
     const urlEncoded = ascii.replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
     return urlEncoded;
   }
@@ -57,7 +57,7 @@ abstract class PKCE {
    */
   public static async sha256(value: string): Promise<Uint8Array> {
     const uint8Array = new TextEncoder().encode(value);
-    const hashBuffer = await window.crypto.subtle.digest('SHA-256', uint8Array);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', uint8Array);
     const hashArray = new Uint8Array(hashBuffer);
     return hashArray;
   }
@@ -68,7 +68,7 @@ abstract class PKCE {
    */
   private static createRandomString(num = 32): string {
     const random = new Uint8Array(num);
-    window.crypto.getRandomValues(random);
+    crypto.getRandomValues(random);
     return btoa(random.join('')).replace(/[^a-zA-Z0-9]+/, '');
   }
 }

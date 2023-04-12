@@ -61,7 +61,7 @@ function autoscript() {
             document.cookie = 'iPlanetDirectoryPro=abcd1234; domain=example.com; path=/';
             if (code && state) {
               window.sessionStorage.setItem(
-                clientId,
+                `FR-SDK-${clientId}`,
                 JSON.stringify({ responseType: 'code', state, verifier: '1234' }),
               );
             }
