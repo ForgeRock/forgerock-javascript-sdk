@@ -5,7 +5,7 @@
 # Generated code
 tmp/
 */dist/*
-dist
+dist/*
 packages/*/dist/
 packages/javascript-sdk/lib-esm
 packages/javascript-sdk/lib

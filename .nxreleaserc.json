@@ -5,11 +5,7 @@
   "ci": true,
   "commitMessage": "chore(release-${PROJECT_NAME}): ${nextRelease.version} [skip ci]",
   "packageJsonDir": "dist/packages/${PROJECT_NAME}",
-  "gitAssets": [
-    "dist/packages/${PROJECT_NAME}/*",
-    "packages/${PROJECT_NAME}/README.md",
-    "packages/${PROJECT_NAME}/CHANGELOG.md"
-  ],
+  "gitAssets": ["packages/${PROJECT_NAME}/README.md", "packages/${PROJECT_NAME}/CHANGELOG.md"],
   "buildTarget": "${PROJECT_NAME}:build",
   "outputPath": "dist/packages/${PROJECT_NAME}",
   "repositoryUrl": "https://github.com/ForgeRock/forgerock-javascript-sdk.git",
