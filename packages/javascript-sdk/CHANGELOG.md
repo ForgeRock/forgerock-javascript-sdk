@@ -1,3 +1,12 @@
+# [4.0.0-beta.3](https://github.com/ForgeRock/forgerock-javascript-sdk/compare/v4.0.0-beta.2...v4.0.0-beta.3) (2023-04-12)
+
+
+### Bug Fixes
+
+* **javascript-sdk:** fix-policy-types ([5a3ac2a](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/5a3ac2a3a80b4dff56fc0554b72bb646544b826d))
+* **javascript-sdk:** validated-create-password-callback-json ([f619062](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/f619062ee13b05dfc29c3b3dcdedd14bb9635a0e))
+* **javascript-sdk:** validated-user-name-policies ([b08fcaa](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/b08fcaaf2c3e2498b5e73e1d6aed2751bb026dec))
+
 # [4.0.0-beta.2](https://github.com/ForgeRock/forgerock-javascript-sdk/compare/v4.0.0-beta.1...v4.0.0-beta.2) (2023-04-12)
 
 
