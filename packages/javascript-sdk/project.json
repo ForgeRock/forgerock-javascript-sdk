@@ -10,6 +10,13 @@
         "compiler": "babel",
         "entryFile": "packages/javascript-sdk/src/index.ts",
         "outputPath": "dist/packages/javascript-sdk",
+        "assets": [
+          {
+            "input": "packages/javascript-sdk",
+            "glob": "README.md",
+            "output": "/"
+          }
+        ],
         "format": ["esm", "cjs"],
         "deleteOutputPath": true,
         "generateExportsField": true,
