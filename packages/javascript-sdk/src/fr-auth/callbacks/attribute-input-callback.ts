@@ -55,7 +55,13 @@ class AttributeInputCallback<T extends string | number | boolean> extends FRCall
       'failedPolicies',
       [],
     ) as unknown as string[];
-    return failedPolicies.map((v) => JSON.parse(v)) as PolicyRequirement[];
+    try {
+      return failedPolicies.map((v) => JSON.parse(v)) as PolicyRequirement[];
+    } catch (err) {
+      throw new Error(
+        'Unable to parse "failed policies" from the ForgeRock server. The JSON within `AttributeInputCallback` was either malformed or missing.',
+      );
+    }
   }
 
   /**
