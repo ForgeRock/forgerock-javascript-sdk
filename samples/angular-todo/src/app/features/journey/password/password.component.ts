@@ -104,14 +104,10 @@ export class PasswordComponent implements OnInit {
     const validationFailures: string[] = [];
 
     failedPolicies.forEach((policy) => {
-      const policyObj = JSON.parse(JSON.parse(JSON.stringify(policy)));
-
-      console.log(policyObj.policyRequirement);
-
-      switch (policyObj.policyRequirement) {
+      switch (policy.policyRequirement) {
         case 'LENGTH_BASED':
           validationFailures.push(
-            `Ensure password contains more than ${policyObj.params['min-password-length']} characters. `,
+            `Ensure password contains more than ${policy.params['min-password-length']} characters. `,
           );
           break;
         case 'CHARACTER_SET':

@@ -34,7 +34,7 @@ describe('ValidatedCreateUsernameCallback', () => {
       },
       {
         name: 'failedPolicies',
-        value: ['c', 'd'],
+        value: [JSON.stringify({ failedPolicies: { c: 'c', d: 'd' } })],
       },
       {
         name: 'validateOnly',
@@ -67,7 +67,7 @@ describe('ValidatedCreateUsernameCallback', () => {
     expect(cb.getPrompt()).toBe('Username');
     expect(cb.isRequired()).toBe(true);
     expect(cb.getPolicies().policyRequirements).toStrictEqual(['a', 'b']);
-    expect(cb.getFailedPolicies()).toStrictEqual(['c', 'd']);
+    expect(cb.getFailedPolicies()).toStrictEqual([{ failedPolicies: { c: 'c', d: 'd' } }]);
     expect(cb.payload.input[0].value).toBe('abcd123');
     expect(cb.payload.input[1].value).toBe(true);
   });
