@@ -92,6 +92,7 @@ jobs:
           git_config_global: true
       - run: npm ci
       - run: npm install @nrwl/nx-cloud
+      - run: npm install conventional-changelog-writer -D
       - name: Derive appropriate SHAs for base and head for `nx affected` commands
         id: sha
         uses: nrwl/nx-set-shas@v2
