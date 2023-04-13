@@ -1,3 +1,10 @@
+# [4.0.0-beta.4](https://github.com/ForgeRock/forgerock-javascript-sdk/compare/v4.0.0-beta.3...v4.0.0-beta.4) (2023-04-13)
+
+
+### Bug Fixes
+
+* **javascript-sdk:** fix-publish-readme-and-dist ([2a06503](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/2a065035a67babd263dd896823cf46eb942ccbd0))
+
 # [4.0.0-beta.4](https://github.com/ForgeRock/forgerock-javascript-sdk/compare/v4.0.0-beta.3...v4.0.0-beta.4) (2023-04-12)
 
 
