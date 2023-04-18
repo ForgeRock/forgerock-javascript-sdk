@@ -17,10 +17,7 @@
             "output": "/"
           }
         ],
-        "format": [
-          "esm",
-          "cjs"
-        ],
+        "format": ["esm", "cjs"],
         "deleteOutputPath": true,
         "generateExportsField": true,
         "updateBuildableProjectDepsInPackageJson": false,
@@ -32,71 +29,46 @@
       "configurations": {
         "production": {}
       },
-      "outputs": [
-        "{options.outputPath}"
-      ]
+      "outputs": ["{options.outputPath}"]
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",
-      "outputs": [
-        "{options.outputFile}"
-      ],
+      "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": [
-          "packages/javascript-sdk/**/*.ts"
-        ],
+        "lintFilePatterns": ["packages/javascript-sdk/**/*.ts"],
         "fix": true,
         "ignorePath": ".gitignore"
       }
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": [
-        "coverage/packages/javascript-sdk"
-      ],
+      "outputs": ["coverage/packages/javascript-sdk"],
       "options": {
         "jestConfig": "packages/javascript-sdk/jest.config.ts",
-        "testPathPattern": [
-          "packages/javascript-sdk/src"
-        ],
+        "testPathPattern": ["packages/javascript-sdk/src"],
         "codeCoverage": true,
         "passWithNoTests": true
       },
       "configurations": {
         "unit": {},
         "integration": {
-          "testPathPattern": [
-            "packages/javascript-sdk/tests/integration"
-          ],
+          "testPathPattern": ["packages/javascript-sdk/tests/integration"],
           "passWithNoTests": true,
           "codeCoverage": true
         }
       }
     },
-    "publish": {
-      "executor": "@theunderscorer/nx-semantic-release:semantic-release"
-    },
     "typedoc": {
       "executor": "@enio.ai/typedoc:typedoc",
-      "outputs": [
-        "docs/packages/javascript-sdk"
-      ],
+      "outputs": ["docs/packages/javascript-sdk"],
       "options": {
         "options": "typedoc.json"
       },
       "configurations": {}
     },
     "release": {
-      "executor": "@theunderscorer/nx-semantic-release:semantic-release",
-      "options": {
-        "github": true,
-        "changelog": true,
-        "npm": true,
-        "tagFormat": "v${VERSION}"
-      }
+      "executor": "@theunderscorer/nx-semantic-release:semantic-release"
     }
   },
-  "tags": [
-    "scope:sdk"
-  ]
+  "tags": ["scope:sdk"]
 }
