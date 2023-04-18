@@ -67,7 +67,10 @@
       "configurations": {}
     },
     "release": {
-      "executor": "@theunderscorer/nx-semantic-release:semantic-release"
+      "executor": "@theunderscorer/nx-semantic-release:semantic-release",
+      "options": {
+        "tagFormat": "v${version}"
+      }
     }
   },
   "tags": ["scope:sdk"]

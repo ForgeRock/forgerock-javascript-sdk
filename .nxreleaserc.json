@@ -1,6 +1,6 @@
 {
   "ci": true,
-  "commitMessage": "chore(release-${PROJECT_NAME}): ${nextRelease.version} [skip ci]",
+  "commitMessage": "chore(${PROJECT_NAME}): ${nextRelease.version} [skip ci]",
   "gitAssets": ["packages/${PROJECT_NAME}/README.md", "packages/${PROJECT_NAME}/CHANGELOG.md"],
   "buildTarget": "${PROJECT_NAME}:build",
   "outputPath": "dist/packages/${PROJECT_NAME}",
