@@ -7,6 +7,7 @@ let targetPath =
     : 'samples/angular-todo/src/environments/environment.ts';
 
 const envConfigFile = `export const environment = {
+   APP_URL: 'https://angular.example.com:8443',
    AM_URL: '${process.env.AM_URL}',
    REALM_PATH: '${process.env.REALM_PATH}',
    WEB_OAUTH_CLIENT: '${process.env.WEB_OAUTH_CLIENT}',

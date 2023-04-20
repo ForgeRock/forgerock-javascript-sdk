@@ -65,7 +65,8 @@
       "defaultConfiguration": "development"
     },
     "serve": {
-      "executor": "@nrwl/angular:webpack-server",
+      "executor": "@nrwl/angular:webpack-dev-server",
+      "outputs": ["{options.outputPath}"],
       "options": {
         "open": true,
         "ssl": true,
