@@ -7,7 +7,7 @@
     "build": {
       "executor": "@nrwl/rollup:rollup",
       "options": {
-        "compiler": "babel",
+        "compiler": "tsc",
         "entryFile": "packages/javascript-sdk/src/index.ts",
         "outputPath": "dist/packages/javascript-sdk",
         "assets": [
