@@ -20,6 +20,7 @@ import {
   parseRelyingPartyId,
 } from './helpers';
 import {
+  AttestationType,
   RelyingParty,
   WebAuthnAuthenticationMetadata,
   WebAuthnCallbacks,
@@ -29,6 +30,15 @@ import {
 import TextOutputCallback from '../fr-auth/callbacks/text-output-callback';
 import { parseWebAuthnAuthenticateText, parseWebAuthnRegisterText } from './script-parser';
 
+// <clientdata>::<attestation>::<publickeyCredential>::<DeviceName>
+type OutcomeWithName<
+  ClientId extends string,
+  Attestation extends AttestationType,
+  PubKeyCred extends PublicKeyCredential,
+  Name = '',
+> = Name extends infer P extends string
+  ? `${ClientId}::${Attestation}::${PubKeyCred['id']}${P extends '' ? '' : `::${P}`}`
+  : never;
 // JSON-based WebAuthn
 type WebAuthnMetadata = WebAuthnAuthenticationMetadata | WebAuthnRegistrationMetadata;
 // Script-based WebAuthn
@@ -92,7 +102,7 @@ abstract class FRWebAuthn {
   public static async authenticate(step: FRStep): Promise<FRStep> {
     const { hiddenCallback, metadataCallback, textOutputCallback } = this.getCallbacks(step);
     if (hiddenCallback && (metadataCallback || textOutputCallback)) {
-      let outcome: string;
+      let outcome: ReturnType<typeof this.getAuthenticationOutcome>;
 
       try {
         let publicKey: PublicKeyCredentialRequestOptions;
@@ -127,17 +137,22 @@ abstract class FRWebAuthn {
       throw e;
     }
   }
-
   /**
    * Populates the step with the necessary registration outcome.
    *
    * @param step The step that contains WebAuthn registration data
    * @return The populated step
    */
-  public static async register(step: FRStep): Promise<FRStep> {
+  // Can make this generic const in Typescritp 5.0 > and the name itself will
+  // be inferred from the type so `typeof deviceName` will not just return string
+  // but the actual name of the deviceName passed in as a generic.
+  public static async register<T extends string = undefined>(
+    step: FRStep,
+    deviceName?: T,
+  ): Promise<FRStep> {
     const { hiddenCallback, metadataCallback, textOutputCallback } = this.getCallbacks(step);
     if (hiddenCallback && (metadataCallback || textOutputCallback)) {
-      let outcome: string;
+      let outcome: OutcomeWithName<string, AttestationType, PublicKeyCredential>;
 
       try {
         let publicKey: PublicKeyCredentialRequestOptions;
@@ -147,10 +162,9 @@ abstract class FRWebAuthn {
         } else if (textOutputCallback) {
           publicKey = parseWebAuthnRegisterText(textOutputCallback.getMessage());
         }
-        // TypeScript doesn't like `publicKey` being assigned in conditionals above
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        const credential = await this.getRegistrationCredential(publicKey);
+        const credential = await this.getRegistrationCredential(
+          publicKey as PublicKeyCredentialCreationOptions,
+        );
         outcome = this.getRegistrationOutcome(credential);
       } catch (error) {
         if (!(error instanceof Error)) throw error;
@@ -162,8 +176,7 @@ abstract class FRWebAuthn {
         hiddenCallback.setInputValue(`${WebAuthnOutcome.Error}::${error.name}:${error.message}`);
         throw error;
       }
-
-      hiddenCallback.setInputValue(outcome);
+      hiddenCallback.setInputValue(deviceName ? `${outcome}::${deviceName}` : outcome);
       return step;
     } else {
       const e = new Error('Incorrect callbacks for WebAuthn registration');
@@ -263,7 +276,11 @@ abstract class FRWebAuthn {
    * @param credential The credential to convert
    * @return The outcome string
    */
-  public static getAuthenticationOutcome(credential: PublicKeyCredential | null): string {
+  public static getAuthenticationOutcome(
+    credential: PublicKeyCredential | null,
+  ):
+    | OutcomeWithName<string, AttestationType, typeof credential>
+    | OutcomeWithName<string, AttestationType, typeof credential, string> {
     if (credential === null) {
       const e = new Error('No credential generated from authentication');
       e.name = WebAuthnOutcomeType.UnknownError;
@@ -273,7 +290,9 @@ abstract class FRWebAuthn {
     try {
       const clientDataJSON = arrayBufferToString(credential.response.clientDataJSON);
       const assertionResponse = credential.response as AuthenticatorAssertionResponse;
-      const authenticatorData = new Int8Array(assertionResponse.authenticatorData).toString();
+      const authenticatorData = new Int8Array(
+        assertionResponse.authenticatorData,
+      ).toString() as AttestationType;
       const signature = new Int8Array(assertionResponse.signature).toString();
 
       // Current native typing for PublicKeyCredential does not include `userHandle`
@@ -281,11 +300,23 @@ abstract class FRWebAuthn {
       // @ts-ignore
       const userHandle = arrayBufferToString(credential.response.userHandle);
 
-      let stringOutput = `${clientDataJSON}::${authenticatorData}::${signature}::${credential.id}`;
+      let stringOutput =
+        `${clientDataJSON}::${authenticatorData}::${signature}::${credential.id}` as OutcomeWithName<
+          string,
+          AttestationType,
+          PublicKeyCredential
+        >;
       // Check if Username is stored on device
       if (userHandle) {
         stringOutput = `${stringOutput}::${userHandle}`;
+        return stringOutput as OutcomeWithName<
+          string,
+          AttestationType,
+          PublicKeyCredential,
+          string
+        >;
       }
+
       return stringOutput;
     } catch (error) {
       const e = new Error('Transforming credential object to string failed');
@@ -321,7 +352,9 @@ abstract class FRWebAuthn {
    * @param credential The credential to convert
    * @return The outcome string
    */
-  public static getRegistrationOutcome(credential: PublicKeyCredential | null): string {
+  public static getRegistrationOutcome(
+    credential: PublicKeyCredential | null,
+  ): OutcomeWithName<string, AttestationType, PublicKeyCredential> {
     if (credential === null) {
       const e = new Error('No credential generated from registration');
       e.name = WebAuthnOutcomeType.UnknownError;
@@ -331,7 +364,9 @@ abstract class FRWebAuthn {
     try {
       const clientDataJSON = arrayBufferToString(credential.response.clientDataJSON);
       const attestationResponse = credential.response as AuthenticatorAttestationResponse;
-      const attestationObject = new Int8Array(attestationResponse.attestationObject).toString();
+      const attestationObject = new Int8Array(
+        attestationResponse.attestationObject,
+      ).toString() as AttestationType.Direct;
       return `${clientDataJSON}::${attestationObject}::${credential.id}`;
     } catch (error) {
       const e = new Error('Transforming credential object to string failed');
