@@ -69,7 +69,8 @@
     "release": {
       "executor": "@theunderscorer/nx-semantic-release:semantic-release",
       "options": {
-        "tagFormat": "v${version}"
+        "tagFormat": "v${version}",
+        "preset": "conventionalcommits"
       }
     }
   },
