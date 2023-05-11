@@ -5,7 +5,7 @@
   "projectType": "library",
   "targets": {
     "build": {
-      "executor": "@nrwl/rollup:rollup",
+      "executor": "@nx/rollup:rollup",
       "options": {
         "compiler": "tsc",
         "entryFile": "packages/javascript-sdk/src/index.ts",
@@ -32,7 +32,7 @@
       "outputs": ["{options.outputPath}"]
     },
     "lint": {
-      "executor": "@nrwl/linter:eslint",
+      "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": ["packages/javascript-sdk/**/*.ts"],
@@ -41,7 +41,7 @@
       }
     },
     "test": {
-      "executor": "@nrwl/jest:jest",
+      "executor": "@nx/jest:jest",
       "outputs": ["coverage/packages/javascript-sdk"],
       "options": {
         "jestConfig": "packages/javascript-sdk/jest.config.ts",
@@ -69,7 +69,6 @@
     "release": {
       "executor": "@theunderscorer/nx-semantic-release:semantic-release",
       "options": {
-        "tagFormat": "v${version}",
         "preset": "conventionalcommits"
       }
     }

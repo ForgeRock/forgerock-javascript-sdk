@@ -3,7 +3,7 @@ ARG SOURCE_IMAGE=$SOURCE_IMAGE
 FROM $SOURCE_IMAGE as builder
 WORKDIR /app/builder
 
-RUN npx nx build central-login --parallel --prod
+RUN npm run nx build central-login --parallel --prod
 
 FROM nginx:1.23.3-alpine
 

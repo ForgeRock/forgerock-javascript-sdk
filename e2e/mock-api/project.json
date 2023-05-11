@@ -5,7 +5,7 @@
   "projectType": "application",
   "targets": {
     "build": {
-      "executor": "@nrwl/esbuild:esbuild",
+      "executor": "@nx/esbuild:esbuild",
       "outputs": ["{options.outputPath}"],
       "options": {
         "platform": "node",
@@ -18,7 +18,8 @@
         "generatePackageJson": true,
         "esbuildOptions": {
           "sourcemap": true
-        }
+        },
+        "thirdParty": true
       },
       "configurations": {
         "development": {
@@ -38,7 +39,7 @@
       }
     },
     "serve": {
-      "executor": "@nrwl/js:node",
+      "executor": "@nx/js:node",
       "options": {
         "buildTarget": "mock-api:build",
         "watch": true
@@ -53,7 +54,7 @@
       }
     },
     "deploy": {
-      "executor": "@nrwl/workspace:run-commands",
+      "executor": "@nx/workspace:run-commands",
       "options": {
         "commands": [
           "nx build mock-api --prod",
@@ -63,7 +64,7 @@
       }
     },
     "lint": {
-      "executor": "@nrwl/linter:eslint",
+      "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": ["e2e/mock-api/**/*.ts"],
@@ -72,7 +73,7 @@
       }
     },
     "test": {
-      "executor": "@nrwl/jest:jest",
+      "executor": "@nx/jest:jest",
       "outputs": ["coverage/e2e/mock-api"],
       "options": {
         "jestConfig": "e2e/mock-api/jest.config.ts",

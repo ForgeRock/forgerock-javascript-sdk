@@ -8,6 +8,7 @@
   "github": true,
   "changelog": true,
   "npm": true,
+  "tag": "${PROJECT_NAME}-v${version}",
   "branches": [
     "+([0-9])?(.{+([0-9]),x}).x",
     "master",

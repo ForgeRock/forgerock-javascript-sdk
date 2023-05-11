@@ -114,7 +114,7 @@ deploy:
 dev:
   todo-api:
     image: ${OKTETO_BUILD_DEV_IMAGE}
-    command: npx nx serve todo-api --configuration=okteto
+    command: npm run nx serve todo-api --configuration=okteto
     workdir: /app/builder
     sync:
       - .:/app/builder
@@ -123,7 +123,7 @@ dev:
       - 8443:80
   angular-todo:
     image: ${OKTETO_BUILD_DEV_IMAGE}
-    command: npx nx serve angular-todo --configuration=okteto
+    command: npm run nx serve angular-todo --configuration=okteto
     workdir: /app/builder
     sync:
       - .:/app/builder
@@ -134,7 +134,7 @@ dev:
 
   reactjs-todo:
     image: ${OKTETO_BUILD_DEV_IMAGE}
-    command: npx nx serve reactjs-todo --configuration=okteto
+    command: npm run nx serve reactjs-todo --configuration=okteto
     workdir: /app/builder
     sync:
       - .:/app/builder
@@ -145,7 +145,7 @@ dev:
 
   central-login:
     image: ${OKTETO_BUILD_DEV_IMAGE}
-    command: npx nx serve central-login --configuration=okteto
+    command: npm run nx serve central-login --configuration=okteto
     workdir: /app/builder
     sync:
       - .:/app/builder
@@ -156,7 +156,7 @@ dev:
 
   embedded-login:
     image: ${OKTETO_BUILD_DEV_IMAGE}
-    command: npx nx serve embedded-login --configuration=okteto
+    command: npm run nx serve embedded-login --configuration=okteto
     workdir: /app/builder
     sync:
       - .:/app/builder

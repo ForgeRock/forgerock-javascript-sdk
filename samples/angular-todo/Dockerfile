@@ -3,7 +3,7 @@ ARG SOURCE_IMAGE=$SOURCE_IMAGE
 FROM $SOURCE_IMAGE as builder
 WORKDIR /app/builder
 
-RUN npx nx build angular-todo --prod
+RUN npm run nx build angular-todo -- --skipNxCache --configuration=production
 
 FROM nginx:1.23.3-alpine
 
