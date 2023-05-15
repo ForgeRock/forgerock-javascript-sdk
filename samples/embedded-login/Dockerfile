@@ -4,7 +4,7 @@ FROM $SOURCE_IMAGE as builder
 WORKDIR /app/builder
 COPY . .
 
-RUN npx nx build embedded-login --prod
+RUN npm run nx build embedded-login --prod
 
 FROM nginx:1.23.3-alpine
 

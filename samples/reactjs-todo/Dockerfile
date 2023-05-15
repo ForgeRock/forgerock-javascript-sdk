@@ -3,7 +3,7 @@ ARG SOURCE_IMAGE=$SOURCE_IMAGE
 FROM $SOURCE_IMAGE as builder
 WORKDIR /app/builder
 
-RUN npx nx build reactjs-todo --prod 
+RUN npm run nx build reactjs-todo --prod 
 
 FROM nginx:1.23.3-alpine
 

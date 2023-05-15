@@ -1,155 +1,35 @@
-## [4.0.0-beta.1](https://github.com/ForgeRock/forgerock-javascript-sdk/compare/v3.4.0...v4.0.0-beta.1) (2023-05-08)
-
-
-### ⚠ BREAKING CHANGES
-
-* **javascript-sdk:** refactor token storage and config timeout
-* **javascript-sdk:** remove the frui and event classes / folders and
-references.
-* **javascript-sdk:** for some reason breaking changes arent triggered by
-semver so i'm auto triggering it here
-* **javascript-sdk:** commit 48cc494  didn't get picked up for breaking
-change, unsure why so i'm adding it here. there isn o breaking change in
-this commit
-* **javascript-sdk:** remove the ability to use 'modern' as a means of making calls. fetch
-complicates the auth process too much for the value it provides. we've
-opted to remove this support property, automatically defaulting to the
-iframe.
-
-### Features
-
-* **javascript-sdk:** register-device-name ([f845505](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/f845505d68e648bf3e6dd8068f2abb8133c7c304))
-
-
-### Bug Fixes
-
-* **javascript-sdk:** correct code / type in  getTokens call ([abd3e66](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/abd3e663286b8e830f568cce59fa652c16abbbb1))
-* **javascript-sdk:** fix-policy-types ([5a3ac2a](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/5a3ac2a3a80b4dff56fc0554b72bb646544b826d))
-* **javascript-sdk:** fix-publish-readme-and-dist ([2a06503](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/2a065035a67babd263dd896823cf46eb942ccbd0))
-* **javascript-sdk:** fix-type-of-get-type ([56a0822](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/56a08229f71acfcf7a87e129fb55d54eda44095a))
-* **javascript-sdk:** package-json ([9c03c28](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/9c03c2874cdd552f4f21236d42bb2b783f6e9be6))
-* **javascript-sdk:** release process ([9f1b3a3](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/9f1b3a372d5d89c11d17122e9e749d87ed78d55b))
-* **javascript-sdk:** release-process ([baabf80](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/baabf808ae11389b892a84e5add1fae7b8a37efb))
-* **javascript-sdk:** remove-modules-unneeded ([bd2e1fe](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/bd2e1feb2ff926ff9c9eb984907c2d2bd9cc8027))
-* **javascript-sdk:** remove-support-property ([48cc494](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/48cc4947105ce1b0559cd988913758f8eb17cecb))
-* **javascript-sdk:** removes-rogue-package-updates-infra ([77dd8da](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/77dd8da94074591f72e4767de66d035383d4b485))
-* **javascript-sdk:** use-prompt-none ([c1f4b49](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/c1f4b49f3dcf76dbb5fe40a7c0819106ba494510))
-* **javascript-sdk:** validated-create-password-callback-json ([f619062](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/f619062ee13b05dfc29c3b3dcdedd14bb9635a0e))
-* **javascript-sdk:** validated-user-name-policies ([b08fcaa](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/b08fcaaf2c3e2498b5e73e1d6aed2751bb026dec))
-* release-failure-packages ([22ded72](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/22ded728308d1513dc53a6d198e70c09f9d2008b))
-* remove-beta ([2f8299e](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/2f8299e339ebf48809fd2f9433f8429fb12e3885))
-
-
-### Miscellaneous Chores
-
-* **javascript-sdk:** pr comments ([f9e2622](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/f9e2622c9a99407814cbf721cae2f179f95dc4f6))
-* **javascript-sdk:** refactor token storage and config timeout ([23f8e4c](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/23f8e4c811c7a61ce51b49de699f2788a8d3e279))
-
-# [4.0.0-beta.4](https://github.com/ForgeRock/forgerock-javascript-sdk/compare/v4.0.0-beta.3...v4.0.0-beta.4) (2023-04-19)
-
-
-### Bug Fixes
-
-* **javascript-sdk:** fix-publish-readme-and-dist ([2a06503](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/2a065035a67babd263dd896823cf46eb942ccbd0))
-* **javascript-sdk:** release process ([9f1b3a3](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/9f1b3a372d5d89c11d17122e9e749d87ed78d55b))
-* **javascript-sdk:** release-process ([baabf80](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/baabf808ae11389b892a84e5add1fae7b8a37efb))
-* release-failure-packages ([22ded72](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/22ded728308d1513dc53a6d198e70c09f9d2008b))
-
-# 1.0.0-beta.1 (2023-04-18)
-
-
-### Bug Fixes
-
-* fix-lockfile ([5122de1](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/5122de1a85b965c147a11612417c74c39d0c7a7d))
-* **javascript-sdk:** add-back-proper-namespace ([245d85e](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/245d85eef06149b0ad4bb0cae841d50d33bebb6c))
-* **javascript-sdk:** capitalize headers ([9287f3b](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/9287f3b739bc2f9816ff7b0d7d41202edc86e183))
-* **javascript-sdk:** correct code / type in  getTokens call ([abd3e66](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/abd3e663286b8e830f568cce59fa652c16abbbb1))
-* **javascript-sdk:** fix-policy-types ([5a3ac2a](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/5a3ac2a3a80b4dff56fc0554b72bb646544b826d))
-* **javascript-sdk:** fix-profile-object-checks ([01e41e7](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/01e41e75321cb6c9c1a037ff1788cde2cfc56c04))
-* **javascript-sdk:** fix-publish-readme-and-dist ([2a06503](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/2a065035a67babd263dd896823cf46eb942ccbd0))
-* **javascript-sdk:** fix-release ([06d2f33](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/06d2f3302d138a97dc47582e68035ad81774f9b0))
-* **javascript-sdk:** fix-type-of-get-type ([56a0822](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/56a08229f71acfcf7a87e129fb55d54eda44095a))
-* **javascript-sdk:** fixing-comment ([ea68f26](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/ea68f26f40700f6bfb98e5fcd0dfe64d0714c798))
-* **javascript-sdk:** release-process ([baabf80](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/baabf808ae11389b892a84e5add1fae7b8a37efb))
-* **javascript-sdk:** remove-support-property ([48cc494](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/48cc4947105ce1b0559cd988913758f8eb17cecb))
-* **javascript-sdk:** removes-rogue-package-updates-infra ([77dd8da](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/77dd8da94074591f72e4767de66d035383d4b485))
-* **javascript-sdk:** use-prompt-none ([c1f4b49](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/c1f4b49f3dcf76dbb5fe40a7c0819106ba494510))
-* **javascript-sdk:** validated-create-password-callback-json ([f619062](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/f619062ee13b05dfc29c3b3dcdedd14bb9635a0e))
-* **javascript-sdk:** validated-user-name-policies ([b08fcaa](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/b08fcaaf2c3e2498b5e73e1d6aed2751bb026dec))
-* release-failure-packages ([22ded72](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/22ded728308d1513dc53a6d198e70c09f9d2008b))
-* remove-beta ([2f8299e](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/2f8299e339ebf48809fd2f9433f8429fb12e3885))
-
-
-### chore
-
-* **javascript-sdk:** pr comments ([f9e2622](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/f9e2622c9a99407814cbf721cae2f179f95dc4f6))
-
-
-* fix(javascript-sdk)!: remove-modules-unneeded ([bd2e1fe](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/bd2e1feb2ff926ff9c9eb984907c2d2bd9cc8027))
-* fix(javascript-sdk)!: package-json ([9c03c28](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/9c03c2874cdd552f4f21236d42bb2b783f6e9be6))
-
-
-### Features
-
-* **javascript-sdk,autoscript-apps,autoscript-suites,mock-api:** add-saml-params-to-resume ([5fcdcd2](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/5fcdcd251a6be2441ecb88dda5341457728848a4))
-* **javascript-sdk:** add tests to textinputcallback external contribution ([56eca0f](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/56eca0fcb27c5c06f0183fd0bcb80b3a232e7611))
-* **javascript-sdk:** added-text-input-callback ([444eeb2](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/444eeb237ae6f5b454089aab84f8d78e9bbd2ed5))
-* release- v3.4.0 ([6915d43](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/6915d43a4e04f8f1796ecfae4cabd0c568f3b08d))
-* upgrade-nx-14 ([216e801](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/216e801c06d3bd8d4f3d5290e13ac829e20ab034))
-
-
-### BREAKING CHANGES
-
-* remove the frui and event classes / folders and
-references.
-* for some reason breaking changes arent triggered by
-semver so i'm auto triggering it here
-* **javascript-sdk:** commit 48cc494  didn't get picked up for breaking
-change, unsure why so i'm adding it here. there isn o breaking change in
-this commit
-* **javascript-sdk:** remove the ability to use 'modern' as a means of making calls. fetch
-complicates the auth process too much for the value it provides. we've
-opted to remove this support property, automatically defaulting to the
-iframe.
-
 # [4.0.0-beta.4](https://github.com/ForgeRock/forgerock-javascript-sdk/compare/v4.0.0-beta.3...v4.0.0-beta.4) (2023-04-13)
 
-
 ### Bug Fixes
 
-* **javascript-sdk:** fix-publish-readme-and-dist ([2a06503](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/2a065035a67babd263dd896823cf46eb942ccbd0))
+- **javascript-sdk:** fix-publish-readme-and-dist ([2a06503](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/2a065035a67babd263dd896823cf46eb942ccbd0))
 
 # [4.0.0-beta.4](https://github.com/ForgeRock/forgerock-javascript-sdk/compare/v4.0.0-beta.3...v4.0.0-beta.4) (2023-04-12)
 
-
 ### Bug Fixes
 
-* **javascript-sdk:** fix-publish-readme-and-dist ([2a06503](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/2a065035a67babd263dd896823cf46eb942ccbd0))
+- **javascript-sdk:** fix-publish-readme-and-dist ([2a06503](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/2a065035a67babd263dd896823cf46eb942ccbd0))
 
 # [4.0.0-beta.3](https://github.com/ForgeRock/forgerock-javascript-sdk/compare/v4.0.0-beta.2...v4.0.0-beta.3) (2023-04-12)
 
-
 ### Bug Fixes
 
-* **javascript-sdk:** fix-policy-types ([5a3ac2a](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/5a3ac2a3a80b4dff56fc0554b72bb646544b826d))
-* **javascript-sdk:** validated-create-password-callback-json ([f619062](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/f619062ee13b05dfc29c3b3dcdedd14bb9635a0e))
-* **javascript-sdk:** validated-user-name-policies ([b08fcaa](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/b08fcaaf2c3e2498b5e73e1d6aed2751bb026dec))
+- **javascript-sdk:** fix-policy-types ([5a3ac2a](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/5a3ac2a3a80b4dff56fc0554b72bb646544b826d))
+- **javascript-sdk:** validated-create-password-callback-json ([f619062](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/f619062ee13b05dfc29c3b3dcdedd14bb9635a0e))
+- **javascript-sdk:** validated-user-name-policies ([b08fcaa](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/b08fcaaf2c3e2498b5e73e1d6aed2751bb026dec))
 
 # [4.0.0-beta.2](https://github.com/ForgeRock/forgerock-javascript-sdk/compare/v4.0.0-beta.1...v4.0.0-beta.2) (2023-04-12)
 
-
 ### Bug Fixes
 
-* **javascript-sdk:** removes-rogue-package-updates-infra ([77dd8da](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/77dd8da94074591f72e4767de66d035383d4b485))
+- **javascript-sdk:** removes-rogue-package-updates-infra ([77dd8da](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/77dd8da94074591f72e4767de66d035383d4b485))
 
-
-* fix(javascript-sdk)!: remove-modules-unneeded ([bd2e1fe](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/bd2e1feb2ff926ff9c9eb984907c2d2bd9cc8027))
-
+- fix(javascript-sdk)!: remove-modules-unneeded ([bd2e1fe](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/bd2e1feb2ff926ff9c9eb984907c2d2bd9cc8027))
 
 ### BREAKING CHANGES
 
-* remove the frui and event classes / folders and
-references.
+- remove the frui and event classes / folders and
+  references.
 
 # Changelog
 

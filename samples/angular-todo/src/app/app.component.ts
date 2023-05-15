@@ -41,7 +41,7 @@ export class AppComponent implements OnInit {
           evt instanceof NavigationCancel ||
           evt instanceof NavigationError,
       ),
-    ) as Observable<NavigationStart>;
+    );
 
     navStart.subscribe(() => (this.loading = true));
     navEnd.subscribe(() => (this.loading = false));

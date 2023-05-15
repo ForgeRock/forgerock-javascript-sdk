@@ -6,7 +6,7 @@
   "tags": ["scope:sample"],
   "targets": {
     "build": {
-      "executor": "@nrwl/web:webpack",
+      "executor": "@nx/webpack:webpack",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/samples/embedded-login",
@@ -34,7 +34,7 @@
       "defaultConfiguration": "production"
     },
     "serve": {
-      "executor": "@nrwl/web:dev-server",
+      "executor": "@nx/web:dev-server",
       "options": {
         "buildTarget": "embedded-login:build",
         "port": 8443,
@@ -56,7 +56,7 @@
       "defaultConfiguration": "development"
     },
     "lint": {
-      "executor": "@nrwl/linter:eslint",
+      "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
         "fix": true,

@@ -9,20 +9,14 @@
  */
 
 import { Injectable } from '@angular/core';
-import {
-  ActivatedRouteSnapshot,
-  CanActivate,
-  RouterStateSnapshot,
-  UrlTree,
-  Router,
-} from '@angular/router';
+import { ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router } from '@angular/router';
 import { UserService } from '../services/user.service';
 import { TokenStorage, UserManager } from '@forgerock/javascript-sdk';
 
 @Injectable({
   providedIn: 'root',
 })
-export class AuthGuard implements CanActivate {
+export class AuthGuard {
   constructor(public userService: UserService, private router: Router) {}
 
   /**
