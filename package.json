@@ -17,7 +17,7 @@
     "build:reactjs-todo": "nx run reactjs-todo:build",
     "build:angular-todo": "nx run angular-todo:build",
     "prepare": "husky install",
-    "release": "nx affected --target=release",
+    "release": "nx run-many --target=release",
     "start:e2e": "nx run-many --target=serve --projects=autoscript-apps,mock-api --configuration=development",
     "start:embedded-login": "nx serve embedded-login",
     "start:central-login": "nx serve central-login",
