@@ -42,9 +42,6 @@ jobs:
       - run: |
           git config --global user.name 'ryanbas21'
           git config --global user.email 'ryan.basmajian@forgerock.com'
-          git remote set-url origin https://ryanbas21:$GITHUB_TOKEN@github.com/ForgeRock/forgerock-javascript-sdk
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
       - name: semantic-release
         run: npm run release -- --verbose
         env:
