@@ -5,7 +5,7 @@
   "buildTarget": "${PROJECT_NAME}:build",
   "repositoryUrl": "https://github.com/ForgeRock/forgerock-javascript-sdk",
   "outputPath": "dist/packages/${PROJECT_NAME}",
-  "github": true,
+  "github": false,
   "changelog": true,
   "npm": true,
   "tag": "${PROJECT_NAME}-v${version}",
