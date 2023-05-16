@@ -1,5 +1,4 @@
 {
-  "ci": true,
   "dryRun": false,
   "commitMessage": "chore(${PROJECT_NAME}): ${nextRelease.version} [skip ci]",
   "gitAssets": ["packages/${PROJECT_NAME}/README.md", "packages/${PROJECT_NAME}/CHANGELOG.md"],
