@@ -82,7 +82,7 @@
           "typedoc",
           "release"
         ],
-        "useDaemonProcess": true,
+        "useDaemonProcess": false,
         "accessToken": "NzU3MWE3MjgtOWRiZi00ZDczLWI4YWYtMDI5NThmNTRkNDc1fHJlYWQtd3JpdGU="
       }
     }

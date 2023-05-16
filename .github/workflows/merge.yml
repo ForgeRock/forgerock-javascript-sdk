@@ -23,6 +23,12 @@ jobs:
           cache: 'npm'
           cache-dependency-path: '**/package-lock.json'
       - run: npm ci
+      - name: Configure CI Git User
+        run: |
+          git config --global user.name 'ryanbas21'
+          git remote set-url origin https://ryanbas21:$GITHUB_TOKEN@github.com/ForgeRock/forgerock-javascript-sdk
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
       - name: Import GPG
         uses: crazy-max/ghaction-import-gpg@v5.2.0
         with:
@@ -32,6 +38,7 @@ jobs:
           git_committer_email: 'ryan.basmajian@forgerock.com'
           git_push_gpgsign: false
           git_config_global: true
+      - run: git config -l
       - name: Derive appropriate SHAs for base and head for `nx affected` commands
         id: sha
         uses: nrwl/nx-set-shas@v2
@@ -40,7 +47,7 @@ jobs:
       - run: npx nx affected --target=build --parallel --max-parallel=3
       - run: npx nx-cloud stop-all-agents
       - name: semantic-release
-        run: npm run release -- --verbose
+        run: npx nx run release --parallell=false
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
