@@ -39,9 +39,6 @@ jobs:
       - run: npx nx-cloud start-ci-run
       - run: npx nx affected --target=build --parallel --max-parallel=3
       - run: npx nx-cloud stop-all-agents
-      - run: |
-          git config --global user.name 'ryanbas21'
-          git config --global user.email 'ryan.basmajian@forgerock.com'
       - name: semantic-release
         run: npm run release -- --verbose
         env:
