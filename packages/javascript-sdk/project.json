@@ -69,7 +69,9 @@
     "release": {
       "executor": "@theunderscorer/nx-semantic-release:semantic-release",
       "options": {
-        "preset": "conventionalcommits"
+        "preset": "conventionalcommits",
+        "dryRun": false,
+        "ci": false
       }
     }
   },
