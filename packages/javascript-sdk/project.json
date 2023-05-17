@@ -19,7 +19,8 @@
         ],
         "format": ["esm", "cjs"],
         "deleteOutputPath": true,
-        "generateExportsField": true,
+        "generateExportsField": false,
+        "main": "packages/javascript-sdk/src/index.ts",
         "rollupConfig": "packages/javascript-sdk/rollup.config.js",
         "updateBuildableProjectDepsInPackageJson": false,
         "project": "packages/javascript-sdk/package.json",
@@ -77,7 +78,11 @@
         "commitMessageFormat": "chore(${projectName}): release version ${version} [skip ci]",
         "push": true,
         "syncVersions": false,
-        "postTargets": ["javascript-sdk:npm", "javascript-sdk:github"],
+        "postTargets": [
+          "javascript-sdk:updatePackageJson",
+          "javascript-sdk:npm",
+          "javascript-sdk:github"
+        ],
         "skipCommitTypes": ["ci", "docs", "style", "refactor", ""]
       },
       "configurations": {
@@ -90,7 +95,11 @@
           "skipRootChangelog": true,
           "releaseAs": "prerelease",
           "skipCommitTypes": ["ci", "docs", "style", "refactor", ""],
-          "postTargets": ["javascript-sdk:npm:beta", "javascript-sdk:github:beta"]
+          "postTargets": [
+            "javascript-sdk:updatePackageJson",
+            "javascript-sdk:npm:beta",
+            "javascript-sdk:github:beta"
+          ]
         }
       }
     },
@@ -109,12 +118,24 @@
     "npm": {
       "executor": "ngx-deploy-npm:deploy",
       "options": {
-        "access": "public"
+        "access": "public",
+        "noBuild": true
       },
       "configurations": {
         "beta": {
-          "tag": "beta"
+          "tag": "beta",
+          "noBuild": true
         }
+      }
+    },
+    "updatePackageJson": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          {
+            "command": "node ./scripts/update-package-json-sdk.js"
+          }
+        ]
       }
     }
   },

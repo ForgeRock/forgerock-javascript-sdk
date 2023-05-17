@@ -50,6 +50,7 @@
     "@nx-extend/e2e-runner": "^2.3.2",
     "@nx-extend/playwright": "^1.2.1",
     "@nx/angular": "16.1.4",
+    "@nx/devkit": "^16.2.1",
     "@nx/esbuild": "16.1.4",
     "@nx/eslint-plugin": "16.1.4",
     "@nx/express": "16.1.4",

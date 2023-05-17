@@ -13,9 +13,15 @@
   "version": "4.0.0-beta.7",
   "exports": {
     "./src/*": {
-      "types": "./src/*.d.ts",
-      "import": "./src/*.js",
-      "require": "./src/*.cjs"
+      "types": "./*.d.ts",
+      "import": "./*.js",
+      "require": "./*.cjs"
+    },
+    ".": {
+      "types": "./index.d.ts",
+      "import": "./index.js",
+      "require": "./index.cjs"
     }
-  }
+  },
+  "types": "./src/index.d.ts"
 }
