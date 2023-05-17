@@ -76,7 +76,8 @@
         "commitMessageFormat": "chore(${projectName}): release version ${version} [skip ci]",
         "push": true,
         "syncVersions": false,
-        "postTargets": ["javascript-sdk:npm", "javascript-sdk:github"]
+        "postTargets": ["javascript-sdk:npm", "javascript-sdk:github"],
+        "skipCommitTypes": ["ci", "docs", "style", "refactor", ""]
       },
       "configurations": {
         "beta": {
