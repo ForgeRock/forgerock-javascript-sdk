@@ -79,6 +79,7 @@
         "push": true,
         "syncVersions": false,
         "postTargets": [
+          "javascript-sdk:build",
           "javascript-sdk:updatePackageJson",
           "javascript-sdk:npm",
           "javascript-sdk:github"
@@ -96,6 +97,7 @@
           "releaseAs": "prerelease",
           "skipCommitTypes": ["ci", "docs", "style", "refactor", ""],
           "postTargets": [
+            "javascript-sdk:build",
             "javascript-sdk:updatePackageJson",
             "javascript-sdk:npm:beta",
             "javascript-sdk:github:beta"
