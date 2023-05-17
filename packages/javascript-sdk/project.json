@@ -84,7 +84,7 @@
           "javascript-sdk:npm",
           "javascript-sdk:github"
         ],
-        "skipCommitTypes": ["ci", "docs", "style", "refactor", ""]
+        "skipCommitTypes": ["ci", "docs", "style", "refactor", "chore"]
       },
       "configurations": {
         "beta": {
@@ -95,7 +95,7 @@
           "push": true,
           "skipRootChangelog": true,
           "releaseAs": "prerelease",
-          "skipCommitTypes": ["ci", "docs", "style", "refactor", ""],
+          "skipCommitTypes": ["ci", "docs", "style", "refactor", "chore"],
           "postTargets": [
             "javascript-sdk:build",
             "javascript-sdk:updatePackageJson",
