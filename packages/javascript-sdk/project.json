@@ -20,6 +20,7 @@
         "format": ["esm", "cjs"],
         "deleteOutputPath": true,
         "generateExportsField": true,
+        "rollupConfig": "packages/javascript-sdk/rollup.config.js",
         "updateBuildableProjectDepsInPackageJson": false,
         "project": "packages/javascript-sdk/package.json",
         "tsConfig": "packages/javascript-sdk/tsconfig.lib.json",
@@ -88,6 +89,7 @@
           "push": true,
           "skipRootChangelog": true,
           "releaseAs": "prerelease",
+          "skipCommitTypes": ["ci", "docs", "style", "refactor", ""],
           "postTargets": ["javascript-sdk:npm:beta", "javascript-sdk:github:beta"]
         }
       }
