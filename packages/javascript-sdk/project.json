@@ -113,7 +113,9 @@
       },
       "configurations": {
         "beta": {
-          "prerelease": true
+          "prerelease": true,
+          "tag": "${tag}",
+          "notes": "${notes}"
         }
       }
     },

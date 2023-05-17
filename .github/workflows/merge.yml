@@ -26,29 +26,12 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       - run: npm ci
-      - name: Configure CI Git User
-        run: |
-          git config --global user.name 'ryanbas21'
-          git remote set-url origin https://ryanbas21:$GITHUB_TOKEN@github.com/ForgeRock/forgerock-javascript-sdk
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-      - name: Import GPG
-        uses: crazy-max/ghaction-import-gpg@v5.2.0
-        with:
-          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
-          git_user_signingkey: true
-          git_commit_gpgsign: true
-          git_committer_email: 'ryan.basmajian@forgerock.com'
-          git_push_gpgsign: false
-          git_config_global: true
-      - run: git config -l
       - name: Derive appropriate SHAs for base and head for `nx affected` commands
         id: sha
         uses: nrwl/nx-set-shas@v2
       - run: npm install @nrwl/nx-cloud
       - run: npx nx-cloud start-ci-run
       - run: npx nx affected --target=build --parallel --max-parallel=3
-      - run: npx nx-cloud stop-all-agents
       - name: semantic-release
         if: github.ref == 'refs/heads/master'
         run: npm run nx affected --target=version
@@ -58,7 +41,6 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           HUSKY: 0
-          NX_CLOUD_DISTRIBUTED_EXECUTION: false
       - name: semantic-release beta
         if: github.ref == 'refs/heads/develop'
         run: npm run nx affected -- --target=version --configuration=beta
@@ -68,7 +50,7 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           HUSKY: 0
-          NX_CLOUD_DISTRIBUTED_EXECUTION: false
+      - run: npx nx-cloud stop-all-agents
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
         if: always()
@@ -97,6 +79,24 @@ jobs:
           node-version: '18.x'
           cache: 'npm'
           cache-dependency-path: '**/package-lock.json'
+          registry-url: https://registry.npmjs.org
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Import GPG
+        uses: crazy-max/ghaction-import-gpg@v5.2.0
+        with:
+          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+          git_user_signingkey: true
+          git_commit_gpgsign: true
+          git_committer_email: 'ryan.basmajian@forgerock.com'
+          git_push_gpgsign: false
+          git_config_global: true
+
+      - name: Configure CI Git User
+        run: |
+          git config --global user.name 'ryanbas21'
+          git remote set-url origin https://ryanbas21:$GITHUB_TOKEN@github.com/ForgeRock/forgerock-javascript-sdk
       - run: npm ci
         if: steps.cache.outputs.cache-hit != 'true'
         env:
