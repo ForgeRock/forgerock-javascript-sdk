@@ -1,3 +1,38 @@
+# Changelog
+
+This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
+
+## [4.0.0-beta.4](https://github.com/ForgeRock/forgerock-javascript-sdk/compare/javascript-sdk-v4.0.0-beta.3...javascript-sdk-v4.0.0-beta.4) (2023-05-17)
+
+
+### ⚠ BREAKING CHANGES
+
+* **javascript-sdk:** refactor token storage and config timeout
+
+### Features
+
+* **javascript-sdk:** register-device-name ([f845505](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/f845505d68e648bf3e6dd8068f2abb8133c7c304))
+
+
+### Bug Fixes
+
+* angular-sample & upgrade ([62f66f6](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/62f66f6b261c379fc5a710c577158ade15e377b7))
+* **javascript-sdk:** fix-changelog ([47d954b](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/47d954b1ba9eb4dd33b51c1ebc89d1223bb626c9))
+* **javascript-sdk:** fix-policy-types ([5a3ac2a](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/5a3ac2a3a80b4dff56fc0554b72bb646544b826d))
+* **javascript-sdk:** fix-publish-readme-and-dist ([2a06503](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/2a065035a67babd263dd896823cf46eb942ccbd0))
+* **javascript-sdk:** release process ([9f1b3a3](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/9f1b3a372d5d89c11d17122e9e749d87ed78d55b))
+* **javascript-sdk:** release-process ([b0ba262](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/b0ba2625a5637d517201e98342979ae0f364c254))
+* **javascript-sdk:** release-process ([baabf80](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/baabf808ae11389b892a84e5add1fae7b8a37efb))
+* **javascript-sdk:** validated-create-password-callback-json ([f619062](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/f619062ee13b05dfc29c3b3dcdedd14bb9635a0e))
+* **javascript-sdk:** validated-user-name-policies ([b08fcaa](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/b08fcaaf2c3e2498b5e73e1d6aed2751bb026dec))
+* release-failure-packages ([22ded72](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/22ded728308d1513dc53a6d198e70c09f9d2008b))
+* release-process-changing-tool ([42d3271](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/42d327161f6c660e3c8b533801386ae5a8590fa2))
+
+
+### Miscellaneous Chores
+
+* **javascript-sdk:** refactor token storage and config timeout ([23f8e4c](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/23f8e4c811c7a61ce51b49de699f2788a8d3e279))
+
 ## [4.0.0-beta.1](https://github.com/ForgeRock/forgerock-javascript-sdk/compare/javascript-sdk-v3.4.0...javascript-sdk-v4.0.0-beta.1) (2023-05-16)
 
 
