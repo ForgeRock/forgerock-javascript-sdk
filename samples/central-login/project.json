@@ -34,7 +34,7 @@
       "defaultConfiguration": "production"
     },
     "serve": {
-      "executor": "@nx/web:dev-server",
+      "executor": "@nx/webpack:dev-server",
       "options": {
         "buildTarget": "central-login:build",
         "port": 8443,
