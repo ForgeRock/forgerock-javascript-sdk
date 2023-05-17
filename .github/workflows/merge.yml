@@ -95,7 +95,7 @@ jobs:
 
       - name: Configure CI Git User
         run: |
-          git config --global user.name 'ryanbas21'
+          git config --global user.name 'semantic-release'
           git remote set-url origin https://ryanbas21:$GITHUB_TOKEN@github.com/ForgeRock/forgerock-javascript-sdk
       - run: npm ci
         if: steps.cache.outputs.cache-hit != 'true'
