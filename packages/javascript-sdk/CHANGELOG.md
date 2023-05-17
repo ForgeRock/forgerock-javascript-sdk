@@ -4,6 +4,13 @@ This file was generated using [@jscutlery/semver](https://github.com/jscutlery/s
 
 ## [4.0.0-beta.5](https://github.com/ForgeRock/forgerock-javascript-sdk/compare/javascript-sdk-v4.0.0-beta.4...javascript-sdk-v4.0.0-beta.5) (2023-05-17)
 
+
+### Bug Fixes
+
+* **javascript-sdk:** release ([9f144a7](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/9f144a7ad14c3ec61b0ad96d76e5d3e0a65792ff))
+
+## [4.0.0-beta.5](https://github.com/ForgeRock/forgerock-javascript-sdk/compare/javascript-sdk-v4.0.0-beta.4...javascript-sdk-v4.0.0-beta.5) (2023-05-17)
+
 ## [4.0.0-beta.4](https://github.com/ForgeRock/forgerock-javascript-sdk/compare/javascript-sdk-v4.0.0-beta.3...javascript-sdk-v4.0.0-beta.4) (2023-05-17)
 
 
