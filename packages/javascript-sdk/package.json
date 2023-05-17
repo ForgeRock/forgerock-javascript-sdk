@@ -13,14 +13,14 @@
   "version": "4.0.0-beta.9",
   "exports": {
     "./src/*": {
-      "types": "./*.d.ts",
-      "import": "./*.js",
-      "require": "./*.cjs"
+      "types": "./src/*.d.ts",
+      "import": "./src/*.js",
+      "require": "./src/*.cjs"
     },
     ".": {
-      "types": "./index.d.ts",
-      "import": "./index.js",
-      "require": "./index.cjs"
+      "types": "./src/index.d.ts",
+      "import": "./src/index.js",
+      "require": "./src/index.cjs"
     }
   },
   "types": "./src/index.d.ts"
