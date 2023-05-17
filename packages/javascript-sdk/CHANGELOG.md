@@ -2,6 +2,13 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [4.0.0-beta.7](https://github.com/ForgeRock/forgerock-javascript-sdk/compare/javascript-sdk-v4.0.0-beta.6...javascript-sdk-v4.0.0-beta.7) (2023-05-17)
+
+
+### Bug Fixes
+
+* **javascript-sdk:** export-map-update ([d12b90f](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/d12b90fea51070eccfec2329e539121eb90af909))
+
 ## [4.0.0-beta.6](https://github.com/ForgeRock/forgerock-javascript-sdk/compare/javascript-sdk-v4.0.0-beta.5...javascript-sdk-v4.0.0-beta.6) (2023-05-17)
 
 

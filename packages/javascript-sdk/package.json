@@ -10,7 +10,7 @@
     "url": "https://github.com/ForgeRock/forgerock-javascript-sdk/issues"
   },
   "homepage": "https://github.com/ForgeRock/forgerock-javascript-sdk#readme",
-  "version": "4.0.0-beta.6",
+  "version": "4.0.0-beta.7",
   "exports": {
     "./src/*": {
       "types": "./src/*.d.ts",
