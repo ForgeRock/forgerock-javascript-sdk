@@ -66,12 +66,53 @@
       },
       "configurations": {}
     },
-    "release": {
-      "executor": "@theunderscorer/nx-semantic-release:semantic-release",
+    "version": {
+      "executor": "@jscutlery/semver:version",
       "options": {
-        "preset": "conventionalcommits",
-        "dryRun": false,
-        "ci": false
+        "preset": "conventional",
+        "baseBranch": "master",
+        "skipRootChangelog": true,
+        "tagPrefix": "${projectName}-v",
+        "commitMessageFormat": "chore(${projectName}): release version ${version} [skip ci]",
+        "push": true,
+        "syncVersions": false,
+        "postTargets": ["javascript-sdk:npm", "javascript-sdk:github"]
+      },
+      "configurations": {
+        "beta": {
+          "preset": "conventional",
+          "baseBranch": "develop",
+          "preid": "beta",
+          "tagPrefix": "${projectName}-v",
+          "push": true,
+          "skipRootChangelog": true,
+          "releaseAs": "prerelease",
+          "postTargets": ["javascript-sdk:npm:beta", "javascript-sdk:github:beta"]
+        }
+      }
+    },
+    "github": {
+      "executor": "@jscutlery/semver:github",
+      "options": {
+        "tag": "${tag}",
+        "notes": "${notes}"
+      },
+      "configurations": {
+        "beta": {
+          "prerelease": true
+        }
+      }
+    },
+    "npm": {
+      "executor": "ngx-deploy-npm:deploy",
+      "options": {
+        "access": "public"
+      },
+      "configurations": {
+        "beta": {
+          "tag": "beta",
+          "buildTarget": "javascript-sdk:build"
+        }
       }
     }
   },
