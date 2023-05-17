@@ -110,8 +110,7 @@
       },
       "configurations": {
         "beta": {
-          "tag": "beta",
-          "buildTarget": "javascript-sdk:build"
+          "tag": "beta"
         }
       }
     }
