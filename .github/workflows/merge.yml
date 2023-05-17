@@ -61,7 +61,7 @@ jobs:
           NX_CLOUD_DISTRIBUTED_EXECUTION: false
       - name: semantic-release beta
         if: github.ref == 'refs/heads/develop'
-        run: npm run nx affected --target=version -- --configuration=beta
+        run: npm run nx affected -- --target=version --configuration=beta
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
