@@ -9,7 +9,7 @@
           "error",
           {
             "enforceBuildableLibDependency": true,
-            "allow": ["@angular/router", "@angular/forms"],
+            "allow": ["@angular/router", "@angular/forms", "regenerator-runtime/runtime"],
             "depConstraints": [
               {
                 "sourceTag": "scope:sample",
