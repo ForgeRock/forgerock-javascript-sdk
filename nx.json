@@ -80,13 +80,9 @@
           "config",
           "tsc",
           "typedoc",
-          "version",
-          "deploy",
-          "npm",
-          "github",
-          "updatePackageJson"
+          "version"
         ],
-        "useDaemonProcess": false,
+        "useDaemonProcess": true,
         "accessToken": "NzU3MWE3MjgtOWRiZi00ZDczLWI4YWYtMDI5NThmNTRkNDc1fHJlYWQtd3JpdGU="
       }
     }

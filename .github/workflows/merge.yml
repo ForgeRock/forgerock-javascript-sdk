@@ -7,6 +7,11 @@ on:
   workflow_dispatch:
 env:
   NX_CLOUD_DISTRIBUTED_EXECUTION: true
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  GH_TOKEN: ${{ secrets.GH_TOKEN }}
+  NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+  NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+  HUSKY: 0
 jobs:
   merge:
     runs-on: ubuntu-latest # we run on ubuntu because some actions in this job do not work on mac
@@ -23,8 +28,6 @@ jobs:
           cache: 'npm'
           cache-dependency-path: '**/package-lock.json'
           registry-url: https://registry.npmjs.org
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       - run: npm ci
       - name: Derive appropriate SHAs for base and head for `nx affected` commands
         id: sha
@@ -35,17 +38,11 @@ jobs:
       - name: semantic-release
         if: github.ref == 'refs/heads/master'
         run: npm run nx affected --target=version
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-          HUSKY: 0
       - name: semantic-release beta
         if: github.ref == 'refs/heads/develop'
         run: npm run nx affected -- --target=version --configuration=beta
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
