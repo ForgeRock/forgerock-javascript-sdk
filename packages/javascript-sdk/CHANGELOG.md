@@ -2,6 +2,8 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [4.0.0-beta.13](https://github.com/ForgeRock/forgerock-javascript-sdk/compare/javascript-sdk-v4.0.0-beta.12...javascript-sdk-v4.0.0-beta.13) (2023-05-19)
+
 ## [4.0.0-beta.11](https://github.com/ForgeRock/forgerock-javascript-sdk/compare/javascript-sdk-v4.0.0-beta.10...javascript-sdk-v4.0.0-beta.11) (2023-05-17)
 
 ## [4.0.0-beta.10](https://github.com/ForgeRock/forgerock-javascript-sdk/compare/javascript-sdk-v4.0.0-beta.9...javascript-sdk-v4.0.0-beta.10) (2023-05-17)
