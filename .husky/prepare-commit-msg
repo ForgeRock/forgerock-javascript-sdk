@@ -1,0 +1,6 @@
+ #!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+if [ $2 == "template" ]; then
+  exec < /dev/tty && npm run commit || true
+fi

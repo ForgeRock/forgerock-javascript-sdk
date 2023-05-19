@@ -9,7 +9,7 @@
           "error",
           {
             "enforceBuildableLibDependency": true,
-            "allow": [],
+            "allow": ["regenerator-runtime/runtime"],
             "depConstraints": [
               {
                 "sourceTag": "scope:sample",
