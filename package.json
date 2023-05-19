@@ -7,6 +7,7 @@
   },
   "private": true,
   "scripts": {
+    "commit": "git cz",
     "build": "nx run javascript-sdk:build",
     "build:analyze": "NODE_ENV=analyze nx run javascript-sdk:build --skipNxCache",
     "clean": "shx rm -rf ./{coverage,bundles,dist,docs,lib,lib-esm,node_modules,tests,tmp,todos,users}/ ./samples/*/node_modules/ ./samples/_static/js/*/ ./samples/todo-api/{todos,users} ./packages/*/{bundles,lib,lib-esm}/ && git clean -fX -e \"!.env\"",
@@ -62,6 +63,7 @@
     "@nx/rollup": "16.2.1",
     "@nx/web": "16.2.1",
     "@nx/workspace": "16.2.1",
+    "@types/estree": "^1.0.1",
     "@types/express": "4.17.17",
     "@types/jest": "29.5.1",
     "@types/jest-dev-server": "^5.0.0",
@@ -71,6 +73,8 @@
     "@typescript-eslint/typescript-estree": "5.59.5",
     "babel-jest": "29.4.3",
     "conventional-changelog-conventionalcommits": "^4.6.3",
+    "cz-conventional-changelog": "^3.3.0",
+    "cz-git": "^1.6.1",
     "eslint": "8.40.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-import": "2.27.5",
@@ -106,7 +110,9 @@
     "samples/*",
     "lib/*"
   ],
-  "dependencies": {
-    "@types/estree": "^1.0.1"
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }

@@ -39,17 +39,17 @@
       }
     },
     "serve": {
-      "executor": "@nx/js:node",
+      "executor": "nx:run-commands",
       "options": {
-        "buildTarget": "mock-api:build",
-        "watch": true
+        "command": "node dist/e2e/mock-api/index.cjs"
       },
       "configurations": {
-        "live": {},
-        "development": {},
-        "production": {
-          "buildTarget": "mock-api:build:production",
+        "development": {
+          "readyWhen": "Listening to HTTPS on secure port: 9443",
           "args": ["MOCK_PORT=9443"]
+        },
+        "production": {
+          "buildTarget": "mock-api:build:production"
         }
       }
     },

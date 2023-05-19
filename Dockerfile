@@ -5,10 +5,11 @@ WORKDIR /app/builder
 ENV PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1
 ARG HUSKY=0
 ENV HUSKY=0
+ENV HUSKY_SKIP_HOOKS=1
 
 COPY . /app/builder/
 
-RUN npm ci --ignore-scripts
+RUN npm install
 ENV NODE_ENV=production
 
 ARG AM_URL=$AM_URL
