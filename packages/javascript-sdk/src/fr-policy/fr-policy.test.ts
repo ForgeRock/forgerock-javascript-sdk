@@ -180,7 +180,10 @@ describe('The IDM error handling', () => {
         ],
         detail: {
           policyRequirements: [
-            { params: { numCaps: 1 }, policyRequirement: 'AT_LEAST_X_CAPITAL_LETTERS' },
+            {
+              params: { numCaps: 1 },
+              policyRequirement: 'AT_LEAST_X_CAPITAL_LETTERS',
+            },
             { params: { minLength: 6 }, policyRequirement: 'MIN_LENGTH' },
           ],
           property: 'password',

@@ -2,9 +2,10 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "../../dist/out-tsc",
-    "module": "commonjs",
+    "module": "CommonJS",
     "allowUmdGlobalAccess": true,
-    "target": "ES2015",
+    "target": "ES2020",
+    "composite": true,
     "allowJs": true,
     "types": ["node", "express"]
   },

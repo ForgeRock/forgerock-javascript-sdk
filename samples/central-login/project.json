@@ -1,11 +1,12 @@
 {
+  "name": "central-login",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
   "sourceRoot": "samples/central-login/src",
-  "tags": [],
+  "tags": ["scope:sample"],
   "targets": {
     "build": {
-      "executor": "@nrwl/web:webpack",
+      "executor": "@nx/webpack:webpack",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/samples/central-login",
@@ -33,7 +34,7 @@
       "defaultConfiguration": "production"
     },
     "serve": {
-      "executor": "@nrwl/web:dev-server",
+      "executor": "@nx/webpack:dev-server",
       "options": {
         "buildTarget": "central-login:build",
         "port": 8443,
@@ -43,12 +44,16 @@
         "liveReload": true
       },
       "configurations": {
+        "okteto": {
+          "host": "0.0.0.0",
+          "allowedHosts": "all"
+        },
         "development": {}
       },
       "defaultConfiguration": "development"
     },
     "lint": {
-      "executor": "@nrwl/linter:eslint",
+      "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
         "fix": true,

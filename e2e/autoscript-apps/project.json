@@ -1,11 +1,13 @@
 {
+  "name": "autoscript-apps",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
   "sourceRoot": "e2e/autoscript-apps/src",
-  "tags": [],
+  "tags": ["scope:app"],
   "targets": {
     "build": {
-      "executor": "@nrwl/web:webpack",
+      "executor": "@nx/webpack:webpack",
+      "dependsOn": ["^build", "^tsc"],
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/e2e/autoscript-apps",
@@ -29,7 +31,8 @@
       "defaultConfiguration": "production"
     },
     "serve": {
-      "executor": "@nrwl/web:dev-server",
+      "executor": "@nx/webpack:dev-server",
+      "dependsOn": ["^build"],
       "defaultConfiguration": "production",
       "options": {
         "port": 8443,

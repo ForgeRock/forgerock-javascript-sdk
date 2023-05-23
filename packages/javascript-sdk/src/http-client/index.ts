@@ -10,7 +10,6 @@
 
 import Config from '../config';
 import { ActionTypes } from '../config/enums';
-import Dispatcher from '../event';
 import FRAuth from '../fr-auth';
 import { StepType } from '../fr-auth/enums';
 import FRStep from '../fr-auth/fr-step';
@@ -59,7 +58,7 @@ import middlewareWrapper from '../util/middleware';
  * });
  * ```
  */
-abstract class HttpClient extends Dispatcher {
+abstract class HttpClient {
   /**
    * Makes a request using the specified options.
    *
@@ -120,12 +119,8 @@ abstract class HttpClient extends Dispatcher {
         // Walk through auth tree
         await this.stepIterator(initialStep, options.authorization.handleStep, type, tree);
         // See if OAuth tokens are being used
-        let tokens;
-        try {
-          tokens = await TokenStorage.get();
-        } catch (err) {
-          // No OAuth Tokens
-        }
+        const tokens = await TokenStorage.get();
+
         if (hasIG) {
           // Update URL with IDs and tokens for IG
           options.url = addAuthzInfoToURL(options.url, authorizationJSON.advices, tokens);
@@ -146,12 +141,7 @@ abstract class HttpClient extends Dispatcher {
   }
 
   private static async setAuthHeaders(headers: Headers, forceRenew: boolean): Promise<Headers> {
-    let tokens;
-    try {
-      tokens = await TokenStorage.get();
-    } catch (err) {
-      // No OAuth Tokens
-    }
+    let tokens = await TokenStorage.get();
 
     /**
      * Condition to see if Auth is session based or OAuth token based

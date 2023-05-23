@@ -1,6 +1,8 @@
-FROM okteto.dev/base as builder
+ARG SOURCE_IMAGE=$SOURCE_IMAGE
 
-FROM nginx:1.19.2
+FROM $SOURCE_IMAGE as builder
+
+FROM nginx:1.23.3-alpine
 
 WORKDIR /usr/share/nginx/html
 

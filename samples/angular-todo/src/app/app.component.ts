@@ -19,8 +19,8 @@ import {
   NavigationStart,
   Router,
 } from '@angular/router';
-import { filter, Observable } from 'rxjs';
-
+import { Observable } from 'rxjs';
+import { filter } from 'rxjs/operators';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -41,7 +41,7 @@ export class AppComponent implements OnInit {
           evt instanceof NavigationCancel ||
           evt instanceof NavigationError,
       ),
-    ) as Observable<NavigationStart>;
+    );
 
     navStart.subscribe(() => (this.loading = true));
     navEnd.subscribe(() => (this.loading = false));
@@ -56,15 +56,15 @@ export class AppComponent implements OnInit {
      * Summary: Configure the SDK
      * ----------------------------------------------------------------------------
      * Details: Below, you will see the following settings:
-     * - clientId: (OAuth2 only) this is the OAuth2 client you created in ForgeRock
-     * - redirectUri: (OAuth2 only) this is the URI/URL of this app too which the
-     *   OAuth flow will redirect
-     * - scope: (OAuth2 only) these are the OAuth scopes that you will request from
+     * - clientId: (OAuth 2.0 only) this is the OAuth 2.0 client you created in ForgeRock, such as `ForgeRockSDKClient`
+     * - redirectUri: (OAuth 2.0 only) this is the URI/URL of this app to which the
+     *   OAuth 2.0 flow redirects
+     * - scope: (OAuth 2.0 only) these are the OAuth scopes that you will request from
      *   ForgeRock
-     * - serverConfig: this includes the baseUrl of your ForgeRock AM, should
-     *   include `/am/` at the end
-     * - realmPath: this is the realm you are wanting to use within ForgeRock
-     * - tree: The authentication journey/tree that you are wanting to use
+     * - serverConfig: this includes the baseUrl of your ForgeRock AM, and should
+     *   include the deployment path at the end, such as `/am/` or `/openam/`
+     * - realmPath: this is the realm to use within ForgeRock. such as `alpha` or `root`
+     * - tree: The authentication journey/tree to use, such as `sdkAuthenticationTree`
      *************************************************************************** */
 
     Config.set({

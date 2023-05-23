@@ -12,7 +12,7 @@
 class LocalStorage {
   private storage: Storage;
   constructor(persist = false) {
-    this.storage = persist ? window.localStorage : window.sessionStorage;
+    this.storage = persist ? localStorage : sessionStorage;
   }
 
   public get<T>(key: string): T | undefined {

@@ -68,7 +68,10 @@ const middleware: RequestMiddleware[] = [
       case add:
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
-        req.init.headers = { ...{ 'x-char': 'a,' + action.payload }, ...req.init.headers };
+        req.init.headers = {
+          ...{ 'x-char': 'a,' + action.payload },
+          ...req.init.headers,
+        };
         break;
     }
     next();
@@ -78,7 +81,10 @@ const middleware: RequestMiddleware[] = [
   (req: RequestObj, action: Action, next: NextFn): void => {
     switch (action.type) {
       case reassignment:
-        req = { url: new URL('https://bad.com'), init: { headers: { 'x-bad': 'true' } } };
+        req = {
+          url: new URL('https://bad.com'),
+          init: { headers: { 'x-bad': 'true' } },
+        };
         break;
     }
     next();

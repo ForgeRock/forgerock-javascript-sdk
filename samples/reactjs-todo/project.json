@@ -1,10 +1,12 @@
 {
+  "name": "reactjs-todo",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "samples/reactjs-todo/client",
   "projectType": "application",
+  "tags": ["scope:sample"],
   "targets": {
     "build": {
-      "executor": "@nrwl/web:webpack",
+      "executor": "@nx/webpack:webpack",
       "outputs": ["{options.outputPath}"],
       "options": {
         "compiler": "babel",
@@ -33,13 +35,13 @@
       "defaultConfiguration": "development"
     },
     "serve": {
-      "executor": "@nrwl/web:dev-server",
+      "executor": "@nx/webpack:dev-server",
       "defaultConfiguration": "development",
       "options": {},
       "configurations": {
         "development": {
           "buildTarget": "reactjs-todo:build",
-          "host": "react.example.com",
+          "host": "localhost",
           "port": 8443,
           "open": true,
           "ssl": true,
@@ -53,7 +55,7 @@
       }
     },
     "test": {
-      "executor": "@nrwl/jest:jest",
+      "executor": "@nx/jest:jest",
       "outputs": ["coverage/samples/reactjs-todo"],
       "options": {
         "jestConfig": "samples/reactjs-todo/jest.config.ts",
@@ -64,7 +66,7 @@
       }
     },
     "lint": {
-      "executor": "@nrwl/linter:eslint",
+      "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": ["samples/reactjs-todo/**/*.js"],

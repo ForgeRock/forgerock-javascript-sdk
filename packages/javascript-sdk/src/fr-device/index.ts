@@ -27,6 +27,7 @@ import {
   ProfileConfigOptions,
 } from './interfaces';
 import Collector from './collector';
+import { PREFIX } from '../config/constants';
 
 /**
  * @class FRDevice - Collects user device metadata
@@ -130,6 +131,8 @@ class FRDevice extends Collector {
   }
 
   getIdentifier(): string {
+    const storageKey = `${PREFIX}-DeviceID`;
+
     if (!(typeof globalThis.crypto !== 'undefined' && globalThis.crypto.getRandomValues)) {
       console.warn('Cannot generate profile ID. Crypto and/or getRandomValues is not supported.');
       return '';
@@ -138,11 +141,11 @@ class FRDevice extends Collector {
       console.warn('Cannot store profile ID. localStorage is not supported.');
       return '';
     }
-    let id = localStorage.getItem('profile-id');
+    let id = localStorage.getItem(storageKey);
     if (!id) {
       // generate ID, 3 sections of random numbers: "714524572-2799534390-3707617532"
       id = globalThis.crypto.getRandomValues(new Uint32Array(3)).join('-');
-      localStorage.setItem('profile-id', id);
+      localStorage.setItem(storageKey, id);
     }
     return id;
   }

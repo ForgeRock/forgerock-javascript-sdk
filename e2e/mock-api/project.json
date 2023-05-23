@@ -1,17 +1,25 @@
 {
+  "name": "mock-api",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "e2e/mock-api/src",
   "projectType": "application",
   "targets": {
     "build": {
-      "executor": "@nrwl/node:webpack",
+      "executor": "@nx/esbuild:esbuild",
       "outputs": ["{options.outputPath}"],
       "options": {
+        "platform": "node",
         "outputPath": "dist/e2e/mock-api",
+        "format": ["cjs"],
+        "bundle": true,
         "main": "e2e/mock-api/src/index.js",
         "tsConfig": "e2e/mock-api/tsconfig.app.json",
         "assets": ["e2e/mock-api/src/assets"],
-        "generatePackageJson": true
+        "generatePackageJson": true,
+        "esbuildOptions": {
+          "sourcemap": true
+        },
+        "thirdParty": true
       },
       "configurations": {
         "development": {
@@ -31,22 +39,22 @@
       }
     },
     "serve": {
-      "executor": "@nrwl/node:node",
+      "executor": "nx:run-commands",
       "options": {
-        "buildTarget": "mock-api:build",
-        "watch": true
+        "command": "node dist/e2e/mock-api/index.cjs"
       },
       "configurations": {
-        "live": {},
-        "development": {},
-        "production": {
-          "buildTarget": "mock-api:build:production",
+        "development": {
+          "readyWhen": "Listening to HTTPS on secure port: 9443",
           "args": ["MOCK_PORT=9443"]
+        },
+        "production": {
+          "buildTarget": "mock-api:build:production"
         }
       }
     },
     "deploy": {
-      "executor": "@nrwl/workspace:run-commands",
+      "executor": "@nx/workspace:run-commands",
       "options": {
         "commands": [
           "nx build mock-api --prod",
@@ -56,7 +64,7 @@
       }
     },
     "lint": {
-      "executor": "@nrwl/linter:eslint",
+      "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": ["e2e/mock-api/**/*.ts"],
@@ -65,7 +73,7 @@
       }
     },
     "test": {
-      "executor": "@nrwl/jest:jest",
+      "executor": "@nx/jest:jest",
       "outputs": ["coverage/e2e/mock-api"],
       "options": {
         "jestConfig": "e2e/mock-api/jest.config.ts",
@@ -73,5 +81,5 @@
       }
     }
   },
-  "tags": []
+  "tags": ["scope:e2e"]
 }

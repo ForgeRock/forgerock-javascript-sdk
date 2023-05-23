@@ -1,11 +1,12 @@
 {
+  "name": "embedded-login",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
   "sourceRoot": "samples/embedded-login/src",
-  "tags": [],
+  "tags": ["scope:sample"],
   "targets": {
     "build": {
-      "executor": "@nrwl/web:webpack",
+      "executor": "@nx/webpack:webpack",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/samples/embedded-login",
@@ -33,7 +34,7 @@
       "defaultConfiguration": "production"
     },
     "serve": {
-      "executor": "@nrwl/web:dev-server",
+      "executor": "@nx/webpack:dev-server",
       "options": {
         "buildTarget": "embedded-login:build",
         "port": 8443,
@@ -42,6 +43,10 @@
         "host": "sdkapp.example.com"
       },
       "configurations": {
+        "okteto": {
+          "host": "0.0.0.0",
+          "allowedHosts": "all"
+        },
         "development": {},
         "production": {
           "hmr": false,
@@ -51,7 +56,7 @@
       "defaultConfiguration": "development"
     },
     "lint": {
-      "executor": "@nrwl/linter:eslint",
+      "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
         "fix": true,

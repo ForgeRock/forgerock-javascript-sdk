@@ -26,7 +26,7 @@ import { getEndpointPath, resolve, stringify } from '../util/url';
 export function addAuthzInfoToHeaders(
   init: RequestInit,
   advices: Advices,
-  tokens?: Tokens,
+  tokens?: Tokens | void,
 ): Headers {
   const headers = new Headers(init.headers);
 
@@ -42,7 +42,7 @@ export function addAuthzInfoToHeaders(
   return headers;
 }
 
-export function addAuthzInfoToURL(url: string, advices: Advices, tokens?: Tokens): string {
+export function addAuthzInfoToURL(url: string, advices: Advices, tokens?: Tokens | void): string {
   const updatedURL = new URL(url);
 
   // Only modify URL for Transactional Authorization

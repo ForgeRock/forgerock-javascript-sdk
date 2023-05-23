@@ -1,49 +1,15 @@
-FROM node:alpine as base
+ARG SOURCE_IMAGE=$SOURCE_IMAGE
 
+FROM $SOURCE_IMAGE as builder
 WORKDIR /app/builder
 
-RUN npm i -g nx
+RUN npm run nx build angular-todo -- --skipNxCache --configuration=production
 
-COPY . /app/builder 
-
-RUN npm install --ignore-scripts
-
-ENV NODE_ENV production
-
-ARG AM_URL=$AM_URL
-ENV AM_URL=$AM_URL
-ARG API_URL=$API_URL
-ENV API_URL=$API_URL
-ARG DEBUGGER_OFF=$DEBUGGER_OFF
-ENV DEBUGGER_OFF=$DEBUGGER_OFF
-ARG REALM_PATH=$REALM_PATH
-ENV REALM_PATH=$REALM_PATH
-ARG JOURNEY_LOGIN=$JOURNEY_LOGIN
-ENV JOURNEY_LOGIN=$JOURNEY_LOGIN
-ARG JOURNEY_REGISTER=$JOURNEY_REGISTER
-ENV JOURNEY_REGISTER=$JOURNEY_REGISTER
-ARG WEB_OAUTH_CLIENT=$WEB_OAUTH_CLIENT
-ENV WEB_OAUTH_CLIENT=$WEB_OAUTH_CLIENT
-ARG REST_OAUTH_CLIENT=$REST_OAUTH_CLIENT
-ENV REST_OAUTH_CLIENT=$REST_OAUTH_CLIENT
-ARG REST_OAUTH_SECRET=$REST_OAUTH_SECRET
-ENV REST_OAUTH_SECRET=$REST_OAUTH_SECRET
-ARG SCOPE=$SCOPE
-ENV SCOPE=$SCOPE
-ARG TIMEOUT=$TIMEOUT
-ENV TIMEOUT=$TIMEOUT
-ARG TREE=$TREE
-ENV TREE=$TREE
-
-RUN nx run-many --target=config --projects=angular-todo --skipNxCache
-
-RUN nx build angular-todo --parallel --prod --skipNxCache
-
-FROM nginx:1.21.6
+FROM nginx:1.23.3-alpine
 
 WORKDIR /usr/share/nginx/html
 
-COPY --from=base /app/builder/dist/samples/angular-todo  .
+COPY --from=builder /app/builder/dist/samples/angular-todo  .
 
 ENV PORT=8082
 EXPOSE ${PORT}

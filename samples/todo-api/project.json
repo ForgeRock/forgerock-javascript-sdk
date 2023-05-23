@@ -1,14 +1,17 @@
 {
+  "name": "todo-api",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "samples/todo-api/src",
   "projectType": "application",
   "targets": {
     "build": {
-      "executor": "@nrwl/node:webpack",
+      "executor": "@nx/webpack:webpack",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/samples/todo-api",
         "generatePackageJson": true,
+        "format": ["cjs"],
+        "platform": "node",
         "main": "samples/todo-api/src/index.js",
         "tsConfig": "samples/todo-api/tsconfig.app.json",
         "assets": ["samples/todo-api/src/assets"]
@@ -30,14 +33,19 @@
       }
     },
     "serve": {
-      "executor": "@nrwl/node:node",
+      "executor": "@nx/node:node",
       "options": {
         "buildTarget": "todo-api:build",
         "watch": true
+      },
+      "configurations": {
+        "production": {
+          "watch": false
+        }
       }
     },
     "lint": {
-      "executor": "@nrwl/linter:eslint",
+      "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
         "fix": true,
@@ -45,7 +53,7 @@
       }
     },
     "test": {
-      "executor": "@nrwl/jest:jest",
+      "executor": "@nx/jest:jest",
       "outputs": ["coverage/samples/todo-api"],
       "options": {
         "jestConfig": "samples/todo-api/jest.config.ts",
@@ -53,5 +61,5 @@
       }
     }
   },
-  "tags": []
+  "tags": ["scope:sample"]
 }

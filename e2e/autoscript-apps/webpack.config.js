@@ -25,6 +25,7 @@ const pages = [
   'authn-social-login-am',
   'authn-social-login-idm',
   'authn-webauthn',
+  'authn-webauthn-device-registration',
   'authz-token',
   'authz-tree-basic',
   'authz-txn-basic',
@@ -34,12 +35,10 @@ const pages = [
   'config-token-storage',
   'misc-callbacks',
   'register-basic',
-  'umd-bundle-check',
 ];
 
 module.exports = (config) => {
   const plugins = [
-    ...config.plugins,
     new HtmlWebpackPlugin({
       inject: true,
       template: `./src/index.html`,
@@ -61,7 +60,9 @@ module.exports = (config) => {
           chunks: ['index,', 'polyfill'],
         }),
     ),
-    new webpack.WatchIgnorePlugin({ paths: [/bundles|docs|lib|lib-esm|samples/] }),
+    new webpack.WatchIgnorePlugin({
+      paths: [/bundles|docs|lib|lib-esm|samples/],
+    }),
     new webpack.BannerPlugin({ banner }),
   ];
   return {
@@ -93,10 +94,15 @@ module.exports = (config) => {
         'Access-Control-Allow-Origin': 'null',
         'Access-Control-Allow-Headers': 'x-authorize-middleware',
       },
+
       client: {
         logging: 'none',
         overlay: false,
       },
+    },
+    output: {
+      ...config.output,
+      scriptType: 'text/javascript',
     },
     plugins,
     watch: config.watch,

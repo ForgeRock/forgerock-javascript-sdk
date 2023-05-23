@@ -15,12 +15,13 @@ import RedirectCallback from '../fr-auth/callbacks/redirect-callback';
 import FRLoginFailure from './fr-login-failure';
 import FRLoginSuccess from './fr-login-success';
 import FRStep from './fr-step';
+import { PREFIX } from '../config/constants';
 
 /**
  * Provides access to the OpenAM authentication tree API.
  */
 abstract class FRAuth {
-  public static readonly previousStepKey = 'FRAuth_PreviousStep';
+  public static readonly previousStepKey = `${PREFIX}-PreviousStep`;
 
   /**
    * Requests the next step in the authentication tree.
@@ -88,8 +89,8 @@ abstract class FRAuth {
     const cb = step.getCallbackOfType(CallbackType.RedirectCallback) as RedirectCallback;
     const redirectUrl = cb.getRedirectUrl();
 
-    window.localStorage.setItem(this.previousStepKey, JSON.stringify(step));
-    window.location.assign(redirectUrl);
+    localStorage.setItem(this.previousStepKey, JSON.stringify(step));
+    location.assign(redirectUrl);
   }
 
   /**
@@ -132,7 +133,7 @@ abstract class FRAuth {
      * If suspendedId is present, no previous step data is needed, so skip below conditional.
      */
     if (requiresPreviousStep()) {
-      const redirectStepString = window.localStorage.getItem(this.previousStepKey);
+      const redirectStepString = localStorage.getItem(this.previousStepKey);
 
       if (!redirectStepString) {
         throw new Error('Error: could not retrieve original redirect information.');
@@ -144,7 +145,7 @@ abstract class FRAuth {
         throw new Error('Error: could not parse redirect params or step information');
       }
 
-      window.localStorage.removeItem(this.previousStepKey);
+      localStorage.removeItem(this.previousStepKey);
     }
 
     /**
@@ -169,7 +170,9 @@ abstract class FRAuth {
         // Allow developer to add or override params with their own.
         ...(options && options.query),
       },
-      ...((options?.tree ?? authIndexValue) && { tree: options?.tree ?? authIndexValue }),
+      ...((options?.tree ?? authIndexValue) && {
+        tree: options?.tree ?? authIndexValue,
+      }),
     };
 
     return await this.next(previousStep, nextOptions);

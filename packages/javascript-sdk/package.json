@@ -1,16 +1,6 @@
 {
   "name": "@forgerock/javascript-sdk",
-  "version": "3.4.0",
   "description": "ForgeRock JavaScript SDK",
-  "module": "./lib-esm/index.js",
-  "main": "./lib/index.js",
-  "files": [
-    "bundles/**",
-    "lib/**",
-    "lib-esm/**",
-    "package.json",
-    "README.md"
-  ],
   "author": "ForgeRock",
   "license": "MIT",
   "repository": {
@@ -20,7 +10,18 @@
     "url": "https://github.com/ForgeRock/forgerock-javascript-sdk/issues"
   },
   "homepage": "https://github.com/ForgeRock/forgerock-javascript-sdk#readme",
-  "devDependencies": {
-    "rollup-plugin-visualizer": "^5.5.2"
-  }
+  "version": "4.0.0-beta.13",
+  "exports": {
+    "./src/*": {
+      "types": "./src/*.d.ts",
+      "import": "./src/*.js",
+      "require": "./src/*.cjs"
+    },
+    ".": {
+      "types": "./src/index.d.ts",
+      "import": "./src/index.js",
+      "require": "./src/index.cjs"
+    }
+  },
+  "types": "./src/index.d.ts"
 }

@@ -1,12 +1,16 @@
-FROM node:lts
+FROM okteto/node:18 as builder
 
 WORKDIR /app/builder
 
-ENV NODE_ENV=development
+ENV PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1
+ARG HUSKY=0
+ENV HUSKY=0
+ENV HUSKY_SKIP_HOOKS=1
 
 COPY . /app/builder/
 
 RUN npm install
+ENV NODE_ENV=production
 
 ARG AM_URL=$AM_URL
 ENV AM_URL=$AM_URL
@@ -32,6 +36,3 @@ ARG TIMEOUT=$TIMEOUT
 ENV TIMEOUT=$TIMEOUT
 ARG TREE=$TREE
 ENV TREE=$TREE
-
-RUN npx nx run-many --target=config --projects=angular-todo
-RUN npx nx run-many --target=build --all

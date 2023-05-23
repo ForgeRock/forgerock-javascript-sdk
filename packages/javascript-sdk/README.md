@@ -1,6 +1,5 @@
 [![npm (scoped)](https://img.shields.io/npm/v/@forgerock/javascript-sdk?color=%23f46200&label=Version&style=flat-square)](CHANGELOG.md)
 [![ForgeRock CI](https://github.com/ForgeRock/forgerock-javascript-sdk/actions/workflows/ci.yml/badge.svg)](https://github.com/ForgeRock/forgerock-javascript-sdk/actions/workflows/ci.yml)
-[![ForgeRock Ubuntu CI](https://github.com/ForgeRock/forgerock-javascript-sdk/actions/workflows/ubuntu.yml/badge.svg)](https://github.com/ForgeRock/forgerock-javascript-sdk/actions/workflows/ubuntu.yml)
 
 <p align="center">
   <a href="https://github.com/ForgeRock">

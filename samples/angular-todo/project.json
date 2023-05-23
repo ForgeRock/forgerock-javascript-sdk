@@ -1,18 +1,17 @@
 {
+  "name": "angular-todo",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
   "sourceRoot": "samples/angular-todo/src",
   "prefix": "app",
   "targets": {
     "config": {
-      "executor": "@nrwl/workspace:run-commands",
-      "options": {
-        "commands": ["node samples/angular-todo/set-env.mjs"]
-      }
+      "command": "node samples/angular-todo/set-env.mjs"
     },
     "build": {
-      "executor": "@angular-devkit/build-angular:browser",
+      "executor": "@angular-devkit/build-angular:browser-esbuild",
       "outputs": ["{options.outputPath}"],
+      "dependsOn": ["config"],
       "options": {
         "outputPath": "dist/samples/angular-todo",
         "index": "samples/angular-todo/src/index.html",
@@ -63,14 +62,19 @@
       "defaultConfiguration": "development"
     },
     "serve": {
-      "executor": "@nrwl/angular:webpack-server",
+      "executor": "@nx/angular:webpack-dev-server",
       "options": {
-        "open": true,
         "ssl": true,
-        "watch": true,
         "port": 8443,
+        "allowedHosts": [".example.com", "localhost"],
+        "headers": {
+          "Access-Control-Allow-Origin": "null",
+          "Access-Control-Allow-Credentials": "true"
+        },
+        "watch": true,
         "host": "angular.example.com",
-        "browserTarget": "angular-todo:build:development"
+        "browserTarget": "angular-todo:build:development",
+        "open": true
       },
       "configurations": {
         "production": {
@@ -89,7 +93,7 @@
       }
     },
     "lint": {
-      "executor": "@nrwl/linter:eslint",
+      "executor": "@nx/linter:eslint",
       "options": {
         "fix": true,
         "lintFilePatterns": [
@@ -99,7 +103,7 @@
       }
     },
     "test": {
-      "executor": "@nrwl/jest:jest",
+      "executor": "@nx/jest:jest",
       "outputs": ["coverage/samples/angular-todo"],
       "options": {
         "jestConfig": "samples/angular-todo/jest.config.ts",
@@ -107,5 +111,5 @@
       }
     }
   },
-  "tags": []
+  "tags": ["scope:sample"]
 }

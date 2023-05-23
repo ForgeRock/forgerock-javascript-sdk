@@ -9,20 +9,14 @@
  */
 
 import { Injectable } from '@angular/core';
-import {
-  ActivatedRouteSnapshot,
-  CanActivate,
-  RouterStateSnapshot,
-  UrlTree,
-  Router,
-} from '@angular/router';
+import { ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router } from '@angular/router';
 import { UserService } from '../services/user.service';
-import { Tokens, TokenStorage, UserManager } from '@forgerock/javascript-sdk';
+import { TokenStorage, UserManager } from '@forgerock/javascript-sdk';
 
 @Injectable({
   providedIn: 'root',
 })
-export class AuthGuard implements CanActivate {
+export class AuthGuard {
   constructor(public userService: UserService, private router: Router) {}
 
   /**
@@ -49,7 +43,7 @@ export class AuthGuard implements CanActivate {
        * In this case, we are calling the userinfo endpoint to
        * ensure valid tokens before continuing, but it's optional.
        ***************************************************************** */
-      const tokens: Tokens = await TokenStorage.get();
+      const tokens = await TokenStorage.get();
       const info = await UserManager.getCurrentUser();
       if (tokens === undefined || info === undefined) {
         return loginUrl;

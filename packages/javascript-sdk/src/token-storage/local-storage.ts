@@ -9,7 +9,7 @@
  */
 
 import { Tokens } from '../shared/interfaces';
-import { DB_NAME } from './constants';
+import { PREFIX } from '../config/constants';
 
 /**
  * Provides wrapper for tokens with localStorage.
@@ -18,19 +18,20 @@ abstract class LocalStorageWrapper {
   /**
    * Retrieve tokens.
    */
-  public static async get(clientId: string): Promise<Tokens> {
-    const tokenString = localStorage.getItem(`${DB_NAME}-${clientId}`);
+  public static async get(clientId: string): Promise<Tokens | void> {
+    const tokenString = localStorage.getItem(`${PREFIX}-${clientId}`);
+
+    // If there is no stored token, or the token is not an object, return null
+    if (!tokenString) {
+      // This is a normal state, so resolve with undefined
+      return;
+    }
 
     try {
-      return Promise.resolve(JSON.parse(tokenString || ''));
+      return JSON.parse(tokenString || '');
     } catch (err) {
-      console.warn(
-        'Could not parse token from localStorage. This could be due to accessing a removed token',
-      );
-      // Original behavior had an untyped return of undefined for no token
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      return undefined;
+      // This is an error state, so reject
+      throw new Error('Could not parse token object from localStorage');
     }
   }
 
@@ -39,14 +40,14 @@ abstract class LocalStorageWrapper {
    */
   public static async set(clientId: string, tokens: Tokens): Promise<void> {
     const tokenString = JSON.stringify(tokens);
-    localStorage.setItem(`${DB_NAME}-${clientId}`, tokenString);
+    localStorage.setItem(`${PREFIX}-${clientId}`, tokenString);
   }
 
   /**
    * Removes stored tokens.
    */
   public static async remove(clientId: string): Promise<void> {
-    localStorage.removeItem(`${DB_NAME}-${clientId}`);
+    localStorage.removeItem(`${PREFIX}-${clientId}`);
   }
 }
 

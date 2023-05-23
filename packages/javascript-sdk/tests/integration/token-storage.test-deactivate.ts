@@ -15,7 +15,7 @@
 import 'fake-indexeddb/auto';
 import TokenStorage from '../../src/token-storage';
 import { ConfigOptions } from '../../src/config';
-import { Tokens } from '@forgerock/shared';
+import { Tokens } from '../../src/shared/interfaces';
 import { DB_NAME, TOKEN_KEY } from '../../src/token-storage/constants';
 
 const config: ConfigOptions = {
@@ -36,7 +36,7 @@ const testTokensTwo: Tokens = {
 };
 
 const initTokenIndexedDB = async (initToken?: Tokens): Promise<unknown> => {
-  return new Promise((resolve) => {
+  return new Promise<void>((resolve) => {
     let setup = indexedDB.open(DB_NAME);
 
     const onUpgradeNeeded = (): void => {
@@ -89,7 +89,7 @@ jest.mock('../config/index', () => ({
 }));
 
 describe('The TokenStorage module', () => {
-  const cleanUp = async (done): Promise<void> => {
+  const cleanUp = async (done: any): Promise<void> => {
     const deleteDatabase = indexedDB.deleteDatabase(DB_NAME);
     deleteDatabase.onsuccess = (): void => {
       done();

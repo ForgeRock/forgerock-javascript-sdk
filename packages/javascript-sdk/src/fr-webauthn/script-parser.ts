@@ -98,7 +98,9 @@ function parseWebAuthnRegisterText(text: string): PublicKeyCredentialCreationOpt
       // Only include authenticatorAttachment prop if the value is truthy
       ...(authenticatorAttachment && { authenticatorAttachment }),
       // Only include requireResidentKey prop if the value is of string "true"
-      ...(requireResidentKey === 'true' && { requireResidentKey: !!requireResidentKey }),
+      ...(requireResidentKey === 'true' && {
+        requireResidentKey: !!requireResidentKey,
+      }),
     },
     challenge,
     ...(excludeCredentials.length && { excludeCredentials }),

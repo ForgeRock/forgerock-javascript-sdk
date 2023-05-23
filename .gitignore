@@ -5,7 +5,7 @@
 # Generated code
 tmp/
 */dist/*
-dist
+dist/*
 packages/*/dist/
 packages/javascript-sdk/lib-esm
 packages/javascript-sdk/lib
@@ -51,3 +51,5 @@ samples/**/.env.local
 samples/**/.env
 todos/*
 users/*
+#Project Docs
+docs/packages/javascript-sdk

@@ -1,36 +1,31 @@
 {
+  "name": "autoscript-suites",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "e2e/autoscript-suites/src",
   "projectType": "application",
   "targets": {
     "e2e": {
-      "executor": "@nrwl/workspace:run-commands",
+      "executor": "@nx-extend/e2e-runner:run",
       "options": {
-        "commands": [
+        "runner": "playwright",
+        "targets": [
           {
-            "command": "concurrently --kill-others --success first  \"playwright test --config=./e2e/autoscript-suites/playwright.config.ts\" \"npm run start:server\"",
-            "description": "run e2e setup"
+            "target": "mock-api:serve",
+            "checkUrl": "https://api.example.com:9443/healthcheck",
+            "checkMaxTries": 50,
+            "rejectUnauthorized": false
+          },
+          {
+            "target": "autoscript-apps:serve",
+            "checkUrl": "https://sdkapp.example.com:8443",
+            "checkMaxTries": 50,
+            "rejectUnauthorized": false
           }
-        ],
-        "parallel": true
-      },
-      "configurations": {
-        "live": {
-          "commands": [
-            {
-              "command": "npm run start:server:live",
-              "description": "run api setup"
-            },
-            {
-              "command": "playwright test",
-              "description": "run e2e setup"
-            }
-          ]
-        }
+        ]
       }
     },
     "lint": {
-      "executor": "@nrwl/linter:eslint",
+      "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": ["e2e/autoscript-suites/**/*.{js,ts}"],
