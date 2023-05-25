@@ -5,7 +5,8 @@
       "dependsOn": ["^test"]
     },
     "test": {
-      "dependsOn": ["^test"]
+      "dependsOn": ["^test"],
+      "inputs": ["default", "^default"]
     },
     "tsc": {
       "dependsOn": ["^tsc"]

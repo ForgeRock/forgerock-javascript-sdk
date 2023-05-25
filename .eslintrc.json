@@ -17,7 +17,7 @@
               },
               {
                 "sourceTag": "scope:app",
-                "onlyDependOnLibsWithTags": ["scope:sdk"]
+                "onlyDependOnLibsWithTags": ["scope:sdk", "scope:package"]
               },
               {
                 "sourceTag": "scope:e2e",
@@ -26,6 +26,10 @@
               {
                 "sourceTag": "scope:sdk",
                 "onlyDependOnLibsWithTags": []
+              },
+              {
+                "sourceTag": "scope:package",
+                "onlyDependOnLibsWithTags": ["scope:sdk"]
               }
             ]
           }
