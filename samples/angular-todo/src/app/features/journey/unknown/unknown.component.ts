@@ -9,7 +9,7 @@
  */
 
 import { Component, Input } from '@angular/core';
-import { FRCallback } from '@forgerock/javascript-sdk';
+import type { FRCallback } from '@forgerock/javascript-sdk';
 
 /**
  * Used to display a message if there is an unknown callback

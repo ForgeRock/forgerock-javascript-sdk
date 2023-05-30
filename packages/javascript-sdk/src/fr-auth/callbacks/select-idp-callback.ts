@@ -9,7 +9,7 @@
  */
 
 import FRCallback from '.';
-import { Callback } from '../../auth/interfaces';
+import type { Callback } from '../../auth/interfaces';
 
 interface IdPValue {
   provider: string;
@@ -50,4 +50,4 @@ class SelectIdPCallback extends FRCallback {
 
 export default SelectIdPCallback;
 
-export { IdPValue };
+export type { IdPValue };

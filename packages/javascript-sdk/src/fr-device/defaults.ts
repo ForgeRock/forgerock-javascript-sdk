@@ -76,7 +76,12 @@ const hardwareProps = [
   'maxTouchPoints',
   'oscpu',
 ];
-const platformProps = ['language', 'platform', 'userLanguage', 'systemLanguage'];
+const platformProps = [
+  'language',
+  'platform',
+  'userLanguage',
+  'systemLanguage',
+];
 
 export {
   browserProps,

@@ -9,8 +9,8 @@
  */
 
 import { CallbackType } from '../auth/enums';
-import TextOutputCallback from '../fr-auth/callbacks/text-output-callback';
-import FRStep from '../fr-auth/fr-step';
+import type TextOutputCallback from '../fr-auth/callbacks/text-output-callback';
+import type FRStep from '../fr-auth/fr-step';
 import { parseDisplayRecoveryCodesText } from './script-parser';
 
 /**
@@ -55,12 +55,16 @@ abstract class FRRecoveryCodes {
    * @param step The step to evaluate
    * @return gets the Display Recovery Codes' callback
    */
-  private static getDisplayCallback(step: FRStep): TextOutputCallback | undefined {
+  private static getDisplayCallback(
+    step: FRStep
+  ): TextOutputCallback | undefined {
     return step
       .getCallbacksOfType<TextOutputCallback>(CallbackType.TextOutputCallback)
       .find((x) => {
         const cb = x.getOutputByName<string | undefined>('message', undefined);
-        return cb && (cb.includes('Recovery Codes') || cb.includes('recovery codes'));
+        return (
+          cb && (cb.includes('Recovery Codes') || cb.includes('recovery codes'))
+        );
       });
   }
 }

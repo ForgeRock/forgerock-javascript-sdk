@@ -32,7 +32,8 @@ export default function Password({ callback, errorMessage, inputName }) {
    * for accessing values from the callbacks received from AM
    ************************************************************************* */
   if (DEBUGGER) debugger;
-  const failedPolicies = callback.getFailedPolicies && callback.getFailedPolicies();
+  const failedPolicies =
+    callback.getFailedPolicies && callback.getFailedPolicies();
   const passwordLabel = callback.getPrompt();
   const policies = callback.getPolicies && callback.getPolicies();
   const [isVisible, setVisibility] = useState(false);
@@ -106,7 +107,9 @@ export default function Password({ callback, errorMessage, inputName }) {
       <input
         className={`cstm_input-password form-control ${
           validationClass ? validationClass : ''
-        } border-end-0 bg-transparent ${state.theme.textClass} ${state.theme.borderClass}`}
+        } border-end-0 bg-transparent ${state.theme.textClass} ${
+          state.theme.borderClass
+        }`}
         id={inputName}
         name={inputName}
         onChange={setValue}

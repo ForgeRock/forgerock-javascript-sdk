@@ -14,7 +14,7 @@
  * These are private utility functions for HttpClient
  */
 import { WebAuthnOutcomeType } from './enums';
-import { ParsedCredential } from './interfaces';
+import type { ParsedCredential } from './interfaces';
 
 function ensureArray(arr: RegExpMatchArray | null): string[] {
   return arr || [];
@@ -64,7 +64,9 @@ function parseNumberArray(value: string): number[] {
   return JSON.parse(matches[1]);
 }
 
-function parsePubKeyArray(value: string | unknown[]): PublicKeyCredentialParameters[] | undefined {
+function parsePubKeyArray(
+  value: string | unknown[]
+): PublicKeyCredentialParameters[] | undefined {
   if (Array.isArray(value)) {
     return value as PublicKeyCredentialParameters[];
   }
@@ -79,7 +81,7 @@ function parsePubKeyArray(value: string | unknown[]): PublicKeyCredentialParamet
 }
 
 function parseAllowCredentialsArray(
-  value: string | unknown[],
+  value: string | unknown[]
 ): PublicKeyCredentialDescriptor[] | undefined {
   if (!value) {
     return undefined;

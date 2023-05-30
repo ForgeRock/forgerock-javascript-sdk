@@ -8,8 +8,8 @@
  * of the MIT license. See the LICENSE file for details.
  */
 
-import { ConfigOptions } from '../config/interfaces';
-import FRStep from '../fr-auth/fr-step';
+import type { ConfigOptions } from '../config/interfaces';
+import type FRStep from '../fr-auth/fr-step';
 
 export interface Advices {
   AuthenticateToServiceConditionAdvice?: string[];

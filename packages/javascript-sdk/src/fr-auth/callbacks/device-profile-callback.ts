@@ -9,8 +9,8 @@
  */
 
 import FRCallback from '.';
-import { Callback } from '../../auth/interfaces';
-import { DeviceProfileData } from '../../fr-device/interfaces';
+import type { Callback } from '../../auth/interfaces';
+import type { DeviceProfileData } from '../../fr-device/interfaces';
 
 /**
  * Represents a callback used to collect device profile data.

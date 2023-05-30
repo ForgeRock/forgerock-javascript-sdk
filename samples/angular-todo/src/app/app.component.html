@@ -10,7 +10,10 @@ of the MIT license. See the LICENSE file for details.
 
 <div id="root" class="cstm_root">
   <router-outlet></router-outlet>
-  <div *ngIf="loading" class="cstm_container_v-centered container-fluid d-flex align-items-center">
+  <div
+    *ngIf="loading"
+    class="cstm_container_v-centered container-fluid d-flex align-items-center"
+  >
     <div class="w-100">
       <app-loading message="Verifying access ..."></app-loading>
     </div>

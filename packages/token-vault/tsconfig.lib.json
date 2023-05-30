@@ -3,8 +3,11 @@
   "compilerOptions": {
     "outDir": "../../dist/out-tsc",
     "declaration": true,
-    "types": ["dom"],
-    "lib": ["es2018", "dom", "WebWorker"],
+    "moduleResolution": "node",
+    "types": ["node"],
+    "lib": ["DOM", "ES2020"],
+    "target": "ES2020",
+    "module": "ES2022"
   },
   "include": ["src/**/*.ts"],
   "exclude": ["jest.config.ts", "src/**/*.spec.ts", "src/**/*.test.ts"]

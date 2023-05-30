@@ -1,13 +1,12 @@
-import type { Tokens, OAuth2Tokens } from "@forgerock/javascript-sdk";
-
-import type { BaseConfig } from "./interface";
+import type { OAuth2Tokens, Tokens } from '@forgerock/javascript-sdk';
+import type { BaseConfig } from '@forgerock/shared-types';
 
 type ClientConfigInit = Partial<BaseConfig>;
 interface ClientConfig extends ClientConfigInit {
-  app: BaseConfig["app"];
-  forgerock?: BaseConfig["forgerock"];
-  interceptor: BaseConfig["interceptor"];
-  proxy: BaseConfig["proxy"];
+  app: BaseConfig['app'];
+  forgerock?: BaseConfig['forgerock'];
+  interceptor: BaseConfig['interceptor'];
+  proxy: BaseConfig['proxy'];
 }
 
 /**
@@ -21,7 +20,7 @@ export function client(config: ClientConfig) {
   let tokenVaultProxyEl: HTMLIFrameElement;
 
   return {
-    interceptor: async function (options?: BaseConfig["interceptor"]) {
+    interceptor: async function (options?: BaseConfig['interceptor']) {
       /** ****************************************************
        * SERVICE WORKER REGISTRATION
        */
@@ -50,9 +49,12 @@ export function client(config: ClientConfig) {
        * IFRAME HTTP PROXY SETUP
        */
       const fetchEventName = config?.events?.fetch || 'FETCH_RESOURCE';
-      const frameId = options?.proxy?.id || config?.proxy?.id || 'token-vault-iframe';
+      const frameId =
+        options?.proxy?.id || config?.proxy?.id || 'token-vault-iframe';
       const proxyOrigin =
-        options?.proxy?.origin || config?.proxy.origin || 'http://localhost:9000';
+        options?.proxy?.origin ||
+        config?.proxy.origin ||
+        'http://localhost:9000';
       const proxyUrl =
         options?.proxy?.url || config?.proxy?.url || 'http://localhost:9000';
 
@@ -65,7 +67,9 @@ export function client(config: ClientConfig) {
 
       console.log(`App origin: ${window.location.origin}`);
       console.log(`Proxy origin: ${proxyOrigin}`);
-      console.log(`iframe URL: ${tokenVaultProxyEl.contentWindow?.location.href}`);
+      console.log(
+        `iframe URL: ${tokenVaultProxyEl.contentWindow?.location.href}`
+      );
 
       navigator.serviceWorker.addEventListener('message', (event) => {
         if (event.data?.type === fetchEventName) {
@@ -77,20 +81,21 @@ export function client(config: ClientConfig) {
         }
       });
 
-      return tokenVaultProxyEl;
+      return new Promise((resolve, reject) => {
+        tokenVaultProxyEl.onload = () => {
+          resolve(tokenVaultProxyEl);
+        };
+      });
     },
     store: function () {
       const clientId = config?.forgerock?.clientId || 'WebOAuthClient';
       const hasTokenEventName = config?.events?.has || 'HAS_TOKENS';
-      const refreshTokenEventName =
-        config?.events?.refresh || 'REFRESH_TOKENS';
-      const removeTokenEventName =
-        config?.events?.remove || 'REMOVE_TOKENS';
-      const setTokenEventName = config?.events?.set || 'SET_TOKENS';
+      const refreshTokenEventName = config?.events?.refresh || 'REFRESH_TOKENS';
+      const removeTokenEventName = config?.events?.remove || 'REMOVE_TOKENS';
 
       return {
         get() {
-          // We cannot get the tokens out of the iframe
+          // Tokens are not retrievable from the iframe
           return Promise.resolve(null as unknown as Tokens);
         },
         has() {
@@ -136,19 +141,6 @@ export function client(config: ClientConfig) {
           });
         },
         set(_: string, tokens: OAuth2Tokens): Promise<void> {
-          const proxyChannel = new MessageChannel();
-
-          // Use this if not redacting tokens in proxy
-          // return new Promise((resolve, reject) => {
-          //   tokenVaultProxyEl.contentWindow?.postMessage(
-          //     { type: setTokenEventName, clientId, tokens },
-          //     config.proxy.origin,
-          //     [proxyChannel.port2]
-          //   );
-          //   proxyChannel.port1.onmessage = (event) => {
-          //     resolve(undefined);
-          //   };
-          // });
           return Promise.resolve(undefined);
         },
       };

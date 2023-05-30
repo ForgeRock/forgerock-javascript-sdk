@@ -8,8 +8,9 @@
  * of the MIT license. See the LICENSE file for details.
  */
 
-import { ConfigOptions } from '../config';
-import FRStep, { FRStepHandler } from '../fr-auth/fr-step';
+import type { ConfigOptions } from '../config';
+import type { FRStepHandler } from '../fr-auth/fr-step';
+import type FRStep from '../fr-auth/fr-step';
 import OAuth2Client from '../oauth2-client';
 import SessionManager from '../session-manager';
 import TokenManager from '../token-manager';
@@ -28,7 +29,7 @@ abstract class FRUser {
    */
   public static async login<T>(
     handler: FRStepHandler,
-    options?: ConfigOptions,
+    options?: ConfigOptions
   ): Promise<FRStep | T> {
     console.info(handler, options); // Avoid lint errors
     throw new Error('FRUser.login() not implemented');

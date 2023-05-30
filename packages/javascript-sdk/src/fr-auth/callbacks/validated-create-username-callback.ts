@@ -9,8 +9,8 @@
  */
 
 import FRCallback from '.';
-import { Callback, PolicyRequirement } from '../../auth/interfaces';
-import { StringDict } from '../../shared/interfaces';
+import type { Callback, PolicyRequirement } from '../../auth/interfaces';
+import type { StringDict } from '../../shared/interfaces';
 
 /**
  * Represents a callback used to collect a valid platform username.
@@ -36,13 +36,13 @@ class ValidatedCreateUsernameCallback extends FRCallback {
   public getFailedPolicies(): PolicyRequirement[] {
     const failedPolicies = this.getOutputByName<PolicyRequirement[]>(
       'failedPolicies',
-      [],
+      []
     ) as unknown as string[];
     try {
       return failedPolicies.map((v) => JSON.parse(v)) as PolicyRequirement[];
     } catch (err) {
       throw new Error(
-        'Unable to parse "failed policies" from the ForgeRock server. The JSON within `ValidatedCreateUsernameCallback` was either malformed or missing.',
+        'Unable to parse "failed policies" from the ForgeRock server. The JSON within `ValidatedCreateUsernameCallback` was either malformed or missing.'
       );
     }
   }

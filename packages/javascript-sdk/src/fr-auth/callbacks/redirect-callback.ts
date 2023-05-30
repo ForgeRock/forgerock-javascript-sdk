@@ -9,7 +9,7 @@
  */
 
 import FRCallback from '.';
-import { Callback } from '../../auth/interfaces';
+import type { Callback } from '../../auth/interfaces';
 
 /**
  * Represents a callback used to collect an answer to a choice.

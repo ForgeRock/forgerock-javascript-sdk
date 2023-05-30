@@ -1,0 +1,75 @@
+{
+  "name": "e2e-token-vault-app",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "e2e/token-vault-app/src",
+  "tags": ["scope:app"],
+  "targets": {
+    "build": {
+      "executor": "@nx/vite:build",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "outputPath": "dist/e2e/token-vault-app"
+      },
+      "configurations": {
+        "development": {
+          "mode": "development"
+        },
+        "production": {
+          "mode": "production"
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nx/vite:dev-server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "e2e-token-vault-app:build",
+        "host": "localhost",
+        "open": true,
+        "port": 8000
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "e2e-token-vault-app:build:development",
+          "hmr": true
+        },
+        "production": {
+          "buildTarget": "e2e-token-vault-app:build:production",
+          "hmr": false
+        }
+      }
+    },
+    "preview": {
+      "executor": "@nx/vite:preview-server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "e2e-token-vault-app:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "e2e-token-vault-app:build:development"
+        },
+        "production": {
+          "buildTarget": "e2e-token-vault-app:build:production"
+        }
+      }
+    },
+    "test": {
+      "executor": "@nx/vite:test",
+      "outputs": ["coverage/e2e/token-vault-app"],
+      "options": {
+        "passWithNoTests": true,
+        "reportsDirectory": "../../coverage/e2e/token-vault-app"
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["e2e/token-vault-app/**/*.ts"]
+      }
+    }
+  }
+}

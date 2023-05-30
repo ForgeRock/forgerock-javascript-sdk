@@ -9,17 +9,18 @@
  */
 
 import { ActionTypes } from '../config/enums';
-import Config, { ConfigOptions } from '../config/index';
-import { ConfigurablePaths } from '../config/interfaces';
-import { StringDict } from '../shared/interfaces';
-import { Noop } from '../shared/types';
+import type { ConfigOptions } from '../config/index';
+import Config from '../config/index';
+import type { ConfigurablePaths } from '../config/interfaces';
+import type { StringDict } from '../shared/interfaces';
+import type { Noop } from '../shared/types';
 import TokenStorage from '../token-storage';
 import { isOkOr4xx } from '../util/http';
 import PKCE from '../util/pkce';
 import { withTimeout } from '../util/timeout';
 import { getEndpointPath, resolve, stringify } from '../util/url';
 import { ResponseType } from './enums';
-import {
+import type {
   AccessTokenResponse,
   GetAuthorizationUrlOptions,
   GetOAuth2TokensOptions,
@@ -40,14 +41,17 @@ const allowedErrors = {
   CORSError: 'Cross-origin redirection',
 
   // prompt=none errors
-  InteractionNotAllowed: 'The request requires some interaction that is not allowed.',
+  InteractionNotAllowed:
+    'The request requires some interaction that is not allowed.',
 };
 
 /**
  * OAuth 2.0 client.
  */
 abstract class OAuth2Client {
-  public static async createAuthorizeUrl(options: GetAuthorizationUrlOptions): Promise<string> {
+  public static async createAuthorizeUrl(
+    options: GetAuthorizationUrlOptions
+  ): Promise<string> {
     const { clientId, middleware, redirectUri, scope } = Config.get(options);
     const requestParams: StringDict<string | undefined> = {
       ...options.query,
@@ -70,7 +74,7 @@ abstract class OAuth2Client {
         url: new URL(this.getUrl('authorize', requestParams, options)),
         init: {},
       },
-      { type: ActionTypes.Authorize },
+      { type: ActionTypes.Authorize }
     );
     const { url } = runMiddleware(middleware);
     return url.toString();
@@ -84,7 +88,9 @@ abstract class OAuth2Client {
    * Original Name: getAuthorizeUrl
    * New Name: getAuthCodeByIframe
    */
-  public static async getAuthCodeByIframe(options: GetAuthorizationUrlOptions): Promise<string> {
+  public static async getAuthCodeByIframe(
+    options: GetAuthorizationUrlOptions
+  ): Promise<string> {
     const url = await this.createAuthorizeUrl({ ...options, prompt: 'none' });
 
     const { serverConfig } = Config.get(options);
@@ -134,7 +140,9 @@ abstract class OAuth2Client {
   /**
    * Exchanges an authorization code for OAuth tokens.
    */
-  public static async getOAuth2Tokens(options: GetOAuth2TokensOptions): Promise<OAuth2Tokens> {
+  public static async getOAuth2Tokens(
+    options: GetOAuth2TokensOptions
+  ): Promise<OAuth2Tokens> {
     const { clientId, redirectUri } = Config.get(options);
 
     const requestParams: StringDict<string | undefined> = {
@@ -158,7 +166,13 @@ abstract class OAuth2Client {
       method: 'POST',
     };
 
-    const response = await this.request('accessToken', undefined, false, init, options);
+    const response = await this.request(
+      'accessToken',
+      undefined,
+      false,
+      init,
+      options
+    );
     const responseBody = await this.getBody<unknown>(response);
 
     if (response.status !== 200) {
@@ -191,7 +205,13 @@ abstract class OAuth2Client {
    * Gets OIDC user information.
    */
   public static async getUserInfo(options?: ConfigOptions): Promise<unknown> {
-    const response = await this.request('userInfo', undefined, true, undefined, options);
+    const response = await this.request(
+      'userInfo',
+      undefined,
+      true,
+      undefined,
+      options
+    );
     if (response.status !== 200) {
       throw new Error(`Failed to get user info; received ${response.status}`);
     }
@@ -212,7 +232,13 @@ abstract class OAuth2Client {
       query.id_token_hint = idToken;
     }
 
-    const response = await this.request('endSession', query, true, undefined, options);
+    const response = await this.request(
+      'endSession',
+      query,
+      true,
+      undefined,
+      options
+    );
     if (!isOkOr4xx(response)) {
       throw new Error(`Failed to end session; received ${response.status}`);
     }
@@ -236,7 +262,13 @@ abstract class OAuth2Client {
       method: 'POST',
     };
 
-    const response = await this.request('revoke', undefined, false, init, options);
+    const response = await this.request(
+      'revoke',
+      undefined,
+      false,
+      init,
+      options
+    );
     if (!isOkOr4xx(response)) {
       throw new Error(`Failed to revoke token; received ${response.status}`);
     }
@@ -248,7 +280,7 @@ abstract class OAuth2Client {
     query?: StringDict<string | undefined>,
     includeToken?: boolean,
     init?: RequestInit,
-    options?: ConfigOptions,
+    options?: ConfigOptions
   ): Promise<Response> {
     const { middleware, serverConfig } = Config.get(options);
     const url = this.getUrl(endpoint, query, options);
@@ -277,10 +309,13 @@ abstract class OAuth2Client {
     }
     const runMiddleware = middlewareWrapper(
       { url: new URL(url), init },
-      { type: getActionType(endpoint) },
+      { type: getActionType(endpoint) }
     );
     const req = runMiddleware(middleware);
-    return await withTimeout(fetch(req.url.toString(), req.init), serverConfig.timeout);
+    return await withTimeout(
+      fetch(req.url.toString(), req.init),
+      serverConfig.timeout
+    );
   }
 
   private static containsAuthCode(url: string | null): boolean {
@@ -314,7 +349,7 @@ abstract class OAuth2Client {
   private static getUrl(
     endpoint: ConfigurablePaths,
     query?: StringDict<string | undefined>,
-    options?: ConfigOptions,
+    options?: ConfigOptions
   ): string {
     const { realmPath, serverConfig } = Config.get(options);
     const path = getEndpointPath(endpoint, realmPath, serverConfig.paths);
@@ -327,10 +362,9 @@ abstract class OAuth2Client {
 }
 
 export default OAuth2Client;
-export {
-  allowedErrors,
+export type {
   GetAuthorizationUrlOptions,
   GetOAuth2TokensOptions,
   OAuth2Tokens,
-  ResponseType,
 };
+export { allowedErrors, ResponseType };

@@ -1,0 +1,73 @@
+{
+  "name": "e2e-token-vault-proxy",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "e2e/token-vault-proxy/src",
+  "tags": ["scope:app"],
+  "targets": {
+    "build": {
+      "executor": "@nx/vite:build",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "outputPath": "dist/e2e/token-vault-proxy"
+      },
+      "configurations": {
+        "development": {
+          "mode": "development"
+        },
+        "production": {
+          "mode": "production"
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nx/vite:dev-server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "e2e-token-vault-proxy:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "e2e-token-vault-proxy:build:development",
+          "hmr": true,
+          "port": 9000
+        },
+        "production": {
+          "buildTarget": "e2e-token-vault-proxy:build:production",
+          "hmr": false
+        }
+      }
+    },
+    "preview": {
+      "executor": "@nx/vite:preview-server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "e2e-token-vault-proxy:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "e2e-token-vault-proxy:build:development"
+        },
+        "production": {
+          "buildTarget": "e2e-token-vault-proxy:build:production"
+        }
+      }
+    },
+    "test": {
+      "executor": "@nx/vite:test",
+      "outputs": ["coverage/e2e/token-vault-proxy"],
+      "options": {
+        "passWithNoTests": true,
+        "reportsDirectory": "../../coverage/e2e/token-vault-proxy"
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["e2e/token-vault-proxy/**/*.ts"]
+      }
+    }
+  }
+}

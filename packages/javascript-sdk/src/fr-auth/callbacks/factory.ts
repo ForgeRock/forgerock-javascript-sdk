@@ -10,7 +10,7 @@
 
 import FRCallback from '.';
 import { CallbackType } from '../../auth/enums';
-import { Callback } from '../../auth/interfaces';
+import type { Callback } from '../../auth/interfaces';
 import AttributeInputCallback from './attribute-input-callback';
 import ChoiceCallback from './choice-callback';
 import ConfirmationCallback from './confirmation-callback';
@@ -86,4 +86,4 @@ function createCallback(callback: Callback): FRCallback {
 }
 
 export default createCallback;
-export { FRCallbackFactory };
+export type { FRCallbackFactory };

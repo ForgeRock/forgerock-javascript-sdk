@@ -9,7 +9,7 @@
  */
 
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { KbaCreateCallback } from '@forgerock/javascript-sdk';
+import type { KbaCreateCallback } from '@forgerock/javascript-sdk';
 
 /**
  * Used to display a KBA security question

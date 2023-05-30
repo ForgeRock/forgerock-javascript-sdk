@@ -1,4 +1,4 @@
-import { TokenManager } from "@forgerock/javascript-sdk";
+import { TokenManager } from '@forgerock/javascript-sdk';
 
 const url = new URL(document.location.href);
 const params = url.searchParams;

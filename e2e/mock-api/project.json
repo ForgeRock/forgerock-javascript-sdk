@@ -41,6 +41,7 @@
     },
     "serve": {
       "executor": "nx:run-commands",
+      "dependsOn": ["build"],
       "options": {
         "command": "node dist/e2e/mock-api/index.cjs"
       },

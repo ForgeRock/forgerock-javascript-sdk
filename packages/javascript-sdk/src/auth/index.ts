@@ -8,13 +8,14 @@
  * of the MIT license. See the LICENSE file for details.
  */
 
-import Config, { ServerConfig } from '../config';
+import type { ServerConfig } from '../config';
+import Config from '../config';
 import { ActionTypes } from '../config/enums';
 import { REQUESTED_WITH } from '../shared/constants';
-import { StringDict } from '../shared/interfaces';
+import type { StringDict } from '../shared/interfaces';
 import { withTimeout } from '../util/timeout';
 import { getEndpointPath, resolve, stringify } from '../util/url';
-import { Step, StepOptions } from './interfaces';
+import type { Step, StepOptions } from './interfaces';
 import middlewareWrapper from '../util/middleware';
 
 /**
@@ -28,8 +29,12 @@ abstract class Auth {
    * @param {StepOptions} options Configuration default overrides.
    * @return {Step} The next step in the authentication tree.
    */
-  public static async next(previousStep?: Step, options?: StepOptions): Promise<Step> {
-    const { middleware, realmPath, serverConfig, tree, type } = Config.get(options);
+  public static async next(
+    previousStep?: Step,
+    options?: StepOptions
+  ): Promise<Step> {
+    const { middleware, realmPath, serverConfig, tree, type } =
+      Config.get(options);
     const query = options ? options.query : {};
     const url = this.constructUrl(serverConfig, realmPath, tree, query);
     const runMiddleware = middlewareWrapper(
@@ -38,15 +43,20 @@ abstract class Auth {
         init: this.configureRequest(previousStep),
       },
       {
-        type: previousStep ? ActionTypes.Authenticate : ActionTypes.StartAuthenticate,
+        type: previousStep
+          ? ActionTypes.Authenticate
+          : ActionTypes.StartAuthenticate,
         payload: {
           tree,
           type: type ? type : 'service',
         },
-      },
+      }
     );
     const req = runMiddleware(middleware);
-    const res = await withTimeout(fetch(req.url.toString(), req.init), serverConfig.timeout);
+    const res = await withTimeout(
+      fetch(req.url.toString(), req.init),
+      serverConfig.timeout
+    );
     const json = await this.getResponseJson<Step>(res);
     return json;
   }
@@ -55,11 +65,14 @@ abstract class Auth {
     serverConfig: ServerConfig,
     realmPath?: string,
     tree?: string,
-    query?: StringDict<string>,
+    query?: StringDict<string>
   ): string {
-    const treeParams = tree ? { authIndexType: 'service', authIndexValue: tree } : undefined;
+    const treeParams = tree
+      ? { authIndexType: 'service', authIndexValue: tree }
+      : undefined;
     const params: StringDict<string | undefined> = { ...query, ...treeParams };
-    const queryString = Object.keys(params).length > 0 ? `?${stringify(params)}` : '';
+    const queryString =
+      Object.keys(params).length > 0 ? `?${stringify(params)}` : '';
     const path = getEndpointPath('authenticate', realmPath, serverConfig.paths);
     const url = resolve(serverConfig.baseUrl, `${path}${queryString}`);
     return url;

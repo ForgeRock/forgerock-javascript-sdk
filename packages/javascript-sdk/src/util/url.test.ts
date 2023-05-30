@@ -51,7 +51,9 @@ describe('The URL utility', () => {
     const basePath = '/a/b/c';
 
     baseUrls.forEach((baseUrl) => {
-      const baseUrlWithoutSlash = baseUrl.endsWith('/') ? baseUrl.slice(0, -1) : baseUrl;
+      const baseUrlWithoutSlash = baseUrl.endsWith('/')
+        ? baseUrl.slice(0, -1)
+        : baseUrl;
 
       const tests = [
         ['', `${baseUrlWithoutSlash}/a/b`],

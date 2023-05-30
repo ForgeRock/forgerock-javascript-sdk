@@ -5,6 +5,16 @@
   "projectType": "library",
   "targets": {
     "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/packages/javascript-sdk",
+        "main": "packages/javascript-sdk/src/index.ts",
+        "tsConfig": "packages/javascript-sdk/tsconfig.lib.json",
+        "assets": ["packages/javascript-sdk/*.md"]
+      }
+    },
+    "bundle": {
       "executor": "@nx/rollup:rollup",
       "options": {
         "compiler": "tsc",

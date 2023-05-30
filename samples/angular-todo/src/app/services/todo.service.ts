@@ -9,7 +9,7 @@
  */
 
 import { Injectable } from '@angular/core';
-import { Todo } from '../features/todo/todo';
+import type { Todo } from '../features/todo/todo';
 import { environment } from '../../environments/environment';
 import { HttpClient } from '@forgerock/javascript-sdk';
 
@@ -44,7 +44,11 @@ export class TodoService {
    */
   completeTodo(todo: Todo): Promise<Response> {
     todo.completed = !todo.completed;
-    return this.request(`${environment.API_URL}/todos/${todo._id}`, 'POST', todo);
+    return this.request(
+      `${environment.API_URL}/todos/${todo._id}`,
+      'POST',
+      todo
+    );
   }
 
   /**
@@ -53,7 +57,11 @@ export class TodoService {
    * @returns Promise - Response from the POST request
    */
   updateTodo(todo: Todo): Promise<Response> {
-    return this.request(`${environment.API_URL}/todos/${todo._id}`, 'POST', todo);
+    return this.request(
+      `${environment.API_URL}/todos/${todo._id}`,
+      'POST',
+      todo
+    );
   }
 
   /**

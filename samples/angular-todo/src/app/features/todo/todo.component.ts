@@ -9,7 +9,7 @@
  */
 
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { Todo } from './todo';
+import type { Todo } from './todo';
 
 /**
  * Used to display a Todo retrieved from the backend, handles user interaction with an existing Todo

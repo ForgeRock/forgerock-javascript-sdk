@@ -8,9 +8,9 @@
  * of the MIT license. See the LICENSE file for details.
  */
 
-import { ActionTypes } from './enums';
-import { FRCallbackFactory } from '../fr-auth/callbacks/factory';
-import { Tokens } from '../shared/interfaces';
+import type { ActionTypes } from './enums';
+import type { FRCallbackFactory } from '../fr-auth/callbacks/factory';
+import type { Tokens } from '../shared/interfaces';
 
 interface Action {
   type: ActionTypes;
@@ -50,7 +50,11 @@ interface CustomPathConfig {
   sessions?: string;
 }
 
-type RequestMiddleware = (req: RequestObj, action: Action, next: () => RequestObj) => void;
+type RequestMiddleware = (
+  req: RequestObj,
+  action: Action,
+  next: () => RequestObj
+) => void;
 
 interface RequestObj {
   url: URL;
@@ -82,7 +86,7 @@ interface ValidConfigOptions extends ConfigOptions {
   serverConfig: ServerConfig;
 }
 
-export {
+export type {
   Action,
   ConfigOptions,
   ConfigurablePaths,

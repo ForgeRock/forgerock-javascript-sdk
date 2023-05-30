@@ -13,12 +13,19 @@ import { setupAndGo } from '../utilities/setup-and-go';
 
 test.describe('Test Social Login flow with AM nodes', () => {
   test(`Login with identity provider`, async ({ page, browserName }) => {
-    const { messageArray } = await setupAndGo(page, browserName, 'authn-social-login-idm/', {
-      clientId: 'IDMSocialLogin',
-    });
+    const { messageArray } = await setupAndGo(
+      page,
+      browserName,
+      'authn-social-login-idm/',
+      {
+        clientId: 'IDMSocialLogin',
+      }
+    );
 
     // Test assertions
-    expect(messageArray.includes('Set provider on SelectIdPCallback')).toBe(true);
+    expect(messageArray.includes('Set provider on SelectIdPCallback')).toBe(
+      true
+    );
     expect(messageArray.includes('Redirect to ID Provider')).toBe(true);
     expect(messageArray.includes('Returning from provider')).toBe(true);
     expect(messageArray.includes('Social Login successful')).toBe(true);

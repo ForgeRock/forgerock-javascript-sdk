@@ -23,7 +23,12 @@ import TodoIcon from '../icons/todo-icon';
  * @param {Object} props.item - The todo item instance to be rendered
  * @returns {Object} - React component object
  */
-export default function Todo({ completeTodo, setSelectedDeleteTodo, setSelectedEditTodo, item }) {
+export default function Todo({
+  completeTodo,
+  setSelectedDeleteTodo,
+  setSelectedEditTodo,
+  item,
+}) {
   const [state] = useContext(AppContext);
 
   /**
@@ -59,7 +64,10 @@ export default function Todo({ completeTodo, setSelectedDeleteTodo, setSelectedE
         </label>
       </div>
 
-      <div className="dropdown text-end d-flex align-items-center" aria-expanded="false">
+      <div
+        className="dropdown text-end d-flex align-items-center"
+        aria-expanded="false"
+      >
         <button
           className="cstm_dropdown-actions btn h-auto"
           data-bs-toggle="dropdown"

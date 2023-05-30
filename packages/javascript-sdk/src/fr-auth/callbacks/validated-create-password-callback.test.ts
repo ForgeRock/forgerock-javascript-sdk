@@ -9,7 +9,7 @@
  */
 
 import { CallbackType } from '../../auth/enums';
-import { Callback } from '../../auth/interfaces';
+import type { Callback } from '../../auth/interfaces';
 import ValidatedCreatePasswordCallback from './validated-create-password-callback';
 
 describe('ValidatedCreatePasswordCallback', () => {
@@ -67,7 +67,9 @@ describe('ValidatedCreatePasswordCallback', () => {
     expect(cb.getPrompt()).toBe('Password');
     expect(cb.isRequired()).toBe(true);
     expect(cb.getPolicies().policyRequirements).toStrictEqual(['a', 'b']);
-    expect(cb.getFailedPolicies()).toStrictEqual([{ failedPolicies: { c: 'c', d: 'd' } }]);
+    expect(cb.getFailedPolicies()).toStrictEqual([
+      { failedPolicies: { c: 'c', d: 'd' } },
+    ]);
     expect(cb.payload.input[0].value).toBe('abcd123');
     expect(cb.payload.input[1].value).toBe(true);
   });

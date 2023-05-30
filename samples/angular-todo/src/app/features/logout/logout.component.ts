@@ -8,10 +8,11 @@
  * of the MIT license. See the LICENSE file for details.
  */
 
-import { Component, OnInit } from '@angular/core';
+import type { OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FRUser } from '@forgerock/javascript-sdk';
-import { Router } from '@angular/router';
-import { UserService } from '../../services/user.service';
+import type { Router } from '@angular/router';
+import type { UserService } from '../../services/user.service';
 
 /**
  * Used to log the user out whilst a spinner and message are displayed

@@ -8,18 +8,17 @@
  * of the MIT license. See the LICENSE file for details.
  */
 
-import { Component, Input, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import type { OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import type { Router } from '@angular/router';
 import { environment } from '../../../../environments/environment';
-import {
-  FRAuth,
+import type {
   FRLoginFailure,
   FRLoginSuccess,
   FRStep,
-  TokenManager,
-  UserManager,
 } from '@forgerock/javascript-sdk';
-import { UserService } from '../../../services/user.service';
+import { FRAuth, TokenManager, UserManager } from '@forgerock/javascript-sdk';
+import type { UserService } from '../../../services/user.service';
 
 /**
  * Used to display a login / registration form to the user, with authentication callbacks dynamically rendered based on the tree / journey
@@ -188,7 +187,8 @@ export class FormComponent implements OnInit {
       }
       case 'register': {
         this.title = 'Sign Up';
-        (this.buttonText = 'Register'), (this.tree = environment.JOURNEY_REGISTER);
+        (this.buttonText = 'Register'),
+          (this.tree = environment.JOURNEY_REGISTER);
         break;
       }
       default: {

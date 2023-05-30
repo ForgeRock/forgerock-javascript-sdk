@@ -46,7 +46,10 @@ export default function Header() {
           location.pathname === '/' ? 'cstm_nav-item_active' : ''
         } nav-item mx-1`}
       >
-        <Link className="cstm_nav-link nav-link d-flex align-items-center h-100 p-0 ps-1" to="/">
+        <Link
+          className="cstm_nav-link nav-link d-flex align-items-center h-100 p-0 ps-1"
+          to="/"
+        >
           <HomeIcon />
           <span className="px-2 fs-6">Home</span>
         </Link>
@@ -82,7 +85,9 @@ export default function Header() {
             aria-labelledby="account_dropdown"
           >
             <li>
-              <div className={`dropdown-header border-bottom ${state.theme.borderClass}`}>
+              <div
+                className={`dropdown-header border-bottom ${state.theme.borderClass}`}
+              >
                 <p
                   className={`fw-bold fs-6 mb-0 ${
                     state.theme.textClass ? state.theme.textClass : 'text-dark'
@@ -136,8 +141,13 @@ export default function Header() {
         >
           <ForgeRockIcon size="31px" /> + <ReactIcon size="38px" />
         </Link>
-        <div className="navbar-collapse d-flex align-items-stretch" id="navbarNav">
-          <ul className="navbar-nav d-flex align-items-stretch me-auto">{TodosItem}</ul>
+        <div
+          className="navbar-collapse d-flex align-items-stretch"
+          id="navbarNav"
+        >
+          <ul className="navbar-nav d-flex align-items-stretch me-auto">
+            {TodosItem}
+          </ul>
           {LoginOrOutItem}
         </div>
       </div>

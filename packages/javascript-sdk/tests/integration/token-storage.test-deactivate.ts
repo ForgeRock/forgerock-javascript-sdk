@@ -14,8 +14,8 @@
 
 import 'fake-indexeddb/auto';
 import TokenStorage from '../../src/token-storage';
-import { ConfigOptions } from '../../src/config';
-import { Tokens } from '../../src/shared/interfaces';
+import type { ConfigOptions } from '../../src/config';
+import type { Tokens } from '../../src/shared/interfaces';
 import { DB_NAME, TOKEN_KEY } from '../../src/token-storage/constants';
 
 const config: ConfigOptions = {

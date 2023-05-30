@@ -8,8 +8,8 @@
  * of the MIT license. See the LICENSE file for details.
  */
 
-import { RequestMiddleware, RequestObj } from '../config/interfaces';
-import { ActionTypes } from '../config/enums';
+import type { RequestMiddleware, RequestObj } from '../config/interfaces';
+import type { ActionTypes } from '../config/enums';
 
 /**
  * @function middlewareWrapper - A "Node" and "Redux" style middleware that is called just before
@@ -23,7 +23,7 @@ import { ActionTypes } from '../config/enums';
 function middlewareWrapper(
   request: RequestObj,
   // eslint-disable-next-line
-  { type, payload }: { type: ActionTypes; payload?: any },
+  { type, payload }: { type: ActionTypes; payload?: any }
 ): (middleware: RequestMiddleware[] | undefined) => RequestObj {
   // no mutation and no reassignment
   const actionCopy = Object.freeze({ type, payload });
@@ -38,7 +38,8 @@ function middlewareWrapper(
 
     function iterator(): RequestObj {
       const nextMiddlewareToBeCalled = mwareCopy.shift();
-      nextMiddlewareToBeCalled && nextMiddlewareToBeCalled(request, actionCopy, iterator);
+      nextMiddlewareToBeCalled &&
+        nextMiddlewareToBeCalled(request, actionCopy, iterator);
       return request;
     }
 

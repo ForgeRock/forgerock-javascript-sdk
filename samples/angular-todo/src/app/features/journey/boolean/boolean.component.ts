@@ -9,7 +9,7 @@
  */
 
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { AttributeInputCallback } from '@forgerock/javascript-sdk';
+import type { AttributeInputCallback } from '@forgerock/javascript-sdk';
 
 /**
  * Used to display checkboxes
