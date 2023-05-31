@@ -9,13 +9,13 @@
  */
 
 import { Injectable } from '@angular/core';
-import type {
+import {
   ActivatedRouteSnapshot,
   RouterStateSnapshot,
   UrlTree,
   Router,
 } from '@angular/router';
-import type { UserService } from '../services/user.service';
+import { UserService } from '../services/user.service';
 import { TokenStorage, UserManager } from '@forgerock/javascript-sdk';
 
 @Injectable({

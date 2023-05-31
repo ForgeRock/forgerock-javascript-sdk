@@ -8,9 +8,9 @@
  * of the MIT license. See the LICENSE file for details.
  */
 
-import type { OnInit } from '@angular/core';
+import { OnInit } from '@angular/core';
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import type { ValidatedCreatePasswordCallback } from '@forgerock/javascript-sdk';
+import { ValidatedCreatePasswordCallback } from '@forgerock/javascript-sdk';
 import { PasswordCallback } from '@forgerock/javascript-sdk';
 
 /**

@@ -41,7 +41,11 @@
               },
               {
                 "sourceTag": "scope:package",
-                "onlyDependOnLibsWithTags": ["scope:sdk", "scope:lib"]
+                "onlyDependOnLibsWithTags": [
+                  "scope:sdk",
+                  "scope:lib",
+                  "scope:types"
+                ]
               },
               {
                 "sourceTag": "scope:token-vault",

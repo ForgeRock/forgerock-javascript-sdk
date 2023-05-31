@@ -5,8 +5,8 @@ import {
   getRequestBodyBlob,
   getEndpointPath,
   resolve,
-} from '@forgerock/shared/network-utils';
-import { getRequestHeaders } from '@forgerock/shared/sw-utils';
+} from '@forgerock/network-utils';
+import { getRequestHeaders } from '@forgerock/sw-utils';
 declare const self: ServiceWorkerGlobalScope;
 
 export function interceptor(config: InterceptorConfig) {
@@ -17,7 +17,6 @@ export function interceptor(config: InterceptorConfig) {
   const forgerockBaseUrl = checkForMissingSlash(
     config.forgerock.serverConfig.baseUrl
   );
-
   const realmPath = config.forgerock?.realmPath || 'root';
   const urls = [
     ...config.interceptor.urls,
@@ -76,13 +75,7 @@ export function interceptor(config: InterceptorConfig) {
           ]);
           proxyChannel.port1.onmessage = (messageEvent) => {
             console.log(`Returning ${url}`);
-            let response;
-
-            try {
-              response = JSON.parse(messageEvent.data);
-            } catch (error) {
-              return reject(`Error parsing response in interceptor: ${error}`);
-            }
+            const response = messageEvent.data;
 
             // Create a new response from the response body and headers
             // The body, first argument, needs to be converted back to string

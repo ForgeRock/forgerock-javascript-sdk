@@ -9,8 +9,8 @@
  */
 
 import { Component } from '@angular/core';
-import type { Router } from '@angular/router';
-import type { UserService } from '../../services/user.service';
+import { Router } from '@angular/router';
+import { UserService } from '../../services/user.service';
 
 /**
  * Used to show a navigation bar with router links and user info

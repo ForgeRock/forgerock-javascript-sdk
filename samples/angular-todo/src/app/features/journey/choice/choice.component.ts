@@ -9,7 +9,7 @@
  */
 
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import type { ChoiceCallback } from '@forgerock/javascript-sdk';
+import { ChoiceCallback } from '@forgerock/javascript-sdk';
 
 /**
  * Used to display a series of choices and allow the user to select one

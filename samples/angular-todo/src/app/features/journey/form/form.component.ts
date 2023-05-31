@@ -8,9 +8,9 @@
  * of the MIT license. See the LICENSE file for details.
  */
 
-import type { OnInit } from '@angular/core';
+import { OnInit } from '@angular/core';
 import { Component, Input } from '@angular/core';
-import type { Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { environment } from '../../../../environments/environment';
 import type {
   FRLoginFailure,
@@ -18,7 +18,7 @@ import type {
   FRStep,
 } from '@forgerock/javascript-sdk';
 import { FRAuth, TokenManager, UserManager } from '@forgerock/javascript-sdk';
-import type { UserService } from '../../../services/user.service';
+import { UserService } from '../../../services/user.service';
 
 /**
  * Used to display a login / registration form to the user, with authentication callbacks dynamically rendered based on the tree / journey

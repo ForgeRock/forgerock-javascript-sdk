@@ -29,6 +29,7 @@ export function client(config: ClientConfig) {
 
       const registerServiceWorker = async () => {
         if ('serviceWorker' in navigator) {
+          console.log(filename);
           try {
             return navigator.serviceWorker.register(filename, {
               type: moduleType,

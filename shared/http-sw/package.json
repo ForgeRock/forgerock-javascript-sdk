@@ -1,5 +1,5 @@
 {
-  "name": "@forgerock/shared/http-sw",
+  "name": "@forgerock/http-sw",
   "version": "0.0.1",
   "type": "commonjs"
 }

@@ -1,4 +1,5 @@
-import { interceptor } from '@forgerock/token-vault';
+// eslint-disable-next-line @nx/enforce-module-boundaries
+import { interceptor } from '../../packages/token-vault/src/index';
 
 // Initialize the token vault interceptor
 interceptor({

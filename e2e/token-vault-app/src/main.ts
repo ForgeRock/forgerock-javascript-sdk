@@ -1,6 +1,11 @@
 import './app/app.element';
 import { client } from '@forgerock/token-vault';
-
+import {
+  Config,
+  FRUser,
+  TokenManager,
+  UserManager,
+} from '@forgerock/javascript-sdk';
 // Initialize the token vault client
 const register = client({
   app: {
@@ -8,7 +13,7 @@ const register = client({
     url: 'http://localhost:8000',
   },
   interceptor: {
-    file: 'interceptor.ts',
+    file: new URL('../interceptor.ts', import.meta.url).pathname,
   },
   proxy: {
     origin: 'http://localhost:9000',
@@ -30,13 +35,6 @@ const storeReplacement = register.store();
 /** ****************************************************
  * SDK CONFIGURATION
  */
-
-import {
-  Config,
-  FRUser,
-  TokenManager,
-  UserManager,
-} from '@forgerock/javascript-sdk';
 
 Config.set({
   clientId: 'WebOAuthClient',
@@ -111,6 +109,7 @@ refreshTokensBtn.addEventListener('click', async (event) => {
   console.log(refreshTokens);
 });
 loginBtn.addEventListener('click', async (event) => {
+  console.log('Logging in...');
   await TokenManager.getTokens({ login: 'redirect', forceRenew: true });
 });
 logoutBtn.addEventListener('click', async (event) => {

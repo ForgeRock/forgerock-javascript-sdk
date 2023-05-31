@@ -18,7 +18,7 @@
     "skipLibCheck": true,
     "types": ["vite/client", "vitest"]
   },
-  "include": ["src", "public/interceptor.ts"],
+  "include": ["src", "interceptor.ts"],
   "references": [
     {
       "path": "./tsconfig.app.json"

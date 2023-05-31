@@ -8,10 +8,10 @@
  * of the MIT license. See the LICENSE file for details.
  */
 
-import type { OnInit } from '@angular/core';
+import { OnInit } from '@angular/core';
 import { Component } from '@angular/core';
-import type { Todo } from '../../features/todo/todo';
-import type { TodoService } from '../../services/todo.service';
+import { Todo } from '../../features/todo/todo';
+import { TodoService } from '../../services/todo.service';
 
 /**
  * Used to display a page to list Todos and allow the user to interact with them

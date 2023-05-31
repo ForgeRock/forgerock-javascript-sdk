@@ -6,5 +6,5 @@
     "moduleResolution": "node"
   },
   "exclude": ["src/**/*.spec.ts", "src/**/*.test.ts"],
-  "include": ["src/**/*.ts", "public/interceptor.ts"]
+  "include": ["src/**/*.ts", "interceptor.ts"]
 }

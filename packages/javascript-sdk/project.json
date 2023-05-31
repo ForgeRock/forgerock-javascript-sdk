@@ -4,17 +4,23 @@
   "sourceRoot": "packages/javascript-sdk/src",
   "projectType": "library",
   "targets": {
-    "build": {
+    "tsc": {
       "executor": "@nx/js:tsc",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/packages/javascript-sdk",
+        "outputPath": "dist/packages/javascript-sdk/esm",
         "main": "packages/javascript-sdk/src/index.ts",
         "tsConfig": "packages/javascript-sdk/tsconfig.lib.json",
         "assets": ["packages/javascript-sdk/*.md"]
+      },
+      "configurations": {
+        "cjs": {
+          "tsConfig": "packages/javascript-sdk/tsconfig.lib.json",
+          "outputPath": "dist/packages/javascript-sdk/cjs"
+        }
       }
     },
-    "bundle": {
+    "build": {
       "executor": "@nx/rollup:rollup",
       "options": {
         "compiler": "tsc",

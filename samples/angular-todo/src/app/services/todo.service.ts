@@ -9,7 +9,7 @@
  */
 
 import { Injectable } from '@angular/core';
-import type { Todo } from '../features/todo/todo';
+import { Todo } from '../features/todo/todo';
 import { environment } from '../../environments/environment';
 import { HttpClient } from '@forgerock/javascript-sdk';
 
