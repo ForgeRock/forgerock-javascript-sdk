@@ -279,8 +279,8 @@ abstract class FRWebAuthn {
   public static getAuthenticationOutcome(
     credential: PublicKeyCredential | null,
   ):
-    | OutcomeWithName<string, AttestationType, typeof credential>
-    | OutcomeWithName<string, AttestationType, typeof credential, string> {
+    | OutcomeWithName<string, AttestationType, PublicKeyCredential>
+    | OutcomeWithName<string, AttestationType, PublicKeyCredential, string> {
     if (credential === null) {
       const e = new Error('No credential generated from authentication');
       e.name = WebAuthnOutcomeType.UnknownError;

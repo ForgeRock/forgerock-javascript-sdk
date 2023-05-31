@@ -10,6 +10,7 @@
       "options": {
         "platform": "node",
         "outputPath": "dist/e2e/mock-api",
+        "outputFileName": "index.cjs",
         "format": ["cjs"],
         "bundle": true,
         "main": "e2e/mock-api/src/index.js",
@@ -40,6 +41,7 @@
     },
     "serve": {
       "executor": "nx:run-commands",
+      "dependsOn": ["build"],
       "options": {
         "command": "node dist/e2e/mock-api/index.cjs"
       },
