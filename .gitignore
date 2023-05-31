@@ -22,6 +22,7 @@ reports/*
 !env.config.copy.mjs
 packages/javascript-sdk/lib/
 .swc
+.vite
 
 # Certificates
 *.pem
@@ -53,3 +54,5 @@ todos/*
 users/*
 #Project Docs
 docs/packages/javascript-sdk
+**/playwright-report
+**/playwright/.cache

@@ -8,9 +8,13 @@
  * of the MIT license. See the LICENSE file for details.
  */
 
-import { FailedPolicyRequirement, PolicyRequirement, Step } from '../auth/interfaces';
+import type {
+  FailedPolicyRequirement,
+  PolicyRequirement,
+  Step,
+} from '../auth/interfaces';
 import { PolicyKey } from './enums';
-import { MessageCreator, ProcessedPropertyError } from './interfaces';
+import type { MessageCreator, ProcessedPropertyError } from './interfaces';
 import defaultMessageCreator from './message-creator';
 
 /**
@@ -47,7 +51,7 @@ abstract class FRPolicy {
    */
   public static parseErrors(
     err: Partial<Step>,
-    messageCreator?: MessageCreator,
+    messageCreator?: MessageCreator
   ): ProcessedPropertyError[] {
     const errors: ProcessedPropertyError[] = [];
     if (err.detail && err.detail.failedPolicyRequirements) {
@@ -73,12 +77,16 @@ abstract class FRPolicy {
    */
   public static parseFailedPolicyRequirement(
     failedPolicy: FailedPolicyRequirement,
-    messageCreator?: MessageCreator,
+    messageCreator?: MessageCreator
   ): string[] {
     const errors: string[] = [];
     failedPolicy.policyRequirements.map((policyRequirement) => {
       errors.push(
-        this.parsePolicyRequirement(failedPolicy.property, policyRequirement, messageCreator),
+        this.parsePolicyRequirement(
+          failedPolicy.property,
+          policyRequirement,
+          messageCreator
+        )
       );
     });
     return errors;
@@ -96,10 +104,11 @@ abstract class FRPolicy {
   public static parsePolicyRequirement(
     property: string,
     policy: PolicyRequirement,
-    messageCreator: MessageCreator = {},
+    messageCreator: MessageCreator = {}
   ): string {
     // AM is returning policy requirement failures as JSON strings
-    const policyObject = typeof policy === 'string' ? JSON.parse(policy) : { ...policy };
+    const policyObject =
+      typeof policy === 'string' ? JSON.parse(policy) : { ...policy };
 
     const policyRequirement = policyObject.policyRequirement;
 
@@ -120,4 +129,5 @@ abstract class FRPolicy {
 }
 
 export default FRPolicy;
-export { PolicyKey, MessageCreator, ProcessedPropertyError };
+export type { MessageCreator, ProcessedPropertyError };
+export { PolicyKey };

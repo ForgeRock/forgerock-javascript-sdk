@@ -8,12 +8,13 @@
  * of the MIT license. See the LICENSE file for details.
  */
 
-import { CallbackType } from '../auth/enums';
-import { Callback, Step } from '../auth/interfaces';
-import FRCallback from './callbacks';
-import createCallback, { FRCallbackFactory } from './callbacks/factory';
+import type { CallbackType } from '../auth/enums';
+import type { Callback, Step } from '../auth/interfaces';
+import type FRCallback from './callbacks';
+import type { FRCallbackFactory } from './callbacks/factory';
+import createCallback from './callbacks/factory';
 import { StepType } from './enums';
-import { AuthResponse } from './interfaces';
+import type { AuthResponse } from './interfaces';
 
 /**
  * Represents a single step of an authentication tree.
@@ -35,7 +36,10 @@ class FRStep implements AuthResponse {
    */
   constructor(public payload: Step, callbackFactory?: FRCallbackFactory) {
     if (payload.callbacks) {
-      this.callbacks = this.convertCallbacks(payload.callbacks, callbackFactory);
+      this.callbacks = this.convertCallbacks(
+        payload.callbacks,
+        callbackFactory
+      );
     }
   }
 
@@ -47,7 +51,9 @@ class FRStep implements AuthResponse {
   public getCallbackOfType<T extends FRCallback>(type: CallbackType): T {
     const callbacks = this.getCallbacksOfType<T>(type);
     if (callbacks.length !== 1) {
-      throw new Error(`Expected 1 callback of type "${type}", but found ${callbacks.length}`);
+      throw new Error(
+        `Expected 1 callback of type "${type}", but found ${callbacks.length}`
+      );
     }
     return callbacks[0];
   }
@@ -70,7 +76,9 @@ class FRStep implements AuthResponse {
   public setCallbackValue(type: CallbackType, value: unknown): void {
     const callbacks = this.getCallbacksOfType(type);
     if (callbacks.length !== 1) {
-      throw new Error(`Expected 1 callback of type "${type}", but found ${callbacks.length}`);
+      throw new Error(
+        `Expected 1 callback of type "${type}", but found ${callbacks.length}`
+      );
     }
     callbacks[0].setInputValue(value);
   }
@@ -98,7 +106,7 @@ class FRStep implements AuthResponse {
 
   private convertCallbacks(
     callbacks: Callback[],
-    callbackFactory?: FRCallbackFactory,
+    callbackFactory?: FRCallbackFactory
   ): FRCallback[] {
     const converted = callbacks.map((x: Callback) => {
       // This gives preference to the provided factory and falls back to our default implementation
@@ -114,4 +122,4 @@ class FRStep implements AuthResponse {
 type FRStepHandler = (step: FRStep) => void;
 
 export default FRStep;
-export { FRStepHandler };
+export type { FRStepHandler };

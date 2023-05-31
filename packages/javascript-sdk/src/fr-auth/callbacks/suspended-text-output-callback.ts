@@ -9,7 +9,7 @@
  */
 
 import TextOutputCallback from './text-output-callback';
-import { Callback } from '../../auth/interfaces';
+import type { Callback } from '../../auth/interfaces';
 
 /**
  * Represents a callback used to display a message.

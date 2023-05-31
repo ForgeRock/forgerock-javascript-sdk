@@ -9,10 +9,10 @@
  */
 
 import Config from '../config/index';
-import { TokenStoreObject } from '../config/interfaces';
+import type { TokenStoreObject } from '../config/interfaces';
 import LocalStorageWrapper from './local-storage';
 import SessionStorageWrapper from './session-storage';
-import { Tokens } from '../shared/interfaces';
+import type { Tokens } from '../shared/interfaces';
 
 /**
  * Provides access to the token storage API.
@@ -91,9 +91,14 @@ abstract class TokenStorage {
 
   private static getClientConfig(): {
     clientId: string;
-    tokenStore: TokenStoreObject | 'sessionStorage' | 'localStorage' | undefined;
+    tokenStore:
+      | TokenStoreObject
+      | 'sessionStorage'
+      | 'localStorage'
+      | undefined;
   } {
-    const { clientId = 'unconfiguredClient', tokenStore = 'localStorage' } = Config.get();
+    const { clientId = 'unconfiguredClient', tokenStore = 'localStorage' } =
+      Config.get();
 
     return { clientId, tokenStore };
   }

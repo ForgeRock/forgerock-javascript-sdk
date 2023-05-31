@@ -8,7 +8,7 @@
  * of the MIT license. See the LICENSE file for details.
  */
 
-import { Tokens } from '../shared/interfaces';
+import type { Tokens } from '../shared/interfaces';
 
 /** @hidden */
 interface TokenDbEventTarget extends EventTarget {
@@ -20,4 +20,4 @@ interface TokenDbEvent extends Event {
   target: TokenDbEventTarget | null;
 }
 
-export { TokenDbEvent, TokenDbEventTarget };
+export type { TokenDbEvent, TokenDbEventTarget };

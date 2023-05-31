@@ -1,0 +1,9 @@
+{
+  "executors": {
+    "run-targets": {
+      "implementation": "./src/executors/run-targets/run.impl",
+      "schema": "./src/executors/run-targets/schema.json",
+      "description": "run the list of targets"
+    }
+  }
+}

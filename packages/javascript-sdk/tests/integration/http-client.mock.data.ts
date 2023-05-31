@@ -8,7 +8,7 @@
  * of the MIT license. See the LICENSE file for details.
  */
 
-import { HandleStep } from '../../src/http-client/interfaces';
+import type { HandleStep } from '../../src/http-client/interfaces';
 
 export const authzByTreeReqOptionsForIG = {
   init: {

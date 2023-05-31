@@ -3,21 +3,13 @@
   "compilerOptions": {
     "rootDir": ".",
     "baseUrl": ".",
-    "esModuleInterop": true,
-    "lib": ["es2015", "dom"],
-    "moduleResolution": "node",
-    "skipLibCheck": true,
-    "noFallthroughCasesInSwitch": true,
-    "noImplicitAny": true,
-    "noImplicitReturns": true,
-    "noImplicitThis": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "sourceMap": true,
     "paths": {
       "@forgerock/javascript-sdk": ["packages/javascript-sdk/src/index.ts"],
-      "@forgerock/javascript-sdk/*": ["packages/javascript-sdk/src/*"],
-      "@forgerock/javascript-sdk/bundles/*": ["packages/javascript-sdk/bundles/*"]
+      "@forgerock/token-vault": ["packages/token-vault/src/index.ts"],
+      "@plugins/wait-for-api": ["plugins/wait-for-api/src/index.ts"],
+      "@shared/network": ["shared/network/src/index.ts"],
+      "@shared/types": ["shared/types/src/index.ts"],
+      "@shared/workers": ["shared/workers/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

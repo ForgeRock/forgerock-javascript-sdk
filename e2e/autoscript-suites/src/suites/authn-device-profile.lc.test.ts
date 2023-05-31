@@ -13,7 +13,11 @@ import { setupAndGo } from '../utilities/setup-and-go';
 test.describe('Test bad login flow', () => {
   test.use({ permissions: ['geolocation'] });
   test(`Login with device profile callback`, async ({ page, browserName }) => {
-    const { messageArray } = await setupAndGo(page, browserName, 'authn-device-profile/');
+    const { messageArray } = await setupAndGo(
+      page,
+      browserName,
+      'authn-device-profile/'
+    );
 
     // Test assertions
     expect(messageArray.includes('Collecting profile ...')).toBe(true);

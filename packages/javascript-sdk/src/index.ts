@@ -10,15 +10,22 @@
 
 import Auth from './auth';
 import { CallbackType, ErrorCode } from './auth/enums';
-import { Callback, NameValue, PolicyRequirement, Step, StepDetail } from './auth/interfaces';
-import Config, { ConfigOptions, ValidConfigOptions } from './config';
+import type {
+  Callback,
+  NameValue,
+  PolicyRequirement,
+  Step,
+  StepDetail,
+} from './auth/interfaces';
+import Config from './config';
+import type { ConfigOptions, ValidConfigOptions } from './config';
 import FRAuth from './fr-auth';
 import FRCallback from './fr-auth/callbacks';
 import AttributeInputCallback from './fr-auth/callbacks/attribute-input-callback';
 import ChoiceCallback from './fr-auth/callbacks/choice-callback';
 import ConfirmationCallback from './fr-auth/callbacks/confirmation-callback';
 import DeviceProfileCallback from './fr-auth/callbacks/device-profile-callback';
-import { FRCallbackFactory } from './fr-auth/callbacks/factory';
+import type { FRCallbackFactory } from './fr-auth/callbacks/factory';
 import HiddenValueCallback from './fr-auth/callbacks/hidden-value-callback';
 import KbaCreateCallback from './fr-auth/callbacks/kba-create-callback';
 import MetadataCallback from './fr-auth/callbacks/metadata-callback';
@@ -27,7 +34,8 @@ import PasswordCallback from './fr-auth/callbacks/password-callback';
 import PollingWaitCallback from './fr-auth/callbacks/polling-wait-callback';
 import ReCaptchaCallback from './fr-auth/callbacks/recaptcha-callback';
 import RedirectCallback from './fr-auth/callbacks/redirect-callback';
-import SelectIdPCallback, { IdPValue } from './fr-auth/callbacks/select-idp-callback';
+import type { IdPValue } from './fr-auth/callbacks/select-idp-callback';
+import SelectIdPCallback from './fr-auth/callbacks/select-idp-callback';
 import SuspendedTextOutputCallback from './fr-auth/callbacks/suspended-text-output-callback';
 import TermsAndConditionsCallback from './fr-auth/callbacks/terms-and-conditions-callback';
 import TextInputCallback from './fr-auth/callbacks/text-input-callback';
@@ -39,107 +47,111 @@ import ValidatedCreateUsernameCallback from './fr-auth/callbacks/validated-creat
 import { StepType } from './fr-auth/enums';
 import FRLoginFailure from './fr-auth/fr-login-failure';
 import FRLoginSuccess from './fr-auth/fr-login-success';
-import FRStep, { FRStepHandler } from './fr-auth/fr-step';
-import { AuthResponse, FailureDetail } from './fr-auth/interfaces';
+import type { FRStepHandler } from './fr-auth/fr-step';
+import FRStep from './fr-auth/fr-step';
+import type { AuthResponse, FailureDetail } from './fr-auth/interfaces';
 import FRDevice from './fr-device';
-import FRPolicy, { MessageCreator, PolicyKey, ProcessedPropertyError } from './fr-policy';
+import type { MessageCreator, ProcessedPropertyError } from './fr-policy';
+import FRPolicy, { PolicyKey } from './fr-policy';
 import defaultMessageCreator from './fr-policy/message-creator';
 import FRRecoveryCodes from './fr-recovery-codes';
 import FRUser from './fr-user';
-import FRWebAuthn, {
+import type {
   RelyingParty,
   WebAuthnAuthenticationMetadata,
   WebAuthnCallbacks,
-  WebAuthnOutcome,
   WebAuthnRegistrationMetadata,
-  WebAuthnStepType,
 } from './fr-webauthn';
+import FRWebAuthn, { WebAuthnOutcome, WebAuthnStepType } from './fr-webauthn';
 import HttpClient from './http-client';
-import OAuth2Client, {
+import type {
   GetAuthorizationUrlOptions,
   GetOAuth2TokensOptions,
   OAuth2Tokens,
-  ResponseType,
 } from './oauth2-client';
+import OAuth2Client, { ResponseType } from './oauth2-client';
 import SessionManager from './session-manager';
-import { Tokens } from './shared/interfaces';
-import TokenManager, { GetTokensOptions } from './token-manager';
+import type { Tokens } from './shared/interfaces';
+import type { GetTokensOptions } from './token-manager';
+import TokenManager from './token-manager';
 import TokenStorage from './token-storage';
 import UserManager from './user-manager';
 import Deferred from './util/deferred';
 import PKCE from './util/pkce';
 import LocalStorage from './util/storage';
 
+export type {
+  AuthResponse,
+  Callback,
+  ConfigOptions,
+  FailureDetail,
+  FRCallbackFactory,
+  FRStepHandler,
+  GetAuthorizationUrlOptions,
+  GetOAuth2TokensOptions,
+  GetTokensOptions,
+  IdPValue,
+  MessageCreator,
+  NameValue,
+  OAuth2Tokens,
+  PolicyRequirement,
+  ProcessedPropertyError,
+  RelyingParty,
+  Step,
+  StepDetail,
+  Tokens,
+  ValidConfigOptions,
+  WebAuthnAuthenticationMetadata,
+  WebAuthnCallbacks,
+  WebAuthnRegistrationMetadata,
+};
 export {
   defaultMessageCreator,
   AttributeInputCallback,
   Auth,
-  AuthResponse,
-  Callback,
   CallbackType,
   ChoiceCallback,
   Config,
-  ConfigOptions,
   ConfirmationCallback,
   Deferred,
   DeviceProfileCallback,
   ErrorCode,
-  FailureDetail,
   FRAuth,
   FRCallback,
-  FRCallbackFactory,
   FRDevice,
   FRLoginFailure,
   FRLoginSuccess,
   FRPolicy,
   FRRecoveryCodes,
   FRStep,
-  FRStepHandler,
   FRUser,
   FRWebAuthn,
-  GetAuthorizationUrlOptions,
-  GetOAuth2TokensOptions,
-  GetTokensOptions,
   HiddenValueCallback,
   HttpClient,
-  IdPValue,
   KbaCreateCallback,
   LocalStorage,
-  MessageCreator,
   MetadataCallback,
   NameCallback,
-  NameValue,
   OAuth2Client,
-  OAuth2Tokens,
   PasswordCallback,
   PKCE,
   PolicyKey,
-  PolicyRequirement,
   PollingWaitCallback,
-  ProcessedPropertyError,
   ReCaptchaCallback,
   RedirectCallback,
-  RelyingParty,
   ResponseType,
   SelectIdPCallback,
   SessionManager,
-  Step,
-  StepDetail,
   StepType,
   SuspendedTextOutputCallback,
   TermsAndConditionsCallback,
   TextInputCallback,
   TextOutputCallback,
   TokenManager,
-  Tokens,
   TokenStorage,
   UserManager,
   ValidatedCreatePasswordCallback,
   ValidatedCreateUsernameCallback,
-  ValidConfigOptions,
-  WebAuthnAuthenticationMetadata,
-  WebAuthnCallbacks,
   WebAuthnOutcome,
-  WebAuthnRegistrationMetadata,
   WebAuthnStepType,
 };

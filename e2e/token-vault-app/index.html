@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Token Vault App</title>
+    <base href="/" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <style>
+      @media (prefers-color-scheme: dark) {
+        html {
+          background-color: black;
+          color: white;
+        }
+        a {
+          color: lightblue;
+        }
+        a:visited {
+          color: lavender;
+        }
+        a:hover {
+          color: lightskyblue;
+        }
+      }
+      dl {
+        /* display as a grid with two columns */
+        display: grid;
+        grid-template-columns: fit-content(10%) 1fr;
+        /* add some space between the columns */
+        column-gap: 1rem;
+        /* add some space between the rows */
+        row-gap: 0.5rem;
+      }
+      dt,
+      dd {
+        display: inline;
+        margin: 0;
+      }
+    </style>
+    <link rel="stylesheet" href="/src/styles.scss" />
+  </head>
+
+  <body>
+    <button id="loginBtn">Login</button>
+    <button id="fetchMockBtn">Fetch Mock Todos</button>
+    <button id="fetchUserBtn">Fetch Real User</button>
+    <button id="hasTokensBtn">Check for Tokens</button>
+    <button id="refreshTokensBtn">Refresh Tokens</button>
+    <button id="logoutBtn">Logout</button>
+
+    <dl>
+      <dt>User Logged In:</dt>
+      <dd id="loggedInDef">false</dd>
+      <dt>User info:</dt>
+      <dd id="userInfoDef">n/a</dd>
+      <dt>User has tokens:</dt>
+      <dd id="hasTokensDef">false</dd>
+      <dt>Tokens refreshed:</dt>
+      <dd id="refreshTokensDef">false</dd>
+    </dl>
+
+    <div id="token-vault"></div>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

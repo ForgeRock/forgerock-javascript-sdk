@@ -9,7 +9,12 @@
  */
 
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router } from '@angular/router';
+import {
+  ActivatedRouteSnapshot,
+  RouterStateSnapshot,
+  UrlTree,
+  Router,
+} from '@angular/router';
 import { UserService } from '../services/user.service';
 import { TokenStorage, UserManager } from '@forgerock/javascript-sdk';
 
@@ -28,7 +33,7 @@ export class AuthGuard {
    */
   async canActivate(
     next: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot,
+    state: RouterStateSnapshot
   ): Promise<true | UrlTree> {
     const loginUrl = this.router.parseUrl('/login');
     try {

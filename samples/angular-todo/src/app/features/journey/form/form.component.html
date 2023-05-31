@@ -15,7 +15,13 @@ of the MIT license. See the LICENSE file for details.
 -->
 <ng-container
   [ngTemplateOutlet]="
-    success ? successMessage : failure ? failureMessage : step ? callbacks : loading
+    success
+      ? successMessage
+      : failure
+      ? failureMessage
+      : step
+      ? callbacks
+      : loading
   "
 >
   <ng-template #loading>
@@ -46,13 +52,21 @@ of the MIT license. See the LICENSE file for details.
     <div>
       <h1 class="text-center fs-2 mb-3" *ngIf="title">{{ title }}</h1>
       <div id="callbacks">
-        <form #callbackForm (ngSubmit)="nextStep(step)" ngNativeValidate class="cstm_form">
+        <form
+          #callbackForm
+          (ngSubmit)="nextStep(step)"
+          ngNativeValidate
+          class="cstm_form"
+        >
           <!--
             Iterate through callbacks received from AM and invoke the callback to the appropriate callback component.
             The input to each component will be the callback and callback name, and the outputs will be the events emitted by the component.
             Events emitted by each component are handled by an expression mapping them to SDK functions, e.g. to set the password on the callback using the emitted value.
           -->
-          <div *ngFor="let callback of step?.callbacks" v-bind:key="callback.payload._id">
+          <div
+            *ngFor="let callback of step?.callbacks"
+            v-bind:key="callback.payload._id"
+          >
             <!--
             ************************************************************************
             * SDK INTEGRATION POINT
@@ -163,7 +177,10 @@ of the MIT license. See the LICENSE file for details.
           <!--
             Show a button to submit the form
           -->
-          <app-button [buttonText]="buttonText" [submittingForm]="submittingForm"></app-button>
+          <app-button
+            [buttonText]="buttonText"
+            [submittingForm]="submittingForm"
+          ></app-button>
         </form>
       </div>
     </div>

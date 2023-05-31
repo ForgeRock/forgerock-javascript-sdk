@@ -8,9 +8,9 @@
  * of the MIT license. See the LICENSE file for details.
  */
 
-import { ConfigOptions } from '../config/interfaces';
-import { StringDict } from '../shared/interfaces';
-import { CallbackType } from './enums';
+import type { ConfigOptions } from '../config/interfaces';
+import type { StringDict } from '../shared/interfaces';
+import type { CallbackType } from './enums';
 
 /**
  * Represents the authentication tree API payload schema.
@@ -94,7 +94,7 @@ interface NameValue {
   value: unknown;
 }
 
-export {
+export type {
   Callback,
   FailedPolicyRequirement,
   NameValue,

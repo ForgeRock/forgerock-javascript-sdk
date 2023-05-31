@@ -9,7 +9,7 @@
  * of the MIT license. See the LICENSE file for details.
  */
 
-import { CallbackType } from '../auth/enums';
+import type { CallbackType } from '../auth/enums';
 
 /* eslint-disable max-len */
 const displayRecoveryCodes = `/*
@@ -106,4 +106,9 @@ const otherResponse = {
   ],
 };
 
-export { displayRecoveryCodes, displayRecoveryCodesResponse, expectedRecoveryCodes, otherResponse };
+export {
+  displayRecoveryCodes,
+  displayRecoveryCodesResponse,
+  expectedRecoveryCodes,
+  otherResponse,
+};

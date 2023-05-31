@@ -5,9 +5,8 @@
   "projectType": "application",
   "targets": {
     "e2e": {
-      "executor": "@nx-extend/e2e-runner:run",
+      "executor": "./dist/plugins/wait-for-api:run-targets",
       "options": {
-        "runner": "playwright",
         "targets": [
           {
             "target": "mock-api:serve",

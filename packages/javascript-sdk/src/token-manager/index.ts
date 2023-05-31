@@ -8,10 +8,12 @@
  * of the MIT license. See the LICENSE file for details.
  */
 
-import Config, { ConfigOptions } from '../config';
+import type { ConfigOptions } from '../config';
+import Config from '../config';
 import { PREFIX } from '../config/constants';
-import OAuth2Client, { allowedErrors, OAuth2Tokens, ResponseType } from '../oauth2-client';
-import { StringDict, Tokens } from '../shared/interfaces';
+import type { OAuth2Tokens } from '../oauth2-client';
+import OAuth2Client, { allowedErrors, ResponseType } from '../oauth2-client';
+import type { StringDict, Tokens } from '../shared/interfaces';
 import TokenStorage from '../token-storage';
 import PKCE from '../util/pkce';
 import { parseQuery } from '../util/url';
@@ -62,7 +64,9 @@ abstract class TokenManager {
    });
    ```
    */
-  public static async getTokens(options?: GetTokensOptions): Promise<OAuth2Tokens | void> {
+  public static async getTokens(
+    options?: GetTokensOptions
+  ): Promise<OAuth2Tokens | void> {
     const { clientId, oauthThreshold } = Config.get(options as ConfigOptions);
     const storageKey = `${PREFIX}-${clientId}`;
 
@@ -104,7 +108,9 @@ abstract class TokenManager {
     if (options?.query?.code && options?.query?.state) {
       const storedString = sessionStorage.getItem(storageKey);
       sessionStorage.removeItem(storageKey);
-      const storedValues: { state: string; verifier: string } = JSON.parse(storedString as string);
+      const storedValues: { state: string; verifier: string } = JSON.parse(
+        storedString as string
+      );
 
       return await this.tokenExchange(options, storedValues);
     }
@@ -131,7 +137,9 @@ abstract class TokenManager {
     try {
       // Check expected browser support
       // To support legacy browsers, iframe works best with short timeout
-      const parsedUrl = new URL(await OAuth2Client.getAuthCodeByIframe(authorizeUrlOptions));
+      const parsedUrl = new URL(
+        await OAuth2Client.getAuthCodeByIframe(authorizeUrlOptions)
+      );
 
       // Throw if we have an error param or have no authorization code
       if (parsedUrl.searchParams.get('error')) {
@@ -171,7 +179,9 @@ abstract class TokenManager {
       // Since `login` is configured for "redirect", store authorize values and redirect
       sessionStorage.setItem(storageKey, JSON.stringify(authorizeUrlOptions));
 
-      const authorizeUrl = await OAuth2Client.createAuthorizeUrl(authorizeUrlOptions);
+      const authorizeUrl = await OAuth2Client.createAuthorizeUrl(
+        authorizeUrlOptions
+      );
 
       return location.assign(authorizeUrl);
     }
@@ -187,7 +197,7 @@ abstract class TokenManager {
 
   private static async tokenExchange(
     options: GetTokensOptions,
-    stored: { state: string; verifier: string },
+    stored: { state: string; verifier: string }
   ): Promise<Tokens> {
     /**
      * Ensure incoming state and stored state are equal and authorization code exists
@@ -222,4 +232,4 @@ abstract class TokenManager {
 }
 
 export default TokenManager;
-export { GetTokensOptions };
+export type { GetTokensOptions };

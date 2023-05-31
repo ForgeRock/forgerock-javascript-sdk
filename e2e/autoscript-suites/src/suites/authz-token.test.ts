@@ -17,34 +17,44 @@ test.describe('Test OAuth token management', () => {
     browserName,
   }) => {
     // Default threshold
-    const defaultThresholdResult = await setupAndGo(page, browserName, 'authz-token/', {
-      realmPath: 'tokens-expiring-soon',
-    });
+    const defaultThresholdResult = await setupAndGo(
+      page,
+      browserName,
+      'authz-token/',
+      {
+        realmPath: 'tokens-expiring-soon',
+      }
+    );
     expect(
       defaultThresholdResult.messageArray.includes(
-        'OAuth tokens expiring soon; proactively refreshed',
-      ),
+        'OAuth tokens expiring soon; proactively refreshed'
+      )
     ).toBe(true);
     expect(
       defaultThresholdResult.messageArray.includes(
-        'OAuth tokens expiring soon; proactively refreshed by HttpClient call',
-      ),
+        'OAuth tokens expiring soon; proactively refreshed by HttpClient call'
+      )
     ).toBe(true);
 
     // Specified threshold
-    const specifiedThresholdResult = await setupAndGo(page, browserName, 'authz-token/', {
-      realmPath: 'tokens-expiring-soon',
-      oauthThreshold: '25000',
-    });
+    const specifiedThresholdResult = await setupAndGo(
+      page,
+      browserName,
+      'authz-token/',
+      {
+        realmPath: 'tokens-expiring-soon',
+        oauthThreshold: '25000',
+      }
+    );
     expect(
       specifiedThresholdResult.messageArray.includes(
-        'OAuth tokens expiring soon; proactively refreshed',
-      ),
+        'OAuth tokens expiring soon; proactively refreshed'
+      )
     ).toBe(true);
     expect(
       specifiedThresholdResult.messageArray.includes(
-        'OAuth tokens expiring soon; proactively refreshed by HttpClient call',
-      ),
+        'OAuth tokens expiring soon; proactively refreshed by HttpClient call'
+      )
     ).toBe(true);
 
     // Expired
@@ -52,12 +62,14 @@ test.describe('Test OAuth token management', () => {
       realmPath: 'tokens-expired',
     });
     expect(
-      expiredResult.messageArray.includes('OAuth tokens expiring soon; proactively refreshed'),
+      expiredResult.messageArray.includes(
+        'OAuth tokens expiring soon; proactively refreshed'
+      )
     ).toBe(true);
     expect(
       expiredResult.messageArray.includes(
-        'OAuth tokens expiring soon; proactively refreshed by HttpClient call',
-      ),
+        'OAuth tokens expiring soon; proactively refreshed by HttpClient call'
+      )
     ).toBe(true);
   });
 
@@ -66,30 +78,42 @@ test.describe('Test OAuth token management', () => {
     browserName,
   }) => {
     // Default threshold
-    const defaultThresholdResult = await setupAndGo(page, browserName, 'authz-token/', {});
+    const defaultThresholdResult = await setupAndGo(
+      page,
+      browserName,
+      'authz-token/',
+      {}
+    );
     expect(
-      defaultThresholdResult.messageArray.includes('OAuth tokens not expiring soon; not refreshed'),
+      defaultThresholdResult.messageArray.includes(
+        'OAuth tokens not expiring soon; not refreshed'
+      )
     ).toBe(true);
     expect(
       defaultThresholdResult.messageArray.includes(
-        'OAuth tokens not expiring soon; not refreshed by HttpClient call',
-      ),
+        'OAuth tokens not expiring soon; not refreshed by HttpClient call'
+      )
     ).toBe(true);
 
     // Specified threshold
-    const specifiedThresholdResult = await setupAndGo(page, browserName, 'authz-token/', {
-      realmPath: 'tokens-expiring-soon',
-      oauthThreshold: '10000',
-    });
+    const specifiedThresholdResult = await setupAndGo(
+      page,
+      browserName,
+      'authz-token/',
+      {
+        realmPath: 'tokens-expiring-soon',
+        oauthThreshold: '10000',
+      }
+    );
     expect(
       specifiedThresholdResult.messageArray.includes(
-        'OAuth tokens not expiring soon; not refreshed',
-      ),
+        'OAuth tokens not expiring soon; not refreshed'
+      )
     ).toBe(true);
     expect(
       specifiedThresholdResult.messageArray.includes(
-        'OAuth tokens not expiring soon; not refreshed by HttpClient call',
-      ),
+        'OAuth tokens not expiring soon; not refreshed by HttpClient call'
+      )
     ).toBe(true);
   });
 });

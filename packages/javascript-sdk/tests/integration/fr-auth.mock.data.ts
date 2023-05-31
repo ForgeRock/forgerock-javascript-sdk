@@ -9,7 +9,7 @@
  */
 
 import { CallbackType } from '../../src/auth/enums';
-import { Step } from '../../src/auth/interfaces';
+import type { Step } from '../../src/auth/interfaces';
 
 export const jsonResponse: Step = {
   authId: 'unused',
