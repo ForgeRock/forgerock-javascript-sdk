@@ -69,77 +69,12 @@
       "configurations": {}
     },
     "version": {
-      "executor": "@jscutlery/semver:version",
+      "executor": "@theunderscorer/nx-semantic-release:semantic-release",
       "options": {
-        "preset": "conventional",
-        "baseBranch": "master",
-        "skipRootChangelog": true,
-        "tagPrefix": "${projectName}-v",
-        "commitMessageFormat": "chore(${projectName}): release version ${version} [skip ci]",
-        "push": true,
-        "syncVersions": false,
-        "postTargets": [
-          "javascript-sdk:build",
-          "javascript-sdk:updatePackageJson",
-          "javascript-sdk:npm",
-          "javascript-sdk:github"
-        ],
-        "skipCommitTypes": ["ci", "docs", "style", "refactor", "chore"]
-      },
-      "configurations": {
-        "beta": {
-          "preset": "conventional",
-          "baseBranch": "develop",
-          "preid": "beta",
-          "tagPrefix": "${projectName}-v",
-          "push": true,
-          "skipRootChangelog": true,
-          "releaseAs": "prerelease",
-          "skipCommitTypes": ["ci", "docs", "style", "refactor", "chore"],
-          "postTargets": [
-            "javascript-sdk:build",
-            "javascript-sdk:updatePackageJson",
-            "javascript-sdk:npm:beta",
-            "javascript-sdk:github:beta"
-          ]
-        }
-      }
-    },
-    "github": {
-      "executor": "@jscutlery/semver:github",
-      "options": {
-        "tag": "${tag}",
-        "notes": "${notes}"
-      },
-      "configurations": {
-        "beta": {
-          "prerelease": true,
-          "tag": "${tag}",
-          "notes": "${notes}"
-        }
-      }
-    },
-    "npm": {
-      "executor": "ngx-deploy-npm:deploy",
-      "options": {
-        "access": "public",
-        "noBuild": true
-      },
-      "configurations": {
-        "beta": {
-          "tag": "beta",
-          "noBuild": true
-        }
-      }
-    },
-    "updatePackageJson": {
-      "executor": "nx:run-commands",
-      "options": {
-        "commands": [
-          {
-            "command": "node ./scripts/update-package-json-sdk.js"
-          }
-        ]
+        "github": true,
+        "changelog": true,
+        "npm": true,
+        "tagFormat": "javascript-sdk-v${VERSION}"
       }
     }
   },

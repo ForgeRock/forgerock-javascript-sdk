@@ -36,11 +36,7 @@ jobs:
       - run: npx nx-cloud start-ci-run
       - run: npx nx affected --target=build --parallel --max-parallel=3
       - name: semantic-release
-        if: github.ref == 'refs/heads/master'
         run: npm run nx affected -- --target=version
-      - name: semantic-release beta
-        if: github.ref == 'refs/heads/develop'
-        run: npm run nx affected -- --target=version --configuration=beta
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
