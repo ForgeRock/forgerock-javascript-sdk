@@ -67,15 +67,6 @@
         "options": "typedoc.json"
       },
       "configurations": {}
-    },
-    "version": {
-      "executor": "@theunderscorer/nx-semantic-release:semantic-release",
-      "options": {
-        "github": true,
-        "changelog": true,
-        "npm": true,
-        "tagFormat": "javascript-sdk-v${VERSION}"
-      }
     }
   },
   "tags": ["scope:sdk"]
