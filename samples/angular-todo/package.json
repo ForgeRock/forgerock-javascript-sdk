@@ -1,5 +1,5 @@
 {
-  "name": "angular-todo-prototype",
+  "name": "angular-todo",
   "version": "1.0.0",
   "scripts": {
     "clean": "shx rm -rf ./node_modules"
