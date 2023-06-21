@@ -1,5 +1,12 @@
 {
   "name": "@forgerock/token-vault",
   "version": "4.0.0",
-  "type": "commonjs"
+  "type": "commonjs",
+  "exports": {
+    ".": {
+      "default": "./index.mjs",
+      "import": "./index.mjs",
+      "require": "./index.js"
+    }
+  }
 }

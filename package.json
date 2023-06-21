@@ -53,8 +53,6 @@
     "@commitlint/config-nx-scopes": "^17.4.2",
     "@commitlint/prompt": "^17.4.2",
     "@enio.ai/typedoc": "^1.0.8",
-    "@nx-extend/e2e-runner": "^2.3.2",
-    "@nx-extend/playwright": "^1.2.1",
     "@mands/nx-playwright": "^0.6.2",
     "@nx/angular": "16.3.2",
     "@nx/devkit": "16.3.2",
@@ -67,9 +65,9 @@
     "@nx/node": "16.3.2",
     "@nx/react": "16.3.2",
     "@nx/rollup": "16.3.2",
+    "@nx/vite": "16.3.2",
     "@nx/web": "16.3.2",
     "@nx/workspace": "16.3.2",
-    "@nx/vite": "16.3.2",
     "@playwright/test": "^1.32.1",
     "@rollup/plugin-node-resolve": "^15.1.0",
     "@rollup/plugin-typescript": "^11.1.1",
@@ -118,6 +116,7 @@
     "typedoc-plugin-rename-defaults": "^0.6.5",
     "typedoc-theme-hierarchy": "^3.2.0",
     "typescript": "5.0.4",
+    "typescript-transform-paths": "^3.4.6",
     "vite": "^4.3.4",
     "vite-plugin-dts": "~1.7.1",
     "vite-plugin-eslint": "^1.8.1",
@@ -126,12 +125,7 @@
     "webpack": "^5.64.1",
     "webpack-cli": "^4.7.2"
   },
-  "workspaces": [
-    "e2e/*",
-    "packages/*",
-    "samples/*",
-    "shared/*"
-  ],
+  "workspaces": ["e2e/*", "packages/*", "samples/*", "shared/*"],
   "config": {
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
