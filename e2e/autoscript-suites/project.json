@@ -5,19 +5,21 @@
   "projectType": "application",
   "targets": {
     "e2e": {
-      "executor": "./dist/plugins/wait-for-api:run-targets",
+      "executor": "@plugins/wait-for-api:run-targets",
       "options": {
         "targets": [
           {
             "target": "mock-api:serve",
-            "checkUrl": "https://api.example.com:9443/healthcheck",
+            "checkUrl": "http://api.example.com:9443/healthcheck",
             "checkMaxTries": 50,
-            "rejectUnauthorized": false
+            "rejectUnauthorized": false,
+            "reusueExistingServer": true
           },
           {
             "target": "autoscript-apps:serve",
             "checkUrl": "https://sdkapp.example.com:8443",
             "checkMaxTries": 50,
+            "reusueExistingServer": true,
             "rejectUnauthorized": false
           }
         ]
