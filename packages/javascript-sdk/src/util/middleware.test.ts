@@ -18,37 +18,33 @@ describe('Middleware should be called with an action', () => {
       { url: new URL('https://www.example.com'), init: {} },
       {
         type: 'a' as ActionTypes,
-      }
+      },
     );
     const newReq = runMiddleware(middleware);
     expect(newReq.init).toStrictEqual({
       headers: { 'x-letter': 'true', 'x-char': 'a' },
     });
-    expect(newReq.url.toString()).toBe(
-      'https://www.example.com/?letter=true&char=a'
-    );
+    expect(newReq.url.toString()).toBe('https://www.example.com/?letter=true&char=a');
   });
   it('should run all middleware testing action for number and "1"', () => {
     const runMiddleware = middlewareWrapper(
       { url: new URL('https://www.example.com'), init: {} },
       {
         type: '1' as ActionTypes,
-      }
+      },
     );
     const newReq = runMiddleware(middleware);
     expect(newReq.init).toStrictEqual({
       headers: { 'x-letter': 'false', 'x-char': '1' },
     });
-    expect(newReq.url.toString()).toBe(
-      'https://www.example.com/?letter=false&char=1'
-    );
+    expect(newReq.url.toString()).toBe('https://www.example.com/?letter=false&char=1');
   });
   it('should run all middleware testing action for no match', () => {
     const runMiddleware = middlewareWrapper(
       { url: new URL('https://www.example.com'), init: {} },
       {
         type: 'z' as ActionTypes,
-      }
+      },
     );
     const newReq = runMiddleware(middleware);
     expect(newReq.init).toStrictEqual({});
@@ -63,7 +59,7 @@ describe('Middleware should be called with an action', () => {
       {
         type: 'ADD' as ActionTypes,
         payload: 'b',
-      }
+      },
     );
     const newReq = runMiddleware(middleware);
     expect(newReq.init).toStrictEqual({
@@ -75,7 +71,7 @@ describe('Middleware should be called with an action', () => {
       { url: new URL('https://www.example.com'), init: {} },
       {
         type: 'REASSIGNMENT' as ActionTypes,
-      }
+      },
     );
     const newReq = runMiddleware(middleware);
     expect(newReq.init).toStrictEqual({});
@@ -87,13 +83,11 @@ describe('Middleware should be called with an action', () => {
         { url: new URL('https://www.example.com'), init: {} },
         {
           type: 'MUTATE-ACTION' as ActionTypes,
-        }
+        },
       );
       runMiddleware(middleware);
     } catch (err) {
-      expect(err.message).toBe(
-        `Cannot assign to read only property 'type' of object '#<Object>'`
-      );
+      expect(err.message).toBe(`Cannot assign to read only property 'type' of object '#<Object>'`);
     }
   });
 });

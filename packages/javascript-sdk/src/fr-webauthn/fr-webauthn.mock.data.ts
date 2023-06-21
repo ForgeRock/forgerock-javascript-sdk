@@ -320,8 +320,7 @@ export const webAuthnRegMetaCallback70StoredUsername = {
             _type: 'WebAuthn',
             relyingPartyId: '',
             userName: '57a5b4e4-6999-4b45-bf86-a4f2e5d4b629',
-            authenticatorSelection:
-              '{"userVerification":"preferred","requireResidentKey":true}',
+            authenticatorSelection: '{"userVerification":"preferred","requireResidentKey":true}',
             userId: 'NTdhNWI0ZTQtNjk5OS00YjQ1LWJmODYtYTRmMmU1ZDRiNjI5',
             timeout: '60000',
             excludeCredentials: '',

@@ -17,15 +17,8 @@ of the MIT license. See the LICENSE file for details.
     <!--
       Allow the user to easily create a new Todo
     -->
-    <form
-      (ngSubmit)="create(newTodo)"
-      #newTodoForm="ngForm"
-      class="p-3 d-flex"
-      ngNativeValidate
-    >
-      <div
-        class="cstm_todos-input cstm_form-floating form-floating flex-grow-1"
-      >
+    <form (ngSubmit)="create(newTodo)" #newTodoForm="ngForm" class="p-3 d-flex" ngNativeValidate>
+      <div class="cstm_todos-input cstm_form-floating form-floating flex-grow-1">
         <input
           id="newTodo"
           type="text"
@@ -75,14 +68,8 @@ of the MIT license. See the LICENSE file for details.
               <div class="modal-header">
                 <h4 class="modal-title">Edit Todo</h4>
               </div>
-              <form
-                class="modal-body"
-                (ngSubmit)="update(editTodo)"
-                *ngIf="editTodo"
-              >
-                <div
-                  class="cstm_todos-input cstm_form-floating form-floating flex-grow-1"
-                >
+              <form class="modal-body" (ngSubmit)="update(editTodo)" *ngIf="editTodo">
+                <div class="cstm_todos-input cstm_form-floating form-floating flex-grow-1">
                   <input
                     id="editTodo"
                     type="text"
@@ -167,9 +154,7 @@ of the MIT license. See the LICENSE file for details.
         <ul class="list-group list-group-flush mb-1">
           <li class="cstm_todo-item list-group-item list-group-item-action p-0">
             <div class="row">
-              <p
-                class="col d-flex align-items-center fs-5 text-muted w-100 ms-3 p-3"
-              >
+              <p class="col d-flex align-items-center fs-5 text-muted w-100 ms-3 p-3">
                 No todos yet. Create one above!
               </p>
             </div>

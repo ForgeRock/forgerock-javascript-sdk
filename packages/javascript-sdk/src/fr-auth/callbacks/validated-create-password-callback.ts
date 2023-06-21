@@ -29,13 +29,13 @@ class ValidatedCreatePasswordCallback extends FRCallback {
   public getFailedPolicies(): PolicyRequirement[] {
     const failedPolicies = this.getOutputByName<PolicyRequirement[]>(
       'failedPolicies',
-      []
+      [],
     ) as unknown as string[];
     try {
       return failedPolicies.map((v) => JSON.parse(v)) as PolicyRequirement[];
     } catch (err) {
       throw new Error(
-        'Unable to parse "failed policies" from the ForgeRock server. The JSON within `ValidatedCreatePasswordCallback` was either malformed or missing.'
+        'Unable to parse "failed policies" from the ForgeRock server. The JSON within `ValidatedCreatePasswordCallback` was either malformed or missing.',
       );
     }
   }

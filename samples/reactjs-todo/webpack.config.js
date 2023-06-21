@@ -19,7 +19,7 @@ module.exports = (config) => {
       'process.env.JOURNEY_REGISTER': JSON.stringify(JOURNEY_REGISTER),
       'process.env.WEB_OAUTH_CLIENT': JSON.stringify(WEB_OAUTH_CLIENT),
       'process.env.REALM_PATH': JSON.stringify(REALM_PATH),
-    })
+    }),
   );
   const conf = {
     ...config,

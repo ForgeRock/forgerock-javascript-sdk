@@ -65,9 +65,7 @@ export default function Todos() {
    * or the Todos collection component.
    */
   const Todos = hasFetched ? (
-    <ul
-      className={`list-group list-group-flush mb-1 ${state.theme.listGroupClass}`}
-    >
+    <ul className={`list-group list-group-flush mb-1 ${state.theme.listGroupClass}`}>
       {/**
        * We we've fetched the todos, iterate over them for display.
        * If no todos were returned, show the "no todos" message.
@@ -118,10 +116,7 @@ export default function Todos() {
         selectedEditTodo={selectedEditTodo}
         setSelectedEditTodo={setSelectedEditTodo}
       />
-      <DeleteModal
-        deleteTodo={deleteTodo}
-        setSelectedDeleteTodo={setSelectedDeleteTodo}
-      />
+      <DeleteModal deleteTodo={deleteTodo} setSelectedDeleteTodo={setSelectedDeleteTodo} />
     </Fragment>
   );
 }

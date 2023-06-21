@@ -3,7 +3,7 @@ import { Agent } from 'https';
 
 export const isApiLive = async (
   url: string,
-  options: Partial<{ rejectUnauthorized: boolean }> = {}
+  options: Partial<{ rejectUnauthorized: boolean }> = {},
 ): Promise<boolean> => {
   const axiosConfig: AxiosRequestConfig = {
     timeout: 500,

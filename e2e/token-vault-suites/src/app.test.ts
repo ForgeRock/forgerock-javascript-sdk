@@ -21,16 +21,12 @@ test('should start page', async ({ context, page }) => {
 
   // check if tokens are stored in the local storage
   const storage = await context.storageState();
-  const mainAppStorage = storage.origins.find(
-    (item) => item.origin === 'http://localhost:5823'
-  );
+  const mainAppStorage = storage.origins.find((item) => item.origin === 'http://localhost:5823');
   expect(mainAppStorage).toBeFalsy();
 
-  const proxyStorage = storage.origins.find(
-    (item) => item.origin === 'http://localhost:5833'
-  );
+  const proxyStorage = storage.origins.find((item) => item.origin === 'http://localhost:5833');
   const proxyStorageOAuth = proxyStorage?.localStorage.find(
-    (item) => item.name === 'CentralLoginOAuthClient'
+    (item) => item.name === 'CentralLoginOAuthClient',
   );
   expect(proxyStorageOAuth.value).toContain('accessToken');
 });

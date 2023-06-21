@@ -58,7 +58,7 @@ export function client(config: ClientConfig): ClientInit {
             });
           } catch (error) {
             console.error(
-              `Token Vault Interceptor (Service Worker) registration failed with ${error}`
+              `Token Vault Interceptor (Service Worker) registration failed with ${error}`,
             );
           }
         }
@@ -77,15 +77,9 @@ export function client(config: ClientConfig): ClientInit {
      */
     proxy: function (target: HTMLElement, options?: BaseConfig) {
       const fetchEventName = config?.events?.fetch || 'TVP_FETCH_RESOURCE';
-      const frameId =
-        options?.proxy?.id || config?.proxy?.id || 'token-vault-iframe';
-      const proxyOrigin =
-        options?.proxy?.origin ||
-        config?.proxy.origin ||
-        'http://localhost:9000';
-      const proxyUrl = options?.proxy?.path
-        ? `${proxyOrigin}/${config?.proxy?.path}`
-        : proxyOrigin;
+      const frameId = options?.proxy?.id || config?.proxy?.id || 'token-vault-iframe';
+      const proxyOrigin = options?.proxy?.origin || config?.proxy.origin || 'http://localhost:9000';
+      const proxyUrl = options?.proxy?.path ? `${proxyOrigin}/${config?.proxy?.path}` : proxyOrigin;
 
       const fragment = document.createElement('iframe');
       fragment.setAttribute('id', frameId);
@@ -96,16 +90,14 @@ export function client(config: ClientConfig): ClientInit {
 
       console.log(`App origin: ${window.location.origin}`);
       console.log(`Proxy origin: ${proxyOrigin}`);
-      console.log(
-        `iframe URL: ${tokenVaultProxyEl.contentWindow?.location.href}`
-      );
+      console.log(`iframe URL: ${tokenVaultProxyEl.contentWindow?.location.href}`);
 
       navigator.serviceWorker.addEventListener('message', (event) => {
         if (event.data?.type === fetchEventName) {
           tokenVaultProxyEl.contentWindow?.postMessage(
             { type: fetchEventName, request: event.data.request },
             proxyOrigin,
-            [event.ports[0]]
+            [event.ports[0]],
           );
         }
       });
@@ -125,10 +117,8 @@ export function client(config: ClientConfig): ClientInit {
     store: function () {
       const clientId = config?.forgerock?.clientId || 'WebOAuthClient';
       const hasTokenEventName = config?.events?.has || 'TVP_HAS_TOKENS';
-      const refreshTokenEventName =
-        config?.events?.refresh || 'TVP_REFRESH_TOKENS';
-      const removeTokenEventName =
-        config?.events?.remove || 'TVP_REMOVE_TOKENS';
+      const refreshTokenEventName = config?.events?.refresh || 'TVP_REFRESH_TOKENS';
+      const removeTokenEventName = config?.events?.remove || 'TVP_REMOVE_TOKENS';
 
       return {
         /**
@@ -151,7 +141,7 @@ export function client(config: ClientConfig): ClientInit {
             tokenVaultProxyEl.contentWindow?.postMessage(
               { type: hasTokenEventName, clientId },
               config.proxy.origin,
-              [proxyChannel.port2]
+              [proxyChannel.port2],
             );
             proxyChannel.port1.onmessage = (event) => {
               resolve(event.data);
@@ -170,7 +160,7 @@ export function client(config: ClientConfig): ClientInit {
             tokenVaultProxyEl.contentWindow?.postMessage(
               { type: refreshTokenEventName, clientId },
               config.proxy.origin,
-              [proxyChannel.port2]
+              [proxyChannel.port2],
             );
             proxyChannel.port1.onmessage = (event) => {
               resolve(event.data);
@@ -189,7 +179,7 @@ export function client(config: ClientConfig): ClientInit {
             tokenVaultProxyEl.contentWindow?.postMessage(
               { type: removeTokenEventName, clientId },
               config.proxy.origin,
-              [proxyChannel.port2]
+              [proxyChannel.port2],
             );
             proxyChannel.port1.onmessage = (event) => {
               resolve(undefined);

@@ -64,9 +64,7 @@ function parseNumberArray(value: string): number[] {
   return JSON.parse(matches[1]);
 }
 
-function parsePubKeyArray(
-  value: string | unknown[]
-): PublicKeyCredentialParameters[] | undefined {
+function parsePubKeyArray(value: string | unknown[]): PublicKeyCredentialParameters[] | undefined {
   if (Array.isArray(value)) {
     return value as PublicKeyCredentialParameters[];
   }
@@ -81,7 +79,7 @@ function parsePubKeyArray(
 }
 
 function parseAllowCredentialsArray(
-  value: string | unknown[]
+  value: string | unknown[],
 ): PublicKeyCredentialDescriptor[] | undefined {
   if (!value) {
     return undefined;

@@ -79,11 +79,8 @@ export class PasswordComponent implements OnInit {
    * @param callback - the password callback to be evaluated
    * @returns boolean - is this field mandatory
    */
-  getIsRequired(
-    callback?: PasswordCallback | ValidatedCreatePasswordCallback
-  ): boolean {
-    if (callback === undefined || callback instanceof PasswordCallback)
-      return false;
+  getIsRequired(callback?: PasswordCallback | ValidatedCreatePasswordCallback): boolean {
+    if (callback === undefined || callback instanceof PasswordCallback) return false;
 
     const policies = callback.getPolicies();
 
@@ -101,11 +98,8 @@ export class PasswordComponent implements OnInit {
    * @param callback - the password callback to be evaluated
    * @returns string[] - an array of password policy failures
    */
-  evaluateFailedPolicies(
-    callback?: PasswordCallback | ValidatedCreatePasswordCallback
-  ): string[] {
-    if (callback === undefined || callback instanceof PasswordCallback)
-      return [];
+  evaluateFailedPolicies(callback?: PasswordCallback | ValidatedCreatePasswordCallback): string[] {
+    if (callback === undefined || callback instanceof PasswordCallback) return [];
 
     const failedPolicies = callback.getFailedPolicies();
 
@@ -115,12 +109,12 @@ export class PasswordComponent implements OnInit {
       switch (policy.policyRequirement) {
         case 'LENGTH_BASED':
           validationFailures.push(
-            `Ensure password contains more than ${policy.params['min-password-length']} characters. `
+            `Ensure password contains more than ${policy.params['min-password-length']} characters. `,
           );
           break;
         case 'CHARACTER_SET':
           validationFailures.push(
-            `Ensure password contains 1 of each: capital letter, number and special character. `
+            `Ensure password contains 1 of each: capital letter, number and special character. `,
           );
           break;
         default:

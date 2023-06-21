@@ -14,25 +14,19 @@ describe('Test Token Manager utils', () => {
   });
 
   it('Should return true if tokens expire within configured threshold', () => {
-    const expiresSoon = tokenExpiryWithinThreshold(
-      oauthThreshold,
-      Date.now() + aboutToExpire
-    );
+    const expiresSoon = tokenExpiryWithinThreshold(oauthThreshold, Date.now() + aboutToExpire);
     expect(expiresSoon).toBe(true);
   });
 
   it('Should return false if tokens expire outside configured threshold', () => {
-    const expiresSoon = tokenExpiryWithinThreshold(
-      oauthThreshold,
-      Date.now() + notAboutToExpire
-    );
+    const expiresSoon = tokenExpiryWithinThreshold(oauthThreshold, Date.now() + notAboutToExpire);
     expect(expiresSoon).toBe(false);
   });
 
   it('Should return false if token expiry is not set', () => {
     const expiresSoon = tokenExpiryWithinThreshold(
       tokenExpiryNotSet,
-      Date.now() + notAboutToExpire
+      Date.now() + notAboutToExpire,
     );
     expect(expiresSoon).toBe(false);
   });

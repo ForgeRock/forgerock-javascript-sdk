@@ -10,13 +10,7 @@
 
 import Auth from './auth';
 import { CallbackType, ErrorCode } from './auth/enums';
-import type {
-  Callback,
-  NameValue,
-  PolicyRequirement,
-  Step,
-  StepDetail,
-} from './auth/interfaces';
+import type { Callback, NameValue, PolicyRequirement, Step, StepDetail } from './auth/interfaces';
 import Config from './config';
 import type { ConfigOptions, ValidConfigOptions } from './config';
 import FRAuth from './fr-auth';

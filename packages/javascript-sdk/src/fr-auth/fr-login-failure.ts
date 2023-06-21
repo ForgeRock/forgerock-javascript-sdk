@@ -9,10 +9,7 @@
  */
 
 import FRPolicy from '../fr-policy';
-import type {
-  MessageCreator,
-  ProcessedPropertyError,
-} from '../fr-policy/interfaces';
+import type { MessageCreator, ProcessedPropertyError } from '../fr-policy/interfaces';
 import type { Step } from '../auth/interfaces';
 import { StepType } from './enums';
 import type { AuthResponse, FailureDetail } from './interfaces';
@@ -52,9 +49,7 @@ class FRLoginFailure implements AuthResponse {
   /**
    * Gets processed failure message.
    */
-  public getProcessedMessage(
-    messageCreator?: MessageCreator
-  ): ProcessedPropertyError[] {
+  public getProcessedMessage(messageCreator?: MessageCreator): ProcessedPropertyError[] {
     return FRPolicy.parseErrors(this.payload, messageCreator);
   }
 

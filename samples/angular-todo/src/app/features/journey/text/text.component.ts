@@ -74,10 +74,7 @@ export class TextComponent implements OnInit {
    * @returns boolean - is this field mandatory
    */
   getIsRequired(
-    callback?:
-      | NameCallback
-      | ValidatedCreateUsernameCallback
-      | AttributeInputCallback<string>
+    callback?: NameCallback | ValidatedCreateUsernameCallback | AttributeInputCallback<string>,
   ): boolean {
     if (
       callback === undefined ||
@@ -101,10 +98,7 @@ export class TextComponent implements OnInit {
    * @returns string[] - an array of password policy failures
    */
   evaluateFailedPolicies(
-    callback?:
-      | NameCallback
-      | ValidatedCreateUsernameCallback
-      | AttributeInputCallback<string>
+    callback?: NameCallback | ValidatedCreateUsernameCallback | AttributeInputCallback<string>,
   ): string[] {
     if (
       callback === undefined ||

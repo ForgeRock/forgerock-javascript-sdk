@@ -1,10 +1,6 @@
 import { ConfigOptions } from '@forgerock/javascript-sdk';
 import { ConfigurablePaths, CustomPathConfig } from '@shared/types';
-import type {
-  RequestHeaders,
-  ResponseClone,
-  ResponseHeaders,
-} from './network.types';
+import type { RequestHeaders, ResponseClone, ResponseHeaders } from './network.types';
 
 /** ****************************************************************
  * @function checkForMissingSlash
@@ -23,9 +19,7 @@ export function checkForMissingSlash(url: string) {
  * @param {Response} response - The response to clone
  * @returns {Promise<ResponseClone>} - The cloned response
  */
-export async function cloneResponse(
-  response: Response
-): Promise<ResponseClone> {
+export async function cloneResponse(response: Response): Promise<ResponseClone> {
   // Clone and redact the response
   const clone = response.clone();
 
@@ -57,7 +51,7 @@ export async function cloneResponse(
  */
 export function createErrorResponse(
   type: 'fetch_error' | 'no_tokens' | 'refresh_error',
-  error: unknown
+  error: unknown,
 ) {
   const message = error instanceof Error ? error.message : 'Unknown error';
 
@@ -114,21 +108,13 @@ export function evaluateUrlForInterception(url: string, urls: string[]) {
  * @returns {Object} - An object containing the URLs for interception
  */
 export function generateAmUrls(forgerockConfig: ConfigOptions) {
-  const baseUrl = checkForMissingSlash(
-    forgerockConfig?.serverConfig?.baseUrl || ''
-  );
+  const baseUrl = checkForMissingSlash(forgerockConfig?.serverConfig?.baseUrl || '');
   const realmPath = forgerockConfig?.realmPath || 'root';
 
   return {
-    accessToken: `${resolveUrl(
-      baseUrl,
-      getEndpointPath('accessToken', realmPath)
-    )}`,
+    accessToken: `${resolveUrl(baseUrl, getEndpointPath('accessToken', realmPath))}`,
     revoke: `${resolveUrl(baseUrl, getEndpointPath('revoke', realmPath))}`,
-    session: `${resolveUrl(
-      baseUrl,
-      getEndpointPath('endSession', realmPath)
-    )}?`,
+    session: `${resolveUrl(baseUrl, getEndpointPath('endSession', realmPath))}?`,
     userInfo: `${resolveUrl(baseUrl, getEndpointPath('userInfo', realmPath))}`,
   };
 }
@@ -168,9 +154,7 @@ export async function getResponseBodyBlob(response: Response) {
  * @param {Request} request - The request to get the body blob from
  * @returns {Promise<undefined | Blob>} - The request body blob
  */
-export async function getRequestBodyBlob(
-  request: Request
-): Promise<undefined | Blob> {
+export async function getRequestBodyBlob(request: Request): Promise<undefined | Blob> {
   // Return undefined early if GET or HEAD
   if (['GET', 'HEAD'].includes(request.method)) {
     return;
@@ -190,13 +174,10 @@ export async function getRequestBodyBlob(
  * @returns {ResponseHeaders} - The response headers
  */
 export function getResponseHeaders(response: Response) {
-  return Array.from(response.headers.keys()).reduce<ResponseHeaders>(
-    (acc, key) => {
-      acc[key] = response.headers.get(key);
-      return acc;
-    },
-    {}
-  );
+  return Array.from(response.headers.keys()).reduce<ResponseHeaders>((acc, key) => {
+    acc[key] = response.headers.get(key);
+    return acc;
+  }, {});
 }
 
 /**
@@ -205,13 +186,10 @@ export function getResponseHeaders(response: Response) {
  * @returns {RequestHeaders} - The request headers
  */
 export function getRequestHeaders(request: Request) {
-  return Array.from(request.headers.keys()).reduce<RequestHeaders>(
-    (acc, key) => {
-      acc[key] = request.headers.get(key);
-      return acc;
-    },
-    {}
-  );
+  return Array.from(request.headers.keys()).reduce<RequestHeaders>((acc, key) => {
+    acc[key] = request.headers.get(key);
+    return acc;
+  }, {});
 }
 
 /** ****************************************************************
@@ -237,7 +215,7 @@ export async function getBodyJsonOrText(response: Response) {
 export function getEndpointPath(
   endpoint: ConfigurablePaths,
   realmPath?: string,
-  customPaths?: CustomPathConfig
+  customPaths?: CustomPathConfig,
 ): string {
   const realmUrlPath = getRealmUrlPath(realmPath);
   const defaultPaths = {

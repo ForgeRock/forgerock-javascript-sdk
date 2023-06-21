@@ -1,8 +1,4 @@
-import {
-  ClientTokens,
-  RefreshOAuth2TokensOptions,
-  ServerTokens,
-} from '@shared/types';
+import { ClientTokens, RefreshOAuth2TokensOptions, ServerTokens } from '@shared/types';
 import { stringifyQueryParams } from '@shared/network';
 
 /** ****************************************************************
@@ -30,9 +26,7 @@ export function getTokens(clientId: string): ClientTokens | undefined {
  * @param {RefreshOAuth2TokensOptions} config - The configuration object for the refresh request
  * @returns {Promise<Response>} - The response from the refresh request
  */
-export async function refreshTokens(
-  config: RefreshOAuth2TokensOptions
-): Promise<Response> {
+export async function refreshTokens(config: RefreshOAuth2TokensOptions): Promise<Response> {
   const requestParams = {
     client_id: config.clientId || '',
     grant_type: 'refresh_token',
@@ -89,10 +83,7 @@ export async function storeTokens(response: Response, clientId: string) {
  * @param {number | undefined} tokenExpiry - The expiry time for the token
  * @returns {boolean} - Whether the token expiry is within the threshold
  */
-export function tokenExpiryWithinThreshold(
-  oauthThreshold?: number,
-  tokenExpiry?: number
-): boolean {
+export function tokenExpiryWithinThreshold(oauthThreshold?: number, tokenExpiry?: number): boolean {
   console.log(oauthThreshold);
   console.log(tokenExpiry);
   if (oauthThreshold && tokenExpiry) {

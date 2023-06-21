@@ -18,9 +18,7 @@ import type { StringDict } from '../../shared/interfaces';
  * @typeparam T Maps to StringAttributeInputCallback, NumberAttributeInputCallback and
  *     BooleanAttributeInputCallback, respectively
  */
-class AttributeInputCallback<
-  T extends string | number | boolean
-> extends FRCallback {
+class AttributeInputCallback<T extends string | number | boolean> extends FRCallback {
   /**
    * @param payload The raw payload returned by OpenAM
    */
@@ -55,13 +53,13 @@ class AttributeInputCallback<
   public getFailedPolicies(): PolicyRequirement[] {
     const failedPolicies = this.getOutputByName<PolicyRequirement[]>(
       'failedPolicies',
-      []
+      [],
     ) as unknown as string[];
     try {
       return failedPolicies.map((v) => JSON.parse(v)) as PolicyRequirement[];
     } catch (err) {
       throw new Error(
-        'Unable to parse "failed policies" from the ForgeRock server. The JSON within `AttributeInputCallback` was either malformed or missing.'
+        'Unable to parse "failed policies" from the ForgeRock server. The JSON within `AttributeInputCallback` was either malformed or missing.',
       );
     }
   }

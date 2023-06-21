@@ -90,14 +90,10 @@ describe('Test network utility functions', () => {
     };
     const urls = generateAmUrls(forgerockConfig);
     expect(urls).toEqual({
-      accessToken:
-        'https://example.com/am/oauth2/realms/root/realms/alpha/access_token',
-      revoke:
-        'https://example.com/am/oauth2/realms/root/realms/alpha/token/revoke',
-      session:
-        'https://example.com/am/oauth2/realms/root/realms/alpha/connect/endSession?',
-      userInfo:
-        'https://example.com/am/oauth2/realms/root/realms/alpha/userinfo',
+      accessToken: 'https://example.com/am/oauth2/realms/root/realms/alpha/access_token',
+      revoke: 'https://example.com/am/oauth2/realms/root/realms/alpha/token/revoke',
+      session: 'https://example.com/am/oauth2/realms/root/realms/alpha/connect/endSession?',
+      userInfo: 'https://example.com/am/oauth2/realms/root/realms/alpha/userinfo',
     });
   });
 

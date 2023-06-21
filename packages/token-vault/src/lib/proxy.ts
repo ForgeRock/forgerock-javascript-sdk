@@ -1,15 +1,6 @@
-import {
-  cloneResponse,
-  createErrorResponse,
-  generateAmUrls,
-} from '@shared/network';
+import { cloneResponse, createErrorResponse, generateAmUrls } from '@shared/network';
 import { EventsConfig, ProxyConfig, ServerTokens } from '@shared/types';
-import {
-  refreshTokens,
-  storeTokens,
-  getTokens,
-  tokenExpiryWithinThreshold,
-} from './token.utils';
+import { refreshTokens, storeTokens, getTokens, tokenExpiryWithinThreshold } from './token.utils';
 
 /** ****************************************************************
  * @function proxy - Initialize the Token Vault Proxy
@@ -29,10 +20,7 @@ export function proxy(config: ProxyConfig) {
   const clientOrigin = config.app.origin || 'http://localhost:8000';
   const oauthThreshold = config.forgerock?.oauthThreshold || 30 * 1000;
   const scope = config.forgerock?.scope || 'openid email';
-  const redactedTokens = config.proxy?.redact || [
-    'access_token',
-    'refresh_token',
-  ];
+  const redactedTokens = config.proxy?.redact || ['access_token', 'refresh_token'];
 
   /**
    * Default event names
@@ -152,8 +140,7 @@ export function proxy(config: ProxyConfig) {
         localStorage.removeItem(clientId);
         responseChannel.postMessage({
           error: 'refresh_error',
-          message:
-            error instanceof Error ? error.message : 'Error refreshing tokens',
+          message: error instanceof Error ? error.message : 'Error refreshing tokens',
         });
 
         return;
@@ -211,17 +198,14 @@ export function proxy(config: ProxyConfig) {
       // Redact configured tokens from response body
       if (clonedResponse.body) {
         const body = clonedResponse.body as ServerTokens;
-        clonedResponse.body = redactedTokens.reduce<ServerTokens>(
-          (acc, token) => {
-            if (body[token]) {
-              acc[token] = 'REDACTED';
-            } else {
-              acc[token] = body[token];
-            }
-            return acc;
-          },
-          {} as ServerTokens
-        );
+        clonedResponse.body = redactedTokens.reduce<ServerTokens>((acc, token) => {
+          if (body[token]) {
+            acc[token] = 'REDACTED';
+          } else {
+            acc[token] = body[token];
+          }
+          return acc;
+        }, {} as ServerTokens);
       }
 
       // Store tokens in local storage
@@ -235,7 +219,7 @@ export function proxy(config: ProxyConfig) {
     if (!tokens) {
       const errorResponse = createErrorResponse(
         'no_tokens',
-        new Error('No OAuth/OIDC tokens found')
+        new Error('No OAuth/OIDC tokens found'),
       );
       responseChannel.postMessage(errorResponse);
       return;
@@ -384,10 +368,7 @@ export function proxy(config: ProxyConfig) {
        */
       const errorResponse = response
         ? await cloneResponse(response)
-        : createErrorResponse(
-            'fetch_error',
-            new Error('Unable to refresh token')
-          );
+        : createErrorResponse('fetch_error', new Error('Unable to refresh token'));
 
       const clonedResponse = errorResponse;
       responseChannel.postMessage(clonedResponse);
@@ -418,10 +399,7 @@ export function proxy(config: ProxyConfig) {
        */
       const errorResponse = response
         ? await cloneResponse(response)
-        : createErrorResponse(
-            'fetch_error',
-            new Error('Unable to refresh token')
-          );
+        : createErrorResponse('fetch_error', new Error('Unable to refresh token'));
       responseChannel.postMessage(errorResponse);
       return;
     }
@@ -457,7 +435,7 @@ export function proxy(config: ProxyConfig) {
         ? await cloneResponse(response)
         : createErrorResponse(
             'fetch_error',
-            new Error('Unable to re-request resourse with refreshed token')
+            new Error('Unable to re-request resourse with refreshed token'),
           );
 
       responseChannel.postMessage(errorResponse);

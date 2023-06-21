@@ -9,13 +9,6 @@
       "options": {
         "targets": [
           {
-            "target": "mock-api:serve",
-            "checkUrl": "https://api.example.com:9443/healthcheck",
-            "checkMaxTries": 50,
-            "rejectUnauthorized": false,
-            "reuseExistingServer": true
-          },
-          {
             "target": "token-vault-app:serve",
             "checkUrl": "http://localhost:5823",
             "checkMaxTries": 50,
@@ -25,6 +18,13 @@
           {
             "target": "token-vault-proxy:serve",
             "checkUrl": "http://localhost:5833",
+            "checkMaxTries": 50,
+            "rejectUnauthorized": false,
+            "reuseExistingServer": true
+          },
+          {
+            "target": "mock-api:serve",
+            "checkUrl": "https://api.example.com:9443/healthcheck",
             "checkMaxTries": 50,
             "rejectUnauthorized": false,
             "reuseExistingServer": true

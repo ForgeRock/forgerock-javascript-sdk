@@ -13,20 +13,12 @@ import { InterceptorConfig } from './worker.types';
  * @returns {string[]} - An array of URLs to intercept
  */
 export function generateUrlsToIntercept(config: InterceptorConfig) {
-  const forgerockBaseUrl = checkForMissingSlash(
-    config.forgerock.serverConfig.baseUrl
-  );
+  const forgerockBaseUrl = checkForMissingSlash(config.forgerock.serverConfig.baseUrl);
   const realmPath = config.forgerock?.realmPath || 'root';
   const urls = [
     ...config.interceptor.urls,
-    `${resolveUrl(
-      forgerockBaseUrl,
-      getEndpointPath('accessToken', realmPath)
-    )}`,
-    `${resolveUrl(
-      forgerockBaseUrl,
-      getEndpointPath('endSession', realmPath)
-    )}?`,
+    `${resolveUrl(forgerockBaseUrl, getEndpointPath('accessToken', realmPath))}`,
+    `${resolveUrl(forgerockBaseUrl, getEndpointPath('endSession', realmPath))}?`,
     `${resolveUrl(forgerockBaseUrl, getEndpointPath('revoke', realmPath))}`,
     `${resolveUrl(forgerockBaseUrl, getEndpointPath('userInfo', realmPath))}`,
     `${resolveUrl(forgerockBaseUrl, getEndpointPath('sessions', realmPath))}`,

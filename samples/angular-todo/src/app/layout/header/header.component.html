@@ -14,8 +14,7 @@ of the MIT license. See the LICENSE file for details.
       [routerLink]="'/'"
       class="cstm_navbar-brand navbar-brand py-3 pe-4 me-4"
       [ngClass]="{
-        'cstm_navbar-brand_auth d-none d-sm-none d-md-block':
-          userService.isAuthenticated
+        'cstm_navbar-brand_auth d-none d-sm-none d-md-block': userService.isAuthenticated
       }"
     >
       <app-forgerock-icon size="31px"></app-forgerock-icon> +
@@ -25,9 +24,7 @@ of the MIT license. See the LICENSE file for details.
       <!--
         Show simple navigation with login / register links, or links relevant to current route
       -->
-      <ng-container
-        [ngTemplateOutlet]="userService.info ? navigation : loginOrRegister"
-      >
+      <ng-container [ngTemplateOutlet]="userService.info ? navigation : loginOrRegister">
         <ng-template #navigation>
           <!--
             Show navigation links relevant to the current route
@@ -37,8 +34,7 @@ of the MIT license. See the LICENSE file for details.
               key="home"
               class="cstm_nav-item nav-item mx-1"
               [ngClass]="{
-                'cstm_nav-item_active':
-                  router.url === '/' || router.url === '/home'
+                'cstm_nav-item_active': router.url === '/' || router.url === '/home'
               }"
             >
               <a
@@ -90,9 +86,7 @@ of the MIT license. See the LICENSE file for details.
                   </div>
                 </li>
                 <li>
-                  <a class="dropdown-item py-2" [routerLink]="'/logout'">
-                    Sign Out
-                  </a>
+                  <a class="dropdown-item py-2" [routerLink]="'/logout'"> Sign Out </a>
                 </li>
               </ul>
             </div>
@@ -102,9 +96,7 @@ of the MIT license. See the LICENSE file for details.
         <ng-template #loginOrRegister>
           <ul class="navbar-nav d-flex align-items-stretch me-auto"></ul>
           <div class="d-flex py-3">
-            <a [routerLink]="'/login'" class="cstm_login-link py-2 px-3 mx-1">
-              Sign In
-            </a>
+            <a [routerLink]="'/login'" class="cstm_login-link py-2 px-3 mx-1"> Sign In </a>
             <a class="btn btn-primary" [routerLink]="'/register'"> Sign Up </a>
           </div>
         </ng-template>

@@ -51,22 +51,18 @@ export class NxTarget {
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     let processExitedReject = (error: Error) => {};
 
-    this._processExitedPromise = new Promise(
-      (_, reject) => (processExitedReject = reject)
-    );
+    this._processExitedPromise = new Promise((_, reject) => (processExitedReject = reject));
 
     const isAlreadyAvailable = await this._isAvailable();
 
     if (isAlreadyAvailable) {
       if (this._options.reuseExistingServer) {
-        logger.info(
-          `Reusing existing server for target "${this._options.target}"`
-        );
+        logger.info(`Reusing existing server for target "${this._options.target}"`);
         return;
       }
 
       throw new Error(
-        `${this._options.checkUrl} is already used, make sure that nothing is running on the port/url or set reuseExistingServer:true.`
+        `${this._options.checkUrl} is already used, make sure that nothing is running on the port/url or set reuseExistingServer:true.`,
       );
     }
 
@@ -75,9 +71,7 @@ export class NxTarget {
     this._killProcess = await launchProcess(this._options.target, {
       onExit: (code) =>
         processExitedReject(
-          new Error(
-            `Target "${this._options.target}" was not able to start. Exit code: ${code}`
-          )
+          new Error(`Target "${this._options.target}" was not able to start. Exit code: ${code}`),
         ),
       env: this._options.env,
     });
@@ -103,9 +97,7 @@ export class NxTarget {
     cancellationToken.canceled = true;
 
     if (error) {
-      throw new Error(
-        `Error waiting for target "${this._options.target}" to start.`
-      );
+      throw new Error(`Error waiting for target "${this._options.target}" to start.`);
     }
   }
 }
@@ -113,7 +105,7 @@ export class NxTarget {
 async function waitFor(
   options: NxTargetOptions,
   waitFn: () => Promise<boolean>,
-  cancellationToken: { canceled: boolean }
+  cancellationToken: { canceled: boolean },
 ) {
   let serverIsLive = await waitFn();
   let waitTries = 0;
@@ -139,14 +131,12 @@ function launchProcess(
   options: {
     onExit: (exitCode: number | null, signal: string | null) => void;
     env?: { [key: string]: string };
-  }
+  },
 ): () => Promise<void> {
   const { project, target, configuration } = parseTargetString(targetString);
 
   const spawnedProcess = childProcess.spawn(
-    `npx nx ${target} ${project} ${
-      configuration ? `--configuration=${configuration}` : ''
-    }`,
+    `npx nx ${target} ${project} ${configuration ? `--configuration=${configuration}` : ''}`,
     [],
     {
       detached: true,
@@ -156,7 +146,7 @@ function launchProcess(
         ...process.env,
         ...options.env,
       },
-    }
+    },
   );
 
   // spawnedProcess.stdout.on('data', (a) => {

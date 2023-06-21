@@ -91,14 +91,9 @@ abstract class TokenStorage {
 
   private static getClientConfig(): {
     clientId: string;
-    tokenStore:
-      | TokenStoreObject
-      | 'sessionStorage'
-      | 'localStorage'
-      | undefined;
+    tokenStore: TokenStoreObject | 'sessionStorage' | 'localStorage' | undefined;
   } {
-    const { clientId = 'unconfiguredClient', tokenStore = 'localStorage' } =
-      Config.get();
+    const { clientId = 'unconfiguredClient', tokenStore = 'localStorage' } = Config.get();
 
     return { clientId, tokenStore };
   }

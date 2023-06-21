@@ -50,11 +50,7 @@ interface CustomPathConfig {
   sessions?: string;
 }
 
-type RequestMiddleware = (
-  req: RequestObj,
-  action: Action,
-  next: () => RequestObj
-) => void;
+type RequestMiddleware = (req: RequestObj, action: Action, next: () => RequestObj) => void;
 
 interface RequestObj {
   url: URL;

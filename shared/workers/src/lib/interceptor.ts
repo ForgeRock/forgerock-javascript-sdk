@@ -59,23 +59,19 @@ export function interceptor(config: InterceptorConfig) {
             app = await self.clients.get(event.clientId);
           } catch (error) {
             return reject(
-              `Error finding client in Token Vault Interceptor (Service Worker): ${error}`
+              `Error finding client in Token Vault Interceptor (Service Worker): ${error}`,
             );
           }
           // If no app is found, reject the promise
           if (!app) {
-            return reject(
-              'Error finding client in Token Vault Interceptor (Service Worker)'
-            );
+            return reject('Error finding client in Token Vault Interceptor (Service Worker)');
           }
           const requestCopy = {
             url: request.url,
             options: await generateOptions(request),
           };
 
-          app.postMessage({ type: fetchEventName, request: requestCopy }, [
-            proxyChannel.port2,
-          ]);
+          app.postMessage({ type: fetchEventName, request: requestCopy }, [proxyChannel.port2]);
           proxyChannel.port1.onmessage = (messageEvent) => {
             console.log(`Returning ${url}`);
             const response = messageEvent?.data || {};
@@ -89,10 +85,10 @@ export function interceptor(config: InterceptorConfig) {
                 headers: response?.headers,
                 status: response?.status,
                 statusText: response?.statusText,
-              })
+              }),
             );
           };
-        })
+        }),
       );
     }
   });

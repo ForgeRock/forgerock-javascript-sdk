@@ -65,9 +65,7 @@ class FRDevice extends Collector {
     if (config) {
       Object.keys(config).forEach((key: string) => {
         if (!configurableCategories.includes(key)) {
-          throw new Error(
-            'Device profile configuration category does not exist.'
-          );
+          throw new Error('Device profile configuration category does not exist.');
         }
         this.config[key as Category] = config[key as Category];
       });
@@ -76,9 +74,7 @@ class FRDevice extends Collector {
 
   getBrowserMeta(): { [key: string]: string } {
     if (typeof navigator === 'undefined') {
-      console.warn(
-        'Cannot collect browser metadata. navigator is not defined.'
-      );
+      console.warn('Cannot collect browser metadata. navigator is not defined.');
       return {};
     }
     return this.reduceToObject(this.config.browserProps, navigator);
@@ -86,15 +82,10 @@ class FRDevice extends Collector {
 
   getBrowserPluginsNames(): string {
     if (!(typeof navigator !== 'undefined' && navigator.plugins)) {
-      console.warn(
-        'Cannot collect browser plugin information. navigator.plugins is not defined.'
-      );
+      console.warn('Cannot collect browser plugin information. navigator.plugins is not defined.');
       return '';
     }
-    return this.reduceToString(
-      Object.keys(navigator.plugins),
-      navigator.plugins
-    );
+    return this.reduceToString(Object.keys(navigator.plugins), navigator.plugins);
   }
 
   getDeviceName(): string {
@@ -142,15 +133,8 @@ class FRDevice extends Collector {
   getIdentifier(): string {
     const storageKey = `${PREFIX}-DeviceID`;
 
-    if (
-      !(
-        typeof globalThis.crypto !== 'undefined' &&
-        globalThis.crypto.getRandomValues
-      )
-    ) {
-      console.warn(
-        'Cannot generate profile ID. Crypto and/or getRandomValues is not supported.'
-      );
+    if (!(typeof globalThis.crypto !== 'undefined' && globalThis.crypto.getRandomValues)) {
+      console.warn('Cannot generate profile ID. Crypto and/or getRandomValues is not supported.');
       return '';
     }
     if (!localStorage) {
@@ -168,24 +152,18 @@ class FRDevice extends Collector {
 
   getInstalledFonts(): string {
     if (typeof document === undefined) {
-      console.warn(
-        'Cannot collect font data. Global document object is undefined.'
-      );
+      console.warn('Cannot collect font data. Global document object is undefined.');
       return '';
     }
     const canvas = document.createElement('canvas');
     if (!canvas) {
-      console.warn(
-        'Cannot collect font data. Browser does not support canvas element'
-      );
+      console.warn('Cannot collect font data. Browser does not support canvas element');
       return '';
     }
     const context = canvas.getContext && canvas.getContext('2d');
 
     if (!context) {
-      console.warn(
-        'Cannot collect font data. Browser does not support 2d canvas context'
-      );
+      console.warn('Cannot collect font data. Browser does not support 2d canvas context');
       return '';
     }
     const text = 'abcdefghi0123456789';
@@ -205,13 +183,9 @@ class FRDevice extends Collector {
     return installedFonts;
   }
 
-  async getLocationCoordinates(): Promise<
-    Geolocation | Record<string, unknown>
-  > {
+  async getLocationCoordinates(): Promise<Geolocation | Record<string, unknown>> {
     if (!(typeof navigator !== 'undefined' && navigator.geolocation)) {
-      console.warn(
-        'Cannot collect geolocation information. navigator.geolocation is not defined.'
-      );
+      console.warn('Cannot collect geolocation information. navigator.geolocation is not defined.');
       return Promise.resolve({});
     }
     // eslint-disable-next-line no-async-promise-executor
@@ -224,10 +198,7 @@ class FRDevice extends Collector {
           }),
         (error) => {
           console.warn(
-            'Cannot collect geolocation information. ' +
-              error.code +
-              ': ' +
-              error.message
+            'Cannot collect geolocation information. ' + error.code + ': ' + error.message,
           );
           resolve({});
         },
@@ -235,7 +206,7 @@ class FRDevice extends Collector {
           enableHighAccuracy: true,
           timeout: delay,
           maximumAge: 0,
-        }
+        },
       );
     });
   }
@@ -248,10 +219,7 @@ class FRDevice extends Collector {
     return this.reduceToObject(this.config.platformProps, navigator);
   }
 
-  async getProfile({
-    location,
-    metadata,
-  }: CollectParameters): Promise<DeviceProfileData> {
+  async getProfile({ location, metadata }: CollectParameters): Promise<DeviceProfileData> {
     const profile: DeviceProfileData = {
       identifier: this.getIdentifier(),
     };
@@ -284,9 +252,7 @@ class FRDevice extends Collector {
     try {
       return new Date().getTimezoneOffset();
     } catch (err) {
-      console.warn(
-        'Cannot collect timezone information. getTimezoneOffset is not defined.'
-      );
+      console.warn('Cannot collect timezone information. getTimezoneOffset is not defined.');
       return null;
     }
   }

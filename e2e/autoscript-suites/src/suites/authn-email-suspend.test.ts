@@ -12,22 +12,15 @@ import { test, expect } from '@playwright/test';
 import { setupAndGo } from '../utilities/setup-and-go';
 
 test.describe('Test basic registration flow', () => {
-  test(`should register user successfully and then log out`, async ({
-    page,
-    browserName,
-  }) => {
-    const { messageArray } = await setupAndGo(
-      page,
-      browserName,
-      'authn-email-suspend/'
-    );
+  test(`should register user successfully and then log out`, async ({ page, browserName }) => {
+    const { messageArray } = await setupAndGo(page, browserName, 'authn-email-suspend/');
 
     // Test assertions
     expect(
       messageArray.includes(
         // eslint-disable-next-line max-len
-        'An email has been sent to the address you entered. Click the link in that email to proceed.'
-      )
+        'An email has been sent to the address you entered. Click the link in that email to proceed.',
+      ),
     ).toBe(true);
   });
 });

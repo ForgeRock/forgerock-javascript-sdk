@@ -8,11 +8,7 @@
  * of the MIT license. See the LICENSE file for details.
  */
 
-function getProp<T>(
-  obj: { [key: string]: unknown } | undefined,
-  prop: string,
-  defaultValue: T
-): T {
+function getProp<T>(obj: { [key: string]: unknown } | undefined, prop: string, defaultValue: T): T {
   if (!obj || obj[prop] === undefined) {
     return defaultValue;
   }

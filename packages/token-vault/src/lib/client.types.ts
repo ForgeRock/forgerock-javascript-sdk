@@ -3,7 +3,7 @@ import { BaseConfig } from '@shared/types';
 
 export type ClientInit = {
   interceptor: (
-    options?: BaseConfig['interceptor']
+    options?: BaseConfig['interceptor'],
   ) => Promise<ServiceWorkerRegistration | undefined>;
   proxy: (target: HTMLElement, options?: BaseConfig) => Promise<unknown>;
   store: () => {

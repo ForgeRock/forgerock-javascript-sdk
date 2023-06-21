@@ -156,9 +156,7 @@ export default function Form({ action, bottomMessage, followUp, topMessage }) {
      */
     return (
       <Fragment>
-        <h1 className={`text-center fs-2 mb-3 ${state.theme.textClass}`}>
-          {form.titleText}
-        </h1>
+        <h1 className={`text-center fs-2 mb-3 ${state.theme.textClass}`}>{form.titleText}</h1>
         {topMessage}
         <form
           className="cstm_form"
@@ -170,9 +168,7 @@ export default function Form({ action, bottomMessage, followUp, topMessage }) {
             setSubmissionStep(renderStep);
           }}
         >
-          {formFailureMessage ? (
-            <Alert message={formFailureMessage} type="error" />
-          ) : null}
+          {formFailureMessage ? <Alert message={formFailureMessage} type="error" /> : null}
           {
             /**
              * Map over the callbacks in renderStep and render the appropriate
@@ -180,10 +176,7 @@ export default function Form({ action, bottomMessage, followUp, topMessage }) {
              */
             renderStep.callbacks.map(mapCallbacksToComponents)
           }
-          <Button
-            buttonText={form.buttonText}
-            submittingForm={submittingForm}
-          />
+          <Button buttonText={form.buttonText} submittingForm={submittingForm} />
         </form>
         {bottomMessage}
       </Fragment>

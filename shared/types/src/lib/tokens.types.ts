@@ -1,9 +1,6 @@
 import type { GetOAuth2TokensOptions } from '@forgerock/javascript-sdk';
 
-export type RefreshOAuth2TokensOptionsInit = Omit<
-  GetOAuth2TokensOptions,
-  'authorizationCode'
->;
+export type RefreshOAuth2TokensOptionsInit = Omit<GetOAuth2TokensOptions, 'authorizationCode'>;
 
 export type RefreshOAuth2TokensOptions = RefreshOAuth2TokensOptionsInit & {
   refreshToken: string;

@@ -12,11 +12,7 @@ import { OnInit } from '@angular/core';
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { environment } from '../../../../environments/environment';
-import type {
-  FRLoginFailure,
-  FRLoginSuccess,
-  FRStep,
-} from '@forgerock/javascript-sdk';
+import type { FRLoginFailure, FRLoginSuccess, FRStep } from '@forgerock/javascript-sdk';
 import { FRAuth, TokenManager, UserManager } from '@forgerock/javascript-sdk';
 import { UserService } from '../../../services/user.service';
 
@@ -187,8 +183,7 @@ export class FormComponent implements OnInit {
       }
       case 'register': {
         this.title = 'Sign Up';
-        (this.buttonText = 'Register'),
-          (this.tree = environment.JOURNEY_REGISTER);
+        (this.buttonText = 'Register'), (this.tree = environment.JOURNEY_REGISTER);
         break;
       }
       default: {

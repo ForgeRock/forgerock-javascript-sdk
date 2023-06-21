@@ -7,17 +7,12 @@ interface Options {
 }
 
 let runningTargets = [];
-export default async function runExecutor(
-  options: Options,
-  context: ExecutorContext
-) {
+export default async function runExecutor(options: Options, context: ExecutorContext) {
   let success: boolean;
   const { targets, ...rest } = options;
 
   runningTargets = targets.map((targetOptions) => new NxTarget(targetOptions));
-  await Promise.all(
-    runningTargets.map((nxTarget: NxTarget) => nxTarget.setup())
-  );
+  await Promise.all(runningTargets.map((nxTarget: NxTarget) => nxTarget.setup()));
   try {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     const executor = require('@mands/nx-playwright/src/executors/playwright-executor/executor.js');

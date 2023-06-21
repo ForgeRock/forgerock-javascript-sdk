@@ -13,13 +13,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 
 import Router from './router';
-import {
-  AM_URL,
-  DEBUGGER,
-  JOURNEY_LOGIN,
-  REALM_PATH,
-  WEB_OAUTH_CLIENT,
-} from './constants';
+import { AM_URL, DEBUGGER, JOURNEY_LOGIN, REALM_PATH, WEB_OAUTH_CLIENT } from './constants';
 import { AppContext, useGlobalStateMgmt } from './global-state';
 
 /**
@@ -79,9 +73,7 @@ Config.set({
   /**
    * Pull custom values from outside of the app to (re)hydrate state.
    */
-  const prefersDarkTheme = window.matchMedia(
-    '(prefers-color-scheme: dark)'
-  ).matches;
+  const prefersDarkTheme = window.matchMedia('(prefers-color-scheme: dark)').matches;
   const email = window.sessionStorage.getItem('sdk_email');
   const username = window.sessionStorage.getItem('sdk_username');
   const rootEl = document.getElementById('root');

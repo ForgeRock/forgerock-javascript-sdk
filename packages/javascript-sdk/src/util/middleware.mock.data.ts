@@ -8,11 +8,7 @@
  * of the MIT license. See the LICENSE file for details.
  */
 
-import type {
-  Action,
-  RequestMiddleware,
-  RequestObj,
-} from '../config/interfaces';
+import type { Action, RequestMiddleware, RequestObj } from '../config/interfaces';
 import type { ActionTypes } from '../config/enums';
 
 type NextFn = () => RequestObj;

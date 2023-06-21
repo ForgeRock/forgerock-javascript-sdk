@@ -1,9 +1,4 @@
-import {
-  Config,
-  FRUser,
-  TokenManager,
-  UserManager,
-} from '@forgerock/javascript-sdk';
+import { Config, FRUser, TokenManager, UserManager } from '@forgerock/javascript-sdk';
 import { client } from '@forgerock/token-vault';
 
 /** ****************************************************
@@ -28,9 +23,7 @@ const register = client({
 const interceptor = await register.interceptor();
 
 // Register the Token Vault Proxy
-const proxy = await register.proxy(
-  document.getElementById('token-vault') as HTMLElement
-);
+const proxy = await register.proxy(document.getElementById('token-vault') as HTMLElement);
 
 // Register the Token Vault Store
 const tokenStore = register.store();

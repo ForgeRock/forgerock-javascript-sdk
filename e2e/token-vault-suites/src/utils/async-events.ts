@@ -2,9 +2,7 @@ export function asyncEvents(page) {
   return {
     async clickButton(text, endpoint) {
       if (!endpoint)
-        throw new Error(
-          'Must provide endpoint argument, type string, e.g. "/authenticate"'
-        );
+        throw new Error('Must provide endpoint argument, type string, e.g. "/authenticate"');
       await Promise.all([
         page.waitForResponse((response) => response.url().includes(endpoint)),
         page.getByRole('button', { name: text }).click(),
@@ -12,9 +10,7 @@ export function asyncEvents(page) {
     },
     async clickLink(text, endpoint) {
       if (!endpoint)
-        throw new Error(
-          'Must provide endpoint argument, type string, e.g. "/authenticate"'
-        );
+        throw new Error('Must provide endpoint argument, type string, e.g. "/authenticate"');
       await Promise.all([
         page.waitForResponse((response) => response.url().includes(endpoint)),
         page.getByRole('link', { name: text }).click(),
@@ -25,9 +21,7 @@ export function asyncEvents(page) {
     },
     async pressEnter(endpoint) {
       if (!endpoint)
-        throw new Error(
-          'Must provide endpoint argument, type string, e.g. "/authenticate"'
-        );
+        throw new Error('Must provide endpoint argument, type string, e.g. "/authenticate"');
       await Promise.all([
         page.waitForResponse((response) => response.url().includes(endpoint)),
         page.keyboard.press('Enter'),
@@ -35,9 +29,7 @@ export function asyncEvents(page) {
     },
     async pressSpacebar(endpoint) {
       if (!endpoint)
-        throw new Error(
-          'Must provide endpoint argument, type string, e.g. "/authenticate"'
-        );
+        throw new Error('Must provide endpoint argument, type string, e.g. "/authenticate"');
       await Promise.all([
         page.waitForResponse((response) => response.url().includes(endpoint)),
         page.keyboard.press(' '),
@@ -47,8 +39,7 @@ export function asyncEvents(page) {
 }
 
 export async function verifyUserInfo(page, expect, type) {
-  const emailString =
-    type === 'register' ? 'Email: test@auto.com' : 'Email: demo@user.com';
+  const emailString = type === 'register' ? 'Email: test@auto.com' : 'Email: demo@user.com';
   const nameString = 'Full name: Demo User';
 
   const name = page.getByText(nameString);

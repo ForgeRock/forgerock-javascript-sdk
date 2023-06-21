@@ -10,16 +10,16 @@
         "targets": [
           {
             "target": "mock-api:serve",
-            "checkUrl": "http://api.example.com:9443/healthcheck",
+            "checkUrl": "https://api.example.com:9443/healthcheck",
             "checkMaxTries": 50,
             "rejectUnauthorized": false,
-            "reusueExistingServer": true
+            "reuseExistingServer": true
           },
           {
             "target": "autoscript-apps:serve",
             "checkUrl": "https://sdkapp.example.com:8443",
             "checkMaxTries": 50,
-            "reusueExistingServer": true,
+            "reuseExistingServer": true,
             "rejectUnauthorized": false
           }
         ]
