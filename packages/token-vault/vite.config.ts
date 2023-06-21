@@ -1,22 +1,36 @@
 /// <reference types="vitest" />
 import { defineConfig } from 'vite';
-
+import * as path from 'path';
 import viteTsConfigPaths from 'vite-tsconfig-paths';
 import dts from 'vite-plugin-dts';
 import { joinPathFragments } from '@nx/devkit';
 
-export default defineConfig({
+const resolveAlias = (alias: string) => `${path.resolve(__dirname, '../../', alias)}`;
+const config = defineConfig({
   cacheDir: '../../node_modules/.vite/token-vault',
-
+  resolve: {
+    /**
+     * This is a temporary work around
+     * we can probably abstract this logic into our own plugin that works
+     * i couldnt get the vite plugin working with the tsconfig paths
+     */
+    alias: {
+      '@forgerock/javascript-sdk': resolveAlias('packages/javascript-sdk/src/index.ts'),
+      '@forgerock/token-vault': resolveAlias('packages/token-vault/src/index.ts'),
+      '@plugins/wait-for-api': resolveAlias('plugins/wait-for-api/src/index.ts'),
+      '@shared/network': resolveAlias('shared/network/src/index.ts'),
+      '@shared/types': resolveAlias('shared/types/src/index.ts'),
+      '@shared/workers': resolveAlias('shared/workers/src/index.ts'),
+    },
+  },
   plugins: [
+    viteTsConfigPaths({
+      root: '../../',
+    }),
     dts({
       entryRoot: 'src',
       tsConfigFilePath: joinPathFragments(__dirname, 'tsconfig.lib.json'),
       skipDiagnostics: true,
-    }),
-
-    viteTsConfigPaths({
-      root: '../../',
     }),
   ],
 
@@ -56,3 +70,4 @@ export default defineConfig({
     include: ['src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
   },
 });
+export default config;
