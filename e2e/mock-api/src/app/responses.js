@@ -12,6 +12,7 @@ import { AM_URL, RESOURCE_URL } from './env.config';
 
 export const oauthTokens = {
   access_token: 'baz',
+  refresh_token: 'qux',
   scope: 'openid profile me.read',
   id_token: 'mox',
   token_type: 'Bearer',
@@ -20,6 +21,7 @@ export const oauthTokens = {
 
 export const oauthTokensExpiringSoon = {
   access_token: 'baz',
+  refresh_token: 'qux',
   scope: 'openid profile me.read',
   id_token: 'mox',
   token_type: 'Bearer',
@@ -28,6 +30,7 @@ export const oauthTokensExpiringSoon = {
 
 export const oauthTokensExpired = {
   access_token: 'baz',
+  refresh_token: 'qux',
   scope: 'openid profile me.read',
   id_token: 'mox',
   token_type: 'Bearer',

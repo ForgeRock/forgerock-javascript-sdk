@@ -72,10 +72,10 @@ export function client(config: ClientConfig): ClientInit {
      * @method proxy - Register the Token Vault Proxy
      * @param {HTMLElement} target - The target element to append the proxy iframe to
      * @param {BaseConfig['proxy']} options - The configuration object for the proxy
-     * @returns {void}
+     * @returns {Promise<HTMLIFrameElement>}
      * @example register.proxy(document.getElementById('token-vault'));
      */
-    proxy: function (target: HTMLElement, options?: BaseConfig) {
+    proxy: function (target: HTMLElement, options?: BaseConfig): Promise<HTMLIFrameElement> {
       const fetchEventName = config?.events?.fetch || 'TVP_FETCH_RESOURCE';
       const frameId = options?.proxy?.id || config?.proxy?.id || 'token-vault-iframe';
       const proxyOrigin = options?.proxy?.origin || config?.proxy.origin || 'http://localhost:9000';

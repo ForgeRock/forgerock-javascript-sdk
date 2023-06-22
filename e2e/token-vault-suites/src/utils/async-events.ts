@@ -16,6 +16,25 @@ export function asyncEvents(page) {
         page.getByRole('link', { name: text }).click(),
       ]);
     },
+    async getTokens(origin, clientId) {
+      const webStorage = await page.context().storageState();
+
+      const originStorage = webStorage.origins.find((item) => item.origin === origin);
+      // Storage may not have any items
+      if (!originStorage) {
+        return null;
+      }
+      const clientIdStorage = originStorage?.localStorage.find((item) => item.name === clientId);
+
+      if (clientIdStorage && typeof clientIdStorage.value !== 'string' && !clientIdStorage.value) {
+        return null;
+      }
+      try {
+        return JSON.parse(clientIdStorage.value);
+      } catch (e) {
+        return null;
+      }
+    },
     async navigate(route) {
       await page.goto(route, { waitUntil: 'networkidle' });
     },

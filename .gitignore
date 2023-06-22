@@ -23,6 +23,7 @@ reports/*
 packages/javascript-sdk/lib/
 .swc
 .vite
+.env.serve.development
 
 # Certificates
 *.pem
