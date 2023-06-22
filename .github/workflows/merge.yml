@@ -44,9 +44,11 @@ jobs:
       - name: Version Beta
         if: github.ref == 'refs/heads/develop'
         run: |
+          node ./scripts/update-package-json-workspaces.js
           npx changeset version
           npx changeset tag
           npx changeset publish
+          node ./scripts/remove-workspaces-edits.js
           git add .
           git commit -m 'chore: release beta versions [skip ci]'
           git push --follow-tags
@@ -61,10 +63,14 @@ jobs:
       - name: Version Stable Release
         if: github.ref == 'refs/heads/develop'
         run: |
+          node ./scripts/update-package-json-workspaces.js
+          npm install
           npx changeset pre exit
           npx changeset version
           npx changeset publish
           npx changeset pre enter beta
+          node ./scripts/remove-workspaces-edits.js
+          npm install
           git add .
           git commit -m "chore: version packages [skip ci]"
           git push --follow-tags
