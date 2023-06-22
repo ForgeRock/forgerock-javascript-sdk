@@ -226,22 +226,24 @@ abstract class OAuth2Client {
   public static async revokeToken(options?: ConfigOptions): Promise<Response> {
     const { clientId } = Config.get(options);
     const tokens = await TokenStorage.get();
-    const accessToken = tokens && tokens.accessToken;
+    const accessToken = (tokens && tokens.accessToken) || '';
 
-    const init: RequestInit = {
-      body: stringify({ client_id: clientId, token: accessToken }),
-      credentials: 'include',
-      headers: new Headers({
-        'Content-Type': 'application/x-www-form-urlencoded',
-      }),
-      method: 'POST',
-    };
-
-    const response = await this.request('revoke', undefined, false, init, options);
-    if (!isOkOr4xx(response)) {
-      throw new Error(`Failed to revoke token; received ${response.status}`);
+    if (accessToken.length > 0) {
+      const init: RequestInit = {
+        body: stringify({ client_id: clientId, token: accessToken }),
+        credentials: 'include',
+        headers: new Headers({
+          'Content-Type': 'application/x-www-form-urlencoded',
+        }),
+        method: 'POST',
+      };
+      const response = await this.request('revoke', undefined, false, init, options);
+      if (!isOkOr4xx(response)) {
+        throw new Error(`Failed to revoke token; received ${response.status}`);
+      }
+      return response;
     }
-    return response;
+    return new Response();
   }
 
   private static async request(

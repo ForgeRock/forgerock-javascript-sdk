@@ -3,10 +3,9 @@
   "compilerOptions": {
     "outDir": "../../dist/out-tsc",
     "declaration": true,
-    "plugins": [
-      { "transform": "typescript-transform-paths" },
-      { "transform": "typescript-transform-paths", "afterDeclarations": true }
-    ],
+    "noImplicitOverride": false,
+    "noImplicitAny": false,
+    "noPropertyAccessFromIndexSignature": false,
     "types": ["node"]
   },
   "include": ["src/**/*.ts"],

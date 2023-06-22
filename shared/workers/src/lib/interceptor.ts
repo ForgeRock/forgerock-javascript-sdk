@@ -1,3 +1,5 @@
+/// <reference lib="webworker" />
+
 import { evaluateUrlForInterception } from '@shared/network';
 import type { InterceptorConfig } from './worker.types';
 import { generateUrlsToIntercept, generateOptions } from './worker.utilities';

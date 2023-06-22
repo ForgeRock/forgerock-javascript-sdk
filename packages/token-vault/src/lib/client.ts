@@ -102,7 +102,7 @@ export function client(config: ClientConfig): ClientInit {
         }
       });
 
-      return new Promise((resolve, reject) => {
+      return new Promise((resolve) => {
         tokenVaultProxyEl.onload = () => {
           resolve(tokenVaultProxyEl);
         };
@@ -125,7 +125,7 @@ export function client(config: ClientConfig): ClientInit {
          * @method get - A noop method that replaces the default get method
          * @returns {Promise<null>}
          */
-        get(clientId: string): Promise<Tokens> {
+        get(): Promise<Tokens> {
           // Tokens are not retrievable from the iframe
           return Promise.resolve(null as unknown as Tokens);
         },
@@ -137,7 +137,7 @@ export function client(config: ClientConfig): ClientInit {
         has(): Promise<{ hasTokens: boolean }> {
           const proxyChannel = new MessageChannel();
 
-          return new Promise((resolve, reject) => {
+          return new Promise((resolve) => {
             tokenVaultProxyEl.contentWindow?.postMessage(
               { type: hasTokenEventName, clientId },
               config.proxy.origin,
@@ -156,7 +156,7 @@ export function client(config: ClientConfig): ClientInit {
         refresh(): Promise<{ refreshTokens: boolean }> {
           const proxyChannel = new MessageChannel();
 
-          return new Promise((resolve, reject) => {
+          return new Promise((resolve) => {
             tokenVaultProxyEl.contentWindow?.postMessage(
               { type: refreshTokenEventName, clientId },
               config.proxy.origin,
@@ -175,13 +175,13 @@ export function client(config: ClientConfig): ClientInit {
         remove(clientId: string): Promise<void> {
           const proxyChannel = new MessageChannel();
 
-          return new Promise((resolve, reject) => {
+          return new Promise((resolve) => {
             tokenVaultProxyEl.contentWindow?.postMessage(
               { type: removeTokenEventName, clientId },
               config.proxy.origin,
               [proxyChannel.port2],
             );
-            proxyChannel.port1.onmessage = (event) => {
+            proxyChannel.port1.onmessage = () => {
               resolve(undefined);
             };
           });
@@ -192,7 +192,7 @@ export function client(config: ClientConfig): ClientInit {
          * @param {Tokens} _ - The tokens to store
          * @returns {Promise<void>}
          */
-        set(clientId: string, tokens: Tokens): Promise<void> {
+        set(): Promise<void> {
           return Promise.resolve(undefined);
         },
       };

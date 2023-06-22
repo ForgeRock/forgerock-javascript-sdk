@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Config, FRUser, TokenManager, UserManager } from '@forgerock/javascript-sdk';
 import { client } from '@forgerock/token-vault';
 

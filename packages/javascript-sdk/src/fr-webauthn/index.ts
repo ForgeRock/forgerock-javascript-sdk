@@ -159,13 +159,19 @@ abstract class FRWebAuthn {
         if (metadataCallback) {
           const meta = metadataCallback.getOutputValue('data') as WebAuthnRegistrationMetadata;
           publicKey = this.createRegistrationPublicKey(meta);
+          const credential = await this.getRegistrationCredential(
+            publicKey as PublicKeyCredentialCreationOptions,
+          );
+          outcome = this.getRegistrationOutcome(credential);
         } else if (textOutputCallback) {
           publicKey = parseWebAuthnRegisterText(textOutputCallback.getMessage());
+          const credential = await this.getRegistrationCredential(
+            publicKey as PublicKeyCredentialCreationOptions,
+          );
+          outcome = this.getRegistrationOutcome(credential);
+        } else {
+          throw new Error('No Credential found from Public Key');
         }
-        const credential = await this.getRegistrationCredential(
-          publicKey as PublicKeyCredentialCreationOptions,
-        );
-        outcome = this.getRegistrationOutcome(credential);
       } catch (error) {
         if (!(error instanceof Error)) throw error;
         // NotSupportedError is a special case
@@ -176,7 +182,11 @@ abstract class FRWebAuthn {
         hiddenCallback.setInputValue(`${WebAuthnOutcome.Error}::${error.name}:${error.message}`);
         throw error;
       }
-      hiddenCallback.setInputValue(deviceName.length > 0 ? `${outcome}::${deviceName}` : outcome);
+      if (outcome !== undefined) {
+        hiddenCallback.setInputValue(
+          deviceName && deviceName.length > 0 ? `${outcome}::${deviceName}` : outcome,
+        );
+      }
       return step;
     } else {
       const e = new Error('Incorrect callbacks for WebAuthn registration');

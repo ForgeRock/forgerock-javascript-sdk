@@ -73,7 +73,7 @@ function parseQuery(fullUrl: string): StringDict<string> {
 }
 
 function stringify(data: StringDict<string | undefined>): string {
-  const pairs = [];
+  const pairs: string[] = [];
   for (const k in data) {
     if (data[k]) {
       pairs.push(k + '=' + encodeURIComponent(data[k] as string));
