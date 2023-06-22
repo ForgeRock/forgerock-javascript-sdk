@@ -57,6 +57,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           HUSKY: 0
+          NX_CLOUD_DISTRIBUTED_EXECUTION: false
 
       - name: Version Stable Release
         if: github.ref == 'refs/heads/develop'
@@ -78,6 +79,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           HUSKY: 0
+          NX_CLOUD_DISTRIBUTED_EXECUTION: false
 
       - name: Send a Slack notification if a publish happens
         if: steps.changesets.outputs.published == 'true'
