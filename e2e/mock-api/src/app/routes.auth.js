@@ -321,8 +321,9 @@ export default function (app) {
   app.post(authPaths.tokenExchange, wait, async (req, res) => {
     // eslint-disable-next-line
     const access_token = v4();
+    const refresh_token = v4();
     // eslint-disable-next-line
-    const tokens = { ...oauthTokens, access_token };
+    const tokens = { ...oauthTokens, access_token, refresh_token };
 
     if (req.path.includes('middleware')) {
       if (
@@ -336,10 +337,10 @@ export default function (app) {
         res.status(406).send('Middleware header is missing.');
       }
     } else if (req.path.includes('tokens-expiring-soon')) {
-      const tokensExpiringSoon = { ...oauthTokensExpiringSoon, access_token };
+      const tokensExpiringSoon = { ...oauthTokensExpiringSoon, access_token, refresh_token };
       res.json(tokensExpiringSoon);
     } else if (req.path.includes('tokens-expired')) {
-      const tokensExpired = { ...oauthTokensExpired, access_token };
+      const tokensExpired = { ...oauthTokensExpired, access_token, refresh_token };
       res.json(tokensExpired);
     } else {
       res.json(tokens);
@@ -429,7 +430,10 @@ export default function (app) {
   });
 
   app.get('/login', async (req, res) => {
-    res.cookie('iPlanetDirectoryPro', 'abcd1234', { domain: 'example.com' });
+    const domain = req.url.includes('localhost') ? 'localhost' : 'example.com';
+
+    res.cookie('iPlanetDirectoryPro', 'abcd1234', { domain });
+
     const url = new URL(`${req.protocol}://${req.headers.host}${authPaths.authorize[1]}`);
     url.searchParams.set('client_id', req.query.client_id);
     url.searchParams.set('acr_values', req.query.acr_values);
@@ -440,7 +444,7 @@ export default function (app) {
   });
 
   app.get(authPaths.userInfo, wait, async (req, res) => {
-    if (req.path.includes('middleware')) {
+    if (req.headers['authorization'] && req.path.includes('middleware')) {
       if (
         req.query['userinfo-middleware'] === 'userinfo' &&
         req.headers['x-userinfo-middleware'] === 'userinfo' &&
@@ -451,8 +455,10 @@ export default function (app) {
       } else {
         res.status(406).send('Middleware additions are missing.');
       }
-    } else {
+    } else if (req.headers['authorization']) {
       res.json(userInfo);
+    } else {
+      res.status(401).send('Unauthorized');
     }
   });
 
@@ -515,5 +521,6 @@ export default function (app) {
       }
     }
   });
+
   app.get('/callback', (req, res) => res.status(200).send('ok'));
 }
