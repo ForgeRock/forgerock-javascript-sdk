@@ -1,6 +1,6 @@
 {
   "name": "@shared/workers",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "type": "commonjs",
   "main": "./src/index.js",
   "exports": {

@@ -1,5 +1,6 @@
 {
   "name": "@forgerock/javascript-sdk",
+  "version": "4.0.0",
   "description": "ForgeRock JavaScript SDK",
   "author": "ForgeRock",
   "license": "MIT",
@@ -10,7 +11,6 @@
     "url": "https://github.com/ForgeRock/forgerock-javascript-sdk/issues"
   },
   "homepage": "https://github.com/ForgeRock/forgerock-javascript-sdk#readme",
-  "version": "4.0.0",
   "exports": {
     "./src/*": {
       "types": "./src/*.d.ts",
