@@ -1,14 +1,13 @@
 {
   "name": "reactjs-todo",
+  "version": "0.0.0",
   "private": true,
   "description": "A ForgeRock authenticated sample web app written in React",
   "scripts": {
     "clean": "shx rm -rf \"./public/app*\" ./node_modules ./package-lock.json"
   },
   "author": "Justin Lowery <justin.lowery@forgerock.com>",
-  "contributors": [
-    "Ryan Basmajian <ryan.basmajian@forgerock.com>"
-  ],
+  "contributors": ["Ryan Basmajian <ryan.basmajian@forgerock.com>"],
   "license": "MIT",
   "devDependencies": {
     "@babel/preset-react": "^7.18.6",
