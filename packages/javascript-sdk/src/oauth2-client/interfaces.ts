@@ -8,9 +8,9 @@
  * of the MIT license. See the LICENSE file for details.
  */
 
-import { StringDict } from '../shared/interfaces';
-import { ConfigOptions } from '../config';
-import { ResponseType } from './enums';
+import type { StringDict } from '../shared/interfaces';
+import type { ConfigOptions } from '../config';
+import type { ResponseType } from './enums';
 
 /**
  * Tokens returned after successful authentication.
@@ -51,4 +51,9 @@ interface GetOAuth2TokensOptions extends ConfigOptions {
   verifier?: string;
 }
 
-export { AccessTokenResponse, GetAuthorizationUrlOptions, GetOAuth2TokensOptions, OAuth2Tokens };
+export type {
+  AccessTokenResponse,
+  GetAuthorizationUrlOptions,
+  GetOAuth2TokensOptions,
+  OAuth2Tokens,
+};

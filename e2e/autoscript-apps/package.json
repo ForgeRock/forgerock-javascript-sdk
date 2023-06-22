@@ -1,5 +1,5 @@
 {
-  "name": "@forgerock/autoscript-apps",
+  "name": "autoscript-apps",
   "private": true,
   "dependencies": {
     "rxjs": "^7.4.0"

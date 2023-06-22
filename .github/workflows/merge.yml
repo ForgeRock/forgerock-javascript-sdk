@@ -12,6 +12,9 @@ env:
   NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
   NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
   HUSKY: 0
+
+concurrency: ${{ github.workflow }}-${{ github.ref }}
+
 jobs:
   merge:
     runs-on: ubuntu-latest # we run on ubuntu because some actions in this job do not work on mac
@@ -29,25 +32,64 @@ jobs:
           cache-dependency-path: '**/package-lock.json'
           registry-url: https://registry.npmjs.org
       - run: npm ci
+
       - name: Derive appropriate SHAs for base and head for `nx affected` commands
         id: sha
         uses: nrwl/nx-set-shas@v2
       - run: npm install @nrwl/nx-cloud
       - run: npx nx-cloud start-ci-run
       - run: npx nx affected --target=build --parallel --max-parallel=3
-      - name: semantic-release
-        if: github.ref == 'refs/heads/master'
-        run: npm run nx affected -- --target=version
-      - name: semantic-release beta
+      - run: npx nx-cloud stop-all-agents
+
+      - name: Version Beta
         if: github.ref == 'refs/heads/develop'
-        run: npm run nx affected -- --target=version --configuration=beta
+        run: |
+          npm run build
+          npx changeset version
+          npx changeset tag
+          npx changeset publish
+          git add .
+          git commit -m 'chore: release beta versions'
+          git push --follow-tags
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           HUSKY: 0
-      - run: npx nx-cloud stop-all-agents
+
+      - name: Version Stable Release
+        if: github.ref == 'refs/heads/develop'
+        run: |
+          npm run build
+          npx changeset pre exit
+          npx changeset version
+          npx changeset publish
+          npx changeset pre enter beta
+          git add .
+          git commit -m "chore: version packages [skip ci]"
+          git push --follow-tags
+          git checkout develop
+          git rebase main
+          git push -f
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          HUSKY: 0
+
+      - name: Send a Slack notification if a publish happens
+        if: steps.changesets.outputs.published == 'true'
+        uses: slackapi/slack-github-action@v1.24.0
+        with:
+          payload: |
+            {
+              "packages": ${{ steps.changesets.outputs.publishedPackages }}
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SDK_WEBHOOK }}
+
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
         if: always()
@@ -92,7 +134,7 @@ jobs:
 
       - name: Configure CI Git User
         run: |
-          git config --global user.name 'semantic-release'
+          git config --global user.name 'release'
           git remote set-url origin https://ryanbas21:$GITHUB_TOKEN@github.com/ForgeRock/forgerock-javascript-sdk
       - run: npm ci
         if: steps.cache.outputs.cache-hit != 'true'

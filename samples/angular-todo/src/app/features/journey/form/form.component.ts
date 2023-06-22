@@ -8,17 +8,12 @@
  * of the MIT license. See the LICENSE file for details.
  */
 
-import { Component, Input, OnInit } from '@angular/core';
+import { OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { environment } from '../../../../environments/environment';
-import {
-  FRAuth,
-  FRLoginFailure,
-  FRLoginSuccess,
-  FRStep,
-  TokenManager,
-  UserManager,
-} from '@forgerock/javascript-sdk';
+import type { FRLoginFailure, FRLoginSuccess, FRStep } from '@forgerock/javascript-sdk';
+import { FRAuth, TokenManager, UserManager } from '@forgerock/javascript-sdk';
 import { UserService } from '../../../services/user.service';
 
 /**

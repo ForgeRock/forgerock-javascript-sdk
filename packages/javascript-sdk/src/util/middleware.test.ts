@@ -10,7 +10,7 @@
 
 import middlewareWrapper from './middleware';
 import middleware from './middleware.mock.data';
-import { ActionTypes } from '../config/enums';
+import type { ActionTypes } from '../config/enums';
 
 describe('Middleware should be called with an action', () => {
   it('should run all middleware testing action for letter and "a"', () => {

@@ -13,14 +13,14 @@
  * @ignore
  * These are private utility functions for HttpClient
  */
-import { CustomPathConfig } from '../config/interfaces';
-import {
+import type { CustomPathConfig } from '../config/interfaces';
+import type {
   Advices,
   HttpClientRequestOptions,
   RequiresNewTokenFn,
   AuthorizationJSON,
 } from './interfaces';
-import { Tokens } from '../shared/interfaces';
+import type { Tokens } from '../shared/interfaces';
 import { getEndpointPath, resolve, stringify } from '../util/url';
 
 export function addAuthzInfoToHeaders(

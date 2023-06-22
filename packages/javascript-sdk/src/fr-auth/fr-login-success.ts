@@ -8,9 +8,9 @@
  * of the MIT license. See the LICENSE file for details.
  */
 
-import { Step } from '../auth/interfaces';
+import type { Step } from '../auth/interfaces';
 import { StepType } from './enums';
-import { AuthResponse } from './interfaces';
+import type { AuthResponse } from './interfaces';
 
 class FRLoginSuccess implements AuthResponse {
   /**

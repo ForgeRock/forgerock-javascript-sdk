@@ -9,7 +9,7 @@
  */
 
 import { DEFAULT_TIMEOUT, DEFAULT_OAUTH_THRESHOLD } from './constants';
-import { ConfigOptions, ServerConfig, ValidConfigOptions } from './interfaces';
+import type { ConfigOptions, ServerConfig, ValidConfigOptions } from './interfaces';
 
 /**
  * Sets defaults for options that are required but have no supplied value
@@ -95,4 +95,5 @@ abstract class Config {
 }
 
 export default Config;
-export { DEFAULT_TIMEOUT, ConfigOptions, ServerConfig, ValidConfigOptions };
+export type { ConfigOptions, ServerConfig, ValidConfigOptions };
+export { DEFAULT_TIMEOUT };

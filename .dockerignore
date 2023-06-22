@@ -13,7 +13,7 @@ docker-compose.yml
 node_modules
 dist/
 
-# for now we dont need this directory!
+# for now we don't need this directory!
 
 .husky
 coverage

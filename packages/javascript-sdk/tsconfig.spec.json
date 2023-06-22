@@ -3,11 +3,10 @@
   "compilerOptions": {
     "outDir": "../../dist/packages/javascript-sdk",
     "types": ["node", "jest"],
+    "esModuleInterop": true,
     "strict": false,
     "noImplicitAny": false,
-    "allowJs": true,
-    "module": "ES2015",
-    "target": "ES6"
+    "allowJs": true
   },
   "include": [
     "tests/*",

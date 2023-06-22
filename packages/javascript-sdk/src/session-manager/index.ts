@@ -8,7 +8,8 @@
  * of the MIT license. See the LICENSE file for details.
  */
 
-import Config, { ConfigOptions } from '../config/index';
+import type { ConfigOptions } from '../config/index';
+import Config from '../config/index';
 import { REQUESTED_WITH } from '../shared/constants';
 import { isOkOr4xx } from '../util/http';
 import { withTimeout } from '../util/timeout';

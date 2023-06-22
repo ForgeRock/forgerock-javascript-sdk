@@ -19,4 +19,4 @@ interface Tokens {
   tokenExpiry?: number;
 }
 
-export { StringDict, Tokens };
+export type { StringDict, Tokens };

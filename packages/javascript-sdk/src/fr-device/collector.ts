@@ -8,7 +8,7 @@
  * of the MIT license. See the LICENSE file for details.
  */
 
-import { StringDict } from '../shared/interfaces';
+import type { StringDict } from '../shared/interfaces';
 
 /**
  * @class Collector - base class for FRDevice

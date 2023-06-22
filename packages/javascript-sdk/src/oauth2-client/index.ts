@@ -9,17 +9,18 @@
  */
 
 import { ActionTypes } from '../config/enums';
-import Config, { ConfigOptions } from '../config/index';
-import { ConfigurablePaths } from '../config/interfaces';
-import { StringDict } from '../shared/interfaces';
-import { Noop } from '../shared/types';
+import type { ConfigOptions } from '../config/index';
+import Config from '../config/index';
+import type { ConfigurablePaths } from '../config/interfaces';
+import type { StringDict } from '../shared/interfaces';
+import type { Noop } from '../shared/types';
 import TokenStorage from '../token-storage';
 import { isOkOr4xx } from '../util/http';
 import PKCE from '../util/pkce';
 import { withTimeout } from '../util/timeout';
 import { getEndpointPath, resolve, stringify } from '../util/url';
 import { ResponseType } from './enums';
-import {
+import type {
   AccessTokenResponse,
   GetAuthorizationUrlOptions,
   GetOAuth2TokensOptions,
@@ -327,10 +328,5 @@ abstract class OAuth2Client {
 }
 
 export default OAuth2Client;
-export {
-  allowedErrors,
-  GetAuthorizationUrlOptions,
-  GetOAuth2TokensOptions,
-  OAuth2Tokens,
-  ResponseType,
-};
+export type { GetAuthorizationUrlOptions, GetOAuth2TokensOptions, OAuth2Tokens };
+export { allowedErrors, ResponseType };

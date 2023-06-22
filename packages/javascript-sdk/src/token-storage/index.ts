@@ -9,10 +9,10 @@
  */
 
 import Config from '../config/index';
-import { TokenStoreObject } from '../config/interfaces';
+import type { TokenStoreObject } from '../config/interfaces';
 import LocalStorageWrapper from './local-storage';
 import SessionStorageWrapper from './session-storage';
-import { Tokens } from '../shared/interfaces';
+import type { Tokens } from '../shared/interfaces';
 
 /**
  * Provides access to the token storage API.

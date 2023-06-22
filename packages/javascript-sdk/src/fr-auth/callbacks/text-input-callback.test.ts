@@ -9,7 +9,7 @@
  */
 
 import { CallbackType } from '../../auth/enums';
-import { Callback } from '../../auth/interfaces';
+import type { Callback } from '../../auth/interfaces';
 import TextInputCallback from './text-input-callback';
 
 describe('TextInputCallback', () => {

@@ -8,8 +8,8 @@
  * of the MIT license. See the LICENSE file for details.
  */
 
-import { ConfigurablePaths, CustomPathConfig } from '../config/interfaces';
-import { StringDict } from '../shared/interfaces';
+import type { ConfigurablePaths, CustomPathConfig } from '../config/interfaces';
+import type { StringDict } from '../shared/interfaces';
 import { getRealmUrlPath } from '../util/realm';
 
 /**

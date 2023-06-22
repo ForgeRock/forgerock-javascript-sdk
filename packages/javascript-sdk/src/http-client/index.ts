@@ -13,7 +13,7 @@ import { ActionTypes } from '../config/enums';
 import FRAuth from '../fr-auth';
 import { StepType } from '../fr-auth/enums';
 import FRStep from '../fr-auth/fr-step';
-import {
+import type {
   HandleStep,
   HttpClientRequestOptions,
   RequiresNewTokenFn,
@@ -202,4 +202,4 @@ abstract class HttpClient {
 }
 
 export default HttpClient;
-export { HttpClientRequestOptions, RequiresNewTokenFn };
+export type { HttpClientRequestOptions, RequiresNewTokenFn };

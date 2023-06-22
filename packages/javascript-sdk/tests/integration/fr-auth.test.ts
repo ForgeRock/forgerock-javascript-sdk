@@ -8,12 +8,12 @@
  * of the MIT license. See the LICENSE file for details.
  */
 
-import PasswordCallback from '../../src/fr-auth/callbacks/password-callback';
+import type PasswordCallback from '../../src/fr-auth/callbacks/password-callback';
 import { CallbackType } from '../../src/auth/enums';
 import Config from '../../src/config';
 import FRAuth from '../../src/fr-auth';
-import NameCallback from '../../src/fr-auth/callbacks/name-callback';
-import FRStep from '../../src/fr-auth/fr-step';
+import type NameCallback from '../../src/fr-auth/callbacks/name-callback';
+import type FRStep from '../../src/fr-auth/fr-step';
 import { rawResponse } from './fr-auth.mock.data';
 
 jest.mock('../../src/config');

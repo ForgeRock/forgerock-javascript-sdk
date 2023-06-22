@@ -1,0 +1,16 @@
+{
+  "mode": "pre",
+  "tag": "beta",
+  "initialVersions": {
+    "autoscript-apps": "0.0.0",
+    "autoscript-suites": "0.0.0",
+    "mock-api": "0.0.0",
+    "@forgerock/javascript-sdk": "4.0.0",
+    "@forgerock/token-vault": "4.0.0",
+    "angular-todo": "0.0.0",
+    "central-login": "0.0.0",
+    "embedded-login": "0.0.0",
+    "todo-api": "0.0.0"
+  },
+  "changesets": []
+}

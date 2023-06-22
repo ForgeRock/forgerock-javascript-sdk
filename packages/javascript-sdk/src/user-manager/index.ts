@@ -8,7 +8,7 @@
  * of the MIT license. See the LICENSE file for details.
  */
 
-import { ConfigOptions } from '../config/interfaces';
+import type { ConfigOptions } from '../config/interfaces';
 import OAuth2Client from '../oauth2-client';
 
 /**

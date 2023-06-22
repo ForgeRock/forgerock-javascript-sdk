@@ -1,0 +1,18 @@
+{
+  "$schema": "https://unpkg.com/@changesets/config@2.3.0/schema.json",
+  "changelog": ["@changesets/changelog-github", { "repo": "ForgeRock/forgerock-javascript-sdk" }],
+  "fixed": [["@forgerock/*"]],
+  "linked": [],
+  "baseBranch": "develop",
+  "updateInternalDependencies": "patch",
+  "ignore": [
+    "todo-api",
+    "mock-api",
+    "autoscript-apps",
+    "autoscript-suites",
+    "reactjs-todo",
+    "angular-todo",
+    "central-login",
+    "embedded-login"
+  ]
+}

@@ -18,7 +18,7 @@ import {
   hardwareProps,
   platformProps,
 } from './defaults';
-import {
+import type {
   BaseProfileConfig,
   Category,
   CollectParameters,

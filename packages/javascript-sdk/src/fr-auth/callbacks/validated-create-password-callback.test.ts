@@ -9,7 +9,7 @@
  */
 
 import { CallbackType } from '../../auth/enums';
-import { Callback } from '../../auth/interfaces';
+import type { Callback } from '../../auth/interfaces';
 import ValidatedCreatePasswordCallback from './validated-create-password-callback';
 
 describe('ValidatedCreatePasswordCallback', () => {

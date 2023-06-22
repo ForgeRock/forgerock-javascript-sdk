@@ -8,7 +8,7 @@
  * of the MIT license. See the LICENSE file for details.
  */
 
-import { FailedPolicyRequirement } from '../auth/interfaces';
+import type { FailedPolicyRequirement } from '../auth/interfaces';
 
 interface MessageCreator {
   [key: string]: (propertyName: string, params?: { [key: string]: unknown }) => string;
@@ -19,4 +19,4 @@ interface ProcessedPropertyError {
   messages: string[];
 }
 
-export { MessageCreator, ProcessedPropertyError };
+export type { MessageCreator, ProcessedPropertyError };

@@ -1,0 +1,7 @@
+{
+  "name": "@forgerock/token-vault-proxy",
+  "description": "ForgeRock Token Vault Test Proxy",
+  "private": true,
+  "devDependencies": {},
+  "version": "0.0.0"
+}

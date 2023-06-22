@@ -57,7 +57,7 @@ interface ProfileConfigOptions {
   [key: string]: string[];
 }
 
-export {
+export type {
   BaseProfileConfig,
   Category,
   CollectParameters,

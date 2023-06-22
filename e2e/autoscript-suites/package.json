@@ -1,5 +1,5 @@
 {
-  "name": "@forgerock/autoscript-suites",
+  "name": "autoscript-suites",
   "description": "ForgeRock JavaScript SDK E2E Suites",
   "private": true,
   "devDependencies": {

@@ -15,4 +15,4 @@
  */
 type Noop = () => void;
 
-export { Noop };
+export type { Noop };

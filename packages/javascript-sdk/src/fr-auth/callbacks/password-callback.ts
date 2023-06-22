@@ -9,7 +9,7 @@
  */
 
 import FRCallback from '.';
-import { Callback, PolicyRequirement } from '../../auth/interfaces';
+import type { Callback, PolicyRequirement } from '../../auth/interfaces';
 
 /**
  * Represents a callback used to collect a password.

@@ -11,7 +11,7 @@
 
 import { WebAuthnOutcomeType } from './enums';
 import { ensureArray, getIndexOne, parsePubKeyArray, parseCredentials } from './helpers';
-import { AttestationType, UserVerificationType } from './interfaces';
+import type { AttestationType, UserVerificationType } from './interfaces';
 
 function parseWebAuthnRegisterText(text: string): PublicKeyCredentialCreationOptions {
   const txtEncoder = new TextEncoder();

@@ -8,12 +8,13 @@
  * of the MIT license. See the LICENSE file for details.
  */
 
-import { CallbackType } from '../auth/enums';
-import { Callback, Step } from '../auth/interfaces';
-import FRCallback from './callbacks';
-import createCallback, { FRCallbackFactory } from './callbacks/factory';
+import type { CallbackType } from '../auth/enums';
+import type { Callback, Step } from '../auth/interfaces';
+import type FRCallback from './callbacks';
+import type { FRCallbackFactory } from './callbacks/factory';
+import createCallback from './callbacks/factory';
 import { StepType } from './enums';
-import { AuthResponse } from './interfaces';
+import type { AuthResponse } from './interfaces';
 
 /**
  * Represents a single step of an authentication tree.
@@ -114,4 +115,4 @@ class FRStep implements AuthResponse {
 type FRStepHandler = (step: FRStep) => void;
 
 export default FRStep;
-export { FRStepHandler };
+export type { FRStepHandler };

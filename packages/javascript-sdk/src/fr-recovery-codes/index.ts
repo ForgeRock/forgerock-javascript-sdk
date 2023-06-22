@@ -9,8 +9,8 @@
  */
 
 import { CallbackType } from '../auth/enums';
-import TextOutputCallback from '../fr-auth/callbacks/text-output-callback';
-import FRStep from '../fr-auth/fr-step';
+import type TextOutputCallback from '../fr-auth/callbacks/text-output-callback';
+import type FRStep from '../fr-auth/fr-step';
 import { parseDisplayRecoveryCodesText } from './script-parser';
 
 /**

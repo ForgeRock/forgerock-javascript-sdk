@@ -10,8 +10,8 @@
 
 import Auth from '../auth/index';
 import { CallbackType } from '../auth/enums';
-import { StepOptions } from '../auth/interfaces';
-import RedirectCallback from '../fr-auth/callbacks/redirect-callback';
+import type { StepOptions } from '../auth/interfaces';
+import type RedirectCallback from '../fr-auth/callbacks/redirect-callback';
 import FRLoginFailure from './fr-login-failure';
 import FRLoginSuccess from './fr-login-success';
 import FRStep from './fr-step';

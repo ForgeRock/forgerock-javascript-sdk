@@ -8,9 +8,9 @@
  * of the MIT license. See the LICENSE file for details.
  */
 
-import { FailedPolicyRequirement, PolicyRequirement, Step } from '../auth/interfaces';
+import type { FailedPolicyRequirement, PolicyRequirement, Step } from '../auth/interfaces';
 import { PolicyKey } from './enums';
-import { MessageCreator, ProcessedPropertyError } from './interfaces';
+import type { MessageCreator, ProcessedPropertyError } from './interfaces';
 import defaultMessageCreator from './message-creator';
 
 /**
@@ -120,4 +120,5 @@ abstract class FRPolicy {
 }
 
 export default FRPolicy;
-export { PolicyKey, MessageCreator, ProcessedPropertyError };
+export type { MessageCreator, ProcessedPropertyError };
+export { PolicyKey };

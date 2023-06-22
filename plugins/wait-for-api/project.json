@@ -1,0 +1,66 @@
+{
+  "name": "plugins-wait-for-api",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "plugins/wait-for-api/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/plugins/wait-for-api",
+        "main": "plugins/wait-for-api/src/index.ts",
+        "tsConfig": "plugins/wait-for-api/tsconfig.lib.json",
+        "assets": [
+          "plugins/wait-for-api/*.md",
+          {
+            "input": "./plugins/wait-for-api/src",
+            "glob": "**/!(*.ts)",
+            "output": "./src"
+          },
+          {
+            "input": "./plugins/wait-for-api/src",
+            "glob": "**/*.d.ts",
+            "output": "./src"
+          },
+          {
+            "input": "./plugins/wait-for-api",
+            "glob": "generators.json",
+            "output": "."
+          },
+          {
+            "input": "./plugins/wait-for-api",
+            "glob": "executors.json",
+            "output": "."
+          }
+        ]
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": [
+          "plugins/wait-for-api/**/*.ts",
+          "plugins/wait-for-api/package.json",
+          "plugins/wait-for-api/executors.json"
+        ]
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "plugins/wait-for-api/jest.config.ts",
+        "passWithNoTests": true
+      },
+      "configurations": {
+        "ci": {
+          "ci": true,
+          "codeCoverage": true
+        }
+      }
+    }
+  },
+  "tags": ["sdk:e2e"]
+}

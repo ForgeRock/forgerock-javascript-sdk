@@ -9,8 +9,8 @@
  */
 
 import FRCallback from '.';
-import { Callback, PolicyRequirement } from '../../auth/interfaces';
-import { StringDict } from '../../shared/interfaces';
+import type { Callback, PolicyRequirement } from '../../auth/interfaces';
+import type { StringDict } from '../../shared/interfaces';
 
 /**
  * Represents a callback used to collect attributes.
