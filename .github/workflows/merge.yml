@@ -44,12 +44,11 @@ jobs:
       - name: Version Beta
         if: github.ref == 'refs/heads/develop'
         run: |
-          npm run build
           npx changeset version
           npx changeset tag
           npx changeset publish
           git add .
-          git commit -m 'chore: release beta versions'
+          git commit -m 'chore: release beta versions [skip ci]'
           git push --follow-tags
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -62,7 +61,6 @@ jobs:
       - name: Version Stable Release
         if: github.ref == 'refs/heads/develop'
         run: |
-          npm run build
           npx changeset pre exit
           npx changeset version
           npx changeset publish
