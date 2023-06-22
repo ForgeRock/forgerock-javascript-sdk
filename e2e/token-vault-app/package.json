@@ -1,5 +1,5 @@
 {
-  "name": "@forgerock/token-vault-app",
+  "name": "e2e-token-vault-app",
   "description": "ForgeRock Token Vault Test App",
   "private": true,
   "devDependencies": {},

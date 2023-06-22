@@ -19,5 +19,5 @@
     "@shared/types": "0.0.0",
     "@shared/workers": "0.0.0"
   },
-  "changesets": ["sharp-jars-sniff"]
+  "changesets": []
 }

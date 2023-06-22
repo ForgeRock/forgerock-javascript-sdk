@@ -1,5 +1,5 @@
 {
-  "name": "token-vault-suites",
+  "name": "e2e-token-vault-suites",
   "description": "ForgeRock Token Vault E2E Suites",
   "private": true,
   "devDependencies": {},

@@ -1,5 +1,5 @@
 {
-  "name": "@forgerock/token-vault-proxy",
+  "name": "e2e-token-vault-proxy",
   "description": "ForgeRock Token Vault Test Proxy",
   "private": true,
   "devDependencies": {},
