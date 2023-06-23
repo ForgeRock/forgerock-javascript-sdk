@@ -11,7 +11,16 @@
         "outputPath": "dist/shared/workers",
         "main": "shared/workers/src/index.ts",
         "tsConfig": "shared/workers/tsconfig.lib.json",
-        "assets": ["shared/workers/*.md"]
+        "assets": ["shared/workers/*.md"],
+        "transformers": [
+          {
+            "name": "typescript-transform-paths/nx-transformer"
+          },
+          {
+            "name": "typescript-transform-paths/nx-transformer",
+            "options": { "afterDeclarations": true }
+          }
+        ]
       }
     },
     "lint": {

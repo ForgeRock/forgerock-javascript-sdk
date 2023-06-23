@@ -5,11 +5,22 @@
   "projectType": "library",
   "targets": {
     "build": {
-      "executor": "@nx/vite:build",
+      "executor": "@nx/js:tsc",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/packages/token-vault",
-        "generatePackageJson": false
+        "main": "packages/token-vault/src/index.ts",
+        "tsConfig": "packages/token-vault/tsconfig.lib.json",
+        "assets": ["shared/types/*.md"],
+        "transformers": [
+          {
+            "name": "typescript-transform-paths/nx-transformer"
+          },
+          {
+            "name": "typescript-transform-paths/nx-transformer",
+            "options": { "afterDeclarations": true }
+          }
+        ]
       }
     },
     "test": {

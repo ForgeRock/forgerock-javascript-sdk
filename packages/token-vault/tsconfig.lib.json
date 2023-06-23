@@ -6,6 +6,7 @@
     "noImplicitOverride": false,
     "noImplicitAny": false,
     "noPropertyAccessFromIndexSignature": false,
+    "skipLibCheck": true,
     "types": ["node"]
   },
   "include": ["src/**/*.ts"],
