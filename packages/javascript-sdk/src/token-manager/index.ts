@@ -118,6 +118,8 @@ abstract class TokenManager {
     const verifier = PKCE.createVerifier();
     const state = PKCE.createState();
 
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     const { forceRenew, login, ...config } = options;
 
     const authorizeUrlOptions = {

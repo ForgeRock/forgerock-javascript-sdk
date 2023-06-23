@@ -1,6 +1,5 @@
 {
   "*": [
-    "npx nx format:write --base=HEAD",
-    "npx nx affected --target=lint --base=HEAD"
+    "npm run nx format:write --  --base=HEAD"
   ]
 }

@@ -75,6 +75,8 @@
       "options": {
         "cacheableOperations": [
           "build",
+          "build-types",
+          "bundle-types",
           "test",
           "lint",
           "package",

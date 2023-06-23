@@ -17,7 +17,7 @@
     "format:staged": "pretty-quick --staged",
     "lint": "nx affected --target=lint",
     "nx": "nx",
-    "prepare": "husky install & ts-patch install -s",
+    "prepare": "husky install",
     "release": "changeset publish",
     "release:beta": "changeset publish --tag beta --no-git-tag",
     "start:e2e": "nx run-many --target=serve --projects=autoscript-apps,mock-api --configuration=development",
@@ -52,8 +52,8 @@
     "@commitlint/config-conventional": "^17.4.2",
     "@commitlint/config-nx-scopes": "^17.4.2",
     "@commitlint/prompt": "^17.4.2",
-    "@enio.ai/typedoc": "^1.0.8",
     "@mands/nx-playwright": "^0.6.2",
+    "@nrwl/devkit": "16.3.2",
     "@nx/angular": "16.3.2",
     "@nx/devkit": "16.3.2",
     "@nx/esbuild": "16.3.2",
@@ -107,13 +107,15 @@
     "playwright": "^1.32.1",
     "prettier": "2.7.1",
     "pretty-quick": "^3.1.2",
+    "rollup-plugin-copy": "^3.4.0",
+    "rollup-plugin-dts": "^5.3.0",
     "shx": "^0.3.4",
     "ts-jest": "29.1.0",
-    "ts-loader": "^9.4.2",
-    "ts-node": "10.9.1",
+    "ts-node": "^10.9.1",
     "ts-patch": "^3.0.1",
     "tsc-alias": "^1.8.6",
     "tslib": "^2.5.0",
+    "tsup": "^7.0.0",
     "typedoc": "^0.23.26",
     "typedoc-plugin-rename-defaults": "^0.6.5",
     "typedoc-theme-hierarchy": "^3.2.0",
@@ -132,5 +134,6 @@
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
-  }
+  },
+  "dependencies": {}
 }
