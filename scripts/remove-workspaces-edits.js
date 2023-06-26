@@ -6,6 +6,10 @@ const file = readFileSync(pkgPath, 'utf8');
 const packageJson = JSON.parse(file);
 
 const workspaces = packageJson.workspaces;
-packageJson.workspaces = workspaces.map((workspace) => workspace.slice(5));
+const parentDir = 'dist/';
 
-writeFileSync(pkgPath, JSON.stringify(packageJson, null, 2), 'utf8');
+// a stupid check to make sure we have workspaces starting with `dist/`
+if (packageJson.workspaces[0].startsWith(parentDir)) {
+  packageJson.workspaces = workspaces.map((workspace) => workspace.slice(parentDir.length));
+  writeFileSync(pkgPath, JSON.stringify(packageJson, null, 2), 'utf8');
+}

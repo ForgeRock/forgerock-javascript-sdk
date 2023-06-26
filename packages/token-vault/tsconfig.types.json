@@ -4,6 +4,7 @@
     "outDir": "../../dist/out-tsc",
     "declaration": true,
     "declarationMap": true,
+    "emitDeclarationOnly": true,
     "noImplicitOverride": false,
     "noImplicitAny": false,
     "noPropertyAccessFromIndexSignature": false,

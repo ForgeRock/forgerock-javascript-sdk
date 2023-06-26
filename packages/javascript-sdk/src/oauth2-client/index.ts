@@ -226,9 +226,9 @@ abstract class OAuth2Client {
   public static async revokeToken(options?: ConfigOptions): Promise<Response> {
     const { clientId } = Config.get(options);
     const tokens = await TokenStorage.get();
-    const accessToken = (tokens && tokens.accessToken) || '';
+    const accessToken = tokens && tokens.accessToken;
 
-    if (accessToken.length > 0) {
+    if (accessToken) {
       const init: RequestInit = {
         body: stringify({ client_id: clientId, token: accessToken }),
         credentials: 'include',
