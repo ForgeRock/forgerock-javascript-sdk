@@ -36,7 +36,6 @@ jobs:
       - name: Derive appropriate SHAs for base and head for `nx affected` commands
         id: sha
         uses: nrwl/nx-set-shas@v2
-      - run: npm install @nrwl/nx-cloud
       - run: npx nx-cloud start-ci-run
       - run: npx nx affected --target=build --parallel --max-parallel=3
       - run: npx nx-cloud stop-all-agents
@@ -72,7 +71,7 @@ jobs:
           NX_CLOUD_DISTRIBUTED_EXECUTION: false
 
       - name: Version Stable Release
-        if: github.ref == 'refs/heads/develop'
+        if: github.ref == 'refs/heads/master'
         run: |
           node ./scripts/update-package-json-workspaces.js
           npm install

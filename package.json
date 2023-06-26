@@ -54,6 +54,7 @@
     "@commitlint/prompt": "^17.4.2",
     "@mands/nx-playwright": "^0.6.2",
     "@nrwl/devkit": "16.3.2",
+    "@nrwl/nx-cloud": "^16.0.5",
     "@nx/angular": "16.3.2",
     "@nx/devkit": "16.3.2",
     "@nx/esbuild": "16.3.2",
@@ -129,12 +130,7 @@
     "webpack": "^5.64.1",
     "webpack-cli": "^4.7.2"
   },
-  "workspaces": [
-    "e2e/*",
-    "packages/*",
-    "samples/*",
-    "shared/*"
-  ],
+  "workspaces": ["e2e/*", "packages/*", "samples/*", "shared/*"],
   "config": {
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
