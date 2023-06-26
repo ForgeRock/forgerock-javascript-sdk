@@ -143,7 +143,7 @@ abstract class FRWebAuthn {
    * @param step The step that contains WebAuthn registration data
    * @return The populated step
    */
-  // Can make this generic const in Typescritp 5.0 > and the name itself will
+  // Can make this generic const in Typescript 5.0 > and the name itself will
   // be inferred from the type so `typeof deviceName` will not just return string
   // but the actual name of the deviceName passed in as a generic.
   public static async register<T extends string = ''>(
@@ -159,13 +159,19 @@ abstract class FRWebAuthn {
         if (metadataCallback) {
           const meta = metadataCallback.getOutputValue('data') as WebAuthnRegistrationMetadata;
           publicKey = this.createRegistrationPublicKey(meta);
+          const credential = await this.getRegistrationCredential(
+            publicKey as PublicKeyCredentialCreationOptions,
+          );
+          outcome = this.getRegistrationOutcome(credential);
         } else if (textOutputCallback) {
           publicKey = parseWebAuthnRegisterText(textOutputCallback.getMessage());
+          const credential = await this.getRegistrationCredential(
+            publicKey as PublicKeyCredentialCreationOptions,
+          );
+          outcome = this.getRegistrationOutcome(credential);
+        } else {
+          throw new Error('No Credential found from Public Key');
         }
-        const credential = await this.getRegistrationCredential(
-          publicKey as PublicKeyCredentialCreationOptions,
-        );
-        outcome = this.getRegistrationOutcome(credential);
       } catch (error) {
         if (!(error instanceof Error)) throw error;
         // NotSupportedError is a special case
@@ -176,7 +182,9 @@ abstract class FRWebAuthn {
         hiddenCallback.setInputValue(`${WebAuthnOutcome.Error}::${error.name}:${error.message}`);
         throw error;
       }
-      hiddenCallback.setInputValue(deviceName.length > 0 ? `${outcome}::${deviceName}` : outcome);
+      hiddenCallback.setInputValue(
+        deviceName && deviceName.length > 0 ? `${outcome}::${deviceName}` : outcome,
+      );
       return step;
     } else {
       const e = new Error('Incorrect callbacks for WebAuthn registration');

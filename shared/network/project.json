@@ -11,7 +11,16 @@
         "outputPath": "dist/shared/network",
         "main": "shared/network/src/index.ts",
         "tsConfig": "shared/network/tsconfig.lib.json",
-        "assets": ["shared/network/*.md"]
+        "assets": ["shared/network/*.md"],
+        "transformers": [
+          {
+            "name": "typescript-transform-paths/nx-transformer"
+          },
+          {
+            "name": "typescript-transform-paths/nx-transformer",
+            "options": { "afterDeclarations": true }
+          }
+        ]
       }
     },
     "lint": {

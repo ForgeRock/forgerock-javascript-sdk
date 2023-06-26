@@ -9,7 +9,11 @@
           "error",
           {
             "enforceBuildableLibDependency": true,
-            "allow": ["regenerator-runtime/runtime"],
+            "allow": [
+              "regenerator-runtime/runtime",
+              "@angular/router",
+              "@angular/forms"
+            ],
             "depConstraints": [
               {
                 "sourceTag": "scope:sample",
@@ -17,7 +21,11 @@
               },
               {
                 "sourceTag": "scope:app",
-                "onlyDependOnLibsWithTags": ["scope:sdk", "scope:package", "scope:token-vault"]
+                "onlyDependOnLibsWithTags": [
+                  "scope:sdk",
+                  "scope:package",
+                  "scope:token-vault"
+                ]
               },
               {
                 "sourceTag": "scope:e2e",
@@ -25,7 +33,11 @@
               },
               {
                 "sourceTag": "scope:lib",
-                "onlyDependOnLibsWithTags": ["scope:sdk", "scope:types", "scope:lib"]
+                "onlyDependOnLibsWithTags": [
+                  "scope:sdk",
+                  "scope:types",
+                  "scope:lib"
+                ]
               },
               {
                 "sourceTag": "scope:sdk",
@@ -33,11 +45,19 @@
               },
               {
                 "sourceTag": "scope:package",
-                "onlyDependOnLibsWithTags": ["scope:sdk", "scope:lib", "scope:types"]
+                "onlyDependOnLibsWithTags": [
+                  "scope:sdk",
+                  "scope:lib",
+                  "scope:types"
+                ]
               },
               {
                 "sourceTag": "scope:token-vault",
-                "onlyDependOnLibsWithTags": ["scope:sdk", "scope:lib", "scope:types"]
+                "onlyDependOnLibsWithTags": [
+                  "scope:sdk",
+                  "scope:lib",
+                  "scope:types"
+                ]
               },
               {
                 "sourceTag": "scope:types",
@@ -52,7 +72,12 @@
       "files": ["*.ts", "*.tsx", "!*.spec.ts", "!*.test*.ts"],
       "extends": ["plugin:@nx/typescript"],
 
-      "rules": {}
+      "rules": {
+        "@typescript-eslint/no-unused-vars": [
+          "error",
+          { "ignoreRestSiblings": true }
+        ]
+      }
     },
     {
       "files": ["*.js", "*.jsx"],
@@ -66,7 +91,10 @@
     }
   ],
   "parser": "@typescript-eslint/parser",
-  "extends": ["plugin:@typescript-eslint/recommended", "plugin:prettier/recommended"],
+  "extends": [
+    "plugin:@typescript-eslint/recommended",
+    "plugin:prettier/recommended"
+  ],
   "parserOptions": {
     "ecmaVersion": 2018,
     "sourceType": "module"

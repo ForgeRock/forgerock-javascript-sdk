@@ -48,8 +48,8 @@ export class NxTarget {
   }
 
   private async _startProcess(): Promise<void> {
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    let processExitedReject = (error: Error) => {};
+    // eslint-disable-next-line @typescript-eslint/no-empty-function, @typescript-eslint/no-unused-vars
+    let processExitedReject = (_error: Error) => {};
 
     this._processExitedPromise = new Promise((_, reject) => (processExitedReject = reject));
 

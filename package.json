@@ -52,8 +52,8 @@
     "@commitlint/config-conventional": "^17.4.2",
     "@commitlint/config-nx-scopes": "^17.4.2",
     "@commitlint/prompt": "^17.4.2",
-    "@enio.ai/typedoc": "^1.0.8",
     "@mands/nx-playwright": "^0.6.2",
+    "@nrwl/devkit": "16.3.2",
     "@nx/angular": "16.3.2",
     "@nx/devkit": "16.3.2",
     "@nx/esbuild": "16.3.2",
@@ -105,13 +105,17 @@
     "nx": "16.3.2",
     "nx-cloud": "16.0.5",
     "playwright": "^1.32.1",
-    "prettier": "2.7.1",
+    "prettier": "^2.8.5",
     "pretty-quick": "^3.1.2",
+    "rollup-plugin-copy": "^3.4.0",
+    "rollup-plugin-dts": "^5.3.0",
     "shx": "^0.3.4",
     "ts-jest": "29.1.0",
-    "ts-loader": "^9.4.2",
-    "ts-node": "10.9.1",
+    "ts-node": "^10.9.1",
+    "ts-patch": "^3.0.1",
+    "tsc-alias": "^1.8.6",
     "tslib": "^2.5.0",
+    "tsup": "^7.1.0",
     "typedoc": "^0.23.26",
     "typedoc-plugin-rename-defaults": "^0.6.5",
     "typedoc-theme-hierarchy": "^3.2.0",
@@ -125,7 +129,12 @@
     "webpack": "^5.64.1",
     "webpack-cli": "^4.7.2"
   },
-  "workspaces": ["e2e/*", "packages/*", "samples/*", "shared/*"],
+  "workspaces": [
+    "e2e/*",
+    "packages/*",
+    "samples/*",
+    "shared/*"
+  ],
   "config": {
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"

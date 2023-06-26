@@ -1,3 +1,4 @@
+/// reference libs="WebWorker"
 import { ConfigOptions } from '@forgerock/javascript-sdk';
 import { ConfigurablePaths, CustomPathConfig } from '@shared/types';
 import type { RequestHeaders, ResponseClone, ResponseHeaders } from './network.types';
@@ -174,7 +175,7 @@ export async function getRequestBodyBlob(request: Request): Promise<undefined | 
  * @returns {ResponseHeaders} - The response headers
  */
 export function getResponseHeaders(response: Response) {
-  return Array.from(response.headers.keys()).reduce<ResponseHeaders>((acc, key) => {
+  return Array.from(response.headers.keys()).reduce<ResponseHeaders>((acc, key: string) => {
     acc[key] = response.headers.get(key);
     return acc;
   }, {});
