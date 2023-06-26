@@ -1,6 +1,7 @@
 {
   "name": "@plugins/wait-for-api",
   "version": "0.0.0",
+  "private": true,
   "type": "commonjs",
   "executors": "./executors.json"
 }

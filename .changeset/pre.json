@@ -10,7 +10,16 @@
     "angular-todo": "0.0.0",
     "central-login": "0.0.0",
     "embedded-login": "0.0.0",
-    "todo-api": "0.0.0"
+    "todo-api": "0.0.0",
+    "token-vault-app": "0.0.0",
+    "token-vault-proxy": "0.0.0",
+    "@shared/network": "0.0.0",
+    "@shared/types": "0.0.0",
+    "@shared/workers": "0.0.0"
   },
-  "changesets": []
+  "changesets": [
+    "afraid-bears-hang",
+    "sharp-jars-sniff",
+    "strange-olives-count"
+  ]
 }

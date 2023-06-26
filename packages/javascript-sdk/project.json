@@ -8,7 +8,7 @@
       "executor": "@nx/js:tsc",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/packages/javascript-sdk/esm",
+        "outputPath": "dist/out-tsc",
         "main": "packages/javascript-sdk/src/index.ts",
         "tsConfig": "packages/javascript-sdk/tsconfig.lib.json",
         "assets": ["packages/javascript-sdk/*.md"]

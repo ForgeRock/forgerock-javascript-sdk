@@ -4,19 +4,10 @@
     "@changesets/changelog-github",
     { "repo": "ForgeRock/forgerock-javascript-sdk" }
   ],
-  "fixed": [["@forgerock/*"]],
+  "fixed": [["@forgerock/token-vault", "@forgerock/javascript-sdk"]],
   "linked": [],
   "baseBranch": "develop",
   "updateInternalDependencies": "patch",
   "access": "public",
-  "ignore": [
-    "todo-api",
-    "mock-api",
-    "autoscript-apps",
-    "autoscript-suites",
-    "reactjs-todo",
-    "angular-todo",
-    "central-login",
-    "embedded-login"
-  ]
+  "ignore": []
 }
