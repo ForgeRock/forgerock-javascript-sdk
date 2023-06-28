@@ -39,10 +39,7 @@ function autoscript() {
             }
             break;
           case 'AUTHENTICATE':
-            if (
-              action.payload.type === 'composite_advice' &&
-              typeof action.payload.tree === 'string'
-            ) {
+            if (action.payload.tree === '') {
               console.log('Continuing authentication with composite advice');
             }
             break;
@@ -107,7 +104,7 @@ function autoscript() {
           if (response.ok) {
             console.log('Request to IG resource successfully responded');
           } else {
-            throw new Error('IG Transactional Authorization was not successful');
+            throw new Error('IG Tree Based Authorization was not successful');
           }
           return step;
         },
@@ -151,7 +148,7 @@ function autoscript() {
           if (jsonResponse.message === 'Successfully retrieved resource!') {
             console.log('Request to REST resource successfully responded');
           } else {
-            throw new Error('REST Transactional Authorization was not successful');
+            throw new Error('REST Tree Based Authorization was not successful');
           }
           return step;
         },

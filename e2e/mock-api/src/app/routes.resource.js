@@ -13,7 +13,14 @@ import request from 'superagent';
 import { session } from './app.auth';
 import { key, cert } from './app.certs';
 import { AM_URL, AM_PORT, FORGEOPS, REALM_PATH } from './env.config';
-import { authByTreeResponse, authByTxnResponse, createStepUpUrl } from './responses';
+import {
+  authByTreeResponse,
+  authByTxnResponse,
+  createTxnStepUpHeader,
+  createTreeStepUpHeader,
+  createTxnStepUpUrl,
+  createTreeStepUpUrl,
+} from './responses';
 import { baz } from './routes.auth';
 import wait from './wait';
 
@@ -101,7 +108,7 @@ export default function (app) {
     res.json({ message: req.headers['authorization'] });
   });
 
-  app.get('/resource/ig/*', wait, authorization, async (req, res) => {
+  app.get('/resource/ig/authz-by-txn', wait, authorization, async (req, res) => {
     if (req.hostname === FORGEOPS) {
       // Calls are coming from IG, so Auth is already enforced
       res.json({ message: 'Successfully retrieved resource!' });
@@ -115,7 +122,41 @@ export default function (app) {
         baz.canWithdraw = false;
         res.json({ message: 'Successfully retrieved resource!' });
       } else {
-        res.redirect(307, createStepUpUrl(req.headers.referer));
+        console.log(req.headers['x-authenticate-response']);
+        if (
+          req.headers['x-authenticate-response'] &&
+          req.headers['x-authenticate-response'] === 'header' &&
+          req.headers.referer.includes('json')
+        ) {
+          res.setHeader('WWW-Authenticate', createTxnStepUpHeader(req.headers.referer));
+          res.send(401, null);
+        } else {
+          res.redirect(307, createTxnStepUpUrl(req.headers.referer));
+        }
+      }
+    }
+  });
+
+  app.get('/resource/ig/authz-by-tree', wait, authorization, async (req, res) => {
+    if (req.hostname === FORGEOPS) {
+      // Calls are coming from IG, so Auth is already enforced
+      res.json({ message: 'Successfully retrieved resource!' });
+    } else {
+      // Calls are coming directly from app, so let's mocks IG's behavior
+      if (req.cookies.iPlanetDirectoryPro === 'abcd1234' && baz.canWithdraw) {
+        baz.canWithdraw = false;
+        res.json({ message: 'Successfully retrieved resource!' });
+      } else {
+        if (
+          req.headers['x-authenticate-response'] &&
+          req.headers['x-authenticate-response'] === 'header' &&
+          req.headers.referer.includes('json')
+        ) {
+          res.setHeader('WWW-Authenticate', createTreeStepUpHeader(req.headers.referer));
+          res.send(401, null);
+        } else {
+          res.redirect(307, createTreeStepUpUrl(req.headers.referer));
+        }
       }
     }
   });
@@ -144,7 +185,11 @@ export default function (app) {
         baz.canWithdraw = false;
         res.json({ message: 'Successfully retrieved resource!' });
       } else {
-        res.json(authByTxnResponse);
+        if (req.path.includes('authz-by-txn')) {
+          res.json(authByTxnResponse);
+        } else if (req.path.includes('authz-by-tree')) {
+          res.json(authByTreeResponse);
+        }
       }
     }
   });

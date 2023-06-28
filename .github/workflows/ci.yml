@@ -15,7 +15,7 @@ jobs:
       - uses: actions/setup-node@v3
         id: cache
         with:
-          node-version: '16.13.1'
+          node-version: '18.12.1'
           cache: 'npm'
           cache-dependency-path: '**/package-lock.json'
       - name: Setup custom host for sdkapp.example.com

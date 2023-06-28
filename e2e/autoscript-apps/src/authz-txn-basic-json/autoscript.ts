@@ -39,10 +39,7 @@ function autoscript() {
             }
             break;
           case 'AUTHENTICATE':
-            if (
-              action.payload.type === 'composite_advice' &&
-              typeof action.payload.tree === 'string'
-            ) {
+            if (action.payload.tree === '') {
               console.log('Continuing authentication with composite advice');
             }
             break;
@@ -108,34 +105,6 @@ function autoscript() {
             console.log('Request to IG resource successfully responded');
           } else {
             throw new Error('IG Transactional Authorization was not successful');
-          }
-          return step;
-        },
-      ),
-      rxDelay(delay),
-      mergeMap(
-        (step) => {
-          console.log('Retrieve the protected resource');
-          return forgerock.HttpClient.request({
-            url: `${resourceOrigin}/rest/authz-by-txn`,
-            init: {
-              method: 'GET',
-              credentials: 'include',
-            },
-            authorization: {
-              handleStep: async (step) => {
-                console.log('Rest resource requires additional authorization');
-                step.getCallbackOfType('PasswordCallback').setPassword(pw);
-                return Promise.resolve(step);
-              },
-            },
-          });
-        },
-        async (step, response) => {
-          if (response.ok) {
-            console.log('Request to REST resource successfully responded');
-          } else {
-            throw new Error('REST Transactional Authorization was not successful');
           }
           return step;
         },
