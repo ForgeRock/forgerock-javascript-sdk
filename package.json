@@ -11,7 +11,7 @@
     "build:reactjs-todo": "nx run reactjs-todo:build",
     "build:angular-todo": "nx run angular-todo:build",
     "changeset": "changeset",
-    "clean": "shx rm -rf ./{coverage,bundles,dist,docs,lib,lib-esm,node_modules,tests,tmp,todos,users}/ ./samples/*/node_modules/ ./samples/_static/js/*/ ./samples/todo-api/{todos,users} ./packages/*/{bundles,lib,lib-esm}/ && git clean -fX -e \"!.env\"",
+    "clean": "shx rm -rf ./{coverage,bundles,dist,docs,lib,lib-esm,node_modules,tests,tmp,todos,users}/ ./samples/*/node_modules/ ./samples/_static/js/*/ ./samples/todo-api/{todos,users} ./packages/*/{bundles,lib,lib-esm}/ && git clean -fX -e \"!.env*\"",
     "commit": "git cz",
     "docs": "nx affected --target=typedoc",
     "format:staged": "pretty-quick --staged",
@@ -130,12 +130,7 @@
     "webpack": "^5.64.1",
     "webpack-cli": "^4.7.2"
   },
-  "workspaces": [
-    "e2e/*",
-    "packages/*",
-    "samples/*",
-    "shared/*"
-  ],
+  "workspaces": ["e2e/*", "packages/*", "samples/*", "shared/*"],
   "config": {
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
