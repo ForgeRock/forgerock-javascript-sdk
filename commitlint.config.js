@@ -3,6 +3,7 @@ const path = require('path');
 
 const packages = fs.readdirSync(path.resolve(__dirname, 'packages'));
 const samples = fs.readdirSync(path.resolve(__dirname, 'samples'));
+const shared = fs.readdirSync(path.resolve(__dirname, 'shared')).map((name) => `shared-${name}`);
 const e2e = fs.readdirSync(path.resolve(__dirname, 'e2e'));
 
 /* commitlint.config.js | .commitlintrc.js
@@ -12,9 +13,17 @@ module.exports = {
   prompt: {
     alias: { fd: 'docs: fix typos' },
     types: [
-      { value: 'feat', name: 'feat:     ✨  A new feature', emoji: ':sparkles:' },
+      {
+        value: 'feat',
+        name: 'feat:     ✨  A new feature',
+        emoji: ':sparkles:',
+      },
       { value: 'fix', name: 'fix:      🐛  A bug fix', emoji: ':bug:' },
-      { value: 'docs', name: 'docs:     📝  Documentation only changes', emoji: ':memo:' },
+      {
+        value: 'docs',
+        name: 'docs:     📝  Documentation only changes',
+        emoji: ':memo:',
+      },
       {
         value: 'style',
         name: 'style:    💄  Changes that do not affect the meaning of the code',
@@ -50,8 +59,12 @@ module.exports = {
         name: "chore:    🔨  Other changes that don't modify src or test files",
         emoji: ':hammer:',
       },
-      { value: 'revert', name: 'revert:   ⏪️  Reverts a previous commit', emoji: ':rewind:' },
+      {
+        value: 'revert',
+        name: 'revert:   ⏪️  Reverts a previous commit',
+        emoji: ':rewind:',
+      },
     ],
-    scopes: [...packages, ...samples, ...e2e],
+    scopes: [...shared, ...packages, ...samples, ...e2e],
   },
 };

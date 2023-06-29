@@ -21,7 +21,6 @@ import {
   initialLoginWithEmailResponse,
   initialMiscCallbacks,
   initialPlatformLogin,
-  initialAuthz,
   passwordCallback,
   choiceCallback,
   messageCallback,
@@ -39,6 +38,8 @@ import {
   nameCallback,
   redirectCallbackFailureSaml,
   textInputCallback,
+  treeAuthz,
+  txnAuthz,
 } from './responses';
 import initialRegResponse from './response.registration';
 import wait from './wait';
@@ -53,7 +54,11 @@ export default function (app) {
   app.post(authPaths.authenticate, wait, async (req, res) => {
     if (!req.body.callbacks) {
       if (req.query.authIndexType === 'composite_advice') {
-        res.json(initialAuthz);
+        if (req.query.authIndexValue.includes('TransactionConditionAdvice')) {
+          res.json(txnAuthz);
+        } else if (req.query.authIndexValue.includes('AuthenticateToServiceConditionAdvice')) {
+          res.json(treeAuthz);
+        }
       } else if (req.query.authIndexValue === 'MiscCallbacks') {
         res.json(initialMiscCallbacks);
       } else if (req.query.authIndexValue === 'PlatformUsernamePasswordTest') {
@@ -261,7 +266,10 @@ export default function (app) {
         if (req.query.authIndexValue === 'DeviceProfileCallbackTest') {
           res.json(requestDeviceProfile);
         } else {
-          if (req.body.stage === 'TransactionAuthorization') {
+          if (
+            req.body.stage === 'TransactionAuthorization' ||
+            req.body.stage === 'TreeBasedAuthorization'
+          ) {
             baz.canWithdraw = true;
           }
           if (req.path.includes('middleware')) {

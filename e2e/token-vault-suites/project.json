@@ -1,0 +1,45 @@
+{
+  "name": "token-vault-suites",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "/e2e/token-vault-suites/src",
+  "projectType": "application",
+  "targets": {
+    "e2e": {
+      "executor": "@plugins/wait-for-api:run-targets",
+      "options": {
+        "targets": [
+          {
+            "target": "token-vault-app:serve",
+            "checkUrl": "http://localhost:5823",
+            "checkMaxTries": 50,
+            "rejectUnauthorized": false,
+            "reuseExistingServer": true
+          },
+          {
+            "target": "token-vault-proxy:serve",
+            "checkUrl": "http://localhost:5833",
+            "checkMaxTries": 50,
+            "rejectUnauthorized": false,
+            "reuseExistingServer": true
+          },
+          {
+            "target": "mock-api:serve",
+            "checkUrl": "https://api.example.com:9443/healthcheck",
+            "checkMaxTries": 50,
+            "rejectUnauthorized": false,
+            "reuseExistingServer": true
+          }
+        ]
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["e2e/token-vault-suites/**/*.{ts,tsx,js,jsx}"]
+      }
+    }
+  },
+  "tags": [],
+  "implicitDependencies": ["token-vault-app", "token-vault-proxy"]
+}

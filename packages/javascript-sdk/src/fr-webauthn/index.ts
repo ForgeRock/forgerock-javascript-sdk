@@ -9,9 +9,9 @@
  */
 
 import { CallbackType } from '../auth/enums';
-import HiddenValueCallback from '../fr-auth/callbacks/hidden-value-callback';
-import MetadataCallback from '../fr-auth/callbacks/metadata-callback';
-import FRStep from '../fr-auth/fr-step';
+import type HiddenValueCallback from '../fr-auth/callbacks/hidden-value-callback';
+import type MetadataCallback from '../fr-auth/callbacks/metadata-callback';
+import type FRStep from '../fr-auth/fr-step';
 import { WebAuthnOutcome, WebAuthnOutcomeType, WebAuthnStepType } from './enums';
 import {
   arrayBufferToString,
@@ -19,7 +19,7 @@ import {
   parsePubKeyArray,
   parseRelyingPartyId,
 } from './helpers';
-import {
+import type {
   AttestationType,
   RelyingParty,
   WebAuthnAuthenticationMetadata,
@@ -27,7 +27,7 @@ import {
   WebAuthnRegistrationMetadata,
   WebAuthnTextOutputRegistration,
 } from './interfaces';
-import TextOutputCallback from '../fr-auth/callbacks/text-output-callback';
+import type TextOutputCallback from '../fr-auth/callbacks/text-output-callback';
 import { parseWebAuthnAuthenticateText, parseWebAuthnRegisterText } from './script-parser';
 
 // <clientdata>::<attestation>::<publickeyCredential>::<DeviceName>
@@ -143,10 +143,10 @@ abstract class FRWebAuthn {
    * @param step The step that contains WebAuthn registration data
    * @return The populated step
    */
-  // Can make this generic const in Typescritp 5.0 > and the name itself will
+  // Can make this generic const in Typescript 5.0 > and the name itself will
   // be inferred from the type so `typeof deviceName` will not just return string
   // but the actual name of the deviceName passed in as a generic.
-  public static async register<T extends string = undefined>(
+  public static async register<T extends string = ''>(
     step: FRStep,
     deviceName?: T,
   ): Promise<FRStep> {
@@ -159,13 +159,19 @@ abstract class FRWebAuthn {
         if (metadataCallback) {
           const meta = metadataCallback.getOutputValue('data') as WebAuthnRegistrationMetadata;
           publicKey = this.createRegistrationPublicKey(meta);
+          const credential = await this.getRegistrationCredential(
+            publicKey as PublicKeyCredentialCreationOptions,
+          );
+          outcome = this.getRegistrationOutcome(credential);
         } else if (textOutputCallback) {
           publicKey = parseWebAuthnRegisterText(textOutputCallback.getMessage());
+          const credential = await this.getRegistrationCredential(
+            publicKey as PublicKeyCredentialCreationOptions,
+          );
+          outcome = this.getRegistrationOutcome(credential);
+        } else {
+          throw new Error('No Credential found from Public Key');
         }
-        const credential = await this.getRegistrationCredential(
-          publicKey as PublicKeyCredentialCreationOptions,
-        );
-        outcome = this.getRegistrationOutcome(credential);
       } catch (error) {
         if (!(error instanceof Error)) throw error;
         // NotSupportedError is a special case
@@ -176,7 +182,9 @@ abstract class FRWebAuthn {
         hiddenCallback.setInputValue(`${WebAuthnOutcome.Error}::${error.name}:${error.message}`);
         throw error;
       }
-      hiddenCallback.setInputValue(deviceName ? `${outcome}::${deviceName}` : outcome);
+      hiddenCallback.setInputValue(
+        deviceName && deviceName.length > 0 ? `${outcome}::${deviceName}` : outcome,
+      );
       return step;
     } else {
       const e = new Error('Incorrect callbacks for WebAuthn registration');
@@ -279,8 +287,8 @@ abstract class FRWebAuthn {
   public static getAuthenticationOutcome(
     credential: PublicKeyCredential | null,
   ):
-    | OutcomeWithName<string, AttestationType, typeof credential>
-    | OutcomeWithName<string, AttestationType, typeof credential, string> {
+    | OutcomeWithName<string, AttestationType, PublicKeyCredential>
+    | OutcomeWithName<string, AttestationType, PublicKeyCredential, string> {
     if (credential === null) {
       const e = new Error('No credential generated from authentication');
       e.name = WebAuthnOutcomeType.UnknownError;
@@ -460,11 +468,10 @@ abstract class FRWebAuthn {
 }
 
 export default FRWebAuthn;
-export {
+export type {
   RelyingParty,
   WebAuthnAuthenticationMetadata,
   WebAuthnCallbacks,
-  WebAuthnOutcome,
   WebAuthnRegistrationMetadata,
-  WebAuthnStepType,
 };
+export { WebAuthnOutcome, WebAuthnStepType };

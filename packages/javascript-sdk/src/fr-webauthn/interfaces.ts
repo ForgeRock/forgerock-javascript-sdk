@@ -8,9 +8,9 @@
  * of the MIT license. See the LICENSE file for details.
  */
 
-import HiddenValueCallback from '../fr-auth/callbacks/hidden-value-callback';
-import MetadataCallback from '../fr-auth/callbacks/metadata-callback';
-import TextOutputCallback from '../fr-auth/callbacks/text-output-callback';
+import type HiddenValueCallback from '../fr-auth/callbacks/hidden-value-callback';
+import type MetadataCallback from '../fr-auth/callbacks/metadata-callback';
+import type TextOutputCallback from '../fr-auth/callbacks/text-output-callback';
 
 enum AttestationType {
   Direct = 'direct',
@@ -97,17 +97,15 @@ interface ParsedCredential {
   type: 'public-key';
 }
 
-export {
-  AttestationType,
+export type {
   DeviceStepState,
   ParsedCredential,
   RelyingParty,
   ResponseCredential,
   Step,
-  StepType,
-  UserVerificationType,
   WebAuthnCallbacks,
   WebAuthnAuthenticationMetadata,
   WebAuthnRegistrationMetadata,
   WebAuthnTextOutputRegistration,
 };
+export { AttestationType, StepType, UserVerificationType };

@@ -5,20 +5,21 @@
   "projectType": "application",
   "targets": {
     "e2e": {
-      "executor": "@nx-extend/e2e-runner:run",
+      "executor": "@plugins/wait-for-api:run-targets",
       "options": {
-        "runner": "playwright",
         "targets": [
           {
             "target": "mock-api:serve",
             "checkUrl": "https://api.example.com:9443/healthcheck",
             "checkMaxTries": 50,
-            "rejectUnauthorized": false
+            "rejectUnauthorized": false,
+            "reuseExistingServer": true
           },
           {
             "target": "autoscript-apps:serve",
             "checkUrl": "https://sdkapp.example.com:8443",
             "checkMaxTries": 50,
+            "reuseExistingServer": true,
             "rejectUnauthorized": false
           }
         ]

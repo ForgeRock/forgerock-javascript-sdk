@@ -8,7 +8,8 @@
  * of the MIT license. See the LICENSE file for details.
  */
 
-import { Component, OnInit } from '@angular/core';
+import { OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FRUser } from '@forgerock/javascript-sdk';
 import { Router } from '@angular/router';
 import { UserService } from '../../services/user.service';

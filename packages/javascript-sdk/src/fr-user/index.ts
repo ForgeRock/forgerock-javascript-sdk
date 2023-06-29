@@ -8,8 +8,9 @@
  * of the MIT license. See the LICENSE file for details.
  */
 
-import { ConfigOptions } from '../config';
-import FRStep, { FRStepHandler } from '../fr-auth/fr-step';
+import type { ConfigOptions } from '../config';
+import type { FRStepHandler } from '../fr-auth/fr-step';
+import type FRStep from '../fr-auth/fr-step';
 import OAuth2Client from '../oauth2-client';
 import SessionManager from '../session-manager';
 import TokenManager from '../token-manager';

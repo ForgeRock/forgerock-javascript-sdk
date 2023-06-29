@@ -8,7 +8,7 @@
  * of the MIT license. See the LICENSE file for details.
  */
 
-import { StepType } from './enums';
+import type { StepType } from './enums';
 
 /**
  * Base interface for all types of authentication step responses.
@@ -24,4 +24,4 @@ interface FailureDetail {
   failureUrl?: string;
 }
 
-export { AuthResponse, FailureDetail };
+export type { AuthResponse, FailureDetail };

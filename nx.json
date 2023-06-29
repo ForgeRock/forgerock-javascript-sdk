@@ -1,11 +1,15 @@
 {
   "npmScope": "forgerock",
   "targetDefaults": {
+    "e2e": {
+      "dependsOn": ["plugins-wait-for-api:build"]
+    },
     "test:unit": {
       "dependsOn": ["^test"]
     },
     "test": {
-      "dependsOn": ["^test"]
+      "dependsOn": ["^test"],
+      "inputs": ["default", "^default"]
     },
     "tsc": {
       "dependsOn": ["^tsc"]
@@ -71,6 +75,8 @@
       "options": {
         "cacheableOperations": [
           "build",
+          "build-types",
+          "bundle-types",
           "test",
           "lint",
           "package",
@@ -79,8 +85,7 @@
           "version",
           "config",
           "tsc",
-          "typedoc",
-          "version"
+          "typedoc"
         ],
         "useDaemonProcess": true,
         "accessToken": "NzU3MWE3MjgtOWRiZi00ZDczLWI4YWYtMDI5NThmNTRkNDc1fHJlYWQtd3JpdGU="

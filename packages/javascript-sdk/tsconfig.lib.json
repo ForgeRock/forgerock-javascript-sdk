@@ -1,13 +1,11 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "outDir": "../../dist/packages/javascript-sdk",
+    "outDir": "../../dist/temp/packages/javascript-sdk",
     "declaration": true,
-    "lib": ["dom"],
+    "lib": ["DOM", "DOM.Iterable"],
     "moduleResolution": "node",
-    "composite": true,
     "sourceMap": true,
-    "skipLibCheck": false,
     "strict": false,
     "module": "ES2020",
     "target": "ES2020"

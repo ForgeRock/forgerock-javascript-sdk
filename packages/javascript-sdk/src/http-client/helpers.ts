@@ -13,14 +13,14 @@
  * @ignore
  * These are private utility functions for HttpClient
  */
-import { CustomPathConfig } from '../config/interfaces';
-import {
+import type { CustomPathConfig } from '../config/interfaces';
+import type {
   Advices,
   HttpClientRequestOptions,
   RequiresNewTokenFn,
   AuthorizationJSON,
 } from './interfaces';
-import { Tokens } from '../shared/interfaces';
+import type { Tokens } from '../shared/interfaces';
 import { getEndpointPath, resolve, stringify } from '../util/url';
 
 export function addAuthzInfoToHeaders(
@@ -120,6 +120,11 @@ export function examineForIGAuthz(res: Response): boolean {
   return type.includes('html') && res.url.includes('composite_advice');
 }
 
+export function examineForIGAuthzHeader(headers: Headers): boolean {
+  const authnHeader = headers.get('WWW-Authenticate') || '';
+  return authnHeader.includes('advices');
+}
+
 export async function examineForRESTAuthz(res: Response): Promise<boolean> {
   const clone = res.clone();
   const json = await clone.json();
@@ -134,6 +139,22 @@ function getXMLValueFromURL(urlString: string): string {
   const doc = parser.parseFromString(decodedValue, 'application/xml');
   const el = doc.querySelector('Value');
   return el ? el.innerHTML : '';
+}
+
+export function getAdvicesFromHeader(header: string): Advices {
+  const headerArr = header.split(',') || [];
+  const advicesSubstr = headerArr.find((substr) => substr.includes('advices')) || '';
+  let advicesValueParsed: Advices;
+  try {
+    const advicesValueArray = advicesSubstr.match(/"(\S+)"/);
+    const advicesValue = advicesValueArray ? advicesValueArray[1] : '';
+    const advicesValueDecoded = atob(advicesValue);
+    advicesValueParsed = JSON.parse(advicesValueDecoded);
+    return advicesValueParsed;
+  } catch (err) {
+    console.error('Could not parse advices value from WWW-Authenticate header');
+  }
+  return {};
 }
 
 export function hasAuthzAdvice(json: AuthorizationJSON): boolean {
@@ -166,7 +187,7 @@ export function newTokenRequired(res: Response, requiresNewToken?: RequiresNewTo
   return res.status === 401;
 }
 
-export function normalizeIGJSON(res: Response): AuthorizationJSON {
+export function normalizeIGRedirectResponseToAdviceJSON(res: Response): AuthorizationJSON {
   const advices: Advices = {};
   if (res.url.includes('AuthenticateToServiceConditionAdvice')) {
     advices.AuthenticateToServiceConditionAdvice = [getXMLValueFromURL(res.url)];
@@ -178,6 +199,19 @@ export function normalizeIGJSON(res: Response): AuthorizationJSON {
     actions: {},
     attributes: {},
     advices,
+    ttl: 0,
+  };
+}
+
+export function normalizeIGJSONResponseToAdviceJSON(res: Response): AuthorizationJSON {
+  const authHeader = res.headers.get('WWW-Authenticate') || '';
+  const advicesObject = getAdvicesFromHeader(authHeader);
+
+  return {
+    resource: '',
+    actions: {},
+    attributes: {},
+    advices: advicesObject,
     ttl: 0,
   };
 }

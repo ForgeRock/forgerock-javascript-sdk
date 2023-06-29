@@ -9,7 +9,7 @@
  */
 
 import { CallbackType } from '../../auth/enums';
-import { Callback } from '../../auth/interfaces';
+import type { Callback } from '../../auth/interfaces';
 import AttributeInputCallback from './attribute-input-callback';
 
 describe('AttributeInputCallback', () => {

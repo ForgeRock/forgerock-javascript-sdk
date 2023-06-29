@@ -8,8 +8,8 @@
  * of the MIT license. See the LICENSE file for details.
  */
 
-import { CallbackType } from '../../auth/enums';
-import { Callback, NameValue } from '../../auth/interfaces';
+import type { CallbackType } from '../../auth/enums';
+import type { Callback, NameValue } from '../../auth/interfaces';
 
 /**
  * Base class for authentication tree callback wrappers.

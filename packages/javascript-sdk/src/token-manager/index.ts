@@ -8,10 +8,12 @@
  * of the MIT license. See the LICENSE file for details.
  */
 
-import Config, { ConfigOptions } from '../config';
+import type { ConfigOptions } from '../config';
+import Config from '../config';
 import { PREFIX } from '../config/constants';
-import OAuth2Client, { allowedErrors, OAuth2Tokens, ResponseType } from '../oauth2-client';
-import { StringDict, Tokens } from '../shared/interfaces';
+import type { OAuth2Tokens } from '../oauth2-client';
+import OAuth2Client, { allowedErrors, ResponseType } from '../oauth2-client';
+import type { StringDict, Tokens } from '../shared/interfaces';
 import TokenStorage from '../token-storage';
 import PKCE from '../util/pkce';
 import { parseQuery } from '../util/url';
@@ -116,9 +118,10 @@ abstract class TokenManager {
     const verifier = PKCE.createVerifier();
     const state = PKCE.createState();
 
-    /** strict mode requires us to be smarter about destructuring */
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     const { forceRenew, login, ...config } = options;
+
     const authorizeUrlOptions = {
       ...config,
       responseType: ResponseType.Code,
@@ -222,4 +225,4 @@ abstract class TokenManager {
 }
 
 export default TokenManager;
-export { GetTokensOptions };
+export type { GetTokensOptions };

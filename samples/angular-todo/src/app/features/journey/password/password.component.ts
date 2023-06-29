@@ -8,8 +8,10 @@
  * of the MIT license. See the LICENSE file for details.
  */
 
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { PasswordCallback, ValidatedCreatePasswordCallback } from '@forgerock/javascript-sdk';
+import { OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { ValidatedCreatePasswordCallback } from '@forgerock/javascript-sdk';
+import { PasswordCallback } from '@forgerock/javascript-sdk';
 
 /**
  * Used to collect or set a password

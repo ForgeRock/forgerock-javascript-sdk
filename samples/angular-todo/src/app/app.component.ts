@@ -8,17 +8,13 @@
  * of the MIT license. See the LICENSE file for details.
  */
 
-import { Component, OnInit } from '@angular/core';
+import { OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Config, UserManager } from '@forgerock/javascript-sdk';
 import { environment } from '../environments/environment';
 import { UserService } from './services/user.service';
-import {
-  NavigationCancel,
-  NavigationEnd,
-  NavigationError,
-  NavigationStart,
-  Router,
-} from '@angular/router';
+import { Router } from '@angular/router';
+import { NavigationCancel, NavigationEnd, NavigationError, NavigationStart } from '@angular/router';
 import { Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
 @Component({

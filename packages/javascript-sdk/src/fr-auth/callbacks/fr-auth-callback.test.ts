@@ -10,7 +10,7 @@
 
 import FRCallback from '.';
 import { CallbackType } from '../../auth/enums';
-import { Callback } from '../../auth/interfaces';
+import type { Callback } from '../../auth/interfaces';
 
 describe('FRCallback', () => {
   it('reads/writes basic properties', () => {

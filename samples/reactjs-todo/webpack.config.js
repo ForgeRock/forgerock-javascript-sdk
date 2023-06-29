@@ -46,6 +46,5 @@ module.exports = (config) => {
     devtool: 'source-map',
     plugins: config.plugins.slice(1),
   };
-  console.log(config);
   return conf;
 };

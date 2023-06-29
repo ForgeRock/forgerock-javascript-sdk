@@ -8,13 +8,14 @@
  * of the MIT license. See the LICENSE file for details.
  */
 
-import Config, { ServerConfig } from '../config';
+import type { ServerConfig } from '../config';
+import Config from '../config';
 import { ActionTypes } from '../config/enums';
 import { REQUESTED_WITH } from '../shared/constants';
-import { StringDict } from '../shared/interfaces';
+import type { StringDict } from '../shared/interfaces';
 import { withTimeout } from '../util/timeout';
 import { getEndpointPath, resolve, stringify } from '../util/url';
-import { Step, StepOptions } from './interfaces';
+import type { Step, StepOptions } from './interfaces';
 import middlewareWrapper from '../util/middleware';
 
 /**

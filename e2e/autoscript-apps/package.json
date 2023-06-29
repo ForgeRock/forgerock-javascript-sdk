@@ -1,5 +1,6 @@
 {
-  "name": "@forgerock/autoscript-apps",
+  "name": "autoscript-apps",
+  "version": "0.0.0",
   "private": true,
   "dependencies": {
     "rxjs": "^7.4.0"
@@ -9,7 +10,6 @@
     "html-webpack-plugin": "^5.5.0",
     "regenerator-runtime": "0.13.7"
   },
-  "version": "0.0.0",
   "description": "apps for e2e on js sdk",
   "main": "./src/index.ts",
   "license": "ISC",

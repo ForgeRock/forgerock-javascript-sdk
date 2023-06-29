@@ -12,7 +12,7 @@
  * @jest-environment jsdom
  */
 
-import crypto from 'crypto';
+import * as crypto from 'crypto';
 import { TextEncoder } from 'util';
 import PKCE from './pkce';
 

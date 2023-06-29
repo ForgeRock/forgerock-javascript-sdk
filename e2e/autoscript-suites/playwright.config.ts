@@ -23,7 +23,7 @@ const config: PlaywrightTestConfig = {
       name: 'chromium',
       use: {
         ...devices['Desktop Chrome'],
-        ...devices['Desktop Edge'],
+        // ...devices['Desktop Edge'],
       },
     },
     {

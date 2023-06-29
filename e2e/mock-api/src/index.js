@@ -27,6 +27,7 @@ app.use('/am/XUI/images', express.static(path.join(__dirname, 'public')));
 app.use(cookieParser());
 app.use(
   cors({
+    exposedHeaders: ['www-authenticate'],
     credentials: true,
     origin: function (origin, callback) {
       return callback(null, true);

@@ -11,13 +11,17 @@
 import {
   buildAuthzOptions,
   examineForIGAuthz,
+  examineForIGAuthzHeader,
   examineForRESTAuthz,
-  normalizeIGJSON,
+  normalizeIGJSONResponseToAdviceJSON,
+  normalizeIGRedirectResponseToAdviceJSON,
 } from './helpers';
 import {
   authzByTxnResFromIG,
+  authzByTxnResFromIGHeader,
   authzByTxnResFromREST,
   authzByTreeResFromIG,
+  authzByTreeResFromIGHeader,
   authzByTreeResFromREST,
   authzTreeJSON,
   authzTxnJSON,
@@ -48,6 +52,11 @@ describe('Test HttpClient utils', () => {
     expect(output).toBe(true);
   });
 
+  it('examines response for IG auth by tree using header', async () => {
+    const output = await examineForIGAuthzHeader(authzByTreeResFromIGHeader);
+    expect(output).toBe(true);
+  });
+
   it('examines response for REST auth by tree', async () => {
     const output = await examineForRESTAuthz(authzByTreeResFromREST);
     expect(output).toBe(true);
@@ -55,6 +64,11 @@ describe('Test HttpClient utils', () => {
 
   it('examines response for IG auth by txn', async () => {
     const output = await examineForIGAuthz(authzByTxnResFromIG);
+    expect(output).toBe(true);
+  });
+
+  it('examines response for IG auth by txn using header', async () => {
+    const output = await examineForIGAuthzHeader(authzByTxnResFromIGHeader);
     expect(output).toBe(true);
   });
 
@@ -70,18 +84,34 @@ describe('Test HttpClient utils', () => {
       url: 'https://openam.example.com/am/json/realms/root/authenticate?authIndexType=composite_advice&authIndexValue=%3CAdvices%3E%3CAttributeValuePair%3E%3CAttribute+name%3D%22AuthenticateToServiceConditionAdvice%22%2F%3E%3CValue%3Eabc%3C%2FValue%3E%3C%2FAttributeValuePair%3E%3C%2FAdvices%3E',
     };
     const expected = authzTreeJSON;
-    const output = await normalizeIGJSON(res);
+    const output = await normalizeIGRedirectResponseToAdviceJSON(res);
     expect(output).toStrictEqual(expected);
   });
 
-  it('normalizes IG redirect to JSON', async () => {
+  it('normalizes IG redirect to advice JSON', async () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const res: any = {
       // eslint-disable-next-line max-len, prettier/prettier
       url: 'https://openam.example.com/am/json/realms/root/authenticate?authIndexType=composite_advice&authIndexValue=%3CAdvices%3E%3CAttributeValuePair%3E%3CAttribute+name%3D%22TransactionConditionAdvice%22%2F%3E%3CValue%3Eabc%3C%2FValue%3E%3C%2FAttributeValuePair%3E%3C%2FAdvices%3E',
     };
     const expected = authzTxnJSON;
-    const output = await normalizeIGJSON(res);
+    const output = await normalizeIGRedirectResponseToAdviceJSON(res);
+    expect(output).toStrictEqual(expected);
+  });
+
+  it('normalizes IG JSON to advice JSON', async () => {
+    const advices = btoa('{"TransactionConditionAdvice":["abc"]}');
+    const headers = new Headers();
+    headers.append(
+      'WWW-Authenticate',
+      `SSOADVICE realm="/",advices="${advices}",am_uri="https://openam.example.com/am"`,
+    );
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const res: any = {
+      headers: headers,
+    };
+    const expected = authzTxnJSON;
+    const output = await normalizeIGJSONResponseToAdviceJSON(res);
     expect(output).toStrictEqual(expected);
   });
 });

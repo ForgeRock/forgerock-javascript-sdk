@@ -12,6 +12,9 @@ env:
   NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
   NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
   HUSKY: 0
+
+concurrency: ${{ github.workflow }}-${{ github.ref }}
+
 jobs:
   merge:
     runs-on: ubuntu-latest # we run on ubuntu because some actions in this job do not work on mac
@@ -29,25 +32,60 @@ jobs:
           cache-dependency-path: '**/package-lock.json'
           registry-url: https://registry.npmjs.org
       - run: npm ci
+
       - name: Derive appropriate SHAs for base and head for `nx affected` commands
         id: sha
         uses: nrwl/nx-set-shas@v2
-      - run: npm install @nrwl/nx-cloud
       - run: npx nx-cloud start-ci-run
       - run: npx nx affected --target=build --parallel --max-parallel=3
-      - name: semantic-release
-        if: github.ref == 'refs/heads/master'
-        run: npm run nx affected -- --target=version
-      - name: semantic-release beta
-        if: github.ref == 'refs/heads/develop'
-        run: npm run nx affected -- --target=version --configuration=beta
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-          HUSKY: 0
       - run: npx nx-cloud stop-all-agents
+      - name: Import GPG
+        uses: crazy-max/ghaction-import-gpg@v5.2.0
+        with:
+          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+          git_user_signingkey: true
+          git_commit_gpgsign: true
+          git_committer_email: 'ryan.basmajian@forgerock.com'
+          git_push_gpgsign: false
+          git_config_global: true
+
+      # - name: Version Stable Release
+      #   if: github.ref == 'refs/heads/master'
+      #   run: |
+      #     node ./scripts/update-package-json-workspaces.js
+      #     npm install
+      #     npx changeset version
+      #     npx changeset tag
+      #     npx changeset publish
+
+      #     node ./scripts/remove-workspaces-edits.js
+      #     npm install
+      #     git config --global user.name "github-actions[bot]"
+      #     git add .
+      #     git commit -m "chore: version packages [skip ci]"
+      #     git push --follow-tags
+      #     git checkout develop
+      #     git rebase master
+      #     git push -f
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #     NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      #     GH_TOKEN: ${{ secrets.GH_TOKEN }}
+      #     NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      #     HUSKY: 0
+      #     NX_CLOUD_DISTRIBUTED_EXECUTION: false
+
+      - name: Send a Slack notification if a publish happens
+        if: steps.changesets.outputs.published == 'true'
+        uses: slackapi/slack-github-action@v1.24.0
+        with:
+          payload: |
+            {
+              "packages": ${{ steps.changesets.outputs.publishedPackages }}
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SDK_WEBHOOK }}
+
       - name: Upload Artifacts
         uses: actions/upload-artifact@v2
         if: always()
@@ -92,7 +130,7 @@ jobs:
 
       - name: Configure CI Git User
         run: |
-          git config --global user.name 'semantic-release'
+          git config --global user.name 'release'
           git remote set-url origin https://ryanbas21:$GITHUB_TOKEN@github.com/ForgeRock/forgerock-javascript-sdk
       - run: npm ci
         if: steps.cache.outputs.cache-hit != 'true'

@@ -8,8 +8,8 @@
  * of the MIT license. See the LICENSE file for details.
  */
 
-import { RequestMiddleware, RequestObj } from '../config/interfaces';
-import { ActionTypes } from '../config/enums';
+import type { RequestMiddleware, RequestObj } from '../config/interfaces';
+import type { ActionTypes } from '../config/enums';
 
 /**
  * @function middlewareWrapper - A "Node" and "Redux" style middleware that is called just before

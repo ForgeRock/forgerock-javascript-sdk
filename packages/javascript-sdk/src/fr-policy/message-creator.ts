@@ -11,7 +11,7 @@
 import { plural } from '../util/strings';
 import { PolicyKey } from './enums';
 import { getProp } from './helpers';
-import { MessageCreator } from './interfaces';
+import type { MessageCreator } from './interfaces';
 
 const defaultMessageCreator: MessageCreator = {
   [PolicyKey.CannotContainCharacters]: (property: string, params?: { forbiddenChars?: string }) => {

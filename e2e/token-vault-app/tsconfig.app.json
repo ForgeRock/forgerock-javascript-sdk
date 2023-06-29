@@ -1,0 +1,16 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "composite": true,
+    "outDir": "../../dist/out-tsc",
+    "types": ["node"],
+    "moduleResolution": "node"
+  },
+  "exclude": ["src/**/*.spec.ts", "src/**/*.test.ts"],
+  "include": [
+    "src/**/*.ts",
+    "src/interceptor.ts",
+    "../../packages/token-vault/src/index.ts",
+    "../../packages/javascript-sdk/src/index.ts"
+  ]
+}
