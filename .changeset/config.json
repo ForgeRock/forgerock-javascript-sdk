@@ -4,7 +4,7 @@
     "@changesets/changelog-github",
     { "repo": "ForgeRock/forgerock-javascript-sdk" }
   ],
-  "fixed": [["@forgerock/token-vault", "@forgerock/javascript-sdk"]],
+  "fixed": [["@forgerock/javascript-sdk"]],
   "linked": [],
   "baseBranch": "develop",
   "updateInternalDependencies": "patch",

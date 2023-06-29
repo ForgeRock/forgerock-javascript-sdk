@@ -122,8 +122,9 @@
     "typedoc-theme-hierarchy": "^3.2.0",
     "typescript": "5.0.4",
     "typescript-transform-paths": "^3.4.6",
-    "vite": "^4.3.4",
-    "vite-plugin-dts": "~1.7.1",
+    "verdaccio": "^5.0.4",
+    "vite": "^4.3.9",
+    "vite-plugin-dts": "2.3.0",
     "vite-plugin-eslint": "^1.8.1",
     "vite-tsconfig-paths": "^4.0.2",
     "vitest": "^0.31.0",
@@ -140,5 +141,8 @@
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
+  },
+  "nx": {
+    "includedScripts": []
   }
 }
