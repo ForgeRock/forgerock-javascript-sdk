@@ -122,16 +122,21 @@
     "typedoc-theme-hierarchy": "^3.2.0",
     "typescript": "5.0.4",
     "typescript-transform-paths": "^3.4.6",
-    "vite": "4.3.9",
-    "vite-plugin-dts": "2.3.0",
     "verdaccio": "^5.0.4",
+    "vite": "^4.3.9",
+    "vite-plugin-dts": "2.3.0",
     "vite-plugin-eslint": "^1.8.1",
     "vite-tsconfig-paths": "^4.0.2",
     "vitest": "^0.31.0",
     "webpack": "^5.64.1",
     "webpack-cli": "^4.7.2"
   },
-  "workspaces": ["e2e/*", "packages/*", "samples/*", "shared/*"],
+  "workspaces": [
+    "e2e/*",
+    "packages/*",
+    "samples/*",
+    "shared/*"
+  ],
   "config": {
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"

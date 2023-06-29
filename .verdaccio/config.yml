@@ -12,12 +12,13 @@ uplinks:
     maxage: 60m
 
 packages:
-  '**':
-    # give all users (including non-authenticated users) full access
-    # because it is a local registry
+  '@forgerock/*':
     access: $all
-    publish: $all
-    unpublish: $all
+    publish: $authenticated
+
+  '**':
+    access: $all
+    publish: $authenticated
 
     # if package is not available locally, proxy requests to npm registry
     proxy: npmjs
