@@ -13,7 +13,7 @@ import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { environment } from '../../../../environments/environment';
 import type { FRLoginFailure, FRLoginSuccess, FRStep } from '@forgerock/javascript-sdk';
-import { FRAuth, TokenManager, UserManager } from '@forgerock/javascript-sdk';
+import { CallbackType, FRAuth, TokenManager, UserManager } from '@forgerock/javascript-sdk';
 import { UserService } from '../../../services/user.service';
 
 /**
@@ -86,6 +86,7 @@ export class FormComponent implements OnInit {
        * Details: This calls the next method with the previous step, expecting
        * the next step to be returned, or a success or failure.
        ********************************************************************* */
+
       const nextStep = await FRAuth.next(step, { tree: this.tree });
 
       /** *******************************************************************
@@ -103,7 +104,9 @@ export class FormComponent implements OnInit {
           this.handleSuccess(nextStep);
           break;
         case 'Step':
-          this.handleStep(nextStep);
+          {
+            this.handleStep(nextStep);
+          }
           break;
         default:
           this.handleFailure();
@@ -162,6 +165,16 @@ export class FormComponent implements OnInit {
   handleStep(step?: FRStep) {
     this.step = step;
 
+    const selectIdCallback = step.callbacks.find((cb) => cb.payload.type === 'SelectIdPCallback');
+    if (selectIdCallback && selectIdCallback.payload.input[0].value === '') {
+      selectIdCallback.payload.input[0].value = 'localAuthentication';
+    }
+    const redirectCallback = step.callbacks.find(
+      (callback) => callback.getType() === CallbackType.RedirectCallback,
+    );
+    if (redirectCallback) {
+      FRAuth.redirect(step);
+    }
     this.setConfigForAction(this.action);
 
     if (step?.getHeader()) {
