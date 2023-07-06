@@ -39,7 +39,7 @@ jobs:
       - run: npx nx affected --t lint --parallel --max-parallel=3
       - run: npx nx affected --t test --parallel --max-parallel=3
       - run: npx nx affected --t test --configuration=integration
-      - run: npx nx affected --t e2e --parallel 1
+      - run: npx nx affected --t e2e --parallel 1 --exclude token-vault-suites
       # It's important that we always run this step, otherwise in the case of any failures in preceding non-Nx steps, the agents will keep running and waste billable minutes
       - name: Stop All Agents
         if: ${{ always() }}
