@@ -10,7 +10,8 @@
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
-        "outputPath": "dist/e2e/token-vault-app"
+        "emptyOutDir": false,
+        "outputPath": "e2e/token-vault-app/public/"
       },
       "configurations": {
         "development": {
@@ -23,6 +24,7 @@
     },
     "serve": {
       "executor": "@nx/vite:dev-server",
+      "dependsOn": ["token-vault-app:build"],
       "defaultConfiguration": "development",
       "options": {
         "buildTarget": "token-vault-app:build",
