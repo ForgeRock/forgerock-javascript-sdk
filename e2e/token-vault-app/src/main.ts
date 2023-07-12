@@ -12,7 +12,7 @@ const register = client({
     origin: 'http://localhost:5823',
   },
   interceptor: {
-    file: new URL('/src/interceptor.ts', import.meta.url).pathname,
+    file: new URL('/interceptor.js', import.meta.url).pathname,
     scope: '/',
   },
   proxy: {

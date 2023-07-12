@@ -57,3 +57,8 @@ users/*
 docs/packages/javascript-sdk
 **/playwright-report
 **/playwright/.cache
+
+
+# compiled interceptor
+e2e/token-vault-app/public/interceptor.js
+e2e/token-vault-app/e2e/token-vault-app/public/interceptor.js
