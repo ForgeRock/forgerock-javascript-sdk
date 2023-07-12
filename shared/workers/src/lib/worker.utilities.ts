@@ -21,7 +21,6 @@ export function generateUrlsToIntercept(config: InterceptorConfig) {
     `${resolveUrl(forgerockBaseUrl, getEndpointPath('endSession', realmPath))}?`,
     `${resolveUrl(forgerockBaseUrl, getEndpointPath('revoke', realmPath))}`,
     `${resolveUrl(forgerockBaseUrl, getEndpointPath('userInfo', realmPath))}`,
-    `${resolveUrl(forgerockBaseUrl, getEndpointPath('sessions', realmPath))}`,
   ];
   return urls;
 }
