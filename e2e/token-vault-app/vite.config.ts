@@ -4,14 +4,13 @@ import viteTsConfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig({
   build: {
+    minify: false,
     rollupOptions: {
       input: {
-        interceptor: 'e2e/token-vault-app/src/interceptor.ts',
-        main: 'e2e/token-vault-app/src/main.ts',
+        main: './e2e/token-vault-app/src/main.ts',
       },
       output: {
-        // dir: 'e2e/token-vault-app/public',
-        entryFileNames: '[name].js',
+        entryFileNames: 'main.js',
       },
     },
   },
@@ -23,19 +22,9 @@ export default defineConfig({
     },
     strictPort: true,
   },
-
   plugins: [
     viteTsConfigPaths({
       root: '../../',
     }),
   ],
-
-  worker: {
-    plugins: [
-      viteTsConfigPaths({
-        root: '../../',
-      }),
-    ],
-    format: 'es',
-  },
 });

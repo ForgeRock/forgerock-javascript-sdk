@@ -27,6 +27,7 @@
     "start:angular-todo": "nx run angular-todo:config && nx run-many --target=serve --projects=angular-todo,todo-api",
     "start:server": "nx run mock-api:serve",
     "start:server:live": "NODE_ENV=LIVE nx run mock-api:serve:live",
+    "start:token-vault": "nx run-many --target=serve --projects=token-vault-app,token-vault-proxy,mock-api",
     "test": "npm run test:unit && npm run test:integration && npm run test:e2e",
     "test:e2e": "nx affected:e2e --parallel 1 --max-parallel 1",
     "test:e2e:live": "nx run autoscript-suites:e2e --configuration=live",

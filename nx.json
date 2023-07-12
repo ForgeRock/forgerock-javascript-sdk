@@ -75,6 +75,7 @@
       "options": {
         "cacheableOperations": [
           "build",
+          "build-interceptor",
           "build-types",
           "bundle-types",
           "test",
