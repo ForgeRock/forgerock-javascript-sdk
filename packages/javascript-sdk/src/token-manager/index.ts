@@ -118,9 +118,12 @@ abstract class TokenManager {
     const verifier = PKCE.createVerifier();
     const state = PKCE.createState();
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    const { forceRenew, login, ...config } = options;
+    // so to not change the type of the above function
+    // we assign it here if its undefined or null.
+
+    const config = Object.assign({}, options);
+    delete config.forceRenew;
+    delete config.login;
 
     const authorizeUrlOptions = {
       ...config,
