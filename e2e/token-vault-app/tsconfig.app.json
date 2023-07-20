@@ -3,7 +3,7 @@
   "compilerOptions": {
     "composite": true,
     "outDir": "../../dist/out-tsc",
-    "types": ["node"],
+    "types": ["vite/client", "node"],
     "moduleResolution": "node"
   },
   "exclude": ["src/**/*.spec.ts", "src/**/*.test.ts"],

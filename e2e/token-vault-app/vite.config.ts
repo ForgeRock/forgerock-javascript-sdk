@@ -3,6 +3,17 @@ import { defineConfig } from 'vite';
 import viteTsConfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig({
+  build: {
+    minify: false,
+    rollupOptions: {
+      input: {
+        main: './e2e/token-vault-app/src/main.ts',
+      },
+      output: {
+        entryFileNames: 'main.js',
+      },
+    },
+  },
   server: {
     port: 5823,
     headers: {
@@ -11,19 +22,9 @@ export default defineConfig({
     },
     strictPort: true,
   },
-
   plugins: [
     viteTsConfigPaths({
       root: '../../',
     }),
   ],
-
-  worker: {
-    plugins: [
-      viteTsConfigPaths({
-        root: '../../',
-      }),
-    ],
-    format: 'es',
-  },
 });

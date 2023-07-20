@@ -12,7 +12,7 @@ const register = client({
     origin: 'http://localhost:5823',
   },
   interceptor: {
-    file: new URL('/src/interceptor.ts', import.meta.url).pathname,
+    file: new URL('/interceptor.js', import.meta.url).pathname,
     scope: '/',
   },
   proxy: {
@@ -40,16 +40,17 @@ const tokenStore = register.store();
 /** ****************************************************
  * START: SDK CONFIGURATION
  **************************************************** */
+console.log(`AM URL: ${import.meta.env.VITE_AM_URL}`);
 
 Config.set({
   clientId: 'CentralLoginOAuthClient',
   redirectUri: `${window.location.origin}`,
   scope: 'openid profile me.read',
   serverConfig: {
-    baseUrl: 'https://auth.example.com:9443/am',
+    baseUrl: import.meta.env.VITE_AM_URL,
     timeout: 5000,
   },
-  realmPath: 'root',
+  realmPath: import.meta.env.VITE_AM_REALM,
   tokenStore: {
     get: tokenStore.get,
     set: tokenStore.set,
@@ -84,12 +85,15 @@ function getById(id: string) {
   return document.getElementById(id) as HTMLElement;
 }
 // Buttons
-const fetchMockBtn = getById('fetchMockBtn');
+const fetchProtectedMockBtn = getById('fetchProtectedMockBtn');
+const fetchUnprotectedMockBtn = getById('fetchUnprotectedMockBtn');
 const fetchUserBtn = getById('fetchUserBtn');
 const hasTokensBtn = getById('hasTokensBtn');
 const refreshTokensBtn = getById('refreshTokensBtn');
 const loginBtn = getById('loginBtn');
 const logoutBtn = getById('logoutBtn');
+const unregisterInterceptorBtn = getById('unregisterInterceptorBtn');
+const destroyProxyBtn = getById('destroyProxyBtn');
 
 // Definition elements
 const loggedInEl = getById('loggedInDef');
@@ -115,33 +119,40 @@ const res = await (async () => {
 })();
 if (res.hasTokens) {
   loggedInEl.innerText = 'true';
-  hasTokensEl.innerText = 'true';
 }
 
 /** ****************************************************
  * ATTACH USER EVENT LISTENERS
  */
-fetchMockBtn.addEventListener('click', async (event) => {
+fetchProtectedMockBtn.addEventListener('click', async (event) => {
   await fetch('https://jsonplaceholder.typicode.com/todos');
 });
+
+fetchUnprotectedMockBtn.addEventListener('click', async (event) => {
+  await fetch('https://mockbin.org/request');
+});
+
 fetchUserBtn.addEventListener('click', async (event) => {
   const user = (await UserManager.getCurrentUser()) as any;
 
   userInfoEl.innerText = user?.name;
   console.log(user);
 });
+
 hasTokensBtn.addEventListener('click', async (event) => {
   const res = await tokenStore.has();
 
   hasTokensEl.innerText = String(res.hasTokens);
   console.log(res);
 });
+
 refreshTokensBtn.addEventListener('click', async (event) => {
   const res = await tokenStore.refresh();
 
   refreshTokensEl.innerText = String(res.refreshTokens);
   console.log(res);
 });
+
 loginBtn.addEventListener('click', async (event) => {
   console.log('Logging in...');
   await TokenManager.getTokens({
@@ -150,6 +161,7 @@ loginBtn.addEventListener('click', async (event) => {
     query: { acr_values: 'SpecificTree' },
   });
 });
+
 logoutBtn.addEventListener('click', async (event) => {
   // Not all endpoints are supported and will fail
   await FRUser.logout();
@@ -159,4 +171,14 @@ logoutBtn.addEventListener('click', async (event) => {
   refreshTokensEl.innerText = 'false';
   userInfoEl.innerText = 'n/a';
   console.log('Logged out');
+});
+
+unregisterInterceptorBtn.addEventListener('click', async (event) => {
+  await interceptor?.unregister();
+  console.log('Interceptor unregistered');
+});
+
+destroyProxyBtn.addEventListener('click', async (event) => {
+  (document.getElementById('token-vault') as HTMLDivElement).removeChild(proxy as Node);
+  console.log('Proxy destroyed');
 });

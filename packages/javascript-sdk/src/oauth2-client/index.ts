@@ -228,22 +228,26 @@ abstract class OAuth2Client {
     const tokens = await TokenStorage.get();
     const accessToken = tokens && tokens.accessToken;
 
+    const body: StringDict<string | undefined> = {
+      client_id: clientId,
+    };
+    // This is needed to support Token Vault; the SDK may not have the token locally
     if (accessToken) {
-      const init: RequestInit = {
-        body: stringify({ client_id: clientId, token: accessToken }),
-        credentials: 'include',
-        headers: new Headers({
-          'Content-Type': 'application/x-www-form-urlencoded',
-        }),
-        method: 'POST',
-      };
-      const response = await this.request('revoke', undefined, false, init, options);
-      if (!isOkOr4xx(response)) {
-        throw new Error(`Failed to revoke token; received ${response.status}`);
-      }
-      return response;
+      body.token = accessToken;
     }
-    return new Response();
+    const init: RequestInit = {
+      body: stringify(body),
+      credentials: 'include',
+      headers: new Headers({
+        'Content-Type': 'application/x-www-form-urlencoded',
+      }),
+      method: 'POST',
+    };
+    const response = await this.request('revoke', undefined, false, init, options);
+    if (!isOkOr4xx(response)) {
+      throw new Error(`Failed to revoke token; received ${response.status}`);
+    }
+    return response;
   }
 
   private static async request(
