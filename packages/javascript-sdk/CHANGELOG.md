@@ -1,5 +1,15 @@
 # Changelog
 
+## [4.1.2] - 2023-07-20
+
+Features:
+
+- Minor changes to prepare for an upcoming Token Vault release
+
+Fixes:
+
+- fix(javascript-sdk): get-tokens-default-destructure (360df9968d)
+
 ## [4.1.1] - 2023-06-29
 
 Features:
