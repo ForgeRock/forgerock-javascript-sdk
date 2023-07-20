@@ -248,7 +248,6 @@ abstract class OAuth2Client {
       throw new Error(`Failed to revoke token; received ${response.status}`);
     }
     return response;
-    return new Response();
   }
 
   private static async request(
