@@ -22,6 +22,7 @@ const config = [
           { src: 'packages/token-vault/package.json', dest: 'dist/packages/token-vault' },
           { src: 'packages/token-vault/LICENSE', dest: 'dist/packages/token-vault' },
           { src: 'packages/token-vault/README.md', dest: 'dist/packages/token-vault' },
+          { src: 'packages/token-vault/CHANGELOG.md', dest: 'dist/packages/token-vault' },
         ],
       }),
     ],
