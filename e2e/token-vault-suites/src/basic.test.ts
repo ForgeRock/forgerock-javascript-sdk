@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { asyncEvents } from './utils/async-events';
+import { asyncEvents } from '@forgerock/async-events';
 
 test('Test happy paths on test page', async ({ page }) => {
   const { clickButton, getTokens, navigate } = asyncEvents(page);

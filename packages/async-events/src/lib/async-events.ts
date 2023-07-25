@@ -1,6 +1,8 @@
-export function asyncEvents(page) {
+import { Expect, Page } from '@playwright/test';
+
+export function asyncEvents(page: Page) {
   return {
-    async clickButton(text, endpoint) {
+    async clickButton(text: string, endpoint: string) {
       if (!endpoint)
         throw new Error('Must provide endpoint argument, type string, e.g. "/authenticate"');
       await Promise.all([
@@ -8,7 +10,7 @@ export function asyncEvents(page) {
         page.getByRole('button', { name: text }).click(),
       ]);
     },
-    async clickLink(text, endpoint) {
+    async clickLink(text: string, endpoint: string) {
       if (!endpoint)
         throw new Error('Must provide endpoint argument, type string, e.g. "/authenticate"');
       await Promise.all([
@@ -16,7 +18,7 @@ export function asyncEvents(page) {
         page.getByRole('link', { name: text }).click(),
       ]);
     },
-    async getTokens(origin, clientId) {
+    async getTokens(origin: string, clientId: string) {
       const webStorage = await page.context().storageState();
 
       const originStorage = webStorage.origins.find((item) => item.origin === origin);
@@ -30,15 +32,18 @@ export function asyncEvents(page) {
         return null;
       }
       try {
+        if (!clientIdStorage) {
+          throw new Error('No client id storage');
+        }
         return JSON.parse(clientIdStorage.value);
       } catch (e) {
         return null;
       }
     },
-    async navigate(route) {
+    async navigate(route: string) {
       await page.goto(route, { waitUntil: 'networkidle' });
     },
-    async pressEnter(endpoint) {
+    async pressEnter(endpoint: string) {
       if (!endpoint)
         throw new Error('Must provide endpoint argument, type string, e.g. "/authenticate"');
       await Promise.all([
@@ -46,7 +51,7 @@ export function asyncEvents(page) {
         page.keyboard.press('Enter'),
       ]);
     },
-    async pressSpacebar(endpoint) {
+    async pressSpacebar(endpoint: string) {
       if (!endpoint)
         throw new Error('Must provide endpoint argument, type string, e.g. "/authenticate"');
       await Promise.all([
@@ -57,7 +62,7 @@ export function asyncEvents(page) {
   };
 }
 
-export async function verifyUserInfo(page, expect, type) {
+export async function verifyUserInfo(page: Page, expect: Expect, type: string) {
   const emailString = type === 'register' ? 'Email: test@auto.com' : 'Email: demo@user.com';
   const nameString = 'Full name: Demo User';
 

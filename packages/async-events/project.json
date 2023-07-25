@@ -1,0 +1,38 @@
+{
+  "name": "async-events",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/async-events/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/packages/async-events",
+        "main": "packages/async-events/src/index.ts",
+        "tsConfig": "packages/async-events/tsconfig.lib.json",
+        "assets": ["packages/async-events/*.md"]
+      }
+    },
+    "publish": {
+      "command": "node tools/scripts/publish.mjs async-events {args.ver} {args.tag}",
+      "dependsOn": ["build"]
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/async-events/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nx/vite:test",
+      "outputs": ["coverage/packages/async-events"],
+      "options": {
+        "passWithNoTests": true,
+        "reportsDirectory": "../../coverage/packages/async-events"
+      }
+    }
+  },
+  "tags": ["scope:package"]
+}

@@ -15,9 +15,9 @@ jobs:
       - uses: actions/setup-node@v3
         id: cache
         with:
-          node-version: '18.12.1'
+          node-version-file: '.node-version'
           cache: 'npm'
-          cache-dependency-path: '**/package-lock.json'
+      - run: npm install npm@9 -g
       - name: Setup custom host for sdkapp.example.com
         run: sudo echo "127.0.0.1 sdkapp.example.com auth.example.com api.example.com user.example.com" | sudo tee -a /etc/hosts
       - name: npm install
@@ -31,8 +31,7 @@ jobs:
       - name: Derive appropriate SHAs for base and head for `nx affected` commands
         uses: nrwl/nx-set-shas@v2
         with:
-          main-branch-name: 'develop'
-      - run: npm install @nrwl/nx-cloud
+          main-branch-name: ${{ github.base_ref }} # e.g. main or develop
       - run: npx nx-cloud start-ci-run
 
       - run: npx nx affected --t build --parallel --max-parallel=3
@@ -40,18 +39,21 @@ jobs:
       - run: npx nx affected --t test --parallel --max-parallel=3
       - run: npx nx affected --t test --configuration=integration
       - run: npx nx affected --t e2e --parallel 1 --exclude token-vault-suites
+        env:
+          VITE_AM_CLIENT_ID: ${{ secrets.VITE_AM_CLIENT_ID }}
+          VITE_AM_URL: ${{ secrets.VITE_AM_URL }}
+          VITE_AM_REALM: ${{ secrets.VITE_AM_REALM }}
       # It's important that we always run this step, otherwise in the case of any failures in preceding non-Nx steps, the agents will keep running and waste billable minutes
       - name: Stop All Agents
         if: ${{ always() }}
         run: npx nx-cloud stop-all-agents
-
-      - name: 'Artifacts'
-        uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v3
+        if: always()
         with:
-          retention-days: 5
-          if-no-files-found: ignore
           path: |
-            ${{ github.workspace }}/e2e/autoscript-suites/test-results
+            ${{ github.workspace}}/e2e/token-vault-suites/test-results/*
+            ${{github.workspace}}/e2e/autoscript-suites/test-results/*
+          retention-days: 30
       - name: Slack Notify
         id: slack
         uses: slackapi/slack-github-action@v1.18.0
