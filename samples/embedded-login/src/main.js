@@ -63,26 +63,26 @@ const showUser = (user) => {
 };
 
 const getStage = (step) => {
-  // Check if the step contains callbacks for capturing username and password
-  const usernameCallbacks = step.getCallbacksOfType('NameCallback');
-  const passwordCallbacks = step.getCallbacksOfType('PasswordCallback');
-
-  if (usernameCallbacks.length && passwordCallbacks.length) {
+  console.log(step.getStage);
+  if (step.getStage() == 'UsernamePassword') {
     return 'UsernamePassword';
   }
-
-  return undefined;
 };
 
 // Display and bind the handler for this stage
 const handleStep = async (step) => {
   switch (step.type) {
     case 'LoginSuccess': {
-      // If we have a session token, get user information
-      const sessionToken = step.getSessionToken();
-      const tokens = await forgerock.TokenManager.getTokens();
-      const user = await forgerock.UserManager.getCurrentUser();
-      return showUser(user);
+      // If a goto URL param was captured, then redirect as this is a Custom Login Page flow
+      if (goto != null) {
+        window.location.replace(goto);
+      } else {
+        // If we have a session token, get user information
+        const sessionToken = step.getSessionToken();
+        const tokens = await forgerock.TokenManager.getTokens();
+        const user = await forgerock.UserManager.getCurrentUser();
+        return showUser(user);
+      }
     }
 
     case 'LoginFailure': {
@@ -121,6 +121,13 @@ const logout = async () => {
     console.error(error);
   }
 };
+
+/**
+ * Check URL for query parameters
+ */
+const url = new URL(document.location);
+const params = url.searchParams;
+const goto = params.get('goto');
 
 // Begin the login flow
 nextStep();
