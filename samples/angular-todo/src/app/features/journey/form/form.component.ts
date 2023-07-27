@@ -10,9 +10,15 @@
 
 import { OnInit } from '@angular/core';
 import { Component, Input } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from '../../../../environments/environment';
-import type { FRLoginFailure, FRLoginSuccess, FRStep } from '@forgerock/javascript-sdk';
+import type {
+  FRLoginFailure,
+  FRLoginSuccess,
+  FRStep,
+  IdPValue,
+  SelectIdPCallback,
+} from '@forgerock/javascript-sdk';
 import { CallbackType, FRAuth, TokenManager, UserManager } from '@forgerock/javascript-sdk';
 import { UserService } from '../../../services/user.service';
 
@@ -64,9 +70,18 @@ export class FormComponent implements OnInit {
    */
   tree?: string;
 
-  constructor(private router: Router, public userService: UserService) {}
+  identityProviders: IdPValue[];
+  code: string;
+  state: string;
 
+  constructor(
+    private router: Router,
+    public userService: UserService,
+    private route: ActivatedRoute,
+  ) {}
   ngOnInit(): void {
+    this.code = this.route.snapshot.queryParamMap.get('code');
+    this.state = this.route.snapshot.queryParamMap.get('state');
     this.setConfigForAction(this.action);
     this.nextStep();
   }
@@ -86,8 +101,26 @@ export class FormComponent implements OnInit {
        * Details: This calls the next method with the previous step, expecting
        * the next step to be returned, or a success or failure.
        ********************************************************************* */
+      const selectIdCallback = step?.callbacks.find(
+        (cb) => cb.payload.type === 'SelectIdPCallback',
+      ) as SelectIdPCallback;
 
-      const nextStep = await FRAuth.next(step, { tree: this.tree });
+      if (selectIdCallback) {
+        const nameCallBacksInputs = step?.payload.callbacks.find(
+          (cb) => cb.type === 'NameCallback',
+        )?.input;
+        const idToken2Input = nameCallBacksInputs?.find((input) => input.name === 'IDToken2').value;
+
+        if (this.isIdentityProviderLogin(selectIdCallback) && idToken2Input !== '') {
+          selectIdCallback.payload.input[0].value = 'localAuthentication';
+        }
+      }
+      let nextStep;
+      if (this.code && this.state) {
+        nextStep = await FRAuth.resume(window.location.href);
+      } else {
+        nextStep = await FRAuth.next(step, { tree: this.tree });
+      }
 
       /** *******************************************************************
        * SDK INTEGRATION POINT
@@ -164,9 +197,9 @@ export class FormComponent implements OnInit {
    */
   handleStep(step?: FRStep) {
     this.step = step;
-
     const selectIdCallback = step.callbacks.find((cb) => cb.payload.type === 'SelectIdPCallback');
-    if (selectIdCallback && selectIdCallback.payload.input[0].value === '') {
+    const callBackInputValue = selectIdCallback?.payload.input[0].value as string;
+    if (selectIdCallback && callBackInputValue === '') {
       selectIdCallback.payload.input[0].value = 'localAuthentication';
     }
     const redirectCallback = step.callbacks.find(
@@ -206,5 +239,13 @@ export class FormComponent implements OnInit {
         break;
       }
     }
+  }
+
+  isIdentityProviderLogin(callback: SelectIdPCallback): boolean {
+    return callback
+      ?.getProviders()
+      .filter((provider) => provider.provider !== 'localAuthentication')
+      ? true
+      : false;
   }
 }

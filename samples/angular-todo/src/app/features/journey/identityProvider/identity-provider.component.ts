@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import FRAuth from 'packages/javascript-sdk/src/fr-auth';
 import SelectIdPCallback, {
   IdPValue,
 } from 'packages/javascript-sdk/src/fr-auth/callbacks/select-idp-callback';
@@ -20,6 +19,8 @@ export class IdentityProviderComponent implements OnInit {
    */
   @Input() name?: string;
 
+  @Output() updatedCallback = new EventEmitter<string>();
+
   identityProviders: IdPValue[];
 
   ngOnInit(): void {
@@ -29,7 +30,7 @@ export class IdentityProviderComponent implements OnInit {
   }
 
   onSetProvider(provider: string): void {
-    this.callback.setProvider(provider);
+    this.updatedCallback.emit(provider);
   }
 
   isGoogleIdP(idP: string): boolean {

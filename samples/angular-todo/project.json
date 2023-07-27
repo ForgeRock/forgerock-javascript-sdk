@@ -9,7 +9,7 @@
       "command": "node samples/angular-todo/set-env.mjs"
     },
     "build": {
-      "executor": "@angular-devkit/build-angular:browser-esbuild",
+      "executor": "@nx/angular:webpack-browser",
       "outputs": ["{options.outputPath}"],
       "dependsOn": ["config"],
       "options": {

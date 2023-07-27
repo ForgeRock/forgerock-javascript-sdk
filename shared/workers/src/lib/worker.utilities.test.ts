@@ -21,7 +21,6 @@ test('generateUrlsToIntercept returns the expected array of URLs', () => {
     'https://openam.forgerock.com/am/oauth2/realms/root/connect/endSession?',
     'https://openam.forgerock.com/am/oauth2/realms/root/token/revoke',
     'https://openam.forgerock.com/am/oauth2/realms/root/userinfo',
-    'https://openam.forgerock.com/am/json/realms/root/sessions',
   ];
 
   expect(generateUrlsToIntercept(config)).toEqual(expectedUrls);
@@ -48,7 +47,6 @@ test('generateUrlsToIntercept returns the expected array of URLs with /alpha as 
     'https://openam.forgerock.com/am/oauth2/realms/root/realms/alpha/connect/endSession?',
     'https://openam.forgerock.com/am/oauth2/realms/root/realms/alpha/token/revoke',
     'https://openam.forgerock.com/am/oauth2/realms/root/realms/alpha/userinfo',
-    'https://openam.forgerock.com/am/json/realms/root/realms/alpha/sessions',
   ];
 
   expect(generateUrlsToIntercept(config)).toEqual(expectedUrls);

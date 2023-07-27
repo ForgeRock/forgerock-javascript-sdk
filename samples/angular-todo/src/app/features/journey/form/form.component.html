@@ -162,7 +162,7 @@ of the MIT license. See the LICENSE file for details.
                 *ngSwitchCase="'SelectIdPCallback'"
                 [callback]="$any(callback)"
                 [name]="callback?.payload?.input?.[0]?.name"
-                (updatedCallback)="$any(callback).setIdentityProvider($event)"
+                (updatedCallback)="$any(callback).setProvider($event)"
               >
               </app-identity-provider>
 

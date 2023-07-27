@@ -3,7 +3,7 @@ export const environment = {
   REALM_PATH: 'alpha',
   WEB_OAUTH_CLIENT: 'WebOAuthClient',
   JOURNEY_LOGIN: 'google-login-web',
-  JOURNEY_REGISTER: 'Register',
+  JOURNEY_REGISTER: 'Registration',
   API_URL: 'http://localhost:9443',
   production: 'development',
 };

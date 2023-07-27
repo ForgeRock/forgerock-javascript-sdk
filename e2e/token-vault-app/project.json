@@ -7,10 +7,12 @@
   "targets": {
     "build": {
       "executor": "@nx/vite:build",
+      "dependsOn": ["token-vault-app:build-interceptor"],
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
-        "outputPath": "dist/e2e/token-vault-app"
+        "emptyOutDir": false,
+        "outputPath": "e2e/token-vault-app/public/"
       },
       "configurations": {
         "development": {
@@ -21,8 +23,18 @@
         }
       }
     },
+    "build-interceptor": {
+      "executor": "@nx/vite:build",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "configFile": "e2e/token-vault-app/vite.interceptor.config.ts",
+        "emptyOutDir": false,
+        "outputPath": "e2e/token-vault-app/public/"
+      }
+    },
     "serve": {
       "executor": "@nx/vite:dev-server",
+      "dependsOn": ["token-vault-app:build"],
       "defaultConfiguration": "development",
       "options": {
         "buildTarget": "token-vault-app:build",

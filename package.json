@@ -11,7 +11,7 @@
     "build:reactjs-todo": "nx run reactjs-todo:build",
     "build:angular-todo": "nx run angular-todo:build",
     "changeset": "changeset",
-    "clean": "shx rm -rf ./{coverage,bundles,dist,docs,lib,lib-esm,node_modules,tests,tmp,todos,users}/ ./samples/*/node_modules/ ./samples/_static/js/*/ ./samples/todo-api/{todos,users} ./packages/*/{bundles,lib,lib-esm}/ && git clean -fX -e \"!.env\"",
+    "clean": "shx rm -rf ./{coverage,bundles,dist,docs,lib,lib-esm,node_modules,tests,tmp,todos,users}/ ./samples/*/node_modules/ ./samples/_static/js/*/ ./samples/todo-api/{todos,users} ./packages/*/{bundles,lib,lib-esm}/ && git clean -fX -e \"!.env*\"",
     "commit": "git cz",
     "docs": "nx affected --target=typedoc",
     "format:staged": "pretty-quick --staged",
@@ -27,6 +27,7 @@
     "start:angular-todo": "nx run angular-todo:config && nx run-many --target=serve --projects=angular-todo,todo-api",
     "start:server": "nx run mock-api:serve",
     "start:server:live": "NODE_ENV=LIVE nx run mock-api:serve:live",
+    "start:token-vault": "nx run-many --target=serve --projects=token-vault-app,token-vault-proxy,mock-api",
     "test": "npm run test:unit && npm run test:integration && npm run test:e2e",
     "test:e2e": "nx affected:e2e --parallel 1 --max-parallel 1",
     "test:e2e:live": "nx run autoscript-suites:e2e --configuration=live",
@@ -122,23 +123,22 @@
     "typedoc-theme-hierarchy": "^3.2.0",
     "typescript": "5.0.4",
     "typescript-transform-paths": "^3.4.6",
-    "vite": "^4.3.4",
-    "vite-plugin-dts": "~1.7.1",
+    "verdaccio": "^5.0.4",
+    "vite": "^4.3.9",
+    "vite-plugin-dts": "2.3.0",
     "vite-plugin-eslint": "^1.8.1",
     "vite-tsconfig-paths": "^4.0.2",
     "vitest": "^0.31.0",
     "webpack": "^5.64.1",
     "webpack-cli": "^4.7.2"
   },
-  "workspaces": [
-    "e2e/*",
-    "packages/*",
-    "samples/*",
-    "shared/*"
-  ],
+  "workspaces": ["e2e/*", "packages/*", "samples/*", "shared/*"],
   "config": {
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
+  },
+  "nx": {
+    "includedScripts": []
   }
 }

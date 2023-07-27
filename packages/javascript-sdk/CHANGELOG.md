@@ -1,258 +1,44 @@
 # Changelog
 
-This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
+## [4.1.2] - 2023-07-20
 
-## [4.0.0-beta.13](https://github.com/ForgeRock/forgerock-javascript-sdk/compare/javascript-sdk-v4.0.0-beta.12...javascript-sdk-v4.0.0-beta.13) (2023-05-19)
+Features:
 
-## [4.0.0-beta.11](https://github.com/ForgeRock/forgerock-javascript-sdk/compare/javascript-sdk-v4.0.0-beta.10...javascript-sdk-v4.0.0-beta.11) (2023-05-17)
+- Minor changes to prepare for an upcoming Token Vault release
 
-## [4.0.0-beta.10](https://github.com/ForgeRock/forgerock-javascript-sdk/compare/javascript-sdk-v4.0.0-beta.9...javascript-sdk-v4.0.0-beta.10) (2023-05-17)
+Fixes:
 
+- fix(javascript-sdk): get-tokens-default-destructure (360df9968d)
 
-### Bug Fixes
+## [4.1.1] - 2023-06-29
 
-* **javascript-sdk:** fix-export-maps-again ([0535537](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/053553738201dbb4ed858f2b6054716d48bc4ab6))
+Features:
 
-## [4.0.0-beta.9](https://github.com/ForgeRock/forgerock-javascript-sdk/compare/javascript-sdk-v4.0.0-beta.8...javascript-sdk-v4.0.0-beta.9) (2023-05-17)
+- Transaction Authorization advices information adds support for JSON, HTTPClient modified to support this change
 
+Fixes:
 
-### Bug Fixes
+- Improved types when in strict mode of Typescript
 
-* **javascript-sdk:** versioning-correctly ([58b45bc](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/58b45bcb70c71d6259f9f7fd05e0c9ef0b879bb3))
+## [4.0.0] - 2023-05-23
 
-## [4.0.0-beta.11](https://github.com/ForgeRock/forgerock-javascript-sdk/compare/javascript-sdk-v4.0.0-beta.10...javascript-sdk-v4.0.0-beta.11) (2023-05-17)
+Breaking Changes:
 
-## [4.0.0-beta.10](https://github.com/ForgeRock/forgerock-javascript-sdk/compare/javascript-sdk-v4.0.0-beta.9...javascript-sdk-v4.0.0-beta.10) (2023-05-17)
+- Dropped UMD bundle support, if you would like to use a UMD bundle it's available in 3.4 or you can produce your own by git cloning the repo and setting up the ability to do so.
+- Removed Event and FRUI modules
 
-## [4.0.0-beta.9](https://github.com/ForgeRock/forgerock-javascript-sdk/compare/javascript-sdk-v4.0.0-beta.8...javascript-sdk-v4.0.0-beta.9) (2023-05-17)
+Features:
 
-## [4.0.0-beta.8](https://github.com/ForgeRock/forgerock-javascript-sdk/compare/javascript-sdk-v4.0.0-beta.7...javascript-sdk-v4.0.0-beta.8) (2023-05-17)
+- Updated the esmodule bundle
+- Added interface to register a name to a webauthn device
 
-### Bug Fixes
+Fixes:
 
-- **javascript-sdk:** update-pacakge-automatically ([ec16000](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/ec16000f55cd578c91a8d587bcaebb485304698c))
+- Fixed Policy Types so that a PolicyRequirement array is outputted from `failedPolicies`
 
-## [4.0.0-beta.7](https://github.com/ForgeRock/forgerock-javascript-sdk/compare/javascript-sdk-v4.0.0-beta.6...javascript-sdk-v4.0.0-beta.7) (2023-05-17)
+Infrastructure:
 
-### Bug Fixes
-
-- **javascript-sdk:** export-map-update ([d12b90f](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/d12b90fea51070eccfec2329e539121eb90af909))
-
-## [4.0.0-beta.6](https://github.com/ForgeRock/forgerock-javascript-sdk/compare/javascript-sdk-v4.0.0-beta.5...javascript-sdk-v4.0.0-beta.6) (2023-05-17)
-
-### Bug Fixes
-
-- **javascript-sdk:** types-broken ([1240404](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/12404043f616c318031a24434a264e4276d767f6))
-
-## [4.0.0-beta.5](https://github.com/ForgeRock/forgerock-javascript-sdk/compare/javascript-sdk-v4.0.0-beta.4...javascript-sdk-v4.0.0-beta.5) (2023-05-17)
-
-### Bug Fixes
-
-- **javascript-sdk:** release ([9f144a7](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/9f144a7ad14c3ec61b0ad96d76e5d3e0a65792ff))
-
-## [4.0.0-beta.5](https://github.com/ForgeRock/forgerock-javascript-sdk/compare/javascript-sdk-v4.0.0-beta.4...javascript-sdk-v4.0.0-beta.5) (2023-05-17)
-
-## [4.0.0-beta.4](https://github.com/ForgeRock/forgerock-javascript-sdk/compare/javascript-sdk-v4.0.0-beta.3...javascript-sdk-v4.0.0-beta.4) (2023-05-17)
-
-### ⚠ BREAKING CHANGES
-
-- **javascript-sdk:** refactor token storage and config timeout
-
-### Features
-
-- **javascript-sdk:** register-device-name ([f845505](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/f845505d68e648bf3e6dd8068f2abb8133c7c304))
-
-### Bug Fixes
-
-- angular-sample & upgrade ([62f66f6](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/62f66f6b261c379fc5a710c577158ade15e377b7))
-- **javascript-sdk:** fix-changelog ([47d954b](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/47d954b1ba9eb4dd33b51c1ebc89d1223bb626c9))
-- **javascript-sdk:** fix-policy-types ([5a3ac2a](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/5a3ac2a3a80b4dff56fc0554b72bb646544b826d))
-- **javascript-sdk:** fix-publish-readme-and-dist ([2a06503](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/2a065035a67babd263dd896823cf46eb942ccbd0))
-- **javascript-sdk:** release process ([9f1b3a3](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/9f1b3a372d5d89c11d17122e9e749d87ed78d55b))
-- **javascript-sdk:** release-process ([b0ba262](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/b0ba2625a5637d517201e98342979ae0f364c254))
-- **javascript-sdk:** release-process ([baabf80](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/baabf808ae11389b892a84e5add1fae7b8a37efb))
-- **javascript-sdk:** validated-create-password-callback-json ([f619062](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/f619062ee13b05dfc29c3b3dcdedd14bb9635a0e))
-- **javascript-sdk:** validated-user-name-policies ([b08fcaa](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/b08fcaaf2c3e2498b5e73e1d6aed2751bb026dec))
-- release-failure-packages ([22ded72](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/22ded728308d1513dc53a6d198e70c09f9d2008b))
-- release-process-changing-tool ([42d3271](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/42d327161f6c660e3c8b533801386ae5a8590fa2))
-
-### Miscellaneous Chores
-
-- **javascript-sdk:** refactor token storage and config timeout ([23f8e4c](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/23f8e4c811c7a61ce51b49de699f2788a8d3e279))
-
-## [4.0.0-beta.1](https://github.com/ForgeRock/forgerock-javascript-sdk/compare/javascript-sdk-v3.4.0...javascript-sdk-v4.0.0-beta.1) (2023-05-16)
-
-### ⚠ BREAKING CHANGES
-
-- **javascript-sdk:** refactor token storage and config timeout
-- **javascript-sdk:** remove the frui and event classes / folders and
-  references.
-- **javascript-sdk:** for some reason breaking changes arent triggered by
-  semver so i'm auto triggering it here
-- **javascript-sdk:** commit 48cc494 didn't get picked up for breaking
-  change, unsure why so i'm adding it here. there isn o breaking change in
-  this commit
-- **javascript-sdk:** remove the ability to use 'modern' as a means of making calls. fetch
-  complicates the auth process too much for the value it provides. we've
-  opted to remove this support property, automatically defaulting to the
-  iframe.
-
-### Features
-
-- **javascript-sdk:** register-device-name ([f845505](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/f845505d68e648bf3e6dd8068f2abb8133c7c304))
-
-### Bug Fixes
-
-- angular-sample & upgrade ([62f66f6](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/62f66f6b261c379fc5a710c577158ade15e377b7))
-- **javascript-sdk:** correct code / type in getTokens call ([abd3e66](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/abd3e663286b8e830f568cce59fa652c16abbbb1))
-- **javascript-sdk:** fix-changelog ([47d954b](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/47d954b1ba9eb4dd33b51c1ebc89d1223bb626c9))
-- **javascript-sdk:** fix-policy-types ([5a3ac2a](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/5a3ac2a3a80b4dff56fc0554b72bb646544b826d))
-- **javascript-sdk:** fix-publish-readme-and-dist ([2a06503](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/2a065035a67babd263dd896823cf46eb942ccbd0))
-- **javascript-sdk:** fix-type-of-get-type ([56a0822](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/56a08229f71acfcf7a87e129fb55d54eda44095a))
-- **javascript-sdk:** package-json ([9c03c28](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/9c03c2874cdd552f4f21236d42bb2b783f6e9be6))
-- **javascript-sdk:** release process ([9f1b3a3](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/9f1b3a372d5d89c11d17122e9e749d87ed78d55b))
-- **javascript-sdk:** release-process ([b0ba262](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/b0ba2625a5637d517201e98342979ae0f364c254))
-- **javascript-sdk:** release-process ([baabf80](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/baabf808ae11389b892a84e5add1fae7b8a37efb))
-- **javascript-sdk:** remove-modules-unneeded ([bd2e1fe](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/bd2e1feb2ff926ff9c9eb984907c2d2bd9cc8027))
-- **javascript-sdk:** remove-support-property ([48cc494](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/48cc4947105ce1b0559cd988913758f8eb17cecb))
-- **javascript-sdk:** removes-rogue-package-updates-infra ([77dd8da](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/77dd8da94074591f72e4767de66d035383d4b485))
-- **javascript-sdk:** use-prompt-none ([c1f4b49](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/c1f4b49f3dcf76dbb5fe40a7c0819106ba494510))
-- **javascript-sdk:** validated-create-password-callback-json ([f619062](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/f619062ee13b05dfc29c3b3dcdedd14bb9635a0e))
-- **javascript-sdk:** validated-user-name-policies ([b08fcaa](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/b08fcaaf2c3e2498b5e73e1d6aed2751bb026dec))
-- release-failure-packages ([22ded72](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/22ded728308d1513dc53a6d198e70c09f9d2008b))
-- remove-beta ([2f8299e](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/2f8299e339ebf48809fd2f9433f8429fb12e3885))
-
-### Miscellaneous Chores
-
-- **javascript-sdk:** pr comments ([f9e2622](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/f9e2622c9a99407814cbf721cae2f179f95dc4f6))
-- **javascript-sdk:** refactor token storage and config timeout ([23f8e4c](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/23f8e4c811c7a61ce51b49de699f2788a8d3e279))
-
-## [4.0.0-beta.1](https://github.com/ForgeRock/forgerock-javascript-sdk/compare/javascript-sdk-v3.4.0...javascript-sdk-v4.0.0-beta.1) (2023-05-16)
-
-### ⚠ BREAKING CHANGES
-
-- **javascript-sdk:** refactor token storage and config timeout
-- **javascript-sdk:** remove the frui and event classes / folders and
-  references.
-- **javascript-sdk:** for some reason breaking changes arent triggered by
-  semver so i'm auto triggering it here
-- **javascript-sdk:** commit 48cc494 didn't get picked up for breaking
-  change, unsure why so i'm adding it here. there isn o breaking change in
-  this commit
-- **javascript-sdk:** remove the ability to use 'modern' as a means of making calls. fetch
-  complicates the auth process too much for the value it provides. we've
-  opted to remove this support property, automatically defaulting to the
-  iframe.
-
-### Features
-
-- **javascript-sdk:** register-device-name ([f845505](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/f845505d68e648bf3e6dd8068f2abb8133c7c304))
-
-### Bug Fixes
-
-- angular-sample & upgrade ([62f66f6](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/62f66f6b261c379fc5a710c577158ade15e377b7))
-- **javascript-sdk:** correct code / type in getTokens call ([abd3e66](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/abd3e663286b8e830f568cce59fa652c16abbbb1))
-- **javascript-sdk:** fix-changelog ([47d954b](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/47d954b1ba9eb4dd33b51c1ebc89d1223bb626c9))
-- **javascript-sdk:** fix-policy-types ([5a3ac2a](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/5a3ac2a3a80b4dff56fc0554b72bb646544b826d))
-- **javascript-sdk:** fix-publish-readme-and-dist ([2a06503](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/2a065035a67babd263dd896823cf46eb942ccbd0))
-- **javascript-sdk:** fix-type-of-get-type ([56a0822](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/56a08229f71acfcf7a87e129fb55d54eda44095a))
-- **javascript-sdk:** package-json ([9c03c28](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/9c03c2874cdd552f4f21236d42bb2b783f6e9be6))
-- **javascript-sdk:** release process ([9f1b3a3](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/9f1b3a372d5d89c11d17122e9e749d87ed78d55b))
-- **javascript-sdk:** release-process ([b0ba262](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/b0ba2625a5637d517201e98342979ae0f364c254))
-- **javascript-sdk:** release-process ([baabf80](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/baabf808ae11389b892a84e5add1fae7b8a37efb))
-- **javascript-sdk:** remove-modules-unneeded ([bd2e1fe](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/bd2e1feb2ff926ff9c9eb984907c2d2bd9cc8027))
-- **javascript-sdk:** remove-support-property ([48cc494](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/48cc4947105ce1b0559cd988913758f8eb17cecb))
-- **javascript-sdk:** removes-rogue-package-updates-infra ([77dd8da](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/77dd8da94074591f72e4767de66d035383d4b485))
-- **javascript-sdk:** use-prompt-none ([c1f4b49](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/c1f4b49f3dcf76dbb5fe40a7c0819106ba494510))
-- **javascript-sdk:** validated-create-password-callback-json ([f619062](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/f619062ee13b05dfc29c3b3dcdedd14bb9635a0e))
-- **javascript-sdk:** validated-user-name-policies ([b08fcaa](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/b08fcaaf2c3e2498b5e73e1d6aed2751bb026dec))
-- release-failure-packages ([22ded72](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/22ded728308d1513dc53a6d198e70c09f9d2008b))
-- remove-beta ([2f8299e](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/2f8299e339ebf48809fd2f9433f8429fb12e3885))
-
-### Miscellaneous Chores
-
-- **javascript-sdk:** pr comments ([f9e2622](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/f9e2622c9a99407814cbf721cae2f179f95dc4f6))
-- **javascript-sdk:** refactor token storage and config timeout ([23f8e4c](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/23f8e4c811c7a61ce51b49de699f2788a8d3e279))
-
-## [4.0.0-beta.1](https://github.com/ForgeRock/forgerock-javascript-sdk/compare/javascript-sdk-v3.4.0...javascript-sdk-v4.0.0-beta.1) (2023-05-16)
-
-### ⚠ BREAKING CHANGES
-
-- **javascript-sdk:** refactor token storage and config timeout
-- **javascript-sdk:** remove the frui and event classes / folders and
-  references.
-- **javascript-sdk:** for some reason breaking changes arent triggered by
-  semver so i'm auto triggering it here
-- **javascript-sdk:** commit 48cc494 didn't get picked up for breaking
-  change, unsure why so i'm adding it here. there isn o breaking change in
-  this commit
-- **javascript-sdk:** remove the ability to use 'modern' as a means of making calls. fetch
-  complicates the auth process too much for the value it provides. we've
-  opted to remove this support property, automatically defaulting to the
-  iframe.
-
-### Features
-
-- **javascript-sdk:** register-device-name ([f845505](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/f845505d68e648bf3e6dd8068f2abb8133c7c304))
-
-### Bug Fixes
-
-- angular-sample & upgrade ([62f66f6](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/62f66f6b261c379fc5a710c577158ade15e377b7))
-- **javascript-sdk:** correct code / type in getTokens call ([abd3e66](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/abd3e663286b8e830f568cce59fa652c16abbbb1))
-- **javascript-sdk:** fix-changelog ([47d954b](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/47d954b1ba9eb4dd33b51c1ebc89d1223bb626c9))
-- **javascript-sdk:** fix-policy-types ([5a3ac2a](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/5a3ac2a3a80b4dff56fc0554b72bb646544b826d))
-- **javascript-sdk:** fix-publish-readme-and-dist ([2a06503](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/2a065035a67babd263dd896823cf46eb942ccbd0))
-- **javascript-sdk:** fix-type-of-get-type ([56a0822](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/56a08229f71acfcf7a87e129fb55d54eda44095a))
-- **javascript-sdk:** package-json ([9c03c28](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/9c03c2874cdd552f4f21236d42bb2b783f6e9be6))
-- **javascript-sdk:** release process ([9f1b3a3](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/9f1b3a372d5d89c11d17122e9e749d87ed78d55b))
-- **javascript-sdk:** release-process ([b0ba262](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/b0ba2625a5637d517201e98342979ae0f364c254))
-- **javascript-sdk:** release-process ([baabf80](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/baabf808ae11389b892a84e5add1fae7b8a37efb))
-- **javascript-sdk:** remove-modules-unneeded ([bd2e1fe](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/bd2e1feb2ff926ff9c9eb984907c2d2bd9cc8027))
-- **javascript-sdk:** remove-support-property ([48cc494](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/48cc4947105ce1b0559cd988913758f8eb17cecb))
-- **javascript-sdk:** removes-rogue-package-updates-infra ([77dd8da](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/77dd8da94074591f72e4767de66d035383d4b485))
-- **javascript-sdk:** use-prompt-none ([c1f4b49](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/c1f4b49f3dcf76dbb5fe40a7c0819106ba494510))
-- **javascript-sdk:** validated-create-password-callback-json ([f619062](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/f619062ee13b05dfc29c3b3dcdedd14bb9635a0e))
-- **javascript-sdk:** validated-user-name-policies ([b08fcaa](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/b08fcaaf2c3e2498b5e73e1d6aed2751bb026dec))
-- release-failure-packages ([22ded72](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/22ded728308d1513dc53a6d198e70c09f9d2008b))
-- remove-beta ([2f8299e](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/2f8299e339ebf48809fd2f9433f8429fb12e3885))
-
-### Miscellaneous Chores
-
-- **javascript-sdk:** pr comments ([f9e2622](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/f9e2622c9a99407814cbf721cae2f179f95dc4f6))
-- **javascript-sdk:** refactor token storage and config timeout ([23f8e4c](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/23f8e4c811c7a61ce51b49de699f2788a8d3e279))
-
-# [4.0.0-beta.4](https://github.com/ForgeRock/forgerock-javascript-sdk/compare/v4.0.0-beta.3...v4.0.0-beta.4) (2023-04-13)
-
-### Bug Fixes
-
-- **javascript-sdk:** fix-publish-readme-and-dist ([2a06503](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/2a065035a67babd263dd896823cf46eb942ccbd0))
-
-# [4.0.0-beta.4](https://github.com/ForgeRock/forgerock-javascript-sdk/compare/v4.0.0-beta.3...v4.0.0-beta.4) (2023-04-12)
-
-### Bug Fixes
-
-- **javascript-sdk:** fix-publish-readme-and-dist ([2a06503](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/2a065035a67babd263dd896823cf46eb942ccbd0))
-
-# [4.0.0-beta.3](https://github.com/ForgeRock/forgerock-javascript-sdk/compare/v4.0.0-beta.2...v4.0.0-beta.3) (2023-04-12)
-
-### Bug Fixes
-
-- **javascript-sdk:** fix-policy-types ([5a3ac2a](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/5a3ac2a3a80b4dff56fc0554b72bb646544b826d))
-- **javascript-sdk:** validated-create-password-callback-json ([f619062](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/f619062ee13b05dfc29c3b3dcdedd14bb9635a0e))
-- **javascript-sdk:** validated-user-name-policies ([b08fcaa](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/b08fcaaf2c3e2498b5e73e1d6aed2751bb026dec))
-
-# [4.0.0-beta.2](https://github.com/ForgeRock/forgerock-javascript-sdk/compare/v4.0.0-beta.1...v4.0.0-beta.2) (2023-04-12)
-
-### Bug Fixes
-
-- **javascript-sdk:** removes-rogue-package-updates-infra ([77dd8da](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/77dd8da94074591f72e4767de66d035383d4b485))
-
-- fix(javascript-sdk)!: remove-modules-unneeded ([bd2e1fe](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/bd2e1feb2ff926ff9c9eb984907c2d2bd9cc8027))
-
-### BREAKING CHANGES
-
-- remove the frui and event classes / folders and
-  references.
+- Updated tags in github to be prefixed with package name
 
 # Changelog
 
