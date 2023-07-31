@@ -6,7 +6,6 @@ import SelectIdPCallback, {
 @Component({
   selector: 'app-identity-provider',
   templateUrl: './identity-provider.component.html',
-  styleUrls: ['./identity-provider.component.css'],
 })
 export class IdentityProviderComponent implements OnInit {
   /**

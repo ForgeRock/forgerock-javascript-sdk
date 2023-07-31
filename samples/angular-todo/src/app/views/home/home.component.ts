@@ -20,12 +20,4 @@ import { UserService } from '../../services/user.service';
 })
 export class HomeComponent {
   constructor(public userService: UserService) {}
-
-  // ngOnInit(): void {
-  //   const code = this.route.snapshot.queryParamMap.get('code');
-  //   const state = this.route.snapshot.queryParamMap.get('state');
-  //   if (code && state) {
-  //     FRAuth.resume(window.location.href);
-  //   }
-  // }
 }
