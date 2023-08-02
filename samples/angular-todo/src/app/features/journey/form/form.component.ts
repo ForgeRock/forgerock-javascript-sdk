@@ -94,13 +94,6 @@ export class FormComponent implements OnInit {
     this.submittingForm = true;
 
     try {
-      /** *********************************************************************
-       * SDK INTEGRATION POINT
-       * Summary: Call the SDK's next method to submit the current step.
-       * ----------------------------------------------------------------------
-       * Details: This calls the next method with the previous step, expecting
-       * the next step to be returned, or a success or failure.
-       ********************************************************************* */
       const selectIdCallback = step?.callbacks.find(
         (cb) => cb.payload.type === 'SelectIdPCallback',
       ) as SelectIdPCallback;
@@ -115,6 +108,15 @@ export class FormComponent implements OnInit {
           selectIdCallback.payload.input[0].value = 'localAuthentication';
         }
       }
+
+      /** *********************************************************************
+       * SDK INTEGRATION POINT
+       * Summary: Call the SDK's next method to submit the current step.
+       * ----------------------------------------------------------------------
+       * Details: This calls the next method with the previous step, expecting
+       * the next step to be returned, or a success or failure.
+       ********************************************************************* */
+
       let nextStep;
       if (this.code && this.state) {
         nextStep = await FRAuth.resume(window.location.href);
@@ -244,7 +246,7 @@ export class FormComponent implements OnInit {
   isIdentityProviderLogin(callback: SelectIdPCallback): boolean {
     return callback
       ?.getProviders()
-      .filter((provider) => provider.provider !== 'localAuthentication')
+      .filter((provider) => provider.provider !== 'localAuthentication').length > 0
       ? true
       : false;
   }

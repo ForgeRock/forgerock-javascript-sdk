@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import SelectIdPCallback, {
   IdPValue,
 } from 'packages/javascript-sdk/src/fr-auth/callbacks/select-idp-callback';
+import { IdpNames } from '../../../shared/idps.enums';
 
 @Component({
   selector: 'app-identity-provider',
@@ -21,7 +22,11 @@ export class IdentityProviderComponent implements OnInit {
   @Output() updatedCallback = new EventEmitter<string>();
 
   identityProviders: IdPValue[];
+  idpNames = IdpNames;
 
+  getDisplayName(idp: IdPValue): string {
+    return idp.uiConfig.buttonDisplayName;
+  }
   ngOnInit(): void {
     this.identityProviders = this.callback
       .getProviders()
@@ -30,17 +35,5 @@ export class IdentityProviderComponent implements OnInit {
 
   onSetProvider(provider: string): void {
     this.updatedCallback.emit(provider);
-  }
-
-  isGoogleIdP(idP: string): boolean {
-    return idP === 'Google';
-  }
-
-  isAppleIdP(idP: string): boolean {
-    return idP === 'Apple';
-  }
-
-  isFacebookIdP(idP: string): boolean {
-    return idP === 'Facebook';
   }
 }

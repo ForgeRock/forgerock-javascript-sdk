@@ -24,6 +24,7 @@ const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'todos', canActivate: [AuthGuard], component: TodosComponent },
   { path: 'logout', component: LogoutComponent },
+  { path: 'callback', component: HomeComponent },
   { path: '', redirectTo: '/home', pathMatch: 'full' }, // redirect to `first-component`
 ];
 
