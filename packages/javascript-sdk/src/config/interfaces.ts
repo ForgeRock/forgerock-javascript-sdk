@@ -12,6 +12,8 @@ import type { ActionTypes } from './enums';
 import type { FRCallbackFactory } from '../fr-auth/callbacks/factory';
 import type { Tokens } from '../shared/interfaces';
 
+type LogLevel = 'none' | 'info';
+
 interface Action {
   type: ActionTypes;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -33,6 +35,7 @@ interface ConfigOptions {
   tree?: string;
   type?: string;
   oauthThreshold?: number;
+  logLevel?: LogLevel;
 }
 
 type ConfigurablePaths = keyof CustomPathConfig;
@@ -87,6 +90,7 @@ export type {
   ConfigOptions,
   ConfigurablePaths,
   CustomPathConfig,
+  LogLevel,
   RequestMiddleware,
   RequestObj,
   ServerConfig,

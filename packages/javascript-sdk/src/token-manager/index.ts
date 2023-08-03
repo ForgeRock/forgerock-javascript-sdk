@@ -11,6 +11,7 @@
 import type { ConfigOptions } from '../config';
 import Config from '../config';
 import { PREFIX } from '../config/constants';
+import { Logger } from '../logger';
 import type { OAuth2Tokens } from '../oauth2-client';
 import OAuth2Client, { allowedErrors, ResponseType } from '../oauth2-client';
 import type { StringDict, Tokens } from '../shared/interfaces';
@@ -95,7 +96,7 @@ abstract class TokenManager {
         await OAuth2Client.revokeToken(options);
         await TokenManager.deleteTokens();
       } catch (error) {
-        console.warn('Existing tokens could not be revoked or deleted', error);
+        Logger.warn('Existing tokens could not be revoked or deleted', error);
       }
     }
 
