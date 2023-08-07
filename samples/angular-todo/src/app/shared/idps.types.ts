@@ -1,7 +1,7 @@
 /*
  * @forgerock/javascript-sdk
  *
- * idps.enums.ts
+ * idps.types.ts
  *
  * Copyright (c) 2020 ForgeRock. All rights reserved.
  * This software may be modified and distributed under the terms
@@ -11,10 +11,6 @@
 /**
  * Types of identity providers
  */
-enum IdpNames {
-  Google = 'Google',
-  Apple = 'Apple',
-  Facebook = 'Facebook',
-}
+type IdpNames = 'Google' | 'Apple' | 'Facebook';
 
 export { IdpNames };

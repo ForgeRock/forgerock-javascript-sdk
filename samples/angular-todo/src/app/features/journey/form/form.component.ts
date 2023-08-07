@@ -13,11 +13,11 @@ import { Component, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from '../../../../environments/environment';
 import type {
+  FRCallback,
   FRLoginFailure,
   FRLoginSuccess,
   FRStep,
   IdPValue,
-  SelectIdPCallback,
 } from '@forgerock/javascript-sdk';
 import { CallbackType, FRAuth, TokenManager, UserManager } from '@forgerock/javascript-sdk';
 import { UserService } from '../../../services/user.service';
@@ -94,18 +94,20 @@ export class FormComponent implements OnInit {
     this.submittingForm = true;
 
     try {
-      const selectIdCallback = step?.callbacks.find(
-        (cb) => cb.payload.type === 'SelectIdPCallback',
-      ) as SelectIdPCallback;
+      /** This was to be added because when logging in locally by pressing enter it selects the first identity provider by default
+       * In order to prevent this behavior it is necessary to grab the selectIdP callback. If present, we look for the value
+       * on the name input form. If it has a value and it is an identity provider it means it logs in locally by pressing enter keyboard so we set
+       * the input value to 'localAuthentication' manually.
+       *
+       */
+      const selectIdPCallback = step?.getCallbacksOfType(CallbackType.SelectIdPCallback);
 
-      if (selectIdCallback) {
-        const nameCallBacksInputs = step?.payload.callbacks.find(
-          (cb) => cb.type === 'NameCallback',
-        )?.input;
-        const idToken2Input = nameCallBacksInputs?.find((input) => input.name === 'IDToken2').value;
+      if (selectIdPCallback?.length > 0) {
+        const nameCallBacksInputs = step?.getCallbackOfType(CallbackType.NameCallback);
+        const idToken2Input = nameCallBacksInputs?.getInputValue('IDToken2');
 
-        if (this.isIdentityProviderLogin(selectIdCallback) && idToken2Input !== '') {
-          selectIdCallback.payload.input[0].value = 'localAuthentication';
+        if (this.isIdentityProviderLogin(selectIdPCallback[0]) && idToken2Input !== '') {
+          selectIdPCallback[0].payload.input[0].value = 'localAuthentication';
         }
       }
 
@@ -139,9 +141,7 @@ export class FormComponent implements OnInit {
           this.handleSuccess(nextStep);
           break;
         case 'Step':
-          {
-            this.handleStep(nextStep);
-          }
+          this.handleStep(nextStep);
           break;
         default:
           this.handleFailure();
@@ -199,15 +199,8 @@ export class FormComponent implements OnInit {
    */
   handleStep(step?: FRStep) {
     this.step = step;
-    const selectIdCallback = step.callbacks.find((cb) => cb.payload.type === 'SelectIdPCallback');
-    const callBackInputValue = selectIdCallback?.payload.input[0].value as string;
-    if (selectIdCallback && callBackInputValue === '') {
-      selectIdCallback.payload.input[0].value = 'localAuthentication';
-    }
-    const redirectCallback = step.callbacks.find(
-      (callback) => callback.getType() === CallbackType.RedirectCallback,
-    );
-    if (redirectCallback) {
+    const redirectCallback = step?.getCallbacksOfType(CallbackType.RedirectCallback);
+    if (redirectCallback?.length > 0) {
       FRAuth.redirect(step);
     }
     this.setConfigForAction(this.action);
@@ -243,9 +236,9 @@ export class FormComponent implements OnInit {
     }
   }
 
-  isIdentityProviderLogin(callback: SelectIdPCallback): boolean {
+  isIdentityProviderLogin(callback: FRCallback): boolean {
     return callback
-      ?.getProviders()
+      ?.getOutputByName('providers', [])
       .filter((provider) => provider.provider !== 'localAuthentication').length > 0
       ? true
       : false;

@@ -1,14 +1,14 @@
 <div *ngFor="let provider of identityProviders">
   <button
     [ngClass]="{
-      'google-login': getDisplayName(provider) === idpNames.Google,
-      'apple-login': getDisplayName(provider) === idpNames.Apple,
-      'facebook-login': getDisplayName(provider) === idpNames.Facebook
+      'google-login': getDisplayName(provider) === 'Google',
+      'apple-login': getDisplayName(provider) === 'Apple',
+      'facebook-login': getDisplayName(provider) === 'Facebook'
     }"
     (click)="onSetProvider(provider.provider)"
   >
-    <app-google-icon *ngIf="getDisplayName(provider) === idpNames.Google"></app-google-icon>
-    <app-apple-icon *ngIf="getDisplayName(provider) === idpNames.Apple"></app-apple-icon>
+    <app-google-icon *ngIf="getDisplayName(provider) === 'Google'"></app-google-icon>
+    <app-apple-icon *ngIf="getDisplayName(provider) === 'Apple'"></app-apple-icon>
     Sign in with {{ getDisplayName(provider) }}
   </button>
 </div>
