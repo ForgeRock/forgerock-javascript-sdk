@@ -28,7 +28,7 @@ import type {
 } from './interfaces';
 import Collector from './collector';
 import { PREFIX } from '../config/constants';
-import { Logger } from '../logger';
+import { FRLogger } from '../util/logger';
 
 /**
  * @class FRDevice - Collects user device metadata
@@ -75,7 +75,7 @@ class FRDevice extends Collector {
 
   getBrowserMeta(): { [key: string]: string } {
     if (typeof navigator === 'undefined') {
-      Logger.warn('Cannot collect browser metadata. navigator is not defined.');
+      FRLogger.warn('Cannot collect browser metadata. navigator is not defined.');
       return {};
     }
     return this.reduceToObject(this.config.browserProps, navigator);
@@ -83,7 +83,7 @@ class FRDevice extends Collector {
 
   getBrowserPluginsNames(): string {
     if (!(typeof navigator !== 'undefined' && navigator.plugins)) {
-      Logger.warn('Cannot collect browser plugin information. navigator.plugins is not defined.');
+      FRLogger.warn('Cannot collect browser plugin information. navigator.plugins is not defined.');
       return '';
     }
     return this.reduceToString(Object.keys(navigator.plugins), navigator.plugins);
@@ -91,7 +91,7 @@ class FRDevice extends Collector {
 
   getDeviceName(): string {
     if (typeof navigator === 'undefined') {
-      Logger.warn('Cannot collect device name. navigator is not defined.');
+      FRLogger.warn('Cannot collect device name. navigator is not defined.');
       return '';
     }
     const userAgent = navigator.userAgent;
@@ -117,7 +117,7 @@ class FRDevice extends Collector {
 
   getDisplayMeta(): { [key: string]: string | number | null } {
     if (typeof screen === 'undefined') {
-      Logger.warn('Cannot collect screen information. screen is not defined.');
+      FRLogger.warn('Cannot collect screen information. screen is not defined.');
       return {};
     }
     return this.reduceToObject(this.config.displayProps, screen);
@@ -125,7 +125,7 @@ class FRDevice extends Collector {
 
   getHardwareMeta(): { [key: string]: string } {
     if (typeof navigator === 'undefined') {
-      Logger.warn('Cannot collect OS metadata. Navigator is not defined.');
+      FRLogger.warn('Cannot collect OS metadata. Navigator is not defined.');
       return {};
     }
     return this.reduceToObject(this.config.hardwareProps, navigator);
@@ -135,11 +135,11 @@ class FRDevice extends Collector {
     const storageKey = `${PREFIX}-DeviceID`;
 
     if (!(typeof globalThis.crypto !== 'undefined' && globalThis.crypto.getRandomValues)) {
-      Logger.warn('Cannot generate profile ID. Crypto and/or getRandomValues is not supported.');
+      FRLogger.warn('Cannot generate profile ID. Crypto and/or getRandomValues is not supported.');
       return '';
     }
     if (!localStorage) {
-      Logger.warn('Cannot store profile ID. localStorage is not supported.');
+      FRLogger.warn('Cannot store profile ID. localStorage is not supported.');
       return '';
     }
     let id = localStorage.getItem(storageKey);
@@ -153,18 +153,18 @@ class FRDevice extends Collector {
 
   getInstalledFonts(): string {
     if (typeof document === undefined) {
-      Logger.warn('Cannot collect font data. Global document object is undefined.');
+      FRLogger.warn('Cannot collect font data. Global document object is undefined.');
       return '';
     }
     const canvas = document.createElement('canvas');
     if (!canvas) {
-      Logger.warn('Cannot collect font data. Browser does not support canvas element');
+      FRLogger.warn('Cannot collect font data. Browser does not support canvas element');
       return '';
     }
     const context = canvas.getContext && canvas.getContext('2d');
 
     if (!context) {
-      Logger.warn('Cannot collect font data. Browser does not support 2d canvas context');
+      FRLogger.warn('Cannot collect font data. Browser does not support 2d canvas context');
       return '';
     }
     const text = 'abcdefghi0123456789';
@@ -186,7 +186,9 @@ class FRDevice extends Collector {
 
   async getLocationCoordinates(): Promise<Geolocation | Record<string, unknown>> {
     if (!(typeof navigator !== 'undefined' && navigator.geolocation)) {
-      Logger.warn('Cannot collect geolocation information. navigator.geolocation is not defined.');
+      FRLogger.warn(
+        'Cannot collect geolocation information. navigator.geolocation is not defined.',
+      );
       return Promise.resolve({});
     }
     // eslint-disable-next-line no-async-promise-executor
@@ -198,7 +200,7 @@ class FRDevice extends Collector {
             longitude: position.coords.longitude,
           }),
         (error) => {
-          Logger.warn(
+          FRLogger.warn(
             'Cannot collect geolocation information. ' + error.code + ': ' + error.message,
           );
           resolve({});
@@ -214,7 +216,7 @@ class FRDevice extends Collector {
 
   getOSMeta(): { [key: string]: string } {
     if (typeof navigator === 'undefined') {
-      Logger.warn('Cannot collect OS metadata. navigator is not defined.');
+      FRLogger.warn('Cannot collect OS metadata. navigator is not defined.');
       return {};
     }
     return this.reduceToObject(this.config.platformProps, navigator);
@@ -253,7 +255,7 @@ class FRDevice extends Collector {
     try {
       return new Date().getTimezoneOffset();
     } catch (err) {
-      Logger.warn('Cannot collect timezone information. getTimezoneOffset is not defined.');
+      FRLogger.warn('Cannot collect timezone information. getTimezoneOffset is not defined.');
       return null;
     }
   }

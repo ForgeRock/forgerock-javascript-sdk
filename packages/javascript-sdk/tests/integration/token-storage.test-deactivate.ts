@@ -17,6 +17,7 @@ import TokenStorage from '../../src/token-storage';
 import type { ConfigOptions } from '../../src/config';
 import type { Tokens } from '../../src/shared/interfaces';
 import { DB_NAME, TOKEN_KEY } from '../../src/token-storage/constants';
+import { FRLogger } from '../../src/util/logger';
 
 const config: ConfigOptions = {
   clientId: 'mockClientId',
@@ -79,7 +80,7 @@ const getTestToken = async (): Promise<Tokens | undefined | string> => {
     })
     .catch((err) => {
       token = 'error';
-      console.log(err);
+      FRLogger.log(err);
     });
   return token;
 };
@@ -95,7 +96,7 @@ describe('The TokenStorage module', () => {
       done();
     };
     deleteDatabase.onerror = (): void => {
-      console.log('failed to delete database');
+      FRLogger.log('failed to delete database');
     };
   };
   beforeEach(cleanUp);

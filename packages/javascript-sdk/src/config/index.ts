@@ -9,7 +9,7 @@
  */
 
 import { DEFAULT_TIMEOUT, DEFAULT_OAUTH_THRESHOLD } from './constants';
-import type { ConfigOptions, LogLevel, ServerConfig, ValidConfigOptions } from './interfaces';
+import type { ConfigOptions, ServerConfig, ValidConfigOptions } from './interfaces';
 
 /**
  * Sets defaults for options that are required but have no supplied value
@@ -43,7 +43,6 @@ function setDefaults(options: ConfigOptions): ConfigOptions {
  */
 abstract class Config {
   private static options: ConfigOptions;
-  public static logLevel: LogLevel;
 
   /**
    * Sets the default options.
@@ -60,7 +59,6 @@ abstract class Config {
     this.options = {
       ...setDefaults(options),
     };
-    this.logLevel = this.options.logLevel || this.logLevel;
   }
 
   /**

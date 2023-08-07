@@ -11,7 +11,7 @@
 import type { ConfigOptions } from '../config';
 import type { FRStepHandler } from '../fr-auth/fr-step';
 import type FRStep from '../fr-auth/fr-step';
-import { Logger } from '../logger';
+import { FRLogger } from '../util/logger';
 import OAuth2Client from '../oauth2-client';
 import SessionManager from '../session-manager';
 import TokenManager from '../token-manager';
@@ -32,7 +32,7 @@ abstract class FRUser {
     handler: FRStepHandler,
     options?: ConfigOptions,
   ): Promise<FRStep | T> {
-    console.info(handler, options); // Avoid lint errors
+    FRLogger.info(handler, options); // Avoid lint errors
     throw new Error('FRUser.login() not implemented');
   }
 
@@ -47,19 +47,19 @@ abstract class FRUser {
       // Both invalidates the session on the server AND removes browser cookie
       await SessionManager.logout(options);
     } catch (error) {
-      Logger.warn('Session logout was not successful');
+      FRLogger.warn('Session logout was not successful');
     }
     try {
       // Invalidates session on the server tied to the ID Token
       // Needed for Express environment as session logout is unavailable
       await OAuth2Client.endSession(options);
     } catch (error) {
-      Logger.warn('OAuth endSession was not successful');
+      FRLogger.warn('OAuth endSession was not successful');
     }
     try {
       await OAuth2Client.revokeToken(options);
     } catch (error) {
-      Logger.warn('OAuth revokeToken was not successful');
+      FRLogger.warn('OAuth revokeToken was not successful');
     }
     await TokenManager.deleteTokens();
   }
