@@ -27,6 +27,10 @@ Breaking Changes:
 - Dropped UMD bundle support, if you would like to use a UMD bundle it's available in 3.4 or you can produce your own by git cloning the repo and setting up the ability to do so.
 - Removed Event and FRUI modules
 
+Deprecated:
+
+- JavaScript support configuration property deprecated.
+
 Features:
 
 - Updated the esmodule bundle
