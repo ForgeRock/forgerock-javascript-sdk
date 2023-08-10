@@ -155,6 +155,27 @@ of the MIT license. See the LICENSE file for details.
               ></app-kba>
 
               <!--
+                Handle a KbaCreateCallback using the Kba component.
+                Emitted questions and answers are used to set the values on the callback.
+              -->
+              <app-identity-provider
+                *ngSwitchCase="'SelectIdPCallback'"
+                [callback]="$any(callback)"
+                [name]="callback?.payload?.input?.[0]?.name"
+                (updatedCallback)="$any(callback).setProvider($event)"
+              >
+              </app-identity-provider>
+
+              <!--
+                Handle a RedirectCallback using the Kba component.
+                Emitted questions and answers are used to set the values on the callback.
+              -->
+              <app-loading
+                *ngSwitchCase="'RedirectCallback'"
+                [message]="'Redirecting ...'"
+              ></app-loading>
+
+              <!--
                  If current callback is not supported, render a warning message
               -->
               <app-unknown *ngSwitchDefault [callback]="callback"></app-unknown>

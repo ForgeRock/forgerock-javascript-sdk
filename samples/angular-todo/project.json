@@ -9,7 +9,7 @@
       "command": "node samples/angular-todo/set-env.mjs"
     },
     "build": {
-      "executor": "@angular-devkit/build-angular:browser-esbuild",
+      "executor": "@nx/angular:webpack-browser",
       "outputs": ["{options.outputPath}"],
       "dependsOn": ["config"],
       "options": {
@@ -19,7 +19,7 @@
         "polyfills": "samples/angular-todo/src/polyfills.ts",
         "tsConfig": "samples/angular-todo/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
-        "assets": ["samples/angular-todo/src/favicon.ico", "samples/angular-todo/src/assets"],
+        "assets": ["samples/angular-todo/src/favicon.ico", "samples/angular-todo/src/assets", "samples/angular-todo/src/callback.html"],
         "styles": ["samples/angular-todo/src/styles.scss"],
         "scripts": []
       },

@@ -49,6 +49,9 @@ import { AccountIconComponent } from './icons/account-icon/account-icon.componen
 import { TodoIconComponent } from './icons/todo-icon/todo-icon.component';
 import { ActionIconComponent } from './icons/action-icon/action-icon.component';
 import { ChoiceComponent } from './features/journey/choice/choice.component';
+import { IdentityProviderComponent } from './features/journey/identityProvider/identity-provider.component';
+import { GoogleIconComponent } from './icons/google-icon/google-icon.component';
+import { AppleIconComponent } from './icons/apple-icon/apple-icon.component';
 
 @NgModule({
   declarations: [
@@ -87,6 +90,9 @@ import { ChoiceComponent } from './features/journey/choice/choice.component';
     TodoIconComponent,
     ActionIconComponent,
     ChoiceComponent,
+    IdentityProviderComponent,
+    GoogleIconComponent,
+    AppleIconComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, FormsModule],
   providers: [],

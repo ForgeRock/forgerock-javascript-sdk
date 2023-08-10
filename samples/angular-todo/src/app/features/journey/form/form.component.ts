@@ -10,10 +10,16 @@
 
 import { OnInit } from '@angular/core';
 import { Component, Input } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from '../../../../environments/environment';
-import type { FRLoginFailure, FRLoginSuccess, FRStep } from '@forgerock/javascript-sdk';
-import { FRAuth, TokenManager, UserManager } from '@forgerock/javascript-sdk';
+import type {
+  FRCallback,
+  FRLoginFailure,
+  FRLoginSuccess,
+  FRStep,
+  IdPValue,
+} from '@forgerock/javascript-sdk';
+import { CallbackType, FRAuth, TokenManager, UserManager } from '@forgerock/javascript-sdk';
 import { UserService } from '../../../services/user.service';
 
 /**
@@ -64,9 +70,18 @@ export class FormComponent implements OnInit {
    */
   tree?: string;
 
-  constructor(private router: Router, public userService: UserService) {}
+  identityProviders: IdPValue[];
+  code: string;
+  state: string;
 
+  constructor(
+    private router: Router,
+    public userService: UserService,
+    private route: ActivatedRoute,
+  ) {}
   ngOnInit(): void {
+    this.code = this.route.snapshot.queryParamMap.get('code');
+    this.state = this.route.snapshot.queryParamMap.get('state');
     this.setConfigForAction(this.action);
     this.nextStep();
   }
@@ -79,6 +94,23 @@ export class FormComponent implements OnInit {
     this.submittingForm = true;
 
     try {
+      /** This was to be added because when logging in locally by pressing enter it selects the first identity provider by default
+       * In order to prevent this behavior it is necessary to grab the selectIdP callback. If present, we look for the value
+       * on the name input form. If it has a value and it is an identity provider it means it logs in locally by pressing enter keyboard so we set
+       * the input value to 'localAuthentication' manually.
+       *
+       */
+      const selectIdPCallback = step?.getCallbacksOfType(CallbackType.SelectIdPCallback);
+
+      if (selectIdPCallback?.length > 0) {
+        const nameCallBacksInputs = step?.getCallbackOfType(CallbackType.NameCallback);
+        const idToken2Input = nameCallBacksInputs?.getInputValue('IDToken2');
+
+        if (this.isIdentityProviderLogin(selectIdPCallback[0]) && idToken2Input !== '') {
+          selectIdPCallback[0].payload.input[0].value = 'localAuthentication';
+        }
+      }
+
       /** *********************************************************************
        * SDK INTEGRATION POINT
        * Summary: Call the SDK's next method to submit the current step.
@@ -86,7 +118,13 @@ export class FormComponent implements OnInit {
        * Details: This calls the next method with the previous step, expecting
        * the next step to be returned, or a success or failure.
        ********************************************************************* */
-      const nextStep = await FRAuth.next(step, { tree: this.tree });
+
+      let nextStep;
+      if (this.code && this.state) {
+        nextStep = await FRAuth.resume(window.location.href);
+      } else {
+        nextStep = await FRAuth.next(step, { tree: this.tree });
+      }
 
       /** *******************************************************************
        * SDK INTEGRATION POINT
@@ -161,7 +199,10 @@ export class FormComponent implements OnInit {
    */
   handleStep(step?: FRStep) {
     this.step = step;
-
+    const redirectCallback = step?.getCallbacksOfType(CallbackType.RedirectCallback);
+    if (redirectCallback?.length > 0) {
+      FRAuth.redirect(step);
+    }
     this.setConfigForAction(this.action);
 
     if (step?.getHeader()) {
@@ -193,5 +234,13 @@ export class FormComponent implements OnInit {
         break;
       }
     }
+  }
+
+  isIdentityProviderLogin(callback: FRCallback): boolean {
+    return callback
+      ?.getOutputByName('providers', [])
+      .filter((provider) => provider.provider !== 'localAuthentication').length > 0
+      ? true
+      : false;
   }
 }
