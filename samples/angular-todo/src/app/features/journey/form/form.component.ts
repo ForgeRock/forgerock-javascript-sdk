@@ -94,12 +94,16 @@ export class FormComponent implements OnInit {
     this.submittingForm = true;
 
     try {
-      /** This was to be added because when logging in locally by pressing enter it selects the first identity provider by default
-       * In order to prevent this behavior it is necessary to grab the selectIdP callback. If present, we look for the value
-       * on the name input form. If it has a value and it is an identity provider it means it logs in locally by pressing enter keyboard so we set
-       * the input value to 'localAuthentication' manually.
-       *
-       */
+      /** *********************************************************************
+       * SDK INTEGRATION POINT
+       * Summary: Handle selection of IdpCallbacks
+       * ----------------------------------------------------------------------
+       * Details: If we do not initially select the IdpCallback, when pressing enter,
+       * local authentication will automatically be submitted.
+       * This allows us to submit the form with the proper selection of an
+       * identity provider rather than local authentication.
+       ********************************************************************* */
+
       const selectIdPCallback = step?.getCallbacksOfType(CallbackType.SelectIdPCallback);
 
       if (selectIdPCallback?.length > 0) {
@@ -107,7 +111,7 @@ export class FormComponent implements OnInit {
         const idToken2Input = nameCallBacksInputs?.getInputValue('IDToken2');
 
         if (this.isIdentityProviderLogin(selectIdPCallback[0]) && idToken2Input !== '') {
-          selectIdPCallback[0].payload.input[0].value = 'localAuthentication';
+          selectIdPCallback[0].setInputValue('localAuthentication', 0);
         }
       }
 
