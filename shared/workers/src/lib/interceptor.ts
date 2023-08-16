@@ -25,7 +25,7 @@ declare const self: ServiceWorkerGlobalScope;
 export function interceptor(config: InterceptorConfig) {
   // Report back if no additional URLs are provided
   if (!config.interceptor?.urls?.length) {
-    console.warn('No URLs provided for Token Vault interception.');
+    throw new Error('Config: `config.interceptor.urls` is required');
   }
   const fetchEventName = config?.events?.fetch || 'TVP_FETCH_RESOURCE';
   const urls = generateUrlsToIntercept(config);
