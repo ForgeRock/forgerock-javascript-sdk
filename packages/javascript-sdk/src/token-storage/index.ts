@@ -9,6 +9,7 @@
  */
 
 import Config from '../config/index';
+import { FRLogger } from '../util/logger';
 import type { TokenStoreObject } from '../config/interfaces';
 import LocalStorageWrapper from './local-storage';
 import SessionStorageWrapper from './session-storage';
@@ -35,7 +36,7 @@ abstract class TokenStorage {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
     } else if (tokenStore === 'indexedDB') {
-      console.warn('IndexedDB is not supported in this version.');
+      FRLogger.warn('IndexedDB is not supported in this version.');
     } else if (tokenStore && tokenStore.get) {
       // User supplied token store
       return await tokenStore.get(clientId);
@@ -58,7 +59,7 @@ abstract class TokenStorage {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
     } else if (tokenStore === 'indexedDB') {
-      console.warn('IndexedDB is not supported in this version.');
+      FRLogger.warn('IndexedDB is not supported in this version.');
     } else if (tokenStore && tokenStore.set) {
       // User supplied token store
       return await tokenStore.set(clientId, tokens);
@@ -81,7 +82,7 @@ abstract class TokenStorage {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
     } else if (tokenStore === 'indexedDB') {
-      console.warn('IndexedDB is not supported in this version.');
+      FRLogger.warn('IndexedDB is not supported in this version.');
     } else if (tokenStore && tokenStore.remove) {
       // User supplied token store
       return await tokenStore.remove(clientId);

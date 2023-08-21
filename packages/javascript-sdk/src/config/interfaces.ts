@@ -12,12 +12,27 @@ import type { ActionTypes } from './enums';
 import type { FRCallbackFactory } from '../fr-auth/callbacks/factory';
 import type { Tokens } from '../shared/interfaces';
 
+type LogLevel = 'none' | 'info' | 'warn' | 'error' | 'debug';
+
 interface Action {
   type: ActionTypes;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   payload: any;
 }
-
+/**
+ * Custom Logger for logger
+ */
+interface LoggerFunctions<
+  W = (...msgs: unknown[]) => void,
+  E = (...msgs: unknown[]) => void,
+  L = (...msgs: unknown[]) => void,
+  I = (...msgs: unknown[]) => void,
+> {
+  warn?: W;
+  error?: E;
+  log?: L;
+  info?: I;
+}
 /**
  * Configuration options.
  */
@@ -33,6 +48,8 @@ interface ConfigOptions {
   tree?: string;
   type?: string;
   oauthThreshold?: number;
+  logLevel?: LogLevel;
+  logger?: LoggerFunctions;
 }
 
 type ConfigurablePaths = keyof CustomPathConfig;
@@ -80,6 +97,7 @@ interface TokenStoreObject {
  */
 interface ValidConfigOptions extends ConfigOptions {
   serverConfig: ServerConfig;
+  logLevel: LogLevel;
 }
 
 export type {
@@ -87,6 +105,8 @@ export type {
   ConfigOptions,
   ConfigurablePaths,
   CustomPathConfig,
+  LogLevel,
+  LoggerFunctions,
   RequestMiddleware,
   RequestObj,
   ServerConfig,

@@ -20,6 +20,7 @@ function setDefaults(options: ConfigOptions): ConfigOptions {
   return {
     ...options,
     oauthThreshold: options.oauthThreshold || DEFAULT_OAUTH_THRESHOLD,
+    logLevel: options.logLevel || 'none',
   };
 }
 
