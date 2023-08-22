@@ -50,7 +50,10 @@ export function proxy(config: ProxyConfig) {
   /**
    * Generate AM URLs
    */
-  const urls = generateAmUrls(config?.forgerock);
+  const amUrlObj = generateAmUrls(config?.forgerock);
+  const amUrlArray = Object.keys(amUrlObj).map((key) => {
+    return amUrlObj[key];
+  });
 
   /**
    * Generate origins from URLs
@@ -59,7 +62,7 @@ export function proxy(config: ProxyConfig) {
   if (!config.proxy.urls) {
     throw new Error('Config: `config.proxy.urls` is required');
   }
-  const allowedOrigins = extractOrigins(config.proxy.urls);
+  const allowedOrigins = extractOrigins([...config.proxy.urls, ...amUrlArray]);
 
   /**
    * Create the proxy iframe
@@ -128,7 +131,7 @@ export function proxy(config: ProxyConfig) {
           clientId,
           refreshToken: tokens.refreshToken,
           scope,
-          url: urls.accessToken,
+          url: amUrlObj.accessToken,
         });
 
         // Check for error and build error message
@@ -363,7 +366,7 @@ export function proxy(config: ProxyConfig) {
         clientId,
         refreshToken: tokens.refreshToken,
         scope,
-        url: urls.accessToken,
+        url: amUrlObj.accessToken,
       });
     } catch (error) {
       // Remove the tokens from localStorage and return error
