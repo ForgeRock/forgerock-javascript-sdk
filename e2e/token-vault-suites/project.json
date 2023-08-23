@@ -40,6 +40,6 @@
       }
     }
   },
-  "tags": [],
+  "tags": ["scope:e2e"],
   "implicitDependencies": ["token-vault-app", "token-vault-proxy"]
 }

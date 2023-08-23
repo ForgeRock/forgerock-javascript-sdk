@@ -38,18 +38,18 @@ describe('Test network utility functions', () => {
     const expected = [
       'https://example.com',
       'http://example.com',
-      'https://example.com:443',
-      'https://my.forgeblocks.com/am',
+      'https://example.com:8443',
+      'https://my.forgeblocks.com',
     ];
     const urls = [
       'https://example.com/a',
       'http://example.com/b',
-      'https://example.com:443/c',
+      'https://example.com:8443/c',
       'https://example.com/d',
       'http://example.com/e',
       'https://my.forgeblocks.com/am',
     ];
-    expect(extractOrigins(urls)).toBe(expected);
+    expect(extractOrigins(urls)).toStrictEqual(expected);
   });
 
   // Test createErrorResponse with `fetch_error` type
