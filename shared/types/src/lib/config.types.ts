@@ -97,7 +97,7 @@ export type ForgeRockConfig = FRConfig & ConfigOptions;
 type AppConfigInit = BaseConfig['app'];
 type ForgeRockConfigInit = BaseConfig['forgerock'];
 // Pluck out the irrelevant props for Proxy configuration
-type ProxyConfigBase = Omit<BaseConfig['proxy'], 'id' | 'origin' | 'path'>;
+type ProxyConfigBase = Omit<BaseConfig['proxy'], 'id' | 'path'>;
 // Make only the `urls` property required.
 interface ProxyConfigBaseRequired extends ProxyConfigBase {
   urls: ProxyConfigBase['urls'];

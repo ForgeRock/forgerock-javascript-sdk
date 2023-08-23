@@ -18,6 +18,9 @@ import { refreshTokens, storeTokens, getTokens, tokenExpiryWithinThreshold } fro
  * });
  */
 export function proxy(config: ProxyConfig) {
+  if (!config.proxy.origin) {
+    throw new Error('Config: `config.proxy.origin` is required');
+  }
   /**
    * Client default configuration
    */
