@@ -89,3 +89,27 @@ test('Test happy paths on test page', async ({ page }) => {
   const revokedTokens = await getTokens('http://localhost:5833', 'CentralLoginOAuthClient');
   expect(revokedTokens).toBeFalsy();
 });
+/*
+ * ensure the proxy is not called when the url is not in the allow list
+ * and that the proxy responds with an error
+ */
+test('Ensure someone cannot try to call their own url!', async ({ page }) => {
+  const { navigate } = asyncEvents(page);
+  await navigate('/');
+
+  expect(page.url()).toBe('http://localhost:5823/');
+
+  const messageArray = [];
+  page.on('console', (message) => messageArray.push(message.text()));
+
+  await page.click('#hacker');
+  expect(
+    messageArray.includes('Received TVP_FETCH_RESOURCE event from http://localhost:5823'),
+  ).toBe(true);
+  expect(messageArray.includes('Proxying https://reqres.in/api/users/2')).toBe(true);
+  expect(
+    messageArray.includes(
+      '{error: unrecognized_origin, message: Unrecognized origin: https://reqres.in. Please configure URLs in Proxy.}',
+    ),
+  ).toBe(true);
+});

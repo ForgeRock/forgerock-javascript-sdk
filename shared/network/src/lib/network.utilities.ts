@@ -104,6 +104,22 @@ export function evaluateUrlForInterception(url: string, urls: string[]) {
 }
 
 /** ****************************************************************
+ * @function extractOrigins - Extract a set of origins from URLs
+ * @param {string[]} urls - array of urls
+ * @returns {string[]} - array of origins
+ */
+export function extractOrigins(urls: string[]): string[] {
+  const origins: Set<string> = new Set();
+
+  urls.forEach((url) => {
+    const { origin } = new URL(url);
+    origins.add(origin);
+  });
+
+  return Array.from(origins);
+}
+
+/** ****************************************************************
  * @function generateAmUrls - Generate the URLs for interception
  * @param forgerockConfig - The ForgeRock config object
  * @returns {Object} - An object containing the URLs for interception

@@ -15,4 +15,7 @@ proxy({
     },
     realmPath: import.meta.env.VITE_AM_REALM,
   },
+  proxy: {
+    urls: ['https://jsonplaceholder.typicode.com/*'],
+  },
 });

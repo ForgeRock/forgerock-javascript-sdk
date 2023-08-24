@@ -1,4 +1,9 @@
-import { cloneResponse, createErrorResponse, generateAmUrls } from '@shared/network';
+import {
+  cloneResponse,
+  createErrorResponse,
+  extractOrigins,
+  generateAmUrls,
+} from '@shared/network';
 import { EventsConfig, ProxyConfig, ServerTokens } from '@shared/types';
 import { refreshTokens, storeTokens, getTokens, tokenExpiryWithinThreshold } from './token.utils';
 
@@ -13,6 +18,9 @@ import { refreshTokens, storeTokens, getTokens, tokenExpiryWithinThreshold } fro
  * });
  */
 export function proxy(config: ProxyConfig) {
+  if (!config.proxy.origin) {
+    throw new Error('Config: `config.proxy.origin` is required');
+  }
   /**
    * Client default configuration
    */
@@ -45,7 +53,19 @@ export function proxy(config: ProxyConfig) {
   /**
    * Generate AM URLs
    */
-  const urls = generateAmUrls(config?.forgerock);
+  const amUrlObj = generateAmUrls(config?.forgerock);
+  const amUrlArray = Object.keys(amUrlObj).map((key) => {
+    return amUrlObj[key];
+  });
+
+  /**
+   * Generate origins from URLs
+   */
+  // Throw if URLs are not declared
+  if (!config.proxy.urls) {
+    throw new Error('Config: `config.proxy.urls` is required');
+  }
+  const allowedOrigins = extractOrigins([...config.proxy.urls, ...amUrlArray]);
 
   /**
    * Create the proxy iframe
@@ -114,7 +134,7 @@ export function proxy(config: ProxyConfig) {
           clientId,
           refreshToken: tokens.refreshToken,
           scope,
-          url: urls.accessToken,
+          url: amUrlObj.accessToken,
         });
 
         // Check for error and build error message
@@ -174,7 +194,21 @@ export function proxy(config: ProxyConfig) {
     console.log(`Proxying ${event.data?.request?.url}`);
 
     const request = event.data?.request || {};
+    const requestUrl = request?.url || '';
+    const requestOrigin = new URL(requestUrl)?.origin;
     const tokens = getTokens(clientId);
+
+    /** ****************************************************
+     * IGNORE ALL REQUESTS TO UNRECOGNIZED ORIGINS
+     * Ensure request origin is allow listed; if not return early
+     */
+    if (!requestUrl || !allowedOrigins.includes(requestOrigin)) {
+      responseChannel.postMessage({
+        error: 'unrecognized_origin',
+        message: `Unrecognized origin: ${requestOrigin}. Please configure URLs in Proxy.`,
+      });
+      return;
+    }
 
     /** ****************************************************
      * ACCESS TOKEN ENDPOINT
@@ -335,7 +369,7 @@ export function proxy(config: ProxyConfig) {
         clientId,
         refreshToken: tokens.refreshToken,
         scope,
-        url: urls.accessToken,
+        url: amUrlObj.accessToken,
       });
     } catch (error) {
       // Remove the tokens from localStorage and return error

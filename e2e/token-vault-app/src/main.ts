@@ -100,6 +100,7 @@ const loggedInEl = getById('loggedInDef');
 const userInfoEl = getById('userInfoDef');
 const hasTokensEl = getById('hasTokensDef');
 const refreshTokensEl = getById('refreshTokensDef');
+const hackerEl = getById('hacker');
 
 /**
  * If the URL has state and code as query parameters, then the user
@@ -151,6 +152,29 @@ refreshTokensBtn.addEventListener('click', async (event) => {
 
   refreshTokensEl.innerText = String(res.refreshTokens);
   console.log(res);
+});
+
+hackerEl.addEventListener('click', async () => {
+  console.log('in hacker function!');
+  const proxyChannel = new MessageChannel();
+  const proxyOrigin = 'http://localhost:5833';
+
+  // Create a request to a URL that is not allow-listed
+  const request = { url: 'https://reqres.in/api/users/2' };
+
+  const type = 'TVP_FETCH_RESOURCE';
+
+  // Grab the Proxy's iframe and post message to it
+  (document?.getElementById('token-vault-iframe') as HTMLIFrameElement)?.contentWindow?.postMessage(
+    { type, request },
+    proxyOrigin,
+    [proxyChannel.port2],
+  );
+
+  // This is how you listen for the response from the Proxy
+  proxyChannel.port1.onmessage = (event) => {
+    console.log(event.data); // This should return error
+  };
 });
 
 loginBtn.addEventListener('click', async (event) => {
