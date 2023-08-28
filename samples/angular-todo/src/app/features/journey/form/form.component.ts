@@ -8,7 +8,7 @@
  * of the MIT license. See the LICENSE file for details.
  */
 
-import { OnInit } from '@angular/core';
+import { EventEmitter, OnInit, Output } from '@angular/core';
 import { Component, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from '../../../../environments/environment';
@@ -19,7 +19,14 @@ import type {
   FRStep,
   IdPValue,
 } from '@forgerock/javascript-sdk';
-import { CallbackType, FRAuth, TokenManager, UserManager } from '@forgerock/javascript-sdk';
+import {
+  CallbackType,
+  FRAuth,
+  FRWebAuthn,
+  TokenManager,
+  UserManager,
+  WebAuthnStepType,
+} from '@forgerock/javascript-sdk';
 import { UserService } from '../../../services/user.service';
 
 /**
@@ -35,6 +42,10 @@ export class FormComponent implements OnInit {
    */
   @Input() action?: string;
 
+  /**
+   * the value representing whether is a webAuthn step or not
+   */
+  @Output() isWebAuthn = new EventEmitter<boolean>();
   /**
    * The current step awaiting user input and submission to AM
    */
@@ -73,6 +84,8 @@ export class FormComponent implements OnInit {
   identityProviders: IdPValue[];
   code: string;
   state: string;
+  showWebAuthn = false;
+  webAuthnType: WebAuthnStepType;
 
   constructor(
     private router: Router,
@@ -203,6 +216,18 @@ export class FormComponent implements OnInit {
    */
   handleStep(step?: FRStep) {
     this.step = step;
+
+    /**
+     * Since WebAuthn is being handled as its own unique component, it is necessary to check if we have WebAuthn type step.
+     * if so an output event is emitted to the log-in component to switch the login icon and render the webAuhtn component into the form component.
+     */
+    const webAuthnType = FRWebAuthn.getWebAuthnStepType(step);
+    if (webAuthnType !== WebAuthnStepType.None) {
+      this.showWebAuthn = true;
+      this.webAuthnType = webAuthnType;
+      this.isWebAuthn.emit(true);
+    }
+
     const redirectCallback = step?.getCallbacksOfType(CallbackType.RedirectCallback);
     if (redirectCallback?.length > 0) {
       FRAuth.redirect(step);
@@ -222,13 +247,13 @@ export class FormComponent implements OnInit {
     switch (action) {
       case 'login': {
         this.title = 'Sign In';
-        this.buttonText = 'Sign In';
+        this.buttonText = 'Submit';
         this.tree = environment.JOURNEY_LOGIN;
         break;
       }
       case 'register': {
         this.title = 'Sign Up';
-        (this.buttonText = 'Register'), (this.tree = environment.JOURNEY_REGISTER);
+        (this.buttonText = 'Submit'), (this.tree = environment.JOURNEY_REGISTER);
         break;
       }
       default: {
@@ -246,5 +271,16 @@ export class FormComponent implements OnInit {
       .filter((provider) => provider.provider !== 'localAuthentication').length > 0
       ? true
       : false;
+  }
+
+  requiresUserInput(callbacks: FRCallback[]): boolean {
+    return callbacks.filter((callback) => {
+      return (
+        callback.getType() === CallbackType.ConfirmationCallback ||
+        callback.getType() === CallbackType.SelectIdPCallback
+      );
+    }).length > 0
+      ? false
+      : true;
   }
 }

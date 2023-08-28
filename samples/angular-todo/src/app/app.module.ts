@@ -52,6 +52,10 @@ import { ChoiceComponent } from './features/journey/choice/choice.component';
 import { IdentityProviderComponent } from './features/journey/identityProvider/identity-provider.component';
 import { GoogleIconComponent } from './icons/google-icon/google-icon.component';
 import { AppleIconComponent } from './icons/apple-icon/apple-icon.component';
+import { WebAuthnComponent } from './features/journey/webAuthn/webAuthn.component';
+import { ConfirmationComponent } from './features/journey/confirmation/confirmation.component';
+import { TextOutputComponent } from './features/journey/textOutput/textOutput.component';
+import { FingerPrintIconComponent } from './icons/finger-print-icon/finger-print-icon.component';
 
 @NgModule({
   declarations: [
@@ -93,6 +97,10 @@ import { AppleIconComponent } from './icons/apple-icon/apple-icon.component';
     IdentityProviderComponent,
     GoogleIconComponent,
     AppleIconComponent,
+    WebAuthnComponent,
+    ConfirmationComponent,
+    TextOutputComponent,
+    FingerPrintIconComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, FormsModule],
   providers: [],
