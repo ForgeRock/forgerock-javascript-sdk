@@ -73,6 +73,7 @@ import UserManager from './user-manager';
 import Deferred from './util/deferred';
 import PKCE from './util/pkce';
 import LocalStorage from './util/storage';
+import type { LoggerFunctions } from './config/interfaces';
 
 export type {
   AuthResponse,
@@ -85,6 +86,7 @@ export type {
   GetOAuth2TokensOptions,
   GetTokensOptions,
   IdPValue,
+  LoggerFunctions,
   MessageCreator,
   NameValue,
   OAuth2Tokens,
