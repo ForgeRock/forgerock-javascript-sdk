@@ -1,4 +1,8 @@
-## 4.1.2 - 2023-07-24
+### [4.2.0] - 2023-09-11
+
+Security: - Proxy config declaring URLs is now required and will be used to generate an allow list of origins to check again prior to fowarding a request.
+
+## [4.1.2] - 2023-07-24
 
 Features:
 

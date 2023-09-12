@@ -1,5 +1,11 @@
 # Changelog
 
+## [4.2.0] - 2023-09-11
+
+Features:
+
+- Added ability for SDK to accept a logLevel and customLogger option in the config. The default to the logger is `none` which means the SDK will no longer output to the console messages/warnings/console.error calls.
+
 ## [4.1.2] - 2023-07-20
 
 Features:
