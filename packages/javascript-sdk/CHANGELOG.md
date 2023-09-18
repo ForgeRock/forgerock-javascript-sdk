@@ -1,5 +1,11 @@
 # Changelog
 
+## [4.2.0] - 2023-09-11
+
+Features:
+
+- Added ability for SDK to accept a logLevel and customLogger option in the config. The default to the logger is `none` which means the SDK will no longer output to the console messages/warnings/console.error calls.
+
 ## [4.1.2] - 2023-07-20
 
 Features:
@@ -26,6 +32,10 @@ Breaking Changes:
 
 - Dropped UMD bundle support, if you would like to use a UMD bundle it's available in 3.4 or you can produce your own by git cloning the repo and setting up the ability to do so.
 - Removed Event and FRUI modules
+
+Deprecated:
+
+- JavaScript support configuration property deprecated.
 
 Features:
 

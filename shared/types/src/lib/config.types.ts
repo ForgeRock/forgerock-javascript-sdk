@@ -58,6 +58,7 @@ export type BaseConfig = {
     origin: string;
     path?: string;
     redact?: ('access_token' | 'refresh_token' | 'id_token')[];
+    urls?: string[];
   };
 };
 
@@ -90,10 +91,21 @@ export type ForgeRockConfig = FRConfig & ConfigOptions;
 /** ****************************************************************
  * Convert the BaseConfig to all optional. Then, modify the result
  * specifically for the Proxy's config needs.
+ *
+ * TODO: The below could use some work; just trying to reuse as much as possible
  */
-type ProxyConfigInit = Partial<BaseConfig>;
-export interface ProxyConfig extends ProxyConfigInit {
-  app: BaseConfig['app'];
-  forgerock: BaseConfig['forgerock'];
-  proxy?: BaseConfig['proxy'];
+type AppConfigInit = BaseConfig['app'];
+type ForgeRockConfigInit = BaseConfig['forgerock'];
+// Pluck out the irrelevant props for Proxy configuration
+type ProxyConfigBase = Omit<BaseConfig['proxy'], 'id' | 'path'>;
+// Make only the `urls` property required.
+interface ProxyConfigBaseRequired extends ProxyConfigBase {
+  urls: ProxyConfigBase['urls'];
 }
+// Rebuild config specifically for Proxy configuration
+export type ProxyConfig = {
+  app: AppConfigInit;
+  events?: Partial<EventsConfig>;
+  forgerock: ForgeRockConfigInit;
+  proxy: ProxyConfigBaseRequired;
+};

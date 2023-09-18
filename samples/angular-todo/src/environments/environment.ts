@@ -1,5 +1,5 @@
 export const environment = {
-  AM_URL: 'https://openam-crbrl-01.forgeblocks.com/am',
+  AM_URL: 'https://openam-sdks.forgeblocks.com/am/',
   REALM_PATH: 'alpha',
   WEB_OAUTH_CLIENT: 'WebOAuthClient',
   JOURNEY_LOGIN: 'Login',

@@ -440,7 +440,7 @@ export default function (app) {
   app.get('/login', async (req, res) => {
     const domain = req.url.includes('localhost') ? 'localhost' : 'example.com';
 
-    res.cookie('iPlanetDirectoryPro', 'abcd1234', { domain });
+    res.cookie('iPlanetDirectoryPro', 'abcd1234', { domain, sameSite: 'none', secure: true });
 
     const url = new URL(`${req.protocol}://${req.headers.host}${authPaths.authorize[1]}`);
     url.searchParams.set('client_id', req.query.client_id);

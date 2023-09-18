@@ -15,7 +15,15 @@ of the MIT license. See the LICENSE file for details.
 -->
 <ng-container
   [ngTemplateOutlet]="
-    success ? successMessage : failure ? failureMessage : step ? callbacks : loading
+    success
+      ? successMessage
+      : failure
+      ? failureMessage
+      : showWebAuthn
+      ? webAuthn
+      : step
+      ? callbacks
+      : loading
   "
 >
   <ng-template #loading>
@@ -37,6 +45,12 @@ of the MIT license. See the LICENSE file for details.
       We have failed to authenticate, show a failure message to the user.
     -->
     <app-alert [message]="failure?.getMessage()" [type]="'error'"></app-alert>
+  </ng-template>
+
+  <ng-template #webAuthn>
+    <div>
+      <app-webAuthn [webAuthnType]="webAuthnType" [step]="step"></app-webAuthn>
+    </div>
   </ng-template>
 
   <ng-template #callbacks>
@@ -153,6 +167,42 @@ of the MIT license. See the LICENSE file for details.
                 (setQuestion)="$any(callback).setQuestion($event)"
                 (setAnswer)="$any(callback).setAnswer($event)"
               ></app-kba>
+
+              <!--
+                Handle a SelectIdPCallback using the identityProvider component.
+              -->
+              <app-identity-provider
+                *ngSwitchCase="'SelectIdPCallback'"
+                [callback]="$any(callback)"
+                [name]="callback?.payload?.input?.[0]?.name"
+                (updatedCallback)="$any(callback).setProvider($event)"
+              >
+              </app-identity-provider>
+
+              <!--
+                Handle a TextOutputCallback using the textOutput component.
+              -->
+              <app-textOutput *ngSwitchCase="'TextOutputCallback'"> </app-textOutput>
+
+              <!--
+                Handle a ConfirmationCallback using the confirmation component.
+              -->
+              <app-confirmation
+                *ngSwitchCase="'ConfirmationCallback'"
+                [callback]="$any(callback)"
+                [name]="callback?.payload?.input?.[0]?.name"
+                (updatedCallback)="$any(callback).setOptionValue($event)"
+              >
+              </app-confirmation>
+
+              <!--
+                Handle a RedirectCallback using the Kba component.
+                Emitted questions and answers are used to set the values on the callback.
+              -->
+              <app-loading
+                *ngSwitchCase="'RedirectCallback'"
+                [message]="'Redirecting ...'"
+              ></app-loading>
 
               <!--
                  If current callback is not supported, render a warning message

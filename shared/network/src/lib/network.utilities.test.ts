@@ -1,6 +1,7 @@
 import {
   createErrorResponse,
   evaluateUrlForInterception,
+  extractOrigins,
   generateAmUrls,
   getBaseUrl,
   getEndpointPath,
@@ -17,17 +18,38 @@ describe('Test network utility functions', () => {
     const url = 'https://example.com';
     expect(evaluateUrlForInterception(url, urls)).toBe(true);
   });
+
   // Test evaluateUrlForInterception with non-matching URL
   it('evaluateUrlForInterception should return false for non-matching URLs', () => {
     const urls = ['https://example.com', 'https://example.com/*'];
     const url = 'https://example.org';
     expect(evaluateUrlForInterception(url, urls)).toBe(false);
   });
+
   // Test evaluateUrlForInterception with matching URL containing blob
   it('evaluateUrlForInterception should return true for matching URLs with blob', () => {
     const urls = ['https://example.com', 'https://example.com/*'];
     const url = 'blob:https://example.com/1234';
     expect(evaluateUrlForInterception(url, urls)).toBe(true);
+  });
+
+  // Test extractOrigins
+  it('extractOrigins should return an array of unique origins from array of URLs', () => {
+    const expected = [
+      'https://example.com',
+      'http://example.com',
+      'https://example.com:8443',
+      'https://my.forgeblocks.com',
+    ];
+    const urls = [
+      'https://example.com/a',
+      'http://example.com/b',
+      'https://example.com:8443/c',
+      'https://example.com/d',
+      'http://example.com/e',
+      'https://my.forgeblocks.com/am',
+    ];
+    expect(extractOrigins(urls)).toStrictEqual(expected);
   });
 
   // Test createErrorResponse with `fetch_error` type
@@ -142,7 +164,7 @@ describe('Test network utility functions', () => {
     expect(realmUrlPath).toBe('realms/root/realms/alpha');
   });
   // Test getRealmUrlPath with /alpha with trailing slash
-  it('getRealmUrlPath should return realm URL path without being affected by trailing slash', () => {
+  it('getRealmUrlPath should return realm URL path w/o being affected by trailing slash', () => {
     const realmUrlPath = getRealmUrlPath('alpha/');
     expect(realmUrlPath).toBe('realms/root/realms/alpha');
   });

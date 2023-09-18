@@ -65,11 +65,11 @@ export class AppComponent implements OnInit {
 
     Config.set({
       clientId: environment.WEB_OAUTH_CLIENT,
-      redirectUri: `${window.location.origin}/callback`,
+      redirectUri: `${window.location.origin}/callback.html`,
       scope: 'openid profile email',
       serverConfig: {
         baseUrl: environment.AM_URL,
-        timeout: 30000, // 90000 or less
+        timeout: 3000, // 9000 or less
       },
       realmPath: environment.REALM_PATH,
       tree: environment.JOURNEY_LOGIN,

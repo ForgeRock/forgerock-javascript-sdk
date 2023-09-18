@@ -1,8 +1,8 @@
 /*
  * angular-todo-prototype
- * 
+ *
  * _custom-styles.scss
- * 
+ *
  * Copyright (c) 2021 ForgeRock. All rights reserved.
  * This software may be modified and distributed under the terms
  * of the MIT license. See the LICENSE file for details.
@@ -226,6 +226,15 @@ body {
   button[type='submit'] {
     padding: 0.75rem 1.25rem;
   }
+
+  button {
+    padding: 0.75rem 0.75rem;
+  }
+}
+
+.cstm_form-confirmation-select {
+  margin-bottom: 0.5rem;
+  transition: background-color 0.5s;
 }
 .cstm_form-floating > .cstm_form-select {
   padding-bottom: $form-select-padding-y;
@@ -410,4 +419,50 @@ body {
 .text-white .cstm_dropdown-actions:hover,
 .text-white .cstm_dropdown-actions:focus {
   fill: $gray-200;
+}
+
+/** *********************************************
+ * Identity provider styling
+ */
+
+.google-login {
+  background-color: #fff;
+  color: #757575;
+  border-color: #ddd;
+
+  &:hover {
+    color: #6d6d6d;
+    background-color: #eee;
+    border-color: #ccc;
+  }
+}
+
+.apple-login {
+  background-color: #000000;
+  color: #ffffff;
+  border-color: #000000;
+
+  &:hover {
+    background-color: #000000;
+    color: #ffffff;
+    border-color: #000000;
+  }
+}
+.facebook-login {
+  background-color: #3b5998;
+  border-color: #3b5998;
+  color: white;
+
+  &:hover {
+    background-color: #334b7d;
+    border-color: #334b7d;
+    color: white;
+  }
+}
+app-identity-provider button {
+  border-radius: 8px;
+  width: 100%;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  height: 3rem;
 }

@@ -22,6 +22,7 @@ import type {
 } from './interfaces';
 import type { Tokens } from '../shared/interfaces';
 import { getEndpointPath, resolve, stringify } from '../util/url';
+import { FRLogger } from '../util/logger';
 
 export function addAuthzInfoToHeaders(
   init: RequestInit,
@@ -152,7 +153,7 @@ export function getAdvicesFromHeader(header: string): Advices {
     advicesValueParsed = JSON.parse(advicesValueDecoded);
     return advicesValueParsed;
   } catch (err) {
-    console.error('Could not parse advices value from WWW-Authenticate header');
+    FRLogger.error('Could not parse advices value from WWW-Authenticate header');
   }
   return {};
 }

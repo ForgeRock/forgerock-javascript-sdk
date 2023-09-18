@@ -311,7 +311,9 @@ interceptor({
 });
 ```
 
-The `interceptor.urls` array can accept a `/*` ending to match any request from a particular root domain and path without having to declare each and every unique endpoint that's used in your app. Please note that this isn't a full glob-pattern feature, but just a single ending `*`.
+Note: The `interceptor.urls` array is a required property and will also be shared with the upcoming Proxy configuration, so it's best to store this array as a global, build-time value in the project. If not provided, your Interceptor will throw an error of "Config: `config.interceptor.urls` is required".
+
+These urls can accept a `/*` ending to match any request from a particular root domain and path without having to declare each and every unique endpoint that's used in your app. Please note that this isn't a full glob-pattern feature, but just a single ending `*` (wildcard).
 
 #### The Proxy
 
@@ -337,8 +339,15 @@ proxy({
     },
     realmPath: 'alpha',
   },
+  proxy: {
+    urls: [
+      /* Your protected endpoints; should be identical to `interceptor.urls` */
+    ],
+  },
 });
 ```
+
+Note: the `proxy.urls`, which is shared with `interceptor.urls` from the Interceptor configuration, is a required property for security. If not provided, your Proxy will `throw` an error or "Config: `config.proxy.urls` is required".
 
 ## Building the Code
 
