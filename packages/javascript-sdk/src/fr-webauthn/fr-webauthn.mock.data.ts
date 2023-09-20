@@ -8,11 +8,13 @@
  * of the MIT license. See the LICENSE file for details.
  */
 
+import { CallbackType } from '../auth/enums';
+
 export const webAuthnRegJSCallback653 = {
   authId: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9 ... ',
   callbacks: [
     {
-      type: 'TextOutputCallback',
+      type: CallbackType.TextOutputCallback,
       output: [
         {
           name: 'message',
@@ -24,7 +26,7 @@ export const webAuthnRegJSCallback653 = {
       ],
     },
     {
-      type: 'TextOutputCallback',
+      type: CallbackType.TextOutputCallback,
       output: [
         {
           name: 'message',
@@ -36,7 +38,7 @@ export const webAuthnRegJSCallback653 = {
       ],
     },
     {
-      type: 'HiddenValueCallback',
+      type: CallbackType.HiddenValueCallback,
       output: [
         { name: 'value', value: 'false' },
         { name: 'id', value: 'webAuthnOutcome' },
@@ -50,7 +52,7 @@ export const webAuthnAuthJSCallback653 = {
   authId: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9 ... ',
   callbacks: [
     {
-      type: 'TextOutputCallback',
+      type: CallbackType.TextOutputCallback,
       output: [
         {
           name: 'message',
@@ -62,7 +64,7 @@ export const webAuthnAuthJSCallback653 = {
       ],
     },
     {
-      type: 'TextOutputCallback',
+      type: CallbackType.TextOutputCallback,
       output: [
         {
           name: 'message',
@@ -74,7 +76,7 @@ export const webAuthnAuthJSCallback653 = {
       ],
     },
     {
-      type: 'HiddenValueCallback',
+      type: CallbackType.HiddenValueCallback,
       output: [
         { name: 'value', value: 'false' },
         { name: 'id', value: 'webAuthnOutcome' },
@@ -88,7 +90,7 @@ export const webAuthnRegJSCallback70 = {
   authId: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9 ... ',
   callbacks: [
     {
-      type: 'TextOutputCallback',
+      type: CallbackType.TextOutputCallback,
       output: [
         {
           name: 'message',
@@ -100,7 +102,7 @@ export const webAuthnRegJSCallback70 = {
       ],
     },
     {
-      type: 'TextOutputCallback',
+      type: CallbackType.TextOutputCallback,
       output: [
         {
           name: 'message',
@@ -112,7 +114,7 @@ export const webAuthnRegJSCallback70 = {
       ],
     },
     {
-      type: 'HiddenValueCallback',
+      type: CallbackType.HiddenValueCallback,
       output: [
         { name: 'value', value: 'false' },
         { name: 'id', value: 'webAuthnOutcome' },
@@ -126,7 +128,7 @@ export const webAuthnAuthJSCallback70 = {
   authId: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9 ... ',
   callbacks: [
     {
-      type: 'TextOutputCallback',
+      type: CallbackType.TextOutputCallback,
       output: [
         {
           name: 'message',
@@ -138,7 +140,7 @@ export const webAuthnAuthJSCallback70 = {
       ],
     },
     {
-      type: 'TextOutputCallback',
+      type: CallbackType.TextOutputCallback,
       output: [
         {
           name: 'message',
@@ -150,7 +152,7 @@ export const webAuthnAuthJSCallback70 = {
       ],
     },
     {
-      type: 'HiddenValueCallback',
+      type: CallbackType.HiddenValueCallback,
       output: [
         { name: 'value', value: 'false' },
         { name: 'id', value: 'webAuthnOutcome' },
@@ -164,7 +166,7 @@ export const webAuthnRegJSCallback70StoredUsername = {
   authId: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9 ... ',
   callbacks: [
     {
-      type: 'TextOutputCallback',
+      type: CallbackType.TextOutputCallback,
       output: [
         {
           name: 'message',
@@ -176,7 +178,7 @@ export const webAuthnRegJSCallback70StoredUsername = {
       ],
     },
     {
-      type: 'TextOutputCallback',
+      type: CallbackType.TextOutputCallback,
       output: [
         {
           name: 'message',
@@ -188,7 +190,7 @@ export const webAuthnRegJSCallback70StoredUsername = {
       ],
     },
     {
-      type: 'HiddenValueCallback',
+      type: CallbackType.HiddenValueCallback,
       output: [
         { name: 'value', value: 'false' },
         { name: 'id', value: 'webAuthnOutcome' },
@@ -202,7 +204,7 @@ export const webAuthnAuthJSCallback70StoredUsername = {
   authId: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9 ... ',
   callbacks: [
     {
-      type: 'TextOutputCallback',
+      type: CallbackType.TextOutputCallback,
       output: [
         {
           name: 'message',
@@ -214,7 +216,7 @@ export const webAuthnAuthJSCallback70StoredUsername = {
       ],
     },
     {
-      type: 'TextOutputCallback',
+      type: CallbackType.TextOutputCallback,
       output: [
         {
           name: 'message',
@@ -226,7 +228,7 @@ export const webAuthnAuthJSCallback70StoredUsername = {
       ],
     },
     {
-      type: 'HiddenValueCallback',
+      type: CallbackType.HiddenValueCallback,
       output: [
         { name: 'value', value: 'false' },
         { name: 'id', value: 'webAuthnOutcome' },
@@ -240,7 +242,7 @@ export const webAuthnRegMetaCallback70 = {
   authId: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9 ... ',
   callbacks: [
     {
-      type: 'MetadataCallback',
+      type: CallbackType.MetadataCallback,
       output: [
         {
           name: 'data',
@@ -263,7 +265,7 @@ export const webAuthnRegMetaCallback70 = {
       ],
     },
     {
-      type: 'HiddenValueCallback',
+      type: CallbackType.HiddenValueCallback,
       output: [
         { name: 'value', value: 'false' },
         { name: 'id', value: 'webAuthnOutcome' },
@@ -277,7 +279,7 @@ export const webAuthnAuthMetaCallback70 = {
   authId: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9 ... ',
   callbacks: [
     {
-      type: 'MetadataCallback',
+      type: CallbackType.MetadataCallback,
       output: [
         {
           name: 'data',
@@ -295,7 +297,7 @@ export const webAuthnAuthMetaCallback70 = {
       ],
     },
     {
-      type: 'HiddenValueCallback',
+      type: CallbackType.HiddenValueCallback,
       output: [
         { name: 'value', value: 'false' },
         { name: 'id', value: 'webAuthnOutcome' },
@@ -309,7 +311,7 @@ export const webAuthnRegMetaCallback70StoredUsername = {
   authId: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9 ... ',
   callbacks: [
     {
-      type: 'MetadataCallback',
+      type: CallbackType.MetadataCallback,
       output: [
         {
           name: 'data',
@@ -332,7 +334,7 @@ export const webAuthnRegMetaCallback70StoredUsername = {
       ],
     },
     {
-      type: 'HiddenValueCallback',
+      type: CallbackType.HiddenValueCallback,
       output: [
         { name: 'value', value: 'false' },
         { name: 'id', value: 'webAuthnOutcome' },
@@ -346,7 +348,7 @@ export const webAuthnAuthMetaCallback70StoredUsername = {
   authId: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9 ... ',
   callbacks: [
     {
-      type: 'MetadataCallback',
+      type: CallbackType.MetadataCallback,
       output: [
         {
           name: 'data',
@@ -362,7 +364,7 @@ export const webAuthnAuthMetaCallback70StoredUsername = {
       ],
     },
     {
-      type: 'HiddenValueCallback',
+      type: CallbackType.HiddenValueCallback,
       output: [
         { name: 'value', value: 'false' },
         { name: 'id', value: 'webAuthnOutcome' },

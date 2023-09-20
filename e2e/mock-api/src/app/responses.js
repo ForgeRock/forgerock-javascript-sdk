@@ -414,6 +414,91 @@ export const secondFactorCallback = {
   stage: 'OneTimePasswordEmail',
 };
 
+export const otpQRCodeCallbacks = {
+  authId: 'foo',
+  callbacks: [
+    {
+      type: 'TextOutputCallback',
+      output: [
+        {
+          name: 'message',
+          value:
+            'Scan the QR code image below with the ForgeRock Authenticator app to register your device with your login.',
+        },
+        {
+          name: 'messageType',
+          value: '0',
+        },
+      ],
+    },
+    {
+      type: 'TextOutputCallback',
+      output: [
+        {
+          name: 'message',
+          value:
+            "window.QRCodeReader.createCode({\n    id: 'callback_0',\n    text: 'otpauth\\x3A\\x2F\\x2Ftotp\\x2FForgeRock\\x3Ajlowery\\x3Fperiod\\x3D30\\x26b\\x3D032b75\\x26digits\\x3D6\\x26secret\\QITSTC234FRIU8DD987DW3VPICFY\\x3D\\x3D\\x3D\\x3D\\x3D\\x3D\\x26issuer\\x3DForgeRock',\n    version: '20',\n    code: 'L'\n});",
+        },
+        {
+          name: 'messageType',
+          value: '4',
+        },
+      ],
+    },
+    {
+      type: 'HiddenValueCallback',
+      output: [
+        {
+          name: 'value',
+          value:
+            'otpauth://totp/ForgeRock:jlowery?secret=QITSTC234FRIU8DD987DW3VPICFY======&issuer=ForgeRock&period=30&digits=6&b=032b75',
+        },
+        {
+          name: 'id',
+          value: 'mfaDeviceRegistration',
+        },
+      ],
+      input: [
+        {
+          name: 'IDToken3',
+          value: 'mfaDeviceRegistration',
+        },
+      ],
+    },
+    {
+      type: 'ConfirmationCallback',
+      output: [
+        {
+          name: 'prompt',
+          value: '',
+        },
+        {
+          name: 'messageType',
+          value: 0,
+        },
+        {
+          name: 'options',
+          value: ['Next'],
+        },
+        {
+          name: 'optionType',
+          value: -1,
+        },
+        {
+          name: 'defaultOption',
+          value: 0,
+        },
+      ],
+      input: [
+        {
+          name: 'IDToken4',
+          value: 0,
+        },
+      ],
+    },
+  ],
+};
+
 export const redirectCallback = {
   authId: 'foo',
   callbacks: [
