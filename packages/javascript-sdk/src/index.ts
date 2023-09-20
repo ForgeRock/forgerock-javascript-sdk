@@ -47,6 +47,7 @@ import type { AuthResponse, FailureDetail } from './fr-auth/interfaces';
 import FRDevice from './fr-device';
 import type { MessageCreator, ProcessedPropertyError } from './fr-policy';
 import FRPolicy, { PolicyKey } from './fr-policy';
+import FRQRCode from './fr-qr-code';
 import defaultMessageCreator from './fr-policy/message-creator';
 import FRRecoveryCodes from './fr-recovery-codes';
 import FRUser from './fr-user';
@@ -118,6 +119,7 @@ export {
   FRLoginFailure,
   FRLoginSuccess,
   FRPolicy,
+  FRQRCode,
   FRRecoveryCodes,
   FRStep,
   FRUser,
