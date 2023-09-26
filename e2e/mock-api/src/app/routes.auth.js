@@ -40,6 +40,7 @@ import {
   textInputCallback,
   treeAuthz,
   txnAuthz,
+  otpQRCodeCallbacks,
 } from './responses';
 import initialRegResponse from './response.registration';
 import wait from './wait';
@@ -99,6 +100,13 @@ export default function (app) {
       }
     } else if (req.query.authIndexValue === 'LoginWithEmail') {
       res.json(emailSuspend);
+    } else if (req.query.authIndexValue === 'QRCodeTest') {
+      // If QR Code callbacks are being returned, return success
+      if (req.body.callbacks.find((cb) => cb.type === 'HiddenValueCallback')) {
+        return res.json(authSuccess);
+      }
+      // Client is returning callbacks from username password, so return QR Code callbacks
+      res.json(otpQRCodeCallbacks);
     } else if (req.query.authIndexValue === 'SAMLTestFailure') {
       if (req.body.callbacks.find((cb) => cb.type === 'RedirectCallback')) {
         if (
