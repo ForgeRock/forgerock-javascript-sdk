@@ -5,6 +5,11 @@ on:
       - develop
       - next
       - '!dependabot/**'
+
+env:
+  NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
+  NX_CLOUD_ENCRYPTION_KEY: ${{ secrets.NX_CLOUD_ENCRYPTION_KEY }}
+
 jobs:
   preview:
     runs-on: ubuntu-latest
