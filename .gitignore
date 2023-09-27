@@ -50,6 +50,7 @@ samples/*/users
 
 # Environment files
 .env
+nx-cloud.env
 .env.local
 .angular
 samples/**/.env.local
