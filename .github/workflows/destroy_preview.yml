@@ -7,6 +7,9 @@ on:
       - '!dependabot/**'
     types:
       - closed
+env:
+  NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
+  NX_CLOUD_ENCRYPTION_KEY: ${{ secrets.NX_CLOUD_ENCRYPTION_KEY }}
 
 jobs:
   closed:

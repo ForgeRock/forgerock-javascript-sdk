@@ -11,7 +11,7 @@
     "build:reactjs-todo": "nx run reactjs-todo:build",
     "build:angular-todo": "nx run angular-todo:build",
     "changeset": "changeset",
-    "clean": "shx rm -rf ./{coverage,bundles,dist,docs,lib,lib-esm,node_modules,tests,tmp,todos,users}/ ./samples/*/node_modules/ ./samples/_static/js/*/ ./samples/todo-api/{todos,users} ./packages/*/{bundles,lib,lib-esm}/ && git clean -fX -e \"!.env*\"",
+    "clean": "shx rm -rf ./{coverage,bundles,dist,docs,lib,lib-esm,node_modules,tests,tmp,todos,users}/ ./samples/*/node_modules/ ./samples/_static/js/*/ ./samples/todo-api/{todos,users} ./packages/*/{bundles,lib,lib-esm}/ && git clean -fX -e \"!.env*,nx-cloud.env\"",
     "commit": "git cz",
     "docs": "nx affected --target=typedoc",
     "format:staged": "pretty-quick --staged",
