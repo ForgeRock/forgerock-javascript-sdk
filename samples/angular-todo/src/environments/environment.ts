@@ -4,6 +4,6 @@ export const environment = {
   WEB_OAUTH_CLIENT: 'WebOAuthClient',
   JOURNEY_LOGIN: 'Login',
   JOURNEY_REGISTER: 'Registration',
-  API_URL: 'http://localhost:9443',
+  API_URL: 'https://auth.example.com:9443',
   production: 'development',
 };

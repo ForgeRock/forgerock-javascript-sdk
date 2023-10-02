@@ -1,4 +1,5 @@
 name: ForgeRock Commit Check
+
 on:
   pull_request:
   push:
@@ -7,6 +8,10 @@ on:
       # because they will be merged, not the commits we write
       - 'develop'
       - 'master'
+
+env:
+  NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
+  NX_CLOUD_ENCRYPTION_KEY: ${{ secrets.NX_CLOUD_ENCRYPTION_KEY }}
 
 jobs:
   commit-check:
