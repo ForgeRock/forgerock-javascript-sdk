@@ -25,6 +25,13 @@ import TermsConditions from './terms-conditions';
 import Text from './text';
 import Unknown from './unknown';
 import Button from './button';
+import TextOutput from './text-output';
+import Confirmation from './confirmation';
+import { FRWebAuthn, WebAuthnStepType } from '@forgerock/javascript-sdk';
+import WebAuthn from './web-authn';
+import KeyIcon from '../../components/icons/key-icon';
+import NewUserIcon from '../../components/icons/new-user-icon';
+import FingerPrintIcon from '../../components/icons/finger-print-icon';
 
 /**
  * @function Form - React component for managing the user authentication journey
@@ -121,6 +128,10 @@ export default function Form({ action, bottomMessage, followUp, topMessage }) {
         return <TermsConditions callback={cb} inputName={name} key={name} />;
       case 'KbaCreateCallback':
         return <Kba callback={cb} inputName={name} key={name} />;
+      case 'TextOutputCallback':
+        return <TextOutput callback={cb} key={`textOutput-${idx}`} />; //For TextOutput callbacks, 'input' field comes empty which leads to a unique-key-prop error
+      case 'ConfirmationCallback':
+        return <Confirmation callback={cb} inputName={name} key={name} />;
       default:
         // If current callback is not supported, render a warning message
         return <Unknown callback={cb} key={`unknown-${idx}`} />;
@@ -149,6 +160,18 @@ export default function Form({ action, bottomMessage, followUp, topMessage }) {
      * user while we complete the process and redirect to home page.
      */
     return <Loading message="Success! Redirecting ..." />;
+  } else if (
+    renderStep.type === 'Step' &&
+    FRWebAuthn.getWebAuthnStepType(renderStep) !== WebAuthnStepType.None
+  ) {
+    return (
+      <>
+        <div className="cstm_form-icon align-self-center mb-3">
+          <FingerPrintIcon size="72px" />
+        </div>
+        <WebAuthn step={renderStep} setSubmissionStep={setSubmissionStep} />
+      </>
+    );
   } else if (renderStep.type === 'Step') {
     /**
      * The step to render has callbacks, so we need to collect additional
@@ -156,6 +179,9 @@ export default function Form({ action, bottomMessage, followUp, topMessage }) {
      */
     return (
       <Fragment>
+        <div className="cstm_form-icon  align-self-center mb-3">
+          {action.type === 'login' ? <KeyIcon size="72px" /> : <NewUserIcon size="72px" />}
+        </div>
         <h1 className={`text-center fs-2 mb-3 ${state.theme.textClass}`}>{form.titleText}</h1>
         {topMessage}
         <form

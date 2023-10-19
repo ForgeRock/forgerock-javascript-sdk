@@ -14,7 +14,6 @@ import { Link } from 'react-router-dom';
 import BackHome from '../components/utilities/back-home';
 import Card from '../components/layout/card';
 import { AppContext } from '../global-state';
-import KeyIcon from '../components/icons/key-icon';
 import Form from '../components/journey/form';
 
 /**
@@ -29,9 +28,6 @@ export default function Login() {
       <div className="w-100">
         <BackHome />
         <Card>
-          <div className="cstm_form-icon  align-self-center mb-3">
-            <KeyIcon size="72px" />
-          </div>
           <Form
             action={{ type: 'login' }}
             bottomMessage={

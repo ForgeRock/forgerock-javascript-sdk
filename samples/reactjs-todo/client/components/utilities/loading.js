@@ -20,7 +20,6 @@ import { AppContext } from '../../global-state';
  */
 export default function Loading({ classes, message }) {
   const [state] = useContext(AppContext);
-
   return (
     <div className="container">
       <p className={classes}>
