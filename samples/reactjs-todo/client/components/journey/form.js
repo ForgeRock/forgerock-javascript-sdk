@@ -129,7 +129,7 @@ export default function Form({ action, bottomMessage, followUp, topMessage }) {
       case 'KbaCreateCallback':
         return <Kba callback={cb} inputName={name} key={name} />;
       case 'TextOutputCallback':
-        return <TextOutput key={`textOutput-${idx}`} />; //For TextOutput callbacks, 'input' field comes empty which leads to a unique-key-prop error
+        return <TextOutput callback={cb} key={`textOutput-${idx}`} />; //For TextOutput callbacks, 'input' field comes empty which leads to a unique-key-prop error
       case 'ConfirmationCallback':
         return <Confirmation callback={cb} inputName={name} key={name} />;
       default:

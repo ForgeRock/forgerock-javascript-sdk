@@ -39,16 +39,11 @@ export default function WebAuthn({ step, setSubmissionStep }) {
         }
         setSubmissionStep(step);
       } catch (e) {
-        setSubmissionStep({
-          type: 'LoginFailure',
-          payload: {
-            message: 'user cancelled webAuthn',
-          },
-        });
+        setSubmissionStep(step);
       }
     }
     performWebAuthn();
-  }, [step, webAuthnStep, setSubmissionStep]);
+  }, []);
 
   return (
     <p>
