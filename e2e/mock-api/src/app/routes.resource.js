@@ -79,7 +79,7 @@ export default function (app) {
           .set('Content-Type', 'application/json')
           .set('iPlanetDirectoryPro', session.tokenId)
           .set('Accept-API-Version', 'resource=1.2')
-          .query({ token: authHeaderArr[1] });
+          .send({ token: authHeaderArr[1] });
       } else {
         // Using SSO
         response = await request

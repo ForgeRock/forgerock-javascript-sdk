@@ -28,7 +28,7 @@ export async function auth(req, res, next) {
         .post(`${AM_URL}oauth2/realms/root/realms/${REALM_PATH}/introspect`)
         .set('Content-Type', 'application/json')
         .set('Authorization', `Basic ${CONFIDENTIAL_CLIENT}`)
-        .query({ token });
+        .send({ token });
     }
   } catch (err) {
     console.log(JSON.stringify(err));
