@@ -27,8 +27,8 @@ import type {
   ProfileConfigOptions,
 } from './interfaces';
 import Collector from './collector';
-import { PREFIX } from '../config/constants';
 import { FRLogger } from '../util/logger';
+import Config from '../config';
 
 /**
  * @class FRDevice - Collects user device metadata
@@ -132,7 +132,7 @@ class FRDevice extends Collector {
   }
 
   getIdentifier(): string {
-    const storageKey = `${PREFIX}-DeviceID`;
+    const storageKey = `${Config.get().prefix}-DeviceID`;
 
     if (!(typeof globalThis.crypto !== 'undefined' && globalThis.crypto.getRandomValues)) {
       FRLogger.warn('Cannot generate profile ID. Crypto and/or getRandomValues is not supported.');

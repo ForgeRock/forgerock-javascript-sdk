@@ -10,7 +10,6 @@
 
 import type { ConfigOptions } from '../config';
 import Config from '../config';
-import { PREFIX } from '../config/constants';
 import { FRLogger } from '../util/logger';
 import type { OAuth2Tokens } from '../oauth2-client';
 import OAuth2Client, { allowedErrors, ResponseType } from '../oauth2-client';
@@ -67,7 +66,7 @@ abstract class TokenManager {
    */
   public static async getTokens(options?: GetTokensOptions): Promise<OAuth2Tokens | void> {
     const { clientId, oauthThreshold } = Config.get(options as ConfigOptions);
-    const storageKey = `${PREFIX}-${clientId}`;
+    const storageKey = `${Config.get().prefix}-${clientId}`;
 
     /**
      * First, let's see if tokens exist locally

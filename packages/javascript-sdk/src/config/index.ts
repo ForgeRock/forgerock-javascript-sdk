@@ -8,7 +8,7 @@
  * of the MIT license. See the LICENSE file for details.
  */
 
-import { DEFAULT_TIMEOUT, DEFAULT_OAUTH_THRESHOLD } from './constants';
+import { DEFAULT_TIMEOUT, DEFAULT_OAUTH_THRESHOLD, PREFIX } from './constants';
 import type { ConfigOptions, ServerConfig, ValidConfigOptions } from './interfaces';
 
 /**
@@ -21,6 +21,7 @@ function setDefaults(options: ConfigOptions): ConfigOptions {
     ...options,
     oauthThreshold: options.oauthThreshold || DEFAULT_OAUTH_THRESHOLD,
     logLevel: options.logLevel || 'none',
+    prefix: options.prefix || PREFIX,
   };
 }
 
@@ -56,9 +57,7 @@ abstract class Config {
     if (options.serverConfig) {
       this.validateServerConfig(options.serverConfig);
     }
-    this.options = {
-      ...setDefaults(options),
-    };
+    this.options = { ...setDefaults(options) };
   }
 
   /**

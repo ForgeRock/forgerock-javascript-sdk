@@ -50,10 +50,10 @@ interface ConfigOptions {
   oauthThreshold?: number;
   logLevel?: LogLevel;
   logger?: LoggerFunctions;
+  prefix?: string;
 }
 
 type ConfigurablePaths = keyof CustomPathConfig;
-
 /**
  * Optional configuration for custom paths for actions
  */
