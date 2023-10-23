@@ -8,6 +8,7 @@
  * of the MIT license. See the LICENSE file for details.
  */
 
+import Config from '../config';
 import FRDevice from './index';
 
 Object.defineProperty(window, 'crypto', {
@@ -17,6 +18,14 @@ Object.defineProperty(window, 'crypto', {
   },
 });
 
+beforeAll(() => {
+  Config.set({
+    serverConfig: {
+      baseUrl: 'http://am.example.com:8443',
+      timeout: 3000,
+    },
+  });
+});
 describe('Test DeviceProfile', () => {
   it('should return basic metadata', async () => {
     const device = new FRDevice();

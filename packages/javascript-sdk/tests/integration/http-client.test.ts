@@ -84,6 +84,9 @@ describe('Test HttpClient request for txn auth', () => {
     url: 'https://openam.example.com/am/json/realms/root/authenticate?authIndexType=composite_advice&authIndexValue=%3CAdvices%3E%3CAttributeValuePair%3E%3CAttribute%20name%3D%22TransactionConditionAdvice%22%2F%3E%3CValue%3Eabc%3C%2FValue%3E%3C%2FAttributeValuePair%3E%3C%2FAdvices%3E',
   };
 
+  afterAll(() => {
+    jest.clearAllMocks();
+  });
   beforeEach(() => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const mockedHttpClientRequest = HttpClient['_request'] as any;

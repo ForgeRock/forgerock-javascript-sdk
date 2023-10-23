@@ -33,7 +33,9 @@ jest.mock('../../src/util/pkce', () => {
     },
   };
 });
-
+afterAll(() => {
+  jest.clearAllMocks();
+});
 describe('Test OAuth2Client methods', () => {
   it('should construct proper authorization URL', async () => {
     const verifier = PKCE.createVerifier();

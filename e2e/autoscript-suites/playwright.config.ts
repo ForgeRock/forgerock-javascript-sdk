@@ -23,7 +23,7 @@ const config: PlaywrightTestConfig = {
       name: 'chromium',
       use: {
         ...devices['Desktop Chrome'],
-        // ...devices['Desktop Edge'],
+        ...devices['Desktop Edge'],
       },
     },
     {
@@ -32,23 +32,7 @@ const config: PlaywrightTestConfig = {
     },
     {
       name: 'webkit',
-      use: { ...devices['Desktop Safari'], ...devices['iPad (gen 7)'] },
-    },
-    {
-      name: 'Android Web',
-      use: {
-        ...devices['Pixel 4a (5G)'],
-        ...devices['Pixel 5'],
-      },
-    },
-    {
-      name: 'Apple Mobile',
-      use: {
-        ...devices['iPhone X'],
-        ...devices['iPhone XR'],
-        ...devices['iPhone SE'],
-        ...devices['iPhone 13 Pro Max'],
-      },
+      use: { ...devices['Desktop Safari'] },
     },
   ],
 };
