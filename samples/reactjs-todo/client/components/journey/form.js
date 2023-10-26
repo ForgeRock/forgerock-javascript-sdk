@@ -9,7 +9,7 @@
  */
 
 import React, { Fragment, useEffect, useContext, useReducer } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import Boolean from './boolean';
 import { DEBUGGER } from '../../constants';
@@ -27,11 +27,12 @@ import Unknown from './unknown';
 import Button from './button';
 import TextOutput from './text-output';
 import Confirmation from './confirmation';
-import { FRWebAuthn, WebAuthnStepType } from '@forgerock/javascript-sdk';
+import { FRWebAuthn, WebAuthnStepType, FRAuth, CallbackType } from '@forgerock/javascript-sdk';
 import WebAuthn from './web-authn';
 import KeyIcon from '../../components/icons/key-icon';
 import NewUserIcon from '../../components/icons/new-user-icon';
 import FingerPrintIcon from '../../components/icons/finger-print-icon';
+import IdentityProvider from './identity-provider';
 
 /**
  * @function Form - React component for managing the user authentication journey
@@ -56,6 +57,16 @@ export default function Form({ action, bottomMessage, followUp, topMessage }) {
   const [form] = useReducer(treeReducer, treeReducer(null, action));
   // Used for redirection after success
   const navigate = useNavigate();
+  const [params] = useSearchParams();
+
+  // Get the code and state from the URL query parameters
+  const codeParam = params.get('code');
+  const stateParam = params.get('state');
+
+  let resumeUrl = '';
+  if (codeParam && stateParam) {
+    resumeUrl = window.location.href;
+  }
 
   /**
    * Custom "hook" for handling form orchestration
@@ -63,7 +74,7 @@ export default function Form({ action, bottomMessage, followUp, topMessage }) {
   const [
     { formFailureMessage, renderStep, submittingForm, user },
     { setSubmissionStep, setSubmittingForm },
-  ] = useJourneyHandler({ action, form });
+  ] = useJourneyHandler({ action, form, resumeUrl });
 
   /**
    * If the user successfully authenticates, let React complete
@@ -132,12 +143,13 @@ export default function Form({ action, bottomMessage, followUp, topMessage }) {
         return <TextOutput callback={cb} key={`textOutput-${idx}`} />; //For TextOutput callbacks, 'input' field comes empty which leads to a unique-key-prop error
       case 'ConfirmationCallback':
         return <Confirmation callback={cb} inputName={name} key={name} />;
+      case 'SelectIdPCallback':
+        return <IdentityProvider callback={cb} inputName={name} key={name} />;
       default:
         // If current callback is not supported, render a warning message
         return <Unknown callback={cb} key={`unknown-${idx}`} />;
     }
   }
-
   /**
    * Render conditions for presenting appropriate views to user.
    * First, we need to handle no "step", which means we are waiting for
@@ -172,6 +184,12 @@ export default function Form({ action, bottomMessage, followUp, topMessage }) {
         <WebAuthn step={renderStep} setSubmissionStep={setSubmissionStep} />
       </>
     );
+  } else if (
+    renderStep.type === 'Step' &&
+    renderStep?.getCallbacksOfType(CallbackType.RedirectCallback).length > 0
+  ) {
+    FRAuth.redirect(renderStep);
+    return <Loading message="Redirecting ..." />;
   } else if (renderStep.type === 'Step') {
     /**
      * The step to render has callbacks, so we need to collect additional
