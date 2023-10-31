@@ -9,7 +9,7 @@
  */
 
 import type { Tokens } from '../shared/interfaces';
-import { PREFIX } from '../config/constants';
+import Config from '../config';
 
 /**
  * Provides wrapper for tokens with sessionStorage.
@@ -19,7 +19,7 @@ abstract class SessionStorageWrapper {
    * Retrieve tokens.
    */
   public static async get(clientId: string): Promise<Tokens | void> {
-    const tokenString = sessionStorage.getItem(`${PREFIX}-${clientId}`);
+    const tokenString = sessionStorage.getItem(`${Config.get().prefix}-${clientId}`);
 
     // If there is no stored token, or the token is not an object, return null
     if (!tokenString) {
@@ -40,14 +40,14 @@ abstract class SessionStorageWrapper {
    */
   public static async set(clientId: string, tokens: Tokens): Promise<void> {
     const tokenString = JSON.stringify(tokens);
-    sessionStorage.setItem(`${PREFIX}-${clientId}`, tokenString);
+    sessionStorage.setItem(`${Config.get().prefix}-${clientId}`, tokenString);
   }
 
   /**
    * Removes stored tokens.
    */
   public static async remove(clientId: string): Promise<void> {
-    sessionStorage.removeItem(`${PREFIX}-${clientId}`);
+    sessionStorage.removeItem(`${Config.get().prefix}-${clientId}`);
   }
 }
 
