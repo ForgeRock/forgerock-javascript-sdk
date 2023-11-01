@@ -160,6 +160,7 @@ abstract class OAuth2Client {
     };
 
     const response = await this.request('accessToken', undefined, false, init, options);
+    const responseClone = response.clone();
     const responseBody = await this.getBody<unknown>(response);
 
     if (response.status !== 200) {
@@ -185,6 +186,7 @@ abstract class OAuth2Client {
       idToken: responseObject.id_token,
       refreshToken: responseObject.refresh_token,
       tokenExpiry: tokenExpiry,
+      rawResponse: await responseClone.text(),
     };
   }
 
