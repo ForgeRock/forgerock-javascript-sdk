@@ -18,7 +18,6 @@ $cstm_link-light-color_hover: color.scale($primary, $blackness: 20%);
 $cstm_link-dark-color: color.scale($primary, $lightness: 40%);
 $cstm_link-dark-color_hover: color.scale($primary, $lightness: 60%);
 
-
 /** *********************************************
  * Root and container element fixes
  */
@@ -224,7 +223,7 @@ body {
   }
 }
 .cstm_form {
-  button[type="submit"] {
+  button[type='submit'] {
     padding: 0.75rem 1.25rem;
   }
 }
@@ -294,10 +293,10 @@ body {
   }
 }
 .cstm_back-home_dark {
-  color: color.scale($primary, $lightness: 40%);;
+  color: color.scale($primary, $lightness: 40%);
 
   svg {
-    fill: color.scale($primary, $lightness: 40%);;
+    fill: color.scale($primary, $lightness: 40%);
   }
   &:hover {
     background-color: $gray-700;
@@ -368,7 +367,6 @@ body {
   box-shadow: $input-btn-focus-box-shadow;
 }
 .cstm_form-check:focus + .cstm_todo-label {
-
   .cstm_todo-icon_complete {
     fill: $gray-600;
   }
@@ -384,7 +382,6 @@ body {
 }
 .text-white .cstm_form-check:focus + .cstm_todo-label,
 .text-white .cstm_todo-label:hover {
-
   .cstm_todo-icon_complete {
     fill: $gray-200;
   }
@@ -413,4 +410,51 @@ body {
 .text-white .cstm_dropdown-actions:hover,
 .text-white .cstm_dropdown-actions:focus {
   fill: $gray-200;
+}
+
+/** *********************************************
+ * Identity provider styling
+ */
+
+.google-login {
+  background-color: #fff;
+  color: #757575;
+  border-color: #ddd;
+
+  &:hover {
+    color: #6d6d6d;
+    background-color: #eee;
+    border-color: #ccc;
+  }
+}
+
+.apple-login {
+  background-color: #000000;
+  color: #ffffff;
+  border-color: #000000;
+
+  &:hover {
+    background-color: #000000;
+    color: #ffffff;
+    border-color: #000000;
+  }
+}
+.facebook-login {
+  background-color: #3b5998;
+  border-color: #3b5998;
+  color: white;
+
+  &:hover {
+    background-color: #334b7d;
+    border-color: #334b7d;
+    color: white;
+  }
+}
+
+.identity-provider {
+  border-radius: 8px;
+  width: 100%;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  height: 3rem;
 }

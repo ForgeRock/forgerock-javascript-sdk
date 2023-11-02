@@ -22,7 +22,7 @@ import { htmlDecode } from '../../utilities/decode';
  * @param {Object} props.form - The form metadata object
  * @returns {Object} - React component object
  */
-export default function useJourneyHandler({ action, form }) {
+export default function useJourneyHandler({ action, form, resumeUrl }) {
   /**
    * Compose the state used in this view.
    * First, we will use the global state methods found in the App Context.
@@ -113,7 +113,11 @@ export default function useJourneyHandler({ action, form }) {
       if (DEBUGGER) debugger;
       let nextStep;
       try {
-        nextStep = await FRAuth.next(prev, { tree: form.tree });
+        if (resumeUrl) {
+          nextStep = await FRAuth.resume(resumeUrl);
+        } else {
+          nextStep = await FRAuth.next(prev, { tree: form.tree });
+        }
         setStepCount((current) => current + 1);
       } catch (err) {
         console.error(`Error: failure in next step request; ${err}`);
