@@ -19,7 +19,11 @@
         "polyfills": "samples/angular-todo/src/polyfills.ts",
         "tsConfig": "samples/angular-todo/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
-        "assets": ["samples/angular-todo/src/favicon.ico", "samples/angular-todo/src/assets", "samples/angular-todo/src/callback.html"],
+        "assets": [
+          "samples/angular-todo/src/favicon.ico",
+          "samples/angular-todo/src/assets",
+          "samples/angular-todo/src/callback.html"
+        ],
         "styles": ["samples/angular-todo/src/styles.scss"],
         "scripts": []
       },
@@ -73,15 +77,15 @@
         },
         "watch": true,
         "host": "angular.example.com",
-        "browserTarget": "angular-todo:build:development",
-        "open": true
+        "open": true,
+        "buildTarget": "angular-todo:build:development"
       },
       "configurations": {
         "production": {
-          "browserTarget": "angular-todo:build:production"
+          "buildTarget": "angular-todo:build:production"
         },
         "development": {
-          "browserTarget": "angular-todo:build:development"
+          "buildTarget": "angular-todo:build:development"
         }
       },
       "defaultConfiguration": "development"
@@ -89,11 +93,11 @@
     "extract-i18n": {
       "executor": "@angular-devkit/build-angular:extract-i18n",
       "options": {
-        "browserTarget": "angular-todo:build"
+        "buildTarget": "angular-todo:build"
       }
     },
     "lint": {
-      "executor": "@nx/linter:eslint",
+      "executor": "@nx/eslint:lint",
       "options": {
         "fix": true,
         "lintFilePatterns": [
@@ -104,10 +108,9 @@
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": ["coverage/samples/angular-todo"],
+      "outputs": ["{workspaceRoot}/coverage/samples/angular-todo"],
       "options": {
-        "jestConfig": "samples/angular-todo/jest.config.ts",
-        "passWithNoTests": true
+        "jestConfig": "samples/angular-todo/jest.config.ts"
       }
     }
   },

@@ -14,7 +14,7 @@ import cookieParser from 'cookie-parser';
 import { createServer } from 'https';
 // import { createServer } from 'http';
 import { env } from 'process';
-import path from 'path';
+import * as path from 'path';
 import { authorizeApp } from './app/app.auth';
 import { key, cert } from './app/app.certs';
 import { MOCK_PORT } from './app/env.config';

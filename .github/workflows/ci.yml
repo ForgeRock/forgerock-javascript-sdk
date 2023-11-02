@@ -5,6 +5,7 @@ env:
   NX_CLOUD_ENCRYPTION_KEY: ${{ secrets.NX_CLOUD_ENCRYPTION_KEY }}
   NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
   NX_CLOUD_DISTRIBUTED_EXECUTION: true
+  NX_VERBOSE_LOGGING: true
 jobs:
   pr:
     runs-on: macos-latest
@@ -17,7 +18,7 @@ jobs:
       - uses: actions/setup-node@v3
         id: cache
         with:
-          node-version: '18.12.1'
+          node-version: '18.18.2'
           cache: 'npm'
           cache-dependency-path: '**/package-lock.json'
       - name: Setup custom host for sdkapp.example.com
@@ -34,9 +35,7 @@ jobs:
         uses: nrwl/nx-set-shas@v2
         with:
           main-branch-name: 'develop'
-      - run: npm install @nrwl/nx-cloud
       - run: npx nx-cloud start-ci-run
-
       - run: npx nx affected --t build --parallel --max-parallel=3
       - run: npx nx affected --t lint --parallel --max-parallel=3
       - run: npx nx affected --t test --parallel --max-parallel=3
@@ -46,7 +45,6 @@ jobs:
       - name: Stop All Agents
         if: ${{ always() }}
         run: npx nx-cloud stop-all-agents
-
       - name: 'Artifacts'
         uses: actions/upload-artifact@v3
         with:
@@ -81,7 +79,7 @@ jobs:
           fetch-depth: 0
       - uses: actions/setup-node@v3
         with:
-          node-version: '16.13.1'
+          node-version: '18.18.2'
           cache: 'npm'
           cache-dependency-path: '**/package-lock.json'
       - run: npm ci
@@ -89,7 +87,6 @@ jobs:
         env:
           # PLAYWRIGHT_BROWSERS_PATH: 0
           PLAYWRIGHT_SKIP_BROWSERS_DOWNLOAD: 1
-      - run: npm install @nrwl/nx-cloud
       - name: Setup custom host for sdkapp.example.com
         run: sudo echo "127.0.0.1 sdkapp.example.com auth.example.com api.example.com user.example.com" | sudo tee -a /etc/hosts
       - run: npx playwright install chromium firefox webkit

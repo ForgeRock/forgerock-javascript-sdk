@@ -9,7 +9,7 @@
  */
 
 import { readFileSync } from 'fs';
-import path from 'path';
+import * as path from 'path';
 
 const __dirname = path.dirname(__filename);
 

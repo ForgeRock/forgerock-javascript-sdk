@@ -61,3 +61,5 @@ users/*
 docs/packages/javascript-sdk
 **/playwright-report
 **/playwright/.cache
+
+.nx/cache

@@ -5,6 +5,7 @@
     "module": "CommonJS",
     "allowUmdGlobalAccess": true,
     "target": "ES2020",
+    "esModuleInterop": true,
     "composite": true,
     "allowJs": true,
     "types": ["node", "express"]

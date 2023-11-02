@@ -24,7 +24,7 @@
           },
           {
             "target": "mock-api:serve",
-            "checkUrl": "https://api.example.com:9443/healthcheck",
+            "checkUrl": "http://localhost:9443/healthcheck",
             "checkMaxTries": 50,
             "rejectUnauthorized": false,
             "reuseExistingServer": true
@@ -33,7 +33,7 @@
       }
     },
     "lint": {
-      "executor": "@nx/linter:eslint",
+      "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": ["e2e/token-vault-suites/**/*.{ts,tsx,js,jsx}"]
