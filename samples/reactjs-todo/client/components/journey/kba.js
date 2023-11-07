@@ -80,7 +80,7 @@ export default function Kba({ callback, inputName }) {
           <option value="">No selection</option>
           {questions.map((question, idx) => {
             return (
-              <option key={idx} value={idx}>
+              <option key={idx} value={question}>
                 {question}
               </option>
             );
