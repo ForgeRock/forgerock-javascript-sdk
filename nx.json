@@ -78,6 +78,7 @@
           "build-interceptor",
           "build-types",
           "bundle-types",
+          "bundle",
           "test",
           "lint",
           "package",

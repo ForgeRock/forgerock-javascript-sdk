@@ -24,5 +24,7 @@
     },
     "./package.json": "./package.json"
   },
+  "main": "./src/index.cjs",
+  "module": "./src/index.js",
   "types": "./src/index.d.ts"
 }
