@@ -1,5 +1,16 @@
 # Changelog
 
+## [4.3.0] - 2024-01-04
+
+Features
+
+- Make a prefix to the storage keys configurable via the Config class
+- Added a QR Code utility class to determine if a step has a QR Code and handle QR Codes in SDK
+
+Fixes
+
+- Fix main and module fields in package.json being undefined
+
 ## [4.2.0] - 2023-09-11
 
 Features:
