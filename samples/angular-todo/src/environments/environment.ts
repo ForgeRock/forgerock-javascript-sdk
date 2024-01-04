@@ -1,9 +1,9 @@
 export const environment = {
-   AM_URL: 'https://openam-crbrl-01.forgeblocks.com/am/',
-   REALM_PATH: 'alpha',
-   WEB_OAUTH_CLIENT: 'WebOAuthClient',
-   JOURNEY_LOGIN: 'UsernamelessWebAuthn',
-   JOURNEY_REGISTER: 'Registration',
-   API_URL: 'http://localhost:9443',
-   production: 'development'
+  AM_URL: 'undefined',
+  REALM_PATH: 'undefined',
+  WEB_OAUTH_CLIENT: 'undefined',
+  JOURNEY_LOGIN: 'undefined',
+  JOURNEY_REGISTER: 'undefined',
+  API_URL: 'undefined',
+  production: 'development',
 };
