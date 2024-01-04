@@ -21,6 +21,10 @@
       }
     },
     "build": {
+      "dependsOn": ["bundle"],
+      "command": "node ./scripts/update-package-json-sdk.js"
+    },
+    "bundle": {
       "executor": "@nx/rollup:rollup",
       "options": {
         "compiler": "tsc",

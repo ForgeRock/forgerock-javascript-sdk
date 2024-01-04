@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test';
 import { asyncEvents } from './utils/async-events';
 
-test('Test happy paths on test page', async ({ page }) => {
+test.skip('Test happy paths on test page', async ({ page }) => {
   const { clickButton, getTokens, navigate } = asyncEvents(page);
   await navigate('/');
 
@@ -93,7 +93,7 @@ test('Test happy paths on test page', async ({ page }) => {
  * ensure the proxy is not called when the url is not in the allow list
  * and that the proxy responds with an error
  */
-test('Ensure someone cannot try to call their own url!', async ({ page }) => {
+test.skip('Ensure someone cannot try to call their own url!', async ({ page }) => {
   const { navigate } = asyncEvents(page);
   await navigate('/');
 

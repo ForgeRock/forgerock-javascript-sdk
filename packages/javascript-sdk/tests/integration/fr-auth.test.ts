@@ -15,19 +15,35 @@ import FRAuth from '../../src/fr-auth';
 import type NameCallback from '../../src/fr-auth/callbacks/name-callback';
 import type FRStep from '../../src/fr-auth/fr-step';
 import { rawResponse } from './fr-auth.mock.data';
+jest.mock('../../src/config', () => {
+  return {
+    set: (conf) => conf,
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    get() {
+      return {
+        serverConfig: {
+          baseUrl: 'https://openam.example.com/am/',
+          timeout: 0,
+        },
+      };
+    },
+  };
+});
 
-jest.mock('../../src/config');
-
+afterAll(() => {
+  jest.clearAllMocks();
+  jest.resetModules();
+});
 describe('Test FRAuth.next functionality', () => {
   it('should be able to make initial next step', async () => {
     global.fetch = jest.fn().mockImplementation(() => rawResponse);
-    (Config.get as jest.Mock).mockImplementation(() => ({
-      realmPath: '',
+    console.log(JSON.stringify(Config.set));
+    Config.set({
       serverConfig: {
-        baseUrl: 'https://domain.com',
+        baseUrl: 'http://am.example.com',
+        timeout: 3000,
       },
-      tree: 'FakeTree',
-    }));
+    });
 
     const step = await FRAuth.next();
     const stage = (step as FRStep).getStage();

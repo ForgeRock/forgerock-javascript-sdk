@@ -25,10 +25,14 @@ export async function auth(req, res, next) {
     if (req.headers.authorization) {
       const [_, token] = req.headers.authorization.split(' ');
       response = await request
-        .post(`${AM_URL}oauth2/realms/root/realms/${REALM_PATH}/introspect`)
+        .post(
+          `${AM_URL}oauth2/realms/root${
+            REALM_PATH === 'root' ? '' : '/realms/' + REALM_PATH
+          }/introspect`,
+        )
         .set('Content-Type', 'application/json')
         .set('Authorization', `Basic ${CONFIDENTIAL_CLIENT}`)
-        .query({ token });
+        .send({ token });
     }
   } catch (err) {
     console.log(JSON.stringify(err));
