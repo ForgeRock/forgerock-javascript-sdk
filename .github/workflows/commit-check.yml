@@ -1,7 +1,6 @@
 name: ForgeRock Commit Check
 
 on:
-  pull_request:
   push:
     branches-ignore:
       # We don't want to check commits on develop or master
