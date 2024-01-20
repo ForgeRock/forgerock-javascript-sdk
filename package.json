@@ -124,7 +124,7 @@
     "typescript": "5.0.4",
     "typescript-transform-paths": "^3.4.6",
     "verdaccio": "^5.0.4",
-    "vite": "^4.3.9",
+    "vite": "^4.5.2",
     "vite-plugin-dts": "2.3.0",
     "vite-plugin-eslint": "^1.8.1",
     "vite-tsconfig-paths": "^4.0.2",
