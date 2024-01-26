@@ -29,7 +29,10 @@
               },
               {
                 "sourceTag": "scope:e2e",
-                "onlyDependOnLibsWithTags": ["scope:sdk, scope:app"]
+                "onlyDependOnLibsWithTags": [
+                  "scope:sdk, scope:app",
+                  "scope:package"
+                ]
               },
               {
                 "sourceTag": "scope:lib",

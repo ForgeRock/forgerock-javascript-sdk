@@ -47,10 +47,10 @@ Config.set({
   redirectUri: `${window.location.origin}`,
   scope: 'openid profile me.read',
   serverConfig: {
-    baseUrl: import.meta.env.VITE_AM_URL,
+    baseUrl: import.meta.env.VITE_AM_URL || 'http://localhost:9443/am',
     timeout: 5000,
   },
-  realmPath: import.meta.env.VITE_AM_REALM,
+  realmPath: import.meta.env.VITE_AM_REALM || 'root',
   tokenStore: {
     get: tokenStore.get,
     set: tokenStore.set,
