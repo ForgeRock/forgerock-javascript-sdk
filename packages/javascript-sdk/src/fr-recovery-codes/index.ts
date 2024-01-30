@@ -11,7 +11,7 @@
 import { CallbackType } from '../auth/enums';
 import type TextOutputCallback from '../fr-auth/callbacks/text-output-callback';
 import type FRStep from '../fr-auth/fr-step';
-import { parseDisplayRecoveryCodesText } from './script-parser';
+import { parseDeviceNameText, parseDisplayRecoveryCodesText } from './script-parser';
 
 /**
  * Utility for handling recovery code nodes.
@@ -28,6 +28,10 @@ import { parseDisplayRecoveryCodesText } from './script-parser';
  * ```
  */
 abstract class FRRecoveryCodes {
+  public static getDeviceName(step: FRStep): string {
+    const text = this.getDisplayCallback(step)?.getOutputByName('message', '') ?? '';
+    return parseDeviceNameText(text);
+  }
   /**
    * Retrieves the recovery codes by parsing the JavaScript message text in callback.
    *

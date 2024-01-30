@@ -75,6 +75,7 @@ const displayRecoveryCodesResponse = {
     },
   ],
 };
+const expectedDeviceName = 'New Security Key';
 
 const expectedRecoveryCodes = [
   'iZmEtxvQ00',
@@ -106,4 +107,15 @@ const otherResponse = {
   ],
 };
 
-export { displayRecoveryCodes, displayRecoveryCodesResponse, expectedRecoveryCodes, otherResponse };
+const securityKeyResponse = `/* * Copyright 2018 ForgeRock AS. All Rights Reserved * * Use of this code requires a commercial software license with ForgeRock AS. * or with one of its affiliates. All use shall be exclusively subject * to such license between the licensee and ForgeRock AS. */ var newLocation = document.getElementById("wrapper"); var oldHtml = newLocation.getElementsByTagName("fieldset")[0].innerHTML; newLocation.getElementsByTagName("fieldset")[0].innerHTML = "<div class=\"panel panel-default\">\n" + " <div class=\"panel-body text-center\">\n" + " <h3>Your Recovery Codes</h3>\n" + " <h4>You must make a copy of these recovery codes. They cannot be displayed again.</h4>\n" + " </div>\n" + "<div class=\"text-center\">\n" + "kw50qtmm32\n" + "</div>\n" + "<div class=\"text-center\">\n" + "Rt2Td8AK2s\n" + "</div>\n" + "<div class=\"text-center\">\n" + "6vZrIRCBJB\n" + "</div>\n" + "<div class=\"text-center\">\n" + "HCmL01Yiyv\n" + "</div>\n" + "<div class=\"text-center\">\n" + "BvDsSpazA2\n" + "</div>\n" + "<div class=\"text-center\">\n" + "T6pbKLyW2l\n" + "</div>\n" + "<div class=\"text-center\">\n" + "gZR0u6XubS\n" + "</div>\n" + "<div class=\"text-center\">\n" + "VZ1bH94IfO\n" + "</div>\n" + "<div class=\"text-center\">\n" + "O9BZ4bLefQ\n" + "</div>\n" + "<div class=\"text-center\">\n" + "NKNrBxlHCt\n" + "</div>\n" + "<div class=\"panel-body text-center\">\n" + " <p>Use one of these codes to authenticate if you lose your device, which has been named: <em>New Security Key</em></p>\n" + "</div>\n" + "</div>" + oldHtml; document.body.appendChild(newLocation);`;
+const securityKeyCustomNameResponse = `/* * Copyright 2018 ForgeRock AS. All Rights Reserved * * Use of this code requires a commercial software license with ForgeRock AS. * or with one of its affiliates. All use shall be exclusively subject * to such license between the licensee and ForgeRock AS. */ var newLocation = document.getElementById("wrapper"); var oldHtml = newLocation.getElementsByTagName("fieldset")[0].innerHTML; newLocation.getElementsByTagName("fieldset")[0].innerHTML = "<div class=\"panel panel-default\">\n" + " <div class=\"panel-body text-center\">\n" + " <h3>Your Recovery Codes</h3>\n" + " <h4>You must make a copy of these recovery codes. They cannot be displayed again.</h4>\n" + " </div>\n" + "<div class=\"text-center\">\n" + "kw50qtmm32\n" + "</div>\n" + "<div class=\"text-center\">\n" + "Rt2Td8AK2s\n" + "</div>\n" + "<div class=\"text-center\">\n" + "6vZrIRCBJB\n" + "</div>\n" + "<div class=\"text-center\">\n" + "HCmL01Yiyv\n" + "</div>\n" + "<div class=\"text-center\">\n" + "BvDsSpazA2\n" + "</div>\n" + "<div class=\"text-center\">\n" + "T6pbKLyW2l\n" + "</div>\n" + "<div class=\"text-center\">\n" + "gZR0u6XubS\n" + "</div>\n" + "<div class=\"text-center\">\n" + "VZ1bH94IfO\n" + "</div>\n" + "<div class=\"text-center\">\n" + "O9BZ4bLefQ\n" + "</div>\n" + "<div class=\"text-center\">\n" + "NKNrBxlHCt\n" + "</div>\n" + "<div class=\"panel-body text-center\">\n" + " <p>Use one of these codes to authenticate if you lose your device, which has been named: <em>My Custom Device Name</em></p>\n" + "</div>\n" + "</div>" + oldHtml; document.body.appendChild(newLocation);`;
+
+export {
+  displayRecoveryCodes,
+  displayRecoveryCodesResponse,
+  expectedDeviceName,
+  expectedRecoveryCodes,
+  otherResponse,
+  securityKeyCustomNameResponse,
+  securityKeyResponse,
+};
