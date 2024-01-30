@@ -16,6 +16,7 @@ const pages = [
   'authn-basic',
   'authn-central-login',
   'authn-device-profile',
+  'authn-protect',
   'authn-email-suspend',
   'authn-no-session',
   'authn-oauth',

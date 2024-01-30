@@ -3,7 +3,7 @@
  *
  * routes.auth.js
  *
- * Copyright (c) 2020 ForgeRock. All rights reserved.
+ * Copyright (c) 2020-2024 ForgeRock. All rights reserved.
  * This software may be modified and distributed under the terms
  * of the MIT license. See the LICENSE file for details.
  */
@@ -26,6 +26,8 @@ import {
   messageCallback,
   noSessionSuccess,
   pollingCallback,
+  pingProtectEvaluate,
+  pingProtectInitialize,
   redirectCallback,
   redirectCallbackSaml,
   requestDeviceProfile,
@@ -78,6 +80,8 @@ export default function (app) {
         req.query.authIndexValue === 'SAMLFailure'
       ) {
         res.json(nameCallback);
+      } else if (req.query.authIndexValue === 'TEST_LoginPingProtect') {
+        res.json(pingProtectInitialize);
       } else if (req.query.authIndexValue === 'IDMSocialLogin') {
         res.json(selectIdPCallback);
       } else if (req.query.authIndexValue === 'AMSocialLogin') {
@@ -265,6 +269,23 @@ export default function (app) {
         } else {
           res.status(401).json(authFail);
         }
+      }
+    } else if (req.query.authIndexValue === 'TEST_LoginPingProtect') {
+      const protectInitCb = req.body.callbacks.find(
+        (cb) => cb.type === 'PingOneProtectInitializeCallback',
+      );
+      const usernameCb = req.body.callbacks.find((cb) => cb.type === 'NameCallback');
+      const protectEvalCb = req.body.callbacks.find(
+        (cb) => cb.type === 'PingOneProtectEvaluationCallback',
+      );
+      if (protectInitCb) {
+        res.json(initialBasicLogin);
+      } else if (usernameCb && usernameCb.input[0].value) {
+        res.json(pingProtectEvaluate);
+      } else if (protectEvalCb && protectEvalCb.input[0].value) {
+        res.json(authSuccess);
+      } else {
+        res.status(401).json(authFail);
       }
     } else if (req.body.callbacks.find((cb) => cb.type === 'PasswordCallback')) {
       const pwCb = req.body.callbacks.find((cb) => cb.type === 'PasswordCallback');

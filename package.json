@@ -140,5 +140,6 @@
   },
   "nx": {
     "includedScripts": []
-  }
+  },
+  "dependencies": {}
 }
