@@ -56,11 +56,9 @@
       "defaultConfiguration": "development"
     },
     "lint": {
-      "executor": "@nx/linter:eslint",
-      "outputs": ["{options.outputFile}"],
+      "executor": "@nx/eslint:lint",
       "options": {
-        "fix": true,
-        "lintFilePatterns": ["samples/embedded-login/**/*.ts"]
+        "fix": true
       }
     }
   }

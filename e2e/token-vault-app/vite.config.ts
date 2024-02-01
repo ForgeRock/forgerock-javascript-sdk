@@ -1,9 +1,13 @@
 import { defineConfig } from 'vite';
 
-import viteTsConfigPaths from 'vite-tsconfig-paths';
+import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
 
 export default defineConfig({
+  root: __dirname,
   build: {
+    outDir: '../../e2e/token-vault-app/public/',
+    reportCompressedSize: true,
+    commonjsOptions: { transformMixedEsModules: true },
     minify: false,
     rollupOptions: {
       input: {
@@ -22,9 +26,5 @@ export default defineConfig({
     },
     strictPort: true,
   },
-  plugins: [
-    viteTsConfigPaths({
-      root: '../../',
-    }),
-  ],
+  plugins: [nxViteTsPaths()],
 });

@@ -1,30 +1,52 @@
 {
-  "npmScope": "forgerock",
   "targetDefaults": {
-    "e2e": {
-      "dependsOn": ["plugins-wait-for-api:build"]
-    },
-    "test:unit": {
-      "dependsOn": ["^test"]
-    },
     "test": {
-      "dependsOn": ["^test"],
-      "inputs": ["default", "^default"]
+      "cache": true
+    },
+    "e2e": {
+      "dependsOn": ["plugins-wait-for-api:build"],
+      "cache": true
     },
     "tsc": {
-      "dependsOn": ["^tsc"]
+      "dependsOn": ["^tsc"],
+      "cache": true
     },
     "build": {
-      "dependsOn": ["^build"]
+      "dependsOn": ["^build"],
+      "cache": true
     },
-    "prepare": {
-      "dependsOn": ["^prepare"]
+    "build-interceptor": {
+      "cache": true
     },
-    "package": {
-      "dependsOn": ["^package"]
+    "build-types": {
+      "cache": true
     },
-    "lint": {
-      "inputs": ["default", "{workspaceRoot}/.eslintrc.json"]
+    "bundle-types": {
+      "cache": true
+    },
+    "bundle": {
+      "cache": true
+    },
+    "config": {
+      "cache": true
+    },
+    "@nx/jest:jest": {
+      "dependsOn": ["^test"],
+      "inputs": ["default", "^default"],
+      "cache": true,
+      "options": {
+        "passWithNoTests": true
+      },
+      "configurations": {
+        "ci": {
+          "ci": true,
+          "codeCoverage": true
+        }
+      }
+    },
+    "@nx/eslint:lint": {
+      "inputs": ["default", "{workspaceRoot}/.eslintrc.json"],
+      "cache": true
     }
   },
   "targetDependencies": {
@@ -69,35 +91,8 @@
     "appsDir": "",
     "libsDir": ""
   },
-  "tasksRunnerOptions": {
-    "default": {
-      "runner": "nx-cloud",
-      "options": {
-        "cacheableOperations": [
-          "build",
-          "build-interceptor",
-          "build-types",
-          "bundle-types",
-          "bundle",
-          "test",
-          "lint",
-          "package",
-          "prepare",
-          "e2e",
-          "version",
-          "config",
-          "tsc",
-          "typedoc"
-        ],
-        "useDaemonProcess": true
-      }
-    }
-  },
   "affected": {
     "defaultBase": "develop"
-  },
-  "cli": {
-    "defaultCollection": "@nx/react"
   },
   "generators": {
     "@nx/web:application": {
@@ -139,5 +134,6 @@
       }
     }
   },
-  "defaultProject": "javascript-sdk"
+  "defaultProject": "javascript-sdk",
+  "useDaemonProcess": true
 }

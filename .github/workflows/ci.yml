@@ -5,55 +5,64 @@ env:
   NX_CLOUD_ENCRYPTION_KEY: ${{ secrets.NX_CLOUD_ENCRYPTION_KEY }}
   NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
   NX_CLOUD_DISTRIBUTED_EXECUTION: true
+
+# Needed for nx-set-shas when run on the master branch
+permissions:
+  actions: read
+  contents: read
+
 jobs:
   pr:
-    runs-on: macos-latest
+    strategy:
+      matrix:
+        node: [20.x]
+        os: ['ubuntu-latest']
+    runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.pull_request.head.ref }}
-          repository: ${{github.event.pull_request.head.repo.full_name}}
           fetch-depth: 0
-      - uses: actions/setup-node@v3
-        id: cache
+      - name: Setup Node ${{ matrix.node }}
+        uses: actions/setup-node@v4
         with:
-          node-version: '18.12.1'
+          node-version: ${{ matrix.node }}
           cache: 'npm'
-          cache-dependency-path: '**/package-lock.json'
-      - name: Setup custom host for sdkapp.example.com
-        run: sudo echo "127.0.0.1 sdkapp.example.com auth.example.com api.example.com user.example.com" | sudo tee -a /etc/hosts
-      - name: npm install
-        # if: steps.cache.outputs.cache-hit != 'true'
-        run: npm ci
-        env:
-          DEBUG: pw:install
-          # PLAYWRIGHT_BROWSERS_PATH: 0
-          PLAYWRIGHT_SKIP_BROWSERS_DOWNLOAD: 1
-      - run: npx playwright install chromium firefox webkit
-      - name: Derive appropriate SHAs for base and head for `nx affected` commands
-        uses: nrwl/nx-set-shas@v2
+      - run: npx nx-cloud start-ci-run --distribute-on="5 linux-medium-js" --stop-agents-after="e2e" # this line enables distribution
+      - uses: actions/cache@v4
+        id: npm-cache
         with:
-          main-branch-name: 'develop'
-      - run: npm install @nrwl/nx-cloud
-      - run: npx nx-cloud start-ci-run
-
-      - run: npx nx affected --t build --parallel --max-parallel=3
-      - run: npx nx affected --t lint --parallel --max-parallel=3
-      - run: npx nx affected --t test --parallel --max-parallel=3
-      - run: npx nx affected --t test --configuration=integration
-      - run: npx nx affected --t e2e --parallel 1 --exclude token-vault-suites
-      # It's important that we always run this step, otherwise in the case of any failures in preceding non-Nx steps, the agents will keep running and waste billable minutes
-      - name: Stop All Agents
-        if: ${{ always() }}
-        run: npx nx-cloud stop-all-agents
-
-      - name: 'Artifacts'
-        uses: actions/upload-artifact@v3
-        with:
-          retention-days: 5
-          if-no-files-found: ignore
           path: |
-            ${{ github.workspace }}/e2e/autoscript-suites/test-results
+            **/node_modules
+          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-npm
+      - name: Install dependencies if cache invalid
+        if: steps.npm-cache.outputs.cache-hit != 'true'
+        run: npm ci
+
+      - name: Cache npm dependencies
+        uses: actions/cache/save@v3
+        with:
+          path: |
+            **/node_modules
+          key: npm-dependencies-${{ hashFiles('**/package-lock.json') }}
+
+      - run: sudo echo "127.0.0.1 sdkapp.example.com auth.example.com api.example.com user.example.com" | sudo tee -a /etc/hosts
+
+      - name: Derive appropriate SHAs for base and head for `nx affected` commands
+        uses: nrwl/nx-set-shas@v4
+        with:
+          main-branch-name: ${{ github.base_ref }}
+      - run: echo ${{  github.base_ref }}
+      - if: ${{ github.base_ref }} == 'develop'
+        run: git branch --track develop origin/develop
+
+      - if: ${{  github.base_ref }} == 'master'
+        run: git branch --track master origin/master
+
+      - run: npx nx affected -t lint test build --parallel=3
+      - run: npx nx affected --t e2e --parallel 1 --exclude token-vault-suites
+
       - name: Slack Notify
         id: slack
         uses: slackapi/slack-github-action@v1.18.0
@@ -67,31 +76,3 @@ jobs:
             }
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-  agents:
-    runs-on: macos-latest
-    name: Agent Mac
-    strategy:
-      matrix:
-        agent: [1, 2, 3]
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          ref: ${{ github.event.pull_request.head.ref }}
-          repository: ${{github.event.pull_request.head.repo.full_name}}
-          fetch-depth: 0
-      - uses: actions/setup-node@v3
-        with:
-          node-version: '16.13.1'
-          cache: 'npm'
-          cache-dependency-path: '**/package-lock.json'
-      - run: npm ci
-        if: steps.cache.outputs.cache-hit != 'true'
-        env:
-          # PLAYWRIGHT_BROWSERS_PATH: 0
-          PLAYWRIGHT_SKIP_BROWSERS_DOWNLOAD: 1
-      - run: npm install @nrwl/nx-cloud
-      - name: Setup custom host for sdkapp.example.com
-        run: sudo echo "127.0.0.1 sdkapp.example.com auth.example.com api.example.com user.example.com" | sudo tee -a /etc/hosts
-      - run: npx playwright install chromium firefox webkit
-      - name: Start Nx Agent ${{ matrix.agent }}
-        run: npx nx-cloud start-agent

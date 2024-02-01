@@ -83,7 +83,7 @@ function autoscript() {
       }),
       rxDelay(delay),
       mergeMap(
-        (step) => {
+        () => {
           console.log('Retrieve the protected resource');
           return forgerock.HttpClient.request({
             url: `${igUrl ? igUrl : resourceOrigin + '/ig/authz-by-tree'}`,
@@ -110,7 +110,7 @@ function autoscript() {
         },
       ),
       rxDelay(delay),
-      mergeMap((step) => {
+      mergeMap(() => {
         console.log('Logout before calling next resource');
         return forgerock.SessionManager.logout();
       }),
@@ -126,7 +126,7 @@ function autoscript() {
       }),
       rxDelay(delay),
       mergeMap(
-        (step) => {
+        () => {
           console.log('Retrieve the protected resource');
           return forgerock.HttpClient.request({
             url: `${resourceOrigin}/rest/authz-by-tree`,
@@ -148,13 +148,14 @@ function autoscript() {
           if (jsonResponse.message === 'Successfully retrieved resource!') {
             console.log('Request to REST resource successfully responded');
           } else {
+            console.log(jsonResponse);
             throw new Error('REST Tree Based Authorization was not successful');
           }
           return step;
         },
       ),
       rxDelay(delay),
-      mergeMap((step) => {
+      mergeMap(() => {
         return forgerock.SessionManager.logout();
       }),
       map((response) => {

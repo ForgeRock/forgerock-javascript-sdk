@@ -9,7 +9,7 @@ const e2e = fs.readdirSync(path.resolve(__dirname, 'e2e'));
 /* commitlint.config.js | .commitlintrc.js
    @type {import('cz-git').UserConfig} */
 module.exports = {
-  extends: ['@commitlint/config-conventional', '@commitlint/config-nx-scopes'],
+  extends: ['@commitlint/config-conventional'],
   prompt: {
     alias: { fd: 'docs: fix typos' },
     types: [

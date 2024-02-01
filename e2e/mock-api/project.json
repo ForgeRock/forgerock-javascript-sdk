@@ -66,20 +66,17 @@
       }
     },
     "lint": {
-      "executor": "@nx/linter:eslint",
-      "outputs": ["{options.outputFile}"],
+      "executor": "@nx/eslint:lint",
       "options": {
-        "lintFilePatterns": ["e2e/mock-api/**/*.ts"],
         "fix": true,
         "ignorePath": ".gitignore"
       }
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": ["coverage/e2e/mock-api"],
+      "outputs": ["{workspaceRoot}/coverage/e2e/mock-api"],
       "options": {
-        "jestConfig": "e2e/mock-api/jest.config.ts",
-        "passWithNoTests": true
+        "jestConfig": "e2e/mock-api/jest.config.ts"
       }
     }
   },

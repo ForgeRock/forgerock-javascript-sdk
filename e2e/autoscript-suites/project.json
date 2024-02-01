@@ -5,31 +5,16 @@
   "projectType": "application",
   "targets": {
     "e2e": {
-      "executor": "@plugins/wait-for-api:run-targets",
-      "options": {
-        "targets": [
-          {
-            "target": "mock-api:serve",
-            "checkUrl": "https://api.example.com:9443/healthcheck",
-            "checkMaxTries": 50,
-            "rejectUnauthorized": false,
-            "reuseExistingServer": true
-          },
-          {
-            "target": "autoscript-apps:serve",
-            "checkUrl": "https://sdkapp.example.com:8443",
-            "checkMaxTries": 50,
-            "reuseExistingServer": true,
-            "rejectUnauthorized": false
-          }
-        ]
+      "command": "playwright test -c e2e/autoscript-suites/playwright.config.ts",
+      "configurations": {
+        "ui": {
+          "command": "playwright test --ui -c e2e/autoscript-suites/playwright.config.ts"
+        }
       }
     },
     "lint": {
-      "executor": "@nx/linter:eslint",
-      "outputs": ["{options.outputFile}"],
+      "executor": "@nx/eslint:lint",
       "options": {
-        "lintFilePatterns": ["e2e/autoscript-suites/**/*.{js,ts}"],
         "fix": true,
         "ignorePath": ".gitignore"
       }

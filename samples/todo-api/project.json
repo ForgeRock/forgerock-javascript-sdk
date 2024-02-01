@@ -33,7 +33,7 @@
       }
     },
     "serve": {
-      "executor": "@nx/node:node",
+      "executor": "@nx/js:node",
       "options": {
         "buildTarget": "todo-api:build",
         "watch": true
@@ -45,19 +45,16 @@
       }
     },
     "lint": {
-      "executor": "@nx/linter:eslint",
-      "outputs": ["{options.outputFile}"],
+      "executor": "@nx/eslint:lint",
       "options": {
-        "fix": true,
-        "lintFilePatterns": ["samples/todo-api/**/*.js", "samples/todo-api/**/*.ts"]
+        "fix": true
       }
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": ["coverage/samples/todo-api"],
+      "outputs": ["{workspaceRoot}/coverage/samples/todo-api"],
       "options": {
-        "jestConfig": "samples/todo-api/jest.config.ts",
-        "passWithNoTests": true
+        "jestConfig": "samples/todo-api/jest.config.ts"
       }
     }
   },

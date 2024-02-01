@@ -47,11 +47,12 @@
         "generateExportsField": false,
         "main": "packages/javascript-sdk/src/index.ts",
         "rollupConfig": "packages/javascript-sdk/rollup.config.js",
-        "updateBuildableProjectDepsInPackageJson": false,
         "project": "packages/javascript-sdk/package.json",
         "tsConfig": "packages/javascript-sdk/tsconfig.lib.json",
         "cwd": "packages/javascript-sdk",
-        "parallel": true
+        "parallel": true,
+        "babelUpwardRootMode": true,
+        "updateBuildableProjectDepsInPackageJson": true
       },
       "configurations": {
         "production": {}
@@ -59,22 +60,19 @@
       "outputs": ["{options.outputPath}"]
     },
     "lint": {
-      "executor": "@nx/linter:eslint",
-      "outputs": ["{options.outputFile}"],
+      "executor": "@nx/eslint:lint",
       "options": {
-        "lintFilePatterns": ["packages/javascript-sdk/**/*.ts"],
         "fix": true,
         "ignorePath": ".gitignore"
       }
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": ["coverage/packages/javascript-sdk"],
+      "outputs": ["{workspaceRoot}/coverage/packages/javascript-sdk"],
       "options": {
         "jestConfig": "packages/javascript-sdk/jest.config.ts",
         "testPathPattern": ["packages/javascript-sdk/src"],
-        "codeCoverage": true,
-        "passWithNoTests": true
+        "codeCoverage": true
       },
       "configurations": {
         "unit": {},

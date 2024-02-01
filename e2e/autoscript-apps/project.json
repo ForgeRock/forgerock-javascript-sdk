@@ -20,7 +20,7 @@
       "configurations": {
         "development": {
           "optimization": false,
-          "watch": true
+          "watch": false
         },
         "production": {
           "outputPath": "dist/e2e/autoscript-apps",

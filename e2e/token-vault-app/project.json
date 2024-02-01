@@ -12,7 +12,7 @@
       "defaultConfiguration": "production",
       "options": {
         "emptyOutDir": false,
-        "outputPath": "e2e/token-vault-app/public/"
+        "outputPath": "dist/e2e/token-vault-app"
       },
       "configurations": {
         "development": {
@@ -68,11 +68,8 @@
       }
     },
     "lint": {
-      "executor": "@nx/linter:eslint",
-      "outputs": ["{options.outputFile}"],
-      "options": {
-        "lintFilePatterns": ["e2e/token-vault-app/**/*.ts"]
-      }
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"]
     }
   }
 }
