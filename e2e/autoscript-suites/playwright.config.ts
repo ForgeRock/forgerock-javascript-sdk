@@ -6,6 +6,7 @@ const config: PlaywrightTestConfig = {
   workers: process.env.CI ? 1 : 8,
   retries: process.env.CI ? 1 : 0,
   testDir: './src/suites',
+  timeout: process.env.CI ? 60000 : 20000,
   use: {
     headless: true,
     navigationTimeout: 50000,

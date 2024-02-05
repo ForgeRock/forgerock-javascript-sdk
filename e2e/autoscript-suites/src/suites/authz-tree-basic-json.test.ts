@@ -11,6 +11,7 @@
 import { test, expect } from '@playwright/test';
 import { setupAndGo } from '../utilities/setup-and-go';
 
+test.use({ actionTimeout: 65000 });
 test.describe('Test Tree Based Authorization flow using JSON response', () => {
   test(`Trigger Tree Based Auth appropriately`, async ({ page, browserName }) => {
     const { messageArray } = await setupAndGo(page, browserName, 'authz-tree-basic-json/');
