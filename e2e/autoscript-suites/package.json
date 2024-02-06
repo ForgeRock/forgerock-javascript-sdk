@@ -18,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/ForgeRock/forgerock-javascript-sdk/issues"
   },
-  "homepage": "https://github.com/ForgeRock/forgerock-javascript-sdk#readme"
+  "homepage": "https://github.com/ForgeRock/forgerock-javascript-sdk#readme",
+  "nx": {
+    "includedScripts": []
+  }
 }
