@@ -10,7 +10,7 @@
 
 import type { ActionTypes } from './enums';
 import type { FRCallbackFactory } from '../fr-auth/callbacks/factory';
-import type { Tokens } from '../shared/interfaces';
+import type { StringDict, Tokens } from '../shared/interfaces';
 
 type LogLevel = 'none' | 'info' | 'warn' | 'error' | 'debug';
 
@@ -100,6 +100,14 @@ interface ValidConfigOptions extends ConfigOptions {
   logLevel: LogLevel;
 }
 
+/**
+ * Represents configuration overrides used when requesting the next
+ * step in an authentication tree.
+ */
+interface StepOptions extends ConfigOptions {
+  query?: StringDict<string>;
+}
+
 export type {
   Action,
   ConfigOptions,
@@ -112,4 +120,5 @@ export type {
   ServerConfig,
   TokenStoreObject,
   ValidConfigOptions,
+  StepOptions,
 };
