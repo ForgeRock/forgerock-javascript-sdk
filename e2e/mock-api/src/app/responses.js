@@ -3,7 +3,7 @@
  *
  * responses.js
  *
- * Copyright (c) 2020 ForgeRock. All rights reserved.
+ * Copyright (c) 2020-2024 ForgeRock. All rights reserved.
  * This software may be modified and distributed under the terms
  * of the MIT license. See the LICENSE file for details.
  */
@@ -280,6 +280,88 @@ export const passwordCallback = {
       type: 'PasswordCallback',
       output: [{ name: 'prompt', value: 'Password' }],
       input: [{ name: 'IDToken1', value: '' }],
+    },
+  ],
+};
+
+export const pingProtectEvaluate = {
+  authId: 'foo',
+  callbacks: [
+    {
+      type: 'PingOneProtectEvaluationCallback',
+      output: [
+        {
+          name: 'pauseBehavioralData',
+          value: true,
+        },
+      ],
+      input: [
+        {
+          name: 'IDToken1signals',
+          value: '',
+        },
+        {
+          name: 'IDToken1clientError',
+          value: '',
+        },
+      ],
+    },
+  ],
+};
+
+export const pingProtectInitialize = {
+  authId: 'foo',
+  callbacks: [
+    {
+      type: 'PingOneProtectInitializeCallback',
+      output: [
+        {
+          name: 'envId',
+          value: '02fb1243-189a-4bc7-9d6c-a919edf6447',
+        },
+        {
+          name: 'consoleLogEnabled',
+          value: true,
+        },
+        {
+          name: 'deviceAttributesToIgnore',
+          value: ['userAgent'],
+        },
+        {
+          name: 'customHost',
+          value: 'https://example.com',
+        },
+        {
+          name: 'lazyMetadata',
+          value: false,
+        },
+        {
+          name: 'behavioralDataCollection',
+          value: true,
+        },
+        {
+          name: 'deviceKeyRsyncIntervals',
+          value: 14,
+        },
+        {
+          name: 'enableTrust',
+          value: false,
+        },
+        {
+          name: 'disableTags',
+          value: false,
+        },
+        {
+          name: 'disableHub',
+          value: false,
+        },
+      ],
+      input: [
+        {
+          name: 'IDToken1clientError',
+          value: '',
+        },
+      ],
     },
   ],
 };
