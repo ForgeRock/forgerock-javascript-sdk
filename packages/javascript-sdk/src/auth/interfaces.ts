@@ -8,8 +8,6 @@
  * of the MIT license. See the LICENSE file for details.
  */
 
-import type { ConfigOptions } from '../config/interfaces';
-import type { StringDict } from '../shared/interfaces';
 import type { CallbackType } from './enums';
 
 /**
@@ -39,14 +37,6 @@ interface StepDetail {
   failedPolicyRequirements?: FailedPolicyRequirement[];
   failureUrl?: string;
   result?: boolean;
-}
-
-/**
- * Represents configuration overrides used when requesting the next
- * step in an authentication tree.
- */
-interface StepOptions extends ConfigOptions {
-  query?: StringDict<string>;
 }
 
 /**
@@ -102,5 +92,4 @@ export type {
   PolicyRequirement,
   Step,
   StepDetail,
-  StepOptions,
 };
