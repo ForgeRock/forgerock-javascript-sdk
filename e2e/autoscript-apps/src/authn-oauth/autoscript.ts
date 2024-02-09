@@ -88,6 +88,7 @@ function autoscript() {
         } else {
           throw new Error('Session_Error');
         }
+        console.log(tokens.rawResponse);
         return tokens;
       }),
       rxDelay(delay),
