@@ -3,7 +3,6 @@ const path = require('path');
 
 const packages = fs.readdirSync(path.resolve(__dirname, 'packages'));
 const samples = fs.readdirSync(path.resolve(__dirname, 'samples'));
-const shared = fs.readdirSync(path.resolve(__dirname, 'shared')).map((name) => `shared-${name}`);
 const e2e = fs.readdirSync(path.resolve(__dirname, 'e2e'));
 
 /* commitlint.config.js | .commitlintrc.js
@@ -65,6 +64,6 @@ module.exports = {
         emoji: ':rewind:',
       },
     ],
-    scopes: [...shared, ...packages, ...samples, ...e2e],
+    scopes: [...packages, ...samples, ...e2e],
   },
 };
