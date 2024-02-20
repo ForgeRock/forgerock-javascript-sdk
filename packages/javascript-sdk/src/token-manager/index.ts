@@ -66,7 +66,8 @@ abstract class TokenManager {
    */
   public static async getTokens(options?: GetTokensOptions): Promise<OAuth2Tokens | void> {
     const { clientId, oauthThreshold } = Config.get(options as ConfigOptions);
-    const storageKey = `${Config.get().prefix}-${clientId}`;
+    // const storageKey = `${Config.get().prefix}-authflow-${clientId}`;
+    const storageKey = `${Config.get().prefix}-authflow-${clientId}`;
 
     /**
      * First, let's see if tokens exist locally
