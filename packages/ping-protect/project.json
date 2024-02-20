@@ -15,7 +15,6 @@
         "outputPath": "dist/packages/ping-protect",
         "main": "packages/ping-protect/src/index.ts",
         "tsConfig": "packages/ping-protect/tsconfig.lib.json",
-        "updateBuildableProjectDepsInPackageJson": false,
         "assets": [
           "packages/ping-protect/*.md",
           "packages/ping-protect/src/lib/ping-signals-sdk.js"
@@ -23,7 +22,7 @@
       }
     },
     "lint": {
-      "executor": "@nx/linter:eslint",
+      "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": ["packages/ping-protect/**/*.ts"]
@@ -31,10 +30,9 @@
     },
     "test": {
       "executor": "@nx/vite:test",
-      "outputs": ["coverage/packages/ping-protect"],
+      "outputs": ["{workspaceRoot}/coverage/packages/ping-protect"],
       "options": {
-        "passWithNoTests": true,
-        "reportsDirectory": "../../coverage/packages/ping-protect"
+        "configFile": "packages/ping-protect/vite.config.ts"
       },
       "configurations": {
         "watch": {
@@ -43,5 +41,5 @@
       }
     }
   },
-  "tags": []
+  "tags": ["scope:package"]
 }

@@ -1,38 +1,39 @@
-import { PlaywrightTestConfig, devices } from '@playwright/test';
+import { PlaywrightTestConfig } from '@playwright/test';
+import { nxE2EPreset } from '@nx/playwright/preset';
+import { workspaceRoot } from '@nx/devkit';
+
+// For CI, you may want to set BASE_URL to the deployed application.
+const baseURL = process.env['BASE_URL'] || 'http://localhost:8443';
+
+const baseConfig = nxE2EPreset(__filename, {
+  testDir: './src/suites',
+});
 
 const config: PlaywrightTestConfig = {
-  forbidOnly: !!process.env.CI,
-  globalTeardown: './teardown.ts',
-  workers: process.env.CI ? 1 : 8,
-  retries: process.env.CI ? 1 : 0,
-  testDir: './src/suites',
+  ...baseConfig,
+  reporter: process.env.CI ? 'github' : 'list',
+  testIgnore: '**/authz-txn*',
   use: {
-    headless: true,
-    navigationTimeout: 50000,
-    screenshot: process.env.CI ? 'only-on-failure' : 'off',
-    video: process.env.CI ? 'retain-on-failure' : 'off',
-    baseURL: 'https://sdkapp.example.com:8443',
+    baseURL,
     ignoreHTTPSErrors: true,
     geolocation: { latitude: 24.9884, longitude: -87.3459 },
-    permissions: [],
     bypassCSP: true,
-    trace: 'retain-on-failure',
+    trace: process.env.CI ? 'retry-with-trace' : 'retain-on-failure',
   },
-  projects: [
+  webServer: [
     {
-      name: 'chromium',
-      use: {
-        ...devices['Desktop Chrome'],
-        ...devices['Desktop Edge'],
-      },
+      command: 'npx nx serve mock-api',
+      url: 'http://localhost:9443/healthcheck',
+      ignoreHTTPSErrors: true,
+      reuseExistingServer: !process.env.CI,
+      cwd: workspaceRoot,
     },
     {
-      name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
-    },
-    {
-      name: 'webkit',
-      use: { ...devices['Desktop Safari'] },
+      command: 'npx nx serve autoscript-apps',
+      url: 'http://localhost:8443',
+      ignoreHTTPSErrors: true,
+      reuseExistingServer: !process.env.CI,
+      cwd: workspaceRoot,
     },
   ],
 };

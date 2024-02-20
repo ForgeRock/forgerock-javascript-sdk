@@ -9,94 +9,35 @@ jobs:
   pr:
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.pull_request.head.ref }}
-          repository: ${{github.event.pull_request.head.repo.full_name}}
           fetch-depth: 0
-      - uses: actions/setup-node@v3
+      - uses: actions/cache/restore@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
+      - uses: actions/cache/save@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
+      - run: npm ci
+      # This line enables distribution
+      # The "--stop-agents-after" is optional, but allows idle agents to shut down once the "e2e-ci" targets have been requested
+      - run: npx nx-cloud start-ci-run --distribute-on="5 linux-medium-js" --stop-agents-after="e2e-ci" --verbose
+
+      - uses: actions/setup-node@v4
         id: cache
         with:
-          node-version: '18.12.1'
+          node-version: '20.x'
           cache: 'npm'
           cache-dependency-path: '**/package-lock.json'
-      - name: Setup custom host for sdkapp.example.com
-        run: |
-          sudo echo "127.0.0.1 localhost sdkapp.example.com auth.example.com api.example.com user.example.com" | sudo tee -a /etc/hosts
-          sudo echo "::1 ip6-localhost ip6-loopback" | sudo tee -a /etc/hosts
+      - run: npx playwright install
+      - uses: nrwl/nx-set-shas@v4
+      # This line is needed for nx affected to work when CI is running on a PR
+      - run: git branch --track develop origin/develop
 
-      - name: npm install
-        # if: steps.cache.outputs.cache-hit != 'true'
-        run: npm ci
-        env:
-          DEBUG: pw:install
-          # PLAYWRIGHT_BROWSERS_PATH: 0
-          PLAYWRIGHT_SKIP_BROWSERS_DOWNLOAD: 1
-      - run: npx playwright install chromium firefox webkit
-      - name: Derive appropriate SHAs for base and head for `nx affected` commands
-        uses: nrwl/nx-set-shas@v2
-        with:
-          main-branch-name: 'develop'
-      - run: npm install @nrwl/nx-cloud
-      - run: npx nx-cloud start-ci-run
+      - name: Validate all commits from PR
+        run: npx commitlint --from ${{ github.event.pull_request.base.sha }} --to ${{ github.event.pull_request.head.sha }} --verbose
 
-      - run: npx nx affected --t build --parallel --max-parallel=3
-      - run: npx nx affected --t lint --parallel --max-parallel=3
-      - run: npx nx affected --t test --parallel --max-parallel=3
-      - run: npx nx affected --t test --configuration=integration
-      - run: npx nx affected -t e2e --exclude=token-vault-suites
-      # It's important that we always run this step, otherwise in the case of any failures in preceding non-Nx steps, the agents will keep running and waste billable minutes
-      - name: Stop All Agents
-        if: ${{ always() }}
-        run: npx nx-cloud stop-all-agents
-
-      - name: 'Artifacts'
-        uses: actions/upload-artifact@v3
-        with:
-          retention-days: 5
-          if-no-files-found: ignore
-          path: |
-            ${{ github.workspace }}/e2e/autoscript-suites/test-results
-      - name: Slack Notify
-        id: slack
-        uses: slackapi/slack-github-action@v1.18.0
-        with:
-          payload: |
-            {
-              "title": "${{ github.event.pull_request.title }}",
-              "author": "${{ github.event.pull_request.user.login }}",
-              "pr_number": "${{ github.event.pull_request.number}}",
-              "url": "${{ github.event.pull_request.html_url }}"
-            }
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-  agents:
-    runs-on: macos-latest
-    name: Agent Mac
-    strategy:
-      matrix:
-        agent: [1, 2, 3]
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          ref: ${{ github.event.pull_request.head.ref }}
-          repository: ${{github.event.pull_request.head.repo.full_name}}
-          fetch-depth: 0
-      - uses: actions/setup-node@v3
-        with:
-          node-version: '16.13.1'
-          cache: 'npm'
-          cache-dependency-path: '**/package-lock.json'
-      - run: npm ci
-        if: steps.cache.outputs.cache-hit != 'true'
-        env:
-          # PLAYWRIGHT_BROWSERS_PATH: 0
-          PLAYWRIGHT_SKIP_BROWSERS_DOWNLOAD: 1
-      - run: npm install @nrwl/nx-cloud
-      - name: Setup custom host for sdkapp.example.com
-        run: |
-          sudo echo "127.0.0.1 sdkapp.example.com auth.example.com api.example.com user.example.com" | sudo tee -a /etc/hosts
-          sudo echo "::1 ip6-localhost ip6-loopback" | sudo tee -a /etc/hosts
-      - run: npx playwright install chromium firefox webkit
-      - name: Start Nx Agent ${{ matrix.agent }}
-        run: npx nx-cloud start-agent
+      - run: npx nx-cloud record -- nx format:check --verbose
+      - run: npx nx affected -t lint test build e2e-ci --verbose

@@ -1,1 +1,1 @@
-export * from './lib/ping-protect';
+export * from './lib/ping-protect.js';

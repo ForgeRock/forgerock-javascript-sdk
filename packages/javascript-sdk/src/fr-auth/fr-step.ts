@@ -34,7 +34,10 @@ class FRStep implements AuthResponse {
    * @param payload The raw payload returned by OpenAM
    * @param callbackFactory A function that returns am implementation of FRCallback
    */
-  constructor(public payload: Step, callbackFactory?: FRCallbackFactory) {
+  constructor(
+    public payload: Step,
+    callbackFactory?: FRCallbackFactory,
+  ) {
     if (payload.callbacks) {
       this.callbacks = this.convertCallbacks(payload.callbacks, callbackFactory);
     }

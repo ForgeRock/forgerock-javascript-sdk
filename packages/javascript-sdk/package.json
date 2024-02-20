@@ -1,6 +1,6 @@
 {
   "name": "@forgerock/javascript-sdk",
-  "version": "4.4.1",
+  "version": "4.4.1-beta.3",
   "description": "ForgeRock JavaScript SDK",
   "author": "ForgeRock",
   "license": "MIT",
@@ -14,17 +14,15 @@
   "exports": {
     "./src/*": {
       "types": "./src/*.d.ts",
-      "import": "./src/*.js",
-      "require": "./src/*.cjs"
+      "import": "./src/*.js"
     },
     ".": {
       "types": "./src/index.d.ts",
-      "import": "./src/index.js",
-      "require": "./src/index.cjs"
+      "import": "./src/index.js"
     },
     "./package.json": "./package.json"
   },
-  "main": "./src/index.cjs",
+  "main": "./src/index.js",
   "module": "./src/index.js",
   "types": "./src/index.d.ts"
 }

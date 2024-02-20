@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test';
 import { asyncEvents } from './utils/async-events';
 
-test.skip('Test happy paths on test page', async ({ page }) => {
+test('Test happy paths on test page', async ({ page }) => {
   const { clickButton, getTokens, navigate } = asyncEvents(page);
   await navigate('/');
 
@@ -61,7 +61,7 @@ test.skip('Test happy paths on test page', async ({ page }) => {
   page.on('request', (request) => {
     if (request.url().includes('jsonplaceholder.typicode.com')) {
       authorizationHeader = request.headers()['authorization'];
-    } else if (request.url().includes('mockbin.org')) {
+    } else if (request.url().includes('thecocktaildb.com')) {
       authorizationHeader = request.headers()['authorization'];
     }
   });
@@ -71,8 +71,8 @@ test.skip('Test happy paths on test page', async ({ page }) => {
   // The authorization header should be present and have the refreshed Access Token
   expect(authorizationHeader).toBe(`Bearer ${refreshedTokens.accessToken}`);
 
-  // Make unprotected request to mock API
-  await clickButton('Fetch Unprotected Mock Data', '/request');
+  // Make unprotected request to cocktail API that is not in urls allowed list
+  await clickButton('Fetch Unprotected Mock Data', '/api/json/v1/1/search.php');
 
   // The authorization header should be empty
   expect(authorizationHeader).toBeFalsy();
@@ -93,7 +93,7 @@ test.skip('Test happy paths on test page', async ({ page }) => {
  * ensure the proxy is not called when the url is not in the allow list
  * and that the proxy responds with an error
  */
-test.skip('Ensure someone cannot try to call their own url!', async ({ page }) => {
+test('Ensure someone cannot try to call their own url!', async ({ page }) => {
   const { navigate } = asyncEvents(page);
   await navigate('/');
 

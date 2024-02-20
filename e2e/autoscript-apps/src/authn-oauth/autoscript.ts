@@ -17,7 +17,7 @@ function autoscript() {
   const tokenExpiredDelay = 2000;
 
   const url = new URL(window.location.href);
-  const amUrl = url.searchParams.get('amUrl') || 'https://auth.example.com:9443/am';
+  const amUrl = url.searchParams.get('amUrl') || 'http://localhost:9443/am';
   const clientId = url.searchParams.get('clientId') || 'WebOAuthClient';
   const realmPath = url.searchParams.get('realmPath') || 'root';
   const scope = url.searchParams.get('scope') || 'openid profile me.read';
@@ -25,8 +25,7 @@ function autoscript() {
   const pw = url.searchParams.get('pw') || 'password';
   const tree = url.searchParams.get('tree') || 'UsernamePassword';
   const oauthThreshold = url.searchParams.get('oauthThreshold');
-  const resourceOrigin =
-    url.searchParams.get('resourceOrigin') || 'https://api.example.com:9443/resource';
+  const resourceOrigin = url.searchParams.get('resourceOrigin') || 'http://localhost:9443/resource';
   const igUrl = url.searchParams.get('igUrl'); // only use when testing against IG on different host
 
   console.log('Configure the SDK');

@@ -1,4 +1,5 @@
 import { tokenExpiryWithinThreshold } from './token.utils';
+import { vi } from 'vitest';
 
 const oauthThreshold = 120000;
 const aboutToExpire = 60000;
@@ -9,8 +10,8 @@ describe('Test Token Manager utils', () => {
   // We want to avoid race conditions between expected and actual date values
   beforeAll(() => {
     // Override date functions to return a static date temporarily
-    jest.useFakeTimers();
-    jest.setSystemTime(new Date('25 Mar 2022 16:50:00 GMT').getTime());
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date('25 Mar 2022 16:50:00 GMT').getTime());
   });
 
   it('Should return true if tokens expire within configured threshold', () => {
@@ -33,6 +34,6 @@ describe('Test Token Manager utils', () => {
 
   afterAll(() => {
     // Reset timers
-    jest.useRealTimers();
+    vi.useRealTimers();
   });
 });
