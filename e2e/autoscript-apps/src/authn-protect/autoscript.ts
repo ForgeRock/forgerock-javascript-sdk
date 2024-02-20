@@ -21,6 +21,7 @@ function autoscript() {
   const realmPath = url.searchParams.get('realmPath') || 'root';
   const un = url.searchParams.get('un') || 'sdkuser';
   const pw = url.searchParams.get('pw') || 'password';
+  const pauseBehaviorData = url.searchParams.get('pauseBehaviorData') || 'true';
   const tree = url.searchParams.get('tree') || 'TEST_LoginPingProtect';
 
   console.log('Configure the SDK');
@@ -52,7 +53,6 @@ function autoscript() {
               console.log(JSON.stringify(config));
 
               try {
-                // Asynchronous call
                 return PIProtect.start(config);
               } catch (err) {
                 cb.setClientError(err.message);
@@ -63,7 +63,6 @@ function autoscript() {
             return step;
           },
         ),
-        rxDelay(delay),
         mergeMap((step) => {
           return forgerock.FRAuth.next(step);
         }),
@@ -72,9 +71,9 @@ function autoscript() {
           console.log('Set values on auth tree callbacks');
           step.getCallbackOfType('NameCallback').setName(un);
           step.getCallbackOfType('PasswordCallback').setPassword(pw);
+
           return forgerock.FRAuth.next(step);
         }),
-        rxDelay(delay),
         mergeMap(
           (step) => {
             if (step.getCallbacksOfType('PingOneProtectEvaluationCallback')) {
@@ -94,7 +93,12 @@ function autoscript() {
         ),
         mergeMap(({ step, data }) => {
           const cb = step.getCallbackOfType('PingOneProtectEvaluationCallback');
-          const shouldPause = cb.getPauseBehavioralData();
+          let pauseFlag = pauseBehaviorData === 'true' ? true : false;
+          let shouldPause = false;
+
+          if (pauseFlag) {
+            shouldPause = cb.getPauseBehavioralData();
+          }
 
           console.log(`getPauseBehavioralData: ${shouldPause}`);
 

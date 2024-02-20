@@ -41,4 +41,13 @@ test.describe('Test basic login flow with Ping Protect', () => {
     expect(messageArray.includes('Basic login with Protect successful')).toBe(true);
     expect(messageArray.includes('Test script complete')).toBe(true);
   });
+  test('should not pause behavioral data if false', async ({ browserName, page }) => {
+    const { messageArray } = await setupAndGo(page, browserName, 'authn-protect/', {
+      pauseBehaviorData: 'false',
+    });
+    expect(messageArray.includes('[SignalsSDK] Starting Signals SDK...')).toBe(true);
+    expect(messageArray.includes('[SignalsSDK] calculated device attributes.')).toBe(true);
+    expect(messageArray.includes('getPauseBehavioralData: false')).toBe(true);
+    expect(messageArray.includes('Basic login with Protect successful')).toBe(true);
+  });
 });

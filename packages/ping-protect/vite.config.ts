@@ -26,6 +26,17 @@ export default defineConfig({
     cache: {
       dir: '../../node_modules/.vitest',
     },
+    setupFiles: ['./vitest.setup.ts'],
+    coverage: {
+      provider: 'v8',
+    },
+    deps: {
+      optimizer: {
+        web: {
+          include: ['vitest-canvas-mock'],
+        },
+      },
+    },
     environment: 'jsdom',
     include: ['src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
   },

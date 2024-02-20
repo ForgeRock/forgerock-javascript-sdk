@@ -27,6 +27,11 @@
       "options": {
         "passWithNoTests": true,
         "reportsDirectory": "../../coverage/packages/ping-protect"
+      },
+      "configurations": {
+        "watch": {
+          "watch": true
+        }
       }
     }
   },

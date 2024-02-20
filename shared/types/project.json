@@ -8,6 +8,7 @@
       "executor": "@nx/js:tsc",
       "outputs": ["{options.outputPath}"],
       "options": {
+        "rootDir": ".",
         "outputPath": "dist/shared/types",
         "main": "shared/types/src/index.ts",
         "tsConfig": "shared/types/tsconfig.lib.json",
