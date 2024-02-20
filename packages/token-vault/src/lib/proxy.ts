@@ -1,10 +1,5 @@
-import {
-  cloneResponse,
-  createErrorResponse,
-  extractOrigins,
-  generateAmUrls,
-} from '@shared/network';
-import { EventsConfig, ProxyConfig, ServerTokens } from '@shared/types';
+import { cloneResponse, createErrorResponse, extractOrigins, generateAmUrls } from './network';
+import { EventsConfig, ProxyConfig, ServerTokens } from './types';
 import { refreshTokens, storeTokens, getTokens, tokenExpiryWithinThreshold } from './token.utils';
 
 /** ****************************************************************

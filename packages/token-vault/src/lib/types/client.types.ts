@@ -1,5 +1,5 @@
 import type { Tokens } from '@forgerock/javascript-sdk';
-import type { BaseConfig } from '@shared/types';
+import type { BaseConfig } from './config.types';
 
 export type ClientInit = {
   interceptor: (

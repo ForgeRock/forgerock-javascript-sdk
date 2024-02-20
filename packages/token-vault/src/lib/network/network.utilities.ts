@@ -1,7 +1,12 @@
 /// reference libs="WebWorker"
 import { ConfigOptions } from '@forgerock/javascript-sdk';
-import { ConfigurablePaths, CustomPathConfig } from '@shared/types';
-import type { RequestHeaders, ResponseClone, ResponseHeaders } from './network.types';
+import type {
+  ConfigurablePaths,
+  CustomPathConfig,
+  RequestHeaders,
+  ResponseClone,
+  ResponseHeaders,
+} from '../types';
 
 /** ****************************************************************
  * @function checkForMissingSlash

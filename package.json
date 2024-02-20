@@ -133,7 +133,7 @@
     "webpack": "^5.64.1",
     "webpack-cli": "^4.7.2"
   },
-  "workspaces": ["e2e/*", "packages/*", "samples/*", "shared/*"],
+  "workspaces": ["e2e/*", "packages/*", "samples/*"],
   "config": {
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
