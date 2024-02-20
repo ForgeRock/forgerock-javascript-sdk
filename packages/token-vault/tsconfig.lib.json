@@ -8,6 +8,7 @@
     "noImplicitAny": false,
     "noPropertyAccessFromIndexSignature": false,
     "skipLibCheck": true,
+    "lib": ["DOM", "WebWorker", "Webworker.Iterable"],
     "types": ["node"]
   },
   "include": ["src/**/*.ts"],
