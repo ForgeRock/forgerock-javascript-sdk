@@ -95,12 +95,13 @@ function autoscript() {
               handleStep: async (step) => {
                 console.log('IG resource requires additional authorization');
                 step.getCallbackOfType('PasswordCallback').setPassword(pw);
-                return Promise.resolve(step);
+                return step;
               },
             },
           });
         },
         async (step, response) => {
+          console.log(response);
           if (response.ok) {
             console.log('Request to IG resource successfully responded');
           } else {

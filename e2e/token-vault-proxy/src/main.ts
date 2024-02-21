@@ -16,6 +16,7 @@ proxy({
     realmPath: import.meta.env.VITE_AM_REALM,
   },
   proxy: {
+    origin: 'http://localhost:5823',
     urls: ['https://jsonplaceholder.typicode.com/*'],
   },
 });

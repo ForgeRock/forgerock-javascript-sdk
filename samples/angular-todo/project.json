@@ -19,7 +19,11 @@
         "polyfills": "samples/angular-todo/src/polyfills.ts",
         "tsConfig": "samples/angular-todo/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
-        "assets": ["samples/angular-todo/src/favicon.ico", "samples/angular-todo/src/assets", "samples/angular-todo/src/callback.html"],
+        "assets": [
+          "samples/angular-todo/src/favicon.ico",
+          "samples/angular-todo/src/assets",
+          "samples/angular-todo/src/callback.html"
+        ],
         "styles": ["samples/angular-todo/src/styles.scss"],
         "scripts": []
       },
@@ -93,7 +97,7 @@
       }
     },
     "lint": {
-      "executor": "@nx/linter:eslint",
+      "executor": "@nx/eslint:lint",
       "options": {
         "fix": true,
         "lintFilePatterns": [
@@ -104,7 +108,7 @@
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": ["coverage/samples/angular-todo"],
+      "outputs": ["{workspaceRoot}/coverage/samples/angular-todo"],
       "options": {
         "jestConfig": "samples/angular-todo/jest.config.ts",
         "passWithNoTests": true

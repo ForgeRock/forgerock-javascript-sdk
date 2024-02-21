@@ -1,9 +1,12 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "rootDir": ".",
     "baseUrl": ".",
+    "rootDir": ".",
     "moduleResolution": "node",
+    "importHelpers": true,
+    "module": "commonjs",
+    "skipLibCheck": true,
     "paths": {
       "@forgerock/javascript-sdk": ["packages/javascript-sdk/src/index.ts"],
       "@forgerock/ping-protect": ["packages/ping-protect/src/index.ts"],

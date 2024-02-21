@@ -71,11 +71,12 @@
     {
       "files": ["*.ts", "*.tsx", "!*.spec.ts", "!*.test*.ts"],
       "extends": ["plugin:@nx/typescript"],
-
       "rules": {
         "@typescript-eslint/no-unused-vars": [
           "error",
-          { "ignoreRestSiblings": true }
+          {
+            "ignoreRestSiblings": true
+          }
         ]
       }
     },

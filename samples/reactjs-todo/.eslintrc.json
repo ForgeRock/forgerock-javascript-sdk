@@ -7,7 +7,12 @@
       "plugins": ["react", "react-hooks"],
       "rules": {
         "no-debugger": 0,
-        "no-unused-vars": [2, { "varsIgnorePattern": "_" }],
+        "no-unused-vars": [
+          2,
+          {
+            "varsIgnorePattern": "_"
+          }
+        ],
         "react/prop-types": 0
       },
       "settings": {
