@@ -11,7 +11,8 @@
         "outputPath": "dist/out-tsc",
         "main": "packages/javascript-sdk/src/index.ts",
         "tsConfig": "packages/javascript-sdk/tsconfig.lib.json",
-        "assets": ["packages/javascript-sdk/*.md"]
+        "assets": ["packages/javascript-sdk/*.md"],
+        "updateBuildableProjectDepsInPackageJson": true
       },
       "configurations": {
         "cjs": {
@@ -51,7 +52,8 @@
         "project": "packages/javascript-sdk/package.json",
         "tsConfig": "packages/javascript-sdk/tsconfig.lib.json",
         "cwd": "packages/javascript-sdk",
-        "parallel": true
+        "parallel": true,
+        "babelUpwardRootMode": true
       },
       "configurations": {
         "production": {}
@@ -59,7 +61,7 @@
       "outputs": ["{options.outputPath}"]
     },
     "lint": {
-      "executor": "@nx/linter:eslint",
+      "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": ["packages/javascript-sdk/**/*.ts"],
@@ -69,7 +71,7 @@
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": ["coverage/packages/javascript-sdk"],
+      "outputs": ["{workspaceRoot}/coverage/packages/javascript-sdk"],
       "options": {
         "jestConfig": "packages/javascript-sdk/jest.config.ts",
         "testPathPattern": ["packages/javascript-sdk/src"],

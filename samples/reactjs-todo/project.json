@@ -16,7 +16,10 @@
         "tsConfig": "samples/reactjs-todo/tsconfig.app.json",
         "webpackConfig": "samples/reactjs-todo/webpack.config.js",
         "stylePreprocessorOptions": {
-          "includePaths": ["samples/reactjs-todo/public", "samples/reactjs-todo/client"]
+          "includePaths": [
+            "samples/reactjs-todo/public",
+            "samples/reactjs-todo/client"
+          ]
         }
       },
       "configurations": {
@@ -56,7 +59,7 @@
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": ["coverage/samples/reactjs-todo"],
+      "outputs": ["{workspaceRoot}/coverage/samples/reactjs-todo"],
       "options": {
         "jestConfig": "samples/reactjs-todo/jest.config.ts",
         "passWithNoTests": true
@@ -66,7 +69,7 @@
       }
     },
     "lint": {
-      "executor": "@nx/linter:eslint",
+      "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": ["samples/reactjs-todo/**/*.js"],

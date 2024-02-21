@@ -8,11 +8,11 @@
       "executor": "@nx/js:tsc",
       "output": "dist/packages/token-vault",
       "options": {
-        "rootDir": ".",
         "tsConfig": "packages/token-vault/tsconfig.lib.json",
         "main": "packages/javascript-sdk/src/index.ts",
         "assets": ["packages/token-vault/src/*.md"],
-        "outputPath": "dist/packages/token-vault"
+        "outputPath": "dist/packages/token-vault",
+        "updateBuildableProjectDepsInPackageJson": true
       }
     },
     "test": {
@@ -30,7 +30,7 @@
       }
     },
     "lint": {
-      "executor": "@nx/linter:eslint",
+      "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": ["packages/token-vault/**/*.ts"]

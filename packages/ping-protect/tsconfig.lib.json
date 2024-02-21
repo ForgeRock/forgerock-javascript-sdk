@@ -4,6 +4,7 @@
     "outDir": "../../dist/out-tsc",
     "declaration": true
   },
-  "include": ["src/**/*.ts"],
+  "files": [],
+  "include": [],
   "exclude": ["jest.config.ts", "src/**/*.spec.ts", "src/**/*.test.ts"]
 }

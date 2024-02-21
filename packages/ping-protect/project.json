@@ -11,11 +11,12 @@
         "outputPath": "dist/packages/ping-protect",
         "main": "packages/ping-protect/src/index.ts",
         "tsConfig": "packages/ping-protect/tsconfig.lib.json",
-        "assets": ["packages/ping-protect/*.md"]
+        "assets": ["packages/ping-protect/*.md"],
+        "updateBuildableProjectDepsInPackageJson": true
       }
     },
     "lint": {
-      "executor": "@nx/linter:eslint",
+      "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": ["packages/ping-protect/**/*.ts"]
@@ -23,7 +24,7 @@
     },
     "test": {
       "executor": "@nx/vite:test",
-      "outputs": ["coverage/packages/ping-protect"],
+      "outputs": ["{workspaceRoot}/coverage/packages/ping-protect"],
       "options": {
         "passWithNoTests": true,
         "reportsDirectory": "../../coverage/packages/ping-protect"
