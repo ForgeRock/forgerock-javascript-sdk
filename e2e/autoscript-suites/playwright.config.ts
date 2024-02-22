@@ -1,40 +1,86 @@
-import { PlaywrightTestConfig, devices } from '@playwright/test';
+import { defineConfig, devices } from '@playwright/test';
+import { nxE2EPreset } from '@nx/playwright/preset';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { workspaceRoot } from '@nx/devkit';
 
-const config: PlaywrightTestConfig = {
-  forbidOnly: !!process.env.CI,
-  globalTeardown: './teardown.ts',
-  workers: process.env.CI ? 1 : 8,
-  retries: process.env.CI ? 1 : 0,
-  testDir: './src/suites',
+// For CI, you may want to set BASE_URL to the deployed application.
+const baseURL = process.env['BASE_URL'] || 'http://sdkapp.example.com:8443';
+
+/**
+ * Read environment variables from file.
+ * https://github.com/motdotla/dotenv
+ */
+// require('dotenv').config();
+
+/**
+ * See https://playwright.dev/docs/test-configuration.
+ */
+export default defineConfig({
+  ...nxE2EPreset(__filename, { testDir: './src/suites' }),
+  /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
-    headless: true,
-    navigationTimeout: 50000,
-    screenshot: process.env.CI ? 'only-on-failure' : 'off',
-    video: process.env.CI ? 'retain-on-failure' : 'off',
-    baseURL: 'https://sdkapp.example.com:8443',
+    baseURL,
+    /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
+    trace: 'on-first-retry',
     ignoreHTTPSErrors: true,
     geolocation: { latitude: 24.9884, longitude: -87.3459 },
-    permissions: [],
-    bypassCSP: true,
-    trace: 'retain-on-failure',
   },
+  /* Run your local dev server before starting the tests */ // webServer: {
+  //   command: 'npm run start',
+  //   url: 'http://127.0.0.1:3000',
+  //   reuseExistingServer: !process.env.CI,
+  //   cwd: workspaceRoot,
+  // },
+  webServer: [
+    {
+      command: 'npm run nx serve autoscript-apps',
+      port: 8443,
+      reuseExistingServer: !process.env.CI,
+      ignoreHTTPSErrors: true,
+      cwd: workspaceRoot,
+    },
+    {
+      command: 'npm run nx serve mock-api',
+      port: 9443,
+      reuseExistingServer: !process.env.CI,
+      ignoreHTTPSErrors: true,
+      cwd: workspaceRoot,
+    },
+  ],
   projects: [
     {
       name: 'chromium',
-      use: {
-        ...devices['Desktop Chrome'],
-        ...devices['Desktop Edge'],
-      },
+      use: { ...devices['Desktop Chrome'] },
     },
+
     {
       name: 'firefox',
       use: { ...devices['Desktop Firefox'] },
     },
+
     {
       name: 'webkit',
       use: { ...devices['Desktop Safari'] },
     },
-  ],
-};
 
-export default config;
+    // Uncomment for mobile browsers support
+    /* {
+      name: 'Mobile Chrome',
+      use: { ...devices['Pixel 5'] },
+    },
+    {
+      name: 'Mobile Safari',
+      use: { ...devices['iPhone 12'] },
+    }, */
+
+    // Uncomment for branded browsers
+    /* {
+      name: 'Microsoft Edge',
+      use: { ...devices['Desktop Edge'], channel: 'msedge' },
+    },
+    {
+      name: 'Google Chrome',
+      use: { ...devices['Desktop Chrome'], channel: 'chrome' },
+    } */
+  ],
+});

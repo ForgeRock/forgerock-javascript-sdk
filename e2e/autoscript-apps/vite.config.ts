@@ -41,6 +41,9 @@ export default defineConfig({
   server: {
     port: 8443,
     host: 'sdkapp.example.com',
+    headers: {
+      'Access-Control-Allow-Origin': 'https://sdkapp.example.com:8443',
+    },
   },
 
   preview: {

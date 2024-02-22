@@ -1,5 +1,9 @@
 {
-  "extends": ["../../.eslintrc.json"],
+  "extends": [
+    "plugin:playwright/recommended",
+    "plugin:playwright/recommended",
+    "../../.eslintrc.json"
+  ],
   "ignorePatterns": ["!**/*"],
   "overrides": [
     {
@@ -12,6 +16,14 @@
         "@typescript-eslint/no-var-requires": "off",
         "no-undef": "off"
       }
+    },
+    {
+      "files": ["e2e/**/*.{ts,js,tsx,jsx}"],
+      "rules": {}
+    },
+    {
+      "files": ["e2e/**/*.{ts,js,tsx,jsx}"],
+      "rules": {}
     }
   ]
 }

@@ -4,27 +4,6 @@
   "sourceRoot": "e2e/autoscript-suites/src",
   "projectType": "application",
   "targets": {
-    "e2e": {
-      "executor": "@plugins/wait-for-api:run-targets",
-      "options": {
-        "targets": [
-          {
-            "target": "mock-api:serve",
-            "checkUrl": "https://api.example.com:9443/healthcheck",
-            "checkMaxTries": 50,
-            "rejectUnauthorized": false,
-            "reuseExistingServer": true
-          },
-          {
-            "target": "autoscript-apps:serve",
-            "checkUrl": "https://sdkapp.example.com:8443",
-            "checkMaxTries": 50,
-            "reuseExistingServer": true,
-            "rejectUnauthorized": false
-          }
-        ]
-      }
-    },
     "lint": {
       "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"],
@@ -33,8 +12,16 @@
         "fix": true,
         "ignorePath": ".gitignore"
       }
+    },
+    "e2e": {
+      "executor": "@nx/playwright:playwright",
+      "outputs": ["{workspaceRoot}/dist/.playwright/e2e/autoscript-suites"],
+      "options": {
+        "config": "e2e/autoscript-suites/playwright.config.ts",
+        "trace": "on-first-retry"
+      }
     }
   },
   "tags": [],
-  "implicitDependencies": ["autoscript-apps"]
+  "implicitDependencies": []
 }
