@@ -12,7 +12,7 @@ import { setupAndGo } from '../utilities/setup-and-go';
 
 test.describe('SAML Flow', () => {
   test(`Login with SAML`, async ({ page, browserName }) => {
-    const { messageArray } = await setupAndGo(page, browserName, 'authn-saml/', {
+    const { messageArray } = await setupAndGo(page, browserName, 'authn-saml', {
       tree: 'SAMLTest',
     });
     // Test assertions

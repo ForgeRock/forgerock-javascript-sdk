@@ -12,7 +12,7 @@ import { setupAndGo } from '../utilities/setup-and-go';
 
 test.describe('Test QR Code flows', () => {
   test(`Login and register OTP successfully`, async ({ page, browserName }) => {
-    const { messageArray } = await setupAndGo(page, browserName, 'authn-otp-reg/');
+    const { messageArray } = await setupAndGo(page, browserName, 'authn-otp-reg');
 
     // Test assertions
     expect(

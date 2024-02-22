@@ -13,7 +13,7 @@ import { setupAndGo } from '../utilities/setup-and-go';
 
 test.describe('Test basic registration flow', () => {
   test(`should register user successfully and then log out`, async ({ page, browserName }) => {
-    const { messageArray } = await setupAndGo(page, browserName, 'authn-email-suspend/');
+    const { messageArray } = await setupAndGo(page, browserName, 'authn-email-suspend');
 
     // Test assertions
     expect(

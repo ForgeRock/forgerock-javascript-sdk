@@ -12,7 +12,7 @@ import { setupAndGo } from '../utilities/setup-and-go';
 
 test.describe('Test basic login flow with Ping Protect', () => {
   test(`should send Protect data and login successfully`, async ({ browserName, page }) => {
-    const { messageArray } = await setupAndGo(page, browserName, 'authn-protect/');
+    const { messageArray } = await setupAndGo(page, browserName, 'authn-protect');
     const configJson = messageArray.find((message) => message.includes('envId'));
 
     let configObj;

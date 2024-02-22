@@ -13,7 +13,7 @@ import { setupAndGo } from '../utilities/setup-and-go';
 
 test.describe('Test Basic login flow', () => {
   test(`should login successfully and then log out`, async ({ page, browserName }) => {
-    const { messageArray } = await setupAndGo(page, browserName, 'misc-callbacks/');
+    const { messageArray } = await setupAndGo(page, browserName, 'misc-callbacks');
 
     // Test assertions
     expect(messageArray.includes('Prompt from NameCallback is User Name')).toBe(true);

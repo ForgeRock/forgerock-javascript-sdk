@@ -43,7 +43,7 @@ export async function setupAndGo(
   const networkArray: string[] = [];
 
   // If anything fails, ensure we close the browser to end the process
-  const url = new URL(`${BASE_URL}/${path}`);
+  const url = new URL(`${BASE_URL}/src/${path}/index.html`);
 
   url.searchParams.set('amUrl', (config && config.amUrl) || AM_URL);
   url.searchParams.set('clientId', (config && config.clientId) || CLIENT_ID);

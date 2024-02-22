@@ -13,7 +13,7 @@ import { setupAndGo } from '../utilities/setup-and-go';
 
 test.describe('Test OAuth login flow', () => {
   test(`should login successfully and then log out with`, async ({ page, browserName }) => {
-    const { messageArray, networkArray } = await setupAndGo(page, browserName, 'authn-oauth/');
+    const { messageArray, networkArray } = await setupAndGo(page, browserName, 'authn-oauth');
 
     // Test assertions
     // Test log messages

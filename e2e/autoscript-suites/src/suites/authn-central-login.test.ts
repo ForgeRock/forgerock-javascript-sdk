@@ -20,7 +20,7 @@ test.describe('Test OAuth login flow', () => {
     const { messageArray, networkArray } = await setupAndGo(
       page,
       browserName,
-      'authn-central-login/',
+      'authn-central-login',
     );
 
     // Test assertions

@@ -17,7 +17,7 @@ test.describe('Test OAuth token management', () => {
     browserName,
   }) => {
     // Default threshold
-    const defaultThresholdResult = await setupAndGo(page, browserName, 'authz-token/', {
+    const defaultThresholdResult = await setupAndGo(page, browserName, 'authz-token', {
       realmPath: 'tokens-expiring-soon',
     });
     expect(

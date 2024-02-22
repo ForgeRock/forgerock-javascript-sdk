@@ -6,16 +6,11 @@
   "tags": ["scope:app"],
   "targets": {
     "build": {
-      "executor": "@nx/webpack:webpack",
+      "executor": "@nx/vite:build",
       "dependsOn": ["^build", "^tsc"],
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/e2e/autoscript-apps",
-        "compiler": "babel",
-        "index": "e2e/autoscript-apps/src/index.html",
-        "main": "packages/javascript-sdk/src/index.ts",
-        "tsConfig": "e2e/autoscript-apps/tsconfig.app.json",
-        "webpackConfig": "e2e/autoscript-apps/webpack.config.js"
+        "outputPath": "dist/e2e/autoscript-apps"
       },
       "configurations": {
         "development": {
@@ -31,10 +26,11 @@
       "defaultConfiguration": "production"
     },
     "serve": {
-      "executor": "@nx/webpack:dev-server",
+      "executor": "@nx/vite:dev-server",
       "dependsOn": ["^build"],
       "defaultConfiguration": "production",
       "options": {
+        "buildTarget": "autoscript-apps:build",
         "port": 8443,
         "host": "sdkapp.example.com"
       },
@@ -48,6 +44,21 @@
           "buildTarget": "autoscript-apps:build:development",
           "open": true,
           "hmr": true
+        }
+      }
+    },
+    "preview": {
+      "executor": "@nx/vite:preview-server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "autoscript-apps:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "autoscript-apps:build:development"
+        },
+        "production": {
+          "buildTarget": "autoscript-apps:build:production"
         }
       }
     }

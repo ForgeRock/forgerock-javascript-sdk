@@ -12,7 +12,7 @@ import { setupAndGo } from '../utilities/setup-and-go';
 
 test.describe('Test bad login flow', () => {
   test(`Login UNsuccessfully`, async ({ page, browserName }) => {
-    const { messageArray } = await setupAndGo(page, browserName, 'authn-basic/', {
+    const { messageArray } = await setupAndGo(page, browserName, 'authn-basic', {
       pw: 'wrong_password_123!',
     });
 

@@ -17,7 +17,7 @@ test.describe('Test basic registration flow', () => {
   const email = `${un}@me.com`;
 
   test(`should register user successfully and then log ou`, async ({ page, browserName }) => {
-    const { messageArray } = await setupAndGo(page, browserName, 'register-basic/', {
+    const { messageArray } = await setupAndGo(page, browserName, 'register-basic', {
       un,
       email,
     });

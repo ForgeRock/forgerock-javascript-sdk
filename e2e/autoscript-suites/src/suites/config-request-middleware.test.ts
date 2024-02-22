@@ -13,7 +13,7 @@ import { setupAndGo } from '../utilities/setup-and-go';
 
 test.describe('Test request middleware with login flow', () => {
   test(`Full login and oauth using middleware at Config`, async ({ page, browserName }) => {
-    const { messageArray } = await setupAndGo(page, browserName, 'config-request-middleware/', {
+    const { messageArray } = await setupAndGo(page, browserName, 'config-request-middleware', {
       realmPath: 'middleware',
       middleware: 'atConfig',
     });

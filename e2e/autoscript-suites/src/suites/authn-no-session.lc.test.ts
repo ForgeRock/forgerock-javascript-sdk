@@ -13,7 +13,7 @@ import { setupAndGo } from '../utilities/setup-and-go';
 
 test.describe('Test Basic login flow', () => {
   test(`should login successfully and then log out with`, async ({ page, browserName }) => {
-    const { messageArray } = await setupAndGo(page, browserName, 'authn-no-session/');
+    const { messageArray } = await setupAndGo(page, browserName, 'authn-no-session');
 
     // Test assertions
     expect(messageArray.includes('Adding "noSession" query param to URL')).toBe(true);

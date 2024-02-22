@@ -13,7 +13,7 @@ import { setupAndGo } from '../utilities/setup-and-go';
 
 test.describe('Test Tree Based Authorization flow using JSON response', () => {
   test(`Trigger Tree Based Auth appropriately`, async ({ page, browserName }) => {
-    const { messageArray } = await setupAndGo(page, browserName, 'authz-tree-basic-json/');
+    const { messageArray } = await setupAndGo(page, browserName, 'authz-tree-basic-json');
 
     // Test assertions
     expect(messageArray.includes('IG resource requires additional authorization')).toBe(true);

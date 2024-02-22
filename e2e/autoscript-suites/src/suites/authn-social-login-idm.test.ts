@@ -13,7 +13,7 @@ import { setupAndGo } from '../utilities/setup-and-go';
 
 test.describe('Test Social Login flow with AM nodes', () => {
   test(`Login with identity provider`, async ({ page, browserName }) => {
-    const { messageArray } = await setupAndGo(page, browserName, 'authn-social-login-idm/', {
+    const { messageArray } = await setupAndGo(page, browserName, 'authn-social-login-idm', {
       clientId: 'IDMSocialLogin',
     });
 

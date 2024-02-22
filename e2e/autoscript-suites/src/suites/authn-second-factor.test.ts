@@ -15,7 +15,7 @@ test.describe('Test Second Factor login flow', () => {
     page,
     browserName,
   }) => {
-    const { messageArray } = await setupAndGo(page, browserName, 'authn-second-factor/');
+    const { messageArray } = await setupAndGo(page, browserName, 'authn-second-factor');
 
     // Test assertions
     expect(messageArray.includes('Set given OTP to password callback')).toBe(true);
