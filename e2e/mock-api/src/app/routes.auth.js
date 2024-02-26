@@ -413,11 +413,11 @@ export default function (app) {
   });
 
   app.get(authPaths.authorize, wait, async (req, res) => {
-    const url = new URL(`${req.protocol}://${req.headers.host}/login`);
-    url.searchParams.set('client_id', req.query.client_id);
-    url.searchParams.set('acr_values', req.query.acr_values);
-    url.searchParams.set('redirect_uri', req.query.redirect_uri);
-    url.searchParams.set('state', req.query.state);
+    const loginUrl = new URL(`${req.protocol}://${req.headers.host}/login`);
+    loginUrl.searchParams.set('client_id', req.query.client_id);
+    loginUrl.searchParams.set('acr_values', req.query.acr_values);
+    loginUrl.searchParams.set('redirect_uri', req.query.redirect_uri);
+    loginUrl.searchParams.set('state', req.query.state);
 
     // Detect if Central Login to enforce ACR value presence
     if (
@@ -433,7 +433,7 @@ export default function (app) {
         !req.query['logout-middleware'] &&
         !req.headers['x-logout-middleware']
       ) {
-        res.redirect(url);
+        res.redirect(loginUrl);
       } else {
         res.status(406).send('Middleware additions are missing.');
       }
@@ -442,26 +442,33 @@ export default function (app) {
         req.query['authorize-middleware'] === 'authorization' &&
         !req.query['logout-middleware']
       ) {
-        res.redirect(url);
+        res.redirect(loginUrl);
       } else {
         res.status(406).send('Middleware additions are missing.');
       }
     } else {
       if (req.cookies.iPlanetDirectoryPro) {
-        const url = new URL(`${req.query.redirect_uri}`);
-        url.searchParams.set('client_id', 'bar');
-        url.searchParams.set('code', 'foo');
-        url.searchParams.set('iss', `${AM_URL}/oauth2`);
-        url.searchParams.set('state', req.query.state);
-        res.redirect(url);
-      } else if (req.headers.accept.includes('html')) {
-        // we set auth because we are mimicking the html document from central login
-        // this helps our test know it is ready to evaluate the page
-        // and not to evaluate when we have the 401 below
-        url.searchParams.set('auth', true);
-        res.redirect(url);
+        const redirectUrl = new URL(`${req.query.redirect_uri}`);
+
+        console.log(`Request URL: ${req.query.client_id}`);
+
+        redirectUrl.searchParams.set('client_id', req.query.client_id);
+        redirectUrl.searchParams.set('code', 'foo');
+        redirectUrl.searchParams.set('iss', `${AM_URL}/oauth2`);
+        redirectUrl.searchParams.set('state', req.query.state);
+
+        res.redirect(redirectUrl);
+      } else if (req.cookies.redirected === 'true') {
+        res.redirect(loginUrl);
       } else {
-        res.status(401).send('Unauthorized');
+        res.cookie('redirected', true);
+
+        const interactionNeeded = 'The request requires some interaction that is not allowed.';
+        const redirectErrorUrl = new URL(
+          `${req.query.redirect_uri}?error_description=${interactionNeeded}`,
+        );
+
+        res.redirect(redirectErrorUrl);
       }
     }
   });
@@ -469,6 +476,7 @@ export default function (app) {
   app.get('/login', async (req, res) => {
     const domain = req.url.includes('localhost') ? 'localhost' : 'example.com';
 
+    res.clearCookie('redirected');
     res.cookie('iPlanetDirectoryPro', 'abcd1234', { domain, sameSite: 'none', secure: true });
 
     const url = new URL(`${req.protocol}://${req.headers.host}${authPaths.authorize[1]}`);
