@@ -4,8 +4,17 @@
     "outDir": "../../dist/out-tsc",
     "declaration": true,
     "types": ["node"],
-    "lib": ["WebWorker", "WebWorker.ImportScripts", "Webworker.Iterable"],
-    "skipLibCheck": true
+    "lib": [
+      "DOM",
+      "WebWorker",
+      "WebWorker.ImportScripts",
+      "Webworker.Iterable"
+    ],
+    "skipLibCheck": true,
+    "noPropertyAccessFromIndexSignature": false,
+    "noImplicitOverride": false,
+    "noImplicitReturns": false,
+    "strict": false
   },
   "include": ["src/**/*.ts"],
   "exclude": ["jest.config.ts", "src/**/*.spec.ts", "src/**/*.test.ts"]

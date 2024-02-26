@@ -19,6 +19,7 @@ export async function setupAndGo(
   config?: {
     allowGeo?: boolean;
     amUrl?: string;
+    pauseBehaviorData?: string; // for protect behavioral data collection
     clientId?: string;
     code?: string;
     dialogInput?: string;
@@ -46,6 +47,7 @@ export async function setupAndGo(
   const url = new URL(`${BASE_URL}/${path}`);
 
   url.searchParams.set('amUrl', (config && config.amUrl) || AM_URL);
+  url.searchParams.set('pauseBehaviorData', (config && config.pauseBehaviorData) || '');
   url.searchParams.set('clientId', (config && config.clientId) || CLIENT_ID);
   config && config.code && url.searchParams.set('code', (config && config.code) || '');
   url.searchParams.set('email', (config && config.email) || '');
