@@ -74,7 +74,7 @@ import UserManager from './user-manager';
 import Deferred from './util/deferred';
 import PKCE from './util/pkce';
 import LocalStorage from './util/storage';
-import type { LoggerFunctions } from './config/interfaces';
+import type { LoggerFunctions, StepOptions } from './config/interfaces';
 
 export type {
   AuthResponse,
@@ -140,6 +140,7 @@ export {
   ResponseType,
   SelectIdPCallback,
   SessionManager,
+  StepOptions,
   StepType,
   SuspendedTextOutputCallback,
   TermsAndConditionsCallback,
