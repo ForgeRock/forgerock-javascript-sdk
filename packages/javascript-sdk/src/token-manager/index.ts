@@ -167,6 +167,9 @@ abstract class TokenManager {
         allowedErrors.FailedToFetch !== err.message &&
         allowedErrors.NetworkError !== err.message &&
         allowedErrors.InteractionNotAllowed !== err.message &&
+        // Check for Ping Identity Login Required error
+        // Long message, so just check substring
+        !err.message.includes(allowedErrors.LoginRequired) &&
         // Safari has a very long error message, so we check for a substring
         !err.message.includes(allowedErrors.CORSError)
       ) {
