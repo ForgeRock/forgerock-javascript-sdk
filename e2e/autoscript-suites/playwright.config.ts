@@ -18,6 +18,22 @@ const config: PlaywrightTestConfig = {
     bypassCSP: true,
     trace: 'retain-on-failure',
   },
+  webServer: [
+    {
+      command: 'npm run nx serve mock-api',
+      url: 'https://api.example.com:9443/healthcheck',
+      ignoreHTTPSErrors: true,
+      reuseExistingServer: !process.env.CI,
+      cwd: '../../',
+    },
+    {
+      command: 'npm run nx serve autoscript-apps',
+      url: 'https://sdkapp.example.com:8443',
+      ignoreHTTPSErrors: true,
+      reuseExistingServer: !process.env.CI,
+      cwd: '../../',
+    },
+  ],
   projects: [
     {
       name: 'chromium',

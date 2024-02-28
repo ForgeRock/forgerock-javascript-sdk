@@ -18,6 +18,29 @@ const config: PlaywrightTestConfig = {
     bypassCSP: true,
     trace: 'retain-on-failure',
   },
+  webServer: [
+    {
+      command: 'npm run nx serve mock-api',
+      url: 'https://api.example.com:9443/healthcheck',
+      ignoreHTTPSErrors: true,
+      reuseExistingServer: !process.env.CI,
+      cwd: '../../',
+    },
+    {
+      command: 'npm run nx serve token-vault-proxy',
+      port: 5833,
+      ignoreHTTPSErrors: true,
+      reuseExistingServer: !process.env.CI,
+      cwd: '../../',
+    },
+    {
+      command: 'npm run nx serve token-vault-app',
+      port: 5823,
+      ignoreHTTPSErrors: true,
+      reuseExistingServer: !process.env.CI,
+      cwd: '../../',
+    },
+  ],
 };
 
 export default config;

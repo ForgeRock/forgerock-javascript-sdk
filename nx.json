@@ -4,14 +4,6 @@
       "dependsOn": ["plugins-wait-for-api:build"],
       "cache": true
     },
-    "test:unit": {
-      "dependsOn": ["^test"]
-    },
-    "test": {
-      "dependsOn": ["^test"],
-      "inputs": ["default", "^default"],
-      "cache": true
-    },
     "tsc": {
       "dependsOn": ["^tsc"],
       "cache": true
@@ -20,38 +12,42 @@
       "dependsOn": ["^build"],
       "cache": true
     },
-    "prepare": {
-      "dependsOn": ["^prepare"],
-      "cache": true
-    },
-    "package": {
-      "dependsOn": ["^package"],
-      "cache": true
-    },
-    "lint": {
-      "inputs": ["default", "{workspaceRoot}/.eslintrc.json"],
-      "cache": true
-    },
     "build-interceptor": {
-      "cache": true
-    },
-    "build-types": {
-      "cache": true
-    },
-    "bundle-types": {
       "cache": true
     },
     "bundle": {
       "cache": true
     },
-    "version": {
-      "cache": true
-    },
     "config": {
       "cache": true
     },
-    "typedoc": {
+    "@nx/jest:jest": {
+      "dependsOn": ["^test"],
+      "inputs": ["default", "^default"],
+      "cache": true,
+      "options": {
+        "passWithNoTests": true
+      },
+      "configurations": {
+        "ci": {
+          "ci": true,
+          "codeCoverage": true
+        }
+      }
+    },
+    "@nx/vite:test": {
+      "dependsOn": ["^test"],
+      "inputs": ["default", "^default"],
       "cache": true
+    },
+    "@nx/eslint:lint": {
+      "inputs": ["default", "{workspaceRoot}/.eslintrc.json"],
+      "cache": true
+    },
+    "@nx/vite:build": {
+      "cache": true,
+      "dependsOn": ["^build"],
+      "inputs": ["default", "^default"]
     }
   },
   "targetDependencies": {

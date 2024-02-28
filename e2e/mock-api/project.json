@@ -43,7 +43,7 @@
       "executor": "nx:run-commands",
       "dependsOn": ["build"],
       "options": {
-        "command": "node dist/e2e/mock-api/index.cjs"
+        "command": "PORT=9443 node dist/e2e/mock-api/index.cjs"
       },
       "configurations": {
         "development": {
@@ -67,7 +67,6 @@
     },
     "lint": {
       "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": ["e2e/mock-api/**/*.ts"],
         "fix": true,
@@ -78,8 +77,7 @@
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/e2e/mock-api"],
       "options": {
-        "jestConfig": "e2e/mock-api/jest.config.ts",
-        "passWithNoTests": true
+        "jestConfig": "e2e/mock-api/jest.config.ts"
       }
     }
   },

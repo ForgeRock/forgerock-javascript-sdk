@@ -5,31 +5,9 @@
   "projectType": "application",
   "targets": {
     "e2e": {
-      "executor": "@plugins/wait-for-api:run-targets",
+      "executor": "@nx/playwright:playwright",
       "options": {
-        "targets": [
-          {
-            "target": "token-vault-app:serve",
-            "checkUrl": "http://localhost:5823",
-            "checkMaxTries": 50,
-            "rejectUnauthorized": false,
-            "reuseExistingServer": true
-          },
-          {
-            "target": "token-vault-proxy:serve",
-            "checkUrl": "http://localhost:5833",
-            "checkMaxTries": 50,
-            "rejectUnauthorized": false,
-            "reuseExistingServer": true
-          },
-          {
-            "target": "mock-api:serve",
-            "checkUrl": "https://api.example.com:9443/healthcheck",
-            "checkMaxTries": 50,
-            "rejectUnauthorized": false,
-            "reuseExistingServer": true
-          }
-        ]
+        "config": "e2e/token-vault-suites/playwright.config.ts"
       }
     },
     "lint": {

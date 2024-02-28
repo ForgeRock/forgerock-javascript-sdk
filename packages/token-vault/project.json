@@ -19,14 +19,7 @@
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/packages/token-vault"],
       "options": {
-        "jestConfig": "packages/token-vault/jest.config.ts",
-        "passWithNoTests": true
-      },
-      "configurations": {
-        "ci": {
-          "ci": true,
-          "codeCoverage": true
-        }
+        "jestConfig": "packages/token-vault/jest.config.ts"
       }
     },
     "lint": {
