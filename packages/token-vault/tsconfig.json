@@ -12,13 +12,5 @@
     "types": ["vitest"]
   },
   "files": [],
-  "include": ["vite.config.ts"],
-  "references": [
-    {
-      "path": "./tsconfig.lib.json"
-    },
-    {
-      "path": "./tsconfig.spec.json"
-    }
-  ]
+  "include": ["vite.config.ts"]
 }

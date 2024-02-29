@@ -40,16 +40,22 @@ export default defineConfig({
   cacheDir: '../../node_modules/.vite/e2e/autoscript-apps',
 
   server: {
+    cors: true,
+    port: 8443,
+    host: 'sdkapp.example.com',
+    headers: {
+      'Access-Control-Allow-Credentials': 'true',
+      'Access-Control-Allow-Origin': 'null',
+      'Access-Control-Allow-Headers': 'x-authorize-middleware',
+    },
+  },
+
+  preview: {
     port: 8443,
     host: 'sdkapp.example.com',
     headers: {
       'Access-Control-Allow-Origin': 'https://sdkapp.example.com:8443',
     },
-  },
-
-  preview: {
-    port: 4300,
-    host: 'localhost',
   },
 
   plugins: [nxViteTsPaths(), basicSsl()],
@@ -68,10 +74,13 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: path.resolve(__dirname, 'index.html'),
-        ...pages.reduce((acc, page) => {
-          acc[page as keyof typeof pages] = path.resolve(__dirname, `src/${page}/index.html`);
-          return acc;
-        }, {} as Record<keyof typeof pages, string>),
+        ...pages.reduce(
+          (acc, page) => {
+            acc[page as keyof typeof pages] = path.resolve(__dirname, `src/${page}/index.html`);
+            return acc;
+          },
+          {} as Record<keyof typeof pages, string>,
+        ),
       },
       output: {
         entryFileNames: '[name]/main.js',

@@ -30,6 +30,7 @@ export default defineConfig({
     setupFiles: ['./vitest.setup.ts'],
     coverage: {
       provider: 'v8',
+      reportsDirectory: '../../coverage/packages/ping-protect',
     },
     deps: {
       inline: ['vitest-canvas-mock'],

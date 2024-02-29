@@ -4,7 +4,7 @@
   "sourceRoot": "packages/javascript-sdk/src",
   "projectType": "library",
   "targets": {
-    "tsc": {
+    "build": {
       "executor": "@nx/js:tsc",
       "outputs": ["{options.outputPath}"],
       "options": {
@@ -20,44 +20,6 @@
         }
       }
     },
-    "build": {
-      "dependsOn": ["bundle"],
-      "command": "node ./scripts/update-package-json-sdk.js"
-    },
-    "bundle": {
-      "executor": "@nx/rollup:rollup",
-      "options": {
-        "compiler": "tsc",
-        "entryFile": "packages/javascript-sdk/src/index.ts",
-        "outputPath": "dist/packages/javascript-sdk",
-        "assets": [
-          {
-            "input": "packages/javascript-sdk",
-            "glob": "README.md",
-            "output": "/"
-          },
-          {
-            "input": "packages/javascript-sdk",
-            "glob": "CHANGELOG.md",
-            "output": "/"
-          }
-        ],
-        "format": ["esm", "cjs"],
-        "deleteOutputPath": true,
-        "generateExportsField": false,
-        "main": "packages/javascript-sdk/src/index.ts",
-        "rollupConfig": "packages/javascript-sdk/rollup.config.js",
-        "project": "packages/javascript-sdk/package.json",
-        "tsConfig": "packages/javascript-sdk/tsconfig.lib.json",
-        "cwd": "packages/javascript-sdk",
-        "parallel": true,
-        "babelUpwardRootMode": true
-      },
-      "configurations": {
-        "production": {}
-      },
-      "outputs": ["{options.outputPath}"]
-    },
     "lint": {
       "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"],
@@ -68,22 +30,16 @@
       }
     },
     "test": {
-      "executor": "@nx/jest:jest",
+      "executor": "@nx/vite:test",
       "outputs": ["{workspaceRoot}/coverage/packages/javascript-sdk"],
       "options": {
-        "jestConfig": "packages/javascript-sdk/jest.config.ts",
         "testPathPattern": ["packages/javascript-sdk/src"],
         "codeCoverage": true
       },
       "configurations": {
         "watch": {
-          "watch": true
-        },
-        "unit": {},
-        "integration": {
-          "testPathPattern": ["packages/javascript-sdk/tests/integration"],
-          "passWithNoTests": true,
-          "codeCoverage": true
+          "watch": true,
+          "mode": "ui"
         }
       }
     }

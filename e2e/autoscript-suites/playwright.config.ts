@@ -23,7 +23,7 @@ const config: PlaywrightTestConfig = {
       command: 'npm run nx serve mock-api',
       url: 'https://api.example.com:9443/healthcheck',
       ignoreHTTPSErrors: true,
-      reuseExistingServer: !process.env.CI,
+      reuseExistingServer: true,
       cwd: '../../',
     },
     {

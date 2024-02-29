@@ -31,7 +31,7 @@ test.describe('Test request middleware with login flow', () => {
     expect(messageArray.includes('OAuth revokeToken was not successful')).toBe(false);
   });
 
-  test(`Full login and oauth using middleware at Call Site `, async ({ page, browserName }) => {
+  test(`Full login and oauth using middleware at Call Site`, async ({ page, browserName }) => {
     const { messageArray } = await setupAndGo(page, browserName, 'config-request-middleware/', {
       realmPath: 'middleware',
       middleware: 'atCallSite',

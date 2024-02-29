@@ -16,10 +16,15 @@
       }
     },
     "test": {
-      "executor": "@nx/jest:jest",
+      "executor": "@nx/vite:test",
       "outputs": ["{workspaceRoot}/coverage/packages/token-vault"],
       "options": {
-        "jestConfig": "packages/token-vault/jest.config.ts"
+        "configFile": "packages/token-vault/vite.config.ts"
+      },
+      "configurations": {
+        "watch": {
+          "watch": true
+        }
       }
     },
     "lint": {

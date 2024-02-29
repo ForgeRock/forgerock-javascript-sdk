@@ -8,16 +8,12 @@
     "build": {
       "executor": "@nx/vite:build",
       "outputs": ["{options.outputPath}"],
-      "defaultConfiguration": "production",
       "options": {
         "outputPath": "dist/e2e/autoscript-apps"
       },
       "configurations": {
         "development": {
           "mode": "development"
-        },
-        "production": {
-          "mode": "production"
         }
       }
     },
@@ -25,7 +21,8 @@
       "executor": "@nx/vite:dev-server",
       "defaultConfiguration": "development",
       "options": {
-        "buildTarget": "autoscript-apps:build"
+        "buildTarget": "autoscript-apps:build",
+        "hmr": false
       },
       "configurations": {
         "development": {
@@ -40,7 +37,7 @@
     },
     "preview": {
       "executor": "@nx/vite:preview-server",
-      "defaultConfiguration": "development",
+      "defaultConfiguration": "production",
       "options": {
         "buildTarget": "autoscript-apps:build"
       },

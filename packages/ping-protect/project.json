@@ -30,8 +30,7 @@
       "executor": "@nx/vite:test",
       "outputs": ["{workspaceRoot}/coverage/packages/ping-protect"],
       "options": {
-        "passWithNoTests": true,
-        "reportsDirectory": "../../coverage/packages/ping-protect"
+        "configFile": "packages/ping-protect/vite.config.ts"
       },
       "configurations": {
         "watch": {

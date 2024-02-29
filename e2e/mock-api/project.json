@@ -72,13 +72,6 @@
         "fix": true,
         "ignorePath": ".gitignore"
       }
-    },
-    "test": {
-      "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/e2e/mock-api"],
-      "options": {
-        "jestConfig": "e2e/mock-api/jest.config.ts"
-      }
     }
   },
   "tags": ["scope:e2e"]

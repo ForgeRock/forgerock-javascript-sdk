@@ -72,11 +72,10 @@ export async function setupAndGo(
     console.log(url.toString());
   }
 
-  await page.goto(url.toString(), { waitUntil: 'commit' });
-
   // Listen for events on page
   page.on('console', async (msg) => {
-    return messageArray.push(msg.text());
+    messageArray.push(msg.text());
+    return Promise.resolve(true);
   });
 
   page.on('request', async (req) => {
@@ -91,7 +90,11 @@ export async function setupAndGo(
     await dialog.accept(config?.dialogInput || 'abc123');
   });
 
-  await page.waitForSelector(config?.selector || '.Test_Complete');
+  await page.goto(url.toString());
+  await page.waitForEvent('console');
+
+  // Test script complete
+  await page.waitForSelector('.Test_Complete', { state: 'attached' });
 
   return { messageArray, networkArray };
 }

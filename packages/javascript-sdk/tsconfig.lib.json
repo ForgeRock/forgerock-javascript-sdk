@@ -17,9 +17,6 @@
     "**/*.test.ts",
     "**/*.mock.ts",
     "tests/*",
-    "bundles",
-    "jest.env.config.ts",
-    "jest.config.ts",
     "**/*.mock.data.ts"
   ]
 }

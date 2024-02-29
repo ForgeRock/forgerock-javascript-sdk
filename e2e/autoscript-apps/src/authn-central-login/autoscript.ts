@@ -43,7 +43,7 @@ function autoscript() {
   forgerock.Config.set({
     clientId: clientId || client_id || 'CentralLoginOAuthClient',
     realmPath,
-    redirectUri: `${url.origin}/${
+    redirectUri: `${url.origin}/src/${
       preAuthenticated === 'false' ? 'authn-central-login' : '_callback'
     }/`,
     scope,

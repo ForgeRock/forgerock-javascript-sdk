@@ -4,36 +4,13 @@
       "dependsOn": ["plugins-wait-for-api:build"],
       "cache": true
     },
-    "tsc": {
-      "dependsOn": ["^tsc"],
-      "cache": true
-    },
     "build": {
       "dependsOn": ["^build"],
-      "cache": true
+      "cache": true,
+      "inputs": ["production", "^production"]
     },
     "build-interceptor": {
       "cache": true
-    },
-    "bundle": {
-      "cache": true
-    },
-    "config": {
-      "cache": true
-    },
-    "@nx/jest:jest": {
-      "dependsOn": ["^test"],
-      "inputs": ["default", "^default"],
-      "cache": true,
-      "options": {
-        "passWithNoTests": true
-      },
-      "configurations": {
-        "ci": {
-          "ci": true,
-          "codeCoverage": true
-        }
-      }
     },
     "@nx/vite:test": {
       "dependsOn": ["^test"],
@@ -51,21 +28,9 @@
     }
   },
   "targetDependencies": {
-    "test:unit": [
-      {
-        "target": "test",
-        "projects": "dependencies"
-      }
-    ],
     "test": [
       {
         "target": "test",
-        "projects": "dependencies"
-      }
-    ],
-    "tsc": [
-      {
-        "target": "tsc",
         "projects": "dependencies"
       }
     ],
@@ -106,35 +71,24 @@
       "style": "css",
       "linter": "eslint",
       "unitTestRunner": "jest"
-    },
-    "@nx/angular:application": {
-      "style": "css",
-      "linter": "eslint",
-      "unitTestRunner": "jest",
-      "e2eTestRunner": "none"
-    },
-    "@nx/angular:library": {
-      "linter": "eslint",
-      "unitTestRunner": "jest"
-    },
-    "@nx/angular:component": {
-      "style": "css"
-    },
-    "@nx/react": {
-      "application": {
-        "style": "css",
-        "linter": "eslint",
-        "babel": true
-      },
-      "component": {
-        "style": "css"
-      },
-      "library": {
-        "style": "css",
-        "linter": "eslint"
-      }
+    }
+  },
+  "release": {
+    "projects": ["packages/*"],
+    "releaseTagPattern": "{version}",
+    "changelog": {
+      "projectChangelogs": true
     }
   },
   "defaultProject": "javascript-sdk",
-  "useDaemonProcess": true
+  "useDaemonProcess": true,
+  "namedInputs": {
+    "default": ["{projectRoot}/**/*", "sharedGlobals"],
+    "sharedGlobals": [],
+    "production": [
+      "default",
+      "!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap)",
+      "!{projectRoot}/tsconfig.spec.json"
+    ]
+  }
 }
