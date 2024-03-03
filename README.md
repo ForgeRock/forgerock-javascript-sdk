@@ -46,7 +46,7 @@ Use the SDKs to leverage _[Intelligent Authentication](https://www.forgerock.com
 
 ## Installation
 
-```
+```bash
 npm install @forgerock/javascript-sdk
 ```
 
