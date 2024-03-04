@@ -10,9 +10,9 @@
 
 import { env } from 'process';
 import request from 'superagent';
-import { session } from './app.auth';
-import { key, cert } from './app.certs';
-import { AM_URL, AM_PORT, FORGEOPS, REALM_PATH } from './env.config';
+import { session } from './app.auth.js';
+import { key, cert } from './app.certs.js';
+import { AM_URL, AM_PORT, FORGEOPS, REALM_PATH } from './env.config.js';
 import {
   authByTreeResponse,
   authByTxnResponse,
@@ -20,9 +20,9 @@ import {
   createTreeStepUpHeader,
   createTxnStepUpUrl,
   createTreeStepUpUrl,
-} from './responses';
-import { baz } from './routes.auth';
-import wait from './wait';
+} from './responses.js';
+import { baz } from './routes.auth.js';
+import wait from './wait.js';
 
 async function authorization(req, res, next) {
   if (env.NODE_ENV === 'LIVE' && req.hostname !== FORGEOPS) {

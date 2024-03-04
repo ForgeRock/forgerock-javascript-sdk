@@ -91,10 +91,10 @@ export async function setupAndGo(
   });
 
   await page.goto(url.toString());
-  await page.waitForEvent('console');
 
   // Test script complete
   await page.waitForSelector('.Test_Complete', { state: 'attached' });
 
+  await page.removeListener('console', (msg) => console.log(msg.text()));
   return { messageArray, networkArray };
 }

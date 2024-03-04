@@ -8,7 +8,7 @@
  * of the MIT license. See the LICENSE file for details.
  */
 
-import { AM_URL, RESOURCE_URL } from './env.config';
+import { AM_URL, RESOURCE_URL } from './env.config.js';
 
 export const oauthTokens = {
   access_token: 'baz',

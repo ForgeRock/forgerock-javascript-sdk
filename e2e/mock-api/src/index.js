@@ -7,20 +7,21 @@
  * This software may be modified and distributed under the terms
  * of the MIT license. See the LICENSE file for details.
  */
+import * as url from 'url';
 import * as dns from 'dns';
 import cors from 'cors';
 import express from 'express';
 import cookieParser from 'cookie-parser';
 import { createServer } from 'https';
-// import { createServer } from 'http';
 import { env } from 'process';
 import path from 'path';
-import { authorizeApp } from './app/app.auth';
-import { key, cert } from './app/app.certs';
-import { MOCK_PORT } from './app/env.config';
-import authRoutes from './app/routes.auth';
-import resourceRoutes from './app/routes.resource';
+import { authorizeApp } from './app/app.auth.js';
+import { key, cert } from './app/app.certs.js';
+import { MOCK_PORT } from './app/env.config.js';
+import authRoutes from './app/routes.auth.js';
+import resourceRoutes from './app/routes.resource.js';
 
+const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 dns.setDefaultResultOrder('ipv4first');
 
 const app = express();
@@ -56,6 +57,4 @@ app.get('/healthcheck', (req, res) => res.status(200).send('ok'));
 
 env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0;
 createServer({ key, cert }, app).listen(MOCK_PORT);
-// when we use nginx we will probably use this
-// createServer(app).listen(MOCK_PORT);
 console.log(`Listening to HTTPS on secure port: ${MOCK_PORT}`);

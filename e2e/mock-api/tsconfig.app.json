@@ -2,7 +2,7 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "../../dist/out-tsc",
-    "module": "CommonJS",
+    "module": "ESNext",
     "allowUmdGlobalAccess": true,
     "target": "ES2020",
     "composite": true,
@@ -10,5 +10,5 @@
     "types": ["node", "express"]
   },
   "exclude": ["**/*.spec.ts", "**/*.test.ts", "jest.config.ts"],
-  "include": ["**/*.ts"]
+  "include": ["**/*.ts", "**/*.js"]
 }

@@ -1,7 +1,6 @@
 {
   "targetDefaults": {
     "e2e": {
-      "dependsOn": ["plugins-wait-for-api:build"],
       "cache": true
     },
     "build": {

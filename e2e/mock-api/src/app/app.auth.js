@@ -9,8 +9,8 @@
  */
 
 import request from 'superagent';
-import { key, cert } from './app.certs';
-import { AM_URL, REALM_PATH } from './env.config';
+import { key, cert } from './app.certs.js';
+import { AM_URL, REALM_PATH } from './env.config.js';
 
 export let session;
 

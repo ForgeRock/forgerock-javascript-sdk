@@ -3,6 +3,7 @@ import { PlaywrightTestConfig, devices } from '@playwright/test';
 const config: PlaywrightTestConfig = {
   forbidOnly: !!process.env.CI,
   globalTeardown: './teardown.ts',
+  reporter: process.env.CI ? 'blob' : 'html',
   workers: process.env.CI ? 1 : 8,
   retries: process.env.CI ? 1 : 0,
   testDir: './src/suites',
@@ -23,7 +24,7 @@ const config: PlaywrightTestConfig = {
       command: 'npm run nx serve mock-api',
       url: 'https://api.example.com:9443/healthcheck',
       ignoreHTTPSErrors: true,
-      reuseExistingServer: true,
+      reuseExistingServer: !process.env.CI,
       cwd: '../../',
     },
     {

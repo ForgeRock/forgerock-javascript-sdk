@@ -1,4 +1,5 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-npx nx affected:test & npx nx affected:e2e
+npx nx affected:test & npx nx affected:e2e --shard=1/2 & npx nx affected:e2e --shard=2/2
+```

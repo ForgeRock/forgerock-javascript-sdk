@@ -9,8 +9,8 @@
  */
 
 import { v4 } from 'uuid';
-import { authPaths } from './constants';
-import { AM_URL, USERS } from './env.config';
+import { authPaths } from './constants.js';
+import { AM_URL, USERS } from './env.config.js';
 import {
   oauthTokens,
   authFail,
@@ -45,9 +45,9 @@ import {
   otpQRCodeCallbacks,
   wellKnownForgeRock,
   wellKnownPing,
-} from './responses';
-import initialRegResponse from './response.registration';
-import wait from './wait';
+} from './responses.js';
+import initialRegResponse from './response.registration.js';
+import wait from './wait.js';
 
 console.log(`Your user password from 'env.config' file: ${USERS[0].pw}`);
 
