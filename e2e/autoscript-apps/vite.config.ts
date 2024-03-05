@@ -1,7 +1,6 @@
 /// <reference types='vitest' />
 import * as path from 'path';
 import { defineConfig } from 'vite';
-import basicSsl from '@vitejs/plugin-basic-ssl';
 import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
 
 const pages = [
@@ -42,7 +41,7 @@ export default defineConfig({
   server: {
     cors: true,
     port: 8443,
-    host: 'sdkapp.example.com',
+    host: 'localhost',
     headers: {
       'Access-Control-Allow-Credentials': 'true',
       'Access-Control-Allow-Origin': 'null',
@@ -52,13 +51,13 @@ export default defineConfig({
 
   preview: {
     port: 8443,
-    host: 'sdkapp.example.com',
+    host: 'localhost',
     headers: {
-      'Access-Control-Allow-Origin': 'https://sdkapp.example.com:8443',
+      'Access-Control-Allow-Origin': 'http://localhost:8443',
     },
   },
 
-  plugins: [nxViteTsPaths(), basicSsl()],
+  plugins: [nxViteTsPaths()],
 
   // Uncomment this if you are using workers.
   // worker: {

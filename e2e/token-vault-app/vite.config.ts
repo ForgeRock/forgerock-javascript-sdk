@@ -1,3 +1,4 @@
+import * as path from 'path';
 import { defineConfig } from 'vite';
 
 import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
@@ -5,14 +6,14 @@ import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
 export default defineConfig({
   root: __dirname,
   build: {
-    outDir: '../../e2e/token-vault-app/public/',
+    outDir: '../../dist/e2e/token-vault-app',
     reportCompressedSize: true,
     commonjsOptions: { transformMixedEsModules: true },
     target: 'esnext',
     minify: false,
     rollupOptions: {
       input: {
-        main: './e2e/token-vault-app/src/main.ts',
+        main: path.resolve(__dirname, 'index.html'),
       },
       output: {
         entryFileNames: 'main.js',

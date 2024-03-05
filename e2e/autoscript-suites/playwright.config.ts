@@ -3,7 +3,7 @@ import { nxE2EPreset } from '@nx/playwright/preset';
 import { workspaceRoot } from '@nx/devkit';
 
 // For CI, you may want to set BASE_URL to the deployed application.
-const baseURL = process.env['BASE_URL'] || 'https://sdkapp.example.com:8443';
+const baseURL = process.env['BASE_URL'] || 'http://localhost:8443';
 
 const baseConfig = nxE2EPreset(__filename, {
   testDir: './src/suites',
@@ -11,25 +11,25 @@ const baseConfig = nxE2EPreset(__filename, {
 
 const config: PlaywrightTestConfig = {
   ...baseConfig,
-  reporter: process.env.CI ? 'blob' : 'html',
+  reporter: process.env.CI ? 'github' : 'list',
   use: {
     baseURL,
     ignoreHTTPSErrors: true,
     geolocation: { latitude: 24.9884, longitude: -87.3459 },
     bypassCSP: true,
-    trace: 'retry-with-trace',
+    trace: process.env.CI ? 'retry-with-trace' : 'retain-on-failure',
   },
   webServer: [
     {
       command: 'npx nx serve mock-api',
-      url: 'https://api.example.com:9443/healthcheck',
+      url: 'http://localhost:9443/healthcheck',
       ignoreHTTPSErrors: true,
       reuseExistingServer: !process.env.CI,
       cwd: workspaceRoot,
     },
     {
       command: 'npx nx serve autoscript-apps',
-      url: 'https://sdkapp.example.com:8443',
+      url: 'http://localhost:8443',
       ignoreHTTPSErrors: true,
       reuseExistingServer: !process.env.CI,
       cwd: workspaceRoot,

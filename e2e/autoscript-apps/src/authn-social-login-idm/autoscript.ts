@@ -15,7 +15,7 @@ function autoscript() {
   const delay = 0;
 
   const url = new URL(window.location.href);
-  const amUrl = url.searchParams.get('amUrl') || 'https://auth.example.com:9443/am/';
+  const amUrl = url.searchParams.get('amUrl') || 'http://localhost:9443/am/';
   const realmPath = url.searchParams.get('realmPath') || 'root';
   const tree = url.searchParams.get('tree') || 'IDMSocialLogin';
   const provider = url.searchParams.get('provider') || 'google';

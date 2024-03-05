@@ -330,7 +330,7 @@ export const pingProtectInitialize = {
         },
         {
           name: 'customHost',
-          value: 'https://example.com',
+          value: 'http://localhost',
         },
         {
           name: 'lazyMetadata',
@@ -592,7 +592,7 @@ export const redirectCallback = {
           name: 'redirectUrl',
           value:
             // eslint-disable-next-line max-len
-            'https://user.example.com:9443/o/oauth2/v2/auth?nonce=ko7fdf2v3b6yctgq35bdpndel0p9qiq&response_type=code&client_id=546064052569-ke17g9ufsmvda3kgg7s5kp2hpf3gnqi8.apps.googleusercontent.com&scope=openid%20profile%20email&code_challenge=Bh_6aMiI04KGI1wVILtEamByklmXnQY9JKhKhlwsIxk&code_challenge_method=S256&state=rtu8pz65dbg6baw985d532myfbbnf5v',
+            'http://localhost:9443/o/oauth2/v2/auth?nonce=ko7fdf2v3b6yctgq35bdpndel0p9qiq&response_type=code&client_id=546064052569-ke17g9ufsmvda3kgg7s5kp2hpf3gnqi8.apps.googleusercontent.com&scope=openid%20profile%20email&code_challenge=Bh_6aMiI04KGI1wVILtEamByklmXnQY9JKhKhlwsIxk&code_challenge_method=S256&state=rtu8pz65dbg6baw985d532myfbbnf5v',
         },
         { name: 'redirectMethod', value: 'GET' },
         { name: 'trackingCookie', value: true },
@@ -610,7 +610,7 @@ export const redirectCallbackSaml = {
           name: 'redirectUrl',
           value:
             // eslint-disable-next-line max-len
-            'https://user.example.com:9443/SAMLTest/',
+            'http://localhost:9443/SAMLTest/',
         },
         { name: 'redirectMethod', value: 'GET' },
         { name: 'trackingCookie', value: true },
@@ -628,7 +628,7 @@ export const redirectCallbackFailureSaml = {
           name: 'redirectUrl',
           value:
             // eslint-disable-next-line max-len
-            'https://user.example.com:9443/SAMLFailure',
+            'http://localhost:9443/SAMLFailure',
         },
         { name: 'redirectMethod', value: 'GET' },
         { name: 'trackingCookie', value: true },

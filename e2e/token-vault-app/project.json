@@ -12,7 +12,7 @@
       "defaultConfiguration": "production",
       "options": {
         "emptyOutDir": false,
-        "outputPath": "dist/e2e/token-vault-app/public"
+        "outputPath": "dist/e2e/token-vault-app"
       },
       "configurations": {
         "development": {

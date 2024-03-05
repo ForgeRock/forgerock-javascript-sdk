@@ -27,7 +27,7 @@ test.describe('Test basic login flow with Ping Protect', () => {
     expect(configObj.envId.length).toBeGreaterThan(5);
     expect(configObj.consoleLogEnabled).toBe(true);
     expect(configObj.deviceAttributesToIgnore).toStrictEqual(['userAgent']);
-    expect(configObj.customHost).toBe('https://example.com');
+    expect(configObj.customHost).toBe('http://localhost');
     expect(configObj.lazyMetadata).toBe(false);
     expect(configObj.behavioralDataCollection).toBe(true);
     expect(configObj.deviceKeyRsyncIntervals).toBe(14);
