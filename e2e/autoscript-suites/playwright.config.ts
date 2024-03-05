@@ -1,55 +1,38 @@
-import { PlaywrightTestConfig, devices } from '@playwright/test';
+import { PlaywrightTestConfig } from '@playwright/test';
+import { nxE2EPreset } from '@nx/playwright/preset';
+import { workspaceRoot } from '@nx/devkit';
+
+// For CI, you may want to set BASE_URL to the deployed application.
+const baseURL = process.env['BASE_URL'] || 'https://sdkapp.example.com:8443';
+
+const baseConfig = nxE2EPreset(__filename, {
+  testDir: './src/suites',
+});
 
 const config: PlaywrightTestConfig = {
-  forbidOnly: !!process.env.CI,
-  globalTeardown: './teardown.ts',
+  ...baseConfig,
   reporter: process.env.CI ? 'blob' : 'html',
-  workers: process.env.CI ? 1 : 8,
-  retries: process.env.CI ? 1 : 0,
-  testDir: './src/suites',
   use: {
-    headless: true,
-    navigationTimeout: 50000,
-    screenshot: process.env.CI ? 'only-on-failure' : 'off',
-    video: process.env.CI ? 'retain-on-failure' : 'off',
-    baseURL: 'https://sdkapp.example.com:8443',
+    baseURL,
     ignoreHTTPSErrors: true,
     geolocation: { latitude: 24.9884, longitude: -87.3459 },
-    permissions: [],
     bypassCSP: true,
-    trace: 'retain-on-failure',
+    trace: 'retry-with-trace',
   },
   webServer: [
     {
-      command: 'npm run nx serve mock-api',
+      command: 'npx nx serve mock-api',
       url: 'https://api.example.com:9443/healthcheck',
       ignoreHTTPSErrors: true,
       reuseExistingServer: !process.env.CI,
-      cwd: '../../',
+      cwd: workspaceRoot,
     },
     {
-      command: 'npm run nx serve autoscript-apps',
+      command: 'npx nx serve autoscript-apps',
       url: 'https://sdkapp.example.com:8443',
       ignoreHTTPSErrors: true,
       reuseExistingServer: !process.env.CI,
-      cwd: '../../',
-    },
-  ],
-  projects: [
-    {
-      name: 'chromium',
-      use: {
-        ...devices['Desktop Chrome'],
-        ...devices['Desktop Edge'],
-      },
-    },
-    {
-      name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
-    },
-    {
-      name: 'webkit',
-      use: { ...devices['Desktop Safari'] },
+      cwd: workspaceRoot,
     },
   ],
 };

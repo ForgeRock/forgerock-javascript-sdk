@@ -1,5 +1,4 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-npx nx affected:test & npx nx affected:e2e --shard=1/2 & npx nx affected:e2e --shard=2/2
-```
+NX_ADD_PLUGINS=false npx nx affected:test && NX_ADD_PLUGINS=false npx nx e2e autoscript-suites && NX_ADD_PLUGINS=false npx nx e2e token-vault-suites

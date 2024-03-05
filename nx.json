@@ -26,6 +26,7 @@
       "inputs": ["default", "^default"]
     }
   },
+  "parallel": 1,
   "targetDependencies": {
     "test": [
       {
@@ -79,6 +80,15 @@
       "projectChangelogs": true
     }
   },
+  "plugins": [
+    {
+      "plugin": "@nx/playwright/plugin",
+      "options": {
+        "ciTargetName": "e2e-ci",
+        "targetName": "e2e"
+      }
+    }
+  ],
   "defaultProject": "javascript-sdk",
   "useDaemonProcess": true,
   "namedInputs": {
