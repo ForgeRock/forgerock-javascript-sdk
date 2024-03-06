@@ -50,10 +50,6 @@ jobs:
           node-version: '20.x'
           cache: 'npm'
           cache-dependency-path: '**/package-lock.json'
-      - name: Setup custom host for sdkapp.example.com
-        run: |
-          sudo echo "127.0.0.1 localhost sdkapp.example.com auth.example.com api.example.com user.example.com" | sudo tee -a /etc/hosts
-          sudo echo "::1 ip6-localhost ip6-loopback" | sudo tee -a /etc/hosts
 
       - run: npx playwright install
       - uses: nrwl/nx-set-shas@v4

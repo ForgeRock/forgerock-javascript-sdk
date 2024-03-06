@@ -301,7 +301,6 @@ export function parseQuery(fullUrl: string) {
  * @returns {string} - The resolved URL
  */
 export function resolveUrl(baseUrl: string, path: string) {
-  // thing
   const url = new URL(baseUrl);
 
   if (path.startsWith('/')) {

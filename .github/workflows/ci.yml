@@ -37,4 +37,4 @@ jobs:
       - run: git branch --track develop origin/develop
 
       - run: npx nx-cloud record -- nx format:check
-      - run: npx nx affected -t lint test build e2e-ci --exclude=token-vault-suites
+      - run: npx nx affected -t lint test build e2e-ci

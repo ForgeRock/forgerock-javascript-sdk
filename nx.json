@@ -76,6 +76,9 @@
   "release": {
     "projects": ["packages/*"],
     "releaseTagPattern": "{version}",
+    "version": {
+      "conventionalCommits": true
+    },
     "changelog": {
       "projectChangelogs": true
     }

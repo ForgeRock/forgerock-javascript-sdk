@@ -20,7 +20,8 @@
     "start:server": "nx run mock-api:serve",
     "start:token-vault": "nx run-many --target=serve --projects=token-vault-app,token-vault-proxy,mock-api",
     "test": "nx affected:test",
-    "verdaccio": "nx local-registry"
+    "verdaccio": "nx local-registry",
+    "publish:local": "node ./tools/release/local.mjs"
   },
   "repository": {
     "type": "git",

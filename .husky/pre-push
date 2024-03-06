@@ -1,4 +1,4 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-NX_ADD_PLUGINS=false npx nx affected:test && NX_ADD_PLUGINS=false npx nx e2e autoscript-suites
+NX_ADD_PLUGINS=false npx nx affected:test && NX_ADD_PLUGINS=false npx nx affected:e2e

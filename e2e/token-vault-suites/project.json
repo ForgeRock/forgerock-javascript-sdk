@@ -9,6 +9,11 @@
       "options": {
         "config": "e2e/token-vault-suites/playwright.config.ts",
         "skipInstall": true
+      },
+      "configurations": {
+        "ui": {
+          "ui": true
+        }
       }
     },
     "lint": {

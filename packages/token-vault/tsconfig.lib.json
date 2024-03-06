@@ -8,8 +8,8 @@
     "noImplicitAny": false,
     "noPropertyAccessFromIndexSignature": false,
     "skipLibCheck": true,
-    "lib": ["DOM", "WebWorker", "Webworker.Iterable"],
-    "types": ["node"]
+    "lib": ["DOM", "WebWorker", "Webworker.Iterable", "ES2020"],
+    "types": []
   },
   "include": ["src/**/*.ts"],
   "exclude": ["jest.config.ts", "src/**/*.spec.ts", "src/**/*.test.ts"]

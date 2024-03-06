@@ -9,7 +9,8 @@
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "target": "ES2017",
-    "types": ["vitest"]
+    "types": [],
+    "lib": ["DOM", "WebWorker", "Webworker.Iterable", "ES2020"]
   },
   "files": [],
   "include": ["vite.config.ts"]
