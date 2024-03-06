@@ -79,8 +79,16 @@
     "version": {
       "conventionalCommits": true
     },
+    "git": {
+      "commitMessage": "chore(release): {version}"
+    },
     "changelog": {
-      "projectChangelogs": true
+      "workspaceChangelog": {
+        "createRelease": "github"
+      },
+      "projectChangelogs": {
+        "createRelease": "github"
+      }
     }
   },
   "plugins": [
