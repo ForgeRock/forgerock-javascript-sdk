@@ -100,7 +100,6 @@ function autoscript() {
           });
         },
         async (step, response) => {
-          console.log(response);
           if (response.ok) {
             console.log('Request to IG resource successfully responded');
           } else {
