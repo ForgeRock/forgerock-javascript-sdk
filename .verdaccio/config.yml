@@ -5,6 +5,7 @@ auth:
   htpasswd:
     file: ./htpasswd
     algorithm: bcrypt # by default is crypt, but is recommended use bcrypt for new installations
+
     # Rounds number for "bcrypt", will be ignored for other algorithms.
     rounds: 10
 # a list of other known repositories we can talk to
@@ -14,13 +15,8 @@ uplinks:
     maxage: 60m
 
 packages:
-  '@forgerock/*':
-    access: $all
-    publish: $authenticated
-    unpublish: $authenticated
-
   '**':
-    access: $all
+    access: $anonymous
     publish: $anonymous
 
     # if package is not available locally, proxy requests to npm registry

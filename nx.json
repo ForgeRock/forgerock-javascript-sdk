@@ -1,5 +1,10 @@
 {
   "targetDefaults": {
+    "nx-release-publish": {
+      "options": {
+        "packageRoot": "dist/packages/{projectName}"
+      }
+    },
     "e2e": {
       "cache": true
     },

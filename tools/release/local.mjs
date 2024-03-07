@@ -2,14 +2,13 @@ import { runServer } from 'verdaccio';
 import * as path from 'path';
 import * as url from 'url';
 import * as console from 'console';
-import * as process from 'process';
 
 import { releasePublish, releaseVersion } from 'nx/release/index.js';
 
 const __dirname = url.fileURLToPath(new url.URL('.', import.meta.url));
 
 const app = await runServer(path.resolve(__dirname, '../../.verdaccio/config.yml'));
-app.listen(4873, async (event) => {
+app.listen(4873, async () => {
   const { workspaceVersion, projectsVersionData } = await releaseVersion({
     specifier: 'prerelease', // this add the extra .0/1/2/3/* to the version
     preid: 'beta', // for sanity check - set preid to beta

@@ -16,6 +16,7 @@
     "lint": "nx affected --target=lint",
     "nx": "nx",
     "prepare": "husky install",
+    "prepublish": "nx run-many -t build --projects=tag:scope:package",
     "start:e2e": "nx run-many --t serve --projects autoscript-apps,mock-api",
     "start:server": "nx run mock-api:serve",
     "start:token-vault": "nx run-many --target=serve --projects=token-vault-app,token-vault-proxy,mock-api",
