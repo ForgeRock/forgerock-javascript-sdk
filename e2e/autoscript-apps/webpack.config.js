@@ -15,11 +15,13 @@ of the MIT license. See the LICENSE file for details.
 const pages = [
   'authn-basic',
   'authn-central-login',
+  'authn-central-login-wellknown',
   'authn-device-profile',
   'authn-protect',
   'authn-email-suspend',
   'authn-no-session',
   'authn-oauth',
+  'authn-wellknown',
   'authn-platform',
   'authn-saml',
   'authn-second-factor',

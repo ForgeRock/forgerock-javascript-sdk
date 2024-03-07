@@ -12,53 +12,53 @@ import * as forgerock from '@forgerock/javascript-sdk';
 import { delay as rxDelay, map, mergeMap } from 'rxjs/operators';
 import { from } from 'rxjs';
 
-function autoscript() {
+async function autoscript() {
   const delay = 0;
 
   const url = new URL(window.location.href);
-  const amUrl = url.searchParams.get('amUrl') || 'https://auth.example.com:9443/am';
-  const preAuthenticated = url.searchParams.get('preAuthenticated') || 'false';
   const code = url.searchParams.get('code') || '';
-  const clientId = url.searchParams.get('clientId');
-  const client_id = url.searchParams.get('client_id');
-  const error = url.searchParams.get('error_description') || false;
-  const realmPath = url.searchParams.get('realmPath') || 'root';
-  const scope = url.searchParams.get('scope') || 'openid profile me.read';
+  const error = url.searchParams.get('error') || '';
   const state = url.searchParams.get('state') || '';
-  const acr_values = url.searchParams.get('acr') || 'SpecificTree';
   // in central login we use an auth query param for the return of our mock 401 request
   // this is to prevent the evaluation of the page before we have technically authenticated
   const auth = url.searchParams.get('auth') || false;
+  const acr_values = url.searchParams.get('acr') || 'SpecificTree';
 
-  let tokenStore = url.searchParams.get('tokenStore') || 'localStorage';
-
-  // Support full redirects by setting storage, rather than rely purely on URL
-  if (!localStorage.getItem('tokenStore')) {
-    localStorage.setItem('tokenStore', tokenStore);
-  } else {
-    tokenStore = localStorage.getItem('tokenStore');
-  }
+  let clientId = url.searchParams.get('clientId') || 'CentralLoginOAuthClient';
+  let realmPath = url.searchParams.get('realmPath') || 'root';
+  // The `revoke` scope is required for PingOne support
+  let scope = url.searchParams.get('scope') || 'openid profile me.read revoke';
+  let wellKnownUrl =
+    url.searchParams.get('wellKnownUrl') ||
+    'https://auth.example.com:9443/am/.well-known/oidc-configuration';
 
   console.log('Configure the SDK');
-  forgerock.Config.set({
-    clientId: clientId || client_id || 'CentralLoginOAuthClient',
+
+  if (wellKnownUrl) {
+    localStorage.setItem('wellknown', wellKnownUrl);
+    localStorage.setItem('clientId', clientId);
+    localStorage.setItem('realmPath', realmPath);
+    localStorage.setItem('scope', scope);
+  } else {
+    wellKnownUrl = localStorage.getItem('wellknown');
+    clientId = localStorage.getItem('clientId');
+    realmPath = localStorage.getItem('realmPath');
+    scope = localStorage.getItem('scope');
+  }
+  await forgerock.Config.setAsync({
+    clientId,
     realmPath,
-    redirectUri: `${url.origin}/${
-      preAuthenticated === 'false' ? 'authn-central-login' : '_callback'
-    }/`,
+    redirectUri: `${url.origin}/authn-central-login-wellknown/`,
     scope,
     serverConfig: {
-      baseUrl: amUrl,
+      wellknown: wellKnownUrl,
     },
-    tokenStore,
   });
 
-  if (!code && !state) {
-    try {
-      forgerock.SessionManager.logout();
-    } catch (err) {
-      // Do nothing
-    }
+  try {
+    forgerock.SessionManager.logout();
+  } catch (err) {
+    // Do nothing
   }
 
   console.log('Initiate first step with `undefined`');
@@ -67,29 +67,15 @@ function autoscript() {
   setTimeout(() => {
     from([1])
       .pipe(
-        map(() => {
-          if (preAuthenticated === 'true') {
-            console.log('Set mock cookie to represent existing session');
-            document.cookie = 'iPlanetDirectoryPro=abcd1234; domain=example.com; path=/';
-            if (code && state) {
-              window.sessionStorage.setItem(
-                `FR-SDK-${clientId}`,
-                JSON.stringify({ responseType: 'code', state, verifier: '1234' }),
-              );
-            }
-          }
-          return;
-        }),
-        rxDelay(delay),
-        mergeMap((step) => {
+        mergeMap(() => {
           let tokens;
-          if (error) {
-            // Do nothing
+          // detect when in iframe as to not call `/authorize` needlessly
+          if (window.self !== window.top) {
             return;
           } else if (code && state) {
             tokens = forgerock.TokenManager.getTokens({
               login: 'redirect',
-              query: { code, state, acr_values },
+              query: { code, state },
             });
           } else {
             tokens = forgerock.TokenManager.getTokens({
@@ -112,6 +98,7 @@ function autoscript() {
           console.log('Remove cookie');
           document.cookie = '';
           console.log('Initiate logout');
+          // You have to allow specific origins to CORS for OAuth client
           return forgerock.FRUser.logout();
         }),
       )
@@ -129,13 +116,14 @@ function autoscript() {
           }
           console.log(`Error: ${err.message}`);
           document.body.innerHTML = `<p class="Test_Complete">${err.message}</p>`;
-          localStorage.clear();
         },
         complete: () => {
           console.log('Test script complete');
           document.body.innerHTML = `<p class="Test_Complete">Test script complete</p>`;
-          history.replaceState(null, null, window.location.origin + window.location.pathname);
-          localStorage.clear();
+          localStorage.removeItem('wellknown');
+          localStorage.removeItem('clientId');
+          localStorage.removeItem('realmPath');
+          localStorage.removeItem('scope');
         },
       });
   }, 250);

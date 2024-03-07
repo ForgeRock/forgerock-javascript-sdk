@@ -3,13 +3,20 @@
  *
  * index.ts
  *
- * Copyright (c) 2020 ForgeRock. All rights reserved.
+ * Copyright (c) 2020-2024 ForgeRock. All rights reserved.
  * This software may be modified and distributed under the terms
  * of the MIT license. See the LICENSE file for details.
  */
 
 import { DEFAULT_TIMEOUT, DEFAULT_OAUTH_THRESHOLD, PREFIX } from './constants';
-import type { ConfigOptions, ServerConfig, StepOptions, ValidConfigOptions } from './interfaces';
+import { convertWellKnown, fetchWellKnown } from './helpers';
+import type {
+  AsyncConfigOptions,
+  ConfigOptions,
+  ServerConfig,
+  StepOptions,
+  ValidConfigOptions,
+} from './interfaces';
 
 /**
  * Sets defaults for options that are required but have no supplied value
@@ -58,6 +65,38 @@ abstract class Config {
       this.validateServerConfig(options.serverConfig);
     }
     this.options = { ...setDefaults(options) };
+  }
+
+  /**
+   * @method setAsync - Asynchronously calls the WellKnown endpoint to collect the APIs for OAuth
+   * @param {AsyncConfigOptions} options - config options with wellknown endpoint URL
+   * @returns {Promise<void>} - Returns a success or failure message object
+   */
+  public static async setAsync(options: AsyncConfigOptions): Promise<void> {
+    if (!options.serverConfig.wellknown) {
+      throw new Error(
+        'Missing well-known property. Use `Config.set` method if not using well-known endpoint.',
+      );
+    }
+    if (options.serverConfig.baseUrl) {
+      console.warn(
+        'The baseUrl property passed in will be ignored, and replaced with well-known origin.',
+      );
+    }
+
+    // Fetch wellknown endpoint for OAuth/OIDC API URLs
+    const json = await fetchWellKnown(options);
+    // Use wellknown object and convert to custom paths
+    const serverConfig = convertWellKnown(json);
+
+    // Remove wellknown property as it's no longer needed
+    delete options.serverConfig.wellknown;
+    // Assign to a new config object with the "sync" config type
+    const newConfig = options as ConfigOptions;
+    newConfig.serverConfig = serverConfig;
+
+    // Set the config as usual
+    this.set(newConfig);
   }
 
   /**
