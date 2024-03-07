@@ -20,6 +20,9 @@ export default defineConfig({
       },
     },
   },
+  preview: {
+    port: 5823,
+  },
   server: {
     port: 5823,
     headers: {
