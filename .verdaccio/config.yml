@@ -5,7 +5,7 @@ auth:
   htpasswd:
     file: ./htpasswd
     algorithm: bcrypt # by default is crypt, but is recommended use bcrypt for new installations
-
+    max_users: -1
     # Rounds number for "bcrypt", will be ignored for other algorithms.
     rounds: 10
 # a list of other known repositories we can talk to

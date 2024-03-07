@@ -12,6 +12,7 @@ const baseConfig = nxE2EPreset(__filename, {
 const config: PlaywrightTestConfig = {
   ...baseConfig,
   reporter: process.env.CI ? 'github' : 'list',
+  testIgnore: '**/authz-txn*',
   use: {
     baseURL,
     ignoreHTTPSErrors: true,

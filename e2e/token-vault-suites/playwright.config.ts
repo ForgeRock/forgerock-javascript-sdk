@@ -32,10 +32,6 @@ const config: PlaywrightTestConfig = {
       ignoreHTTPSErrors: true,
       reuseExistingServer: !process.env.CI,
       cwd: workspaceRoot,
-      env: {
-        VITE_AM_URL: 'http://localhost:9443/am',
-        VITE_AM_REALM: 'root',
-      },
     },
     {
       command: 'npm run nx serve token-vault-app',
@@ -43,10 +39,6 @@ const config: PlaywrightTestConfig = {
       ignoreHTTPSErrors: true,
       reuseExistingServer: !process.env.CI,
       cwd: workspaceRoot,
-      env: {
-        VITE_AM_URL: 'http://localhost:9443/am',
-        VITE_AM_REALM: 'root',
-      },
     },
   ],
 };
