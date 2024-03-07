@@ -65,19 +65,7 @@
   "affected": {
     "defaultBase": "develop"
   },
-  "generators": {
-    "@nx/web:application": {
-      "style": "css",
-      "linter": "eslint",
-      "unitTestRunner": "jest",
-      "e2eTestRunner": "none"
-    },
-    "@nx/web:library": {
-      "style": "css",
-      "linter": "eslint",
-      "unitTestRunner": "jest"
-    }
-  },
+  "generators": {},
   "release": {
     "projects": ["packages/*"],
     "releaseTagPattern": "{version}",
