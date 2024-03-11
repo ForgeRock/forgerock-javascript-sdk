@@ -3,7 +3,7 @@ import HiddenValueCallback from '../fr-auth/callbacks/hidden-value-callback';
 import TextOutputCallback from '../fr-auth/callbacks/text-output-callback';
 import FRStep from '../fr-auth/fr-step';
 
-type QRCodeData = {
+export type QRCodeData = {
   message: string;
   use: string;
   uri: string;

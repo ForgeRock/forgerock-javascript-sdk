@@ -11,7 +11,10 @@
         "outputPath": "dist/packages/ping-protect",
         "main": "packages/ping-protect/src/index.ts",
         "tsConfig": "packages/ping-protect/tsconfig.lib.json",
-        "assets": ["packages/ping-protect/*.md"]
+        "assets": [
+          "packages/ping-protect/*.md",
+          "packages/ping-protect/src/lib/ping-signals-sdk.js"
+        ]
       }
     },
     "lint": {
