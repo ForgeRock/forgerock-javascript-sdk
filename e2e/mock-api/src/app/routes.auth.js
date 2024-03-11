@@ -43,6 +43,8 @@ import {
   treeAuthz,
   txnAuthz,
   otpQRCodeCallbacks,
+  wellKnownForgeRock,
+  wellKnownPing,
 } from './responses';
 import initialRegResponse from './response.registration';
 import wait from './wait';
@@ -461,7 +463,7 @@ export default function (app) {
       } else if (req.cookies.redirected === 'true') {
         res.redirect(loginUrl);
       } else {
-        res.cookie('redirected', true);
+        res.cookie('redirected', 'true');
 
         const interactionNeeded = 'The request requires some interaction that is not allowed.';
         const redirectErrorUrl = new URL(
@@ -568,4 +570,12 @@ export default function (app) {
   });
 
   app.get('/callback', (req, res) => res.status(200).send('ok'));
+
+  app.get('/am/.well-known/oidc-configuration', (req, res) => {
+    res.send(wellKnownForgeRock);
+  });
+
+  app.get('/as/.well-known/oidc-configuration', (req, res) => {
+    res.send(wellKnownPing);
+  });
 }
