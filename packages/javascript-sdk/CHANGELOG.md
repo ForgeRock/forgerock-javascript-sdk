@@ -1,5 +1,17 @@
 # Changelog
 
+## [4.4.0] - 2024-03-12
+
+Features:
+
+feat(javascript-sdk): add config.setAsync for wellknown endpoint support
+feat(javascript-sdk): handle-device-name-in-response
+
+Fixes
+fix(javascript-sdk): add PingOne login error to allowed errors
+fix(javascript-sdk): sessionStorage conflict
+fix(javascript-sdk): circular-dependency
+
 ## [4.3.0] - 2024-01-04
 
 Features
