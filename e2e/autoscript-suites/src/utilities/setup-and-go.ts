@@ -19,6 +19,7 @@ export async function setupAndGo(
   config?: {
     allowGeo?: boolean;
     amUrl?: string;
+    pauseBehaviorData?: string; // for protect behavioral data collection
     clientId?: string;
     code?: string;
     dialogInput?: string;
@@ -36,6 +37,7 @@ export async function setupAndGo(
     tree?: string;
     un?: string;
     oauthThreshold?: string;
+    wellknown?: string;
   },
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): Promise<{ messageArray: string[]; networkArray: string[] }> {
@@ -46,6 +48,7 @@ export async function setupAndGo(
   const url = new URL(`${BASE_URL}/${path}`);
 
   url.searchParams.set('amUrl', (config && config.amUrl) || AM_URL);
+  url.searchParams.set('pauseBehaviorData', (config && config.pauseBehaviorData) || '');
   url.searchParams.set('clientId', (config && config.clientId) || CLIENT_ID);
   config && config.code && url.searchParams.set('code', (config && config.code) || '');
   url.searchParams.set('email', (config && config.email) || '');
@@ -61,6 +64,7 @@ export async function setupAndGo(
   url.searchParams.set('tree', (config && config.tree) || '');
   url.searchParams.set('un', (config && config.un) || USERS[0].un);
   url.searchParams.set('oauthThreshold', (config && config.oauthThreshold) || '');
+  url.searchParams.set('wellknown', (config && config.wellknown) || '');
 
   // log out the URL used for the test, but only for chromium;
   // the other browser URLs would just be duplicates

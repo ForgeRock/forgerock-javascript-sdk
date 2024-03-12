@@ -77,6 +77,9 @@
         "passWithNoTests": true
       },
       "configurations": {
+        "watch": {
+          "watch": true
+        },
         "unit": {},
         "integration": {
           "testPathPattern": ["packages/javascript-sdk/tests/integration"],

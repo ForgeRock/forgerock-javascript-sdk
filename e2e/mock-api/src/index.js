@@ -7,7 +7,7 @@
  * This software may be modified and distributed under the terms
  * of the MIT license. See the LICENSE file for details.
  */
-
+import * as dns from 'dns';
 import cors from 'cors';
 import express from 'express';
 import cookieParser from 'cookie-parser';
@@ -21,7 +21,10 @@ import { MOCK_PORT } from './app/env.config';
 import authRoutes from './app/routes.auth';
 import resourceRoutes from './app/routes.resource';
 
+dns.setDefaultResultOrder('ipv4first');
+
 const app = express();
+
 app.use(express.json());
 app.use('/am/XUI/images', express.static(path.join(__dirname, 'public')));
 app.use(cookieParser());

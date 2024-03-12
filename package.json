@@ -128,7 +128,8 @@
     "vite-plugin-dts": "2.3.0",
     "vite-plugin-eslint": "^1.8.1",
     "vite-tsconfig-paths": "^4.0.2",
-    "vitest": "^0.31.0",
+    "vitest": "^0.34.6",
+    "vitest-canvas-mock": "^0.3.3",
     "webpack": "^5.64.1",
     "webpack-cli": "^4.7.2"
   },

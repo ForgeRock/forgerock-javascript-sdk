@@ -16,6 +16,7 @@ function parseDisplayRecoveryCodesText(text: string): string[] {
    *    "</div>\n" +
    * ... `
    */
+
   const recoveryCodesMatches = text.match(/\s[\w\W]"([\w]*)\\/g);
   const recoveryCodes =
     Array.isArray(recoveryCodesMatches) &&
@@ -27,4 +28,24 @@ function parseDisplayRecoveryCodesText(text: string): string[] {
   return recoveryCodes || [];
 }
 
-export { parseDisplayRecoveryCodesText };
+/**
+ *
+ * @param text
+ * @returns string
+ */
+function parseDeviceNameText(text: string): string {
+  /**
+   * We default the device name to 'New Security Key'
+   * If the user has a device name, it will be wrapped in <em> tags
+   * e.g. ` ... <em>My Security Key</em> ... `
+   * We want to remove the <em> tags and just return the device name
+   * e.g. ` ... My Security Key ... `
+   */
+  const displayName =
+    text
+      ?.match(/<em\s*.*>\s*.*<\/em>/g)?.[0]
+      ?.replace('<em>', '')
+      ?.replace('</em>', '') ?? 'New Security Key';
+  return displayName;
+}
+export { parseDeviceNameText, parseDisplayRecoveryCodesText };

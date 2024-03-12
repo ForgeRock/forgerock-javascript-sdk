@@ -3,7 +3,7 @@
  *
  * routes.auth.js
  *
- * Copyright (c) 2020 ForgeRock. All rights reserved.
+ * Copyright (c) 2020-2024 ForgeRock. All rights reserved.
  * This software may be modified and distributed under the terms
  * of the MIT license. See the LICENSE file for details.
  */
@@ -26,6 +26,8 @@ import {
   messageCallback,
   noSessionSuccess,
   pollingCallback,
+  pingProtectEvaluate,
+  pingProtectInitialize,
   redirectCallback,
   redirectCallbackSaml,
   requestDeviceProfile,
@@ -41,6 +43,8 @@ import {
   treeAuthz,
   txnAuthz,
   otpQRCodeCallbacks,
+  wellKnownForgeRock,
+  wellKnownPing,
 } from './responses';
 import initialRegResponse from './response.registration';
 import wait from './wait';
@@ -78,6 +82,8 @@ export default function (app) {
         req.query.authIndexValue === 'SAMLFailure'
       ) {
         res.json(nameCallback);
+      } else if (req.query.authIndexValue === 'TEST_LoginPingProtect') {
+        res.json(pingProtectInitialize);
       } else if (req.query.authIndexValue === 'IDMSocialLogin') {
         res.json(selectIdPCallback);
       } else if (req.query.authIndexValue === 'AMSocialLogin') {
@@ -266,6 +272,23 @@ export default function (app) {
           res.status(401).json(authFail);
         }
       }
+    } else if (req.query.authIndexValue === 'TEST_LoginPingProtect') {
+      const protectInitCb = req.body.callbacks.find(
+        (cb) => cb.type === 'PingOneProtectInitializeCallback',
+      );
+      const usernameCb = req.body.callbacks.find((cb) => cb.type === 'NameCallback');
+      const protectEvalCb = req.body.callbacks.find(
+        (cb) => cb.type === 'PingOneProtectEvaluationCallback',
+      );
+      if (protectInitCb) {
+        res.json(initialBasicLogin);
+      } else if (usernameCb && usernameCb.input[0].value) {
+        res.json(pingProtectEvaluate);
+      } else if (protectEvalCb && protectEvalCb.input[0].value) {
+        res.json(authSuccess);
+      } else {
+        res.status(401).json(authFail);
+      }
     } else if (req.body.callbacks.find((cb) => cb.type === 'PasswordCallback')) {
       const pwCb = req.body.callbacks.find((cb) => cb.type === 'PasswordCallback');
       if (pwCb.input[0].value !== USERS[0].pw) {
@@ -392,11 +415,11 @@ export default function (app) {
   });
 
   app.get(authPaths.authorize, wait, async (req, res) => {
-    const url = new URL(`${req.protocol}://${req.headers.host}/login`);
-    url.searchParams.set('client_id', req.query.client_id);
-    url.searchParams.set('acr_values', req.query.acr_values);
-    url.searchParams.set('redirect_uri', req.query.redirect_uri);
-    url.searchParams.set('state', req.query.state);
+    const loginUrl = new URL(`${req.protocol}://${req.headers.host}/login`);
+    loginUrl.searchParams.set('client_id', req.query.client_id);
+    loginUrl.searchParams.set('acr_values', req.query.acr_values);
+    loginUrl.searchParams.set('redirect_uri', req.query.redirect_uri);
+    loginUrl.searchParams.set('state', req.query.state);
 
     // Detect if Central Login to enforce ACR value presence
     if (
@@ -412,7 +435,7 @@ export default function (app) {
         !req.query['logout-middleware'] &&
         !req.headers['x-logout-middleware']
       ) {
-        res.redirect(url);
+        res.redirect(loginUrl);
       } else {
         res.status(406).send('Middleware additions are missing.');
       }
@@ -421,26 +444,33 @@ export default function (app) {
         req.query['authorize-middleware'] === 'authorization' &&
         !req.query['logout-middleware']
       ) {
-        res.redirect(url);
+        res.redirect(loginUrl);
       } else {
         res.status(406).send('Middleware additions are missing.');
       }
     } else {
       if (req.cookies.iPlanetDirectoryPro) {
-        const url = new URL(`${req.query.redirect_uri}`);
-        url.searchParams.set('client_id', 'bar');
-        url.searchParams.set('code', 'foo');
-        url.searchParams.set('iss', `${AM_URL}/oauth2`);
-        url.searchParams.set('state', req.query.state);
-        res.redirect(url);
-      } else if (req.headers.accept.includes('html')) {
-        // we set auth because we are mimicking the html document from central login
-        // this helps our test know it is ready to evaluate the page
-        // and not to evaluate when we have the 401 below
-        url.searchParams.set('auth', true);
-        res.redirect(url);
+        const redirectUrl = new URL(`${req.query.redirect_uri}`);
+
+        console.log(`Request URL: ${req.query.client_id}`);
+
+        redirectUrl.searchParams.set('client_id', req.query.client_id);
+        redirectUrl.searchParams.set('code', 'foo');
+        redirectUrl.searchParams.set('iss', `${AM_URL}/oauth2`);
+        redirectUrl.searchParams.set('state', req.query.state);
+
+        res.redirect(redirectUrl);
+      } else if (req.cookies.redirected === 'true') {
+        res.redirect(loginUrl);
       } else {
-        res.status(401).send('Unauthorized');
+        res.cookie('redirected', 'true');
+
+        const interactionNeeded = 'The request requires some interaction that is not allowed.';
+        const redirectErrorUrl = new URL(
+          `${req.query.redirect_uri}?error_description=${interactionNeeded}`,
+        );
+
+        res.redirect(redirectErrorUrl);
       }
     }
   });
@@ -448,6 +478,7 @@ export default function (app) {
   app.get('/login', async (req, res) => {
     const domain = req.url.includes('localhost') ? 'localhost' : 'example.com';
 
+    res.clearCookie('redirected');
     res.cookie('iPlanetDirectoryPro', 'abcd1234', { domain, sameSite: 'none', secure: true });
 
     const url = new URL(`${req.protocol}://${req.headers.host}${authPaths.authorize[1]}`);
@@ -539,4 +570,12 @@ export default function (app) {
   });
 
   app.get('/callback', (req, res) => res.status(200).send('ok'));
+
+  app.get('/am/.well-known/oidc-configuration', (req, res) => {
+    res.send(wellKnownForgeRock);
+  });
+
+  app.get('/as/.well-known/oidc-configuration', (req, res) => {
+    res.send(wellKnownPing);
+  });
 }

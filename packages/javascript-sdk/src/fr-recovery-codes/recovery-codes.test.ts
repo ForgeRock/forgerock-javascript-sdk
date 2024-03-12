@@ -12,6 +12,7 @@ import FRStep from '../fr-auth/fr-step';
 import FRRecoveryCodes from './index';
 import {
   displayRecoveryCodesResponse,
+  expectedDeviceName,
   expectedRecoveryCodes,
   otherResponse,
 } from './script-text.mock.data';
@@ -33,5 +34,10 @@ describe('Class for managing the Display Recovery Codes node', () => {
     const step = new FRStep(displayRecoveryCodesResponse);
     const recoveryCodes = FRRecoveryCodes.getCodes(step);
     expect(recoveryCodes).toStrictEqual(expectedRecoveryCodes);
+  });
+  it('should return a display name from the getDisplayName method', () => {
+    const step = new FRStep(displayRecoveryCodesResponse);
+    const displayName = FRRecoveryCodes.getDeviceName(step);
+    expect(displayName).toStrictEqual(expectedDeviceName);
   });
 });

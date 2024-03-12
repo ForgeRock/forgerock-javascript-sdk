@@ -3,6 +3,9 @@
   "compilerOptions": {
     "outDir": "../../dist/out-tsc",
     "declaration": true,
+    "noPropertyAccessFromIndexSignature": false,
+    "noImplicitReturns": false,
+    "noImplicitOverride": false,
     "lib": ["ESNext", "DOM", "DOM.Iterable"],
     "types": ["node"]
   },

@@ -19,4 +19,5 @@ export enum ActionTypes {
   RevokeToken = 'REVOKE_TOKEN',
   StartAuthenticate = 'START_AUTHENTICATE',
   UserInfo = 'USER_INFO',
+  WellKnown = 'WELL_KNOWN',
 }

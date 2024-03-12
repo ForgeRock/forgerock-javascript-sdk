@@ -12,13 +12,9 @@ uplinks:
     maxage: 60m
 
 packages:
-  '@forgerock/*':
-    access: $all
-    publish: $authenticated
-
   '**':
     access: $all
-    publish: $authenticated
+    publish: $all
 
     # if package is not available locally, proxy requests to npm registry
     proxy: npmjs

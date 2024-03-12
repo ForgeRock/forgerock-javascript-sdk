@@ -66,7 +66,8 @@ abstract class TokenManager {
    */
   public static async getTokens(options?: GetTokensOptions): Promise<OAuth2Tokens | void> {
     const { clientId, oauthThreshold } = Config.get(options as ConfigOptions);
-    const storageKey = `${Config.get().prefix}-${clientId}`;
+    // const storageKey = `${Config.get().prefix}-authflow-${clientId}`;
+    const storageKey = `${Config.get().prefix}-authflow-${clientId}`;
 
     /**
      * First, let's see if tokens exist locally
@@ -166,6 +167,9 @@ abstract class TokenManager {
         allowedErrors.FailedToFetch !== err.message &&
         allowedErrors.NetworkError !== err.message &&
         allowedErrors.InteractionNotAllowed !== err.message &&
+        // Check for Ping Identity Login Required error
+        // Long message, so just check substring
+        !err.message.includes(allowedErrors.LoginRequired) &&
         // Safari has a very long error message, so we check for a substring
         !err.message.includes(allowedErrors.CORSError)
       ) {

@@ -3,7 +3,7 @@
  *
  * factory.ts
  *
- * Copyright (c) 2020 ForgeRock. All rights reserved.
+ * Copyright (c) 2020-2024 ForgeRock. All rights reserved.
  * This software may be modified and distributed under the terms
  * of the MIT license. See the LICENSE file for details.
  */
@@ -20,6 +20,8 @@ import KbaCreateCallback from './kba-create-callback';
 import MetadataCallback from './metadata-callback';
 import NameCallback from './name-callback';
 import PasswordCallback from './password-callback';
+import PingOneProtectEvaluationCallback from './ping-protect-evaluation-callback';
+import PingOneProtectInitializeCallback from './ping-protect-initialize-callback';
 import PollingWaitCallback from './polling-wait-callback';
 import ReCaptchaCallback from './recaptcha-callback';
 import RedirectCallback from './redirect-callback';
@@ -58,6 +60,10 @@ function createCallback(callback: Callback): FRCallback {
       return new AttributeInputCallback<number>(callback);
     case CallbackType.PasswordCallback:
       return new PasswordCallback(callback);
+    case CallbackType.PingOneProtectEvaluationCallback:
+      return new PingOneProtectEvaluationCallback(callback);
+    case CallbackType.PingOneProtectInitializeCallback:
+      return new PingOneProtectInitializeCallback(callback);
     case CallbackType.PollingWaitCallback:
       return new PollingWaitCallback(callback);
     case CallbackType.ReCaptchaCallback:

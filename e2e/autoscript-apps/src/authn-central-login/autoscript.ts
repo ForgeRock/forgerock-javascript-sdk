@@ -17,21 +17,31 @@ function autoscript() {
 
   const url = new URL(window.location.href);
   const amUrl = url.searchParams.get('amUrl') || 'https://auth.example.com:9443/am';
-  const preAuthenticated = url.searchParams.get('preAuthenticated') || 'true';
+  const preAuthenticated = url.searchParams.get('preAuthenticated') || 'false';
   const code = url.searchParams.get('code') || '';
-  const clientId = url.searchParams.get('clientId') || 'CentralLoginOAuthClient';
+  const clientId = url.searchParams.get('clientId');
+  const client_id = url.searchParams.get('client_id');
+  const error = url.searchParams.get('error_description') || false;
   const realmPath = url.searchParams.get('realmPath') || 'root';
   const scope = url.searchParams.get('scope') || 'openid profile me.read';
   const state = url.searchParams.get('state') || '';
-  const support = url.searchParams.get('support') || 'legacy';
   const acr_values = url.searchParams.get('acr') || 'SpecificTree';
   // in central login we use an auth query param for the return of our mock 401 request
   // this is to prevent the evaluation of the page before we have technically authenticated
   const auth = url.searchParams.get('auth') || false;
 
+  let tokenStore = url.searchParams.get('tokenStore') || 'localStorage';
+
+  // Support full redirects by setting storage, rather than rely purely on URL
+  if (!localStorage.getItem('tokenStore')) {
+    localStorage.setItem('tokenStore', tokenStore);
+  } else {
+    tokenStore = localStorage.getItem('tokenStore');
+  }
+
   console.log('Configure the SDK');
   forgerock.Config.set({
-    clientId,
+    clientId: clientId || client_id || 'CentralLoginOAuthClient',
     realmPath,
     redirectUri: `${url.origin}/${
       preAuthenticated === 'false' ? 'authn-central-login' : '_callback'
@@ -40,13 +50,15 @@ function autoscript() {
     serverConfig: {
       baseUrl: amUrl,
     },
-    support,
+    tokenStore,
   });
 
-  try {
-    forgerock.SessionManager.logout();
-  } catch (err) {
-    // Do nothing
+  if (!code && !state) {
+    try {
+      forgerock.SessionManager.logout();
+    } catch (err) {
+      // Do nothing
+    }
   }
 
   console.log('Initiate first step with `undefined`');
@@ -71,7 +83,10 @@ function autoscript() {
         rxDelay(delay),
         mergeMap((step) => {
           let tokens;
-          if (code && state) {
+          if (error) {
+            // Do nothing
+            return;
+          } else if (code && state) {
             tokens = forgerock.TokenManager.getTokens({
               login: 'redirect',
               query: { code, state, acr_values },
@@ -114,10 +129,13 @@ function autoscript() {
           }
           console.log(`Error: ${err.message}`);
           document.body.innerHTML = `<p class="Test_Complete">${err.message}</p>`;
+          localStorage.clear();
         },
         complete: () => {
           console.log('Test script complete');
           document.body.innerHTML = `<p class="Test_Complete">Test script complete</p>`;
+          history.replaceState(null, null, window.location.origin + window.location.pathname);
+          localStorage.clear();
         },
       });
   }, 250);

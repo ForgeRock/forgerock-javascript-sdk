@@ -31,17 +31,24 @@ import middlewareWrapper from '../util/middleware';
 const allowedErrors = {
   // AM error for consent requirement
   AuthenticationConsentRequired: 'Authentication or consent required',
+
   // Manual iframe error
   AuthorizationTimeout: 'Authorization timed out',
+
   // Chromium browser error
   FailedToFetch: 'Failed to fetch',
+
   // Mozilla browser error
   NetworkError: 'NetworkError when attempting to fetch resource.',
+
   // Webkit browser error
   CORSError: 'Cross-origin redirection',
 
   // prompt=none errors
   InteractionNotAllowed: 'The request requires some interaction that is not allowed.',
+
+  // PingOne login error
+  LoginRequired: 'User authentication is required',
 };
 
 /**
