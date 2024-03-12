@@ -700,7 +700,7 @@ export const requestDeviceProfile = {
 
 export const wellKnownForgeRock = {
   request_parameter_supported: true,
-  pushed_authorization_request_endpoint: 'https://auth.example.com:9443/am/oauth2/realms/root/par',
+  pushed_authorization_request_endpoint: 'http://localhost:9443/am/oauth2/realms/root/par',
   introspection_encryption_alg_values_supported: [
     'ECDH-ES+A256KW',
     'ECDH-ES+A192KW',
@@ -714,8 +714,8 @@ export const wellKnownForgeRock = {
     'A192KW',
   ],
   claims_parameter_supported: false,
-  introspection_endpoint: 'https://auth.example.com:9443/am/oauth2/realms/root/introspect',
-  issuer: 'https://auth.example.com:9443/am/oauth2/realms/root',
+  introspection_endpoint: 'http://localhost:9443/am/oauth2/realms/root/introspect',
+  issuer: 'http://localhost:9443/am/oauth2/realms/root',
   id_token_encryption_enc_values_supported: [
     'A256GCM',
     'A192GCM',
@@ -732,7 +732,7 @@ export const wellKnownForgeRock = {
     'A192CBC-HS384',
     'A256CBC-HS512',
   ],
-  authorization_endpoint: 'https://auth.example.com:9443/am/oauth2/realms/root/authorize',
+  authorization_endpoint: 'http://localhost:9443/am/oauth2/realms/root/authorize',
   authorization_encryption_alg_values_supported: [
     'ECDH-ES+A256KW',
     'ECDH-ES+A192KW',
@@ -787,7 +787,7 @@ export const wellKnownForgeRock = {
     'query',
   ],
   backchannel_logout_session_supported: true,
-  token_endpoint: 'https://auth.example.com:9443/am/oauth2/realms/root/access_token',
+  token_endpoint: 'http://localhost:9443/am/oauth2/realms/root/access_token',
   response_types_supported: [
     'code token id_token',
     'code',
@@ -829,7 +829,7 @@ export const wellKnownForgeRock = {
   ],
   version: '3.0',
   prompt_values_supported: ['none', 'login', 'consent'],
-  userinfo_endpoint: 'https://auth.example.com:9443/am/oauth2/realms/root/userinfo',
+  userinfo_endpoint: 'http://localhost:9443/am/oauth2/realms/root/userinfo',
   require_request_uri_registration: true,
   code_challenge_methods_supported: ['plain', 'S256'],
   id_token_encryption_alg_values_supported: [
@@ -914,7 +914,7 @@ export const wellKnownForgeRock = {
     'PS512',
     'RS512',
   ],
-  check_session_iframe: 'https://auth.example.com:9443/am/oauth2/realms/root/connect/checkSession',
+  check_session_iframe: 'http://localhost:9443/am/oauth2/realms/root/connect/checkSession',
   scopes_supported: [
     'address',
     'phone',
@@ -976,7 +976,7 @@ export const wellKnownForgeRock = {
     'dir',
     'A192KW',
   ],
-  end_session_endpoint: 'https://auth.example.com:9443/am/oauth2/realms/root/connect/endSession',
+  end_session_endpoint: 'http://localhost:9443/am/oauth2/realms/root/connect/endSession',
   rcs_request_encryption_enc_values_supported: [
     'A256GCM',
     'A192GCM',
@@ -985,7 +985,7 @@ export const wellKnownForgeRock = {
     'A192CBC-HS384',
     'A256CBC-HS512',
   ],
-  revocation_endpoint: 'https://auth.example.com:9443/am/oauth2/realms/root/token/revoke',
+  revocation_endpoint: 'http://localhost:9443/am/oauth2/realms/root/token/revoke',
   rcs_response_encryption_alg_values_supported: [
     'ECDH-ES+A256KW',
     'ECDH-ES+A192KW',
@@ -1012,7 +1012,7 @@ export const wellKnownForgeRock = {
     'PS512',
     'RS512',
   ],
-  jwks_uri: 'https://auth.example.com:9443/am/oauth2/realms/root/connect/jwk_uri',
+  jwks_uri: 'http://localhost:9443/am/oauth2/realms/root/connect/jwk_uri',
   subject_types_supported: ['public', 'pairwise'],
   id_token_signing_alg_values_supported: [
     'PS384',
@@ -1028,7 +1028,7 @@ export const wellKnownForgeRock = {
     'PS512',
     'RS512',
   ],
-  registration_endpoint: 'https://auth.example.com:9443/am/oauth2/realms/root/register',
+  registration_endpoint: 'http://localhost:9443/am/oauth2/realms/root/register',
 };
 
 export const wellKnownPing = {
