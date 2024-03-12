@@ -1,6 +1,6 @@
 import type { Tokens } from '@forgerock/javascript-sdk';
-import type { BaseConfig } from '@shared/types';
-import { ClientInit } from './client.types';
+import type { BaseConfig } from './types';
+import { ClientInit } from './types/client.types';
 
 type ClientConfigInit = Partial<BaseConfig>;
 interface ClientConfig extends ClientConfigInit {

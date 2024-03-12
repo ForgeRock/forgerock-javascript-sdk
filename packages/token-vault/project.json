@@ -5,30 +5,15 @@
   "projectType": "library",
   "targets": {
     "build": {
-      "dependsOn": ["bundle-types"],
-      "command": "tsup --config packages/token-vault/tsup.config.ts"
-    },
-    "build-types": {
-      "dependsOn": ["^build"],
       "executor": "@nx/js:tsc",
-      "outputs": ["{options.outputPath}"],
+      "output": "dist/packages/token-vault",
       "options": {
         "rootDir": ".",
-        "clean": false,
-        "outputPath": "dist/temp",
-        "main": "packages/token-vault/src/index.ts",
-        "tsConfig": "packages/token-vault/tsconfig.types.json",
-        "transformers": [
-          {
-            "name": "typescript-transform-paths/nx-transformer",
-            "options": { "afterDeclarations": true }
-          }
-        ]
+        "tsConfig": "packages/token-vault/tsconfig.lib.json",
+        "main": "packages/javascript-sdk/src/index.ts",
+        "assets": ["packages/token-vault/src/*.md"],
+        "outputPath": "dist/packages/token-vault"
       }
-    },
-    "bundle-types": {
-      "command": "rollup -c packages/token-vault/rollup.config.js",
-      "dependsOn": ["build-types"]
     },
     "test": {
       "executor": "@nx/jest:jest",
