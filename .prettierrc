@@ -7,6 +7,16 @@
   "trailingComma": "all",
   "overrides": [
     {
+      "files": "tools/**/*.js",
+      "options": {
+        "parser": "babel",
+        "trailingComma": "none",
+        "singleQuote": true,
+        "printWidth": 100,
+        "tabWidth": 2
+      }
+    },
+    {
       "files": "*.json",
       "options": {
         "parser": "json",

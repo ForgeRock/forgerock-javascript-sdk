@@ -83,7 +83,15 @@
     {
       "files": ["*.js", "*.jsx"],
       "extends": ["plugin:@nx/javascript"],
-      "rules": {}
+      "rules": {
+        "quotes": [
+          "error",
+          "single",
+          {
+            "allowTemplateLiterals": true
+          }
+        ]
+      }
     },
     {
       "files": "*.json",

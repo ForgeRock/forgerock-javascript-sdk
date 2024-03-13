@@ -1,4 +1,4 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-npx commitlint --from HEAD~1 --to HEAD && NX_ADD_PLUGINS=false npx nx affected:test && NX_ADD_PLUGINS=false npx nx affected:e2e
+NX_ADD_PLUGINS=false npx nx affected:test && NX_ADD_PLUGINS=false npx nx affected:e2e

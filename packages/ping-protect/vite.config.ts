@@ -24,16 +24,17 @@ export default defineConfig({
   test: {
     reporters: ['default'],
     globals: true,
-    cache: {
-      dir: '../../node_modules/.vitest',
-    },
     setupFiles: ['./vitest.setup.ts'],
     coverage: {
       provider: 'v8',
       reportsDirectory: '../../coverage/packages/ping-protect',
     },
     deps: {
-      inline: ['vitest-canvas-mock'],
+      optimizer: {
+        web: {
+          include: ['vitest-canvas-mock'],
+        },
+      },
     },
     environment: 'jsdom',
     include: ['src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],

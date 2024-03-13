@@ -62,13 +62,10 @@
     "appsDir": "",
     "libsDir": ""
   },
-  "affected": {
-    "defaultBase": "develop"
-  },
   "generators": {},
   "release": {
     "projects": ["packages/*"],
-    "releaseTagPattern": "{version}",
+    "releaseTagPattern": "v{version}",
     "version": {
       "conventionalCommits": true
     },
@@ -103,5 +100,7 @@
       "!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap)",
       "!{projectRoot}/tsconfig.spec.json"
     ]
-  }
+  },
+  "useInferencePlugins": false,
+  "defaultBase": "develop"
 }

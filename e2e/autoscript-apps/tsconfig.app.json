@@ -3,9 +3,9 @@
   "compilerOptions": {
     "outDir": "dist",
     "strict": false,
-    "module": "ES2015",
+    "module": "ES2020",
     "allowUmdGlobalAccess": true,
-    "target": "ES2015"
+    "target": "ES2020"
   },
   "exclude": ["**/*.spec.ts"],
   "include": ["**/*.ts"]
