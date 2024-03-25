@@ -11,7 +11,7 @@
 import type { ServerConfig, StepOptions } from '../config';
 import Config from '../config';
 import { ActionTypes } from '../config/enums';
-import { REQUESTED_WITH } from '../shared/constants';
+import { REQUESTED_WITH, X_REQUESTED_PLATFORM } from '../shared/constants';
 import type { StringDict } from '../shared/interfaces';
 import { withTimeout } from '../util/timeout';
 import { getEndpointPath, resolve, stringify } from '../util/url';
@@ -75,6 +75,7 @@ abstract class Auth {
         'Accept-API-Version': 'protocol=1.0,resource=2.1',
         'Content-Type': 'application/json',
         'X-Requested-With': REQUESTED_WITH,
+        'X-Requested-Platform': X_REQUESTED_PLATFORM,
       }),
       method: 'POST',
     };

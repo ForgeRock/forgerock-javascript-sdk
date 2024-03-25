@@ -79,9 +79,14 @@ export async function setupAndGo(
     return messageArray.push(msg.text());
   });
 
-  page.on('request', (req) => {
+  page.on('request', async (req) => {
     networkArray.push(`${new URL(req.url()).pathname}, ${req.resourceType()}`);
+
+    const headers = await req.allHeaders();
+    const headersKeys = Object.keys(headers);
+    networkArray.push(...headersKeys);
   });
+
   page.on('dialog', async (dialog) => {
     await dialog.accept(config?.dialogInput || 'abc123');
   });

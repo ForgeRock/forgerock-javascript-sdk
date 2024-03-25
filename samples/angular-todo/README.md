@@ -22,7 +22,7 @@ Once you have the 5 requirements above met, we can build the project.
 
 - **Allowed Origins**: `https://angular.example.com:8443`
 - **Allowed Methods**: `GET` `POST`
-- **Allowed headers**: `accept-api-version` `authorization` `content-type` `x-requested-with`
+- **Allowed headers**: `accept-api-version` `authorization` `content-type` `x-requested-with` `x-requested-platform`
 - **Allow credentials**: enable
 
 #### Create Your OAuth Clients
