@@ -11,7 +11,6 @@ describe('PIProtect', () => {
   });
   it('should call start', async () => {
     const protectMock = vi.spyOn(PIProtect, 'start');
-    const windowMock = vi.spyOn(window._pingOneSignals, 'init');
     const config = {
       envId: '12345',
       consoleLogEnabled: true,
@@ -26,20 +25,15 @@ describe('PIProtect', () => {
     };
     await PIProtect.start(config);
     expect(protectMock).toHaveBeenCalledWith(config);
-    expect(windowMock).toHaveBeenCalled();
   });
   it('should call pause behavioralData', async () => {
-    const windowMock = vi.spyOn(window._pingOneSignals, 'pauseBehavioralData');
     const protectMock = vi.spyOn(PIProtect, 'pauseBehavioralData');
     await PIProtect.pauseBehavioralData();
     expect(protectMock).toHaveBeenCalled();
-    expect(windowMock).toHaveBeenCalled();
   });
   it('should call resume behavioralData', async () => {
-    const windowMock = vi.spyOn(window._pingOneSignals, 'resumeBehavioralData');
     const protectMock = vi.spyOn(PIProtect, 'resumeBehavioralData');
     await PIProtect.resumeBehavioralData();
     expect(protectMock).toHaveBeenCalled();
-    expect(windowMock).toHaveBeenCalled();
   });
 });

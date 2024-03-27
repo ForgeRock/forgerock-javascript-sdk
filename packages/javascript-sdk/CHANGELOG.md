@@ -1,5 +1,10 @@
 # Changelog
 
+## [4.4.1] - 2024-03-27
+
+Fixes:
+fix(javascript-sdk): Export the classes of ping-protect callbacks from index
+
 ## [4.4.0] - 2024-03-12
 
 Features:
