@@ -6,6 +6,12 @@
     "lib": ["ES2020", "DOM"],
     "skipLibCheck": true
   },
-  "include": ["src/**/*.ts"],
-  "exclude": ["jest.config.ts", "src/**/*.spec.ts", "src/**/*.test.ts"]
+  "include": ["src/**/*.ts", "src/lib/ping-signals-sdk.js"],
+  "exclude": [
+    "vite.config.ts",
+    "vitest.setup.ts",
+    ".eslintrc.json",
+    "src/**/*.spec.ts",
+    "src/**/*.test.ts"
+  ]
 }

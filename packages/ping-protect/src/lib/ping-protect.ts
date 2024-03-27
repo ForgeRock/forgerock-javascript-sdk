@@ -1,5 +1,3 @@
-import './ping-signals-sdk.js';
-
 export interface Identifiers {
   [key: string]: string;
 }
@@ -54,6 +52,16 @@ export abstract class PIProtect {
    * @returns {Promise<void>} - Returns a promise
    */
   public static async start(options: InitParams): Promise<void> {
+    try {
+      /*
+       * Load the Ping Signals SDK
+       * this automatically pollutes the window
+       * there are no exports of this module
+       */
+      await import('./ping-signals-sdk.js' as string);
+    } catch (err) {
+      console.error('error loading ping signals', err);
+    }
     await window._pingOneSignals.init(options);
 
     if (options.behavioralDataCollection === true) {

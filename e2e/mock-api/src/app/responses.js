@@ -49,6 +49,7 @@ export const authSuccess = {
 };
 
 export const createTxnStepUpUrl = (url) => {
+  console.log(url);
   // Grab the client's desired AM URL
   const referer = new URL(url);
   const amUrl = referer.searchParams.get('amUrl');
