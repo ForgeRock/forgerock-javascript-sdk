@@ -135,4 +135,3 @@ abstract class Config {
 
 export default Config;
 export type { ConfigOptions, ServerConfig, ValidConfigOptions, StepOptions };
-export { DEFAULT_TIMEOUT };
