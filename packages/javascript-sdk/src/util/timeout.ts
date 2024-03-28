@@ -8,7 +8,7 @@
  * of the MIT license. See the LICENSE file for details.
  */
 
-import { DEFAULT_TIMEOUT } from '../config';
+import { DEFAULT_TIMEOUT } from '../config/constants';
 
 /**
  * @module
