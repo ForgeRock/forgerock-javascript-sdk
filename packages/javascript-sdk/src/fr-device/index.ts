@@ -152,7 +152,7 @@ class FRDevice extends Collector {
   }
 
   getInstalledFonts(): string {
-    if (typeof document === undefined) {
+    if (typeof document === 'undefined') {
       FRLogger.warn('Cannot collect font data. Global document object is undefined.');
       return '';
     }

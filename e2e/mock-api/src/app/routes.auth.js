@@ -9,8 +9,8 @@
  */
 
 import { v4 } from 'uuid';
-import { authPaths } from './constants';
-import { AM_URL, USERS } from './env.config';
+import { authPaths } from './constants.js';
+import { AM_URL, USERS } from './env.config.js';
 import {
   oauthTokens,
   authFail,
@@ -45,9 +45,9 @@ import {
   otpQRCodeCallbacks,
   wellKnownForgeRock,
   wellKnownPing,
-} from './responses';
-import initialRegResponse from './response.registration';
-import wait from './wait';
+} from './responses.js';
+import initialRegResponse from './response.registration.js';
+import wait from './wait.js';
 
 console.log(`Your user password from 'env.config' file: ${USERS[0].pw}`);
 
@@ -72,7 +72,7 @@ export default function (app) {
         res.json(initialRegResponse);
       } else if (req.query.authIndexValue === 'LoginWithEmail') {
         if (typeof req.query.suspendedId === 'string' && req.query.suspendedId.length) {
-          res.cookie('iPlanetDirectoryPro', 'abcd1234', { domain: 'example.com' });
+          res.cookie('iPlanetDirectoryPro', 'abcd1234', { domain: 'localhost' });
           res.json(authSuccess);
         } else {
           res.json(initialLoginWithEmailResponse);
@@ -178,7 +178,7 @@ export default function (app) {
           res.json(pollingCallback);
         }
       } else if (req.body.callbacks.find((cb) => cb.type === 'PollingCallback')) {
-        res.cookie('iPlanetDirectoryPro', 'abcd1234', { domain: 'example.com' });
+        res.cookie('iPlanetDirectoryPro', 'abcd1234', { domain: 'localhost' });
         res.json(authSuccess);
       } else {
         res.json(authFail);
@@ -191,7 +191,7 @@ export default function (app) {
       } else if (pwCb.input[0].value !== USERS[0].pw) {
         res.status(401).json(authFail);
       } else {
-        res.cookie('iPlanetDirectoryPro', 'abcd1234', { domain: '.example.com' });
+        res.cookie('iPlanetDirectoryPro', 'abcd1234', { domain: 'localhost' });
         res.json(authSuccess);
       }
     } else if (req.query.authIndexValue === 'Registration') {
@@ -221,7 +221,7 @@ export default function (app) {
         kba2.input[1].value === 'AAA Engineering' &&
         terms.input[0].value === true
       ) {
-        res.cookie('iPlanetDirectoryPro', 'abcd1234', { domain: 'example.com' });
+        res.cookie('iPlanetDirectoryPro', 'abcd1234', { domain: 'localhost' });
         res.json(authSuccess);
       } else {
         res.status(401).json(authFail);
@@ -236,7 +236,7 @@ export default function (app) {
         if (pwCb.input[0].value !== 'abc123') {
           res.status(401).json(authFail);
         } else {
-          res.cookie('iPlanetDirectoryPro', 'abcd1234', { domain: 'example.com' });
+          res.cookie('iPlanetDirectoryPro', 'abcd1234', { domain: 'localhost' });
           res.json(authSuccess);
         }
       }
@@ -250,7 +250,7 @@ export default function (app) {
         }
       } else if (req.body.callbacks.find((cb) => cb.type === 'RedirectCallback')) {
         if (req.body.authId && req.query.code && req.query.state) {
-          res.cookie('iPlanetDirectoryPro', 'abcd1234', { domain: 'example.com' });
+          res.cookie('iPlanetDirectoryPro', 'abcd1234', { domain: 'localhost' });
           res.json(authSuccess);
         } else {
           res.status(401).json(authFail);
@@ -266,7 +266,7 @@ export default function (app) {
         }
       } else if (req.body.callbacks.find((cb) => cb.type === 'RedirectCallback')) {
         if (req.body.authId && req.query.code && req.query.state) {
-          res.cookie('iPlanetDirectoryPro', 'abcd1234', { domain: 'example.com' });
+          res.cookie('iPlanetDirectoryPro', 'abcd1234', { domain: 'localhost' });
           res.json(authSuccess);
         } else {
           res.status(401).json(authFail);
@@ -310,13 +310,13 @@ export default function (app) {
               !req.headers['x-logout-middleware'] &&
               !req.query['logout-middleware']
             ) {
-              res.cookie('iPlanetDirectoryPro', 'abcd1234', { domain: '.example.com' });
+              res.cookie('iPlanetDirectoryPro', 'abcd1234', { domain: 'localhost' });
               res.json(authSuccess);
             } else {
               res.status(406).send('Middleware additions are missing.');
             }
           } else {
-            res.cookie('iPlanetDirectoryPro', 'abcd1234', { domain: '.example.com' });
+            res.cookie('iPlanetDirectoryPro', 'abcd1234', { domain: 'localhost' });
             res.json(req.query.noSession === 'true' ? noSessionSuccess : authSuccess);
           }
         }
@@ -347,7 +347,7 @@ export default function (app) {
         value.identifier &&
         value.identifier.length > 0
       ) {
-        res.cookie('iPlanetDirectoryPro', 'abcd1234', { domain: 'example.com' });
+        res.cookie('iPlanetDirectoryPro', 'abcd1234', { domain: 'localhost' });
         res.json(authSuccess);
       } else {
         // Just failing the auth for testing, but in reality,
@@ -557,13 +557,13 @@ export default function (app) {
           !req.headers['x-auth-middleware'] &&
           !req.query['auth-middleware']
         ) {
-          res.clearCookie('iPlanetDirectoryPro', { domain: 'example.com', path: '/' });
+          res.clearCookie('iPlanetDirectoryPro', { domain: 'localhost', path: '/' });
           res.status(204).send();
         } else {
           res.status(406).send('Middleware header is missing.');
         }
       } else {
-        res.clearCookie('iPlanetDirectoryPro', { domain: 'example.com', path: '/' });
+        res.clearCookie('iPlanetDirectoryPro', { domain: 'localhost', path: '/' });
         res.status(204).send();
       }
     }

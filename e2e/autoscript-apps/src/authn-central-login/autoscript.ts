@@ -16,7 +16,7 @@ function autoscript() {
   const delay = 0;
 
   const url = new URL(window.location.href);
-  const amUrl = url.searchParams.get('amUrl') || 'https://auth.example.com:9443/am';
+  const amUrl = url.searchParams.get('amUrl') || 'http://localhost:9443/am';
   const preAuthenticated = url.searchParams.get('preAuthenticated') || 'false';
   const code = url.searchParams.get('code') || '';
   const clientId = url.searchParams.get('clientId');
@@ -43,7 +43,7 @@ function autoscript() {
   forgerock.Config.set({
     clientId: clientId || client_id || 'CentralLoginOAuthClient',
     realmPath,
-    redirectUri: `${url.origin}/${
+    redirectUri: `${url.origin}/src/${
       preAuthenticated === 'false' ? 'authn-central-login' : '_callback'
     }/`,
     scope,
@@ -70,7 +70,7 @@ function autoscript() {
         map(() => {
           if (preAuthenticated === 'true') {
             console.log('Set mock cookie to represent existing session');
-            document.cookie = 'iPlanetDirectoryPro=abcd1234; domain=example.com; path=/';
+            document.cookie = 'iPlanetDirectoryPro=abcd1234; domain=localhost; path=/';
             if (code && state) {
               window.sessionStorage.setItem(
                 `FR-SDK-${clientId}`,

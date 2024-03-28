@@ -23,7 +23,7 @@ test.describe('Test OAuth login flow with .wellknown config', () => {
       'authn-central-login-wellknown/',
       {
         clientId: 'CentralLoginOAuthClient',
-        wellknown: 'https://auth.example.com:9443/am/.well-known/oidc-configuration',
+        wellknown: 'http://localhost:9443/am/.well-known/oidc-configuration',
       },
     );
 

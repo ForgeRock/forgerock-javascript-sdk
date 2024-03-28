@@ -2,9 +2,10 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "dist",
-    "module": "ES2015",
+    "strict": false,
+    "module": "ES2020",
     "allowUmdGlobalAccess": true,
-    "target": "ES2015"
+    "target": "ES2020"
   },
   "exclude": ["**/*.spec.ts"],
   "include": ["**/*.ts"]

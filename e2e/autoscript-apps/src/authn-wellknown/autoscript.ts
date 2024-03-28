@@ -24,12 +24,11 @@ async function autoscript() {
   const pw = url.searchParams.get('pw') || 'password';
   const tree = url.searchParams.get('tree') || 'UsernamePassword';
   const oauthThreshold = url.searchParams.get('oauthThreshold');
-  const resourceOrigin =
-    url.searchParams.get('resourceOrigin') || 'https://api.example.com:9443/resource';
+  const resourceOrigin = url.searchParams.get('resourceOrigin') || 'http://localhost:9443/resource';
   const igUrl = url.searchParams.get('igUrl'); // only use when testing against IG on different host
   const wellKnownUrl =
     url.searchParams.get('wellKnownUrl') ||
-    'https://auth.example.com:9443/am/.well-known/oidc-configuration';
+    'http://localhost:9443/am/.well-known/oidc-configuration';
 
   console.log('Configure the SDK');
   await forgerock.Config.setAsync({

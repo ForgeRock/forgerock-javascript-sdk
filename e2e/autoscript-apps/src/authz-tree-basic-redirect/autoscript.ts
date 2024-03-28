@@ -16,11 +16,10 @@ function autoscript() {
   const delay = 0;
 
   const url = new URL(window.location.href);
-  const amUrl = url.searchParams.get('amUrl') || 'https://auth.example.com:9443/am';
+  const amUrl = url.searchParams.get('amUrl') || 'http://localhost:9443/am';
   const realmPath = url.searchParams.get('realmPath') || 'root';
   const igUrl = url.searchParams.get('igUrl'); // only use when testing against IG on different host
-  const resourceOrigin =
-    url.searchParams.get('resourceOrigin') || 'https://api.example.com:9443/resource';
+  const resourceOrigin = url.searchParams.get('resourceOrigin') || 'http://localhost:9443/resource';
   const un = url.searchParams.get('un') || 'sdkuser';
   const pw = url.searchParams.get('pw') || 'password';
   const tree = url.searchParams.get('tree') || 'UsernamePassword';

@@ -7,11 +7,13 @@
     "skipLibCheck": true
   },
   "include": ["src/**/*.ts", "src/lib/ping-signals-sdk.js"],
+  "files": [],
   "exclude": [
-    "vite.config.ts",
+    "vitest.config.ts",
     "vitest.setup.ts",
-    ".eslintrc.json",
-    "src/**/*.spec.ts",
+    "tsconfig*.json",
+    "project.json",
+    ".eslintrc",
     "src/**/*.test.ts"
   ]
 }

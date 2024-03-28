@@ -75,7 +75,11 @@ test.describe('Test OAuth token management', () => {
         'OAuth tokens not expiring soon; not refreshed by HttpClient call',
       ),
     ).toBe(true);
-
+  });
+  test(`should not proactively refresh tokens if they expire outside the specified threshold`, async ({
+    page,
+    browserName,
+  }) => {
     // Specified threshold
     const specifiedThresholdResult = await setupAndGo(page, browserName, 'authz-token/', {
       realmPath: 'tokens-expiring-soon',

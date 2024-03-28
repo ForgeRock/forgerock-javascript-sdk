@@ -22,13 +22,12 @@ export default defineConfig({
   // },
 
   test: {
+    reporters: ['default'],
     globals: true,
-    cache: {
-      dir: '../../node_modules/.vitest',
-    },
     setupFiles: ['./vitest.setup.ts'],
     coverage: {
       provider: 'v8',
+      reportsDirectory: '../../coverage/packages/ping-protect',
     },
     deps: {
       optimizer: {

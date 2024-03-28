@@ -17,6 +17,7 @@ const register = client({
   },
   proxy: {
     origin: 'http://localhost:5833',
+    urls: ['https://jsonplaceholder.typicode.com/*'],
   },
 });
 
@@ -47,10 +48,10 @@ Config.set({
   redirectUri: `${window.location.origin}`,
   scope: 'openid profile me.read',
   serverConfig: {
-    baseUrl: import.meta.env.VITE_AM_URL,
+    baseUrl: import.meta.env.VITE_AM_URL || 'http://localhost:9443/am',
     timeout: 5000,
   },
-  realmPath: import.meta.env.VITE_AM_REALM,
+  realmPath: import.meta.env.VITE_AM_REALM || 'root',
   tokenStore: {
     get: tokenStore.get,
     set: tokenStore.set,
@@ -77,7 +78,7 @@ const url = new URL(document.location.href);
 const params = url.searchParams;
 const code = params.get('code');
 const state = params.get('state');
-
+console.log('page loaded');
 /**
  * Get the elements we need to update
  */
@@ -130,7 +131,7 @@ fetchProtectedMockBtn.addEventListener('click', async (event) => {
 });
 
 fetchUnprotectedMockBtn.addEventListener('click', async (event) => {
-  await fetch('https://mockbin.org/request');
+  await fetch('https://thecocktaildb.com/api/json/v1/1/search.php?s=margarita');
 });
 
 fetchUserBtn.addEventListener('click', async (event) => {
