@@ -1,15 +1,13 @@
 /// <reference types="vitest" />
 import { defineConfig } from 'vite';
 
-import viteTsConfigPaths from 'vite-tsconfig-paths';
-
 export default defineConfig({
   cacheDir: '../../node_modules/.vite/ping-protect',
 
   plugins: [
-    viteTsConfigPaths({
-      root: '../../',
-    }),
+    // viteTsConfigPaths({
+    //   root: '../../',
+    // }),
   ],
 
   // Uncomment this if you are using workers.
