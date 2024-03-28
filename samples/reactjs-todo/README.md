@@ -9,12 +9,11 @@ This sample code is provided "as is" and is not a supported product of ForgeRock
 1. An instance of ForgeRock's Access Manager (AM), either within a ForgeRock's Identity Cloud tenant, your own private installation or locally installed on your computer
 2. Node >= 14.2.0 (recommended: install via [official package installer](https://nodejs.org/en/))
 3. Knowledge of using the Terminal/Command Line
-4. Ability to generate security certs (recommended: mkcert ([installation instructions here](https://github.com/FiloSottile/mkcert#installation))
-5. This project "cloned" to your computer
+4. This project "cloned" to your computer
 
 ## Setup
 
-Once you have the 5 requirements above met, we can build the project.
+Once you have the 4 requirements above met, we can build the project.
 
 ### Setup Your AM Instance
 
@@ -54,14 +53,19 @@ Change the name of `.env.example` to `.env` and replace the bracketed values (e.
 Example with annotations:
 
 ```text
-AM_URL=<<<URL to your AM instance>>>
-APP_URL=https://react.example.com:8443 # in develop we do not use this variable for dynamic deployment reasons
-API_URL=https://api.example.com:9443
+AM_URL=https://openam-example.forgeblocks.com/am
+APP_URL=https://react.example.com:8443
+API_URL=http://localhost:9443
 DEBUGGER_OFF=false
+DEVELOPMENT=true
+TIMEOUT=10000
 JOURNEY_LOGIN=Login
 JOURNEY_REGISTER=Registration
-REALM_PATH=<<<Realm path of AM>>>
-WEB_OAUTH_CLIENT=<<<Your Web OAuth client name/ID>>>
+PORT=9443
+REALM_PATH=alpha
+WEB_OAUTH_CLIENT=WebOAuthClient
+REST_OAUTH_CLIENT=RestOAuthClient
+REST_OAUTH_SECRET=changeit!
 ```
 
 ### Installing Dependencies and Run Build
@@ -87,7 +91,7 @@ sudo vim /etc/hosts
 
 ```text
 # hosts file aliases
-127.0.0.1 react.example.com api.example.com
+127.0.0.1 react.example.com
 ```
 
 ### Run the Servers
@@ -99,11 +103,7 @@ Now, run the below commands to start the processes needed for building the appli
 npm run start:reactjs-todo
 ```
 
-Now, you should be able to visit `https://react.example.com:8443`, which is your web app or client (the Relying Party in OAuth terms). This client will make requests to your AM instance, (the Authorization Server in OAuth terms), which will be running on whatever domain you set, and `https://api.example.com:9443` as the REST API for your todos (the Resource Server).
-
-### Accept Cert Exceptions
-
-You will likely have to accept the security certificate exceptions for both your React app and the Node.js server. To accept the cert form the Node.js server, you can visit `https://api.example.com:9443/healthcheck` in your browser. Once you receive "OK", your Node.js server is running on the correct domain and port, and the cert is accepted.
+Now, you should be able to visit `https://react.example.com:8443`, which is your web app or client (the Relying Party in OAuth terms). This client will make requests to your AM instance, (the Authorization Server in OAuth terms), which will be running on whatever domain you set, and `http://localhost:9443` as the REST API for your todos (the Resource Server).
 
 ## Learn About Integration Touchpoints
 
