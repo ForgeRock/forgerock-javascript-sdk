@@ -22,7 +22,7 @@ Once you have the 5 requirements above met, we can build the project.
 
 1. Allowed origins: `https://react.example.com:8443`
 2. Allowed methods: `GET` `POST`
-3. Allowed headers: `Content-Type` `X-Requested-With` `Accept-API-Version` `Authorization`
+3. Allowed headers: `Content-Type` `X-Requested-With` `Accept-API-Version` `Authorization` `x-requested-platform`
 4. Allow credentials: enable
 
 #### Create Your OAuth Clients

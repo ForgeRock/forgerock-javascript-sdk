@@ -10,7 +10,7 @@
 
 import type { ConfigOptions } from '../config/index';
 import Config from '../config/index';
-import { REQUESTED_WITH } from '../shared/constants';
+import { REQUESTED_WITH, X_REQUESTED_PLATFORM } from '../shared/constants';
 import { isOkOr4xx } from '../util/http';
 import { withTimeout } from '../util/timeout';
 import { ActionTypes } from '../config/enums';
@@ -31,6 +31,7 @@ abstract class SessionManager {
       headers: new Headers({
         'Accept-API-Version': 'protocol=1.0,resource=2.0',
         'X-Requested-With': REQUESTED_WITH,
+        'X-Requested-Platform': X_REQUESTED_PLATFORM,
       }),
       method: 'POST',
     };
