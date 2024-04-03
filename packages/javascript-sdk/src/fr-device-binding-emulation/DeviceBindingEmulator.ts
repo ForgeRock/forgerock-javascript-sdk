@@ -12,9 +12,12 @@ const ALGORITHM = 'ES256';
 export default class DeviceBindingEmulator {
   /**
    * Factory method to create a virtual device
+   * @param issuer the issuer to use
    * @returns Promise that will resolve to a new device emulator object
    */
-  public static async createDevice(): Promise<DeviceBindingEmulator> {
+  public static async createDevice(
+    issuer = 'com.forgerock.unsummit',
+  ): Promise<DeviceBindingEmulator> {
     const { publicKey, privateKey } = await jose.generateKeyPair('ES256', {
       extractable: true,
     });
@@ -23,7 +26,7 @@ export default class DeviceBindingEmulator {
     const publicJwk = await jose.exportJWK(publicKey);
     const kid = v4();
 
-    return new DeviceBindingEmulator(publicJwk, privateJwk, kid);
+    return new DeviceBindingEmulator(publicJwk, privateJwk, kid, issuer);
   }
 
   private publicJwk: jose.JWK;
@@ -31,11 +34,13 @@ export default class DeviceBindingEmulator {
   private kid: string;
   private deviceId: string = v4();
   private _userId = '';
+  private issuer: string;
 
-  private constructor(publicJwk: jose.JWK, privateJwk: jose.JWK, kid: string) {
+  private constructor(publicJwk: jose.JWK, privateJwk: jose.JWK, kid: string, issuer: string) {
     this.publicJwk = publicJwk;
     this.privateJwk = privateJwk;
     this.kid = kid;
+    this.issuer = issuer;
   }
 
   /**
@@ -96,7 +101,7 @@ export default class DeviceBindingEmulator {
 
     return new jose.SignJWT({
       platform: 'ios',
-      iss: 'com.forgerock.unsummit',
+      iss: this.issuer,
       sub,
       challenge,
     })
@@ -115,7 +120,7 @@ export default class DeviceBindingEmulator {
     const { privateJwk, kid, _userId: sub } = this;
 
     return new jose.SignJWT({
-      iss: 'com.forgerock.unsummit',
+      iss: this.issuer,
       sub,
       challenge,
     })
