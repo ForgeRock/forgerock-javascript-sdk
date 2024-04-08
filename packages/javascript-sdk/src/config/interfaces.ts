@@ -19,6 +19,7 @@ interface Action {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   payload: any;
 }
+
 /**
  * Custom Logger for logger
  */
@@ -50,6 +51,7 @@ interface ConfigOptions {
   oauthThreshold?: number;
   logLevel?: LogLevel;
   logger?: LoggerFunctions;
+  platformHeader?: boolean;
   prefix?: string;
 }
 
