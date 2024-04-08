@@ -16,6 +16,9 @@ test(`should verifies x-requested-platform header is present in the request`, as
   page,
   browserName,
 }) => {
-  const { networkArray } = await setupAndGo(page, browserName, 'authn-central-login/');
-  expect(networkArray.includes('x-requested-platform')).toBe(true);
+  const { headerArray } = await setupAndGo(page, browserName, 'authn-basic/', {
+    platformHeader: 'true',
+  });
+
+  expect(headerArray.find((headers) => headers.get('x-requested-platform'))).toBeTruthy();
 });

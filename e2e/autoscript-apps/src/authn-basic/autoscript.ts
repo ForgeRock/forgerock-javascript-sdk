@@ -19,6 +19,7 @@ function autoscript() {
   const amUrl = url.searchParams.get('amUrl') || 'https://auth.example.com:9443/am';
   const realmPath = url.searchParams.get('realmPath') || 'root';
   const un = url.searchParams.get('un') || 'sdkuser';
+  const platformHeader = url.searchParams.get('platformHeader') === 'true' ? true : false;
   const pw = url.searchParams.get('pw') || 'password';
   const tree = url.searchParams.get('tree') || 'UsernamePassword';
 
@@ -41,6 +42,7 @@ function autoscript() {
         next();
       },
     ],
+    platformHeader,
     realmPath,
     tree,
     serverConfig: {

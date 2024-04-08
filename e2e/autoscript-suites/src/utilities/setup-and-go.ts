@@ -25,6 +25,7 @@ export async function setupAndGo(
     dialogInput?: string;
     email?: string;
     middleware?: string;
+    platformHeader?: string;
     preAuthenticated?: string;
     pw?: string;
     realmPath?: string;
@@ -40,7 +41,12 @@ export async function setupAndGo(
     wellknown?: string;
   },
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-): Promise<{ messageArray: string[]; networkArray: string[] }> {
+): Promise<{
+  headerArray: Headers[];
+  messageArray: string[];
+  networkArray: string[];
+}> {
+  const headerArray: Headers[] = [];
   const messageArray: string[] = [];
   const networkArray: string[] = [];
 
@@ -53,6 +59,7 @@ export async function setupAndGo(
   config && config.code && url.searchParams.set('code', (config && config.code) || '');
   url.searchParams.set('email', (config && config.email) || '');
   url.searchParams.set('middleware', (config && config.middleware) || '');
+  url.searchParams.set('platformHeader', (config && config.platformHeader) || '');
   url.searchParams.set('preAuthenticated', (config && config.preAuthenticated) || '');
   url.searchParams.set('pw', (config && config.pw) || USERS[0].pw);
   url.searchParams.set('realmPath', (config && config.realmPath) || REALM_PATH);
@@ -81,10 +88,11 @@ export async function setupAndGo(
 
   page.on('request', async (req) => {
     networkArray.push(`${new URL(req.url()).pathname}, ${req.resourceType()}`);
+  });
 
+  page.on('request', async (req) => {
     const headers = await req.allHeaders();
-    const headersKeys = Object.keys(headers);
-    networkArray.push(...headersKeys);
+    headerArray.push(new Headers(headers));
   });
 
   page.on('dialog', async (dialog) => {
@@ -93,5 +101,5 @@ export async function setupAndGo(
 
   await page.waitForSelector(config?.selector || '.Test_Complete');
 
-  return { messageArray, networkArray };
+  return { headerArray, messageArray, networkArray };
 }

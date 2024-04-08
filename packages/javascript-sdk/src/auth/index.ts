@@ -30,7 +30,7 @@ abstract class Auth {
    * @return {Step} The next step in the authentication tree.
    */
   public static async next(previousStep?: Step, options?: StepOptions): Promise<Step> {
-    const { middleware, realmPath, serverConfig, tree, type } = Config.get(options);
+    const { middleware, platformHeader, realmPath, serverConfig, tree, type } = Config.get(options);
     const query = options ? options.query : {};
     const url = this.constructUrl(serverConfig, realmPath, tree, query);
     const runMiddleware = middlewareWrapper(
@@ -47,6 +47,25 @@ abstract class Auth {
       },
     );
     const req = runMiddleware(middleware);
+
+    /**
+     * Run after as to now allow mutation by user
+     * Since the init headers can be an array, object or Headers class,
+     * we need to handle all types.
+     */
+    if (platformHeader) {
+      if (req.init.headers instanceof Headers) {
+        req.init.headers.set('X-Requested-Platform', X_REQUESTED_PLATFORM);
+      } else if (Array.isArray(req.init.headers)) {
+        req.init.headers.push(['X-Requested-Platform', X_REQUESTED_PLATFORM]);
+      } else if (req.init.headers) {
+        req.init.headers['X-Requested-Platform'] = X_REQUESTED_PLATFORM;
+      } else {
+        req.init.headers = {
+          'X-Requested-Platform': X_REQUESTED_PLATFORM,
+        };
+      }
+    }
     const res = await withTimeout(fetch(req.url.toString(), req.init), serverConfig.timeout);
     const json = await this.getResponseJson<Step>(res);
     return json;
@@ -75,10 +94,10 @@ abstract class Auth {
         'Accept-API-Version': 'protocol=1.0,resource=2.1',
         'Content-Type': 'application/json',
         'X-Requested-With': REQUESTED_WITH,
-        'X-Requested-Platform': X_REQUESTED_PLATFORM,
       }),
       method: 'POST',
     };
+
     return init;
   }
 

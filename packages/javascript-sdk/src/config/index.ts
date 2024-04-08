@@ -28,6 +28,7 @@ function setDefaults(options: ConfigOptions): ConfigOptions {
     ...options,
     oauthThreshold: options.oauthThreshold || DEFAULT_OAUTH_THRESHOLD,
     logLevel: options.logLevel || 'none',
+    platformHeader: options.platformHeader || false,
     prefix: options.prefix || PREFIX,
   };
 }
