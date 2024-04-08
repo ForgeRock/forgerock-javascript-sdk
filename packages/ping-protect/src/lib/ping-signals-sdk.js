@@ -28,6 +28,7 @@ var _POSignalsEntities;
             (i.style.width = '0'),
             (i.style.height = '0'),
             (i.style.visibility = 'hidden'),
+            (i.style.overflow = 'hidden'),
             (i.id = t),
             document.body.appendChild(i),
             i);
@@ -57,7 +58,7 @@ var _POSignalsEntities;
     window._pingOneSignalsToken ||
       (window._pingOneSignalsToken = 'uninitialized_token_' + new Date().getTime()),
       (i = window._pingOneSignalsCustomHost || 'apps.pingone.com'),
-      (r = { sdkVersion: '5.2.10w', platform: navigator.platform || '' }),
+      (r = { sdkVersion: '5.3.1w', platform: navigator.platform || '' }),
       (a = encodeURIComponent(
         (function (t) {
           var e,
@@ -68,8 +69,8 @@ var _POSignalsEntities;
             o,
             s,
             u = '',
-            l = 0,
-            c = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
+            c = 0,
+            l = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
           for (
             t = (function (t) {
               t = t.replace(/\r\n/g, '\n');
@@ -85,15 +86,15 @@ var _POSignalsEntities;
               }
               return e;
             })(t);
-            l < t.length;
+            c < t.length;
 
           )
-            (r = (e = t.charCodeAt(l++)) >> 2),
-              (a = ((3 & e) << 4) | ((n = t.charCodeAt(l++)) >> 4)),
-              (o = ((15 & n) << 2) | ((i = t.charCodeAt(l++)) >> 6)),
+            (r = (e = t.charCodeAt(c++)) >> 2),
+              (a = ((3 & e) << 4) | ((n = t.charCodeAt(c++)) >> 4)),
+              (o = ((15 & n) << 2) | ((i = t.charCodeAt(c++)) >> 6)),
               (s = 63 & i),
               isNaN(n) ? (o = s = 64) : isNaN(i) && (s = 64),
-              (u = u + c.charAt(r) + c.charAt(a) + c.charAt(o) + c.charAt(s));
+              (u = u + l.charAt(r) + l.charAt(a) + l.charAt(o) + l.charAt(s));
           return u;
         })(
           (function (t, e) {
@@ -149,7 +150,7 @@ var _POSignalsEntities;
         (this._handled = !1),
         (this._value = void 0),
         (this._deferreds = []),
-        c(t, this);
+        l(t, this);
     }
     function o(t, e) {
       for (; 3 === t._state; ) t = t._value;
@@ -174,9 +175,9 @@ var _POSignalsEntities;
         if (e === t) throw new TypeError('A promise cannot be resolved with itself.');
         if (e && ('object' == typeof e || 'function' == typeof e)) {
           var n = e.then;
-          if (e instanceof a) return (t._state = 3), (t._value = e), void l(t);
+          if (e instanceof a) return (t._state = 3), (t._value = e), void c(t);
           if ('function' == typeof n)
-            return void c(
+            return void l(
               ((i = n),
               (r = e),
               function () {
@@ -185,16 +186,16 @@ var _POSignalsEntities;
               t,
             );
         }
-        (t._state = 1), (t._value = e), l(t);
+        (t._state = 1), (t._value = e), c(t);
       } catch (e) {
         u(t, e);
       }
       var i, r;
     }
     function u(t, e) {
-      (t._state = 2), (t._value = e), l(t);
+      (t._state = 2), (t._value = e), c(t);
     }
-    function l(t) {
+    function c(t) {
       2 === t._state &&
         0 === t._deferreds.length &&
         a._immediateFn(function () {
@@ -203,7 +204,7 @@ var _POSignalsEntities;
       for (var e = 0, n = t._deferreds.length; e < n; e++) o(t, t._deferreds[e]);
       t._deferreds = null;
     }
-    function c(t, e) {
+    function l(t, e) {
       var n = !1;
       try {
         t(
@@ -388,13 +389,13 @@ var _POSignalsEntities;
         (ArrayBuffer.isView = function (t) {
           return 'object' == typeof t && t.buffer && t.buffer.constructor === ArrayBuffer;
         });
-    var l = function (t, e) {
+    var c = function (t, e) {
         return function (n) {
           return new f(e, !0).update(n)[t]();
         };
       },
-      c = function (t) {
-        var e = l('hex', t);
+      l = function (t) {
+        var e = c('hex', t);
         (e.create = function () {
           return new f(t);
         }),
@@ -403,7 +404,7 @@ var _POSignalsEntities;
           });
         for (var n = 0; n < s.length; ++n) {
           var i = s[n];
-          e[i] = l(i, t);
+          e[i] = c(i, t);
         }
         return e;
       },
@@ -476,22 +477,22 @@ var _POSignalsEntities;
       if ('string' === o) {
         var s,
           u = [],
-          l = t.length,
-          c = 0;
-        for (a = 0; a < l; ++a)
+          c = t.length,
+          l = 0;
+        for (a = 0; a < c; ++a)
           (s = t.charCodeAt(a)) < 128
-            ? (u[c++] = s)
+            ? (u[l++] = s)
             : s < 2048
-            ? ((u[c++] = 192 | (s >> 6)), (u[c++] = 128 | (63 & s)))
+            ? ((u[l++] = 192 | (s >> 6)), (u[l++] = 128 | (63 & s)))
             : s < 55296 || s >= 57344
-            ? ((u[c++] = 224 | (s >> 12)),
-              (u[c++] = 128 | ((s >> 6) & 63)),
-              (u[c++] = 128 | (63 & s)))
+            ? ((u[l++] = 224 | (s >> 12)),
+              (u[l++] = 128 | ((s >> 6) & 63)),
+              (u[l++] = 128 | (63 & s)))
             : ((s = 65536 + (((1023 & s) << 10) | (1023 & t.charCodeAt(++a)))),
-              (u[c++] = 240 | (s >> 18)),
-              (u[c++] = 128 | ((s >> 12) & 63)),
-              (u[c++] = 128 | ((s >> 6) & 63)),
-              (u[c++] = 128 | (63 & s)));
+              (u[l++] = 240 | (s >> 18)),
+              (u[l++] = 128 | ((s >> 12) & 63)),
+              (u[l++] = 128 | ((s >> 6) & 63)),
+              (u[l++] = 128 | (63 & s)));
         t = u;
       } else {
         if ('object' !== o) throw new Error(e);
@@ -523,51 +524,51 @@ var _POSignalsEntities;
           else if (!(Array.isArray(t) || (n && ArrayBuffer.isView(t)))) throw new Error(e);
           i = !0;
         }
-        for (var o, s, u = 0, l = t.length, c = this.blocks; u < l; ) {
+        for (var o, s, u = 0, c = t.length, l = this.blocks; u < c; ) {
           if (
             (this.hashed &&
               ((this.hashed = !1),
-              (c[0] = this.block),
-              (c[16] =
-                c[1] =
-                c[2] =
-                c[3] =
-                c[4] =
-                c[5] =
-                c[6] =
-                c[7] =
-                c[8] =
-                c[9] =
-                c[10] =
-                c[11] =
-                c[12] =
-                c[13] =
-                c[14] =
-                c[15] =
+              (l[0] = this.block),
+              (l[16] =
+                l[1] =
+                l[2] =
+                l[3] =
+                l[4] =
+                l[5] =
+                l[6] =
+                l[7] =
+                l[8] =
+                l[9] =
+                l[10] =
+                l[11] =
+                l[12] =
+                l[13] =
+                l[14] =
+                l[15] =
                   0)),
             i)
           )
-            for (s = this.start; u < l && s < 64; ++u) c[s >> 2] |= t[u] << a[3 & s++];
+            for (s = this.start; u < c && s < 64; ++u) l[s >> 2] |= t[u] << a[3 & s++];
           else
-            for (s = this.start; u < l && s < 64; ++u)
+            for (s = this.start; u < c && s < 64; ++u)
               (o = t.charCodeAt(u)) < 128
-                ? (c[s >> 2] |= o << a[3 & s++])
+                ? (l[s >> 2] |= o << a[3 & s++])
                 : o < 2048
-                ? ((c[s >> 2] |= (192 | (o >> 6)) << a[3 & s++]),
-                  (c[s >> 2] |= (128 | (63 & o)) << a[3 & s++]))
+                ? ((l[s >> 2] |= (192 | (o >> 6)) << a[3 & s++]),
+                  (l[s >> 2] |= (128 | (63 & o)) << a[3 & s++]))
                 : o < 55296 || o >= 57344
-                ? ((c[s >> 2] |= (224 | (o >> 12)) << a[3 & s++]),
-                  (c[s >> 2] |= (128 | ((o >> 6) & 63)) << a[3 & s++]),
-                  (c[s >> 2] |= (128 | (63 & o)) << a[3 & s++]))
+                ? ((l[s >> 2] |= (224 | (o >> 12)) << a[3 & s++]),
+                  (l[s >> 2] |= (128 | ((o >> 6) & 63)) << a[3 & s++]),
+                  (l[s >> 2] |= (128 | (63 & o)) << a[3 & s++]))
                 : ((o = 65536 + (((1023 & o) << 10) | (1023 & t.charCodeAt(++u)))),
-                  (c[s >> 2] |= (240 | (o >> 18)) << a[3 & s++]),
-                  (c[s >> 2] |= (128 | ((o >> 12) & 63)) << a[3 & s++]),
-                  (c[s >> 2] |= (128 | ((o >> 6) & 63)) << a[3 & s++]),
-                  (c[s >> 2] |= (128 | (63 & o)) << a[3 & s++]));
+                  (l[s >> 2] |= (240 | (o >> 18)) << a[3 & s++]),
+                  (l[s >> 2] |= (128 | ((o >> 12) & 63)) << a[3 & s++]),
+                  (l[s >> 2] |= (128 | ((o >> 6) & 63)) << a[3 & s++]),
+                  (l[s >> 2] |= (128 | (63 & o)) << a[3 & s++]));
           (this.lastByteIndex = s),
             (this.bytes += s - this.start),
             s >= 64
-              ? ((this.block = c[16]), (this.start = s - 64), this.hash(), (this.hashed = !0))
+              ? ((this.block = l[16]), (this.start = s - 64), this.hash(), (this.hashed = !0))
               : (this.start = s);
         }
         return (
@@ -620,54 +621,54 @@ var _POSignalsEntities;
           a,
           s,
           u,
-          l,
-          c = this.h0,
+          c,
+          l = this.h0,
           d = this.h1,
           h = this.h2,
           f = this.h3,
           g = this.h4,
           p = this.h5,
-          _ = this.h6,
-          v = this.h7,
+          v = this.h6,
+          _ = this.h7,
           m = this.blocks;
         for (t = 16; t < 64; ++t)
           (e = (((r = m[t - 15]) >>> 7) | (r << 25)) ^ ((r >>> 18) | (r << 14)) ^ (r >>> 3)),
             (n = (((r = m[t - 2]) >>> 17) | (r << 15)) ^ ((r >>> 19) | (r << 13)) ^ (r >>> 10)),
             (m[t] = (m[t - 16] + e + m[t - 7] + n) << 0);
-        for (l = d & h, t = 0; t < 64; t += 4)
+        for (c = d & h, t = 0; t < 64; t += 4)
           this.first
             ? (this.is224
                 ? ((a = 300032),
-                  (v = ((r = m[0] - 1413257819) - 150054599) << 0),
+                  (_ = ((r = m[0] - 1413257819) - 150054599) << 0),
                   (f = (r + 24177077) << 0))
                 : ((a = 704751109),
-                  (v = ((r = m[0] - 210244248) - 1521486534) << 0),
+                  (_ = ((r = m[0] - 210244248) - 1521486534) << 0),
                   (f = (r + 143694565) << 0)),
               (this.first = !1))
-            : ((e = ((c >>> 2) | (c << 30)) ^ ((c >>> 13) | (c << 19)) ^ ((c >>> 22) | (c << 10))),
-              (i = (a = c & d) ^ (c & h) ^ l),
-              (v =
+            : ((e = ((l >>> 2) | (l << 30)) ^ ((l >>> 13) | (l << 19)) ^ ((l >>> 22) | (l << 10))),
+              (i = (a = l & d) ^ (l & h) ^ c),
+              (_ =
                 (f +
                   (r =
-                    v +
+                    _ +
                     (n =
                       ((g >>> 6) | (g << 26)) ^
                       ((g >>> 11) | (g << 21)) ^
                       ((g >>> 25) | (g << 7))) +
-                    ((g & p) ^ (~g & _)) +
+                    ((g & p) ^ (~g & v)) +
                     o[t] +
                     m[t])) <<
                 0),
               (f = (r + (e + i)) << 0)),
             (e = ((f >>> 2) | (f << 30)) ^ ((f >>> 13) | (f << 19)) ^ ((f >>> 22) | (f << 10))),
-            (i = (s = f & c) ^ (f & d) ^ a),
-            (_ =
+            (i = (s = f & l) ^ (f & d) ^ a),
+            (v =
               (h +
                 (r =
-                  _ +
+                  v +
                   (n =
-                    ((v >>> 6) | (v << 26)) ^ ((v >>> 11) | (v << 21)) ^ ((v >>> 25) | (v << 7))) +
-                  ((v & g) ^ (~v & p)) +
+                    ((_ >>> 6) | (_ << 26)) ^ ((_ >>> 11) | (_ << 21)) ^ ((_ >>> 25) | (_ << 7))) +
+                  ((_ & g) ^ (~_ & p)) +
                   o[t + 1] +
                   m[t + 1])) <<
               0),
@@ -675,14 +676,14 @@ var _POSignalsEntities;
               (((h = (r + (e + i)) << 0) >>> 2) | (h << 30)) ^
               ((h >>> 13) | (h << 19)) ^
               ((h >>> 22) | (h << 10))),
-            (i = (u = h & f) ^ (h & c) ^ s),
+            (i = (u = h & f) ^ (h & l) ^ s),
             (p =
               (d +
                 (r =
                   p +
                   (n =
-                    ((_ >>> 6) | (_ << 26)) ^ ((_ >>> 11) | (_ << 21)) ^ ((_ >>> 25) | (_ << 7))) +
-                  ((_ & v) ^ (~_ & g)) +
+                    ((v >>> 6) | (v << 26)) ^ ((v >>> 11) | (v << 21)) ^ ((v >>> 25) | (v << 7))) +
+                  ((v & _) ^ (~v & g)) +
                   o[t + 2] +
                   m[t + 2])) <<
               0),
@@ -690,26 +691,26 @@ var _POSignalsEntities;
               (((d = (r + (e + i)) << 0) >>> 2) | (d << 30)) ^
               ((d >>> 13) | (d << 19)) ^
               ((d >>> 22) | (d << 10))),
-            (i = (l = d & h) ^ (d & f) ^ u),
+            (i = (c = d & h) ^ (d & f) ^ u),
             (g =
-              (c +
+              (l +
                 (r =
                   g +
                   (n =
                     ((p >>> 6) | (p << 26)) ^ ((p >>> 11) | (p << 21)) ^ ((p >>> 25) | (p << 7))) +
-                  ((p & _) ^ (~p & v)) +
+                  ((p & v) ^ (~p & _)) +
                   o[t + 3] +
                   m[t + 3])) <<
               0),
-            (c = (r + (e + i)) << 0);
-        (this.h0 = (this.h0 + c) << 0),
+            (l = (r + (e + i)) << 0);
+        (this.h0 = (this.h0 + l) << 0),
           (this.h1 = (this.h1 + d) << 0),
           (this.h2 = (this.h2 + h) << 0),
           (this.h3 = (this.h3 + f) << 0),
           (this.h4 = (this.h4 + g) << 0),
           (this.h5 = (this.h5 + p) << 0),
-          (this.h6 = (this.h6 + _) << 0),
-          (this.h7 = (this.h7 + v) << 0);
+          (this.h6 = (this.h6 + v) << 0),
+          (this.h7 = (this.h7 + _) << 0);
       }),
       (f.prototype.hex = function () {
         this.finalize();
@@ -721,7 +722,7 @@ var _POSignalsEntities;
           o = this.h5,
           s = this.h6,
           u = this.h7,
-          l =
+          c =
             i[(t >> 28) & 15] +
             i[(t >> 24) & 15] +
             i[(t >> 20) & 15] +
@@ -780,7 +781,7 @@ var _POSignalsEntities;
             i[15 & s];
         return (
           this.is224 ||
-            (l +=
+            (c +=
               i[(u >> 28) & 15] +
               i[(u >> 24) & 15] +
               i[(u >> 20) & 15] +
@@ -789,7 +790,7 @@ var _POSignalsEntities;
               i[(u >> 8) & 15] +
               i[(u >> 4) & 15] +
               i[15 & u]),
-          l
+          c
         );
       }),
       (f.prototype.toString = f.prototype.hex),
@@ -863,9 +864,9 @@ var _POSignalsEntities;
             f.prototype.finalize.call(this);
         }
       });
-    var p = c();
+    var p = l();
     (p.sha256 = p),
-      (p.sha224 = c(!0)),
+      (p.sha224 = l(!0)),
       (p.sha256.hmac = h()),
       (p.sha224.hmac = h(!0)),
       (t.sha256 = p.sha256),
@@ -949,15 +950,15 @@ var _POSignalsEntities;
     function s(t, s) {
       (t = t || ''), (s = s || 0);
       var u,
-        l = t.length % 16,
-        c = t.length - l,
+        c = t.length % 16,
+        l = t.length - c,
         d = [0, s],
         h = [0, s],
         f = [0, 0],
         g = [0, 0],
         p = [2277735313, 289559509],
-        _ = [1291169091, 658871167];
-      for (u = 0; u < c; u += 16)
+        v = [1291169091, 658871167];
+      for (u = 0; u < l; u += 16)
         (f = [
           (255 & t.charCodeAt(u + 4)) |
             ((255 & t.charCodeAt(u + 5)) << 8) |
@@ -979,14 +980,14 @@ var _POSignalsEntities;
               ((255 & t.charCodeAt(u + 11)) << 24),
           ]),
           (d = e(
-            n((d = e((d = i((d = a(d, (f = n((f = i((f = n(f, p)), 31)), _)))), 27)), h)), [0, 5]),
+            n((d = e((d = i((d = a(d, (f = n((f = i((f = n(f, p)), 31)), v)))), 27)), h)), [0, 5]),
             [0, 1390208809],
           )),
           (h = e(
-            n((h = e((h = i((h = a(h, (g = n((g = i((g = n(g, _)), 33)), p)))), 31)), d)), [0, 5]),
+            n((h = e((h = i((h = a(h, (g = n((g = i((g = n(g, v)), 33)), p)))), 31)), d)), [0, 5]),
             [0, 944331445],
           ));
-      switch (((f = [0, 0]), (g = [0, 0]), l)) {
+      switch (((f = [0, 0]), (g = [0, 0]), c)) {
         case 15:
           g = a(g, r([0, t.charCodeAt(u + 14)], 48));
         case 14:
@@ -1000,7 +1001,7 @@ var _POSignalsEntities;
         case 10:
           g = a(g, r([0, t.charCodeAt(u + 9)], 8));
         case 9:
-          h = a(h, (g = n((g = i((g = n((g = a(g, [0, t.charCodeAt(u + 8)])), _)), 33)), p)));
+          h = a(h, (g = n((g = i((g = n((g = a(g, [0, t.charCodeAt(u + 8)])), v)), 33)), p)));
         case 8:
           f = a(f, r([0, t.charCodeAt(u + 7)], 56));
         case 7:
@@ -1016,7 +1017,7 @@ var _POSignalsEntities;
         case 2:
           f = a(f, r([0, t.charCodeAt(u + 1)], 8));
         case 1:
-          d = a(d, (f = n((f = i((f = n((f = a(f, [0, t.charCodeAt(u)])), p)), 31)), _)));
+          d = a(d, (f = n((f = i((f = n((f = a(f, [0, t.charCodeAt(u)])), p)), 31)), v)));
       }
       return (
         (d = a(d, [0, t.length])),
@@ -1039,7 +1040,7 @@ var _POSignalsEntities;
           return t;
         }).apply(this, arguments);
     };
-    function l(t, e, n, i) {
+    function c(t, e, n, i) {
       return new (n || (n = Promise))(function (r, a) {
         function o(t) {
           try {
@@ -1069,7 +1070,7 @@ var _POSignalsEntities;
         u((i = i.apply(t, e || [])).next());
       });
     }
-    function c(t, e) {
+    function l(t, e) {
       var n,
         i,
         r,
@@ -1170,31 +1171,31 @@ var _POSignalsEntities;
       }, 0);
     }
     var p = window,
-      _ = navigator,
-      v = document;
+      v = navigator,
+      _ = document;
     function m() {
       return (
         g([
           'MSCSSMatrix' in p,
           'msSetImmediate' in p,
           'msIndexedDB' in p,
-          'msMaxTouchPoints' in _,
-          'msPointerEnabled' in _,
+          'msMaxTouchPoints' in v,
+          'msPointerEnabled' in v,
         ]) >= 4
-      );
-    }
-    function b() {
-      return (
-        g(['msWriteProfilerMark' in p, 'MSStream' in p, 'msLaunchUri' in _, 'msSaveBlob' in _]) >=
-          3 && !m()
       );
     }
     function y() {
       return (
+        g(['msWriteProfilerMark' in p, 'MSStream' in p, 'msLaunchUri' in v, 'msSaveBlob' in v]) >=
+          3 && !m()
+      );
+    }
+    function b() {
+      return (
         g([
-          'webkitPersistentStorage' in _,
-          'webkitTemporaryStorage' in _,
-          0 === _.vendor.indexOf('Google'),
+          'webkitPersistentStorage' in v,
+          'webkitTemporaryStorage' in v,
+          0 === v.vendor.indexOf('Google'),
           'webkitResolveLocalFileSystemURL' in p,
           'BatteryManager' in p,
           'webkitMediaStream' in p,
@@ -1202,25 +1203,25 @@ var _POSignalsEntities;
         ]) >= 5
       );
     }
-    function E() {
+    function w() {
       return (
         g([
           'ApplePayError' in p,
           'CSSPrimitiveValue' in p,
           'Counter' in p,
-          0 === _.vendor.indexOf('Apple'),
-          'getStorageUpdates' in _,
+          0 === v.vendor.indexOf('Apple'),
+          'getStorageUpdates' in v,
           'WebKitMediaKeys' in p,
         ]) >= 4
       );
     }
-    function w() {
+    function E() {
       return (
         g([
           'safari' in p,
           !('DeviceMotionEvent' in p),
           !('ongestureend' in p),
-          !('standalone' in _),
+          !('standalone' in v),
         ]) >= 3
       );
     }
@@ -1237,7 +1238,7 @@ var _POSignalsEntities;
     }
     var T = document,
       I = 'mmMwWLliI0O&1',
-      M = ['monospace', 'sans-serif', 'serif'],
+      D = ['monospace', 'sans-serif', 'serif'],
       C = [
         'sans-serif-thin',
         'ARNO PRO',
@@ -1292,7 +1293,7 @@ var _POSignalsEntities;
         'Vrinda',
         'ZWAdobeF',
       ],
-      L = {
+      M = {
         fontStyle: 'normal',
         fontWeight: 'normal',
         letterSpacing: 'normal',
@@ -1309,14 +1310,14 @@ var _POSignalsEntities;
         left: '-9999px',
         fontSize: '48px',
       },
-      D = navigator,
+      L = navigator,
       U = window,
       k = navigator,
-      R = window,
       x = window,
+      R = window,
       N = window,
       B = document,
-      F = {
+      H = {
         osCpu: function () {
           return navigator.oscpu;
         },
@@ -1324,7 +1325,7 @@ var _POSignalsEntities;
           var t = [],
             e = k.language || k.userLanguage || k.browserLanguage || k.systemLanguage;
           if ((void 0 !== e && t.push([e]), Array.isArray(k.languages)))
-            (y() &&
+            (b() &&
               g([
                 !('MediaSettingsRange' in p),
                 'RTCEncodedAudioFrame' in p,
@@ -1348,12 +1349,12 @@ var _POSignalsEntities;
           var t, e;
         },
         screenResolution: function () {
-          var t = [h(R.screen.width), h(R.screen.height)];
+          var t = [h(x.screen.width), h(x.screen.height)];
           return t.sort().reverse(), t;
         },
         availableScreenResolution: function () {
-          if (x.screen.availWidth && x.screen.availHeight) {
-            var t = [h(x.screen.availWidth), h(x.screen.availHeight)];
+          if (R.screen.availWidth && R.screen.availHeight) {
+            var t = [h(R.screen.availWidth), h(R.screen.availHeight)];
             return t.sort().reverse(), t;
           }
         },
@@ -1392,7 +1393,7 @@ var _POSignalsEntities;
           }
         },
         indexedDB: function () {
-          if (!m() && !b())
+          if (!m() && !y())
             try {
               return !!window.indexedDB;
             } catch (t) {
@@ -1450,10 +1451,10 @@ var _POSignalsEntities;
             n.fillRect(125, 1, 62, 20),
             (n.fillStyle = '#069'),
             (n.font = '11pt no-real-font-123'),
-            n.fillText('Cwm fjordbank ðŸ˜ƒ gly', 2, 15),
+            n.fillText('Cwm fjordbank 😃 gly', 2, 15),
             (n.fillStyle = 'rgba(102, 204, 0, 0.2)'),
             (n.font = '18pt Arial'),
-            n.fillText('Cwm fjordbank ðŸ˜ƒ gly', 4, 45),
+            n.fillText('Cwm fjordbank 😃 gly', 4, 45),
             (n.globalCompositeOperation = 'multiply'),
             (n.fillStyle = 'rgb(255,0,255)'),
             n.beginPath(),
@@ -1485,9 +1486,9 @@ var _POSignalsEntities;
         touchSupport: function () {
           var t,
             e = 0;
-          void 0 !== D.maxTouchPoints
-            ? (e = h(D.maxTouchPoints))
-            : void 0 !== D.msMaxTouchPoints && (e = D.msMaxTouchPoints);
+          void 0 !== L.maxTouchPoints
+            ? (e = h(L.maxTouchPoints))
+            : void 0 !== L.msMaxTouchPoints && (e = L.msMaxTouchPoints);
           try {
             document.createEvent('TouchEvent'), (t = !0);
           } catch (e) {
@@ -1504,29 +1505,29 @@ var _POSignalsEntities;
             a = function () {
               var t = T.createElement('span');
               t.textContent = I;
-              for (var e = 0, n = Object.keys(L); e < n.length; e++) {
+              for (var e = 0, n = Object.keys(M); e < n.length; e++) {
                 var i = n[e];
-                t.style[i] = L[i];
+                t.style[i] = M[i];
               }
               return t;
             },
             o = function (t) {
-              return M.some(function (e, n) {
+              return D.some(function (e, n) {
                 return t[n].offsetWidth !== i[e] || t[n].offsetHeight !== r[e];
               });
             },
-            s = M.map(function (t) {
+            s = D.map(function (t) {
               var n = a();
               return (n.style.fontFamily = t), e.appendChild(n), n;
             });
           t.appendChild(e);
-          for (var u = 0, l = M.length; u < l; u++)
-            (i[M[u]] = s[u].offsetWidth), (r[M[u]] = s[u].offsetHeight);
-          var c = (function () {
+          for (var u = 0, c = D.length; u < c; u++)
+            (i[D[u]] = s[u].offsetWidth), (r[D[u]] = s[u].offsetHeight);
+          var l = (function () {
             for (
               var t = {},
                 e = function (e) {
-                  t[e] = M.map(function (t) {
+                  t[e] = D.map(function (t) {
                     var i = (function (t, e) {
                       var n = a();
                       return (n.style.fontFamily = "'" + t + "'," + e), n;
@@ -1543,19 +1544,19 @@ var _POSignalsEntities;
             return t;
           })();
           t.appendChild(n);
-          for (var d = [], h = 0, f = C.length; h < f; h++) o(c[C[h]]) && d.push(C[h]);
+          for (var d = [], h = 0, f = C.length; h < f; h++) o(l[C[h]]) && d.push(C[h]);
           return t.removeChild(n), t.removeChild(e), d;
         },
         audio: function () {
-          return l(this, void 0, void 0, function () {
+          return c(this, void 0, void 0, function () {
             var t, e, n, i, r, a;
-            return c(this, function (o) {
+            return l(this, function (o) {
               switch (o.label) {
                 case 0:
                   if (!(t = S.OfflineAudioContext || S.webkitOfflineAudioContext)) return [2, -2];
                   if (
-                    E() &&
-                    !w() &&
+                    w() &&
+                    !E() &&
                     !(
                       g([
                         'DOMRectList' in p,
@@ -1664,13 +1665,13 @@ var _POSignalsEntities;
           }
         },
       };
-    function H(t, e, n) {
-      return l(this, void 0, void 0, function () {
-        var i, r, a, o, s, l, d, h, f;
-        return c(this, function (c) {
-          switch (c.label) {
+    function F(t, e, n) {
+      return c(this, void 0, void 0, function () {
+        var i, r, a, o, s, c, d, h, f;
+        return l(this, function (l) {
+          switch (l.label) {
             case 0:
-              (i = Date.now()), (r = {}), (a = 0), (o = Object.keys(t)), (c.label = 1);
+              (i = Date.now()), (r = {}), (a = 0), (o = Object.keys(t)), (l.label = 1);
             case 1:
               if (!(a < o.length)) return [3, 7];
               if (
@@ -1681,22 +1682,22 @@ var _POSignalsEntities;
                 })(n, s))
               )
                 return [3, 6];
-              (l = void 0), (c.label = 2);
+              (c = void 0), (l.label = 2);
             case 2:
-              return c.trys.push([2, 4, , 5]), (f = {}), [4, t[s](e)];
+              return l.trys.push([2, 4, , 5]), (f = {}), [4, t[s](e)];
             case 3:
-              return (f.value = c.sent()), (l = f), [3, 5];
+              return (f.value = l.sent()), (c = f), [3, 5];
             case 4:
               return (
-                (d = c.sent()),
-                (l =
+                (d = l.sent()),
+                (c =
                   d && 'object' == typeof d && 'message' in d
                     ? { error: d }
                     : { error: { message: d } }),
                 [3, 5]
               );
             case 5:
-              (h = Date.now()), (r[s] = u(u({}, l), { duration: h - i })), (i = h), (c.label = 6);
+              (h = Date.now()), (r[s] = u(u({}, c), { duration: h - i })), (i = h), (l.label = 6);
             case 6:
               return a++, [3, 1];
             case 7:
@@ -1737,18 +1738,18 @@ var _POSignalsEntities;
         })(t),
       );
     }
-    var z = (function () {
+    var V = (function () {
       function t() {}
       return (
         (t.prototype.get = function (t) {
           return (
             void 0 === t && (t = {}),
-            l(this, void 0, void 0, function () {
+            c(this, void 0, void 0, function () {
               var e, n;
-              return c(this, function (i) {
+              return l(this, function (i) {
                 switch (i.label) {
                   case 0:
-                    return [4, H(F, void 0, [])];
+                    return [4, F(H, void 0, [])];
                   case 1:
                     return (
                       (e = i.sent()),
@@ -1786,11 +1787,11 @@ var _POSignalsEntities;
         t
       );
     })();
-    function V(t) {
+    function z(t) {
       var e = (void 0 === t ? {} : t).delayFallback,
         n = void 0 === e ? 50 : e;
-      return l(this, void 0, void 0, function () {
-        return c(this, function (t) {
+      return c(this, void 0, void 0, function () {
+        return l(this, function (t) {
           switch (t.label) {
             case 0:
               return [
@@ -1810,29 +1811,29 @@ var _POSignalsEntities;
                 })),
               ];
             case 1:
-              return t.sent(), [2, new z()];
+              return t.sent(), [2, new V()];
           }
           var e, i;
         });
       });
     }
-    var W = { load: V, hashComponents: G, componentsToDebugString: j },
-      K = s;
+    var K = { load: z, hashComponents: G, componentsToDebugString: j },
+      Y = s;
     return (
       (t.componentsToDebugString = j),
-      (t.default = W),
-      (t.getComponents = H),
+      (t.default = K),
+      (t.getComponents = F),
       (t.hashComponents = G),
-      (t.isChromium = y),
-      (t.isDesktopSafari = w),
-      (t.isEdgeHTML = b),
+      (t.isChromium = b),
+      (t.isDesktopSafari = E),
+      (t.isEdgeHTML = y),
       (t.isGecko = function () {
         var t;
         return (
           g([
-            'buildID' in _,
-            (null === (t = v.documentElement) || void 0 === t ? void 0 : t.style) &&
-              'MozAppearance' in v.documentElement.style,
+            'buildID' in v,
+            (null === (t = _.documentElement) || void 0 === t ? void 0 : t.style) &&
+              'MozAppearance' in _.documentElement.style,
             'MediaRecorderErrorEvent' in p,
             'mozInnerScreenX' in p,
             'CSSMozDocumentRule' in p,
@@ -1841,12 +1842,400 @@ var _POSignalsEntities;
         );
       }),
       (t.isTrident = m),
-      (t.isWebKit = E),
-      (t.load = V),
-      (t.murmurX64Hash128 = K),
+      (t.isWebKit = w),
+      (t.load = z),
+      (t.murmurX64Hash128 = Y),
       t
     );
   })({})),
+  (function (t) {
+    'use strict';
+    var e,
+      n,
+      i = function (t, e) {
+        var n = 'function' == typeof Symbol && t[Symbol.iterator];
+        if (!n) return t;
+        var i,
+          r,
+          a = n.call(t),
+          o = [];
+        try {
+          for (; (void 0 === e || e-- > 0) && !(i = a.next()).done; ) o.push(i.value);
+        } catch (t) {
+          r = { error: t };
+        } finally {
+          try {
+            i && !i.done && (n = a.return) && n.call(a);
+          } finally {
+            if (r) throw r.error;
+          }
+        }
+        return o;
+      },
+      r = function (t, e, n) {
+        if (n || 2 === arguments.length)
+          for (var i, r = 0, a = e.length; r < a; r++)
+            (!i && r in e) || (i || (i = Array.prototype.slice.call(e, 0, r)), (i[r] = e[r]));
+        return t.concat(i || Array.prototype.slice.call(e));
+      },
+      a = new WeakMap(),
+      o = new WeakMap(),
+      s = new WeakMap(),
+      u = new WeakMap(),
+      c = new WeakMap(),
+      l = {
+        get: function (t, e, n) {
+          if (t instanceof IDBTransaction) {
+            if ('done' === e) return o.get(t);
+            if ('objectStoreNames' === e) return t.objectStoreNames || s.get(t);
+            if ('store' === e)
+              return n.objectStoreNames[1] ? void 0 : n.objectStore(n.objectStoreNames[0]);
+          }
+          return f(t[e]);
+        },
+        set: function (t, e, n) {
+          return (t[e] = n), !0;
+        },
+        has: function (t, e) {
+          return (t instanceof IDBTransaction && ('done' === e || 'store' === e)) || e in t;
+        },
+      };
+    function d(t) {
+      return t !== IDBDatabase.prototype.transaction ||
+        'objectStoreNames' in IDBTransaction.prototype
+        ? (
+            n ||
+            (n = [
+              IDBCursor.prototype.advance,
+              IDBCursor.prototype.continue,
+              IDBCursor.prototype.continuePrimaryKey,
+            ])
+          ).includes(t)
+          ? function () {
+              for (var e = [], n = 0; n < arguments.length; n++) e[n] = arguments[n];
+              return t.apply(g(this), e), f(a.get(this));
+            }
+          : function () {
+              for (var e = [], n = 0; n < arguments.length; n++) e[n] = arguments[n];
+              return f(t.apply(g(this), e));
+            }
+        : function (e) {
+            for (var n = [], a = 1; a < arguments.length; a++) n[a - 1] = arguments[a];
+            var o = t.call.apply(t, r([g(this), e], i(n), !1));
+            return s.set(o, e.sort ? e.sort() : [e]), f(o);
+          };
+    }
+    function h(t) {
+      return 'function' == typeof t
+        ? d(t)
+        : (t instanceof IDBTransaction &&
+            (function (t) {
+              if (!o.has(t)) {
+                var e = new Promise(function (e, n) {
+                  var i = function () {
+                      t.removeEventListener('complete', r),
+                        t.removeEventListener('error', a),
+                        t.removeEventListener('abort', a);
+                    },
+                    r = function () {
+                      e(), i();
+                    },
+                    a = function () {
+                      n(t.error || new DOMException('AbortError', 'AbortError')), i();
+                    };
+                  t.addEventListener('complete', r),
+                    t.addEventListener('error', a),
+                    t.addEventListener('abort', a);
+                });
+                o.set(t, e);
+              }
+            })(t),
+          (n = t),
+          (e || (e = [IDBDatabase, IDBObjectStore, IDBIndex, IDBCursor, IDBTransaction])).some(
+            function (t) {
+              return n instanceof t;
+            },
+          )
+            ? new Proxy(t, l)
+            : t);
+      var n;
+    }
+    function f(t) {
+      if (t instanceof IDBRequest)
+        return (
+          (e = t),
+          (n = new Promise(function (t, n) {
+            var i = function () {
+                e.removeEventListener('success', r), e.removeEventListener('error', a);
+              },
+              r = function () {
+                t(f(e.result)), i();
+              },
+              a = function () {
+                n(e.error), i();
+              };
+            e.addEventListener('success', r), e.addEventListener('error', a);
+          }))
+            .then(function (t) {
+              t instanceof IDBCursor && a.set(t, e);
+            })
+            .catch(function () {}),
+          c.set(n, e),
+          n
+        );
+      var e, n;
+      if (u.has(t)) return u.get(t);
+      var i = h(t);
+      return i !== t && (u.set(t, i), c.set(i, t)), i;
+    }
+    var g = function (t) {
+        return c.get(t);
+      },
+      p = function () {
+        return (p =
+          Object.assign ||
+          function (t) {
+            for (var e, n = 1, i = arguments.length; n < i; n++)
+              for (var r in (e = arguments[n]))
+                Object.prototype.hasOwnProperty.call(e, r) && (t[r] = e[r]);
+            return t;
+          }).apply(this, arguments);
+      },
+      v = function (t, e, n, i) {
+        return new (n || (n = Promise))(function (r, a) {
+          function o(t) {
+            try {
+              u(i.next(t));
+            } catch (t) {
+              a(t);
+            }
+          }
+          function s(t) {
+            try {
+              u(i.throw(t));
+            } catch (t) {
+              a(t);
+            }
+          }
+          function u(t) {
+            var e;
+            t.done
+              ? r(t.value)
+              : ((e = t.value),
+                e instanceof n
+                  ? e
+                  : new n(function (t) {
+                      t(e);
+                    })).then(o, s);
+          }
+          u((i = i.apply(t, e || [])).next());
+        });
+      },
+      _ = function (t, e) {
+        var n,
+          i,
+          r,
+          a,
+          o = {
+            label: 0,
+            sent: function () {
+              if (1 & r[0]) throw r[1];
+              return r[1];
+            },
+            trys: [],
+            ops: [],
+          };
+        return (
+          (a = { next: s(0), throw: s(1), return: s(2) }),
+          'function' == typeof Symbol &&
+            (a[Symbol.iterator] = function () {
+              return this;
+            }),
+          a
+        );
+        function s(a) {
+          return function (s) {
+            return (function (a) {
+              if (n) throw new TypeError('Generator is already executing.');
+              for (; o; )
+                try {
+                  if (
+                    ((n = 1),
+                    i &&
+                      (r =
+                        2 & a[0]
+                          ? i.return
+                          : a[0]
+                          ? i.throw || ((r = i.return) && r.call(i), 0)
+                          : i.next) &&
+                      !(r = r.call(i, a[1])).done)
+                  )
+                    return r;
+                  switch (((i = 0), r && (a = [2 & a[0], r.value]), a[0])) {
+                    case 0:
+                    case 1:
+                      r = a;
+                      break;
+                    case 4:
+                      return o.label++, { value: a[1], done: !1 };
+                    case 5:
+                      o.label++, (i = a[1]), (a = [0]);
+                      continue;
+                    case 7:
+                      (a = o.ops.pop()), o.trys.pop();
+                      continue;
+                    default:
+                      if (
+                        !(
+                          (r = (r = o.trys).length > 0 && r[r.length - 1]) ||
+                          (6 !== a[0] && 2 !== a[0])
+                        )
+                      ) {
+                        o = 0;
+                        continue;
+                      }
+                      if (3 === a[0] && (!r || (a[1] > r[0] && a[1] < r[3]))) {
+                        o.label = a[1];
+                        break;
+                      }
+                      if (6 === a[0] && o.label < r[1]) {
+                        (o.label = r[1]), (r = a);
+                        break;
+                      }
+                      if (r && o.label < r[2]) {
+                        (o.label = r[2]), o.ops.push(a);
+                        break;
+                      }
+                      r[2] && o.ops.pop(), o.trys.pop();
+                      continue;
+                  }
+                  a = e.call(t, o);
+                } catch (t) {
+                  (a = [6, t]), (i = 0);
+                } finally {
+                  n = r = 0;
+                }
+              if (5 & a[0]) throw a[1];
+              return { value: a[0] ? a[1] : void 0, done: !0 };
+            })([a, s]);
+          };
+        }
+      },
+      m = function (t, e) {
+        var n = 'function' == typeof Symbol && t[Symbol.iterator];
+        if (!n) return t;
+        var i,
+          r,
+          a = n.call(t),
+          o = [];
+        try {
+          for (; (void 0 === e || e-- > 0) && !(i = a.next()).done; ) o.push(i.value);
+        } catch (t) {
+          r = { error: t };
+        } finally {
+          try {
+            i && !i.done && (n = a.return) && n.call(a);
+          } finally {
+            if (r) throw r.error;
+          }
+        }
+        return o;
+      },
+      y = function (t, e, n) {
+        if (n || 2 === arguments.length)
+          for (var i, r = 0, a = e.length; r < a; r++)
+            (!i && r in e) || (i || (i = Array.prototype.slice.call(e, 0, r)), (i[r] = e[r]));
+        return t.concat(i || Array.prototype.slice.call(e));
+      },
+      b = ['get', 'getKey', 'getAll', 'getAllKeys', 'count'],
+      w = ['put', 'add', 'delete', 'clear'],
+      E = new Map();
+    function S(t, e) {
+      if (t instanceof IDBDatabase && !(e in t) && 'string' == typeof e) {
+        if (E.get(e)) return E.get(e);
+        var n = e.replace(/FromIndex$/, ''),
+          i = e !== n,
+          r = w.includes(n);
+        if (n in (i ? IDBIndex : IDBObjectStore).prototype && (r || b.includes(n))) {
+          var a = function (t) {
+            for (var e = [], a = 1; a < arguments.length; a++) e[a - 1] = arguments[a];
+            return v(this, void 0, void 0, function () {
+              var a, o, s;
+              return _(this, function (u) {
+                switch (u.label) {
+                  case 0:
+                    return (
+                      (a = this.transaction(t, r ? 'readwrite' : 'readonly')),
+                      (o = a.store),
+                      i && (o = o.index(e.shift())),
+                      [4, Promise.all([(s = o)[n].apply(s, y([], m(e), !1)), r && a.done])]
+                    );
+                  case 1:
+                    return [2, u.sent()[0]];
+                }
+              });
+            });
+          };
+          return E.set(e, a), a;
+        }
+      }
+    }
+    (l = (function (t) {
+      return p(p({}, t), {
+        get: function (e, n, i) {
+          return S(e, n) || t.get(e, n, i);
+        },
+        has: function (e, n) {
+          return !!S(e, n) || t.has(e, n);
+        },
+      });
+    })(l)),
+      (t.deleteDB = function (t, e) {
+        var n = (void 0 === e ? {} : e).blocked,
+          i = indexedDB.deleteDatabase(t);
+        return (
+          n &&
+            i.addEventListener('blocked', function (t) {
+              return n(t.oldVersion, t);
+            }),
+          f(i).then(function () {})
+        );
+      }),
+      (t.openDB = function (t, e, n) {
+        var i = void 0 === n ? {} : n,
+          r = i.blocked,
+          a = i.upgrade,
+          o = i.blocking,
+          s = i.terminated,
+          u = indexedDB.open(t, e),
+          c = f(u);
+        return (
+          a &&
+            u.addEventListener('upgradeneeded', function (t) {
+              a(f(u.result), t.oldVersion, t.newVersion, f(u.transaction), t);
+            }),
+          r &&
+            u.addEventListener('blocked', function (t) {
+              return r(t.oldVersion, t.newVersion, t);
+            }),
+          c
+            .then(function (t) {
+              s &&
+                t.addEventListener('close', function () {
+                  return s();
+                }),
+                o &&
+                  t.addEventListener('versionchange', function (t) {
+                    return o(t.oldVersion, t.newVersion, t);
+                  });
+            })
+            .catch(function () {}),
+          c
+        );
+      }),
+      (t.unwrap = g),
+      (t.wrap = f);
+  })(_POSignalsEntities || (_POSignalsEntities = {})),
   (function (t) {
     function e(t, n) {
       var i;
@@ -1914,6 +2303,18 @@ var _POSignalsEntities;
       (e.prototype.set = function (t, e) {
         return this._request('set', { key: t, value: e });
       }),
+      (e.prototype.getSignedPayload = function (t, e) {
+        return (
+          console.log('sending payload: ', t, ' deviceId: ', e),
+          this._request('getSignedData', { payload: t, deviceId: e })
+        );
+      }),
+      (e.prototype.getDeviceDetails = function (t) {
+        return this._request('getDeviceDetails', { deviceName: t });
+      }),
+      (e.prototype.setDeviceDetails = function (t, e) {
+        return this._request('setDeviceDetails', { deviceName: t, deviceId: e });
+      }),
       (e.prototype.get = function (t) {
         var e = Array.prototype.slice.call(arguments);
         return this._request('get', { keys: e });
@@ -1928,14 +2329,19 @@ var _POSignalsEntities;
       (e.prototype.getKeys = function () {
         return this._request('getKeys');
       }),
-      (e.prototype.close = function () {
-        var t = document.getElementById(this._frameId);
-        t && t.parentNode.removeChild(t),
-          window.removeEventListener
-            ? window.removeEventListener('message', this._listener, !1)
-            : window.detachEvent('onmessage', this._listener),
-          (this._connected = !1),
-          (this._closed = !0);
+      (e.prototype.close = function (t) {
+        const e = this._frameId;
+        this._request('close')
+          .catch(function () {})
+          .finally(function () {
+            var n = document.getElementById(e);
+            n && !t && n.parentNode.removeChild(n),
+              window.removeEventListener
+                ? window.removeEventListener('message', this._listener, !1)
+                : window.detachEvent('onmessage', this._listener),
+              (this._connected = !1),
+              (this._closed = !0);
+          });
       }),
       (e.prototype._installListener = function () {
         var t = this;
@@ -2066,11 +2472,11 @@ var _POSignalsEntities;
           arguments.length > 2 && (r = arguments[2]);
         }
         for (
-          var o, s = i(n.length), u = e(this) ? Object(new this(s)) : new Array(s), l = 0;
-          l < s;
+          var o, s = i(n.length), u = e(this) ? Object(new this(s)) : new Array(s), c = 0;
+          c < s;
 
         )
-          (o = n[l]), (u[l] = a ? (void 0 === r ? a(o, l) : a.call(r, o, l)) : o), (l += 1);
+          (o = n[c]), (u[c] = a ? (void 0 === r ? a(o, c) : a.call(r, o, c)) : o), (c += 1);
         return (u.length = s), u;
       };
     })()),
@@ -2111,8 +2517,8 @@ var _POSignalsEntities;
       o = 'version',
       s = 'mobile',
       u = 'tablet',
-      l = 'smarttv',
-      c = function (t) {
+      c = 'smarttv',
+      l = function (t) {
         for (var e = {}, n = 0; n < t.length; n++) e[t[n].toUpperCase()] = t[n];
         return e;
       },
@@ -2131,13 +2537,13 @@ var _POSignalsEntities;
       },
       g = function (t, e) {
         for (var n, i, r, a, o, s, u = 0; u < e.length && !o; ) {
-          var l = e[u],
-            c = e[u + 1];
-          for (n = i = 0; n < l.length && !o; )
-            if ((o = l[n++].exec(t)))
-              for (r = 0; r < c.length; r++)
+          var c = e[u],
+            l = e[u + 1];
+          for (n = i = 0; n < c.length && !o; )
+            if ((o = c[n++].exec(t)))
+              for (r = 0; r < l.length; r++)
                 (s = o[++i]),
-                  'object' == typeof (a = c[r]) && a.length > 0
+                  'object' == typeof (a = l[r]) && a.length > 0
                     ? 2 === a.length
                       ? 'function' == typeof a[1]
                         ? (this[a[0]] = a[1].call(this, s))
@@ -2159,7 +2565,7 @@ var _POSignalsEntities;
           } else if (d(e[n], t)) return '?' === n ? void 0 : n;
         return t;
       },
-      _ = {
+      v = {
         ME: '4.90',
         'NT 3.11': 'NT3.51',
         'NT 4.0': 'NT4.0',
@@ -2172,7 +2578,7 @@ var _POSignalsEntities;
         10: ['NT 6.4', 'NT 10.0'],
         RT: 'ARM',
       },
-      v = {
+      _ = {
         browser: [
           [/\b(?:crmo|crios)\/([\w\.]+)/i],
           [o, [i, 'Chrome']],
@@ -2531,30 +2937,30 @@ var _POSignalsEntities;
           [/\b(xbox(?: one)?(?!; xbox))[\); ]/i],
           [n, [a, 'Microsoft'], [r, 'console']],
           [/smart-tv.+(samsung)/i],
-          [a, [r, l]],
+          [a, [r, c]],
           [/hbbtv.+maple;(\d+)/i],
           [
             [n, /^/, 'SmartTV'],
             [a, 'Samsung'],
-            [r, l],
+            [r, c],
           ],
           [/(nux; netcast.+smarttv|lg (netcast\.tv-201\d|android tv))/i],
           [
             [a, 'LG'],
-            [r, l],
+            [r, c],
           ],
           [/(apple) ?tv/i],
-          [a, [n, 'Apple TV'], [r, l]],
+          [a, [n, 'Apple TV'], [r, c]],
           [/crkey/i],
           [
             [n, 'Chromecast'],
             [a, 'Google'],
-            [r, l],
+            [r, c],
           ],
           [/droid.+aft(\w)( bui|\))/i],
-          [n, [a, 'Amazon'], [r, l]],
+          [n, [a, 'Amazon'], [r, c]],
           [/\(dtv[\);].+(aquos)/i],
-          [n, [a, 'Sharp'], [r, l]],
+          [n, [a, 'Sharp'], [r, c]],
           [
             /\b(roku)[\dx]*[\)\/]((?:dvp-)?[\d\.]*)/i,
             /hbbtv\/\d+\.\d+\.\d+ +\([\w ]*; *(\w[^;]*);([^;]*)/i,
@@ -2562,10 +2968,10 @@ var _POSignalsEntities;
           [
             [a, f],
             [n, f],
-            [r, l],
+            [r, c],
           ],
           [/\b(android tv|smart[- ]?tv|opera tv|tv; rv:)\b/i],
-          [[r, l]],
+          [[r, c]],
           [/((pebble))app/i],
           [a, n, [r, 'wearable']],
           [/droid.+; (glass) \d/i],
@@ -2611,11 +3017,11 @@ var _POSignalsEntities;
             /(windows (?:phone(?: os)?|mobile))[\/ ]?([\d\.\w ]*)/i,
             /(windows)[\/ ]?([ntce\d\. ]+\w)(?!.+xbox)/i,
           ],
-          [i, [o, p, _]],
+          [i, [o, p, v]],
           [/(win(?=3|9|n)|win 9x )([nt\d\.]+)/i],
           [
             [i, 'Windows'],
-            [o, p, _],
+            [o, p, v],
           ],
           [/ip[honead]{2,4}\b(?:.*os ([\w]+) like mac|; opera)/i, /cfnetwork\/.+darwin/i],
           [
@@ -2686,8 +3092,8 @@ var _POSignalsEntities;
                 for (var i in t)
                   e[i] && e[i].length % 2 == 0 ? (n[i] = e[i].concat(t[i])) : (n[i] = t[i]);
                 return n;
-              })(v, e)
-            : v;
+              })(_, e)
+            : _;
         return (
           (this.getBrowser = function () {
             var t,
@@ -2740,10 +3146,10 @@ var _POSignalsEntities;
         );
       };
     (m.VERSION = '1.0.2'),
-      (m.BROWSER = c([i, o, 'major'])),
-      (m.CPU = c(['architecture'])),
-      (m.DEVICE = c([n, a, r, 'console', s, l, u, 'wearable', 'embedded'])),
-      (m.ENGINE = m.OS = c([i, o])),
+      (m.BROWSER = l([i, o, 'major'])),
+      (m.CPU = l(['architecture'])),
+      (m.DEVICE = l([n, a, r, 'console', s, c, u, 'wearable', 'embedded'])),
+      (m.ENGINE = m.OS = l([i, o])),
       (t.UAParser = m);
   })(_POSignalsEntities || (_POSignalsEntities = {})),
   ((_POSignalsEntities || (_POSignalsEntities = {})).pako = (function t(e, n, i) {
@@ -2753,18 +3159,18 @@ var _POSignalsEntities;
           var u = 'function' == typeof require && require;
           if (!s && u) return u(o, !0);
           if (a) return a(o, !0);
-          var l = new Error("Cannot find module '" + o + "'");
-          throw ((l.code = 'MODULE_NOT_FOUND'), l);
+          var c = new Error("Cannot find module '" + o + "'");
+          throw ((c.code = 'MODULE_NOT_FOUND'), c);
         }
-        var c = (n[o] = { exports: {} });
+        var l = (n[o] = { exports: {} });
         e[o][0].call(
-          c.exports,
+          l.exports,
           function (t) {
             var n = e[o][1][t];
             return r(n || t);
           },
-          c,
-          c.exports,
+          l,
+          l.exports,
           t,
           e,
           n,
@@ -2905,22 +3311,22 @@ var _POSignalsEntities;
                 a,
                 o,
                 u = e || t.length,
-                l = new Array(2 * u);
+                c = new Array(2 * u);
               for (r = 0, n = 0; n < u; )
-                if ((a = t[n++]) < 128) l[r++] = a;
-                else if ((o = s[a]) > 4) (l[r++] = 65533), (n += o - 1);
+                if ((a = t[n++]) < 128) c[r++] = a;
+                else if ((o = s[a]) > 4) (c[r++] = 65533), (n += o - 1);
                 else {
                   for (a &= 2 === o ? 31 : 3 === o ? 15 : 7; o > 1 && n < u; )
                     (a = (a << 6) | (63 & t[n++])), o--;
                   o > 1
-                    ? (l[r++] = 65533)
+                    ? (c[r++] = 65533)
                     : a < 65536
-                    ? (l[r++] = a)
+                    ? (c[r++] = a)
                     : ((a -= 65536),
-                      (l[r++] = 55296 | ((a >> 10) & 1023)),
-                      (l[r++] = 56320 | (1023 & a)));
+                      (c[r++] = 55296 | ((a >> 10) & 1023)),
+                      (c[r++] = 56320 | (1023 & a)));
                 }
-              return i(l, r);
+              return i(c, r);
             }),
             (n.utf8border = function (t, e) {
               var n;
@@ -3010,10 +3416,10 @@ var _POSignalsEntities;
           function u(t, e) {
             t.pending_buf[t.pending++] = e;
           }
-          function l(t, e) {
+          function c(t, e) {
             (t.pending_buf[t.pending++] = (e >>> 8) & 255), (t.pending_buf[t.pending++] = 255 & e);
           }
-          function c(t, e, n, i) {
+          function l(t, e, n, i) {
             var r = t.avail_in;
             return (
               r > i && (r = i),
@@ -3036,39 +3442,39 @@ var _POSignalsEntities;
               a = t.strstart,
               o = t.prev_length,
               s = t.nice_match,
-              u = t.strstart > t.w_size - W ? t.strstart - (t.w_size - W) : 0,
-              l = t.window,
-              c = t.w_mask,
+              u = t.strstart > t.w_size - K ? t.strstart - (t.w_size - K) : 0,
+              c = t.window,
+              l = t.w_mask,
               d = t.prev,
-              h = t.strstart + V,
-              f = l[a + o - 1],
-              g = l[a + o];
+              h = t.strstart + z,
+              f = c[a + o - 1],
+              g = c[a + o];
             t.prev_length >= t.good_match && (r >>= 2), s > t.lookahead && (s = t.lookahead);
             do {
               if (
-                l[(n = e) + o] === g &&
-                l[n + o - 1] === f &&
-                l[n] === l[a] &&
-                l[++n] === l[a + 1]
+                c[(n = e) + o] === g &&
+                c[n + o - 1] === f &&
+                c[n] === c[a] &&
+                c[++n] === c[a + 1]
               ) {
                 (a += 2), n++;
                 do {} while (
-                  l[++a] === l[++n] &&
-                  l[++a] === l[++n] &&
-                  l[++a] === l[++n] &&
-                  l[++a] === l[++n] &&
-                  l[++a] === l[++n] &&
-                  l[++a] === l[++n] &&
-                  l[++a] === l[++n] &&
-                  l[++a] === l[++n] &&
+                  c[++a] === c[++n] &&
+                  c[++a] === c[++n] &&
+                  c[++a] === c[++n] &&
+                  c[++a] === c[++n] &&
+                  c[++a] === c[++n] &&
+                  c[++a] === c[++n] &&
+                  c[++a] === c[++n] &&
+                  c[++a] === c[++n] &&
                   a < h
                 );
-                if (((i = V - (h - a)), (a = h - V), i > o)) {
+                if (((i = z - (h - a)), (a = h - z), i > o)) {
                   if (((t.match_start = e), (o = i), i >= s)) break;
-                  (f = l[a + o - 1]), (g = l[a + o]);
+                  (f = c[a + o - 1]), (g = c[a + o]);
                 }
               }
-            } while ((e = d[e & c]) > u && 0 != --r);
+            } while ((e = d[e & l]) > u && 0 != --r);
             return o <= t.lookahead ? o : t.lookahead;
           }
           function h(t) {
@@ -3079,7 +3485,7 @@ var _POSignalsEntities;
               a,
               o = t.w_size;
             do {
-              if (((r = t.window_size - t.lookahead - t.strstart), t.strstart >= o + (o - W))) {
+              if (((r = t.window_size - t.lookahead - t.strstart), t.strstart >= o + (o - K))) {
                 S.arraySet(t.window, t.window, o, o, 0),
                   (t.match_start -= o),
                   (t.strstart -= o),
@@ -3096,51 +3502,51 @@ var _POSignalsEntities;
               }
               if (0 === t.strm.avail_in) break;
               if (
-                ((n = c(t.strm, t.window, t.strstart + t.lookahead, r)),
+                ((n = l(t.strm, t.window, t.strstart + t.lookahead, r)),
                 (t.lookahead += n),
-                t.lookahead + t.insert >= z)
+                t.lookahead + t.insert >= V)
               )
                 for (
                   a = t.strstart - t.insert,
                     t.ins_h = t.window[a],
                     t.ins_h = ((t.ins_h << t.hash_shift) ^ t.window[a + 1]) & t.hash_mask;
                   t.insert &&
-                  ((t.ins_h = ((t.ins_h << t.hash_shift) ^ t.window[a + z - 1]) & t.hash_mask),
+                  ((t.ins_h = ((t.ins_h << t.hash_shift) ^ t.window[a + V - 1]) & t.hash_mask),
                   (t.prev[a & t.w_mask] = t.head[t.ins_h]),
                   (t.head[t.ins_h] = a),
                   a++,
                   t.insert--,
-                  !(t.lookahead + t.insert < z));
+                  !(t.lookahead + t.insert < V));
 
                 );
-            } while (t.lookahead < W && 0 !== t.strm.avail_in);
+            } while (t.lookahead < K && 0 !== t.strm.avail_in);
           }
           function f(t, e) {
             for (var n, i; ; ) {
-              if (t.lookahead < W) {
-                if ((h(t), t.lookahead < W && e === I)) return q;
+              if (t.lookahead < K) {
+                if ((h(t), t.lookahead < K && e === I)) return q;
                 if (0 === t.lookahead) break;
               }
               if (
                 ((n = 0),
-                t.lookahead >= z &&
+                t.lookahead >= V &&
                   ((t.ins_h =
-                    ((t.ins_h << t.hash_shift) ^ t.window[t.strstart + z - 1]) & t.hash_mask),
+                    ((t.ins_h << t.hash_shift) ^ t.window[t.strstart + V - 1]) & t.hash_mask),
                   (n = t.prev[t.strstart & t.w_mask] = t.head[t.ins_h]),
                   (t.head[t.ins_h] = t.strstart)),
-                0 !== n && t.strstart - n <= t.w_size - W && (t.match_length = d(t, n)),
-                t.match_length >= z)
+                0 !== n && t.strstart - n <= t.w_size - K && (t.match_length = d(t, n)),
+                t.match_length >= V)
               )
                 if (
-                  ((i = A._tr_tally(t, t.strstart - t.match_start, t.match_length - z)),
+                  ((i = A._tr_tally(t, t.strstart - t.match_start, t.match_length - V)),
                   (t.lookahead -= t.match_length),
-                  t.match_length <= t.max_lazy_match && t.lookahead >= z)
+                  t.match_length <= t.max_lazy_match && t.lookahead >= V)
                 ) {
                   t.match_length--;
                   do {
                     t.strstart++,
                       (t.ins_h =
-                        ((t.ins_h << t.hash_shift) ^ t.window[t.strstart + z - 1]) & t.hash_mask),
+                        ((t.ins_h << t.hash_shift) ^ t.window[t.strstart + V - 1]) & t.hash_mask),
                       (n = t.prev[t.strstart & t.w_mask] = t.head[t.ins_h]),
                       (t.head[t.ins_h] = t.strstart);
                   } while (0 != --t.match_length);
@@ -3155,8 +3561,8 @@ var _POSignalsEntities;
               if (i && (s(t, !1), 0 === t.strm.avail_out)) return q;
             }
             return (
-              (t.insert = t.strstart < z - 1 ? t.strstart : z - 1),
-              e === M
+              (t.insert = t.strstart < V - 1 ? t.strstart : V - 1),
+              e === D
                 ? (s(t, !0), 0 === t.strm.avail_out ? J : Z)
                 : t.last_lit && (s(t, !1), 0 === t.strm.avail_out)
                 ? q
@@ -3165,44 +3571,44 @@ var _POSignalsEntities;
           }
           function g(t, e) {
             for (var n, i, r; ; ) {
-              if (t.lookahead < W) {
-                if ((h(t), t.lookahead < W && e === I)) return q;
+              if (t.lookahead < K) {
+                if ((h(t), t.lookahead < K && e === I)) return q;
                 if (0 === t.lookahead) break;
               }
               if (
                 ((n = 0),
-                t.lookahead >= z &&
+                t.lookahead >= V &&
                   ((t.ins_h =
-                    ((t.ins_h << t.hash_shift) ^ t.window[t.strstart + z - 1]) & t.hash_mask),
+                    ((t.ins_h << t.hash_shift) ^ t.window[t.strstart + V - 1]) & t.hash_mask),
                   (n = t.prev[t.strstart & t.w_mask] = t.head[t.ins_h]),
                   (t.head[t.ins_h] = t.strstart)),
                 (t.prev_length = t.match_length),
                 (t.prev_match = t.match_start),
-                (t.match_length = z - 1),
+                (t.match_length = V - 1),
                 0 !== n &&
                   t.prev_length < t.max_lazy_match &&
-                  t.strstart - n <= t.w_size - W &&
+                  t.strstart - n <= t.w_size - K &&
                   ((t.match_length = d(t, n)),
                   t.match_length <= 5 &&
                     (t.strategy === U ||
-                      (t.match_length === z && t.strstart - t.match_start > 4096)) &&
-                    (t.match_length = z - 1)),
-                t.prev_length >= z && t.match_length <= t.prev_length)
+                      (t.match_length === V && t.strstart - t.match_start > 4096)) &&
+                    (t.match_length = V - 1)),
+                t.prev_length >= V && t.match_length <= t.prev_length)
               ) {
-                (r = t.strstart + t.lookahead - z),
-                  (i = A._tr_tally(t, t.strstart - 1 - t.prev_match, t.prev_length - z)),
+                (r = t.strstart + t.lookahead - V),
+                  (i = A._tr_tally(t, t.strstart - 1 - t.prev_match, t.prev_length - V)),
                   (t.lookahead -= t.prev_length - 1),
                   (t.prev_length -= 2);
                 do {
                   ++t.strstart <= r &&
                     ((t.ins_h =
-                      ((t.ins_h << t.hash_shift) ^ t.window[t.strstart + z - 1]) & t.hash_mask),
+                      ((t.ins_h << t.hash_shift) ^ t.window[t.strstart + V - 1]) & t.hash_mask),
                     (n = t.prev[t.strstart & t.w_mask] = t.head[t.ins_h]),
                     (t.head[t.ins_h] = t.strstart));
                 } while (0 != --t.prev_length);
                 if (
                   ((t.match_available = 0),
-                  (t.match_length = z - 1),
+                  (t.match_length = V - 1),
                   t.strstart++,
                   i && (s(t, !1), 0 === t.strm.avail_out))
                 )
@@ -3220,8 +3626,8 @@ var _POSignalsEntities;
             return (
               t.match_available &&
                 ((i = A._tr_tally(t, 0, t.window[t.strstart - 1])), (t.match_available = 0)),
-              (t.insert = t.strstart < z - 1 ? t.strstart : z - 1),
-              e === M
+              (t.insert = t.strstart < V - 1 ? t.strstart : V - 1),
+              e === D
                 ? (s(t, !0), 0 === t.strm.avail_out ? J : Z)
                 : t.last_lit && (s(t, !1), 0 === t.strm.avail_out)
                 ? q
@@ -3230,17 +3636,17 @@ var _POSignalsEntities;
           }
           function p(t, e) {
             for (var n, i, r, a, o = t.window; ; ) {
-              if (t.lookahead <= V) {
-                if ((h(t), t.lookahead <= V && e === I)) return q;
+              if (t.lookahead <= z) {
+                if ((h(t), t.lookahead <= z && e === I)) return q;
                 if (0 === t.lookahead) break;
               }
               if (
                 ((t.match_length = 0),
-                t.lookahead >= z &&
+                t.lookahead >= V &&
                   t.strstart > 0 &&
                   ((r = t.strstart - 1), (i = o[r]) === o[++r] && i === o[++r] && i === o[++r]))
               ) {
-                a = t.strstart + V;
+                a = t.strstart + z;
                 do {} while (
                   i === o[++r] &&
                   i === o[++r] &&
@@ -3252,12 +3658,12 @@ var _POSignalsEntities;
                   i === o[++r] &&
                   r < a
                 );
-                (t.match_length = V - (a - r)),
+                (t.match_length = z - (a - r)),
                   t.match_length > t.lookahead && (t.match_length = t.lookahead);
               }
               if (
-                (t.match_length >= z
-                  ? ((n = A._tr_tally(t, 1, t.match_length - z)),
+                (t.match_length >= V
+                  ? ((n = A._tr_tally(t, 1, t.match_length - V)),
                     (t.lookahead -= t.match_length),
                     (t.strstart += t.match_length),
                     (t.match_length = 0))
@@ -3268,14 +3674,14 @@ var _POSignalsEntities;
             }
             return (
               (t.insert = 0),
-              e === M
+              e === D
                 ? (s(t, !0), 0 === t.strm.avail_out ? J : Z)
                 : t.last_lit && (s(t, !1), 0 === t.strm.avail_out)
                 ? q
                 : X
             );
           }
-          function _(t, e) {
+          function v(t, e) {
             for (var n; ; ) {
               if (0 === t.lookahead && (h(t), 0 === t.lookahead)) {
                 if (e === I) return q;
@@ -3292,14 +3698,14 @@ var _POSignalsEntities;
             }
             return (
               (t.insert = 0),
-              e === M
+              e === D
                 ? (s(t, !0), 0 === t.strm.avail_out ? J : Z)
                 : t.last_lit && (s(t, !1), 0 === t.strm.avail_out)
                 ? q
                 : X
             );
           }
-          function v(t, e, n, i, r) {
+          function _(t, e, n, i, r) {
             (this.good_length = t),
               (this.max_lazy = e),
               (this.nice_length = n),
@@ -3316,7 +3722,7 @@ var _POSignalsEntities;
               (this.wrap = 0),
               (this.gzhead = null),
               (this.gzindex = 0),
-              (this.method = x),
+              (this.method = R),
               (this.last_flush = -1),
               (this.w_size = 0),
               (this.w_bits = 0),
@@ -3345,8 +3751,8 @@ var _POSignalsEntities;
               (this.good_match = 0),
               (this.nice_match = 0),
               (this.dyn_ltree = new S.Buf16(2 * j)),
-              (this.dyn_dtree = new S.Buf16(2 * (2 * F + 1))),
-              (this.bl_tree = new S.Buf16(2 * (2 * H + 1))),
+              (this.dyn_dtree = new S.Buf16(2 * (2 * H + 1))),
+              (this.bl_tree = new S.Buf16(2 * (2 * F + 1))),
               a(this.dyn_ltree),
               a(this.dyn_dtree),
               a(this.bl_tree),
@@ -3371,52 +3777,52 @@ var _POSignalsEntities;
               (this.bi_buf = 0),
               (this.bi_valid = 0);
           }
-          function b(t) {
+          function y(t) {
             var e;
             return t && t.state
               ? ((t.total_in = t.total_out = 0),
-                (t.data_type = R),
+                (t.data_type = x),
                 ((e = t.state).pending = 0),
                 (e.pending_out = 0),
                 e.wrap < 0 && (e.wrap = -e.wrap),
-                (e.status = e.wrap ? K : Y),
+                (e.status = e.wrap ? Y : W),
                 (t.adler = 2 === e.wrap ? 0 : 1),
                 (e.last_flush = I),
                 A._tr_init(e),
                 C)
-              : i(t, L);
+              : i(t, M);
           }
-          function y(t) {
-            var e = b(t);
+          function b(t) {
+            var e = y(t);
             return (
               e === C &&
                 (function (t) {
                   (t.window_size = 2 * t.w_size),
                     a(t.head),
-                    (t.max_lazy_match = w[t.level].max_lazy),
-                    (t.good_match = w[t.level].good_length),
-                    (t.nice_match = w[t.level].nice_length),
-                    (t.max_chain_length = w[t.level].max_chain),
+                    (t.max_lazy_match = E[t.level].max_lazy),
+                    (t.good_match = E[t.level].good_length),
+                    (t.nice_match = E[t.level].nice_length),
+                    (t.max_chain_length = E[t.level].max_chain),
                     (t.strstart = 0),
                     (t.block_start = 0),
                     (t.lookahead = 0),
                     (t.insert = 0),
-                    (t.match_length = t.prev_length = z - 1),
+                    (t.match_length = t.prev_length = V - 1),
                     (t.match_available = 0),
                     (t.ins_h = 0);
                 })(t.state),
               e
             );
           }
-          function E(t, e, n, r, a, o) {
-            if (!t) return L;
+          function w(t, e, n, r, a, o) {
+            if (!t) return M;
             var s = 1;
             if (
-              (e === D && (e = 6),
+              (e === L && (e = 6),
               r < 0 ? ((s = 0), (r = -r)) : r > 15 && ((s = 2), (r -= 16)),
-              a < 1 || a > N || n !== x || r < 8 || r > 15 || e < 0 || e > 9 || o < 0 || o > k)
+              a < 1 || a > N || n !== R || r < 8 || r > 15 || e < 0 || e > 9 || o < 0 || o > k)
             )
-              return i(t, L);
+              return i(t, M);
             8 === r && (r = 9);
             var u = new m();
             return (
@@ -3430,7 +3836,7 @@ var _POSignalsEntities;
               (u.hash_bits = a + 7),
               (u.hash_size = 1 << u.hash_bits),
               (u.hash_mask = u.hash_size - 1),
-              (u.hash_shift = ~~((u.hash_bits + z - 1) / z)),
+              (u.hash_shift = ~~((u.hash_bits + V - 1) / V)),
               (u.window = new S.Buf8(2 * u.w_size)),
               (u.head = new S.Buf16(u.hash_size)),
               (u.prev = new S.Buf16(u.w_size)),
@@ -3442,41 +3848,41 @@ var _POSignalsEntities;
               (u.level = e),
               (u.strategy = o),
               (u.method = n),
-              y(t)
+              b(t)
             );
           }
-          var w,
+          var E,
             S = t('../utils/common'),
             A = t('./trees'),
             O = t('./adler32'),
             P = t('./crc32'),
             T = t('./messages'),
             I = 0,
-            M = 4,
+            D = 4,
             C = 0,
-            L = -2,
-            D = -1,
+            M = -2,
+            L = -1,
             U = 1,
             k = 4,
-            R = 2,
-            x = 8,
+            x = 2,
+            R = 8,
             N = 9,
             B = 286,
-            F = 30,
-            H = 19,
+            H = 30,
+            F = 19,
             j = 2 * B + 1,
             G = 15,
-            z = 3,
-            V = 258,
-            W = V + z + 1,
-            K = 42,
-            Y = 113,
+            V = 3,
+            z = 258,
+            K = z + V + 1,
+            Y = 42,
+            W = 113,
             q = 1,
             X = 2,
             J = 3,
             Z = 4;
-          (w = [
-            new v(0, 0, 0, 0, function (t, e) {
+          (E = [
+            new _(0, 0, 0, 0, function (t, e) {
               var n = 65535;
               for (n > t.pending_buf_size - 5 && (n = t.pending_buf_size - 5); ; ) {
                 if (t.lookahead <= 1) {
@@ -3494,46 +3900,46 @@ var _POSignalsEntities;
                 )
                   return q;
                 if (
-                  t.strstart - t.block_start >= t.w_size - W &&
+                  t.strstart - t.block_start >= t.w_size - K &&
                   (s(t, !1), 0 === t.strm.avail_out)
                 )
                   return q;
               }
               return (
                 (t.insert = 0),
-                e === M
+                e === D
                   ? (s(t, !0), 0 === t.strm.avail_out ? J : Z)
                   : (t.strstart > t.block_start && (s(t, !1), t.strm.avail_out), q)
               );
             }),
-            new v(4, 4, 8, 4, f),
-            new v(4, 5, 16, 8, f),
-            new v(4, 6, 32, 32, f),
-            new v(4, 4, 16, 16, g),
-            new v(8, 16, 32, 32, g),
-            new v(8, 16, 128, 128, g),
-            new v(8, 32, 128, 256, g),
-            new v(32, 128, 258, 1024, g),
-            new v(32, 258, 258, 4096, g),
+            new _(4, 4, 8, 4, f),
+            new _(4, 5, 16, 8, f),
+            new _(4, 6, 32, 32, f),
+            new _(4, 4, 16, 16, g),
+            new _(8, 16, 32, 32, g),
+            new _(8, 16, 128, 128, g),
+            new _(8, 32, 128, 256, g),
+            new _(32, 128, 258, 1024, g),
+            new _(32, 258, 258, 4096, g),
           ]),
             (n.deflateInit = function (t, e) {
-              return E(t, e, x, 15, 8, 0);
+              return w(t, e, R, 15, 8, 0);
             }),
-            (n.deflateInit2 = E),
-            (n.deflateReset = y),
-            (n.deflateResetKeep = b),
+            (n.deflateInit2 = w),
+            (n.deflateReset = b),
+            (n.deflateResetKeep = y),
             (n.deflateSetHeader = function (t, e) {
-              return t && t.state ? (2 !== t.state.wrap ? L : ((t.state.gzhead = e), C)) : L;
+              return t && t.state ? (2 !== t.state.wrap ? M : ((t.state.gzhead = e), C)) : M;
             }),
             (n.deflate = function (t, e) {
-              var n, s, c, d;
-              if (!t || !t.state || e > 5 || e < 0) return t ? i(t, L) : L;
+              var n, s, l, d;
+              if (!t || !t.state || e > 5 || e < 0) return t ? i(t, M) : M;
               if (
                 ((s = t.state),
-                !t.output || (!t.input && 0 !== t.avail_in) || (666 === s.status && e !== M))
+                !t.output || (!t.input && 0 !== t.avail_in) || (666 === s.status && e !== D))
               )
-                return i(t, 0 === t.avail_out ? -5 : L);
-              if (((s.strm = t), (n = s.last_flush), (s.last_flush = e), s.status === K))
+                return i(t, 0 === t.avail_out ? -5 : M);
+              if (((s.strm = t), (n = s.last_flush), (s.last_flush = e), s.status === Y))
                 if (2 === s.wrap)
                   (t.adler = 0),
                     u(s, 31),
@@ -3568,9 +3974,9 @@ var _POSignalsEntities;
                         u(s, 0),
                         u(s, 9 === s.level ? 2 : s.strategy >= 2 || s.level < 2 ? 4 : 0),
                         u(s, 3),
-                        (s.status = Y));
+                        (s.status = W));
                 else {
-                  var h = (x + ((s.w_bits - 8) << 4)) << 8;
+                  var h = (R + ((s.w_bits - 8) << 4)) << 8;
                   (h |=
                     (s.strategy >= 2 || s.level < 2
                       ? 0
@@ -3581,42 +3987,42 @@ var _POSignalsEntities;
                       : 3) << 6),
                     0 !== s.strstart && (h |= 32),
                     (h += 31 - (h % 31)),
-                    (s.status = Y),
-                    l(s, h),
-                    0 !== s.strstart && (l(s, t.adler >>> 16), l(s, 65535 & t.adler)),
+                    (s.status = W),
+                    c(s, h),
+                    0 !== s.strstart && (c(s, t.adler >>> 16), c(s, 65535 & t.adler)),
                     (t.adler = 1);
                 }
               if (69 === s.status)
                 if (s.gzhead.extra) {
                   for (
-                    c = s.pending;
+                    l = s.pending;
                     s.gzindex < (65535 & s.gzhead.extra.length) &&
                     (s.pending !== s.pending_buf_size ||
                       (s.gzhead.hcrc &&
-                        s.pending > c &&
-                        (t.adler = P(t.adler, s.pending_buf, s.pending - c, c)),
+                        s.pending > l &&
+                        (t.adler = P(t.adler, s.pending_buf, s.pending - l, l)),
                       o(t),
-                      (c = s.pending),
+                      (l = s.pending),
                       s.pending !== s.pending_buf_size));
 
                   )
                     u(s, 255 & s.gzhead.extra[s.gzindex]), s.gzindex++;
                   s.gzhead.hcrc &&
-                    s.pending > c &&
-                    (t.adler = P(t.adler, s.pending_buf, s.pending - c, c)),
+                    s.pending > l &&
+                    (t.adler = P(t.adler, s.pending_buf, s.pending - l, l)),
                     s.gzindex === s.gzhead.extra.length && ((s.gzindex = 0), (s.status = 73));
                 } else s.status = 73;
               if (73 === s.status)
                 if (s.gzhead.name) {
-                  c = s.pending;
+                  l = s.pending;
                   do {
                     if (
                       s.pending === s.pending_buf_size &&
                       (s.gzhead.hcrc &&
-                        s.pending > c &&
-                        (t.adler = P(t.adler, s.pending_buf, s.pending - c, c)),
+                        s.pending > l &&
+                        (t.adler = P(t.adler, s.pending_buf, s.pending - l, l)),
                       o(t),
-                      (c = s.pending),
+                      (l = s.pending),
                       s.pending === s.pending_buf_size)
                     ) {
                       d = 1;
@@ -3629,21 +4035,21 @@ var _POSignalsEntities;
                       u(s, d);
                   } while (0 !== d);
                   s.gzhead.hcrc &&
-                    s.pending > c &&
-                    (t.adler = P(t.adler, s.pending_buf, s.pending - c, c)),
+                    s.pending > l &&
+                    (t.adler = P(t.adler, s.pending_buf, s.pending - l, l)),
                     0 === d && ((s.gzindex = 0), (s.status = 91));
                 } else s.status = 91;
               if (91 === s.status)
                 if (s.gzhead.comment) {
-                  c = s.pending;
+                  l = s.pending;
                   do {
                     if (
                       s.pending === s.pending_buf_size &&
                       (s.gzhead.hcrc &&
-                        s.pending > c &&
-                        (t.adler = P(t.adler, s.pending_buf, s.pending - c, c)),
+                        s.pending > l &&
+                        (t.adler = P(t.adler, s.pending_buf, s.pending - l, l)),
                       o(t),
-                      (c = s.pending),
+                      (l = s.pending),
                       s.pending === s.pending_buf_size)
                     ) {
                       d = 1;
@@ -3656,8 +4062,8 @@ var _POSignalsEntities;
                       u(s, d);
                   } while (0 !== d);
                   s.gzhead.hcrc &&
-                    s.pending > c &&
-                    (t.adler = P(t.adler, s.pending_buf, s.pending - c, c)),
+                    s.pending > l &&
+                    (t.adler = P(t.adler, s.pending_buf, s.pending - l, l)),
                     0 === d && (s.status = 103);
                 } else s.status = 103;
               if (
@@ -3668,16 +4074,16 @@ var _POSignalsEntities;
                         (u(s, 255 & t.adler),
                         u(s, (t.adler >> 8) & 255),
                         (t.adler = 0),
-                        (s.status = Y)))
-                    : (s.status = Y)),
+                        (s.status = W)))
+                    : (s.status = W)),
                 0 !== s.pending)
               ) {
                 if ((o(t), 0 === t.avail_out)) return (s.last_flush = -1), C;
-              } else if (0 === t.avail_in && r(e) <= r(n) && e !== M) return i(t, -5);
+              } else if (0 === t.avail_in && r(e) <= r(n) && e !== D) return i(t, -5);
               if (666 === s.status && 0 !== t.avail_in) return i(t, -5);
               if (0 !== t.avail_in || 0 !== s.lookahead || (e !== I && 666 !== s.status)) {
                 var f =
-                  2 === s.strategy ? _(s, e) : 3 === s.strategy ? p(s, e) : w[s.level].func(s, e);
+                  2 === s.strategy ? v(s, e) : 3 === s.strategy ? p(s, e) : E[s.level].func(s, e);
                 if (((f !== J && f !== Z) || (s.status = 666), f === q || f === J))
                   return 0 === t.avail_out && (s.last_flush = -1), C;
                 if (
@@ -3695,7 +4101,7 @@ var _POSignalsEntities;
                 )
                   return (s.last_flush = -1), C;
               }
-              return e !== M
+              return e !== D
                 ? C
                 : s.wrap <= 0
                 ? 1
@@ -3708,7 +4114,7 @@ var _POSignalsEntities;
                       u(s, (t.total_in >> 8) & 255),
                       u(s, (t.total_in >> 16) & 255),
                       u(s, (t.total_in >> 24) & 255))
-                    : (l(s, t.adler >>> 16), l(s, 65535 & t.adler)),
+                    : (c(s, t.adler >>> 16), c(s, 65535 & t.adler)),
                   o(t),
                   s.wrap > 0 && (s.wrap = -s.wrap),
                   0 !== s.pending ? C : 1);
@@ -3716,16 +4122,16 @@ var _POSignalsEntities;
             (n.deflateEnd = function (t) {
               var e;
               return t && t.state
-                ? (e = t.state.status) !== K &&
+                ? (e = t.state.status) !== Y &&
                   69 !== e &&
                   73 !== e &&
                   91 !== e &&
                   103 !== e &&
-                  e !== Y &&
+                  e !== W &&
                   666 !== e
-                  ? i(t, L)
-                  : ((t.state = null), e === Y ? i(t, -3) : C)
-                : L;
+                  ? i(t, M)
+                  : ((t.state = null), e === W ? i(t, -3) : C)
+                : M;
             }),
             (n.deflateSetDictionary = function (t, e) {
               var n,
@@ -3734,49 +4140,49 @@ var _POSignalsEntities;
                 o,
                 s,
                 u,
-                l,
                 c,
+                l,
                 d = e.length;
-              if (!t || !t.state) return L;
-              if (((n = t.state), 2 === (o = n.wrap) || (1 === o && n.status !== K) || n.lookahead))
-                return L;
+              if (!t || !t.state) return M;
+              if (((n = t.state), 2 === (o = n.wrap) || (1 === o && n.status !== Y) || n.lookahead))
+                return M;
               for (
                 1 === o && (t.adler = O(t.adler, e, d, 0)),
                   n.wrap = 0,
                   d >= n.w_size &&
                     (0 === o && (a(n.head), (n.strstart = 0), (n.block_start = 0), (n.insert = 0)),
-                    (c = new S.Buf8(n.w_size)),
-                    S.arraySet(c, e, d - n.w_size, n.w_size, 0),
-                    (e = c),
+                    (l = new S.Buf8(n.w_size)),
+                    S.arraySet(l, e, d - n.w_size, n.w_size, 0),
+                    (e = l),
                     (d = n.w_size)),
                   s = t.avail_in,
                   u = t.next_in,
-                  l = t.input,
+                  c = t.input,
                   t.avail_in = d,
                   t.next_in = 0,
                   t.input = e,
                   h(n);
-                n.lookahead >= z;
+                n.lookahead >= V;
 
               ) {
-                (i = n.strstart), (r = n.lookahead - (z - 1));
+                (i = n.strstart), (r = n.lookahead - (V - 1));
                 do {
-                  (n.ins_h = ((n.ins_h << n.hash_shift) ^ n.window[i + z - 1]) & n.hash_mask),
+                  (n.ins_h = ((n.ins_h << n.hash_shift) ^ n.window[i + V - 1]) & n.hash_mask),
                     (n.prev[i & n.w_mask] = n.head[n.ins_h]),
                     (n.head[n.ins_h] = i),
                     i++;
                 } while (--r);
-                (n.strstart = i), (n.lookahead = z - 1), h(n);
+                (n.strstart = i), (n.lookahead = V - 1), h(n);
               }
               return (
                 (n.strstart += n.lookahead),
                 (n.block_start = n.strstart),
                 (n.insert = n.lookahead),
                 (n.lookahead = 0),
-                (n.match_length = n.prev_length = z - 1),
+                (n.match_length = n.prev_length = V - 1),
                 (n.match_available = 0),
                 (t.next_in = u),
-                (t.input = l),
+                (t.input = c),
                 (t.avail_in = s),
                 (n.wrap = o),
                 C
@@ -3821,23 +4227,23 @@ var _POSignalsEntities;
             (this.dyn_tree = t), (this.max_code = 0), (this.stat_desc = e);
           }
           function o(t) {
-            return t < 256 ? V[t] : V[256 + (t >>> 7)];
+            return t < 256 ? z[t] : z[256 + (t >>> 7)];
           }
           function s(t, e) {
             (t.pending_buf[t.pending++] = 255 & e), (t.pending_buf[t.pending++] = (e >>> 8) & 255);
           }
           function u(t, e, n) {
-            t.bi_valid > D - n
+            t.bi_valid > L - n
               ? ((t.bi_buf |= (e << t.bi_valid) & 65535),
                 s(t, t.bi_buf),
-                (t.bi_buf = e >> (D - t.bi_valid)),
-                (t.bi_valid += n - D))
+                (t.bi_buf = e >> (L - t.bi_valid)),
+                (t.bi_valid += n - L))
               : ((t.bi_buf |= (e << t.bi_valid) & 65535), (t.bi_valid += n));
           }
-          function l(t, e, n) {
+          function c(t, e, n) {
             u(t, n[2 * e], n[2 * e + 1]);
           }
-          function c(t, e) {
+          function l(t, e) {
             var n = 0;
             do {
               (n |= 1 & t), (t >>>= 1), (n <<= 1);
@@ -3847,19 +4253,19 @@ var _POSignalsEntities;
           function d(t, e, n) {
             var i,
               r,
-              a = new Array(L + 1),
+              a = new Array(M + 1),
               o = 0;
-            for (i = 1; i <= L; i++) a[i] = o = (o + n[i - 1]) << 1;
+            for (i = 1; i <= M; i++) a[i] = o = (o + n[i - 1]) << 1;
             for (r = 0; r <= e; r++) {
               var s = t[2 * r + 1];
-              0 !== s && (t[2 * r] = c(a[s]++, s));
+              0 !== s && (t[2 * r] = l(a[s]++, s));
             }
           }
           function h(t) {
             var e;
             for (e = 0; e < T; e++) t.dyn_ltree[2 * e] = 0;
             for (e = 0; e < I; e++) t.dyn_dtree[2 * e] = 0;
-            for (e = 0; e < M; e++) t.bl_tree[2 * e] = 0;
+            for (e = 0; e < D; e++) t.bl_tree[2 * e] = 0;
             (t.dyn_ltree[2 * k] = 1), (t.opt_len = t.static_len = 0), (t.last_lit = t.matches = 0);
           }
           function f(t) {
@@ -3885,27 +4291,27 @@ var _POSignalsEntities;
               (t.heap[n] = t.heap[r]), (n = r), (r <<= 1);
             t.heap[n] = i;
           }
-          function _(t, e, n) {
+          function v(t, e, n) {
             var i,
               r,
               a,
               s,
-              c = 0;
+              l = 0;
             if (0 !== t.last_lit)
               do {
-                (i = (t.pending_buf[t.d_buf + 2 * c] << 8) | t.pending_buf[t.d_buf + 2 * c + 1]),
-                  (r = t.pending_buf[t.l_buf + c]),
-                  c++,
+                (i = (t.pending_buf[t.d_buf + 2 * l] << 8) | t.pending_buf[t.d_buf + 2 * l + 1]),
+                  (r = t.pending_buf[t.l_buf + l]),
+                  l++,
                   0 === i
-                    ? l(t, r, e)
-                    : (l(t, (a = W[r]) + P + 1, e),
-                      0 !== (s = B[a]) && u(t, (r -= K[a]), s),
-                      l(t, (a = o(--i)), n),
-                      0 !== (s = F[a]) && u(t, (i -= Y[a]), s));
-              } while (c < t.last_lit);
-            l(t, k, e);
+                    ? c(t, r, e)
+                    : (c(t, (a = K[r]) + P + 1, e),
+                      0 !== (s = B[a]) && u(t, (r -= Y[a]), s),
+                      c(t, (a = o(--i)), n),
+                      0 !== (s = H[a]) && u(t, (i -= W[a]), s));
+              } while (l < t.last_lit);
+            c(t, k, e);
           }
-          function v(t, e) {
+          function _(t, e) {
             var n,
               i,
               r,
@@ -3913,17 +4319,17 @@ var _POSignalsEntities;
               o = e.stat_desc.static_tree,
               s = e.stat_desc.has_stree,
               u = e.stat_desc.elems,
-              l = -1;
+              c = -1;
             for (t.heap_len = 0, t.heap_max = C, n = 0; n < u; n++)
               0 !== a[2 * n]
-                ? ((t.heap[++t.heap_len] = l = n), (t.depth[n] = 0))
+                ? ((t.heap[++t.heap_len] = c = n), (t.depth[n] = 0))
                 : (a[2 * n + 1] = 0);
             for (; t.heap_len < 2; )
-              (a[2 * (r = t.heap[++t.heap_len] = l < 2 ? ++l : 0)] = 1),
+              (a[2 * (r = t.heap[++t.heap_len] = c < 2 ? ++c : 0)] = 1),
                 (t.depth[r] = 0),
                 t.opt_len--,
                 s && (t.static_len -= o[2 * r + 1]);
-            for (e.max_code = l, n = t.heap_len >> 1; n >= 1; n--) p(t, a, n);
+            for (e.max_code = c, n = t.heap_len >> 1; n >= 1; n--) p(t, a, n);
             r = u;
             do {
               (n = t.heap[1]),
@@ -3947,24 +4353,24 @@ var _POSignalsEntities;
                   o,
                   s,
                   u = e.dyn_tree,
-                  l = e.max_code,
-                  c = e.stat_desc.static_tree,
+                  c = e.max_code,
+                  l = e.stat_desc.static_tree,
                   d = e.stat_desc.has_stree,
                   h = e.stat_desc.extra_bits,
                   f = e.stat_desc.extra_base,
                   g = e.stat_desc.max_length,
                   p = 0;
-                for (a = 0; a <= L; a++) t.bl_count[a] = 0;
+                for (a = 0; a <= M; a++) t.bl_count[a] = 0;
                 for (u[2 * t.heap[t.heap_max] + 1] = 0, n = t.heap_max + 1; n < C; n++)
                   (a = u[2 * u[2 * (i = t.heap[n]) + 1] + 1] + 1) > g && ((a = g), p++),
                     (u[2 * i + 1] = a),
-                    i > l ||
+                    i > c ||
                       (t.bl_count[a]++,
                       (o = 0),
                       i >= f && (o = h[i - f]),
                       (s = u[2 * i]),
                       (t.opt_len += s * (a + o)),
-                      d && (t.static_len += s * (c[2 * i + 1] + o)));
+                      d && (t.static_len += s * (l[2 * i + 1] + o)));
                 if (0 !== p) {
                   do {
                     for (a = g - 1; 0 === t.bl_count[a]; ) a--;
@@ -3972,13 +4378,13 @@ var _POSignalsEntities;
                   } while (p > 0);
                   for (a = g; 0 !== a; a--)
                     for (i = t.bl_count[a]; 0 !== i; )
-                      (r = t.heap[--n]) > l ||
+                      (r = t.heap[--n]) > c ||
                         (u[2 * r + 1] !== a &&
                           ((t.opt_len += (a - u[2 * r + 1]) * u[2 * r]), (u[2 * r + 1] = a)),
                         i--);
                 }
               })(t, e),
-              d(a, l, t.bl_count);
+              d(a, c, t.bl_count);
           }
           function m(t, e, n) {
             var i,
@@ -3987,102 +4393,102 @@ var _POSignalsEntities;
               o = e[1],
               s = 0,
               u = 7,
-              l = 4;
-            for (0 === o && ((u = 138), (l = 3)), e[2 * (n + 1) + 1] = 65535, i = 0; i <= n; i++)
+              c = 4;
+            for (0 === o && ((u = 138), (c = 3)), e[2 * (n + 1) + 1] = 65535, i = 0; i <= n; i++)
               (r = o),
                 (o = e[2 * (i + 1) + 1]),
                 (++s < u && r === o) ||
-                  (s < l
+                  (s < c
                     ? (t.bl_tree[2 * r] += s)
                     : 0 !== r
-                    ? (r !== a && t.bl_tree[2 * r]++, t.bl_tree[2 * R]++)
+                    ? (r !== a && t.bl_tree[2 * r]++, t.bl_tree[2 * x]++)
                     : s <= 10
-                    ? t.bl_tree[2 * x]++
+                    ? t.bl_tree[2 * R]++
                     : t.bl_tree[2 * N]++,
                   (s = 0),
                   (a = r),
                   0 === o
-                    ? ((u = 138), (l = 3))
+                    ? ((u = 138), (c = 3))
                     : r === o
-                    ? ((u = 6), (l = 3))
-                    : ((u = 7), (l = 4)));
+                    ? ((u = 6), (c = 3))
+                    : ((u = 7), (c = 4)));
           }
-          function b(t, e, n) {
+          function y(t, e, n) {
             var i,
               r,
               a = -1,
               o = e[1],
               s = 0,
-              c = 7,
+              l = 7,
               d = 4;
-            for (0 === o && ((c = 138), (d = 3)), i = 0; i <= n; i++)
-              if (((r = o), (o = e[2 * (i + 1) + 1]), !(++s < c && r === o))) {
+            for (0 === o && ((l = 138), (d = 3)), i = 0; i <= n; i++)
+              if (((r = o), (o = e[2 * (i + 1) + 1]), !(++s < l && r === o))) {
                 if (s < d)
                   do {
-                    l(t, r, t.bl_tree);
+                    c(t, r, t.bl_tree);
                   } while (0 != --s);
                 else
                   0 !== r
-                    ? (r !== a && (l(t, r, t.bl_tree), s--), l(t, R, t.bl_tree), u(t, s - 3, 2))
+                    ? (r !== a && (c(t, r, t.bl_tree), s--), c(t, x, t.bl_tree), u(t, s - 3, 2))
                     : s <= 10
-                    ? (l(t, x, t.bl_tree), u(t, s - 3, 3))
-                    : (l(t, N, t.bl_tree), u(t, s - 11, 7));
+                    ? (c(t, R, t.bl_tree), u(t, s - 3, 3))
+                    : (c(t, N, t.bl_tree), u(t, s - 11, 7));
                 (s = 0),
                   (a = r),
                   0 === o
-                    ? ((c = 138), (d = 3))
+                    ? ((l = 138), (d = 3))
                     : r === o
-                    ? ((c = 6), (d = 3))
-                    : ((c = 7), (d = 4));
+                    ? ((l = 6), (d = 3))
+                    : ((l = 7), (d = 4));
               }
           }
-          function y(t, e, n, i) {
+          function b(t, e, n, i) {
             u(t, (A << 1) + (i ? 1 : 0), 3),
               (function (t, e, n, i) {
                 f(t),
                   i && (s(t, n), s(t, ~n)),
-                  E.arraySet(t.pending_buf, t.window, e, n, t.pending),
+                  w.arraySet(t.pending_buf, t.window, e, n, t.pending),
                   (t.pending += n);
               })(t, e, n, !0);
           }
-          var E = t('../utils/common'),
-            w = 0,
+          var w = t('../utils/common'),
+            E = 0,
             S = 1,
             A = 0,
             O = 29,
             P = 256,
             T = P + 1 + O,
             I = 30,
-            M = 19,
+            D = 19,
             C = 2 * T + 1,
-            L = 15,
-            D = 16,
+            M = 15,
+            L = 16,
             U = 7,
             k = 256,
-            R = 16,
-            x = 17,
+            x = 16,
+            R = 17,
             N = 18,
             B = [
               0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 0,
             ],
-            F = [
+            H = [
               0, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11, 12,
               12, 13, 13,
             ],
-            H = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 3, 7],
+            F = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 3, 7],
             j = [16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15],
             G = new Array(2 * (T + 2));
           i(G);
-          var z = new Array(2 * I);
-          i(z);
-          var V = new Array(512);
+          var V = new Array(2 * I);
           i(V);
-          var W = new Array(256);
-          i(W);
-          var K = new Array(O);
+          var z = new Array(512);
+          i(z);
+          var K = new Array(256);
           i(K);
-          var Y = new Array(I);
+          var Y = new Array(O);
           i(Y);
+          var W = new Array(I);
+          i(W);
           var q,
             X,
             J,
@@ -4095,22 +4501,22 @@ var _POSignalsEntities;
                   n,
                   i,
                   a,
-                  o = new Array(L + 1);
+                  o = new Array(M + 1);
                 for (n = 0, i = 0; i < O - 1; i++)
-                  for (K[i] = n, t = 0; t < 1 << B[i]; t++) W[n++] = i;
-                for (W[n - 1] = i, a = 0, i = 0; i < 16; i++)
-                  for (Y[i] = a, t = 0; t < 1 << F[i]; t++) V[a++] = i;
+                  for (Y[i] = n, t = 0; t < 1 << B[i]; t++) K[n++] = i;
+                for (K[n - 1] = i, a = 0, i = 0; i < 16; i++)
+                  for (W[i] = a, t = 0; t < 1 << H[i]; t++) z[a++] = i;
                 for (a >>= 7; i < I; i++)
-                  for (Y[i] = a << 7, t = 0; t < 1 << (F[i] - 7); t++) V[256 + a++] = i;
-                for (e = 0; e <= L; e++) o[e] = 0;
+                  for (W[i] = a << 7, t = 0; t < 1 << (H[i] - 7); t++) z[256 + a++] = i;
+                for (e = 0; e <= M; e++) o[e] = 0;
                 for (t = 0; t <= 143; ) (G[2 * t + 1] = 8), t++, o[8]++;
                 for (; t <= 255; ) (G[2 * t + 1] = 9), t++, o[9]++;
                 for (; t <= 279; ) (G[2 * t + 1] = 7), t++, o[7]++;
                 for (; t <= 287; ) (G[2 * t + 1] = 8), t++, o[8]++;
-                for (d(G, T + 1, o), t = 0; t < I; t++) (z[2 * t + 1] = 5), (z[2 * t] = c(t, 5));
-                (q = new r(G, B, P + 1, T, L)),
-                  (X = new r(z, F, 0, I, L)),
-                  (J = new r(new Array(0), H, 0, M, U));
+                for (d(G, T + 1, o), t = 0; t < I; t++) (V[2 * t + 1] = 5), (V[2 * t] = l(t, 5));
+                (q = new r(G, B, P + 1, T, M)),
+                  (X = new r(V, H, 0, I, M)),
+                  (J = new r(new Array(0), F, 0, D, U));
               })(),
               (Z = !0)),
               (t.l_desc = new a(t.dyn_ltree, q)),
@@ -4120,7 +4526,7 @@ var _POSignalsEntities;
               (t.bi_valid = 0),
               h(t);
           }),
-            (n._tr_stored_block = y),
+            (n._tr_stored_block = b),
             (n._tr_flush_block = function (t, e, n, i) {
               var r,
                 a,
@@ -4131,21 +4537,21 @@ var _POSignalsEntities;
                       var e,
                         n = 4093624447;
                       for (e = 0; e <= 31; e++, n >>>= 1)
-                        if (1 & n && 0 !== t.dyn_ltree[2 * e]) return w;
+                        if (1 & n && 0 !== t.dyn_ltree[2 * e]) return E;
                       if (0 !== t.dyn_ltree[18] || 0 !== t.dyn_ltree[20] || 0 !== t.dyn_ltree[26])
                         return S;
                       for (e = 32; e < P; e++) if (0 !== t.dyn_ltree[2 * e]) return S;
-                      return w;
+                      return E;
                     })(t)),
-                  v(t, t.l_desc),
-                  v(t, t.d_desc),
+                  _(t, t.l_desc),
+                  _(t, t.d_desc),
                   (o = (function (t) {
                     var e;
                     for (
                       m(t, t.dyn_ltree, t.l_desc.max_code),
                         m(t, t.dyn_dtree, t.d_desc.max_code),
-                        v(t, t.bl_desc),
-                        e = M - 1;
+                        _(t, t.bl_desc),
+                        e = D - 1;
                       e >= 3 && 0 === t.bl_tree[2 * j[e] + 1];
                       e--
                     );
@@ -4155,17 +4561,17 @@ var _POSignalsEntities;
                   (a = (t.static_len + 3 + 7) >>> 3) <= r && (r = a))
                 : (r = a = n + 5),
                 n + 4 <= r && -1 !== e
-                  ? y(t, e, n, i)
+                  ? b(t, e, n, i)
                   : 4 === t.strategy || a === r
-                  ? (u(t, 2 + (i ? 1 : 0), 3), _(t, G, z))
+                  ? (u(t, 2 + (i ? 1 : 0), 3), v(t, G, V))
                   : (u(t, 4 + (i ? 1 : 0), 3),
                     (function (t, e, n, i) {
                       var r;
                       for (u(t, e - 257, 5), u(t, n - 1, 5), u(t, i - 4, 4), r = 0; r < i; r++)
                         u(t, t.bl_tree[2 * j[r] + 1], 3);
-                      b(t, t.dyn_ltree, e - 1), b(t, t.dyn_dtree, n - 1);
+                      y(t, t.dyn_ltree, e - 1), y(t, t.dyn_dtree, n - 1);
                     })(t, t.l_desc.max_code + 1, t.d_desc.max_code + 1, o + 1),
-                    _(t, t.dyn_ltree, t.dyn_dtree)),
+                    v(t, t.dyn_ltree, t.dyn_dtree)),
                 h(t),
                 i && f(t);
             }),
@@ -4177,13 +4583,13 @@ var _POSignalsEntities;
                 t.last_lit++,
                 0 === e
                   ? t.dyn_ltree[2 * n]++
-                  : (t.matches++, e--, t.dyn_ltree[2 * (W[n] + P + 1)]++, t.dyn_dtree[2 * o(e)]++),
+                  : (t.matches++, e--, t.dyn_ltree[2 * (K[n] + P + 1)]++, t.dyn_dtree[2 * o(e)]++),
                 t.last_lit === t.lit_bufsize - 1
               );
             }),
             (n._tr_align = function (t) {
               u(t, 2, 3),
-                l(t, k, G),
+                c(t, k, G),
                 (function (t) {
                   16 === t.bi_valid
                     ? (s(t, t.bi_buf), (t.bi_buf = 0), (t.bi_valid = 0))
@@ -4241,7 +4647,7 @@ var _POSignalsEntities;
               (this.msg = ''),
               (this.ended = !1),
               (this.chunks = []),
-              (this.strm = new l()),
+              (this.strm = new c()),
               (this.strm.avail_out = 0);
             var n = a.deflateInit2(
               this.strm,
@@ -4258,7 +4664,7 @@ var _POSignalsEntities;
                 ((r =
                   'string' == typeof e.dictionary
                     ? s.string2buf(e.dictionary)
-                    : '[object ArrayBuffer]' === c.call(e.dictionary)
+                    : '[object ArrayBuffer]' === l.call(e.dictionary)
                     ? new Uint8Array(e.dictionary)
                     : e.dictionary),
                 (n = a.deflateSetDictionary(this.strm, r)) !== d)
@@ -4276,8 +4682,8 @@ var _POSignalsEntities;
             o = t('./utils/common'),
             s = t('./utils/strings'),
             u = t('./zlib/messages'),
-            l = t('./zlib/zstream'),
-            c = Object.prototype.toString,
+            c = t('./zlib/zstream'),
+            l = Object.prototype.toString,
             d = 0,
             h = -1,
             f = 0,
@@ -4291,7 +4697,7 @@ var _POSignalsEntities;
             (i = e === ~~e ? e : !0 === e ? 4 : 0),
               'string' == typeof t
                 ? (r.input = s.string2buf(t))
-                : '[object ArrayBuffer]' === c.call(t)
+                : '[object ArrayBuffer]' === l.call(t)
                 ? (r.input = new Uint8Array(t))
                 : (r.input = t),
               (r.next_in = 0),
@@ -4353,7 +4759,7 @@ var _POSignalsEntities;
       function a() {
         return 'function' != typeof n.createElement
           ? n.createElement(arguments[0])
-          : E
+          : w
           ? n.createElementNS.call(n, 'http://www.w3.org/2000/svg', arguments[0])
           : n.createElement.apply(n, arguments);
       }
@@ -4364,31 +4770,31 @@ var _POSignalsEntities;
         var o,
           s,
           u,
-          l,
-          c = 'modernizr',
+          c,
+          l = 'modernizr',
           d = a('div'),
           h = (function () {
             var t = n.body;
-            return t || ((t = a(E ? 'svg' : 'body')).fake = !0), t;
+            return t || ((t = a(w ? 'svg' : 'body')).fake = !0), t;
           })();
         if (parseInt(i, 10))
-          for (; i--; ) ((u = a('div')).id = r ? r[i] : c + (i + 1)), d.appendChild(u);
+          for (; i--; ) ((u = a('div')).id = r ? r[i] : l + (i + 1)), d.appendChild(u);
         return (
           ((o = a('style')).type = 'text/css'),
-          (o.id = 's' + c),
+          (o.id = 's' + l),
           (h.fake ? h : d).appendChild(o),
           h.appendChild(d),
           o.styleSheet ? (o.styleSheet.cssText = t) : o.appendChild(n.createTextNode(t)),
-          (d.id = c),
+          (d.id = l),
           h.fake &&
             ((h.style.background = ''),
             (h.style.overflow = 'hidden'),
-            (l = y.style.overflow),
-            (y.style.overflow = 'hidden'),
-            y.appendChild(h)),
+            (c = b.style.overflow),
+            (b.style.overflow = 'hidden'),
+            b.appendChild(h)),
           (s = e(d, t)),
           h.fake
-            ? (h.parentNode.removeChild(h), (y.style.overflow = l), y.offsetHeight)
+            ? (h.parentNode.removeChild(h), (b.style.overflow = c), b.offsetHeight)
             : d.parentNode.removeChild(d),
           !!s
         );
@@ -4400,7 +4806,7 @@ var _POSignalsEntities;
           })
           .replace(/^ms-/, '-ms-');
       }
-      function l(t, n, i) {
+      function c(t, n, i) {
         var r;
         if ('getComputedStyle' in e) {
           r = getComputedStyle.call(e, t, n);
@@ -4415,7 +4821,7 @@ var _POSignalsEntities;
         } else r = !n && t.currentStyle && t.currentStyle[i];
         return r;
       }
-      function c(t, n) {
+      function l(t, n) {
         var r = t.length;
         if ('CSS' in e && 'supports' in e.CSS) {
           for (; r--; ) if (e.CSS.supports(u(t[r]), n)) return !0;
@@ -4426,7 +4832,7 @@ var _POSignalsEntities;
           return s(
             '@supports (' + (a = a.join(' or ')) + ') { #modernizr { position: absolute; } }',
             function (t) {
-              return 'absolute' === l(t, null, 'position');
+              return 'absolute' === c(t, null, 'position');
             },
           );
         }
@@ -4444,18 +4850,18 @@ var _POSignalsEntities;
           h && (delete P.style, delete P.modElem);
         }
         if (((s = !r(s, 'undefined') && s), !r(n, 'undefined'))) {
-          var l = c(t, n);
-          if (!r(l, 'undefined')) return l;
+          var c = l(t, n);
+          if (!r(c, 'undefined')) return c;
         }
-        for (var h, f, g, p, _, v = ['modernizr', 'tspan', 'samp']; !P.style && v.length; )
-          (h = !0), (P.modElem = a(v.shift())), (P.style = P.modElem.style);
+        for (var h, f, g, p, v, _ = ['modernizr', 'tspan', 'samp']; !P.style && _.length; )
+          (h = !0), (P.modElem = a(_.shift())), (P.style = P.modElem.style);
         for (g = t.length, f = 0; f < g; f++)
-          if (((p = t[f]), (_ = P.style[p]), o(p, '-') && (p = d(p)), P.style[p] !== i)) {
+          if (((p = t[f]), (v = P.style[p]), o(p, '-') && (p = d(p)), P.style[p] !== i)) {
             if (s || r(n, 'undefined')) return u(), 'pfx' !== e || p;
             try {
               P.style[p] = n;
             } catch (t) {}
-            if (P.style[p] !== _) return u(), 'pfx' !== e || p;
+            if (P.style[p] !== v) return u(), 'pfx' !== e || p;
           }
         return u(), !1;
       }
@@ -4480,8 +4886,8 @@ var _POSignalsEntities;
       function p(t, e, n) {
         return g(t, i, i, e, n);
       }
-      var _ = [],
-        v = {
+      var v = [],
+        _ = {
           _version: '3.11.1',
           _config: { classPrefix: '', enableClasses: !0, enableJSClass: !0, usePrefixes: !0 },
           _q: [],
@@ -4492,19 +4898,19 @@ var _POSignalsEntities;
             }, 0);
           },
           addTest: function (t, e, n) {
-            _.push({ name: t, fn: e, options: n });
+            v.push({ name: t, fn: e, options: n });
           },
           addAsyncTest: function (t) {
-            _.push({ name: null, fn: t });
+            v.push({ name: null, fn: t });
           },
         },
         m = function () {};
-      (m.prototype = v), (m = new m());
-      var b = [],
-        y = n.documentElement,
-        E = 'svg' === y.nodeName.toLowerCase(),
-        w = (function () {
-          var t = !('onblur' in y);
+      (m.prototype = _), (m = new m());
+      var y = [],
+        b = n.documentElement,
+        w = 'svg' === b.nodeName.toLowerCase(),
+        E = (function () {
+          var t = !('onblur' in b);
           return function (e, n) {
             var r;
             return (
@@ -4521,8 +4927,8 @@ var _POSignalsEntities;
             );
           };
         })();
-      (v.hasEvent = w),
-        m.addTest('ambientlight', w('devicelight', e)),
+      (_.hasEvent = E),
+        m.addTest('ambientlight', E('devicelight', e)),
         m.addTest('applicationcache', 'applicationCache' in e),
         (function () {
           var t = a('audio');
@@ -4553,8 +4959,8 @@ var _POSignalsEntities;
           } catch (t) {}
         })();
       var S = 'Moz O ms Webkit',
-        A = v._config.usePrefixes ? S.split(' ') : [];
-      v._cssomPrefixes = A;
+        A = _._config.usePrefixes ? S.split(' ') : [];
+      _._cssomPrefixes = A;
       var O = { elem: a('modernizr') };
       m._q.push(function () {
         delete O.elem;
@@ -4563,29 +4969,29 @@ var _POSignalsEntities;
       m._q.unshift(function () {
         delete P.style;
       });
-      var T = v._config.usePrefixes ? S.toLowerCase().split(' ') : [];
-      (v._domPrefixes = T), (v.testAllProps = g);
+      var T = _._config.usePrefixes ? S.toLowerCase().split(' ') : [];
+      (_._domPrefixes = T), (_.testAllProps = g);
       var I = function (t) {
         var n,
-          r = D.length,
+          r = L.length,
           a = e.CSSRule;
         if (void 0 === a) return i;
         if (!t) return !1;
         if ((n = (t = t.replace(/^@/, '')).replace(/-/g, '_').toUpperCase() + '_RULE') in a)
           return '@' + t;
         for (var o = 0; o < r; o++) {
-          var s = D[o];
+          var s = L[o];
           if (s.toUpperCase() + '_' + n in a) return '@-' + s.toLowerCase() + '-' + t;
         }
         return !1;
       };
-      v.atRule = I;
-      var M = (v.prefixed = function (t, e, n) {
+      _.atRule = I;
+      var D = (_.prefixed = function (t, e, n) {
         return 0 === t.indexOf('@')
           ? I(t)
           : (-1 !== t.indexOf('-') && (t = d(t)), e ? g(t, e, n) : g(t, 'pfx'));
       });
-      m.addTest('batteryapi', !!M('battery', navigator) || !!M('getBattery', navigator), {
+      m.addTest('batteryapi', !!D('battery', navigator) || !!D('getBattery', navigator), {
         aliases: ['battery-api'],
       }),
         m.addTest(
@@ -4599,10 +5005,10 @@ var _POSignalsEntities;
           },
           { aliases: ['blob-constructor'] },
         ),
-        m.addTest('contextmenu', 'contextMenu' in y && 'HTMLMenuItemElement' in e),
+        m.addTest('contextmenu', 'contextMenu' in b && 'HTMLMenuItemElement' in e),
         m.addTest('cors', 'XMLHttpRequest' in e && 'withCredentials' in new XMLHttpRequest());
-      var C = M('crypto', e);
-      m.addTest('crypto', !!M('subtle', C)),
+      var C = D('crypto', e);
+      m.addTest('crypto', !!D('subtle', C)),
         m.addTest('customelements', 'customElements' in e),
         m.addTest('customprotocolhandler', function () {
           if (!navigator.registerProtocolHandler) return !1;
@@ -4614,23 +5020,23 @@ var _POSignalsEntities;
           return !1;
         }),
         m.addTest('customevent', 'CustomEvent' in e && 'function' == typeof e.CustomEvent),
-        m.addTest('dart', !!M('startDart', navigator)),
+        m.addTest('dart', !!D('startDart', navigator)),
         m.addTest('dataview', 'undefined' != typeof DataView && 'getFloat64' in DataView.prototype),
         m.addTest('eventlistener', 'addEventListener' in e),
         m.addTest('forcetouch', function () {
           return (
-            !!w(M('mouseforcewillbegin', e, !1), e) &&
+            !!E(D('mouseforcewillbegin', e, !1), e) &&
             MouseEvent.WEBKIT_FORCE_AT_MOUSE_DOWN &&
             MouseEvent.WEBKIT_FORCE_AT_FORCE_MOUSE_DOWN
           );
         }),
-        m.addTest('fullscreen', !(!M('exitFullscreen', n, !1) && !M('cancelFullScreen', n, !1))),
-        m.addTest('gamepads', !!M('getGamepads', navigator)),
+        m.addTest('fullscreen', !(!D('exitFullscreen', n, !1) && !D('cancelFullScreen', n, !1))),
+        m.addTest('gamepads', !!D('getGamepads', navigator)),
         m.addTest('geolocation', 'geolocation' in navigator),
         m.addTest('ie8compat', !e.addEventListener && !!n.documentMode && 7 === n.documentMode),
-        m.addTest('intl', !!M('Intl', e)),
+        m.addTest('intl', !!D('Intl', e)),
         m.addTest('json', 'JSON' in e && 'parse' in JSON && 'stringify' in JSON),
-        (v.testAllProps = p),
+        (_.testAllProps = p),
         m.addTest('ligatures', p('fontFeatureSettings', '"liga" 1')),
         m.addTest('messagechannel', 'MessageChannel' in e),
         m.addTest('notification', function () {
@@ -4643,25 +5049,25 @@ var _POSignalsEntities;
           }
           return !0;
         }),
-        m.addTest('pagevisibility', !!M('hidden', n, !1)),
-        m.addTest('performance', !!M('performance', e));
-      var L = [''].concat(T);
-      (v._domPrefixesAll = L),
+        m.addTest('pagevisibility', !!D('hidden', n, !1)),
+        m.addTest('performance', !!D('performance', e));
+      var M = [''].concat(T);
+      (_._domPrefixesAll = M),
         m.addTest('pointerevents', function () {
-          for (var t = 0, e = L.length; t < e; t++) if (w(L[t] + 'pointerdown')) return !0;
+          for (var t = 0, e = M.length; t < e; t++) if (E(M[t] + 'pointerdown')) return !0;
           return !1;
         }),
-        m.addTest('pointerlock', !!M('exitPointerLock', n)),
+        m.addTest('pointerlock', !!D('exitPointerLock', n)),
         m.addTest('queryselector', 'querySelector' in n && 'querySelectorAll' in n),
         m.addTest('quotamanagement', function () {
-          var t = M('temporaryStorage', navigator),
-            e = M('persistentStorage', navigator);
+          var t = D('temporaryStorage', navigator),
+            e = D('persistentStorage', navigator);
           return !(!t || !e);
         }),
-        m.addTest('requestanimationframe', !!M('requestAnimationFrame', e), { aliases: ['raf'] }),
+        m.addTest('requestanimationframe', !!D('requestAnimationFrame', e), { aliases: ['raf'] }),
         m.addTest('serviceworker', 'serviceWorker' in navigator);
-      var D = v._config.usePrefixes ? ' -webkit- -moz- -o- -ms- '.split(' ') : ['', ''];
-      v._prefixes = D;
+      var L = _._config.usePrefixes ? ' -webkit- -moz- -o- -ms- '.split(' ') : ['', ''];
+      _._prefixes = L;
       var U = (function () {
         var t = e.matchMedia || e.msMatchMedia;
         return t
@@ -4673,13 +5079,13 @@ var _POSignalsEntities;
               var e = !1;
               return (
                 s('@media ' + t + ' { #modernizr { position: absolute; } }', function (t) {
-                  e = 'absolute' === l(t, null, 'position');
+                  e = 'absolute' === c(t, null, 'position');
                 }),
                 e
               );
             };
       })();
-      (v.mq = U),
+      (_.mq = U),
         m.addTest('touchevents', function () {
           if (
             'ontouchstart' in e ||
@@ -4687,11 +5093,11 @@ var _POSignalsEntities;
             (e.DocumentTouch && n instanceof DocumentTouch)
           )
             return !0;
-          var t = ['(', D.join('touch-enabled),('), 'heartz', ')'].join('');
+          var t = ['(', L.join('touch-enabled),('), 'heartz', ')'].join('');
           return U(t);
         }),
         m.addTest('typedarrays', 'ArrayBuffer' in e),
-        m.addTest('vibrate', !!M('vibrate', navigator)),
+        m.addTest('vibrate', !!D('vibrate', navigator)),
         (function () {
           var t = a('video');
           m.addTest('video', function () {
@@ -4739,14 +5145,14 @@ var _POSignalsEntities;
       } catch (t) {}
       m.addTest('websockets', k),
         m.addTest('xdomainrequest', 'XDomainRequest' in e),
-        m.addTest('matchmedia', !!M('matchMedia', e)),
+        m.addTest('matchmedia', !!D('matchMedia', e)),
         (function () {
           var t, e, n, i, a, o;
-          for (var s in _)
-            if (_.hasOwnProperty(s)) {
+          for (var s in v)
+            if (v.hasOwnProperty(s)) {
               if (
                 ((t = []),
-                (e = _[s]).name &&
+                (e = v[s]).name &&
                   (t.push(e.name.toLowerCase()),
                   e.options && e.options.aliases && e.options.aliases.length))
               )
@@ -4758,27 +5164,149 @@ var _POSignalsEntities;
                   : ((m[o[0]] && (!m[o[0]] || m[o[0]] instanceof Boolean)) ||
                       (m[o[0]] = new Boolean(m[o[0]])),
                     (m[o[0]][o[1]] = i)),
-                  b.push((i ? '' : 'no-') + o.join('-'));
+                  y.push((i ? '' : 'no-') + o.join('-'));
             }
         })(),
-        delete v.addTest,
-        delete v.addAsyncTest;
-      for (var R = 0; R < m._q.length; R++) m._q[R]();
+        delete _.addTest,
+        delete _.addAsyncTest;
+      for (var x = 0; x < m._q.length; x++) m._q[x]();
       t.Modernizr = m;
     })(_POSignalsEntities || (_POSignalsEntities = {}), window, document);
   });
-var __assign =
-  (this && this.__assign) ||
-  function () {
-    return (__assign =
-      Object.assign ||
-      function (t) {
-        for (var e, n = 1, i = arguments.length; n < i; n++)
-          for (var r in (e = arguments[n]))
-            Object.prototype.hasOwnProperty.call(e, r) && (t[r] = e[r]);
-        return t;
-      }).apply(this, arguments);
-  };
+var __awaiter =
+    (this && this.__awaiter) ||
+    function (t, e, n, i) {
+      return new (n || (n = Promise))(function (r, a) {
+        function o(t) {
+          try {
+            u(i.next(t));
+          } catch (t) {
+            a(t);
+          }
+        }
+        function s(t) {
+          try {
+            u(i.throw(t));
+          } catch (t) {
+            a(t);
+          }
+        }
+        function u(t) {
+          var e;
+          t.done
+            ? r(t.value)
+            : ((e = t.value),
+              e instanceof n
+                ? e
+                : new n(function (t) {
+                    t(e);
+                  })).then(o, s);
+        }
+        u((i = i.apply(t, e || [])).next());
+      });
+    },
+  __generator =
+    (this && this.__generator) ||
+    function (t, e) {
+      var n,
+        i,
+        r,
+        a,
+        o = {
+          label: 0,
+          sent: function () {
+            if (1 & r[0]) throw r[1];
+            return r[1];
+          },
+          trys: [],
+          ops: [],
+        };
+      return (
+        (a = { next: s(0), throw: s(1), return: s(2) }),
+        'function' == typeof Symbol &&
+          (a[Symbol.iterator] = function () {
+            return this;
+          }),
+        a
+      );
+      function s(a) {
+        return function (s) {
+          return (function (a) {
+            if (n) throw new TypeError('Generator is already executing.');
+            for (; o; )
+              try {
+                if (
+                  ((n = 1),
+                  i &&
+                    (r =
+                      2 & a[0]
+                        ? i.return
+                        : a[0]
+                        ? i.throw || ((r = i.return) && r.call(i), 0)
+                        : i.next) &&
+                    !(r = r.call(i, a[1])).done)
+                )
+                  return r;
+                switch (((i = 0), r && (a = [2 & a[0], r.value]), a[0])) {
+                  case 0:
+                  case 1:
+                    r = a;
+                    break;
+                  case 4:
+                    return o.label++, { value: a[1], done: !1 };
+                  case 5:
+                    o.label++, (i = a[1]), (a = [0]);
+                    continue;
+                  case 7:
+                    (a = o.ops.pop()), o.trys.pop();
+                    continue;
+                  default:
+                    if (
+                      !(r = (r = o.trys).length > 0 && r[r.length - 1]) &&
+                      (6 === a[0] || 2 === a[0])
+                    ) {
+                      o = 0;
+                      continue;
+                    }
+                    if (3 === a[0] && (!r || (a[1] > r[0] && a[1] < r[3]))) {
+                      o.label = a[1];
+                      break;
+                    }
+                    if (6 === a[0] && o.label < r[1]) {
+                      (o.label = r[1]), (r = a);
+                      break;
+                    }
+                    if (r && o.label < r[2]) {
+                      (o.label = r[2]), o.ops.push(a);
+                      break;
+                    }
+                    r[2] && o.ops.pop(), o.trys.pop();
+                    continue;
+                }
+                a = e.call(t, o);
+              } catch (t) {
+                (a = [6, t]), (i = 0);
+              } finally {
+                n = r = 0;
+              }
+            if (5 & a[0]) throw a[1];
+            return { value: a[0] ? a[1] : void 0, done: !0 };
+          })([a, s]);
+        };
+      }
+    },
+  __assign =
+    (this && this.__assign) ||
+    function () {
+      return (__assign =
+        Object.assign ||
+        function (t) {
+          for (var e, n = 1, i = arguments.length; n < i; n++)
+            for (var r in (e = arguments[n]))
+              Object.prototype.hasOwnProperty.call(e, r) && (t[r] = e[r]);
+          return t;
+        }).apply(this, arguments);
+    };
 !(function (t) {
   !(function (e) {
     var n = (function () {
@@ -4966,7 +5494,7 @@ var __assign =
         return (
           Object.defineProperty(t, 'CLIENT_VERSION', {
             get: function () {
-              return '5.2.10w';
+              return '5.3.1w';
             },
             enumerable: !1,
             configurable: !0,
@@ -4995,6 +5523,13 @@ var __assign =
           Object.defineProperty(t, 'DEVICE_ID_KEY', {
             get: function () {
               return 'SecuredTouchDeviceId';
+            },
+            enumerable: !1,
+            configurable: !0,
+          }),
+          Object.defineProperty(t, 'LAST_DEVICE_KEY_RESYNC', {
+            get: function () {
+              return 'DeviceRefreshDate';
             },
             enumerable: !1,
             configurable: !0,
@@ -5066,6 +5601,118 @@ var __assign =
         );
       })();
       t.Constants = e;
+    })(t._POSignalsUtils || (t._POSignalsUtils = {}));
+  })(_POSignalsEntities || (_POSignalsEntities = {})),
+  (function (t) {
+    !(function (t) {
+      var e = (function () {
+        function e(t, e, n) {
+          if (
+            (void 0 === t && (t = 'RSA-PSS'),
+            void 0 === e && (e = ['sign', 'verify']),
+            void 0 === n && (n = 'SHA-256'),
+            (this.signingKeyType = t),
+            (this.keyUsage = e),
+            (this.algorithm = n),
+            (this._crypto = window.crypto || window.msCrypto),
+            !this._crypto || !this._crypto.subtle)
+          )
+            throw new Error('Cryptography API not supported in this browser');
+        }
+        return (
+          (e.prototype.generateKeys = function () {
+            return __awaiter(this, void 0, void 0, function () {
+              return __generator(this, function (t) {
+                return [
+                  2,
+                  this._crypto.subtle.generateKey(
+                    {
+                      name: this.signingKeyType,
+                      modulusLength: 2048,
+                      publicExponent: new Uint8Array([1, 0, 1]),
+                      hash: { name: this.algorithm },
+                    },
+                    !1,
+                    this.keyUsage,
+                  ),
+                ];
+              });
+            });
+          }),
+          (e.prototype.exportPublicKey = function (e) {
+            return __awaiter(this, void 0, void 0, function () {
+              var n, i, r;
+              return __generator(this, function (a) {
+                switch (a.label) {
+                  case 0:
+                    return [4, this._crypto.subtle.exportKey('spki', e.publicKey)];
+                  case 1:
+                    return (
+                      (n = a.sent()),
+                      (i = t.Util.ab2str(n)),
+                      (r = btoa(i)),
+                      t.Logger.debug('Exported base64 pub key: ', r),
+                      [2, r]
+                    );
+                }
+              });
+            });
+          }),
+          (e.prototype.exportPrivateKey = function (e) {
+            return __awaiter(this, void 0, void 0, function () {
+              var n, i, r, a;
+              return __generator(this, function (o) {
+                switch (o.label) {
+                  case 0:
+                    return [4, this._crypto.subtle.exportKey('pkcs8', e.privateKey)];
+                  case 1:
+                    return (
+                      (n = o.sent()),
+                      (i = t.Util.ab2str(n)),
+                      (r = btoa(i)),
+                      (a = '-----BEGIN PRIVATE KEY-----\n' + r + '\n-----END PRIVATE KEY-----'),
+                      t.Logger.debug('Exported base64 pem:', a),
+                      [2, a]
+                    );
+                }
+              });
+            });
+          }),
+          (e.prototype.signChallenge = function (e, n, i) {
+            return (
+              void 0 === i && (i = 0),
+              __awaiter(this, void 0, void 0, function () {
+                var r, a, o;
+                return __generator(this, function (s) {
+                  switch (s.label) {
+                    case 0:
+                      return (
+                        (r = t.Util.string2buf(e)),
+                        [
+                          4,
+                          this._crypto.subtle.sign(
+                            { name: this.signingKeyType, saltLength: i, hash: this.algorithm },
+                            n,
+                            r,
+                          ),
+                        ]
+                      );
+                    case 1:
+                      return (
+                        (a = s.sent()),
+                        (o = btoa(String.fromCharCode.apply(null, new Uint8Array(a)))),
+                        t.Logger.debug('Signed challenge: ', o),
+                        [2, o]
+                      );
+                  }
+                });
+              })
+            );
+          }),
+          e
+        );
+      })();
+      t.CryptoOperator = e;
     })(t._POSignalsUtils || (t._POSignalsUtils = {}));
   })(_POSignalsEntities || (_POSignalsEntities = {})),
   (function (t) {
@@ -5697,6 +6344,18 @@ var __assign =
             }
             return e.slice(0, Math.max(a + 1, i));
           }),
+          (n.ab2str = function (t) {
+            return String.fromCharCode.apply(null, new Uint8Array(t));
+          }),
+          (n.str2ab = function (t) {
+            for (
+              var e = new ArrayBuffer(t.length), n = new Uint8Array(e), i = 0, r = t.length;
+              i < r;
+              i++
+            )
+              n[i] = t.charCodeAt(i);
+            return e;
+          }),
           (n.hashCache = new Map()),
           (n.keyStr = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/='),
           n
@@ -5705,39 +6364,39 @@ var __assign =
       e.Util = n;
     })(t._POSignalsUtils || (t._POSignalsUtils = {}));
   })(_POSignalsEntities || (_POSignalsEntities = {}));
-var __awaiter =
-    (this && this.__awaiter) ||
-    function (t, e, n, i) {
-      return new (n || (n = Promise))(function (r, a) {
-        function o(t) {
-          try {
-            u(i.next(t));
-          } catch (t) {
-            a(t);
-          }
+(__awaiter =
+  (this && this.__awaiter) ||
+  function (t, e, n, i) {
+    return new (n || (n = Promise))(function (r, a) {
+      function o(t) {
+        try {
+          u(i.next(t));
+        } catch (t) {
+          a(t);
         }
-        function s(t) {
-          try {
-            u(i.throw(t));
-          } catch (t) {
-            a(t);
-          }
+      }
+      function s(t) {
+        try {
+          u(i.throw(t));
+        } catch (t) {
+          a(t);
         }
-        function u(t) {
-          var e;
-          t.done
-            ? r(t.value)
-            : ((e = t.value),
-              e instanceof n
-                ? e
-                : new n(function (t) {
-                    t(e);
-                  })).then(o, s);
-        }
-        u((i = i.apply(t, e || [])).next());
-      });
-    },
-  __generator =
+      }
+      function u(t) {
+        var e;
+        t.done
+          ? r(t.value)
+          : ((e = t.value),
+            e instanceof n
+              ? e
+              : new n(function (t) {
+                  t(e);
+                })).then(o, s);
+      }
+      u((i = i.apply(t, e || [])).next());
+    });
+  }),
+  (__generator =
     (this && this.__generator) ||
     function (t, e) {
       var n,
@@ -5826,59 +6485,259 @@ var __awaiter =
           })([a, s]);
         };
       }
-    };
+    });
 !(function (t) {
-  !(function (e) {
+  var e = t.openDB;
+  !(function (t) {
     var n = (function () {
-      function e(e, n) {
-        this.crossStorageClient = new t.CrossStorageClient(e, n);
-      }
+      function t() {}
       return (
-        (e.prototype.get = function (e) {
-          var n = t._POSignalsUtils.Util.hash(e);
-          return this.crossStorageClient.get(n);
+        (t.initDB = function () {
+          return __awaiter(this, void 0, void 0, function () {
+            var n,
+              i = this;
+            return __generator(this, function (r) {
+              if (
+                !(
+                  window.indexedDB ||
+                  window.mozIndexedDB ||
+                  window.webkitIndexedDB ||
+                  window.msIndexedDB
+                )
+              )
+                throw new Error('IndexedDB is not supported');
+              return (
+                (n = new t()),
+                [
+                  2,
+                  new Promise(function (r) {
+                    return __awaiter(i, void 0, void 0, function () {
+                      var i;
+                      return __generator(this, function (a) {
+                        switch (a.label) {
+                          case 0:
+                            return (
+                              (i = n),
+                              [
+                                4,
+                                e(this._PingDBName, t._version, {
+                                  upgrade: function (e, n, i, r, a) {
+                                    e.createObjectStore(t._storeDefaultName);
+                                  },
+                                }),
+                              ]
+                            );
+                          case 1:
+                            return (i.indexedDatabase = a.sent()), r(n), [2];
+                        }
+                      });
+                    });
+                  }),
+                ]
+              );
+            });
+          });
         }),
-        (e.prototype.del = function (e) {
-          return this.crossStorageClient.del(t._POSignalsUtils.Util.hash(e));
+        (t.prototype.close = function () {
+          this.indexedDatabase.close();
         }),
-        (e.prototype.set = function (e, n, i) {
-          return this.crossStorageClient.set(t._POSignalsUtils.Util.hash(e), n, i);
+        (t.prototype.getValue = function (e) {
+          return this.indexedDatabase.get(t._storeDefaultName, e);
         }),
-        (e.prototype.onConnect = function () {
-          return this.crossStorageClient.onConnect();
+        (t.prototype.setValue = function (e, n) {
+          return this.indexedDatabase.put(t._storeDefaultName, n, e);
         }),
-        e
-      );
-    })();
-    e.CrossStorage = n;
-    var i = (function () {
-      function t(t) {
-        this.storage = t;
-      }
-      return (
-        (t.prototype.get = function (t) {
-          return Promise.resolve(this.storage.getItem(t));
-        }),
-        (t.prototype.del = function (t) {
-          return this.storage.removeItem(t), Promise.resolve();
-        }),
-        (t.prototype.set = function (t, e) {
-          return this.storage.setItem(t, e), Promise.resolve();
-        }),
-        (t.prototype.onConnect = function () {
-          return Promise.resolve();
-        }),
+        (t._PingDBName = 'Ping'),
+        (t._version = 1),
+        (t._storeDefaultName = 'PING_ONE'),
         t
       );
     })();
-    e.CrossStorageFallback = i;
+    t.IndexedDBStorage = n;
   })(t._POSignalsStorage || (t._POSignalsStorage = {}));
 })(_POSignalsEntities || (_POSignalsEntities = {})),
   (function (t) {
     !(function (e) {
       var n = (function () {
+        function e(e, n) {
+          this.crossStorageClient = new t.CrossStorageClient(e, n);
+        }
+        return (
+          (e.prototype.get = function (e) {
+            var n = t._POSignalsUtils.Util.hash(e);
+            return this.crossStorageClient.get(n);
+          }),
+          (e.prototype.del = function (e) {
+            return this.crossStorageClient.del(t._POSignalsUtils.Util.hash(e));
+          }),
+          (e.prototype.set = function (e, n, i) {
+            return this.crossStorageClient.set(t._POSignalsUtils.Util.hash(e), n, i);
+          }),
+          (e.prototype.onConnect = function () {
+            return this.crossStorageClient.onConnect();
+          }),
+          (e.prototype.close = function (t) {
+            return this.crossStorageClient.close(t);
+          }),
+          (e.prototype.getSignedPayload = function (t, e) {
+            return this.crossStorageClient.getSignedPayload(t, e);
+          }),
+          (e.prototype.getDeviceDetails = function (e) {
+            var n = t._POSignalsUtils.Util.hash(e);
+            return this.crossStorageClient.getDeviceDetails(n);
+          }),
+          (e.prototype.setDeviceDetails = function (e, n) {
+            var i = t._POSignalsUtils.Util.hash(e);
+            return this.crossStorageClient.setDeviceDetails(i, n);
+          }),
+          e
+        );
+      })();
+      e.CrossStorage = n;
+      var i = (function () {
+        function t(t) {
+          this.storage = t;
+        }
+        return (
+          (t.prototype.get = function (t) {
+            return Promise.resolve(this.storage.getItem(t));
+          }),
+          (t.prototype.del = function (t) {
+            return this.storage.removeItem(t), Promise.resolve();
+          }),
+          (t.prototype.set = function (t, e) {
+            return this.storage.setItem(t, e), Promise.resolve();
+          }),
+          (t.prototype.onConnect = function () {
+            return Promise.resolve();
+          }),
+          (t.prototype.close = function (t) {
+            return Promise.resolve();
+          }),
+          (t.prototype.getSignedPayload = function (t, e) {
+            return Promise.resolve([]);
+          }),
+          (t.prototype.getDeviceDetails = function (t) {
+            return Promise.resolve([]);
+          }),
+          (t.prototype.setDeviceDetails = function (t, e) {
+            return Promise.resolve([]);
+          }),
+          t
+        );
+      })();
+      e.CrossStorageFallback = i;
+    })(t._POSignalsStorage || (t._POSignalsStorage = {}));
+  })(_POSignalsEntities || (_POSignalsEntities = {})),
+  (function (t) {
+    var e = (function () {
+      function e(t, e, n) {
+        (this.deviceId = t), (this.dbStorage = e), (this.cryptoHandler = n);
+      }
+      return (
+        (e.prototype.getExportedPublicKey = function () {
+          return __awaiter(this, void 0, void 0, function () {
+            var t;
+            return __generator(this, function (e) {
+              switch (e.label) {
+                case 0:
+                  return [4, this.getDeviceKeys()];
+                case 1:
+                  return (t = e.sent()) ? [2, this.cryptoHandler.exportPublicKey(t)] : [2];
+              }
+            });
+          });
+        }),
+        (e.prototype.setDeviceKeys = function (t) {
+          return __awaiter(this, void 0, void 0, function () {
+            var e;
+            return __generator(this, function (n) {
+              switch (n.label) {
+                case 0:
+                  return [4, this.dbStorage.setValue(this.deviceId, t)];
+                case 1:
+                  return (e = n.sent()), (this.cachedDeviceKey = t), [2, e];
+              }
+            });
+          });
+        }),
+        (e.prototype.associateDeviceKeys = function () {
+          return __awaiter(this, void 0, void 0, function () {
+            var e;
+            return __generator(this, function (n) {
+              switch (n.label) {
+                case 0:
+                  return [4, this.cryptoHandler.generateKeys()];
+                case 1:
+                  return (
+                    (e = n.sent()),
+                    t._POSignalsUtils.Logger.info('Associating new device domain keys'),
+                    [4, this.setDeviceKeys(e)]
+                  );
+                case 2:
+                  return n.sent(), [2, e];
+              }
+            });
+          });
+        }),
+        (e.prototype.signDeviceWithKeys = function (t) {
+          return __awaiter(this, void 0, void 0, function () {
+            var n, i, r;
+            return __generator(this, function (a) {
+              switch (a.label) {
+                case 0:
+                  return (
+                    (i = (n = this.cryptoHandler).signChallenge),
+                    (r = [t]),
+                    [4, this.getDeviceKeys()]
+                  );
+                case 1:
+                  return [2, i.apply(n, r.concat([a.sent().privateKey, e._default_salt]))];
+              }
+            });
+          });
+        }),
+        (e.prototype.getDeviceKeys = function () {
+          return __awaiter(this, void 0, void 0, function () {
+            var t;
+            return __generator(this, function (e) {
+              switch (e.label) {
+                case 0:
+                  return this.cachedDeviceKey
+                    ? [3, 2]
+                    : ((t = this), [4, this.dbStorage.getValue(this.deviceId)]);
+                case 1:
+                  (t.cachedDeviceKey = e.sent()), (e.label = 2);
+                case 2:
+                  return [2, this.cachedDeviceKey];
+              }
+            });
+          });
+        }),
+        (e._default_salt = 32),
+        e
+      );
+    })();
+    t.DeviceKeys = e;
+  })(_POSignalsEntities || (_POSignalsEntities = {})),
+  (function (t) {
+    !(function (e) {
+      var n = (function () {
         function n() {
-          this._disabledStorage = [];
+          (this._disabledStorage = []),
+            (this.assertionValues = [
+              'BROWSER_ENGINE_VERSION',
+              'NAVIGATOR_LANGUAGE',
+              'OS_NAME',
+              'OS_VERSION',
+              'NAVIGATOR_USER_AGENT',
+              'FINGER_PRINT',
+              'RESOLUTION',
+              'PUSH_NOTIFICATIONS_SUPPORTED',
+              'COOKIES_ENABLED',
+              'IS_INCOGNITO',
+              'IS_PRIVATE_MODE',
+            ]);
           try {
             window.sessionStorage.setItem('_st_storage_enabled_check', 'test'),
               window.sessionStorage.removeItem('_st_storage_enabled_check'),
@@ -5900,8 +6759,11 @@ var __awaiter =
           }
         }
         return (
-          (n.prototype.setHubConfig = function (t) {
-            (this.disableHub = t.disableHub), (this.hubUrl = t.hubUrl);
+          (n.prototype.setStorageConfig = function (t) {
+            (this.disableHub = t.disableHub),
+              (this.hubUrl = t.hubUrl),
+              (this.enablePKI = t.enableTrust),
+              (this.devEnv = t.devEnv);
           }),
           Object.defineProperty(n, 'instance', {
             get: function () {
@@ -5964,101 +6826,371 @@ var __awaiter =
           }),
           (n.prototype.initDeviceIdentity = function () {
             return __awaiter(this, void 0, void 0, function () {
-              var n;
-              return __generator(this, function (i) {
-                switch (i.label) {
+              var n, i, r;
+              return __generator(this, function (a) {
+                switch (a.label) {
                   case 0:
                     return (
-                      this.disableHub &&
-                        (this.crossStorage = new e.CrossStorageFallback(this.signalsLocalStorage)),
-                      (n = this.signalsLocalStorage.getItem(
+                      (i = this.signalsLocalStorage.getItem(
                         t._POSignalsUtils.Constants.DEVICE_ID_KEY,
-                      ))
-                        ? ((this.cachedDeviceId = n),
-                          (this.crossStorage = new e.CrossStorageFallback(
-                            this.signalsLocalStorage,
-                          )),
-                          [3, 3])
-                        : [3, 1]
+                      )) && (this.cachedDeviceId = i),
+                      this.enablePKI
+                        ? ((this.deviceTrust = { attestation: {}, dtts: new Date().getTime() }),
+                          this.disableHub && (this.deviceTrust.hubDisabled = !0),
+                          (r = this),
+                          [4, e.IndexedDBStorage.initDB()])
+                        : [3, 3]
                     );
                   case 1:
-                    return this.crossStorage ? [3, 3] : [4, this.initCrossStorage(this.hubUrl)];
+                    return (r.indexedDBStorage = a.sent()), [4, this.loadLocalDeviceTrust()];
                   case 2:
-                    i.sent(), (i.label = 3);
+                    (n = a.sent()), (a.label = 3);
                   case 3:
+                    return this.disableHub || (i && !this.shouldFallbackToP1Key(n))
+                      ? [3, 5]
+                      : [4, this.fallbackToCrossStorage(this.hubUrl)];
+                  case 4:
+                    return a.sent(), [3, 6];
+                  case 5:
+                    (this.crossStorage = new e.CrossStorageFallback(this.signalsLocalStorage)),
+                      (a.label = 6);
+                  case 6:
+                    return this.getDeviceId()
+                      ? [3, 8]
+                      : [4, this.associateDeviceDetails(this.disableHub)];
+                  case 7:
+                    a.sent(), (a.label = 8);
+                  case 8:
+                    return !this.enablePKI || (this.getDeviceId() && n)
+                      ? [3, 10]
+                      : [4, this.createDomainKeys(this.disableHub)];
+                  case 9:
+                    a.sent(), (a.label = 10);
+                  case 10:
                     return [2, this.getDeviceId()];
                 }
               });
             });
           }),
-          (n.prototype.getDeviceId = function () {
+          (n.prototype.shouldFallbackToP1Key = function (t) {
+            return (
+              this.enablePKI &&
+              !this.disableHub &&
+              (!t || this.isRefreshRequired(this.deviceKeyRsyncIntervals))
+            );
+          }),
+          (n.prototype.isRefreshRequired = function (e) {
+            if ((void 0 === e && (e = 3), !this.deviceTrust.dtts)) return !0;
+            var n = this.signalsLocalStorage.getItem(
+              t._POSignalsUtils.Constants.LAST_DEVICE_KEY_RESYNC,
+            );
+            if (!n || isNaN(parseInt(n))) return !0;
+            var i = this.deviceTrust.dtts - n > 864e5 * e;
+            return i && t._POSignalsUtils.Logger.debug('Refresh required'), i;
+          }),
+          (n.prototype.loadLocalDeviceTrust = function () {
             return __awaiter(this, void 0, void 0, function () {
-              return __generator(this, function (e) {
-                return (
-                  this.cachedDeviceId ||
-                    ((this.cachedDeviceId = 'Id-' + t._POSignalsUtils.Util.newGuid()),
-                    this.crossStorage.set(
-                      t._POSignalsUtils.Constants.DEVICE_ID_KEY,
-                      this.cachedDeviceId,
+              var n, i;
+              return __generator(this, function (r) {
+                switch (r.label) {
+                  case 0:
+                    return (
+                      r.trys.push([0, 4, , 5]),
+                      void 0,
+                      this.cachedDeviceId
+                        ? this.cachedDeviceId
+                          ? ((this.domainDeviceKeys = new t.DeviceKeys(
+                              this.getDeviceId(),
+                              this.indexedDBStorage,
+                              new t._POSignalsUtils.CryptoOperator(),
+                            )),
+                            [4, this.domainDeviceKeys.getDeviceKeys()])
+                          : [3, 3]
+                        : (t._POSignalsUtils.Logger.debug('No device id found on customer domain'),
+                          [2, !1])
+                    );
+                  case 1:
+                    return r.sent()
+                      ? ((n = this.deviceTrust.attestation),
+                        [4, this.domainDeviceKeys.getExportedPublicKey()])
+                      : (t._POSignalsUtils.Logger.debug('No device keys found on customer domain'),
+                        [2, !1]);
+                  case 2:
+                    return (
+                      (n.deviceKey = r.sent()),
+                      (this.crossStorage = new e.CrossStorageFallback(this.signalsLocalStorage)),
+                      [2, !0]
+                    );
+                  case 3:
+                    return [3, 5];
+                  case 4:
+                    return (
+                      (i = r.sent()),
+                      t._POSignalsUtils.Logger.error('Domain PKI initialization failed', i),
+                      [2, !1]
+                    );
+                  case 5:
+                    return [2];
+                }
+              });
+            });
+          }),
+          (n.prototype.createDomainKeys = function (e) {
+            return __awaiter(this, void 0, void 0, function () {
+              var n, i;
+              return __generator(this, function (r) {
+                switch (r.label) {
+                  case 0:
+                    return (
+                      r.trys.push([0, 3, , 4]),
+                      !e && this._disabledStorage.lastIndexOf('hub') > -1
+                        ? (t._POSignalsUtils.Logger.debug(
+                            'Hub unavailable - skipping domain trust creation',
+                          ),
+                          [2])
+                        : ((this.domainDeviceKeys = new t.DeviceKeys(
+                            this.getDeviceId(),
+                            this.indexedDBStorage,
+                            new t._POSignalsUtils.CryptoOperator(),
+                          )),
+                          [4, this.domainDeviceKeys.associateDeviceKeys()])
+                    );
+                  case 1:
+                    return (
+                      r.sent(),
+                      (n = this.deviceTrust.attestation),
+                      [4, this.domainDeviceKeys.getExportedPublicKey()]
+                    );
+                  case 2:
+                    return (n.deviceKey = r.sent()), [3, 4];
+                  case 3:
+                    return (
+                      (i = r.sent()),
+                      t._POSignalsUtils.Logger.error('Domain PKI initialization failed', i),
+                      [3, 4]
+                    );
+                  case 4:
+                    return [2];
+                }
+              });
+            });
+          }),
+          (n.prototype.getDeviceId = function () {
+            return this.cachedDeviceId;
+          }),
+          (n.prototype.associateDeviceDetails = function (e) {
+            return __awaiter(this, void 0, void 0, function () {
+              var n;
+              return __generator(this, function (i) {
+                switch (i.label) {
+                  case 0:
+                    return (
+                      t._POSignalsUtils.Logger.debug('Associating fresh device details'),
+                      (this.cachedDeviceId = 'Id-' + t._POSignalsUtils.Util.newGuid()),
+                      this.signalsLocalStorage.setItem(
+                        t._POSignalsUtils.Constants.DEVICE_ID_KEY,
+                        this.cachedDeviceId,
+                      ),
+                      e
+                        ? [3, 4]
+                        : this.enablePKI
+                        ? ((n = this.deviceTrust.attestation),
+                          [
+                            4,
+                            this.crossStorage.setDeviceDetails(
+                              t._POSignalsUtils.Constants.DEVICE_ID_KEY,
+                              this.cachedDeviceId,
+                            ),
+                          ])
+                        : [3, 2]
+                    );
+                  case 1:
+                    return (n.fallbackDeviceKey = i.sent()[0]), [3, 4];
+                  case 2:
+                    return [
+                      4,
+                      this.crossStorage.set(
+                        t._POSignalsUtils.Constants.DEVICE_ID_KEY,
+                        this.cachedDeviceId,
+                      ),
+                    ];
+                  case 3:
+                    i.sent(), (i.label = 4);
+                  case 4:
+                    return (
+                      t._POSignalsUtils.Logger.debug(
+                        'PingOne Signals deviceId: ' + this.cachedDeviceId,
+                      ),
+                      [2, [this.cachedDeviceId, this.deviceTrust.attestation.fallbackDeviceKey]]
+                    );
+                }
+              });
+            });
+          }),
+          (n.prototype.addAssertion = function (e) {
+            return __awaiter(this, void 0, void 0, function () {
+              var n, i, r, a, o, s, u;
+              return __generator(this, function (c) {
+                switch (c.label) {
+                  case 0:
+                    if (
+                      (c.trys.push([0, 5, 6, 7]),
+                      !this.enablePKI ||
+                        (!this.deviceTrust.attestation.deviceKey &&
+                          !this.deviceTrust.attestation.fallbackDeviceKey))
+                    )
+                      return [2];
+                    for (
+                      n = (n = e.deviceId).concat('-' + e.deviceType),
+                        i = 0,
+                        r = this.assertionValues;
+                      i < r.length;
+                      i++
+                    )
+                      (a = r[i]), void 0 != e[a] && null != e[a] && (n = n.concat('-' + e[a]));
+                    return (
+                      (n = n.concat('-' + this.deviceTrust.dtts)),
+                      t._POSignalsUtils.Logger.debug('Device identityContract ' + n),
+                      this.deviceTrust.attestation.fallbackDeviceKey && this.crossStorage
+                        ? ((o = this.deviceTrust.attestation),
+                          [4, this.crossStorage.getSignedPayload(n, this.getDeviceId())])
+                        : [3, 2]
+                    );
+                  case 1:
+                    return (
+                      (o.deviceToken = c.sent()[1]),
+                      this.signalsLocalStorage.setItem(
+                        t._POSignalsUtils.Constants.LAST_DEVICE_KEY_RESYNC,
+                        new Date().getTime(),
+                      ),
+                      [3, 4]
+                    );
+                  case 2:
+                    return (
+                      (s = this.deviceTrust.attestation),
+                      [4, this.domainDeviceKeys.signDeviceWithKeys(n)]
+                    );
+                  case 3:
+                    (s.deviceToken = c.sent()), (c.label = 4);
+                  case 4:
+                    return [3, 7];
+                  case 5:
+                    return (
+                      (u = c.sent()),
+                      t._POSignalsUtils.Logger.warn('Device attestation failed:', u),
+                      [3, 7]
+                    );
+                  case 6:
+                    return (
+                      this.enablePKI &&
+                        t._POSignalsUtils.Logger.info(
+                          'Device attestation ' + JSON.stringify(this.deviceTrust, null, 2),
+                        ),
+                      [7]
+                    );
+                  case 7:
+                    return [2];
+                }
+              });
+            });
+          }),
+          (n.prototype.closeTrustStore = function () {
+            try {
+              this.crossStorage.close(this.devEnv),
+                this.indexedDBStorage && this.indexedDBStorage.close();
+            } catch (e) {
+              t._POSignalsUtils.Logger.warn('Unable to close trust store:', e);
+            }
+          }),
+          (n.prototype.fallbackToCrossStorage = function (n) {
+            return __awaiter(this, void 0, void 0, function () {
+              var i;
+              return __generator(this, function (r) {
+                switch (r.label) {
+                  case 0:
+                    t._POSignalsUtils.Logger.debug(
+                      'PingOne Signals cross storage is required, initializing',
                     ),
-                    this.signalsLocalStorage.setItem(
-                      t._POSignalsUtils.Constants.DEVICE_ID_KEY,
-                      this.cachedDeviceId,
-                    ),
-                    t._POSignalsUtils.Logger.info(
-                      'New PingOne Signals deviceId: ' + this.cachedDeviceId,
-                    )),
-                  [2, this.cachedDeviceId]
-                );
+                      (r.label = 1);
+                  case 1:
+                    return r.trys.push([1, 3, , 4]), [4, this.initCrossStorage(n)];
+                  case 2:
+                    return (
+                      r.sent(),
+                      t._POSignalsUtils.Logger.info('PingOne Signals cross storage initiated'),
+                      [3, 4]
+                    );
+                  case 3:
+                    return (
+                      (i = r.sent()),
+                      t._POSignalsUtils.Logger.warn(
+                        'PingOne Signals Session crossStorage failed to connect ' + i,
+                      ),
+                      this._disabledStorage.push('hub'),
+                      (this.crossStorage = new e.CrossStorageFallback(this.signalsLocalStorage)),
+                      [3, 4]
+                    );
+                  case 4:
+                    return [2];
+                }
               });
             });
           }),
           (n.prototype.initCrossStorage = function (n) {
             return __awaiter(this, void 0, void 0, function () {
-              var i, r, a, o;
-              return __generator(this, function (s) {
-                switch (s.label) {
+              var i, r, a, o, s;
+              return __generator(this, function (u) {
+                switch (u.label) {
                   case 0:
-                    (i = 'https://apps.pingone.com/signals/web-sdk/hub-1.0.1/hub.html'),
-                      (r = ((null === n || void 0 === n ? void 0 : n.trim()) || i).replace(
+                    return (
+                      (i = this.enablePKI ? '1.0.7' : '1.0.1'),
+                      (r = 'https://apps.pingone.com/signals/web-sdk/hub-' + i + '/hub.html'),
+                      (a = ((null === n || void 0 === n ? void 0 : n.trim()) || r).replace(
                         /\/$/,
                         '',
-                      )).endsWith('html') || (r += '/hub.html'),
-                      (s.label = 1);
-                  case 1:
-                    return (
-                      s.trys.push([1, 4, , 5]),
-                      (this.crossStorage = new e.CrossStorage(r, { timeout: 2e3 })),
+                      )).endsWith('html') || (a += '/hub.html'),
+                      (this.crossStorage = new e.CrossStorage(a, { timeout: 2e3 })),
                       [4, this.crossStorage.onConnect()]
                     );
-                  case 2:
+                  case 1:
                     return (
-                      s.sent(),
-                      (a = this),
-                      [4, this.crossStorage.get(t._POSignalsUtils.Constants.DEVICE_ID_KEY)]
+                      u.sent(),
+                      this.enablePKI
+                        ? [
+                            4,
+                            this.crossStorage.getDeviceDetails(
+                              t._POSignalsUtils.Constants.DEVICE_ID_KEY,
+                            ),
+                          ]
+                        : [3, 3]
                     );
+                  case 2:
+                    return (o = u.sent()), (this.cachedDeviceId = o[0]), [3, 5];
                   case 3:
                     return (
-                      (a.cachedDeviceId = s.sent()),
-                      this.cachedDeviceId &&
-                        this.signalsLocalStorage.setItem(
-                          t._POSignalsUtils.Constants.DEVICE_ID_KEY,
-                          this.cachedDeviceId,
-                        ),
-                      [3, 5]
+                      (s = this),
+                      [4, this.crossStorage.get(t._POSignalsUtils.Constants.DEVICE_ID_KEY)]
                     );
                   case 4:
-                    return (
-                      (o = s.sent()),
-                      t._POSignalsUtils.Logger.warn(
-                        'PingOne Signals Session crossStorage failed to connect ' + o,
-                      ),
-                      this._disabledStorage.push('hub'),
-                      (this.crossStorage = new e.CrossStorageFallback(this.signalsLocalStorage)),
-                      [3, 5]
-                    );
+                    (s.cachedDeviceId = u.sent()), (u.label = 5);
                   case 5:
-                    return [2];
+                    return (
+                      this.cachedDeviceId
+                        ? this.signalsLocalStorage.setItem(
+                            t._POSignalsUtils.Constants.DEVICE_ID_KEY,
+                            this.cachedDeviceId,
+                          )
+                        : t._POSignalsUtils.Logger.warn('no device id from hub'),
+                      this.enablePKI &&
+                        (o && o[1]
+                          ? ((this.deviceTrust.attestation.fallbackDeviceKey = o[1]),
+                            t._POSignalsUtils.Logger.info(
+                              'Using fallback device keys from hub ' +
+                                this.deviceTrust.attestation.fallbackDeviceKey,
+                            ))
+                          : t._POSignalsUtils.Logger.info('failed to use any device keys')),
+                      [2]
+                    );
                 }
               });
             });
@@ -6495,33 +7627,25 @@ var __awaiter =
                   2,
                   this.metadataQueue.add(function () {
                     return __awaiter(e, void 0, void 0, function () {
-                      var e,
-                        n,
-                        i = this;
-                      return __generator(this, function (r) {
-                        switch (r.label) {
+                      var e;
+                      return __generator(this, function (n) {
+                        switch (n.label) {
                           case 0:
                             return this.lastCalculatedMetadata
-                              ? [3, 2]
-                              : ((e = this.calculateDeviceMetadata()).then(
-                                  function () {
-                                    t._POSignalsUtils.Logger.info('calculated device attributes.'),
-                                      t._POSignalsUtils.Logger.info(
-                                        'PingOne Signals deviceId: ' + i.deviceId,
-                                      );
-                                  },
-                                  function (e) {
-                                    return t._POSignalsUtils.Logger.warn(
-                                      'failed to calculate device attributes',
-                                      e,
-                                    );
-                                  },
-                                ),
-                                (n = this),
-                                [4, e]);
+                              ? [3, 3]
+                              : ((e = this), [4, this.calculateDeviceMetadata()]);
                           case 1:
-                            (n.lastCalculatedMetadata = r.sent()), (r.label = 2);
+                            return (
+                              (e.lastCalculatedMetadata = n.sent()),
+                              t._POSignalsUtils.Logger.info('calculated device attributes.'),
+                              t._POSignalsUtils.Logger.info(
+                                'PingOne Signals deviceId: ' + this.deviceId,
+                              ),
+                              [4, this.sessionData.addAssertion(this.lastCalculatedMetadata)]
+                            );
                           case 2:
+                            n.sent(), this.sessionData.closeTrustStore(), (n.label = 3);
+                          case 3:
                             return [2, this.lastCalculatedMetadata];
                         }
                       });
@@ -6871,20 +7995,20 @@ var __awaiter =
                 o,
                 s,
                 u,
-                l,
                 c,
+                l,
                 d,
                 h,
                 f,
                 g,
                 p,
-                _,
                 v,
+                _,
                 m,
-                b,
                 y,
-                E,
+                b,
                 w,
+                E,
                 S,
                 A,
                 O = this;
@@ -7030,66 +8154,66 @@ var __awaiter =
                       }),
                       this.fingerPrintComponents)
                     )
-                      for (c in ((u = function (t) {
-                        if (!l.fingerPrintComponents.hasOwnProperty(t)) return 'continue';
-                        var e = l.fingerPrintComponents[t];
+                      for (l in ((u = function (t) {
+                        if (!c.fingerPrintComponents.hasOwnProperty(t)) return 'continue';
+                        var e = c.fingerPrintComponents[t];
                         'fonts' == t
-                          ? l.flatAndAddMetadata(a, 'JS_FONTS', function () {
+                          ? c.flatAndAddMetadata(a, 'JS_FONTS', function () {
                               return e.value.length;
                             })
                           : 'canvas' == t
-                          ? l.flatAndAddMetadata(a, 'IS_CANVAS', function () {
+                          ? c.flatAndAddMetadata(a, 'IS_CANVAS', function () {
                               return null != e.value;
                             })
                           : 'screenResolution' == t && e.value && e.value.length
-                          ? l.flatAndAddMetadata(a, 'RESOLUTION', function () {
+                          ? c.flatAndAddMetadata(a, 'RESOLUTION', function () {
                               return e.value.join(',');
                             })
                           : 'availableScreenResolution' == t && e.value && e.value.length
-                          ? l.flatAndAddMetadata(a, 'AVAILABLE_RESOLUTION', function () {
+                          ? c.flatAndAddMetadata(a, 'AVAILABLE_RESOLUTION', function () {
                               return e.value.join(',');
                             })
                           : 'touchSupport' == t && e.value
-                          ? l.flatAndAddMetadata(a, 'TOUCH_SUPPORT', function () {
+                          ? c.flatAndAddMetadata(a, 'TOUCH_SUPPORT', function () {
                               return e.value;
                             })
                           : 'audio' == t && e.value
-                          ? l.flatAndAddMetadata(a, 'AUDIO_FINGERPRINT', function () {
+                          ? c.flatAndAddMetadata(a, 'AUDIO_FINGERPRINT', function () {
                               return e.value;
                             })
                           : 'osCpu' == t && e.value
-                          ? l.flatAndAddMetadata(a, 'OS_CPU', function () {
+                          ? c.flatAndAddMetadata(a, 'OS_CPU', function () {
                               return e.value;
                             })
                           : 'productSub' == t && e.value
-                          ? l.flatAndAddMetadata(a, 'PRODUCT_SUB', function () {
+                          ? c.flatAndAddMetadata(a, 'PRODUCT_SUB', function () {
                               return e.value;
                             })
                           : 'emptyEvalLength' == t && e.value
-                          ? l.flatAndAddMetadata(a, 'EMPTY_EVAL_LENGTH', function () {
+                          ? c.flatAndAddMetadata(a, 'EMPTY_EVAL_LENGTH', function () {
                               return e.value;
                             })
                           : 'errorFF' == t && e.value
-                          ? l.flatAndAddMetadata(a, 'ERROR_FF', function () {
+                          ? c.flatAndAddMetadata(a, 'ERROR_FF', function () {
                               return e.value;
                             })
                           : 'chrome' == t && e.value
-                          ? l.flatAndAddMetadata(a, 'CHROME', function () {
+                          ? c.flatAndAddMetadata(a, 'CHROME', function () {
                               return e.value;
                             })
                           : 'cookiesEnabled' == t && e.value
-                          ? l.flatAndAddMetadata(a, 'COOKIES_ENABLED', function () {
+                          ? c.flatAndAddMetadata(a, 'COOKIES_ENABLED', function () {
                               return e.value;
                             })
                           : r.fingerPrintComponentKeys.has(t) &&
                             null != t &&
-                            l.flatAndAddMetadata(a, t.toUpperCase(), function () {
+                            c.flatAndAddMetadata(a, t.toUpperCase(), function () {
                               return e.value;
                             });
                       }),
-                      (l = this),
+                      (c = this),
                       this.fingerPrintComponents))
-                        u(c);
+                        u(l);
                     for (p in (this.flatAndAddMetadata(a, 'IS_INCOGNITO', function () {
                       return O.isPrivateMode;
                     }),
@@ -7333,11 +8457,11 @@ var __awaiter =
                         : [4, t.Util.promiseTimeout(100, document.interestCohort())]
                     );
                   case 4:
-                    (_ = P.sent()),
-                      (v = _.id),
-                      (m = _.version),
+                    (v = P.sent()),
+                      (_ = v.id),
+                      (m = v.version),
                       this.flatAndAddMetadata(a, 'floc_id', function () {
-                        return v;
+                        return _;
                       }),
                       this.flatAndAddMetadata(a, 'floc_version', function () {
                         return m;
@@ -7348,24 +8472,24 @@ var __awaiter =
                   case 6:
                     return P.sent(), [3, 7];
                   case 7:
-                    for (E in ((b = function (e) {
-                      y.flatAndAddMetadata(a, e, function () {
+                    for (w in ((y = function (e) {
+                      b.flatAndAddMetadata(a, e, function () {
                         return t._POSignalsUtils.Util.getProperty(
                           window,
                           O.metadataParams.dataPoints[e],
                         );
                       });
                     }),
-                    (y = this),
+                    (b = this),
                     this.metadataParams.dataPoints))
-                      b(E);
-                    for (S in (w = this.metadataParams.propertyDescriptors))
-                      w.hasOwnProperty(S) &&
+                      y(w);
+                    for (S in (E = this.metadataParams.propertyDescriptors))
+                      E.hasOwnProperty(S) &&
                         (A = 'window' === S ? window : window[S]) &&
                         this.addPropertyDescriptorInfo(
                           A,
                           S.toUpperCase() + '_PROPERTY_DESCRIPTOR',
-                          w[S],
+                          E[S],
                           a,
                         );
                     return [2, a];
@@ -7797,7 +8921,7 @@ var __awaiter =
                             );
                         }
                       })),
-                      (i = t._POSignalsUtils.Util.delay(1e3).then(function () {
+                      (i = t._POSignalsUtils.Util.delay(250).then(function () {
                         return null;
                       })),
                       [4, Promise.race([n, i])]
@@ -8397,12 +9521,12 @@ var __awaiter =
                         var u = n.prototype ? n.prototype : n;
                         try {
                           if ('function' == typeof u[e]) {
-                            var l = r.getLies(u[e], u);
-                            return void r.documentLie(o, l);
+                            var c = r.getLies(u[e], u);
+                            return void r.documentLie(o, c);
                           }
                         } catch (t) {}
-                        var c = Object.getOwnPropertyDescriptor(u, e).get,
-                          d = r.getLies(c, u, n);
+                        var l = Object.getOwnPropertyDescriptor(u, e).get,
+                          d = r.getLies(l, u, n);
                         r.documentLie(o, d);
                       } catch (n) {
                         t._POSignalsUtils.Logger.warn('failed ' + e + ' test execution', n);
@@ -9036,7 +10160,7 @@ var __extends =
           e
         );
       })(s),
-      l = (function (t) {
+      c = (function (t) {
         function e() {
           return (null !== t && t.apply(this, arguments)) || this;
         }
@@ -9048,7 +10172,7 @@ var __extends =
           e
         );
       })(s),
-      c = (function (t) {
+      l = (function (t) {
         function e() {
           return (null !== t && t.apply(this, arguments)) || this;
         }
@@ -9092,7 +10216,7 @@ var __extends =
     })(),
       (function () {
         function t() {
-          this._events = new l();
+          this._events = new c();
         }
         Object.defineProperty(t.prototype, 'events', {
           get: function () {
@@ -9122,7 +10246,7 @@ var __extends =
       })(),
       (function () {
         function t() {
-          this._events = new c();
+          this._events = new l();
         }
         Object.defineProperty(t.prototype, 'events', {
           get: function () {
@@ -9844,28 +10968,36 @@ var __extends =
           enumerable: !1,
           configurable: !0,
         }),
+        Object.defineProperty(e.prototype, 'disableTags', {
+          set: function (t) {
+            this._disableTags = t;
+          },
+          enumerable: !1,
+          configurable: !0,
+        }),
         (e.prototype.setTag = function (e, n) {
           var i;
-          if (t.PointerConfig.instance.pointerParams.enabled)
-            if (e) {
-              var r = t.PointerConfig.instance.pointerParams.tagsBlacklistRegex;
-              if (r && (e.match(r) || (null === n || void 0 === n ? void 0 : n.match(r))))
-                t._POSignalsUtils.Logger.info('Tag name or value is blacklisted');
-              else if (!(this._tags.length >= this.MAX_TAGS)) {
-                this._tags.push({
-                  name: e.trim(),
-                  value:
-                    (null === (i = null === n || void 0 === n ? void 0 : n.trim) || void 0 === i
-                      ? void 0
-                      : i.call(n)) || void 0,
-                  epochTs: Date.now(),
-                  timestamp: Date.now(),
-                });
-                var a = n ? e + ':' + n : e;
-                t._POSignalsUtils.Logger.info('Add tag: ' + a);
-              }
-            } else t._POSignalsUtils.Logger.info("Can't add tag, missing name");
-          else t._POSignalsUtils.Logger.info("Can't add tag, PingOneSignals SDK is disabled");
+          if (!this._disableTags)
+            if (t.PointerConfig.instance.pointerParams.enabled)
+              if (e) {
+                var r = t.PointerConfig.instance.pointerParams.tagsBlacklistRegex;
+                if (r && (e.match(r) || (null === n || void 0 === n ? void 0 : n.match(r))))
+                  t._POSignalsUtils.Logger.info('Tag name or value is blacklisted');
+                else if (!(this._tags.length >= this.MAX_TAGS)) {
+                  this._tags.push({
+                    name: e.trim(),
+                    value:
+                      (null === (i = null === n || void 0 === n ? void 0 : n.trim) || void 0 === i
+                        ? void 0
+                        : i.call(n)) || void 0,
+                    epochTs: Date.now(),
+                    timestamp: Date.now(),
+                  });
+                  var a = n ? e + ':' + n : e;
+                  t._POSignalsUtils.Logger.info('Add tag: ' + a);
+                }
+              } else t._POSignalsUtils.Logger.info("Can't add tag, missing name");
+            else t._POSignalsUtils.Logger.info("Can't add tag, PingOneSignals SDK is disabled");
         }),
         (e.prototype.reset = function () {
           this._tags.clear();
@@ -9955,8 +11087,8 @@ var __extends =
               var a = this.classifyMouseInteraction(t);
               if (a === e.POOR) return { shouldCollect: !1 };
               for (var o = -1, s = a, u = 0; u < i.mouse.interactions.length; u++) {
-                var l = this.classifyMouseInteraction(i.mouse.interactions[u]);
-                l < s && ((o = u), (s = l));
+                var c = this.classifyMouseInteraction(i.mouse.interactions[u]);
+                c < s && ((o = u), (s = c));
               }
               return -1 === o
                 ? { shouldCollect: !1 }
@@ -9976,8 +11108,8 @@ var __extends =
                   this.MAX_MOUSE_AND_GESTURE
               )
                 return { shouldCollect: !0 };
-              var c = t,
-                d = this.findMinPriorityGestureIndex(c, i.touch.interactions);
+              var l = t,
+                d = this.findMinPriorityGestureIndex(l, i.touch.interactions);
               return -1 === d
                 ? { shouldCollect: !1 }
                 : { shouldCollect: !0, remove: { type: 'touch', index: d } };
@@ -10075,9 +11207,10 @@ var __extends =
                     )
                       return t._POSignalsUtils.Logger.warn('SDK already initialized'), [2];
                     (this.browserInfo = new t._POSignalsUtils.BrowserInfo()),
-                      (t._POSignalsUtils.Logger.isLogEnabled = !!e.consoleLogEnabled),
+                      (t._POSignalsUtils.Logger.isLogEnabled = !!e.consoleLogEnabled || !!e.devEnv),
                       t._POSignalsUtils.Logger.info('Starting Signals SDK...'),
-                      this.sessionData.setHubConfig(e),
+                      (t.Tags.instance.disableTags = !!this.initParams.disableTags),
+                      this.sessionData.setStorageConfig(e),
                       (r = t.PointerConfig.instance.pointerParams),
                       (a = {
                         additionalMediaCodecs: r.additionalMediaCodecs,
@@ -10097,6 +11230,8 @@ var __extends =
                         this.initParams,
                         this.metadata,
                         this,
+                        e.externalIdentifiers,
+                        this.sessionData,
                       )),
                       (null === (i = this.initParams.behavioralDataCollection) ||
                         void 0 === i ||
@@ -10217,6 +11352,7 @@ var __extends =
               ),
               new Error('PingOne Signals can be started only after DOM Ready!'))
             );
+          e.externalIdentifiers = e.externalIdentifiers || {};
         }),
         (e.prototype.loadEventPromise = function () {
           return __awaiter(this, void 0, void 0, function () {
@@ -11421,8 +12557,8 @@ var __extends =
             if (!r) return null;
             var u = e.htmlElement.parentElement;
             if ((null === u || void 0 === u ? void 0 : u.nodeType) === Node.ELEMENT_NODE) {
-              var l = new t.UiElement(u, this._clientDelegate);
-              return this.findMatchingUiControl(l, n + 1);
+              var c = new t.UiElement(u, this._clientDelegate);
+              return this.findMatchingUiControl(c, n + 1);
             }
           } catch (e) {
             t._POSignalsUtils.Logger.warn('failed to find matching ui control', e);
@@ -11867,8 +13003,8 @@ var __extends =
               var o = this.config[a].selector || [];
               t._POSignalsUtils.Util.isArray(o) || (o = [].concat(o));
               for (var s = 0, u = o; s < u.length; s++) {
-                var l = u[s];
-                t._POSignalsUtils.Util.isSelectorMatches(e, l, n) && (r[a] = this.config[a]);
+                var c = u[s];
+                t._POSignalsUtils.Util.isSelectorMatches(e, c, n) && (r[a] = this.config[a]);
               }
             } catch (e) {
               t._POSignalsUtils.Logger.warn('Failed to get the config for ' + a + ' tag', e);
@@ -11977,12 +13113,12 @@ var __extends =
             s = o.length / n.length;
           if (o.length >= 10 && s >= r) return { keptEvents: o, epsilon: a };
           var u = n.length < 50 ? 0.1 : n.length < 100 ? 0.3 : 0.7,
-            l = this.algorithm.reduceEvents(n, u),
-            c = l.length / n.length;
-          if (l.length <= e.MIN_EVENTS_TO_REDUCE || c <= r) return { keptEvents: l, epsilon: u };
+            c = this.algorithm.reduceEvents(n, u),
+            l = c.length / n.length;
+          if (c.length <= e.MIN_EVENTS_TO_REDUCE || l <= r) return { keptEvents: c, epsilon: u };
           var d =
-            (Math.min(a, Math.pow(a, s / r)) * Math.abs(c - r) + u * Math.abs(s - r)) /
-            Math.abs(s - c);
+            (Math.min(a, Math.pow(a, s / r)) * Math.abs(l - r) + u * Math.abs(s - r)) /
+            Math.abs(s - l);
           return (
             (d < u || d > a) &&
               t._POSignalsUtils.Logger.warn(
@@ -12570,12 +13706,14 @@ onDomReady(function () {
 }),
   (function (t) {
     var e = (function () {
-      function e(t, e, n, i, r) {
+      function e(t, e, n, i, r, a, o) {
         (this.clientVersion = t),
           (this.instanceUUID = e),
           (this.initParams = n),
           (this.metadata = i),
-          (this.behavioralDataHandler = r);
+          (this.behavioralDataHandler = r),
+          (this.externalIdentifiers = a),
+          (this.sessionStorage = o);
       }
       return (
         (e.prototype.getData = function (t) {
@@ -12593,28 +13731,31 @@ onDomReady(function () {
         }),
         (e.prototype.getRiskData = function (e) {
           return __awaiter(this, void 0, void 0, function () {
-            var n;
-            return __generator(this, function (i) {
-              switch (i.label) {
+            var n, i;
+            return __generator(this, function (r) {
+              switch (r.label) {
                 case 0:
-                  return (n = {}), [4, this.metadata.getDeviceAttributes()];
+                  return (i = {}), [4, this.metadata.getDeviceAttributes()];
                 case 1:
-                  return [
-                    2,
-                    ((n.deviceAttributes = i.sent()),
-                    (n.behavioral = this.behavioralDataHandler.getBehavioralData()),
-                    (n.tags = t.Tags.instance.tags),
-                    (n.sdkConfig = this.initParams),
-                    (n.epochTs = e),
-                    (n.instanceUUID = this.instanceUUID),
-                    (n.tabUUID = t._POSignalsStorage.SessionStorage.instance.tabUUID),
-                    (n.origin = location.origin),
-                    (n.href = location.href),
-                    (n.sdkVersion = this.clientVersion),
-                    (n.platform = 'web'),
-                    (n.clientToken = window._pingOneSignalsToken),
-                    n),
-                  ];
+                  return (
+                    (i.deviceAttributes = r.sent()),
+                    (i.behavioral = this.behavioralDataHandler.getBehavioralData()),
+                    (i.tags = t.Tags.instance.tags),
+                    (i.sdkConfig = this.initParams),
+                    (i.epochTs = e),
+                    (i.instanceUUID = this.instanceUUID),
+                    (i.tabUUID = t._POSignalsStorage.SessionStorage.instance.tabUUID),
+                    (i.origin = location.origin),
+                    (i.href = location.href),
+                    (i.sdkVersion = this.clientVersion),
+                    (i.platform = 'web'),
+                    (i.clientToken = window._pingOneSignalsToken),
+                    (i.externalIdentifiers = this.externalIdentifiers),
+                    (n = i),
+                    this.sessionStorage.deviceTrust &&
+                      (n.deviceTrust = this.sessionStorage.deviceTrust),
+                    [2, n]
+                  );
               }
             });
           });
@@ -13141,5 +14282,5 @@ window._POSignalsEntities = _POSignalsEntities;
 window._pingOneSignals = _pingOneSignals;
 
 // Ping Identity INC.
-// ï¿½ ALL RIGHTS RESERVED
-// Version: 5.2.10  Build: 465  Sun Dec 24 2023 08:00:20 GMT+0000 (Coordinated Universal Time)
+// � ALL RIGHTS RESERVED
+//Build: 476  Thu Mar 14 2024 13:20:55 GMT+0000 (Coordinated Universal Time)
