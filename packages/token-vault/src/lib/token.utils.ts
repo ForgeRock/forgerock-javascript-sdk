@@ -1,5 +1,5 @@
-import { ClientTokens, RefreshOAuth2TokensOptions, ServerTokens } from './types';
-import { stringifyQueryParams } from './network';
+import { ClientTokens, RefreshOAuth2TokensOptions, ServerTokens } from './types/index.js';
+import { stringifyQueryParams } from './network/index.js';
 
 /** ****************************************************************
  * @function getTokens - Get the tokens for a client from local storage

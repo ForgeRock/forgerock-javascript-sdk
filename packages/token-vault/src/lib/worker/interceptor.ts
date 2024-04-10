@@ -1,8 +1,8 @@
 /// <reference lib="webworker" />
 
-import { evaluateUrlForInterception } from '../network';
-import type { InterceptorConfig } from '../types/worker.types';
-import { generateUrlsToIntercept, generateOptions } from './worker.utilities';
+import { evaluateUrlForInterception } from '../network/index.js';
+import type { InterceptorConfig } from '../types/worker.types.js';
+import { generateUrlsToIntercept, generateOptions } from './worker.utilities.js';
 
 declare const self: ServiceWorkerGlobalScope;
 

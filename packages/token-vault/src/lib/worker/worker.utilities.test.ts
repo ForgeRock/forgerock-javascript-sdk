@@ -1,4 +1,4 @@
-import { generateUrlsToIntercept } from './worker.utilities';
+import { generateUrlsToIntercept } from './worker.utilities.js';
 
 // Test that the generateUrlsToIntercept function returns the expected array of URLs
 test('generateUrlsToIntercept returns the expected array of URLs', () => {

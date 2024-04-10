@@ -9,7 +9,7 @@ import {
   parseQuery,
   resolveUrl,
   stringifyQueryParams,
-} from './network.utilities';
+} from './network.utilities.js';
 
 describe('Test network utility functions', () => {
   // Test evaluateUrlForInterception with matching URL

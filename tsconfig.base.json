@@ -3,9 +3,6 @@
   "compilerOptions": {
     "baseUrl": ".",
     "rootDir": ".",
-    "moduleResolution": "Node10",
-    "importHelpers": true,
-    "skipLibCheck": true,
     "paths": {
       "@forgerock/javascript-sdk": ["packages/javascript-sdk/src/index.ts"],
       "@forgerock/ping-protect": ["packages/ping-protect/src/index.ts"],

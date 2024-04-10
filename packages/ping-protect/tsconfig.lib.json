@@ -7,8 +7,7 @@
     "module": "ES2020",
     "verbatimModuleSyntax": true,
     "declaration": true,
-    "emitDeclarationOnly": true,
-    "noEmit": true,
+    "noEmit": false,
     "sourceMap": true,
     "declarationMap": true
   },

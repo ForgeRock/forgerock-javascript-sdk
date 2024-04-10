@@ -6,7 +6,7 @@ import type {
   RequestHeaders,
   ResponseClone,
   ResponseHeaders,
-} from '../types';
+} from '../types/index.js';
 
 /** ****************************************************************
  * @function checkForMissingSlash

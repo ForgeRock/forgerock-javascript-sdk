@@ -1,2 +1,2 @@
-export * from './interceptor';
-export * from './worker.utilities';
+export * from './interceptor.js';
+export * from './worker.utilities.js';

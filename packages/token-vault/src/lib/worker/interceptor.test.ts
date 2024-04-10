@@ -1,4 +1,4 @@
-import { interceptor } from './interceptor';
+import { interceptor } from './interceptor.js';
 
 describe('interceptor', () => {
   it('should error when no urls are passed in', () => {

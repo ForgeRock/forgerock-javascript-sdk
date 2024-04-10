@@ -6,7 +6,7 @@
   "targets": {
     "build": {
       "dependsOn": ["package"],
-      "command": "tsc -p packages/ping-protect/tsconfig.lib.json --declaration --declarationMap --outDir dist --emitDeclarationOnly "
+      "command": "tsc -p packages/ping-protect/tsconfig.lib.json -outDir dist --emitDeclarationOnly"
     },
     "package": {
       "executor": "@nx/vite:build",
@@ -15,10 +15,12 @@
         "outputPath": "dist/packages/ping-protect",
         "main": "packages/ping-protect/src/index.ts",
         "tsConfig": "packages/ping-protect/tsconfig.lib.json",
+        "updateBuildableProjectDepsInPackageJson": false,
         "assets": [
           "packages/ping-protect/*.md",
           "packages/ping-protect/src/lib/ping-signals-sdk.js"
-        ]
+        ],
+        "updateBuildableProjectDepsInPackageJson": true
       }
     },
     "lint": {

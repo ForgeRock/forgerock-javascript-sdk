@@ -4,8 +4,8 @@ import {
   getRequestHeaders,
   getRequestBodyBlob,
   resolveUrl,
-} from '../network';
-import { InterceptorConfig } from '../types/worker.types';
+} from '../network/index.js';
+import { InterceptorConfig } from '../types/worker.types.js';
 
 /** ****************************************************************
  * @function generateUrlsToIntercept - Generate the URLs for interception

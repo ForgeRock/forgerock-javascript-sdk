@@ -1,6 +1,16 @@
-import { cloneResponse, createErrorResponse, extractOrigins, generateAmUrls } from './network';
-import { EventsConfig, ProxyConfig, ServerTokens } from './types';
-import { refreshTokens, storeTokens, getTokens, tokenExpiryWithinThreshold } from './token.utils';
+import {
+  cloneResponse,
+  createErrorResponse,
+  extractOrigins,
+  generateAmUrls,
+} from './network/index.js';
+import { EventsConfig, ProxyConfig, ServerTokens } from './types/index.js';
+import {
+  refreshTokens,
+  storeTokens,
+  getTokens,
+  tokenExpiryWithinThreshold,
+} from './token.utils.js';
 
 /** ****************************************************************
  * @function proxy - Initialize the Token Vault Proxy
