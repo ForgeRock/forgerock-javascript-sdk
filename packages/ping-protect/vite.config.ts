@@ -4,12 +4,6 @@ import { defineConfig } from 'vite';
 export default defineConfig({
   cacheDir: '../../node_modules/.vite/ping-protect',
 
-  plugins: [
-    // viteTsConfigPaths({
-    //   root: '../../',
-    // }),
-  ],
-
   // Uncomment this if you are using workers.
   // worker: {
   //  plugins: [
@@ -18,7 +12,21 @@ export default defineConfig({
   //    }),
   //  ],
   // },
-
+  build: {
+    lib: {
+      name: 'ping-protect',
+      entry: 'src/index.ts',
+      formats: ['es'],
+      fileName: () => `src/index.js`,
+    },
+    rollupOptions: {
+      output: {
+        dir: 'dist/packages/ping-protect',
+        preserveModules: true,
+        preserveModulesRoot: './src',
+      },
+    },
+  },
   test: {
     globals: true,
     cache: {
