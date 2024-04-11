@@ -5,7 +5,11 @@
   "projectType": "library",
   "targets": {
     "build": {
-      "executor": "@nx/js:tsc",
+      "dependsOn": ["package"],
+      "command": "tsc -p packages/ping-protect/tsconfig.lib.json --declaration --declarationMap --outDir dist --emitDeclarationOnly "
+    },
+    "package": {
+      "executor": "@nx/vite:build",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/packages/ping-protect",
