@@ -26,5 +26,8 @@
   },
   "main": "./src/index.cjs",
   "module": "./src/index.js",
-  "types": "./src/index.d.ts"
+  "types": "./src/index.d.ts",
+  "dependencies": {
+    "jose": "^5.2.3"
+  }
 }

@@ -77,6 +77,7 @@ import Deferred from './util/deferred';
 import PKCE from './util/pkce';
 import LocalStorage from './util/storage';
 import type { LoggerFunctions, StepOptions } from './config/interfaces';
+import DeviceBindingEmulator from './fr-device-binding-emulation/DeviceBindingEmulator';
 
 export type {
   AuthResponse,
@@ -113,6 +114,7 @@ export {
   Config,
   ConfirmationCallback,
   Deferred,
+  DeviceBindingEmulator,
   DeviceProfileCallback,
   ErrorCode,
   FRAuth,
