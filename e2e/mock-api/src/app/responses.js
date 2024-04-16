@@ -8,7 +8,7 @@
  * of the MIT license. See the LICENSE file for details.
  */
 
-import { AM_URL, RESOURCE_URL } from './env.config';
+import { AM_URL, RESOURCE_URL } from './env.config.js';
 
 export const oauthTokens = {
   access_token: 'baz',
@@ -330,7 +330,7 @@ export const pingProtectInitialize = {
         },
         {
           name: 'customHost',
-          value: 'https://example.com',
+          value: 'http://localhost',
         },
         {
           name: 'lazyMetadata',
@@ -592,7 +592,7 @@ export const redirectCallback = {
           name: 'redirectUrl',
           value:
             // eslint-disable-next-line max-len
-            'https://user.example.com:9443/o/oauth2/v2/auth?nonce=ko7fdf2v3b6yctgq35bdpndel0p9qiq&response_type=code&client_id=546064052569-ke17g9ufsmvda3kgg7s5kp2hpf3gnqi8.apps.googleusercontent.com&scope=openid%20profile%20email&code_challenge=Bh_6aMiI04KGI1wVILtEamByklmXnQY9JKhKhlwsIxk&code_challenge_method=S256&state=rtu8pz65dbg6baw985d532myfbbnf5v',
+            'http://localhost:9443/o/oauth2/v2/auth?nonce=ko7fdf2v3b6yctgq35bdpndel0p9qiq&response_type=code&client_id=546064052569-ke17g9ufsmvda3kgg7s5kp2hpf3gnqi8.apps.googleusercontent.com&scope=openid%20profile%20email&code_challenge=Bh_6aMiI04KGI1wVILtEamByklmXnQY9JKhKhlwsIxk&code_challenge_method=S256&state=rtu8pz65dbg6baw985d532myfbbnf5v',
         },
         { name: 'redirectMethod', value: 'GET' },
         { name: 'trackingCookie', value: true },
@@ -610,7 +610,7 @@ export const redirectCallbackSaml = {
           name: 'redirectUrl',
           value:
             // eslint-disable-next-line max-len
-            'https://user.example.com:9443/SAMLTest/',
+            'http://localhost:9443/SAMLTest/',
         },
         { name: 'redirectMethod', value: 'GET' },
         { name: 'trackingCookie', value: true },
@@ -628,7 +628,7 @@ export const redirectCallbackFailureSaml = {
           name: 'redirectUrl',
           value:
             // eslint-disable-next-line max-len
-            'https://user.example.com:9443/SAMLFailure',
+            'http://localhost:9443/SAMLFailure',
         },
         { name: 'redirectMethod', value: 'GET' },
         { name: 'trackingCookie', value: true },
@@ -700,7 +700,7 @@ export const requestDeviceProfile = {
 
 export const wellKnownForgeRock = {
   request_parameter_supported: true,
-  pushed_authorization_request_endpoint: 'https://auth.example.com:9443/am/oauth2/realms/root/par',
+  pushed_authorization_request_endpoint: 'http://localhost:9443/am/oauth2/realms/root/par',
   introspection_encryption_alg_values_supported: [
     'ECDH-ES+A256KW',
     'ECDH-ES+A192KW',
@@ -714,8 +714,8 @@ export const wellKnownForgeRock = {
     'A192KW',
   ],
   claims_parameter_supported: false,
-  introspection_endpoint: 'https://auth.example.com:9443/am/oauth2/realms/root/introspect',
-  issuer: 'https://auth.example.com:9443/am/oauth2/realms/root',
+  introspection_endpoint: 'http://localhost:9443/am/oauth2/realms/root/introspect',
+  issuer: 'http://localhost:9443/am/oauth2/realms/root',
   id_token_encryption_enc_values_supported: [
     'A256GCM',
     'A192GCM',
@@ -732,7 +732,7 @@ export const wellKnownForgeRock = {
     'A192CBC-HS384',
     'A256CBC-HS512',
   ],
-  authorization_endpoint: 'https://auth.example.com:9443/am/oauth2/realms/root/authorize',
+  authorization_endpoint: 'http://localhost:9443/am/oauth2/realms/root/authorize',
   authorization_encryption_alg_values_supported: [
     'ECDH-ES+A256KW',
     'ECDH-ES+A192KW',
@@ -787,7 +787,7 @@ export const wellKnownForgeRock = {
     'query',
   ],
   backchannel_logout_session_supported: true,
-  token_endpoint: 'https://auth.example.com:9443/am/oauth2/realms/root/access_token',
+  token_endpoint: 'http://localhost:9443/am/oauth2/realms/root/access_token',
   response_types_supported: [
     'code token id_token',
     'code',
@@ -829,7 +829,7 @@ export const wellKnownForgeRock = {
   ],
   version: '3.0',
   prompt_values_supported: ['none', 'login', 'consent'],
-  userinfo_endpoint: 'https://auth.example.com:9443/am/oauth2/realms/root/userinfo',
+  userinfo_endpoint: 'http://localhost:9443/am/oauth2/realms/root/userinfo',
   require_request_uri_registration: true,
   code_challenge_methods_supported: ['plain', 'S256'],
   id_token_encryption_alg_values_supported: [
@@ -914,7 +914,7 @@ export const wellKnownForgeRock = {
     'PS512',
     'RS512',
   ],
-  check_session_iframe: 'https://auth.example.com:9443/am/oauth2/realms/root/connect/checkSession',
+  check_session_iframe: 'http://localhost:9443/am/oauth2/realms/root/connect/checkSession',
   scopes_supported: [
     'address',
     'phone',
@@ -976,7 +976,7 @@ export const wellKnownForgeRock = {
     'dir',
     'A192KW',
   ],
-  end_session_endpoint: 'https://auth.example.com:9443/am/oauth2/realms/root/connect/endSession',
+  end_session_endpoint: 'http://localhost:9443/am/oauth2/realms/root/connect/endSession',
   rcs_request_encryption_enc_values_supported: [
     'A256GCM',
     'A192GCM',
@@ -985,7 +985,7 @@ export const wellKnownForgeRock = {
     'A192CBC-HS384',
     'A256CBC-HS512',
   ],
-  revocation_endpoint: 'https://auth.example.com:9443/am/oauth2/realms/root/token/revoke',
+  revocation_endpoint: 'http://localhost:9443/am/oauth2/realms/root/token/revoke',
   rcs_response_encryption_alg_values_supported: [
     'ECDH-ES+A256KW',
     'ECDH-ES+A192KW',
@@ -1012,7 +1012,7 @@ export const wellKnownForgeRock = {
     'PS512',
     'RS512',
   ],
-  jwks_uri: 'https://auth.example.com:9443/am/oauth2/realms/root/connect/jwk_uri',
+  jwks_uri: 'http://localhost:9443/am/oauth2/realms/root/connect/jwk_uri',
   subject_types_supported: ['public', 'pairwise'],
   id_token_signing_alg_values_supported: [
     'PS384',
@@ -1028,7 +1028,7 @@ export const wellKnownForgeRock = {
     'PS512',
     'RS512',
   ],
-  registration_endpoint: 'https://auth.example.com:9443/am/oauth2/realms/root/register',
+  registration_endpoint: 'http://localhost:9443/am/oauth2/realms/root/register',
 };
 
 export const wellKnownPing = {

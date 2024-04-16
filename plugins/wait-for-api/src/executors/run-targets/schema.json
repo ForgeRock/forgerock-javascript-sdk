@@ -1,9 +1,0 @@
-{
-  "$schema": "http://json-schema.org/schema",
-  "version": 2,
-  "title": "RunTargets executor",
-  "description": "run the given targets for api and e2e servers",
-  "type": "object",
-  "properties": {},
-  "required": []
-}

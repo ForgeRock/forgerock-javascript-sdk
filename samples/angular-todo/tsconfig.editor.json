@@ -1,9 +1,0 @@
-{
-  "extends": "./tsconfig.json",
-  "include": ["**/*.ts"],
-  "compilerOptions": {
-    "types": ["jest", "node"],
-    "moduleResolution": "node"
-  },
-  "exclude": ["jest.config.ts"]
-}

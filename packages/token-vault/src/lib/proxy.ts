@@ -3,9 +3,14 @@ import {
   createErrorResponse,
   extractOrigins,
   generateAmUrls,
-} from '@shared/network';
-import { EventsConfig, ProxyConfig, ServerTokens } from '@shared/types';
-import { refreshTokens, storeTokens, getTokens, tokenExpiryWithinThreshold } from './token.utils';
+} from './network/index.js';
+import { EventsConfig, ProxyConfig, ServerTokens } from './types/index.js';
+import {
+  refreshTokens,
+  storeTokens,
+  getTokens,
+  tokenExpiryWithinThreshold,
+} from './token.utils.js';
 
 /** ****************************************************************
  * @function proxy - Initialize the Token Vault Proxy
@@ -50,11 +55,14 @@ export function proxy(config: ProxyConfig) {
     return acc;
   }, {} as EventsConfig);
 
+  function objectKeys<Obj extends object>(obj: Obj): (keyof Obj)[] {
+    return Object.keys(obj) as (keyof Obj)[];
+  }
   /**
    * Generate AM URLs
    */
   const amUrlObj = generateAmUrls(config?.forgerock);
-  const amUrlArray = Object.keys(amUrlObj).map((key) => {
+  const amUrlArray = objectKeys(amUrlObj).map((key) => {
     return amUrlObj[key];
   });
 

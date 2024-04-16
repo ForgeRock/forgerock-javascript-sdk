@@ -4,21 +4,8 @@
   "private": true,
   "description": "",
   "main": "./index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "dependencies": {
-    "cookie-parser": "^1.4.6",
-    "cors": "^2.8.5",
-    "express": "4.18.2",
-    "local-web-server": "5.1.1",
-    "superagent": "7.1.1",
-    "uuid": "8.3.2"
-  },
   "keywords": [],
   "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "@types/superagent": "^4.1.16"
-  }
+  "type": "commonjs",
+  "license": "ISC"
 }

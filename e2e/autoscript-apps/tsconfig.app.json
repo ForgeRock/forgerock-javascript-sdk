@@ -2,10 +2,11 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "dist",
-    "module": "ES2015",
-    "moduleResolution": "Node16",
+    "strict": false,
+    "module": "ES2020",
     "allowUmdGlobalAccess": true,
-    "target": "ES2020"
+    "target": "ES2020",
+    "moduleResolution": "Bundler"
   },
   "exclude": ["**/*.spec.ts"],
   "include": ["**/*.ts"]

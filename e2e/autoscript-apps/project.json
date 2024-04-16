@@ -6,48 +6,47 @@
   "tags": ["scope:app"],
   "targets": {
     "build": {
-      "executor": "@nx/webpack:webpack",
-      "dependsOn": ["^build", "^tsc"],
+      "executor": "@nx/vite:build",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/e2e/autoscript-apps",
-        "compiler": "babel",
-        "index": "e2e/autoscript-apps/src/index.html",
-        "main": "packages/javascript-sdk/src/index.ts",
-        "tsConfig": "e2e/autoscript-apps/tsconfig.app.json",
-        "webpackConfig": "e2e/autoscript-apps/webpack.config.js"
+        "outputPath": "dist/e2e/autoscript-apps"
       },
       "configurations": {
         "development": {
-          "optimization": false,
-          "watch": true
-        },
-        "production": {
-          "outputPath": "dist/e2e/autoscript-apps",
-          "optimized": true,
-          "watch": false
+          "mode": "development"
         }
-      },
-      "defaultConfiguration": "production"
+      }
     },
     "serve": {
-      "executor": "@nx/webpack:dev-server",
-      "dependsOn": ["^build"],
-      "defaultConfiguration": "production",
+      "executor": "@nx/vite:dev-server",
+      "defaultConfiguration": "development",
       "options": {
-        "port": 8443,
-        "host": "sdkapp.example.com"
+        "buildTarget": "autoscript-apps:build",
+        "hmr": false
       },
       "configurations": {
-        "production": {
-          "buildTarget": "autoscript-apps:build",
-          "open": false,
-          "hmr": false
-        },
         "development": {
           "buildTarget": "autoscript-apps:build:development",
-          "open": true,
           "hmr": true
+        },
+        "production": {
+          "buildTarget": "autoscript-apps:build:production",
+          "hmr": false
+        }
+      }
+    },
+    "preview": {
+      "executor": "@nx/vite:preview-server",
+      "defaultConfiguration": "production",
+      "options": {
+        "buildTarget": "autoscript-apps:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "autoscript-apps:build:development"
+        },
+        "production": {
+          "buildTarget": "autoscript-apps:build:production"
         }
       }
     }

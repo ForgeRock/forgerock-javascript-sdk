@@ -5,22 +5,13 @@
   "projectType": "application",
   "targets": {
     "build": {
-      "executor": "@nx/esbuild:esbuild",
+      "executor": "@nx/js:tsc",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "platform": "node",
         "outputPath": "dist/e2e/mock-api",
-        "outputFileName": "index.cjs",
-        "format": ["cjs"],
-        "bundle": true,
         "main": "e2e/mock-api/src/index.js",
         "tsConfig": "e2e/mock-api/tsconfig.app.json",
-        "assets": ["e2e/mock-api/src/assets"],
-        "generatePackageJson": true,
-        "esbuildOptions": {
-          "sourcemap": true
-        },
-        "thirdParty": true
+        "assets": ["e2e/mock-api/src/assets", "e2e/mock-api/package.json"]
       },
       "configurations": {
         "development": {
@@ -40,46 +31,18 @@
       }
     },
     "serve": {
-      "executor": "nx:run-commands",
-      "dependsOn": ["build"],
+      "executor": "@nx/js:node",
+      "outputs": ["{options.outputPath}"],
       "options": {
-        "command": "node dist/e2e/mock-api/index.cjs"
-      },
-      "configurations": {
-        "development": {
-          "readyWhen": "Listening to HTTPS on secure port: 9443",
-          "args": ["MOCK_PORT=9443"]
-        },
-        "production": {
-          "buildTarget": "mock-api:build:production"
-        }
-      }
-    },
-    "deploy": {
-      "executor": "@nx/workspace:run-commands",
-      "options": {
-        "commands": [
-          "nx build mock-api --prod",
-          "docker build -f ./e2e/mock-api/Dockerfile . -t mock-api"
-        ],
-        "parallel": false
+        "buildTarget": "mock-api:build"
       }
     },
     "lint": {
-      "executor": "@nx/linter:eslint",
-      "outputs": ["{options.outputFile}"],
+      "executor": "@nx/eslint:lint",
       "options": {
         "lintFilePatterns": ["e2e/mock-api/**/*.ts"],
         "fix": true,
         "ignorePath": ".gitignore"
-      }
-    },
-    "test": {
-      "executor": "@nx/jest:jest",
-      "outputs": ["coverage/e2e/mock-api"],
-      "options": {
-        "jestConfig": "e2e/mock-api/jest.config.ts",
-        "passWithNoTests": true
       }
     }
   },

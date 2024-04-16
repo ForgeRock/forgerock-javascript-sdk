@@ -11,15 +11,13 @@ import * as dns from 'dns';
 import cors from 'cors';
 import express from 'express';
 import cookieParser from 'cookie-parser';
-import { createServer } from 'https';
-// import { createServer } from 'http';
+import { createServer } from 'http';
 import { env } from 'process';
 import path from 'path';
-import { authorizeApp } from './app/app.auth';
-import { key, cert } from './app/app.certs';
-import { MOCK_PORT } from './app/env.config';
-import authRoutes from './app/routes.auth';
-import resourceRoutes from './app/routes.resource';
+import { authorizeApp } from './app/app.auth.js';
+import { MOCK_PORT } from './app/env.config.js';
+import authRoutes from './app/routes.auth.js';
+import resourceRoutes from './app/routes.resource.js';
 
 dns.setDefaultResultOrder('ipv4first');
 
@@ -55,7 +53,5 @@ resourceRoutes(app);
 app.get('/healthcheck', (req, res) => res.status(200).send('ok'));
 
 env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0;
-createServer({ key, cert }, app).listen(MOCK_PORT);
-// when we use nginx we will probably use this
-// createServer(app).listen(MOCK_PORT);
-console.log(`Listening to HTTPS on secure port: ${MOCK_PORT}`);
+createServer(app).listen(MOCK_PORT);
+console.log(`Listening to HTTP on secure port: ${MOCK_PORT}`);

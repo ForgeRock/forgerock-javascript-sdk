@@ -10,7 +10,6 @@
 
 import type { Page } from '@playwright/test';
 import { AM_URL, BASE_URL, CLIENT_ID, RESOURCE_URL, SCOPE, REALM_PATH, USERS } from '../env.config';
-import 'core-js/stable';
 
 export async function setupAndGo(
   page: Page,
@@ -51,7 +50,7 @@ export async function setupAndGo(
   const networkArray: string[] = [];
 
   // If anything fails, ensure we close the browser to end the process
-  const url = new URL(`${BASE_URL}/${path}`);
+  const url = new URL(`${BASE_URL}/src/${path}`);
 
   url.searchParams.set('amUrl', (config && config.amUrl) || AM_URL);
   url.searchParams.set('pauseBehaviorData', (config && config.pauseBehaviorData) || '');
@@ -79,11 +78,10 @@ export async function setupAndGo(
     console.log(url.toString());
   }
 
-  await page.goto(url.toString(), { waitUntil: 'commit' });
-
   // Listen for events on page
   page.on('console', async (msg) => {
-    return messageArray.push(msg.text());
+    messageArray.push(msg.text());
+    return Promise.resolve(true);
   });
 
   page.on('request', async (req) => {
@@ -99,7 +97,12 @@ export async function setupAndGo(
     await dialog.accept(config?.dialogInput || 'abc123');
   });
 
-  await page.waitForSelector(config?.selector || '.Test_Complete');
+  await page.goto(url.toString());
+
+  // Test script complete
+  await page.waitForSelector('.Test_Complete', { state: 'attached' });
+
+  await page.removeListener('console', (msg) => console.log(msg.text()));
 
   return { headerArray, messageArray, networkArray };
 }
