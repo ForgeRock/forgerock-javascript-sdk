@@ -13,6 +13,9 @@
       "cache": true,
       "inputs": ["production", "^production"]
     },
+    "readme": {
+      "cache": true
+    },
     "build-interceptor": {
       "cache": true
     },

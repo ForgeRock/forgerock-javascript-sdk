@@ -5,8 +5,12 @@
   "projectType": "library",
   "targets": {
     "build": {
-      "dependsOn": ["package"],
+      "dependsOn": ["readme"],
       "command": "tsc -p packages/ping-protect/tsconfig.lib.json -outDir dist --emitDeclarationOnly"
+    },
+    "readme": {
+      "dependsOn": ["package"],
+      "command": "cp packages/ping-protect/README.md dist/packages/ping-protect"
     },
     "package": {
       "executor": "@nx/vite:build",
@@ -15,12 +19,7 @@
         "outputPath": "dist/packages/ping-protect",
         "main": "packages/ping-protect/src/index.ts",
         "tsConfig": "packages/ping-protect/tsconfig.lib.json",
-        "updateBuildableProjectDepsInPackageJson": false,
-        "assets": [
-          "packages/ping-protect/*.md",
-          "packages/ping-protect/src/lib/ping-signals-sdk.js"
-        ],
-        "updateBuildableProjectDepsInPackageJson": true
+        "updateBuildableProjectDepsInPackageJson": false
       }
     },
     "lint": {

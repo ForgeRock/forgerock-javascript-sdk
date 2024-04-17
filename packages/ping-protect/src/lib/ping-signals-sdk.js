@@ -28,7 +28,6 @@ var _POSignalsEntities;
             (i.style.width = '0'),
             (i.style.height = '0'),
             (i.style.visibility = 'hidden'),
-            (i.style.overflow = 'hidden'),
             (i.id = t),
             document.body.appendChild(i),
             i);
@@ -58,7 +57,7 @@ var _POSignalsEntities;
     window._pingOneSignalsToken ||
       (window._pingOneSignalsToken = 'uninitialized_token_' + new Date().getTime()),
       (i = window._pingOneSignalsCustomHost || 'apps.pingone.com'),
-      (r = { sdkVersion: '5.3.1w', platform: navigator.platform || '' }),
+      (r = { sdkVersion: '5.3.0w', platform: navigator.platform || '' }),
       (a = encodeURIComponent(
         (function (t) {
           var e,
@@ -483,16 +482,16 @@ var _POSignalsEntities;
           (s = t.charCodeAt(a)) < 128
             ? (u[l++] = s)
             : s < 2048
-            ? ((u[l++] = 192 | (s >> 6)), (u[l++] = 128 | (63 & s)))
-            : s < 55296 || s >= 57344
-            ? ((u[l++] = 224 | (s >> 12)),
-              (u[l++] = 128 | ((s >> 6) & 63)),
-              (u[l++] = 128 | (63 & s)))
-            : ((s = 65536 + (((1023 & s) << 10) | (1023 & t.charCodeAt(++a)))),
-              (u[l++] = 240 | (s >> 18)),
-              (u[l++] = 128 | ((s >> 12) & 63)),
-              (u[l++] = 128 | ((s >> 6) & 63)),
-              (u[l++] = 128 | (63 & s)));
+              ? ((u[l++] = 192 | (s >> 6)), (u[l++] = 128 | (63 & s)))
+              : s < 55296 || s >= 57344
+                ? ((u[l++] = 224 | (s >> 12)),
+                  (u[l++] = 128 | ((s >> 6) & 63)),
+                  (u[l++] = 128 | (63 & s)))
+                : ((s = 65536 + (((1023 & s) << 10) | (1023 & t.charCodeAt(++a)))),
+                  (u[l++] = 240 | (s >> 18)),
+                  (u[l++] = 128 | ((s >> 12) & 63)),
+                  (u[l++] = 128 | ((s >> 6) & 63)),
+                  (u[l++] = 128 | (63 & s)));
         t = u;
       } else {
         if ('object' !== o) throw new Error(e);
@@ -554,17 +553,17 @@ var _POSignalsEntities;
               (o = t.charCodeAt(u)) < 128
                 ? (l[s >> 2] |= o << a[3 & s++])
                 : o < 2048
-                ? ((l[s >> 2] |= (192 | (o >> 6)) << a[3 & s++]),
-                  (l[s >> 2] |= (128 | (63 & o)) << a[3 & s++]))
-                : o < 55296 || o >= 57344
-                ? ((l[s >> 2] |= (224 | (o >> 12)) << a[3 & s++]),
-                  (l[s >> 2] |= (128 | ((o >> 6) & 63)) << a[3 & s++]),
-                  (l[s >> 2] |= (128 | (63 & o)) << a[3 & s++]))
-                : ((o = 65536 + (((1023 & o) << 10) | (1023 & t.charCodeAt(++u)))),
-                  (l[s >> 2] |= (240 | (o >> 18)) << a[3 & s++]),
-                  (l[s >> 2] |= (128 | ((o >> 12) & 63)) << a[3 & s++]),
-                  (l[s >> 2] |= (128 | ((o >> 6) & 63)) << a[3 & s++]),
-                  (l[s >> 2] |= (128 | (63 & o)) << a[3 & s++]));
+                  ? ((l[s >> 2] |= (192 | (o >> 6)) << a[3 & s++]),
+                    (l[s >> 2] |= (128 | (63 & o)) << a[3 & s++]))
+                  : o < 55296 || o >= 57344
+                    ? ((l[s >> 2] |= (224 | (o >> 12)) << a[3 & s++]),
+                      (l[s >> 2] |= (128 | ((o >> 6) & 63)) << a[3 & s++]),
+                      (l[s >> 2] |= (128 | (63 & o)) << a[3 & s++]))
+                    : ((o = 65536 + (((1023 & o) << 10) | (1023 & t.charCodeAt(++u)))),
+                      (l[s >> 2] |= (240 | (o >> 18)) << a[3 & s++]),
+                      (l[s >> 2] |= (128 | ((o >> 12) & 63)) << a[3 & s++]),
+                      (l[s >> 2] |= (128 | ((o >> 6) & 63)) << a[3 & s++]),
+                      (l[s >> 2] |= (128 | (63 & o)) << a[3 & s++]));
           (this.lastByteIndex = s),
             (this.bytes += s - this.start),
             s >= 64
@@ -925,15 +924,15 @@ var _POSignalsEntities;
       return 32 == (e %= 64)
         ? [t[1], t[0]]
         : e < 32
-        ? [(t[0] << e) | (t[1] >>> (32 - e)), (t[1] << e) | (t[0] >>> (32 - e))]
-        : ((e -= 32), [(t[1] << e) | (t[0] >>> (32 - e)), (t[0] << e) | (t[1] >>> (32 - e))]);
+          ? [(t[0] << e) | (t[1] >>> (32 - e)), (t[1] << e) | (t[0] >>> (32 - e))]
+          : ((e -= 32), [(t[1] << e) | (t[0] >>> (32 - e)), (t[0] << e) | (t[1] >>> (32 - e))]);
     }
     function r(t, e) {
       return 0 == (e %= 64)
         ? t
         : e < 32
-        ? [(t[0] << e) | (t[1] >>> (32 - e)), t[1] << e]
-        : [t[1] << (e - 32), 0];
+          ? [(t[0] << e) | (t[1] >>> (32 - e)), t[1] << e]
+          : [t[1] << (e - 32), 0];
     }
     function a(t, e) {
       return [t[0] ^ e[0], t[1] ^ e[1]];
@@ -1105,8 +1104,8 @@ var _POSignalsEntities;
                       2 & a[0]
                         ? i.return
                         : a[0]
-                        ? i.throw || ((r = i.return) && r.call(i), 0)
-                        : i.next) &&
+                          ? i.throw || ((r = i.return) && r.call(i), 0)
+                          : i.next) &&
                     !(r = r.call(i, a[1])).done)
                 )
                   return r;
@@ -1451,10 +1450,10 @@ var _POSignalsEntities;
             n.fillRect(125, 1, 62, 20),
             (n.fillStyle = '#069'),
             (n.font = '11pt no-real-font-123'),
-            n.fillText('Cwm fjordbank 😃 gly', 2, 15),
+            n.fillText('Cwm fjordbank ðŸ˜ƒ gly', 2, 15),
             (n.fillStyle = 'rgba(102, 204, 0, 0.2)'),
             (n.font = '18pt Arial'),
-            n.fillText('Cwm fjordbank 😃 gly', 4, 45),
+            n.fillText('Cwm fjordbank ðŸ˜ƒ gly', 4, 45),
             (n.globalCompositeOperation = 'multiply'),
             (n.fillStyle = 'rgb(255,0,255)'),
             n.beginPath(),
@@ -2066,8 +2065,8 @@ var _POSignalsEntities;
                         2 & a[0]
                           ? i.return
                           : a[0]
-                          ? i.throw || ((r = i.return) && r.call(i), 0)
-                          : i.next) &&
+                            ? i.throw || ((r = i.return) && r.call(i), 0)
+                            : i.next) &&
                       !(r = r.call(i, a[1])).done)
                   )
                     return r;
@@ -2288,17 +2287,17 @@ var _POSignalsEntities;
         return this._connected
           ? this._promise.resolve()
           : this._closed
-          ? this._promise.reject(new Error('CrossStorageClient has closed'))
-          : (this._requests.connect || (this._requests.connect = []),
-            new this._promise(function (e, n) {
-              var i = setTimeout(function () {
-                n(new Error('CrossStorageClient could not connect'));
-              }, t._timeout);
-              t._requests.connect.push(function (t) {
-                if ((clearTimeout(i), t)) return n(t);
-                e();
-              });
-            }));
+            ? this._promise.reject(new Error('CrossStorageClient has closed'))
+            : (this._requests.connect || (this._requests.connect = []),
+              new this._promise(function (e, n) {
+                var i = setTimeout(function () {
+                  n(new Error('CrossStorageClient could not connect'));
+                }, t._timeout);
+                t._requests.connect.push(function (t) {
+                  if ((clearTimeout(i), t)) return n(t);
+                  e();
+                });
+              }));
       }),
       (e.prototype.set = function (t, e) {
         return this._request('set', { key: t, value: e });
@@ -2453,8 +2452,8 @@ var _POSignalsEntities;
             return isNaN(e)
               ? 0
               : 0 !== e && isFinite(e)
-              ? (e > 0 ? 1 : -1) * Math.floor(Math.abs(e))
-              : e;
+                ? (e > 0 ? 1 : -1) * Math.floor(Math.abs(e))
+                : e;
           })(t);
           return Math.min(Math.max(e, 0), n);
         };
@@ -2549,11 +2548,11 @@ var _POSignalsEntities;
                         ? (this[a[0]] = a[1].call(this, s))
                         : (this[a[0]] = a[1])
                       : 3 === a.length
-                      ? 'function' != typeof a[1] || (a[1].exec && a[1].test)
-                        ? (this[a[0]] = s ? s.replace(a[1], a[2]) : void 0)
-                        : (this[a[0]] = s ? a[1].call(this, s, a[2]) : void 0)
-                      : 4 === a.length &&
-                        (this[a[0]] = s ? a[3].call(this, s.replace(a[1], a[2])) : void 0)
+                        ? 'function' != typeof a[1] || (a[1].exec && a[1].test)
+                          ? (this[a[0]] = s ? s.replace(a[1], a[2]) : void 0)
+                          : (this[a[0]] = s ? a[1].call(this, s, a[2]) : void 0)
+                        : 4 === a.length &&
+                          (this[a[0]] = s ? a[3].call(this, s.replace(a[1], a[2])) : void 0)
                     : (this[a] = s || void 0);
           u += 2;
         }
@@ -3286,15 +3285,15 @@ var _POSignalsEntities;
                   n < 128
                     ? (e[o++] = n)
                     : n < 2048
-                    ? ((e[o++] = 192 | (n >>> 6)), (e[o++] = 128 | (63 & n)))
-                    : n < 65536
-                    ? ((e[o++] = 224 | (n >>> 12)),
-                      (e[o++] = 128 | ((n >>> 6) & 63)),
-                      (e[o++] = 128 | (63 & n)))
-                    : ((e[o++] = 240 | (n >>> 18)),
-                      (e[o++] = 128 | ((n >>> 12) & 63)),
-                      (e[o++] = 128 | ((n >>> 6) & 63)),
-                      (e[o++] = 128 | (63 & n)));
+                      ? ((e[o++] = 192 | (n >>> 6)), (e[o++] = 128 | (63 & n)))
+                      : n < 65536
+                        ? ((e[o++] = 224 | (n >>> 12)),
+                          (e[o++] = 128 | ((n >>> 6) & 63)),
+                          (e[o++] = 128 | (63 & n)))
+                        : ((e[o++] = 240 | (n >>> 18)),
+                          (e[o++] = 128 | ((n >>> 12) & 63)),
+                          (e[o++] = 128 | ((n >>> 6) & 63)),
+                          (e[o++] = 128 | (63 & n)));
               return e;
             }),
             (n.buf2binstring = function (t) {
@@ -3321,10 +3320,10 @@ var _POSignalsEntities;
                   o > 1
                     ? (c[r++] = 65533)
                     : a < 65536
-                    ? (c[r++] = a)
-                    : ((a -= 65536),
-                      (c[r++] = 55296 | ((a >> 10) & 1023)),
-                      (c[r++] = 56320 | (1023 & a)));
+                      ? (c[r++] = a)
+                      : ((a -= 65536),
+                        (c[r++] = 55296 | ((a >> 10) & 1023)),
+                        (c[r++] = 56320 | (1023 & a)));
                 }
               return i(c, r);
             }),
@@ -3565,8 +3564,8 @@ var _POSignalsEntities;
               e === D
                 ? (s(t, !0), 0 === t.strm.avail_out ? J : Z)
                 : t.last_lit && (s(t, !1), 0 === t.strm.avail_out)
-                ? q
-                : X
+                  ? q
+                  : X
             );
           }
           function g(t, e) {
@@ -3630,8 +3629,8 @@ var _POSignalsEntities;
               e === D
                 ? (s(t, !0), 0 === t.strm.avail_out ? J : Z)
                 : t.last_lit && (s(t, !1), 0 === t.strm.avail_out)
-                ? q
-                : X
+                  ? q
+                  : X
             );
           }
           function p(t, e) {
@@ -3677,8 +3676,8 @@ var _POSignalsEntities;
               e === D
                 ? (s(t, !0), 0 === t.strm.avail_out ? J : Z)
                 : t.last_lit && (s(t, !1), 0 === t.strm.avail_out)
-                ? q
-                : X
+                  ? q
+                  : X
             );
           }
           function v(t, e) {
@@ -3701,8 +3700,8 @@ var _POSignalsEntities;
               e === D
                 ? (s(t, !0), 0 === t.strm.avail_out ? J : Z)
                 : t.last_lit && (s(t, !1), 0 === t.strm.avail_out)
-                ? q
-                : X
+                  ? q
+                  : X
             );
           }
           function _(t, e, n, i, r) {
@@ -3981,10 +3980,10 @@ var _POSignalsEntities;
                     (s.strategy >= 2 || s.level < 2
                       ? 0
                       : s.level < 6
-                      ? 1
-                      : 6 === s.level
-                      ? 2
-                      : 3) << 6),
+                        ? 1
+                        : 6 === s.level
+                          ? 2
+                          : 3) << 6),
                     0 !== s.strstart && (h |= 32),
                     (h += 31 - (h % 31)),
                     (s.status = W),
@@ -4104,20 +4103,20 @@ var _POSignalsEntities;
               return e !== D
                 ? C
                 : s.wrap <= 0
-                ? 1
-                : (2 === s.wrap
-                    ? (u(s, 255 & t.adler),
-                      u(s, (t.adler >> 8) & 255),
-                      u(s, (t.adler >> 16) & 255),
-                      u(s, (t.adler >> 24) & 255),
-                      u(s, 255 & t.total_in),
-                      u(s, (t.total_in >> 8) & 255),
-                      u(s, (t.total_in >> 16) & 255),
-                      u(s, (t.total_in >> 24) & 255))
-                    : (c(s, t.adler >>> 16), c(s, 65535 & t.adler)),
-                  o(t),
-                  s.wrap > 0 && (s.wrap = -s.wrap),
-                  0 !== s.pending ? C : 1);
+                  ? 1
+                  : (2 === s.wrap
+                      ? (u(s, 255 & t.adler),
+                        u(s, (t.adler >> 8) & 255),
+                        u(s, (t.adler >> 16) & 255),
+                        u(s, (t.adler >> 24) & 255),
+                        u(s, 255 & t.total_in),
+                        u(s, (t.total_in >> 8) & 255),
+                        u(s, (t.total_in >> 16) & 255),
+                        u(s, (t.total_in >> 24) & 255))
+                      : (c(s, t.adler >>> 16), c(s, 65535 & t.adler)),
+                    o(t),
+                    s.wrap > 0 && (s.wrap = -s.wrap),
+                    0 !== s.pending ? C : 1);
             }),
             (n.deflateEnd = function (t) {
               var e;
@@ -4401,17 +4400,17 @@ var _POSignalsEntities;
                   (s < c
                     ? (t.bl_tree[2 * r] += s)
                     : 0 !== r
-                    ? (r !== a && t.bl_tree[2 * r]++, t.bl_tree[2 * x]++)
-                    : s <= 10
-                    ? t.bl_tree[2 * R]++
-                    : t.bl_tree[2 * N]++,
+                      ? (r !== a && t.bl_tree[2 * r]++, t.bl_tree[2 * x]++)
+                      : s <= 10
+                        ? t.bl_tree[2 * R]++
+                        : t.bl_tree[2 * N]++,
                   (s = 0),
                   (a = r),
                   0 === o
                     ? ((u = 138), (c = 3))
                     : r === o
-                    ? ((u = 6), (c = 3))
-                    : ((u = 7), (c = 4)));
+                      ? ((u = 6), (c = 3))
+                      : ((u = 7), (c = 4)));
           }
           function y(t, e, n) {
             var i,
@@ -4431,15 +4430,15 @@ var _POSignalsEntities;
                   0 !== r
                     ? (r !== a && (c(t, r, t.bl_tree), s--), c(t, x, t.bl_tree), u(t, s - 3, 2))
                     : s <= 10
-                    ? (c(t, R, t.bl_tree), u(t, s - 3, 3))
-                    : (c(t, N, t.bl_tree), u(t, s - 11, 7));
+                      ? (c(t, R, t.bl_tree), u(t, s - 3, 3))
+                      : (c(t, N, t.bl_tree), u(t, s - 11, 7));
                 (s = 0),
                   (a = r),
                   0 === o
                     ? ((l = 138), (d = 3))
                     : r === o
-                    ? ((l = 6), (d = 3))
-                    : ((l = 7), (d = 4));
+                      ? ((l = 6), (d = 3))
+                      : ((l = 7), (d = 4));
               }
           }
           function b(t, e, n, i) {
@@ -4563,15 +4562,15 @@ var _POSignalsEntities;
                 n + 4 <= r && -1 !== e
                   ? b(t, e, n, i)
                   : 4 === t.strategy || a === r
-                  ? (u(t, 2 + (i ? 1 : 0), 3), v(t, G, V))
-                  : (u(t, 4 + (i ? 1 : 0), 3),
-                    (function (t, e, n, i) {
-                      var r;
-                      for (u(t, e - 257, 5), u(t, n - 1, 5), u(t, i - 4, 4), r = 0; r < i; r++)
-                        u(t, t.bl_tree[2 * j[r] + 1], 3);
-                      y(t, t.dyn_ltree, e - 1), y(t, t.dyn_dtree, n - 1);
-                    })(t, t.l_desc.max_code + 1, t.d_desc.max_code + 1, o + 1),
-                    v(t, t.dyn_ltree, t.dyn_dtree)),
+                    ? (u(t, 2 + (i ? 1 : 0), 3), v(t, G, V))
+                    : (u(t, 4 + (i ? 1 : 0), 3),
+                      (function (t, e, n, i) {
+                        var r;
+                        for (u(t, e - 257, 5), u(t, n - 1, 5), u(t, i - 4, 4), r = 0; r < i; r++)
+                          u(t, t.bl_tree[2 * j[r] + 1], 3);
+                        y(t, t.dyn_ltree, e - 1), y(t, t.dyn_dtree, n - 1);
+                      })(t, t.l_desc.max_code + 1, t.d_desc.max_code + 1, o + 1),
+                      v(t, t.dyn_ltree, t.dyn_dtree)),
                 h(t),
                 i && f(t);
             }),
@@ -4665,8 +4664,8 @@ var _POSignalsEntities;
                   'string' == typeof e.dictionary
                     ? s.string2buf(e.dictionary)
                     : '[object ArrayBuffer]' === l.call(e.dictionary)
-                    ? new Uint8Array(e.dictionary)
-                    : e.dictionary),
+                      ? new Uint8Array(e.dictionary)
+                      : e.dictionary),
                 (n = a.deflateSetDictionary(this.strm, r)) !== d)
               )
                 throw new Error(u[n]);
@@ -4698,8 +4697,8 @@ var _POSignalsEntities;
               'string' == typeof t
                 ? (r.input = s.string2buf(t))
                 : '[object ArrayBuffer]' === l.call(t)
-                ? (r.input = new Uint8Array(t))
-                : (r.input = t),
+                  ? (r.input = new Uint8Array(t))
+                  : (r.input = t),
               (r.next_in = 0),
               (r.avail_in = r.input.length);
             do {
@@ -4760,8 +4759,8 @@ var _POSignalsEntities;
         return 'function' != typeof n.createElement
           ? n.createElement(arguments[0])
           : w
-          ? n.createElementNS.call(n, 'http://www.w3.org/2000/svg', arguments[0])
-          : n.createElement.apply(n, arguments);
+            ? n.createElementNS.call(n, 'http://www.w3.org/2000/svg', arguments[0])
+            : n.createElement.apply(n, arguments);
       }
       function o(t, e) {
         return !!~('' + t).indexOf(e);
@@ -5242,8 +5241,8 @@ var __awaiter =
                       2 & a[0]
                         ? i.return
                         : a[0]
-                        ? i.throw || ((r = i.return) && r.call(i), 0)
-                        : i.next) &&
+                          ? i.throw || ((r = i.return) && r.call(i), 0)
+                          : i.next) &&
                     !(r = r.call(i, a[1])).done)
                 )
                   return r;
@@ -5494,7 +5493,7 @@ var __awaiter =
         return (
           Object.defineProperty(t, 'CLIENT_VERSION', {
             get: function () {
-              return '5.3.1w';
+              return '5.3.0w';
             },
             enumerable: !1,
             configurable: !0,
@@ -5739,8 +5738,8 @@ var __awaiter =
                     ? console.debug(e, n)
                     : console.log(e, n)
                   : console.debug
-                  ? console.debug(e)
-                  : console.log(e));
+                    ? console.debug(e)
+                    : console.log(e));
           }),
           (t.error = function (e) {
             for (var n = [], i = 1; i < arguments.length; i++) n[i - 1] = arguments[i];
@@ -5884,15 +5883,15 @@ var __awaiter =
                 n < 128
                   ? (e[a++] = n)
                   : n < 2048
-                  ? ((e[a++] = 192 | (n >>> 6)), (e[a++] = 128 | (63 & n)))
-                  : n < 65536
-                  ? ((e[a++] = 224 | (n >>> 12)),
-                    (e[a++] = 128 | ((n >>> 6) & 63)),
-                    (e[a++] = 128 | (63 & n)))
-                  : ((e[a++] = 240 | (n >>> 18)),
-                    (e[a++] = 128 | ((n >>> 12) & 63)),
-                    (e[a++] = 128 | ((n >>> 6) & 63)),
-                    (e[a++] = 128 | (63 & n)));
+                    ? ((e[a++] = 192 | (n >>> 6)), (e[a++] = 128 | (63 & n)))
+                    : n < 65536
+                      ? ((e[a++] = 224 | (n >>> 12)),
+                        (e[a++] = 128 | ((n >>> 6) & 63)),
+                        (e[a++] = 128 | (63 & n)))
+                      : ((e[a++] = 240 | (n >>> 18)),
+                        (e[a++] = 128 | ((n >>> 12) & 63)),
+                        (e[a++] = 128 | ((n >>> 6) & 63)),
+                        (e[a++] = 128 | (63 & n)));
             return e;
           }),
           (n.utf8Encode = function (t) {
@@ -5902,11 +5901,11 @@ var __awaiter =
               i < 128
                 ? (e += String.fromCharCode(i))
                 : i > 127 && i < 2048
-                ? ((e += String.fromCharCode((i >> 6) | 192)),
-                  (e += String.fromCharCode((63 & i) | 128)))
-                : ((e += String.fromCharCode((i >> 12) | 224)),
-                  (e += String.fromCharCode(((i >> 6) & 63) | 128)),
-                  (e += String.fromCharCode((63 & i) | 128)));
+                  ? ((e += String.fromCharCode((i >> 6) | 192)),
+                    (e += String.fromCharCode((63 & i) | 128)))
+                  : ((e += String.fromCharCode((i >> 12) | 224)),
+                    (e += String.fromCharCode(((i >> 6) & 63) | 128)),
+                    (e += String.fromCharCode((63 & i) | 128)));
             }
             return e;
           }),
@@ -6053,11 +6052,11 @@ var __awaiter =
                 ? '' + t.checked
                 : t.value
               : t instanceof HTMLSelectElement
-              ? null === (n = null === (e = t.selectedOptions) || void 0 === e ? void 0 : e[0]) ||
-                void 0 === n
-                ? void 0
-                : n.innerText
-              : t.innerText;
+                ? null === (n = null === (e = t.selectedOptions) || void 0 === e ? void 0 : e[0]) ||
+                  void 0 === n
+                  ? void 0
+                  : n.innerText
+                : t.innerText;
           }),
           (n.getSrcElement = function (t) {
             return t.srcElement || t.target;
@@ -6306,14 +6305,14 @@ var __awaiter =
               return t.eventTs > e.eventTs
                 ? 1
                 : t.eventTs < e.eventTs
-                ? -1
-                : t.epochTs > e.epochTs
-                ? 1
-                : t.epochTs < e.epochTs
-                ? -1
-                : 'click' === t.type
-                ? 1
-                : -1;
+                  ? -1
+                  : t.epochTs > e.epochTs
+                    ? 1
+                    : t.epochTs < e.epochTs
+                      ? -1
+                      : 'click' === t.type
+                        ? 1
+                        : -1;
             });
           }),
           (n.distanceBetweenPoints = function (t, e) {
@@ -6433,8 +6432,8 @@ var __awaiter =
                       2 & a[0]
                         ? i.return
                         : a[0]
-                        ? i.throw || ((r = i.return) && r.call(i), 0)
-                        : i.next) &&
+                          ? i.throw || ((r = i.return) && r.call(i), 0)
+                          : i.next) &&
                     !(r = r.call(i, a[1])).done)
                 )
                   return r;
@@ -6994,15 +6993,15 @@ var __awaiter =
                       e
                         ? [3, 4]
                         : this.enablePKI
-                        ? ((n = this.deviceTrust.attestation),
-                          [
-                            4,
-                            this.crossStorage.setDeviceDetails(
-                              t._POSignalsUtils.Constants.DEVICE_ID_KEY,
-                              this.cachedDeviceId,
-                            ),
-                          ])
-                        : [3, 2]
+                          ? ((n = this.deviceTrust.attestation),
+                            [
+                              4,
+                              this.crossStorage.setDeviceDetails(
+                                t._POSignalsUtils.Constants.DEVICE_ID_KEY,
+                                this.cachedDeviceId,
+                              ),
+                            ])
+                          : [3, 2]
                     );
                   case 1:
                     return (n.fallbackDeviceKey = i.sent()[0]), [3, 4];
@@ -7329,8 +7328,8 @@ var __awaiter =
                       2 & a[0]
                         ? i.return
                         : a[0]
-                        ? i.throw || ((r = i.return) && r.call(i), 0)
-                        : i.next) &&
+                          ? i.throw || ((r = i.return) && r.call(i), 0)
+                          : i.next) &&
                     !(r = r.call(i, a[1])).done)
                 )
                   return r;
@@ -7453,16 +7452,16 @@ var __awaiter =
               e.indexOf('windows phone') >= 0
                 ? 'Windows Phone'
                 : e.indexOf('win') >= 0
-                ? 'Windows'
-                : e.indexOf('android') >= 0
-                ? 'Android'
-                : e.indexOf('linux') >= 0 || e.indexOf('cros') >= 0
-                ? 'Linux'
-                : e.indexOf('iphone') >= 0 || e.indexOf('ipad') >= 0
-                ? 'iOS'
-                : e.indexOf('mac') >= 0
-                ? 'Mac'
-                : 'Other'),
+                  ? 'Windows'
+                  : e.indexOf('android') >= 0
+                    ? 'Android'
+                    : e.indexOf('linux') >= 0 || e.indexOf('cros') >= 0
+                      ? 'Linux'
+                      : e.indexOf('iphone') >= 0 || e.indexOf('ipad') >= 0
+                        ? 'iOS'
+                        : e.indexOf('mac') >= 0
+                          ? 'Mac'
+                          : 'Other'),
             ('ontouchstart' in window ||
               navigator.maxTouchPoints > 0 ||
               navigator.msMaxTouchPoints > 0) &&
@@ -7517,14 +7516,14 @@ var __awaiter =
                 e.indexOf('firefox') >= 0
                   ? 'Firefox'
                   : e.indexOf('opera') >= 0 || e.indexOf('opr') >= 0
-                  ? 'Opera'
-                  : e.indexOf('chrome') >= 0
-                  ? 'Chrome'
-                  : e.indexOf('safari') >= 0
-                  ? 'Safari'
-                  : e.indexOf('trident') >= 0
-                  ? 'Internet Explorer'
-                  : 'Other') ||
+                    ? 'Opera'
+                    : e.indexOf('chrome') >= 0
+                      ? 'Chrome'
+                      : e.indexOf('safari') >= 0
+                        ? 'Safari'
+                        : e.indexOf('trident') >= 0
+                          ? 'Internet Explorer'
+                          : 'Other') ||
               'Safari' === t ||
               'Opera' === t) &&
             '20030107' !== n
@@ -7869,13 +7868,13 @@ var __awaiter =
                                               e.numberOfAudioDevices++,
                                               t.label && e.audioInputDevices.push(t.label))
                                             : 'videoinput' == t.kind.toLowerCase()
-                                            ? ((e.hasWebcam = !0),
-                                              e.numberOfVideoDevices++,
-                                              t.label && e.videoInputDevices.push(t.label))
-                                            : 'audiooutput' == t.kind.toLowerCase() &&
-                                              ((e.hasSpeakers = !0),
-                                              e.numberOfAudioDevices++,
-                                              t.label && e.audioOutputDevices.push(t.label)));
+                                              ? ((e.hasWebcam = !0),
+                                                e.numberOfVideoDevices++,
+                                                t.label && e.videoInputDevices.push(t.label))
+                                              : 'audiooutput' == t.kind.toLowerCase() &&
+                                                ((e.hasSpeakers = !0),
+                                                e.numberOfAudioDevices++,
+                                                t.label && e.audioOutputDevices.push(t.label)));
                                       }),
                                         i();
                                     })
@@ -8162,54 +8161,66 @@ var __awaiter =
                               return e.value.length;
                             })
                           : 'canvas' == t
-                          ? c.flatAndAddMetadata(a, 'IS_CANVAS', function () {
-                              return null != e.value;
-                            })
-                          : 'screenResolution' == t && e.value && e.value.length
-                          ? c.flatAndAddMetadata(a, 'RESOLUTION', function () {
-                              return e.value.join(',');
-                            })
-                          : 'availableScreenResolution' == t && e.value && e.value.length
-                          ? c.flatAndAddMetadata(a, 'AVAILABLE_RESOLUTION', function () {
-                              return e.value.join(',');
-                            })
-                          : 'touchSupport' == t && e.value
-                          ? c.flatAndAddMetadata(a, 'TOUCH_SUPPORT', function () {
-                              return e.value;
-                            })
-                          : 'audio' == t && e.value
-                          ? c.flatAndAddMetadata(a, 'AUDIO_FINGERPRINT', function () {
-                              return e.value;
-                            })
-                          : 'osCpu' == t && e.value
-                          ? c.flatAndAddMetadata(a, 'OS_CPU', function () {
-                              return e.value;
-                            })
-                          : 'productSub' == t && e.value
-                          ? c.flatAndAddMetadata(a, 'PRODUCT_SUB', function () {
-                              return e.value;
-                            })
-                          : 'emptyEvalLength' == t && e.value
-                          ? c.flatAndAddMetadata(a, 'EMPTY_EVAL_LENGTH', function () {
-                              return e.value;
-                            })
-                          : 'errorFF' == t && e.value
-                          ? c.flatAndAddMetadata(a, 'ERROR_FF', function () {
-                              return e.value;
-                            })
-                          : 'chrome' == t && e.value
-                          ? c.flatAndAddMetadata(a, 'CHROME', function () {
-                              return e.value;
-                            })
-                          : 'cookiesEnabled' == t && e.value
-                          ? c.flatAndAddMetadata(a, 'COOKIES_ENABLED', function () {
-                              return e.value;
-                            })
-                          : r.fingerPrintComponentKeys.has(t) &&
-                            null != t &&
-                            c.flatAndAddMetadata(a, t.toUpperCase(), function () {
-                              return e.value;
-                            });
+                            ? c.flatAndAddMetadata(a, 'IS_CANVAS', function () {
+                                return null != e.value;
+                              })
+                            : 'screenResolution' == t && e.value && e.value.length
+                              ? c.flatAndAddMetadata(a, 'RESOLUTION', function () {
+                                  return e.value.join(',');
+                                })
+                              : 'availableScreenResolution' == t && e.value && e.value.length
+                                ? c.flatAndAddMetadata(a, 'AVAILABLE_RESOLUTION', function () {
+                                    return e.value.join(',');
+                                  })
+                                : 'touchSupport' == t && e.value
+                                  ? c.flatAndAddMetadata(a, 'TOUCH_SUPPORT', function () {
+                                      return e.value;
+                                    })
+                                  : 'audio' == t && e.value
+                                    ? c.flatAndAddMetadata(a, 'AUDIO_FINGERPRINT', function () {
+                                        return e.value;
+                                      })
+                                    : 'osCpu' == t && e.value
+                                      ? c.flatAndAddMetadata(a, 'OS_CPU', function () {
+                                          return e.value;
+                                        })
+                                      : 'productSub' == t && e.value
+                                        ? c.flatAndAddMetadata(a, 'PRODUCT_SUB', function () {
+                                            return e.value;
+                                          })
+                                        : 'emptyEvalLength' == t && e.value
+                                          ? c.flatAndAddMetadata(
+                                              a,
+                                              'EMPTY_EVAL_LENGTH',
+                                              function () {
+                                                return e.value;
+                                              },
+                                            )
+                                          : 'errorFF' == t && e.value
+                                            ? c.flatAndAddMetadata(a, 'ERROR_FF', function () {
+                                                return e.value;
+                                              })
+                                            : 'chrome' == t && e.value
+                                              ? c.flatAndAddMetadata(a, 'CHROME', function () {
+                                                  return e.value;
+                                                })
+                                              : 'cookiesEnabled' == t && e.value
+                                                ? c.flatAndAddMetadata(
+                                                    a,
+                                                    'COOKIES_ENABLED',
+                                                    function () {
+                                                      return e.value;
+                                                    },
+                                                  )
+                                                : r.fingerPrintComponentKeys.has(t) &&
+                                                  null != t &&
+                                                  c.flatAndAddMetadata(
+                                                    a,
+                                                    t.toUpperCase(),
+                                                    function () {
+                                                      return e.value;
+                                                    },
+                                                  );
                       }),
                       (c = this),
                       this.fingerPrintComponents))
@@ -8887,8 +8898,8 @@ var __awaiter =
                 return window.matchMedia('(prefers-color-scheme: light)').matches
                   ? 'light'
                   : window.matchMedia('(prefers-color-scheme: dark)').matches
-                  ? 'dark'
-                  : void 0;
+                    ? 'dark'
+                    : void 0;
               }),
               n
             );
@@ -8980,20 +8991,20 @@ var __awaiter =
             window.webkitRequestFileSystem
               ? window.webkitRequestFileSystem(0, 0, i, n)
               : 'MozAppearance' in document.documentElement.style
-              ? (((e = indexedDB.open('test')).onerror = n), (e.onsuccess = i))
-              : /constructor/i.test(window.HTMLElement) || window.safari
-              ? (function () {
-                  try {
-                    localStorage.length
-                      ? i()
-                      : ((localStorage.x = 1), localStorage.removeItem('x'), i());
-                  } catch (t) {
-                    navigator.cookieEnabled ? n() : i();
-                  }
-                })()
-              : window.indexedDB || (!window.PointerEvent && !window.MSPointerEvent)
-              ? i()
-              : n();
+                ? (((e = indexedDB.open('test')).onerror = n), (e.onsuccess = i))
+                : /constructor/i.test(window.HTMLElement) || window.safari
+                  ? (function () {
+                      try {
+                        localStorage.length
+                          ? i()
+                          : ((localStorage.x = 1), localStorage.removeItem('x'), i());
+                      } catch (t) {
+                        navigator.cookieEnabled ? n() : i();
+                      }
+                    })()
+                  : window.indexedDB || (!window.PointerEvent && !window.MSPointerEvent)
+                    ? i()
+                    : n();
           }),
           (n.detectChromium = function () {
             return (
@@ -9155,8 +9166,8 @@ var __awaiter =
                                       ).contentWindow.get.toString()
                                         ? [2, !0]
                                         : e.contentWindow === window
-                                        ? [2, !0]
-                                        : [4, this.headlessResults(e.contentWindow)])
+                                          ? [2, !0]
+                                          : [4, this.headlessResults(e.contentWindow)])
                                     : [2];
                                 case 1:
                                   return (n = i.sent()), e.remove(), [2, n];
@@ -9244,13 +9255,13 @@ var __awaiter =
                                 ? 'function query() { [native code] }' !== e.query.toString()
                                   ? [2, !0]
                                   : 'function toString() { [native code] }' !==
-                                    e.query.toString.toString()
-                                  ? [2, !0]
-                                  : e.query.toString.hasOwnProperty('[[Handler]]') &&
-                                    e.query.toString.hasOwnProperty('[[Target]]') &&
-                                    e.query.toString.hasOwnProperty('[[IsRevoked]]')
-                                  ? [2, !0]
-                                  : [2, e.hasOwnProperty('query')]
+                                      e.query.toString.toString()
+                                    ? [2, !0]
+                                    : e.query.toString.hasOwnProperty('[[Handler]]') &&
+                                        e.query.toString.hasOwnProperty('[[Target]]') &&
+                                        e.query.toString.hasOwnProperty('[[IsRevoked]]')
+                                      ? [2, !0]
+                                      : [2, e.hasOwnProperty('query')]
                                 : [2];
                             });
                           });
@@ -9632,8 +9643,8 @@ var __awaiter =
                     'cookieStore' in window
                       ? 'cookieStore'
                       : 'ondevicemotion' in window
-                      ? 'ondevicemotion'
-                      : 'speechSynthesis',
+                        ? 'ondevicemotion'
+                        : 'speechSynthesis',
                   e = [];
                 for (var n in window) e.push(n);
                 return e.indexOf('chrome') > e.indexOf(t);
@@ -9898,8 +9909,8 @@ var __extends =
                       2 & a[0]
                         ? i.return
                         : a[0]
-                        ? i.throw || ((r = i.return) && r.call(i), 0)
-                        : i.next) &&
+                          ? i.throw || ((r = i.return) && r.call(i), 0)
+                          : i.next) &&
                     !(r = r.call(i, a[1])).done)
                 )
                   return r;
@@ -10892,10 +10903,10 @@ var __extends =
           return n > 90 - this.SWIPE_MAX_ANGLE && n <= 90 + this.SWIPE_MAX_ANGLE
             ? e.Up
             : n > 180 - this.SWIPE_MAX_ANGLE && n <= 180 + this.SWIPE_MAX_ANGLE
-            ? e.Right
-            : n > 270 - this.SWIPE_MAX_ANGLE && n <= 270 + this.SWIPE_MAX_ANGLE
-            ? e.Down
-            : e.Left;
+              ? e.Right
+              : n > 270 - this.SWIPE_MAX_ANGLE && n <= 270 + this.SWIPE_MAX_ANGLE
+                ? e.Down
+                : e.Left;
         }),
         (n.prototype.calcAngle = function (t, e) {
           return (180 * Math.atan2(e.y - t.y, e.x - t.x)) / Math.PI + 180;
@@ -11055,10 +11066,10 @@ var __extends =
           return this.isRichMouseInteraction(i)
             ? e.RICH
             : this.isClickInteraction(i)
-            ? e.CLICK
-            : this.isMoveInteraction(i)
-            ? e.MOVE
-            : e.POOR;
+              ? e.CLICK
+              : this.isMoveInteraction(i)
+                ? e.MOVE
+                : e.POOR;
         }),
         (n.prototype.findMinPriorityGestureIndex = function (t, e) {
           if (0 === e.length) return -1;
@@ -12139,10 +12150,10 @@ var __extends =
           return e.keyCode
             ? e.keyCode
             : e.which
-            ? e.which
-            : e.code
-            ? t._POSignalsUtils.Util.hashCode(e.code)
-            : t._POSignalsUtils.Util.hashCode(e.key) + (e.location || 0);
+              ? e.which
+              : e.code
+                ? t._POSignalsUtils.Util.hashCode(e.code)
+                : t._POSignalsUtils.Util.hashCode(e.key) + (e.location || 0);
         }),
         (e.prototype.getKeyboardEvent = function (t) {
           return t || window.event;
@@ -14282,5 +14293,5 @@ window._POSignalsEntities = _POSignalsEntities;
 window._pingOneSignals = _pingOneSignals;
 
 // Ping Identity INC.
-// � ALL RIGHTS RESERVED
-//Build: 476  Thu Mar 14 2024 13:20:55 GMT+0000 (Coordinated Universal Time)
+// ï¿½ ALL RIGHTS RESERVED
+//Build: 468  Thu Jan 04 2024 09:07:45 GMT+0000 (Coordinated Universal Time)
