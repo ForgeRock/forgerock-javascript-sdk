@@ -1,7 +1,7 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "outDir": "../../dist/temp/packages/javascript-sdk",
+    "outDir": "../../dist/packages/javascript-sdk",
     "sourceMap": true,
     "noPropertyAccessFromIndexSignature": false,
     "lib": ["DOM", "DOM.Iterable", "es2023"],

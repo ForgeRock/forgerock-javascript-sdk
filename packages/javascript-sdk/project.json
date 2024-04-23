@@ -5,19 +5,20 @@
   "projectType": "library",
   "targets": {
     "build": {
-      "executor": "@nx/js:tsc",
+      "dependsOn": ["package"],
+      "command": "node ./tools/release/sdk-exports.mjs"
+    },
+    "package": {
+      "executor": "@nx/vite:build",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/packages/javascript-sdk",
         "main": "packages/javascript-sdk/src/index.ts",
         "tsConfig": "packages/javascript-sdk/tsconfig.lib.json",
-        "assets": ["packages/javascript-sdk/*.md"]
-      },
-      "configurations": {
-        "cjs": {
-          "tsConfig": "packages/javascript-sdk/tsconfig.lib.json",
-          "outputPath": "dist/packages/javascript-sdk/cjs"
-        }
+        "updateBuildableProjectDepsInPackageJson": false,
+        "generateExportsField": false,
+        "generatePackageJson": false,
+        "clean": true
       }
     },
     "lint": {
