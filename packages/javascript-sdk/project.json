@@ -4,20 +4,28 @@
   "sourceRoot": "packages/javascript-sdk/src",
   "projectType": "library",
   "targets": {
+    "docs": {
+      "command": "npx typedoc --options packages/javascript-sdk/typedoc.json"
+    },
     "build": {
-      "executor": "@nx/js:tsc",
+      "dependsOn": ["packagejson"],
+      "command": "node ./tools/release/sdk-exports.mjs"
+    },
+    "packagejson": {
+      "dependsOn": ["package"],
+      "command": "cp packages/javascript-sdk/package.json dist/packages/javascript-sdk"
+    },
+    "package": {
+      "executor": "@nx/vite:build",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/packages/javascript-sdk",
         "main": "packages/javascript-sdk/src/index.ts",
         "tsConfig": "packages/javascript-sdk/tsconfig.lib.json",
-        "assets": ["packages/javascript-sdk/*.md"]
-      },
-      "configurations": {
-        "cjs": {
-          "tsConfig": "packages/javascript-sdk/tsconfig.lib.json",
-          "outputPath": "dist/packages/javascript-sdk/cjs"
-        }
+        "updateBuildableProjectDepsInPackageJson": false,
+        "generateExportsField": false,
+        "generatePackageJson": false,
+        "clean": true
       }
     },
     "lint": {

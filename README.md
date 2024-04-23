@@ -56,13 +56,13 @@ ForgeRock provides these samples to help demonstrate SDK functionality/implement
 
 To try out the ForgeRock JavaScript SDK please look at one of our samples:
 
-- [**Embedded login - `samples/embedded-login`**](./samples/embedded-login/README.md)
+- [**Embedded login - `samples/embedded-login`**](https://github.com/ForgeRock/sdk-sample-apps/blob/main/embedded-login/README.md)
 
-- [**Central login - `samples/central-login`**](./samples/central-login/README.md)
+- [**Central login - `samples/central-login`**](https://github.com/ForgeRock/sdk-sample-apps/blob/main/central-login/README.md)
 
-- [**React Todo - `samples/reactjs-todo`**](./samples/reactjs-todo/README.md)
+- [**React Todo - `samples/reactjs-todo`**](https://github.com/ForgeRock/sdk-sample-apps/blob/main/reactjs-todo/README.md)
 
-- [**Angular Todo - `samples/angular-todo`**](./samples/angular-todo/README.md)
+- [**Angular Todo - `samples/angular-todo`**](https://github.com/ForgeRock/sdk-sample-apps/blob/main/angular-todo/README.md)
 
 <!------------------------------------------------------------------------------------------------------------------------------------>
 <!-- DOCS - Link off to the AM-centric documentation at sdks.forgerock.com. -->
