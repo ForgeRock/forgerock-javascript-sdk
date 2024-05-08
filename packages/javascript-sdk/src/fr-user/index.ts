@@ -15,6 +15,7 @@ import { FRLogger } from '../util/logger';
 import OAuth2Client from '../oauth2-client';
 import SessionManager from '../session-manager';
 import TokenManager from '../token-manager';
+import type { LogoutOptions } from '../oauth2-client/interfaces';
 
 /**
  * High-level API for logging a user in/out and getting profile information.
@@ -41,27 +42,37 @@ abstract class FRUser {
    *
    * @param options Configuration overrides
    */
-  public static async logout(options?: ConfigOptions): Promise<void> {
+  public static async logout(options?: LogoutOptions): Promise<void> {
+    // Shallow copy options to delete redirect prop
+    const configOptions = { ...options };
+    delete configOptions.redirect;
+
     // Just log any exceptions that are thrown, but don't abandon the flow
     try {
       // Both invalidates the session on the server AND removes browser cookie
-      await SessionManager.logout(options);
+      await SessionManager.logout(configOptions);
     } catch (error) {
       FRLogger.warn('Session logout was not successful');
     }
+
+    try {
+      await OAuth2Client.revokeToken(configOptions);
+    } catch (error) {
+      FRLogger.warn('OAuth revokeToken was not successful');
+    }
+
+    // Remove tokens locally
+    await TokenManager.deleteTokens();
+
+    // Do this last as it can result in a redirect if using PingOne
     try {
       // Invalidates session on the server tied to the ID Token
       // Needed for Express environment as session logout is unavailable
+      // Pass in the original `options` as it's needed for redirect control
       await OAuth2Client.endSession(options);
     } catch (error) {
       FRLogger.warn('OAuth endSession was not successful');
     }
-    try {
-      await OAuth2Client.revokeToken(options);
-    } catch (error) {
-      FRLogger.warn('OAuth revokeToken was not successful');
-    }
-    await TokenManager.deleteTokens();
   }
 }
 

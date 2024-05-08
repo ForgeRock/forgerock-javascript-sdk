@@ -51,9 +51,15 @@ interface GetOAuth2TokensOptions extends ConfigOptions {
   verifier?: string;
 }
 
+interface LogoutOptions extends ConfigOptions {
+  redirect?: boolean;
+  logoutRedirectUri?: string;
+}
+
 export type {
   AccessTokenResponse,
   GetAuthorizationUrlOptions,
   GetOAuth2TokensOptions,
+  LogoutOptions,
   OAuth2Tokens,
 };
