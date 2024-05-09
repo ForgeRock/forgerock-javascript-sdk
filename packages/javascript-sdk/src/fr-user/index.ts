@@ -16,6 +16,7 @@ import OAuth2Client from '../oauth2-client';
 import SessionManager from '../session-manager';
 import TokenManager from '../token-manager';
 import type { LogoutOptions } from '../oauth2-client/interfaces';
+import TokenStorage from '../token-storage';
 
 /**
  * High-level API for logging a user in/out and getting profile information.
@@ -61,6 +62,10 @@ abstract class FRUser {
       FRLogger.warn('OAuth revokeToken was not successful');
     }
 
+    // Grab tokens and keep in closure
+    const storedTokens = await TokenStorage.get();
+    const { idToken = '' } = storedTokens || {};
+
     // Remove tokens locally
     await TokenManager.deleteTokens();
 
@@ -69,7 +74,7 @@ abstract class FRUser {
       // Invalidates session on the server tied to the ID Token
       // Needed for Express environment as session logout is unavailable
       // Pass in the original `options` as it's needed for redirect control
-      await OAuth2Client.endSession(options);
+      await OAuth2Client.endSession({ ...options, idToken });
     } catch (error) {
       FRLogger.warn('OAuth endSession was not successful');
     }

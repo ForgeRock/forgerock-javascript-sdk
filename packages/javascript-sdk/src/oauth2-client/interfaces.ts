@@ -56,8 +56,12 @@ interface LogoutOptions extends ConfigOptions {
   logoutRedirectUri?: string;
 }
 
+interface EndSessionOptions extends LogoutOptions {
+  idToken: string;
+}
 export type {
   AccessTokenResponse,
+  EndSessionOptions,
   GetAuthorizationUrlOptions,
   GetOAuth2TokensOptions,
   LogoutOptions,

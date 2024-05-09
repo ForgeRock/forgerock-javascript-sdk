@@ -26,6 +26,7 @@ import type {
   GetAuthorizationUrlOptions,
   GetOAuth2TokensOptions,
   OAuth2Tokens,
+  EndSessionOptions,
 } from './interfaces';
 import middlewareWrapper from '../util/middleware';
 
@@ -219,19 +220,21 @@ abstract class OAuth2Client {
    * @param options.logoutRedirectUri {string} - the URL you want the AS to redirect to after signout
    * @param options.redirect {boolean} - to explicitly deactivate redirect, pass `false`
    */
-  public static async endSession(options?: LogoutOptions): Promise<Response | void> {
+  public static async endSession(
+    options?: LogoutOptions | EndSessionOptions,
+  ): Promise<Response | void> {
     // Shallow copy options to delete redirect props
-    const configOptions = { ...options };
+    const configOptions: LogoutOptions | EndSessionOptions = { ...options };
+
     delete configOptions.redirect;
+
     delete configOptions.logoutRedirectUri;
 
-    const tokens = await TokenStorage.get();
-    const idToken = tokens && tokens.idToken;
-
     const query: StringDict<string | undefined> = {};
-    if (idToken) {
-      query.id_token_hint = idToken;
-    }
+
+    const tokens = await TokenStorage.get();
+    query.id_token_hint =
+      (tokens && tokens.idToken) || (options && 'idToken' in options ? options.idToken : '');
 
     const response = await this.request('endSession', query, true, undefined, configOptions, {
       redirect: options?.redirect,
