@@ -79,6 +79,7 @@ abstract class Config {
         'Missing well-known property. Use `Config.set` method if not using well-known endpoint.',
       );
     }
+    // @ts-expect-error safety against runtimes without typescript
     if (options.serverConfig.baseUrl) {
       console.warn(
         'The baseUrl property passed in will be ignored, and replaced with well-known origin.',
