@@ -12,8 +12,12 @@
       "command": "node ./tools/release/sdk-exports.mjs"
     },
     "packagejson": {
-      "dependsOn": ["package"],
+      "dependsOn": ["package", "readme"],
       "command": "cp packages/javascript-sdk/package.json dist/packages/javascript-sdk"
+    },
+    "readme": {
+      "dependsOn": ["package"],
+      "command": "cp packages/javascript-sdk/README.md dist/packages/javascript-sdk"
     },
     "package": {
       "executor": "@nx/vite:build",

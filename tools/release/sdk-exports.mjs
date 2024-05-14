@@ -8,13 +8,13 @@ const pkg = fs.readFileSync(`${sdkPath}/package.json`, 'utf8');
 const json = JSON.parse(pkg);
 
 json.exports = {
-  './src/*': { import: './src/*.mjs', require: './src/*.js' },
-  '.': { import: './src/index.mjs', require: './src/index.js' },
+  './src/*': { import: './src/*.js', require: './src/*.cjs' },
+  '.': { import: './src/index.js', require: './src/index.cjs' },
   './package.json': './package.json',
 };
 
-json.main = './src/index.js';
-json.module = './src/index.mjs';
+json.main = './src/index.cjs';
+json.module = './src/index.js';
 
 fs.writeFileSync(`${sdkPath}/package.json`, JSON.stringify(json, null, 2));
 

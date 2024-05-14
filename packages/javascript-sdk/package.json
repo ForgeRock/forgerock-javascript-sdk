@@ -13,5 +13,6 @@
   "homepage": "https://github.com/ForgeRock/forgerock-javascript-sdk#readme",
   "main": "./src/index.ts",
   "module": "./src/index.ts",
-  "exports": "./src/index.ts"
+  "exports": "./src/index.ts",
+  "type": "module"
 }

@@ -1,24 +1,19 @@
 /// <reference types='vitest' />
 import { defineConfig } from 'vite';
 import dts from 'vite-plugin-dts';
-// import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
 import { copyFileSync } from 'fs';
 
 export default defineConfig({
   root: __dirname,
   cacheDir: '../../node_modules/.vite/packages/javascript-sdk',
 
-  // Uncomment this if you are using workers.
-  // worker: {
-  //  plugins: [ nxViteTsPaths() ],
-  // },
   build: {
     lib: {
       entry: 'src/index.ts',
       name: 'javascript-sdk',
       formats: ['es', 'cjs'],
       fileName(format, name) {
-        return `${name}.${format === 'cjs' ? 'js' : 'mjs'}`;
+        return `${name}.${format === 'cjs' ? 'cjs' : 'js'}`;
       },
     },
     rollupOptions: {
@@ -37,7 +32,7 @@ export default defineConfig({
       insertTypesEntry: true,
       tsconfigPath: './tsconfig.lib.json',
       afterBuild: (files) => {
-        return files.forEach((value, key) => copyFileSync(key, key.replace('.ts', '.mts')));
+        return files.forEach((value, key) => copyFileSync(key, key.replace('.ts', '.cts')));
       },
     }),
   ],
