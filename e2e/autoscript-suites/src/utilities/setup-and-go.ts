@@ -89,7 +89,8 @@ export async function setupAndGo(
   });
 
   page.on('request', async (req) => {
-    const headers = await req.allHeaders();
+    const headers = await req.headers();
+
     headerArray.push(new Headers(headers));
   });
 
