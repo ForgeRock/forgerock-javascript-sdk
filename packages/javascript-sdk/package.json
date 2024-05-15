@@ -1,6 +1,6 @@
 {
   "name": "@forgerock/javascript-sdk",
-  "version": "4.4.1-alpha.2",
+  "version": "4.4.2",
   "description": "ForgeRock JavaScript SDK",
   "author": "ForgeRock",
   "license": "MIT",
