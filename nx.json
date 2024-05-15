@@ -5,6 +5,12 @@
         "packageRoot": "dist/packages/{projectName}"
       }
     },
+    "docs": {
+      "cache": true
+    },
+    "packagejson": {
+      "cache": true
+    },
     "e2e": {
       "cache": true
     },

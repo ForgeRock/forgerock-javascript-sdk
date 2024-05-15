@@ -10,17 +10,6 @@ import * as forgerock from '@forgerock/javascript-sdk';
  * of the MIT license. See the LICENSE file for details.
  */
 async function autoscript() {
-  await forgerock.Config.setAsync({
-    clientId: '724ec718-c41c-4d51-98b0-84a583f450f9', // e.g. 'ForgeRockSDKClient'
-    redirectUri: `${window.location.origin}${window.location.pathname}`, // Redirect back to your app, e.g. 'https://sdkapp.example.com:8443'
-    scope: 'openid profile email name revoke', // e.g. 'openid profile email address phone me.read'
-    serverConfig: {
-      wellknown:
-        'https://auth.pingone.ca/02fb4743-189a-4bc7-9d6c-a919edfe6447/as/.well-known/openid-configuration',
-    },
-    realmPath: '', // e.g. 'alpha' or 'root'
-  });
-
   // Show only the view for this handler
   const showStep = (handler) => {
     document.querySelectorAll('#steps > *').forEach((x) => x.classList.remove('active'));
@@ -72,7 +61,7 @@ async function autoscript() {
     showUser(user);
   };
 
-  document.querySelector('#loginBtn')?.addEventListener('click', async () => {
+  document.getElementById('loginBtn')?.addEventListener('click', async () => {
     /**
      * The key-value of `login: redirect` is what allows central-login.
      * Passing no arguments or a key-value of `login: 'embedded'` means
@@ -83,10 +72,20 @@ async function autoscript() {
     showUser(user);
   });
 
-  document.querySelector('#forceRenewBtn')?.addEventListener('click', async () => {
+  document.getElementById('forceRenewBtn')?.addEventListener('click', async () => {
     await forgerock.TokenManager.getTokens({ login: 'redirect', forceRenew: true });
     const user = await forgerock.UserManager.getCurrentUser();
     showUser(user);
+  });
+  await forgerock.Config.setAsync({
+    clientId: '724ec718-c41c-4d51-98b0-84a583f450f9', // e.g. 'ForgeRockSDKClient'
+    redirectUri: `${window.location.origin}${window.location.pathname}`, // Redirect back to your app, e.g. 'https://sdkapp.example.com:8443'
+    scope: 'openid profile email name revoke', // e.g. 'openid profile email address phone me.read'
+    serverConfig: {
+      wellknown:
+        'https://auth.pingone.ca/02fb4743-189a-4bc7-9d6c-a919edfe6447/as/.well-known/openid-configuration',
+    },
+    realmPath: '', // e.g. 'alpha' or 'root'
   });
 
   /**

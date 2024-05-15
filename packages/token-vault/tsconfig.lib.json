@@ -3,8 +3,8 @@
   "compilerOptions": {
     "outDir": "../../dist/out-tsc",
     "target": "ES2020",
-    "module": "Node16",
-    "moduleResolution": "Node16",
+    "module": "ES2020",
+    "moduleResolution": "Node",
     "declaration": true,
     "declarationMap": true,
     "noImplicitOverride": false,

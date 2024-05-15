@@ -4,6 +4,9 @@
   "sourceRoot": "packages/ping-protect/src",
   "projectType": "library",
   "targets": {
+    "docs": {
+      "command": "npx typedoc --options ./packages/ping-protect/typedoc.json"
+    },
     "build": {
       "dependsOn": ["readme"],
       "command": "tsc -p packages/ping-protect/tsconfig.lib.json -outDir dist --emitDeclarationOnly"

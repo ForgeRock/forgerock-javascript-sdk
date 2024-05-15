@@ -12,7 +12,8 @@
       },
       "configurations": {
         "ui": {
-          "ui": true
+          "ui": true,
+          "headed": true
         }
       }
     },
