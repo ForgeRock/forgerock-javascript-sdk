@@ -1,5 +1,16 @@
 # Changelog
 
+## [4.4.2] - 2024-05-15
+
+Features:
+feat: new request header by @juangarmendia05 in #432
+
+Fixes:
+fix(javascript-sdk): fix-exports-update-protect by @ryanbas21 in #433
+fix(javascript-sdk): circular-dep by @ryanbas21 in #435
+fix(javascript-sdk): change x-requested-platform to opt-in by @cerebrl in #438
+fix(javascript-sdk): add logout redirect for pingone by @cerebrl in #443
+
 ## [4.4.1] - 2024-03-27
 
 Fixes:
