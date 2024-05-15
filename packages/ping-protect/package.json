@@ -1,6 +1,6 @@
 {
   "name": "@forgerock/ping-protect",
-  "version": "4.4.1-alpha.2",
+  "version": "4.4.2",
   "private": false,
   "type": "module",
   "module": "./src/index.js",
@@ -9,6 +9,6 @@
     ".": "./src/index.js"
   },
   "peerDependencies": {
-    "@forgerock/javascript-sdk": "4.4.1-alpha.2"
+    "@forgerock/javascript-sdk": "4.4.2"
   }
 }
