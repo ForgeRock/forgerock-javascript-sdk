@@ -77,7 +77,7 @@
     "releaseTagPattern": "v{version}",
     "version": {
       "generatorOptions": {
-        "currentVersionResolver": "git-tag",
+        "currentVersionResolver": "registry",
         "specifierSource": "conventional-commits"
       }
     },

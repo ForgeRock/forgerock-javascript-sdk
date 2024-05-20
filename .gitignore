@@ -63,3 +63,4 @@ docs/packages/javascript-sdk
 **/playwright/.cache
 
 .nx/cache
+.nx/workspace-data
