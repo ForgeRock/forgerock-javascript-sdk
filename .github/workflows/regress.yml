@@ -1,0 +1,122 @@
+name: Regression Automation
+
+on:
+  workflow_dispatch:
+
+env:
+  NX_CLOUD_ENCRYPTION_KEY: ${{ secrets.NX_CLOUD_ENCRYPTION_KEY }}
+  NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
+  NX_CLOUD_DISTRIBUTED_EXECUTION: true
+
+jobs:
+  install:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        node: [18.x, 20.x]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+      - uses: actions/cache/restore@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
+      - run: npm install
+      - uses: actions/cache/save@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
+  publish:
+    needs: [install]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+      - uses: actions/cache/restore@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
+      - run: npm run publish:regression
+  SDK:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    needs: [publish]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20.10.0'
+
+      - run: npx nx-cloud start-ci-run --distribute-on="5 linux-medium-js" --stop-agents-after="e2e-ci" --verbose
+      - run: npx playwright install
+
+      - run: npm install @forgerock/javascript-sdk@regression @forgerock/ping-protect@regression --registry=https://npm.petrov.ca --workspace e2e/autoscript-suites
+      - run: npm install @forgerock/token-vault@regression --registry=https://npm.petrov.ca --workspace e2e/token-vault-suites
+
+      - run: npx nx affected -t e2e-ci
+  Samples:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    needs: [publish]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: 'https://github.com/ForgeRock/sdk-sample-apps.git'
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.os }}
+
+      - run: npm install @forgerock/javascript-sdk@regression @forgerock/ping-protect@regression --registry=https://npm.petrov.ca
+      - run: npm install @forgerock/token-vault@regression --registry=https://npm.petrov.ca
+      - run: npm install
+
+      - run: npx playwright install
+      - run: npm run e2e --workspace reactjs-todo
+      - run: npm run e2e --workspace angular-todo
+  Widget:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        node: [18.x, 20.x]
+        shardIndex: [1, 2, 3, 4]
+        shardTotal: [4]
+    runs-on: ${{ matrix.os }}
+    needs: [publish]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: 'https://github.com/ForgeRock/forgerock-web-login-framework.git'
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+      - run: npm install @forgerock/javascript-sdk@regression @forgerock/ping-protect@regression --registry=https://npm.petrov.ca
+      - run: npm install
+      - run: npx playwright install
+      - run: npm run build
+      - name: e2e
+        run: npm run ci:e2e -- --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }}
+      - name: Merge into HTML Report
+        run: npx playwright merge-reports --reporter html ./all-blob-reports
+      - name: Upload HTML report
+        uses: actions/upload-artifact@v4
+        with:
+          name: html-report--attempt--${{runner.os}}-${{matrix.node}}-${{ github.run_attempt }}
+          path: playwright-report
+          retention-days: 14
