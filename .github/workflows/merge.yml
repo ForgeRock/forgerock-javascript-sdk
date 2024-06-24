@@ -53,6 +53,14 @@ jobs:
       - run: npx nx-cloud record -- nx format:check
       - run: npx nx affected -t lint test build e2e-ci
 
+      - uses: actions/setup-node@v4
+        id: cache
+        with:
+          node-version: ${{ matrix.node }}
+          cache: 'npm'
+          cache-dependency-path: '**/package-lock.json'
+          registry-url: 'https://npm.petrov.ca'
+
       - name: publish to dev env
         run: npm run publish:dev
         env:

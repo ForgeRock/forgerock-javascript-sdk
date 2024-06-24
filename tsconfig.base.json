@@ -4,6 +4,7 @@
     "baseUrl": ".",
     "rootDir": ".",
     "paths": {
+      "@forgerock/davinci-client": ["packages/davinci-client/src/index.ts"],
       "@forgerock/javascript-sdk": ["packages/javascript-sdk/src/index.ts"],
       "@forgerock/ping-protect": ["packages/ping-protect/src/index.ts"],
       "@forgerock/token-vault": ["packages/token-vault/src/index.ts"]

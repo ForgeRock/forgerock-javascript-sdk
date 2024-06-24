@@ -1,4 +1,13 @@
 {
   "extends": "../../tsconfig.base.json",
-  "exclude": ["lib", "lib-esm", "bundles", "jest.env.config.ts"]
+  "exclude": ["lib", "lib-esm", "bundles", "jest.env.config.ts"],
+  "compilerOptions": {
+    "types": [
+      "vitest/globals",
+      "vitest/importMeta",
+      "vite/client",
+      "node",
+      "vitest"
+    ]
+  }
 }

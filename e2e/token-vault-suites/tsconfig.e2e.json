@@ -4,7 +4,7 @@
     "sourceMap": false,
     "outDir": "../../dist/out-tsc",
     "allowJs": true,
-    "types": ["jest", "node"]
+    "types": ["node"]
   },
   "include": ["**/*.ts", "**/*.js"]
 }

@@ -13,6 +13,12 @@
   "homepage": "https://github.com/ForgeRock/forgerock-javascript-sdk#readme",
   "main": "./src/index.ts",
   "module": "./src/index.ts",
-  "exports": "./src/index.ts",
+  "exports": {
+    ".": {
+      "import": "./src/index.ts",
+      "require": "./src/index.ts"
+    },
+    "./src/oauth2-client/state-pkce": "./src/oauth2-client/state-pkce"
+  },
   "type": "module"
 }
