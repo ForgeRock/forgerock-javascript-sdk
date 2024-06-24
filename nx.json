@@ -33,9 +33,6 @@
       "inputs": ["noMarkdown", "^noMarkdown"],
       "cache": true
     },
-    "serve": {
-      "dependsOn": ["build", "^build"]
-    },
     "build-interceptor": {
       "dependsOn": ["^build"],
       "cache": true,
@@ -73,6 +70,7 @@
     "projects": ["packages/*"],
     "releaseTagPattern": "v{version}",
     "version": {
+      "preVersionCommand": "npx nx run-many -t build",
       "generatorOptions": {
         "currentVersionResolver": "git-tag",
         "specifierSource": "conventional-commits"
