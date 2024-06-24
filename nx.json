@@ -61,10 +61,22 @@
     "appsDir": "",
     "libsDir": ""
   },
+<<<<<<< HEAD
+=======
+  "generators": {
+    "@nx/web:application": {
+      "style": "css",
+      "linter": "eslint",
+      "unitTestRunner": "jest",
+      "e2eTestRunner": "playwright"
+    }
+  },
+>>>>>>> 775274a (chore: initial-setup-for-davinci-client)
   "release": {
     "projects": ["packages/*"],
     "releaseTagPattern": "v{version}",
     "version": {
+      "preVersionCommand": "npx nx run-many -t build",
       "generatorOptions": {
         "currentVersionResolver": "registry",
         "specifierSource": "conventional-commits"
@@ -122,7 +134,23 @@
   ],
   "defaultProject": "javascript-sdk",
   "useDaemonProcess": true,
+<<<<<<< HEAD
 
   "useInferencePlugins": true,
+=======
+  "namedInputs": {
+    "default": ["{projectRoot}/**/*", "sharedGlobals"],
+    "sharedGlobals": [],
+    "production": [
+      "default",
+      "!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap)",
+      "!{projectRoot}/tsconfig.spec.json",
+      "!{projectRoot}/jest.config.[jt]s",
+      "!{projectRoot}/src/test-setup.[jt]s",
+      "!{projectRoot}/test-setup.[jt]s"
+    ]
+  },
+  "useInferencePlugins": false,
+>>>>>>> 775274a (chore: initial-setup-for-davinci-client)
   "defaultBase": "develop"
 }
