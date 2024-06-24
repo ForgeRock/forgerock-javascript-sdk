@@ -1,0 +1,12 @@
+{
+  "name": "@forgerock/davinci-client",
+  "version": "0.0.1",
+  "main": "./index.js",
+  "module": "./index.mjs",
+  "typings": "./index.d.ts",
+  "private": true,
+  "dependencies": {
+    "@forgerock/javascript-sdk": "*",
+    "@reduxjs/toolkit": "^2.2.5"
+  }
+}

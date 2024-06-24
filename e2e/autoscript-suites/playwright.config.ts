@@ -1,3 +1,4 @@
+import * as os from 'os';
 import { PlaywrightTestConfig } from '@playwright/test';
 import { nxE2EPreset } from '@nx/playwright/preset';
 import { workspaceRoot } from '@nx/devkit';
@@ -23,6 +24,19 @@ const config: PlaywrightTestConfig = {
     bypassCSP: true,
     trace: process.env.CI ? 'retry-with-trace' : 'retain-on-failure',
   },
+  projects: [
+    {
+      name: 'Chromium',
+    },
+    {
+      name: 'Firefox',
+    },
+    os.type() === 'Darwin'
+      ? {
+          name: 'Safari',
+        }
+      : undefined,
+  ].filter(Boolean),
   webServer: [
     {
       command: 'pnpm nx serve mock-api',

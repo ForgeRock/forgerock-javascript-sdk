@@ -89,7 +89,7 @@ export async function setupAndGo(
   });
 
   page.on('request', async (req) => {
-    const headers = await req.headers();
+    const headers = req.headers();
 
     headerArray.push(new Headers(headers));
   });
@@ -101,9 +101,10 @@ export async function setupAndGo(
   await page.goto(url.toString());
 
   // Test script complete
-  await page.waitForSelector('.Test_Complete', { state: 'attached' });
+  const locator = page.locator('.Test_Complete');
+  await locator.waitFor({ state: 'visible' });
 
-  await page.removeListener('console', (msg) => console.log(msg.text()));
+  page.removeListener('console', (msg) => console.log(msg.text()));
 
   return { headerArray, messageArray, networkArray };
 }
