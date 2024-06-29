@@ -36,8 +36,12 @@
     "@commitlint/cli": "^19.1.0",
     "@commitlint/config-conventional": "^19.1.0",
     "@commitlint/prompt": "^19.1.0",
+    "@effect/language-service": "^0.1.0",
+    "@effect/platform-node": "^0.53.8",
+    "@effect/schema": "^0.68.9",
     "@nrwl/devkit": "18.2.4",
     "@nx/devkit": "18.2.4",
+    "@nx/esbuild": "18.2.4",
     "@nx/eslint": "18.2.4",
     "@nx/eslint-plugin": "18.2.4",
     "@nx/express": "18.2.4",
@@ -63,12 +67,17 @@
     "cors": "^2.8.5",
     "cz-conventional-changelog": "^3.3.0",
     "cz-git": "^1.6.1",
+    "effect": "^3.4.2",
+    "effect-http": "^0.71.2",
+    "effect-http-node": "^0.15.3",
+    "esbuild": "^0.19.2",
     "eslint": "8.57.0",
     "eslint-config-prettier": "9.1.0",
     "eslint-plugin-import": "2.27.5",
     "eslint-plugin-playwright": "^1.5.1",
     "eslint-plugin-prettier": "^5.1.3",
     "express": "^4.18.3",
+    "fast-check": "^3.19.0",
     "husky": "^8.0.3",
     "jsdom": "22.1.0",
     "jsonc-eslint-parser": "^2.1.0",
@@ -104,5 +113,8 @@
   },
   "nx": {
     "includedScripts": []
+  },
+  "dependencies": {
+    "@effect/platform": "^0.58.9"
   }
 }
