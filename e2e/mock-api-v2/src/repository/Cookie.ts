@@ -10,6 +10,7 @@ import { DavinciAuthorizeHeaders } from '../schemas/authorize';
 interface CookieService {
   writeCookie: (
     headers: Schema.Schema.Type<typeof DavinciAuthorizeHeaders>,
+    interactionToken?: string,
   ) => Effect.Effect<Cookies.Cookies, Cookies.CookiesError, never>;
 }
 const CookieService = Context.GenericTag<CookieService>('CookieService');
@@ -24,11 +25,11 @@ const cookieOptions: Cookies.Cookie['options'] = {
  * Mock out the test servers cookie writing
  */
 const cookieServiceTest = CookieService.of({
-  writeCookie: (headers) =>
+  writeCookie: (headers, interactionToken?) =>
     Effect.succeed(
       Cookies.setAll(Cookies.empty, [
         ['interactionId', '123', cookieOptions],
-        ['interactionToken', '456', cookieOptions],
+        ['interactionToken', interactionToken || '456', cookieOptions],
         ['stepIndex', incrementCookieHeader(headers), cookieOptions],
       ]).pipe(
         /**

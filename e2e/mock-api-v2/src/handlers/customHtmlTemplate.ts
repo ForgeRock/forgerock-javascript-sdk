@@ -14,6 +14,15 @@ const customHtmlHandler = RouterBuilder.handler(
       const response = yield* post('/customHtmlTemplate', { headers, query, body });
 
       const { writeCookie } = yield* CookieService;
+      if (response.body.capabilityName === 'returnSuccessResponseRedirect') {
+        const cookie = yield* writeCookie(headers, response.body.interactionToken);
+        return {
+          ...response,
+          headers: {
+            'Set-Cookie': toCookieHeader(cookie),
+          },
+        };
+      }
       const cookie = yield* writeCookie(headers);
 
       return {

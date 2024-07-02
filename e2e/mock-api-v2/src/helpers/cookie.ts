@@ -1,34 +1,48 @@
-import { Console, Option, pipe } from 'effect';
+import { Effect, Option, pipe } from 'effect';
 import { Schema } from '@effect/schema';
 import { DavinciAuthorizeHeaders } from '../schemas/authorize';
 import { Cookies } from '@effect/platform';
 import { ResponseMapKeys, responseMap } from '../responses';
-import { FetchError } from '../errors';
+import { returnSuccessResponseRedirect } from '../responses/returnSuccessRedirect';
 
+/**
+ *
+ * This will parse the `headers.cookie` into an `Option`
+ * If there is no headers.cookie, it will be a `None`
+ * When we have a headers.cookie value, it will turn
+ * it into a Record of cookieName => value
+ * Then it specifically will grab the `stepIndex` value.
+ * If it doesn't exist, it will be a `None`
+ * If it exists, we will have a `Some(value: number)`
+ */
 const parseCookieHeaderForIndex = (headers: Schema.Schema.Type<typeof DavinciAuthorizeHeaders>) => {
-  console.log(headers);
   return pipe(
+    /*
+     * We create an Option from the headers.cookie
+     * As long as we have some headers, this will be a `Some`
+     */
     Option.fromNullable(headers.cookie),
-    (v) => {
-      console.log('as headers', v);
-      return v;
-    },
+
     Option.map(Cookies.parseHeader),
-    (v) => {
-      console.log(v);
-      return v;
-    },
-    Option.flatMap((record) => Option.fromNullable(record['stepIndex'])),
+
+    /**
+     * We try to get the `stepIndex` key from the record
+     * of headers that we created.
+     */
+    Option.flatMapNullable((record) => record['stepIndex']),
   );
 };
 
+/**
+ * Increment the cookie header
+ * This will parses the cookie header first, and turn it
+ * into a record of cookie name and value
+ * then will incremement the stepIndex header by parsing the
+ * string into a number and adding 1 to it.
+ */
 const incrementCookieHeader = (headers: Schema.Schema.Type<typeof DavinciAuthorizeHeaders>) =>
   pipe(
     parseCookieHeaderForIndex(headers),
-    (v) => {
-      console.log('headers', v);
-      return v;
-    },
     Option.map(parseInt),
     Option.map((num) => num + 1),
     Option.map((num) => num.toString()),
@@ -36,7 +50,7 @@ const incrementCookieHeader = (headers: Schema.Schema.Type<typeof DavinciAuthori
   );
 
 /**
- * Read the cookie for where we are in the DavinciFlow
+ * Read the cookie for where we are in the flow
  * Then return the next item
  */
 
@@ -47,12 +61,12 @@ const getElementFromCookie = (
   pipe(
     parseCookieHeaderForIndex(headers),
     Option.map(parseInt),
-    Option.map((number) => arr[number]),
-    (v) => {
-      console.log('the element', v);
-      return v;
-    },
-    Option.getOrThrowWith(() => new FetchError()),
+    Effect.flatMap((number) =>
+      Effect.if(number <= arr.length - 1, {
+        onTrue: () => Effect.succeed(arr[number]),
+        onFalse: () => Effect.succeed(returnSuccessResponseRedirect),
+      }),
+    ),
   );
 
 export { incrementCookieHeader, parseCookieHeaderForIndex, getElementFromCookie };

@@ -54,6 +54,6 @@ const UsernamePassword = {
       ],
     },
   },
-} as const;
+};
 
 export { UsernamePassword };

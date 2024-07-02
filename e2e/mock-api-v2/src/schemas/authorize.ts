@@ -23,50 +23,9 @@ const DavinciAuthorizeQuery = Schema.Struct({
   acr_values: Schema.String, // this should be optional
 });
 
-const createBrand = (id: string) => Schema.String; //.pipe(Schema.brand(id))
-
 const DavinciAuthorizeFailure = Schema.Struct({
   error: Schema.String,
   error_description: Schema.String,
-});
-
-const DavinciFlowNode = Schema.Struct({
-  interactionId: createBrand('InteractionId'),
-  connectorId: createBrand('ConnectorId'),
-  interactionToken: createBrand('interactionToken'),
-  success: Schema.Boolean,
-  startUiSubFlow: Schema.Boolean,
-  _links: Schema.Struct({
-    next: Schema.Struct({
-      href: createBrand('NextHref'),
-    }),
-  }),
-  eventName: Schema.String,
-  isResponseCompatibleWithMobileAndWebSdks: Schema.Boolean,
-  id: createBrand('id'),
-  companyId: createBrand('companyId'),
-  flowId: createBrand('flowId'),
-  connectionId: createBrand('connectionId'),
-  capabilityName: createBrand('capabilityName'),
-  formData: Schema.Struct({
-    value: Schema.Struct({
-      protectsdk: Schema.String,
-    }),
-  }),
-  form: Schema.Struct({
-    name: Schema.String,
-    description: Schema.String,
-    category: createBrand('formCategory'),
-    components: Schema.Struct({
-      fields: Schema.Array(
-        Schema.Struct({
-          type: Schema.String,
-          key: Schema.String,
-          label: Schema.String,
-        }),
-      ),
-    }),
-  }),
 });
 
 export {
@@ -74,6 +33,5 @@ export {
   DavinciAuthorizeHeaders,
   DavinciAuthorizeQuery,
   DavinciAuthorizeFailure,
-  DavinciFlowNode,
   DavinciAuthorizeResponseHeaders,
 };

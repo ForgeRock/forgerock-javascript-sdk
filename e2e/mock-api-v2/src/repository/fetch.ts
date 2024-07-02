@@ -10,17 +10,22 @@ import {
   PingOneRequestQuery,
 } from '../schemas/customHtmlTemplate/requests';
 import { PingOneCustomHtmlResponseBody } from '../schemas/customHtmlTemplate/responses';
-import { NoSuchElementException } from 'effect/Cause';
 import { HttpError } from 'effect-http';
 import { getFirstElementAndRespond, getNextStep, mapDataToValue } from './fetch-test';
+import { SuccessResponseRedirect } from '../schemas/returnSuccessResponseRedirect';
+import type { Routes } from '../helpers/routeTypes';
 
 type PostSuccessResponse = {
   status: 200;
-  body: Schema.Schema.Type<typeof PingOneCustomHtmlResponseBody>;
+  body:
+    | Schema.Schema.Type<typeof PingOneCustomHtmlResponseBody>
+    | Schema.Schema.Type<typeof SuccessResponseRedirect>;
 };
 
-type GetSuccessResponse = null;
-
+interface GetSuccessResponse {
+  status: 200;
+  body: Schema.Schema.Type<typeof PingOneCustomHtmlResponseBody>;
+}
 /**
  * We define a fetch service here
  * the fetch service is a mimic of what the Authorization Server may
@@ -28,19 +33,22 @@ type GetSuccessResponse = null;
  */
 interface FetchRepository {
   post: (
-    route: string,
+    route: Routes,
     init: {
-      headers: Schema.Schema.Type<typeof DavinciAuthorizeHeaders>;
-      query:
-        | Schema.Schema.Type<typeof DavinciAuthorizeQuery>
-        | Schema.Schema.Type<typeof PingOneRequestQuery>;
+      headers?: Schema.Schema.Type<typeof DavinciAuthorizeHeaders>;
+      query?: Schema.Schema.Type<typeof PingOneRequestQuery>;
       body?: Schema.Schema.Type<typeof PingOneCustomHtmlRequestBody>;
     },
-  ) => Effect.Effect<PostSuccessResponse, HttpError.HttpError | NoSuchElementException, never>;
+  ) => Effect.Effect<PostSuccessResponse, HttpError.HttpError, never>;
 
   get: (
-    route: string,
-    headers: HeadersInit,
+    route: Routes,
+    init:
+      | Record<string, never>
+      | {
+          headers: Schema.Schema.Type<typeof DavinciAuthorizeHeaders>;
+          query: Schema.Schema.Type<typeof DavinciAuthorizeQuery>;
+        },
   ) => Effect.Effect<GetSuccessResponse, FetchError, never>;
 }
 
@@ -84,7 +92,7 @@ const fn = (
              * We then need to parse the cookie header of `stepIndex` to see what is the next step
              */
             Effect.flatMap((bool) => getNextStep(bool, query)),
-            Effect.map((arr) => getElementFromCookie(arr, headers)),
+            Effect.andThen((arr) => getElementFromCookie(arr, headers)),
             /**
              * We have retrieved the next step in our flow / journey.
              * At this stage we are going to form a response body like
@@ -106,10 +114,10 @@ const fn = (
   );
 
 const fetchTest = FetchRepository.of({
-  post: (_route, { body, query, headers }) => {
+  post: (route, { body, query, headers }) => {
     return pipe(
       Option.fromNullable(body?.parameters.data),
-      (option) => fn(option, headers, query),
+      (option) => headers !== undefined && query !== undefined && fn(option, headers, query),
 
       /**
        * Here is where we handle errors
@@ -119,17 +127,17 @@ const fetchTest = FetchRepository.of({
        * and the body of the error we need to respond with
        */
       Effect.catchTags({
-        NoSuchElementException: () =>
-          HttpError.unauthorizedError(errorMap['InvalidUsernamePassword']),
-        InvalidProtectNode: () => HttpError.unauthorizedError(errorMap['InvalidUsernamePassword']),
+        NoSuchElementException: () => HttpError.unauthorizedError('No Such Element'),
+        InvalidProtectNode: () => HttpError.unauthorizedError('Error submitting Protect node'),
         InvalidUsernamePassword: (err) => HttpError.unauthorizedError(errorMap[err._tag]),
         UnableToFindNextStep: () =>
-          HttpError.unauthorizedError(errorMap['InvalidUsernamePassword']),
+          HttpError.unauthorizedError('Unable to find the next step in the journey'),
       }),
     );
   },
-  // Implement when needed
-  get: () => Effect.succeed(null),
+  get: (_route, init) => {
+    return pipe(init['query'], getFirstElementAndRespond);
+  },
 });
 
 export { fetchTest, FetchRepository, FetchError };

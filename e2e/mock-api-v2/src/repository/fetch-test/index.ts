@@ -5,13 +5,19 @@ import {
   PingOneRequestQuery,
 } from '../../schemas/customHtmlTemplate/requests';
 import { ResponseMapKeys, responseMap } from '../../responses';
-import { FetchError, UnableToFindNextStep } from '../../errors';
-import { DavinciAuthorizeHeaders, DavinciAuthorizeQuery } from '../../schemas/authorize';
+import { UnableToFindNextStep } from '../../errors';
+import { DavinciAuthorizeQuery } from '../../schemas/authorize';
 
 type DavinciFormData = Schema.Schema.Type<
   typeof PingOneCustomHtmlRequestBody
 >['parameters']['data'];
 
+/**
+ * Given data in the shape of Ping's Request formData.value
+ * We will dive into the object by accessing `formData`
+ * And then `value` off the object.
+ *
+ */
 const mapDataToValue = (data: Option.Option<DavinciFormData>) =>
   pipe(
     data,
@@ -23,20 +29,30 @@ type QueryTypes =
   | Schema.Schema.Type<typeof DavinciAuthorizeQuery>
   | Schema.Schema.Type<typeof PingOneRequestQuery>;
 
+const getArrayFromResponseMap = (query: QueryTypes) =>
+  Effect.succeed(responseMap[query.acr_values as ResponseMapKeys]);
+/**
+ * A helper function that will use `acr_values` from query object
+ * to grab the array from the `responseMap`.
+ */
 const getNextStep = (bool: boolean, query: QueryTypes) =>
   Effect.if(bool, {
-    onTrue: () => Effect.succeed(responseMap[query.acr_values as ResponseMapKeys]), // get the array
+    onTrue: () => getArrayFromResponseMap(query),
     onFalse: () => Effect.fail(new UnableToFindNextStep()),
   });
 
+/**
+ * Get the first element in the responseMap
+ */
 const getFirstElement = (arr: (typeof responseMap)[ResponseMapKeys]) =>
-  Effect.succeed(
-    pipe(
-      Array.head(arr),
-      Option.getOrThrowWith(() => Effect.fail(new FetchError())),
-    ),
-  );
+  Effect.succeed(pipe(Array.headNonEmpty(arr)));
 
+/**
+ * Gets the first element from the responseMap
+ * And then creates a basic HttpResponse object that
+ * will succeed
+ *
+ */
 const getFirstElementAndRespond = (query: QueryTypes) =>
   pipe(
     responseMap[query.acr_values as ResponseMapKeys],
@@ -47,4 +63,4 @@ const getFirstElementAndRespond = (query: QueryTypes) =>
     })),
   );
 
-export { getNextStep, getFirstElementAndRespond, mapDataToValue };
+export { getNextStep, getFirstElementAndRespond, getArrayFromResponseMap, mapDataToValue };

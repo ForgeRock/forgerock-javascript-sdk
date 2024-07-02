@@ -7,15 +7,20 @@ import { FetchRepository } from '../repository/fetch';
 
 const authorizeHandler = RouterBuilder.handler(apiSpec, 'DavinciAuthorize', ({ headers, query }) =>
   Effect.gen(function* () {
+    const { get } = yield* FetchRepository;
+
     /**
-     * `handleQuery` validates that the query params passed in are good
-     * it returns a `Option` type that is `Some` if a query is ok!
+     * Forward our request to AS
      */
-    const { post } = yield* FetchRepository;
-    const response = yield* post('/authorize/route', { headers, query });
+    const response = yield* get('/authorize', {
+      headers,
+      query,
+    });
 
     const { writeCookie } = yield* CookieService;
-
+    /**
+     * Write our cookies to send to the client
+     */
     const cookie = yield* writeCookie(headers);
     return {
       ...response,

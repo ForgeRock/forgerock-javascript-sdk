@@ -12,4 +12,5 @@ class InvalidProtectNode {
 class UnableToFindNextStep {
   readonly _tag = 'UnableToFindNextStep';
 }
+
 export { FetchError, InvalidUsernamePassword, InvalidProtectNode, UnableToFindNextStep };

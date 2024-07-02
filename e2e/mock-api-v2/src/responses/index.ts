@@ -1,11 +1,11 @@
+import { Array } from 'effect';
 import { UsernamePassword } from './UsernamePassword';
 import { PingProtectNode } from './customHtml/PingProtectNode';
 import { InvalidUsernamePassword } from './InvalidUsernamePassword';
-import { PingOneCustomHtmlResponseErrorBody } from '../schemas/customHtmlTemplate/responses';
 
 type ResponseMapKeys = keyof typeof responseMap;
 const responseMap = {
-  UsernamePassword: [PingProtectNode, UsernamePassword] as const,
+  UsernamePassword: Array.make(PingProtectNode, UsernamePassword),
 } as const;
 
 type ErrorMapKeys = keyof typeof errorMap;

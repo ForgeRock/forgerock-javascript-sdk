@@ -5,11 +5,29 @@
 you can run the server and visit `http://localhost:9443/docs#` to visit the swagger docs
 The swagger docs are automatically created (with effect-http) by way of the schemas that are defined in the [spec file]('./src/spec.ts')
 
+## Creating an endpoint in the Api specification
+
+To create an endpoint, visit the [spec]('./src/spec.ts') file and add your endpoint. For organization and cleanliness, endpoints can be abstracted into the [endpoints]('./src/endpoints/') folder.
+
+When an endpoint is made, you can add it to the [`spec`]('./src/spec.ts') `pipe`.
+
+## Handling your new endpoint
+
+When you have created an endpoint in the specification, you need to now handle the endpoint. This is the actual code implementation of your endpoint.
+
+handlers are saved in the [handlers]('./src/handlers/') folder.
+
+You use RouterBuilder.handler, passing in the [api spec]('./src/spec.ts') and the name of the route, and then an Effect returning function (`Effect.gen` is the simplest form of this).
+
+The request arguments, you define in your endpoint specification, (query params, path params, request bodies, etc) are the arguments passed to the callback function of `RouterBuilder.handler`.
+
+Ensure that you also add your `handler` to the RouterBuilder.handle [here]('./src/main.ts');
+
 ## Adding a journey / flow to the response map
 
 If you are adding a flow to the response map the first thing to do is open up [responseMap]('./src/responses/index.ts')
 
-This file is a `map` of Names -> Array<Steps> where a Step is the response you want to return (in order). Order is key here.
+This file is a `map` of Names -> Array<Step> where a Step is the response you want to return (in order). Order is key here.
 
 If the Response you want to return is not already defined as a schema, you will have to define a new Schema and add the response.
 
