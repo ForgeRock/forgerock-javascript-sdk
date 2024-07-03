@@ -15,7 +15,7 @@ import type { OAuth2Tokens } from '../oauth2-client';
 import OAuth2Client, { allowedErrors, ResponseType } from '../oauth2-client';
 import type { StringDict, Tokens } from '../shared/interfaces';
 import TokenStorage from '../token-storage';
-import PKCE from '../util/pkce';
+import { generateAndStoreAuthUrlValues, getStoredAuthUrlValues } from '../oauth2-client/state-pkce';
 import { parseQuery } from '../util/url';
 import { tokensWillExpireWithinThreshold } from './helpers';
 
@@ -39,7 +39,7 @@ abstract class TokenManager {
      forceRenew: true, // If you want to get new tokens, despite existing ones
      login: 'embedded', // If user authentication is handled in-app
      serverConfig: {
-       timeout: 5000, // If using "legacy", use a short timeout to catch error
+       timeout: 5000,
      },
    });
    ```
@@ -65,9 +65,11 @@ abstract class TokenManager {
    ```
    */
   public static async getTokens(options?: GetTokensOptions): Promise<OAuth2Tokens | void> {
-    const { clientId, oauthThreshold } = Config.get(options as ConfigOptions);
-    // const storageKey = `${Config.get().prefix}-authflow-${clientId}`;
-    const storageKey = `${Config.get().prefix}-authflow-${clientId}`;
+    const { clientId, oauthThreshold, prefix } = Config.get(options as ConfigOptions);
+
+    if (!clientId) {
+      throw new Error('Client ID is required');
+    }
 
     /**
      * First, let's see if tokens exist locally
@@ -105,33 +107,31 @@ abstract class TokenManager {
      * and return acquired tokens
      */
     if (options?.query?.code && options?.query?.state) {
-      const storedString = sessionStorage.getItem(storageKey);
-      sessionStorage.removeItem(storageKey);
-      const storedValues: { state: string; verifier: string } = JSON.parse(storedString as string);
+      const { state, verifier } = getStoredAuthUrlValues(clientId, prefix);
 
-      return await this.tokenExchange(options, storedValues);
+      if (state === undefined || verifier === undefined) {
+        throw new Error(
+          '`state` and/or `verifier` not found in sessionStorage. Debugging: sessionStorage is not accessible in separate tabs.',
+        );
+      }
+      return await this.tokenExchange(options, { state, verifier });
     }
-
-    /**
-     * If we are here, then we are just beginning the auth code flow,
-     * so let's generate authorize PKCE values and URL
-     */
-    const verifier = PKCE.createVerifier();
-    const state = PKCE.createState();
 
     // so to not change the type of the above function
     // we assign it here if its undefined or null.
-
     const config = Object.assign({}, options);
     delete config.forceRenew;
-    delete config.login;
 
-    const authorizeUrlOptions = {
+    /**
+     * Generate state and verifier for PKCE
+     */
+    const { authorizeUrlOptions } = generateAndStoreAuthUrlValues({
       ...config,
+      clientId,
+      prefix,
       responseType: ResponseType.Code,
-      state,
-      verifier,
-    };
+    });
+
     /**
      * Attempt to call the authorize URL to retrieve authorization code
      */
@@ -178,9 +178,6 @@ abstract class TokenManager {
         throw err;
       }
 
-      // Since `login` is configured for "redirect", store authorize values and redirect
-      sessionStorage.setItem(storageKey, JSON.stringify(authorizeUrlOptions));
-
       const authorizeUrl = await OAuth2Client.createAuthorizeUrl(authorizeUrlOptions);
 
       return location.assign(authorizeUrl);
@@ -188,7 +185,10 @@ abstract class TokenManager {
     /**
      * Exchange authorization code for tokens
      */
-    return await this.tokenExchange(options, { state, verifier });
+    return await this.tokenExchange(options, {
+      state: authorizeUrlOptions.state,
+      verifier: authorizeUrlOptions.verifier,
+    });
   }
 
   public static async deleteTokens(): Promise<void> {
