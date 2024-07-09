@@ -1,13 +1,13 @@
 import { Effect } from 'effect';
 import { RouterBuilder } from 'effect-http';
 import { apiSpec } from '../spec';
-import { CookieService } from '../repository/Cookie';
+import { CookieService } from '../services/Cookie';
 import { toCookieHeader } from '@effect/platform/Cookies';
-import { FetchRepository } from '../repository/fetch';
+import { Fetch } from '../services/fetch';
 
 const authorizeHandler = RouterBuilder.handler(apiSpec, 'DavinciAuthorize', ({ headers, query }) =>
   Effect.gen(function* () {
-    const { get } = yield* FetchRepository;
+    const { get } = yield* Fetch;
 
     /**
      * Forward our request to AS

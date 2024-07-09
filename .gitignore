@@ -62,4 +62,6 @@ docs/packages/javascript-sdk
 **/playwright-report
 **/playwright/.cache
 
-.nx/cache
+.nx/*
+!.nx/workflows
+**/vite.config.ts.timestamp-*

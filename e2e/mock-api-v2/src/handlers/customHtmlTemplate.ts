@@ -1,8 +1,8 @@
 import { Effect } from 'effect';
 import { RouterBuilder } from 'effect-http';
 import { apiSpec } from '../spec';
-import { FetchRepository } from '../repository/fetch';
-import { CookieService } from '../repository/Cookie';
+import { Fetch } from '../services/fetch';
+import { CookieService } from '../services/Cookie';
 import { toCookieHeader } from '@effect/platform/Cookies';
 
 const customHtmlHandler = RouterBuilder.handler(
@@ -10,7 +10,7 @@ const customHtmlHandler = RouterBuilder.handler(
   'PingOneCustomHtml',
   ({ headers, query, body }) =>
     Effect.gen(function* () {
-      const { post } = yield* FetchRepository;
+      const { post } = yield* Fetch;
       const response = yield* post('/customHtmlTemplate', { headers, query, body });
 
       const { writeCookie } = yield* CookieService;
