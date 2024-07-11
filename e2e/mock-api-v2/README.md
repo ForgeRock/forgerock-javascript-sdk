@@ -42,6 +42,20 @@ After adding a journey/flow to the response map and defining a schema, you next 
 
 This functions job is to `match` the type passed in, and validate based on the condition provided. If it passes, a boolean is returned, if it fails, a new Error should be returned.
 
+## Services
+
+To make it so types line up easier, each route, has a service dedicated to itself. The service under the hood, uses the `Requester` service. The `Requester` service is to mimic a call to the authorization server.
+
+Let's look at the `Authorize` service. This service is the workhorse of the `authorize` handler.
+
+`Authorize`, the service, uses `Requester` which will fetch a response from the authorization server.
+
+After retrieving the response, the service will catch any errors that may be thrown, and mold them into HttpErrors to respond back to the client.
+
+In a mock environment, rather than fetching from the client, authorization service will grab the next response from the `responseMap`.
+
+In a live environment, it will forward a request to the Fetch service, and return that response.
+
 ## Creating Errors
 
 If you want to create an error, it is simple. This is the skeleton of how to create an Error in `Effect`
@@ -58,14 +72,38 @@ The `_tag` is important as this is the name of the error, and how we can `catchT
 
 We want to return our errors back to the client, but typically we need an error response body that informs the client of the issue.
 
-You should add your error respones to the response folder [here]('./src/responses');
+You should add your error responses to the response folder [here]('./src/responses');
 
-Then in the [fetch]('./src/repository/fetch.ts') repository, you will want to return your error. This will depend on the type of error you want to return. `effect-http` uses `HttpError` class to respond with errors. An example would be if you want to return an Error that is a 401 unauthorized error.
+In the service where you want to handle your error, you will see a `catchTags` function.
+
+Let's pause here to understand the `Effect` type.
 
 ```ts
-Effect.catchTag('MyErrorName', (err) => HttpError.unauthorizedError(MyErrorResponseObject));
+Effect<Success, Error, Requirements>;
 ```
 
-At this stage, you will may likely see an error that your error object does not match the schema. The Error object needs to be defined in the [spec.ts]('./src/spec.ts') file. You can use `ApiResponse.addResponse` if the response does not exist.
+When reading an Effect type, the first generic, is what is returned if the effect is successful.
 
-If the response type exists, but your schema does not match, you will need to create a union of the existing schema, and the new schema.
+The second argument is what is returned if the effect is unsuccessful.
+
+The third argument is any services (or layers) that are required to run this effect.
+
+So if we have an `effect` like this `Effect<Users, HttpError.HttpError | NoSuchElementException, never>`
+
+This tells us the `effect` returns `users`, and can error two ways, `NoSuchElementException`, and with an `HttpError`.
+
+We would rather handle this `NoSuchElementException` and send back to the client an HttpError informing them of the error that occurred.
+
+We can do something like this now
+
+```ts
+Effect.catchTag('NoSuchElementException', () =>
+  HttpError.unauthorizedError('no such element found'),
+);
+```
+
+This will return a 401 with that message.
+
+When handling errors, we try to keep the handler always returning an `HttpError`, so we should handle any other errors we have deeper in the call stack, to return HttpError unless there is a valid reason to allow the error to bubble up.
+
+If you have a shape of an error that you want to return from a handler, that does not match the current schema, you can add it to the `api spec`.

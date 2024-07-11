@@ -1,12 +1,12 @@
 import { Effect } from 'effect';
 import { RouterBuilder } from 'effect-http';
 import { apiSpec } from '../spec';
-import { Fetch } from '../services/fetch';
+import { Tokens } from '../services/tokens';
 
-const tokenHandler = RouterBuilder.handler(apiSpec, 'PingOneToken', () =>
+const tokenHandler = RouterBuilder.handler(apiSpec, 'PingOneToken', (headers, query) =>
   Effect.gen(function* () {
-    const { get } = yield* Fetch;
-    const tokens = yield* get('/tokens', {} as any);
+    const { getTokens } = yield* Tokens;
+    const tokens = yield* getTokens(headers, query);
 
     return tokens;
   }),

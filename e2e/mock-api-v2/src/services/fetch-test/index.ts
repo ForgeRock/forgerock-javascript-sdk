@@ -58,7 +58,15 @@ const getFirstElement = (arr: (typeof responseMap)[ResponseMapKeys]) =>
 const getFirstElementAndRespond = (query: QueryTypes) =>
   pipe(
     Option.fromNullable(query.acr_values),
+    (d) => {
+      console.log('query', query);
+      return d;
+    },
     Option.map((acr) => responseMap[acr as ResponseMapKeys]),
+    (data) => {
+      console.log(data);
+      return data;
+    },
     Effect.flatMap(getFirstElement),
     Effect.map((body) => ({
       status: 200 as const,
