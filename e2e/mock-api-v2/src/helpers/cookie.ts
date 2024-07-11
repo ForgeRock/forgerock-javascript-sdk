@@ -1,9 +1,8 @@
 import { Effect, Option, pipe } from 'effect';
-import { Schema } from '@effect/schema';
-import { DavinciAuthorizeHeaders } from '../schemas/authorize';
 import { Cookies } from '@effect/platform';
 import { ResponseMapKeys, responseMap } from '../responses';
 import { returnSuccessResponseRedirect } from '../responses/returnSuccessRedirect';
+import { HeaderTypes } from '../types';
 
 /**
  *
@@ -15,13 +14,13 @@ import { returnSuccessResponseRedirect } from '../responses/returnSuccessRedirec
  * If it doesn't exist, it will be a `None`
  * If it exists, we will have a `Some(value: number)`
  */
-const parseCookieHeaderForIndex = (headers: Schema.Schema.Type<typeof DavinciAuthorizeHeaders>) => {
+const parseCookieHeaderForIndex = (headers: HeaderTypes) => {
   return pipe(
     /*
      * We create an Option from the headers.cookie
      * As long as we have some headers, this will be a `Some`
      */
-    Option.fromNullable(headers.cookie),
+    Option.fromNullable(headers?.cookie),
 
     Option.map(Cookies.parseHeader),
 
@@ -40,7 +39,7 @@ const parseCookieHeaderForIndex = (headers: Schema.Schema.Type<typeof DavinciAut
  * then will incremement the stepIndex header by parsing the
  * string into a number and adding 1 to it.
  */
-const incrementCookieHeader = (headers: Schema.Schema.Type<typeof DavinciAuthorizeHeaders>) =>
+const incrementCookieHeader = (headers: HeaderTypes) =>
   pipe(
     parseCookieHeaderForIndex(headers),
     Option.map(parseInt),
@@ -54,10 +53,7 @@ const incrementCookieHeader = (headers: Schema.Schema.Type<typeof DavinciAuthori
  * Then return the next item
  */
 
-const getElementFromCookie = (
-  arr: (typeof responseMap)[ResponseMapKeys],
-  headers: Schema.Schema.Type<typeof DavinciAuthorizeHeaders>,
-) =>
+const getElementFromCookie = (arr: (typeof responseMap)[ResponseMapKeys], headers: HeaderTypes) =>
   pipe(
     parseCookieHeaderForIndex(headers),
     Option.map(parseInt),

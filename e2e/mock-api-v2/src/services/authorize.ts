@@ -4,10 +4,11 @@ import { Request } from './request';
 import { getFirstElementAndRespond } from './fetch-test';
 import { HttpError } from 'effect-http';
 import { PingOneCustomHtmlResponseBody } from '../schemas/customHtmlTemplate/responses';
+import { HeaderTypes, QueryTypes } from '../types';
 
 type AuthorizeResponseBody = Schema.Schema.Type<typeof PingOneCustomHtmlResponseBody>;
 
-const mock = <Headers, Query>(
+const mock = <Headers extends HeaderTypes, Query extends QueryTypes>(
   headers: Headers,
   query: Query,
 ): Effect.Effect<{ status: 200; body: AuthorizeResponseBody }, HttpError.HttpError, Request> =>
@@ -21,7 +22,7 @@ const mock = <Headers, Query>(
     });
 
     return yield* pipe(
-      query as any, // fix this later, to match querytypes type
+      query,
       getFirstElementAndRespond,
       Effect.catchTags({
         NoSuchElementException: (err) =>
@@ -30,7 +31,7 @@ const mock = <Headers, Query>(
     );
   });
 
-const live = <Headers, Query>(
+const live = <Headers extends HeaderTypes, Query extends QueryTypes>(
   headers: Headers,
   query: Query,
 ): Effect.Effect<{ status: 200; body: AuthorizeResponseBody }, HttpError.HttpError, Request> =>

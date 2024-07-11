@@ -4,9 +4,13 @@ import { tokenResponseBody } from '../responses/token/token';
 import { HttpError } from 'effect-http';
 import { Request } from './request';
 import { TokenResponseBody } from '../schemas/token/token';
+import { HeaderTypes, QueryTypes } from '../types';
 
 type TokensResponseBody = Schema.Schema.Type<typeof TokenResponseBody>;
-const mock = <Headers, Query>(headers: Headers, query: Query) =>
+const mock = <Headers extends HeaderTypes, Query extends QueryTypes>(
+  headers: Headers,
+  query: Query,
+) =>
   Effect.gen(function* () {
     const { get } = yield* Request;
 
@@ -20,7 +24,10 @@ const mock = <Headers, Query>(headers: Headers, query: Query) =>
     return response;
   });
 
-const live = <Headers, Query>(headers: Headers, query: Query) =>
+const live = <Headers extends HeaderTypes, Query extends QueryTypes>(
+  headers: Headers,
+  query: Query,
+) =>
   Effect.gen(function* () {
     const { get } = yield* Request;
     return yield* get<typeof headers, typeof query, TokensResponseBody>('/tokens', {

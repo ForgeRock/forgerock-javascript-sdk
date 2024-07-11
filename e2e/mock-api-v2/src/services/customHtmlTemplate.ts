@@ -6,13 +6,14 @@ import { HttpError } from 'effect-http';
 import { validator } from '../helpers/match';
 import { PingOneCustomHtmlRequestBody } from '../schemas/customHtmlTemplate/requests';
 import { SuccessResponseRedirect } from '../schemas/returnSuccessResponseRedirect';
+import { HeaderTypes, QueryTypes } from '../types';
 
 type CustomHtmlResponseBody =
   | Schema.Schema.Type<typeof PingOneCustomHtmlResponseBody>
   | Schema.Schema.Type<typeof SuccessResponseRedirect>;
 type CustomHtmlRequestBody = Schema.Schema.Type<typeof PingOneCustomHtmlRequestBody>;
 
-const live = <Headers, Query>(
+const live = <Headers extends HeaderTypes, Query extends QueryTypes>(
   headers: Headers,
   query: Query,
   body: CustomHtmlRequestBody,
@@ -28,7 +29,7 @@ const live = <Headers, Query>(
     return response;
   });
 
-const mock = <Headers, Query>(
+const mock = <Headers extends HeaderTypes, Query extends QueryTypes>(
   headers: Headers,
   query: Query,
   body: CustomHtmlRequestBody,

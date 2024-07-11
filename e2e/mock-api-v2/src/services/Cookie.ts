@@ -1,15 +1,14 @@
 import * as Cookies from '@effect/platform/Cookies';
 import { Effect, Context, Either } from 'effect';
 import { incrementCookieHeader } from '../helpers/cookie';
-import { Schema } from '@effect/schema';
-import { DavinciAuthorizeHeaders } from '../schemas/authorize';
+import { HeaderTypes } from '../types';
 
 /*
  * Define the interface for the Cookie Service
  */
 interface CookieService {
   writeCookie: (
-    headers: Schema.Schema.Type<typeof DavinciAuthorizeHeaders>,
+    headers: HeaderTypes,
     interactionToken?: string,
   ) => Effect.Effect<Cookies.Cookies, Cookies.CookiesError, never>;
 }
@@ -20,6 +19,7 @@ const cookieOptions: Cookies.Cookie['options'] = {
   expires: new Date(Date.now() + 36000),
   path: '/',
   maxAge: 36000,
+  // sameSite: "none" add this in when we need it.
 };
 /*
  * Mock out the test servers cookie writing
