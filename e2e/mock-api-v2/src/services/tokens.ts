@@ -1,4 +1,4 @@
-import { Context, Effect } from 'effect';
+import { Context, Effect, Layer } from 'effect';
 import { Schema } from '@effect/schema';
 import { tokenResponseBody } from '../responses/token/token';
 import { HttpError } from 'effect-http';
@@ -7,41 +7,54 @@ import { TokenResponseBody } from '../schemas/token/token';
 import { HeaderTypes, QueryTypes } from '../types';
 
 type TokensResponseBody = Schema.Schema.Type<typeof TokenResponseBody>;
-const mock = <Headers extends HeaderTypes, Query extends QueryTypes>(
-  headers: Headers,
-  query: Query,
-) =>
+
+class Tokens extends Context.Tag('@services/Tokens')<
+  Tokens,
+  {
+    getTokens: <Headers extends HeaderTypes, Query extends QueryTypes>(
+      headers: Headers,
+      query: Query,
+    ) => Effect.Effect<TokensResponseBody, HttpError.HttpError, never>;
+  }
+>() {}
+
+const mockTokens = Layer.effect(
+  Tokens,
   Effect.gen(function* () {
     const { get } = yield* Request;
+    return {
+      getTokens: (headers, query) =>
+        Effect.gen(function* () {
+          // throw away our get call in mock env;
+          yield* get<typeof headers, typeof query, TokensResponseBody>('/tokens', {
+            headers,
+            query,
+          });
 
-    // throw away our get call in mock env;
-    yield* get<typeof headers, typeof query, TokensResponseBody>('/tokens', { headers, query });
+          const response = yield* Effect.tryPromise({
+            try: () => Promise.resolve(tokenResponseBody),
+            catch: () => HttpError.unauthorizedError('unable to retrieve tokens'),
+          });
+          return response;
+        }),
+    };
+  }),
+);
 
-    const response = yield* Effect.tryPromise({
-      try: () => Promise.resolve(tokenResponseBody),
-      catch: () => HttpError.unauthorizedError('unable to retrieve tokens'),
-    });
-    return response;
-  });
-
-const live = <Headers extends HeaderTypes, Query extends QueryTypes>(
-  headers: Headers,
-  query: Query,
-) =>
+const liveTokens = Layer.effect(
+  Tokens,
   Effect.gen(function* () {
     const { get } = yield* Request;
-    return yield* get<typeof headers, typeof query, TokensResponseBody>('/tokens', {
-      headers,
-      query,
-    });
-  });
-class Tokens extends Context.Tag('@services/Tokens')<Tokens, { getTokens: typeof live }>() {}
+    return {
+      getTokens: (headers, query) =>
+        Effect.gen(function* () {
+          return yield* get<typeof headers, typeof query, TokensResponseBody>('/tokens', {
+            headers,
+            query,
+          });
+        }),
+    };
+  }),
+);
 
-const mockTokens = Tokens.of({
-  getTokens: mock,
-});
-
-const liveTokens = Tokens.of({
-  getTokens: live,
-});
 export { mockTokens, liveTokens, Tokens };

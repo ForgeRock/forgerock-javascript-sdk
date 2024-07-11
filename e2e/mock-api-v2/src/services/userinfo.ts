@@ -4,6 +4,10 @@ import { HttpError } from 'effect-http';
 import { UserInfoSchema } from '../schemas/userinfo/userinfo';
 import { userInfoResponse } from '../responses/userinfo/userinfo';
 
+/***
+ * This file should be converted to a Layer that uses Request
+ */
+
 type UserInfoResponse = Schema.Schema.Type<typeof UserInfoSchema>;
 
 const live = <Headers = object>(bearerToken: string, headers: Headers) =>

@@ -1,4 +1,4 @@
-import { Effect, Context, pipe } from 'effect';
+import { Effect, Context, pipe, Layer } from 'effect';
 import { HttpError } from 'effect-http';
 import { getNextStep } from './fetch-test';
 import { getElementFromCookie } from '../helpers/cookie';
@@ -70,12 +70,12 @@ class Request extends Context.Tag('@services/request')<
   { get: typeof mockGet; post: typeof mockPost }
 >() {}
 
-const mockRequest = Request.of({
+const mockRequest = Layer.succeed(Request, {
   get: mockGet,
   post: mockPost,
 });
 
-const liveRequest = Request.of({
+const liveRequest = Layer.succeed(Request, {
   get: liveGet,
   post: livePost,
 });
