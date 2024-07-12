@@ -56,6 +56,18 @@
     },
     "lint": {
       "executor": "@nx/eslint:lint"
+    },
+    "test": {
+      "executor": "@nx/vite:test",
+      "outputs": ["{options.reportsDirectory}"],
+      "options": {
+        "reportsDirectory": "../../coverage/e2e/mock-api-v2"
+      },
+      "configurations": {
+        "watch": {
+          "watch": true
+        }
+      }
     }
   }
 }

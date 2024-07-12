@@ -6,16 +6,15 @@ import { Request } from './request.service';
 import { tokenResponseBody } from '../responses/token/token';
 import { TokenResponseBody } from '../schemas/token/token.schema';
 
-import { HeaderTypes, QueryTypes } from '../types';
+import { HeaderTypes } from '../types';
 
 type TokensResponseBody = Schema.Schema.Type<typeof TokenResponseBody>;
 
 class Tokens extends Context.Tag('@services/Tokens')<
   Tokens,
   {
-    getTokens: <Headers extends HeaderTypes, Query extends QueryTypes>(
+    getTokens: <Headers extends HeaderTypes>(
       headers: Headers,
-      query: Query,
     ) => Effect.Effect<TokensResponseBody, HttpError.HttpError, never>;
   }
 >() {}
@@ -25,12 +24,12 @@ const mockTokens = Layer.effect(
   Effect.gen(function* () {
     const { get } = yield* Request;
     return {
-      getTokens: (headers, query) =>
+      getTokens: (headers) =>
         Effect.gen(function* () {
           // throw away our get call in mock env;
-          yield* get<typeof headers, typeof query, TokensResponseBody>('/tokens', {
+          yield* get<typeof headers, null, TokensResponseBody>('/tokens', {
             headers,
-            query,
+            query: null,
           });
 
           const response = yield* Effect.tryPromise({
@@ -48,11 +47,11 @@ const liveTokens = Layer.effect(
   Effect.gen(function* () {
     const { get } = yield* Request;
     return {
-      getTokens: (headers, query) =>
+      getTokens: (headers) =>
         Effect.gen(function* () {
-          return yield* get<typeof headers, typeof query, TokensResponseBody>('/tokens', {
+          return yield* get<typeof headers, null, TokensResponseBody>('/tokens', {
             headers,
-            query,
+            query: null,
           });
         }),
     };
