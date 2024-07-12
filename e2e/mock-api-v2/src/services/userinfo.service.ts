@@ -1,8 +1,9 @@
 import { Schema } from '@effect/schema';
 import { Effect, Context } from 'effect';
 import { HttpError } from 'effect-http';
-import { UserInfoSchema } from '../schemas/userinfo/userinfo';
+
 import { userInfoResponse } from '../responses/userinfo/userinfo';
+import { UserInfoSchema } from '../schemas/userinfo/userinfo.schema';
 
 /***
  * This file should be converted to a Layer that uses Request

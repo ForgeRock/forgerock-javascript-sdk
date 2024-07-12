@@ -1,17 +1,21 @@
+import { Schema } from '@effect/schema';
 import { pipe } from 'effect';
 import { Api, ApiResponse } from 'effect-http';
+
+import {
+  DavinciAuthorizeHeaders,
+  DavinciAuthorizeResponseHeaders,
+} from '../schemas/authorize.schema';
+import {
+  PingOneCustomHtmlRequestBody,
+  PingOneRequestQuery,
+} from '../schemas/custom-html-template/custom-html-template-request.schema';
 import {
   PingOneCustomHtmlResponseBody,
   PingOneCustomHtmlResponseErrorBody,
   PingOnePathParams,
-} from '../schemas/customHtmlTemplate/responses';
-import {
-  PingOneCustomHtmlRequestBody,
-  PingOneRequestQuery,
-} from '../schemas/customHtmlTemplate/requests';
-import { DavinciAuthorizeHeaders, DavinciAuthorizeResponseHeaders } from '../schemas/authorize';
-import { Schema } from '@effect/schema';
-import { SuccessResponseRedirect } from '../schemas/returnSuccessResponseRedirect';
+} from '../schemas/custom-html-template/custom-html-template-response.schema';
+import { SuccessResponseRedirect } from '../schemas/return-success-response-redirect.schema';
 
 const customHtmlEndPoint = Api.addEndpoint(
   pipe(

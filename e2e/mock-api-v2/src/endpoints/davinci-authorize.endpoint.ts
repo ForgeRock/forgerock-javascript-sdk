@@ -1,14 +1,15 @@
+import { Schema } from '@effect/schema';
 import { pipe } from 'effect';
 import { Api } from 'effect-http';
+
 import {
   AuthorizePath,
   DavinciAuthorizeHeaders,
   DavinciAuthorizeQuery,
   DavinciAuthorizeResponseHeaders,
-} from '../schemas/authorize';
-import { PingOneCustomHtmlResponseBody } from '../schemas/customHtmlTemplate/responses';
-import { SuccessResponseRedirect } from '../schemas/returnSuccessResponseRedirect';
-import { Schema } from '@effect/schema';
+} from '../schemas/authorize.schema';
+import { PingOneCustomHtmlResponseBody } from '../schemas/custom-html-template/custom-html-template-response.schema';
+import { SuccessResponseRedirect } from '../schemas/return-success-response-redirect.schema';
 
 const davinciAuthorize = Api.addEndpoint(
   pipe(

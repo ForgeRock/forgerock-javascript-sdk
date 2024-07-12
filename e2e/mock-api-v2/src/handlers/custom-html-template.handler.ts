@@ -1,9 +1,10 @@
+import { toCookieHeader } from '@effect/platform/Cookies';
 import { Effect } from 'effect';
 import { RouterBuilder } from 'effect-http';
+
+import { CookieService } from '../services/cookie.service';
+import { CustomHtmlTemplate } from '../services/custom-html-template.service';
 import { apiSpec } from '../spec';
-import { CookieService } from '../services/Cookie';
-import { toCookieHeader } from '@effect/platform/Cookies';
-import { CustomHtmlTemplate } from '../services/customHtmlTemplate';
 
 const customHtmlHandler = RouterBuilder.handler(
   apiSpec,

@@ -1,7 +1,9 @@
 import { Effect, Context, pipe, Layer } from 'effect';
 import { HttpError } from 'effect-http';
-import { getNextStep } from './fetch-test';
+
 import { getElementFromCookie } from '../helpers/cookie';
+import { getNextStep } from './mock-env-helpers';
+
 import { HeaderTypes, QueryTypes } from '../types';
 
 type Init<Headers extends HeaderTypes, Query extends QueryTypes, Body = null> = {

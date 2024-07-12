@@ -1,11 +1,14 @@
-import { Context, Effect, Layer, Option, pipe } from 'effect';
 import { Schema } from '@effect/schema';
-import { Request } from './request';
-import { PingOneCustomHtmlResponseBody } from '../schemas/customHtmlTemplate/responses';
+import { Context, Effect, Layer, Option, pipe } from 'effect';
 import { HttpError } from 'effect-http';
+
 import { validator } from '../helpers/match';
-import { PingOneCustomHtmlRequestBody } from '../schemas/customHtmlTemplate/requests';
-import { SuccessResponseRedirect } from '../schemas/returnSuccessResponseRedirect';
+import { Request } from './request.service';
+
+import { PingOneCustomHtmlRequestBody } from '../schemas/custom-html-template/custom-html-template-request.schema';
+import { PingOneCustomHtmlResponseBody } from '../schemas/custom-html-template/custom-html-template-response.schema';
+import { SuccessResponseRedirect } from '../schemas/return-success-response-redirect.schema';
+
 import { HeaderTypes, QueryTypes } from '../types';
 
 type CustomHtmlResponseBody =

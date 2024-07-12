@@ -1,9 +1,11 @@
-import { Context, Effect, Layer } from 'effect';
 import { Schema } from '@effect/schema';
-import { tokenResponseBody } from '../responses/token/token';
+import { Context, Effect, Layer } from 'effect';
 import { HttpError } from 'effect-http';
-import { Request } from './request';
-import { TokenResponseBody } from '../schemas/token/token';
+
+import { Request } from './request.service';
+import { tokenResponseBody } from '../responses/token/token';
+import { TokenResponseBody } from '../schemas/token/token.schema';
+
 import { HeaderTypes, QueryTypes } from '../types';
 
 type TokensResponseBody = Schema.Schema.Type<typeof TokenResponseBody>;

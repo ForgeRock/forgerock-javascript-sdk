@@ -1,6 +1,6 @@
 import { Schema } from '@effect/schema';
-import { DavinciAuthorizeHeaders, DavinciAuthorizeQuery } from '../schemas/authorize';
-import { PingOneRequestQuery } from '../schemas/customHtmlTemplate/requests';
+import { DavinciAuthorizeHeaders, DavinciAuthorizeQuery } from '../schemas/authorize.schema';
+import { PingOneRequestQuery } from '../schemas/custom-html-template/custom-html-template-request.schema';
 
 type QueryTypes =
   | Schema.Schema.Type<typeof DavinciAuthorizeQuery>

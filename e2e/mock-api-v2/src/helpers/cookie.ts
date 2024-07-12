@@ -1,7 +1,9 @@
-import { Effect, Option, pipe } from 'effect';
 import { Cookies } from '@effect/platform';
+import { Effect, Option, pipe } from 'effect';
+
 import { ResponseMapKeys, responseMap } from '../responses';
-import { returnSuccessResponseRedirect } from '../responses/returnSuccessRedirect';
+import { returnSuccessResponseRedirect } from '../responses/return-success-redirect';
+
 import { HeaderTypes } from '../types';
 
 /**

@@ -1,5 +1,6 @@
 import * as Cookies from '@effect/platform/Cookies';
 import { Effect, Context, Either } from 'effect';
+
 import { incrementCookieHeader } from '../helpers/cookie';
 import { HeaderTypes } from '../types';
 

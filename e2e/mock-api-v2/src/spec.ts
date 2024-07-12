@@ -2,11 +2,11 @@ import { pipe } from 'effect';
 import { Schema } from '@effect/schema';
 import { Api } from 'effect-http';
 
-import { openidConfiguration } from './endpoints/openIdEndpoint';
-import { davinciAuthorize } from './endpoints/davinciAuthorize';
-import { customHtmlEndPoint } from './endpoints/customHtml';
-import { pingOneToken } from './endpoints/token';
-import { userInfo } from './endpoints/userinfo';
+import { openidConfiguration } from './endpoints/open-id-configuration.endpoint';
+import { davinciAuthorize } from './endpoints/davinci-authorize.endpoint';
+import { customHtmlEndPoint } from './endpoints/custom-html.endpoint';
+import { pingOneToken } from './endpoints/token.endpoint';
+import { userInfo } from './endpoints/userinfo.endpoint';
 
 const apiSpec = pipe(
   Api.make({ title: 'MockApi' }),

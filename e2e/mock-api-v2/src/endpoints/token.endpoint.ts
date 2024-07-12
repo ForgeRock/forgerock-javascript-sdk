@@ -1,7 +1,8 @@
 import { Schema } from '@effect/schema';
 import { pipe } from 'effect';
 import { Api } from 'effect-http';
-import { TokenResponseBody } from '../schemas/token/token';
+
+import { TokenResponseBody } from '../schemas/token/token.schema';
 
 const pingOneToken = Api.addEndpoint(
   pipe(

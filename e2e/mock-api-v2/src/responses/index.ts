@@ -1,7 +1,7 @@
 import { Array } from 'effect';
-import { UsernamePassword } from './UsernamePassword';
-import { PingProtectNode } from './customHtml/PingProtectNode';
-import { InvalidUsernamePassword } from './InvalidUsernamePassword';
+import { UsernamePassword } from './username-password';
+import { PingProtectNode } from './custom-html-template/ping-protect-node';
+import { InvalidUsernamePassword } from './invalid-username-password';
 
 type ResponseMapKeys = keyof typeof responseMap;
 const responseMap = {
