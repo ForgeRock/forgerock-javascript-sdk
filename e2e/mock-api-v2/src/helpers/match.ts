@@ -21,12 +21,12 @@ const validator = Match.type<PingRequestData>().pipe(
       onTrue: () => Effect.succeed(true),
     });
   }),
-  Match.when({ pingprotectsdk: Match.string }, ({ pingprotectsdk }) =>
-    Effect.if(pingprotectsdk.length > 1, {
+  Match.when({ pingprotectsdk: Match.string }, ({ pingprotectsdk }) => {
+    return Effect.if(pingprotectsdk.length > 1, {
       onTrue: () => Effect.succeed(true),
       onFalse: () => Effect.fail(new InvalidProtectNode()),
-    }),
-  ),
+    });
+  }),
   Match.exhaustive,
 );
 export { validator, PingRequestData };

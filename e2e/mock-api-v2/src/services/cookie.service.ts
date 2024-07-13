@@ -15,19 +15,19 @@ interface CookieService {
 }
 const CookieService = Context.GenericTag<CookieService>('CookieService');
 
-const cookieOptions: Cookies.Cookie['options'] = {
-  httpOnly: true,
-  expires: new Date(Date.now() + 36000),
-  path: '/',
-  maxAge: 36000,
-  // sameSite: "none" add this in when we need it.
-};
 /*
  * Mock out the test servers cookie writing
  */
 const cookieServiceTest = CookieService.of({
-  writeCookie: (headers, interactionToken?) =>
-    Effect.succeed(
+  writeCookie: (headers, interactionToken?) => {
+    const cookieOptions: Cookies.Cookie['options'] = {
+      httpOnly: true,
+      expires: new Date(Date.now() + 36000),
+      path: '/',
+      maxAge: 36000,
+      // sameSite: "none" add this in when we need it.
+    };
+    return Effect.succeed(
       Cookies.setAll(Cookies.empty, [
         ['interactionId', '123', cookieOptions],
         ['interactionToken', interactionToken || '456', cookieOptions],
@@ -45,7 +45,8 @@ const cookieServiceTest = CookieService.of({
          */
         Either.getOrThrow,
       ),
-    ),
+    );
+  },
 });
 
 export { CookieService, cookieServiceTest };

@@ -88,4 +88,9 @@ const liveCustomHtmlTemplate = Layer.effect(
     };
   }),
 );
-export { CustomHtmlTemplate, mockCustomHtmlTemplate, liveCustomHtmlTemplate };
+export {
+  CustomHtmlTemplate,
+  mockCustomHtmlTemplate,
+  liveCustomHtmlTemplate,
+  CustomHtmlResponseBody,
+};
