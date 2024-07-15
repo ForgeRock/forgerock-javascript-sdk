@@ -39,7 +39,7 @@ const authorizeMock = Layer.effect(
             getFirstElementAndRespond,
             Effect.catchTags({
               NoSuchElementException: (err) =>
-                HttpError.internalHttpError(`failure to get journey from map, ${err}`),
+                HttpError.notFound(`failure to get journey from map, ${err}`),
             }),
           );
         }),

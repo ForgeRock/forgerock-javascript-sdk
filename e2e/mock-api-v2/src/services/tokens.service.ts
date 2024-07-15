@@ -34,7 +34,7 @@ const mockTokens = Layer.effect(
 
           const response = yield* Effect.tryPromise({
             try: () => Promise.resolve(tokenResponseBody),
-            catch: () => HttpError.unauthorizedError('unable to retrieve tokens'),
+            catch: () => HttpError.unauthorized('unable to retrieve tokens'),
           });
           return response;
         }),

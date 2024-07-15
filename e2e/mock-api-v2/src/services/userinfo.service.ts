@@ -11,8 +11,8 @@ import { UserInfoSchema } from '../schemas/userinfo/userinfo.schema';
 
 type UserInfoResponse = Schema.Schema.Type<typeof UserInfoSchema>;
 
-const live = <Headers = object>(bearerToken: string, headers: Headers) =>
-  Effect.tryPromise({
+function live<Headers = object>(bearerToken: string, headers: Headers) {
+  return Effect.tryPromise({
     try: (signal) =>
       fetch('/userinfo', {
         signal,
@@ -22,21 +22,22 @@ const live = <Headers = object>(bearerToken: string, headers: Headers) =>
           ...headers,
         },
       }),
-    catch: () => HttpError.unauthorizedError('failure to get userinfo'),
+    catch: () => HttpError.unauthorized('failure to get userinfo'),
   }).pipe(
     Effect.tryMapPromise({
       try: (response) => response.json() as PromiseLike<UserInfoResponse>,
-      catch: () => HttpError.unauthorizedError('failure to parse the response body of user info'),
+      catch: () => HttpError.internalServerError('failure to parse the response body of user info'),
     }),
   );
+}
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const mock = <Headers = object>(bearerToken: string, headers: Headers) =>
-  Effect.tryPromise({
+function mock<Headers = object>(bearerToken: string, headers: Headers) {
+  return Effect.tryPromise({
     try: () => Promise.resolve(userInfoResponse),
-    catch: () => HttpError.unauthorizedError('failure to get user info'),
+    catch: () => HttpError.unauthorized('failure to get user info'),
   });
-
+}
 class UserInfo extends Context.Tag('@services/userinfo')<
   UserInfo,
   { getUserInfo: typeof live }

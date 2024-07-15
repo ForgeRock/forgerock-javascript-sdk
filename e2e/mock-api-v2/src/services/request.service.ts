@@ -14,11 +14,11 @@ type Init<Headers extends HeaderTypes, Query extends QueryTypes, Body = null> = 
 const liveGet = <Body>(route, init): Effect.Effect<Body, HttpError.HttpError, never> =>
   Effect.tryPromise({
     try: (signal) => fetch(route, { signal, method: 'GET', ...init }),
-    catch: (err) => HttpError.unauthorizedError(`failure to fetch ${route}: \n ${err}`),
+    catch: (err) => HttpError.unauthorized(`failure to fetch ${route}: \n ${err}`),
   }).pipe(
     Effect.tryMapPromise<Response, Body, HttpError.HttpError>({
       try: (response) => response.json(),
-      catch: () => HttpError.internalHttpError('failure to parse response body'),
+      catch: () => HttpError.internalServerError('failure to parse response body'),
     }),
   );
 
@@ -44,29 +44,30 @@ const livePost = <
     Effect.tryMapPromise<Response, ResponseBody, HttpError.HttpError>({
       try: (response) => response.json(),
       catch: () =>
-        HttpError.internalHttpError(`failure to make response from Post request to: ${route}`),
+        HttpError.internalServerError(`failure to make response from Post request to: ${route}`),
     }),
   );
 
-const mockGet = <Headers extends HeaderTypes, Query extends QueryTypes, ResponseBody>(
+function mockGet<Headers extends HeaderTypes, Query extends QueryTypes, ResponseBody>(
   route,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   init: Init<Headers, Query, Body>,
-): Effect.Effect<ResponseBody, HttpError.HttpError, never> =>
-  Effect.tryPromise({
+): Effect.Effect<ResponseBody, HttpError.HttpError, never> {
+  return Effect.tryPromise({
     try: () => Promise.resolve({}) as unknown as PromiseLike<ResponseBody>,
-    catch: () => HttpError.unauthorizedError(`failure to fetch ${route}:`),
+    catch: () => HttpError.internalServerError(`failure to fetch ${route}:`),
   });
+}
 
-const mockPost = <Headers extends HeaderTypes, Query extends QueryTypes, Body, ResponseBody>(
+function mockPost<Headers extends HeaderTypes, Query extends QueryTypes, Body, ResponseBody>(
   route,
   { headers, query }: Init<Headers, Query, Body>,
-): Effect.Effect<ResponseBody, HttpError.HttpError, never> =>
-  pipe(
+): Effect.Effect<ResponseBody, HttpError.HttpError, never> {
+  return pipe(
     getNextStep(true, query),
     Effect.andThen((arr) => getElementFromCookie(arr, headers)),
   ) as unknown as Effect.Effect<ResponseBody, HttpError.HttpError, never>;
-
+}
 class Request extends Context.Tag('@services/request')<
   Request,
   { get: typeof mockGet; post: typeof mockPost }

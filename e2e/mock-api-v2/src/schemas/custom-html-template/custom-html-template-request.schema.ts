@@ -33,6 +33,9 @@ const PingOneCustomHtmlRequestBody = Schema.Struct({
   parameters: Schema.Struct({
     eventType: Schema.String,
     data: Schema.Struct({
+      /**
+       * Consider making action keys literal values.
+       */
       actionKey: Schema.String,
       formData: PossibleFormDatas,
     }),

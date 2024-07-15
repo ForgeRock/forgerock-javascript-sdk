@@ -42,19 +42,16 @@ const mockCustomHtmlTemplate = Layer.effect(
             Option.map((data) => data.value),
             Effect.flatMap((data) => validator(data)),
             Effect.catchTags({
-              NoSuchElementException: () =>
-                HttpError.unauthorizedError('could not find the element'),
+              NoSuchElementException: () => HttpError.unauthorized('could not find the element'),
               InvalidProtectNode: () =>
-                HttpError.unauthorizedError('invalid protect node, did not pass validation'),
+                HttpError.unauthorized('invalid protect node, did not pass validation'),
               InvalidUsernamePassword: () =>
-                HttpError.unauthorizedError(
-                  'invalid username or password, did not pass validation',
-                ),
+                HttpError.unauthorized('invalid username or password, did not pass validation'),
             }),
           );
 
           if (!bool) {
-            yield* Effect.fail(HttpError.unauthorizedError('unable to validate response'));
+            yield* Effect.fail(HttpError.unauthorized('unable to validate response'));
           }
           const response = yield* post<
             typeof headers,
