@@ -20,6 +20,7 @@ const authorizeHandler = RouterBuilder.handler(apiSpec, 'DavinciAuthorize', ({ h
      * Write our cookies to send to the client
      */
     const cookie = yield* writeCookie(headers);
+
     return {
       ...response,
       headers: {

@@ -1,20 +1,9 @@
-import { Schema } from '@effect/schema';
-import { Context, Effect, Layer, Option, pipe } from 'effect';
+import { Context, Effect, Layer } from 'effect';
 import { HttpError } from 'effect-http';
-
-import { validator } from '../helpers/match';
 import { Request } from './request.service';
 
-import { PingOneCustomHtmlRequestBody } from '../schemas/custom-html-template/custom-html-template-request.schema';
-import { PingOneCustomHtmlResponseBody } from '../schemas/custom-html-template/custom-html-template-response.schema';
-import { SuccessResponseRedirect } from '../schemas/return-success-response-redirect.schema';
-
-import { HeaderTypes, QueryTypes } from '../types';
-
-type CustomHtmlResponseBody =
-  | Schema.Schema.Type<typeof PingOneCustomHtmlResponseBody>
-  | Schema.Schema.Type<typeof SuccessResponseRedirect>;
-type CustomHtmlRequestBody = Schema.Schema.Type<typeof PingOneCustomHtmlRequestBody>;
+import { CustomHtmlRequestBody, CustomHtmlResponseBody, HeaderTypes, QueryTypes } from '../types';
+import { validateCustomHtmlRequest } from './mock-env-helpers';
 
 class CustomHtmlTemplate extends Context.Tag('@services/CustomHtmlTemplate')<
   CustomHtmlTemplate,
@@ -34,15 +23,9 @@ const mockCustomHtmlTemplate = Layer.effect(
     return {
       handleCustomHtmlTemplate: (headers, query, body) =>
         Effect.gen(function* () {
-          const data = Option.fromNullable(body?.parameters.data);
-
-          const bool = yield* pipe(
-            data,
-            Option.map((data) => data.formData),
-            Option.map((data) => data.value),
-            Effect.flatMap((data) => validator(data)),
+          yield* validateCustomHtmlRequest(body).pipe(
             Effect.catchTags({
-              NoSuchElementException: () => HttpError.unauthorized('could not find the element'),
+              NoSuchElementException: () => HttpError.notFound('could not find the element'),
               InvalidProtectNode: () =>
                 HttpError.unauthorized('invalid protect node, did not pass validation'),
               InvalidUsernamePassword: () =>
@@ -50,9 +33,6 @@ const mockCustomHtmlTemplate = Layer.effect(
             }),
           );
 
-          if (!bool) {
-            yield* Effect.fail(HttpError.unauthorized('unable to validate response'));
-          }
           const response = yield* post<
             typeof headers,
             typeof query,

@@ -1,6 +1,6 @@
 import { it, expect } from '@effect/vitest';
 import { CustomHtmlTemplate, mockCustomHtmlTemplate } from '../custom-html-template.service';
-import { Effect, Layer } from 'effect';
+import { Effect, Exit, Layer } from 'effect';
 import { mockRequest } from '../request.service';
 import { UsernamePassword } from '../../responses/username-password';
 
@@ -44,30 +44,32 @@ it.effect('should return index 1 of responseMap with customHtmlHandler', () =>
   }).pipe(Effect.provide(Layer.provideMerge(mockCustomHtmlTemplate, mockRequest))),
 );
 
-//it.effect('should return error', () =>
-//  Effect.gen(function* () {
-//    const body = {
-//      id: 'cq77vwelou',
-//      eventName: 'continue',
-//      interactionId: '18a833b0-32e8-4e81-aba4-85d5e6f62077',
-//      parameters: {
-//        eventType: 'submit',
-//        data: {
-//          actionKey: 'SIGNON',
-//          formData: {
-//            value: {
-//              pingprotectsdk: '',
-//            },
-//          },
-//        },
-//      },
-//    };
-//    const { handleCustomHtmlTemplate } = yield* CustomHtmlTemplate;
-//    const result = yield* handleCustomHtmlTemplate({ cookie: 'stepIndex=1' }, queryParams, body);
-//    console.log(result);
-//
-//    expect(result).toEqual(
-//      HttpError.unauthorizedError('invalid protect node, did not pass validation'),
-//    );
-//  }).pipe(Effect.provide(Layer.provideMerge(mockCustomHtmlTemplate, mockRequest))),
-//);
+it.effect('should return error', () =>
+  Effect.gen(function* () {
+    const body = {
+      id: 'cq77vwelou',
+      eventName: 'continue',
+      interactionId: '18a833b0-32e8-4e81-aba4-85d5e6f62077',
+      parameters: {
+        eventType: 'submit',
+        data: {
+          actionKey: 'SIGNON',
+          formData: {
+            value: {
+              pingprotectsdk: '',
+            },
+          },
+        },
+      },
+    };
+
+    const { handleCustomHtmlTemplate } = yield* CustomHtmlTemplate;
+    const result = yield* handleCustomHtmlTemplate(
+      { cookie: 'stepIndex=1' },
+      queryParams,
+      body,
+    ).pipe(Effect.exit);
+
+    expect(result).toEqual(Exit.fail('unauthorized'));
+  }).pipe(Effect.provide(Layer.provideMerge(mockCustomHtmlTemplate, mockRequest))),
+);

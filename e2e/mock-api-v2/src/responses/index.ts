@@ -9,6 +9,7 @@ const responseMap = {
 } as const;
 
 type ErrorMapKeys = keyof typeof errorMap;
+
 const errorMap = {
   InvalidUsernamePassword,
 } as const;

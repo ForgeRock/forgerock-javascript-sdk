@@ -1,6 +1,11 @@
 import { Schema } from '@effect/schema';
 import { DavinciAuthorizeHeaders, DavinciAuthorizeQuery } from '../schemas/authorize.schema';
-import { PingOneRequestQuery } from '../schemas/custom-html-template/custom-html-template-request.schema';
+import {
+  PingOneCustomHtmlRequestBody,
+  PingOneRequestQuery,
+} from '../schemas/custom-html-template/custom-html-template-request.schema';
+import { PingOneCustomHtmlResponseBody } from '../schemas/custom-html-template/custom-html-template-response.schema';
+import { SuccessResponseRedirect } from '../schemas/return-success-response-redirect.schema';
 
 type QueryTypes =
   | Schema.Schema.Type<typeof DavinciAuthorizeQuery>
@@ -8,4 +13,11 @@ type QueryTypes =
   | null;
 
 type HeaderTypes = Schema.Schema.Type<typeof DavinciAuthorizeHeaders> | null;
-export { QueryTypes, HeaderTypes };
+
+type CustomHtmlResponseBody =
+  | Schema.Schema.Type<typeof PingOneCustomHtmlResponseBody>
+  | Schema.Schema.Type<typeof SuccessResponseRedirect>;
+
+type CustomHtmlRequestBody = Schema.Schema.Type<typeof PingOneCustomHtmlRequestBody>;
+
+export { CustomHtmlRequestBody, CustomHtmlResponseBody, QueryTypes, HeaderTypes };

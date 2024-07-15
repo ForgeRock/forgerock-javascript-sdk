@@ -5,7 +5,8 @@ import { UnableToFindNextStep } from '../../errors';
 import { PingOneCustomHtmlRequestBody } from '../../schemas/custom-html-template/custom-html-template-request.schema';
 import { ResponseMapKeys, responseMap } from '../../responses';
 
-import { QueryTypes } from '../../types';
+import { CustomHtmlRequestBody, QueryTypes } from '../../types';
+import { validator } from '../../helpers/match';
 
 type DavinciFormData = Schema.Schema.Type<
   typeof PingOneCustomHtmlRequestBody
@@ -59,4 +60,25 @@ const getFirstElementAndRespond = (query: QueryTypes) =>
     })),
   );
 
-export { getNextStep, getFirstElementAndRespond, getArrayFromResponseMap, mapDataToValue };
+/**
+ * helper function that dives into a request body for CustomHtmlRequestBody
+ * and will apply a validator function to ensure the request passes validation
+ */
+const validateCustomHtmlRequest = <Body extends CustomHtmlRequestBody>(body: Body) =>
+  pipe(
+    body,
+    Option.fromNullable,
+    Option.map((body) => body.parameters),
+    Option.map((body) => body.data),
+    Option.map((data) => data.formData),
+    Option.map((data) => data.value),
+    Effect.flatMap(validator),
+  );
+
+export {
+  getNextStep,
+  getFirstElementAndRespond,
+  getArrayFromResponseMap,
+  mapDataToValue,
+  validateCustomHtmlRequest,
+};

@@ -35,6 +35,7 @@ const customHtmlEndPoint = Api.addEndpoint(
       Api.addResponse(
         ApiResponse.make(401, Schema.Union(PingOneCustomHtmlResponseErrorBody, Schema.String)),
       ),
+      Api.addResponse(ApiResponse.make(403, Schema.String)),
     ),
   ),
 );
