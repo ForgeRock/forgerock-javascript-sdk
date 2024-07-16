@@ -1,6 +1,6 @@
 import { Schema } from '@effect/schema';
 
-const openIdConfigurationResponseSchema = Schema.Struct({
+const _openIdConfigurationResponseSchema = Schema.Struct({
   issuer: Schema.String,
   authorization_endpoint: Schema.String,
   pushed_authorization_request_endpoint: Schema.String,
@@ -30,5 +30,13 @@ const openIdConfigurationResponseSchema = Schema.Struct({
   claims_supported: Schema.Array(Schema.String),
   code_challenge_methods_supported: Schema.Array(Schema.String),
 });
+
+interface openIdConfigurationResponseSchema
+  extends Schema.Schema.Type<typeof _openIdConfigurationResponseSchema> {}
+
+const openIdConfigurationResponseSchema: Schema.Schema<
+  openIdConfigurationResponseSchema,
+  openIdConfigurationResponseSchema
+> = _openIdConfigurationResponseSchema;
 
 export { openIdConfigurationResponseSchema };

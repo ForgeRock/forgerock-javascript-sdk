@@ -27,30 +27,23 @@ it.effect('should parse a cookie header for an index value', () =>
   }),
 );
 
-it.effect('should increment the cookie header', () =>
-  // eslint-disable-next-line require-yield
-  Effect.gen(function* () {
-    const headers: HeaderTypes = {
-      cookie: 'stepIndex=1',
-    };
+it('should increment the cookie header', () => {
+  const headers: HeaderTypes = {
+    cookie: 'stepIndex=1',
+  };
 
-    const result = incrementCookieHeader(headers);
-    expect(result).toEqual('2');
-  }),
-);
+  const result = incrementCookieHeader(headers);
+  expect(result).toEqual('2');
+});
 
-it.effect('should return 1 if no cookie header passed to incrementCookieHeader', () =>
-  // eslint-disable-next-line require-yield
-  Effect.gen(function* () {
-    const headers: HeaderTypes = {};
+it('should return 1 if no cookie header passed to incrementCookieHeader', () => {
+  const headers: HeaderTypes = {};
 
-    const result = incrementCookieHeader(headers);
-    expect(result).toEqual('1');
-  }),
-);
+  const result = incrementCookieHeader(headers);
+  expect(result).toEqual('1');
+});
 
-it.effect('should get an element from the response map based off the cookie header', () =>
-  // eslint-disable-next-line require-yield
+it('should get an element from the response map based off the cookie header', () =>
   Effect.gen(function* () {
     const headers: HeaderTypes = {
       cookie: 'stepIndex=1',
@@ -59,8 +52,7 @@ it.effect('should get an element from the response map based off the cookie head
     const expected = responseMap['UsernamePassword'][1];
     const result = yield* getElementFromCookie(responseMap['UsernamePassword'], headers);
     expect(expected).toEqual(result);
-  }),
-);
+  }));
 it.effect('should return responesRedirect when we have exceeded the index for a given flow', () =>
   Effect.gen(function* () {
     const headers: HeaderTypes = {

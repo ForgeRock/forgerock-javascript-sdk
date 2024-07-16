@@ -1,6 +1,6 @@
 import { Schema } from '@effect/schema';
 
-const SuccessResponseRedirect = Schema.Struct({
+const _SuccessResponseRedirect = Schema.Struct({
   interactionId: Schema.String,
   companyId: Schema.String,
   connectionId: Schema.String,
@@ -36,4 +36,7 @@ const SuccessResponseRedirect = Schema.Struct({
   }),
 });
 
+interface SuccessResponseRedirect extends Schema.Schema.Type<typeof _SuccessResponseRedirect> {}
+const SuccessResponseRedirect: Schema.Schema<SuccessResponseRedirect, SuccessResponseRedirect> =
+  _SuccessResponseRedirect;
 export { SuccessResponseRedirect };

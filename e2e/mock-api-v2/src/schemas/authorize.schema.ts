@@ -10,7 +10,7 @@ const DavinciAuthorizeHeaders = Schema.Struct({
   cookie: Schema.optional(Schema.String),
 });
 
-const DavinciAuthorizeQuery = Schema.Struct({
+const _DavinciAuthorizeQuery = Schema.Struct({
   response_mode: Schema.String,
   client_id: Schema.String,
   redirect_uri: Schema.String,
@@ -22,6 +22,9 @@ const DavinciAuthorizeQuery = Schema.Struct({
   code_challenge_method: Schema.String,
   acr_values: Schema.String, // this should be optional
 });
+interface DavinciAuthorizeQuery extends Schema.Schema.Type<typeof _DavinciAuthorizeQuery> {}
+const DavinciAuthorizeQuery: Schema.Schema<DavinciAuthorizeQuery, DavinciAuthorizeQuery> =
+  _DavinciAuthorizeQuery;
 
 const DavinciAuthorizeFailure = Schema.Struct({
   error: Schema.String,

@@ -1,6 +1,6 @@
 import { Schema } from '@effect/schema';
 
-const UserInfoSchema = Schema.Struct({
+const _UserInfoSchema = Schema.Struct({
   sub: Schema.String,
   preferred_username: Schema.String,
   given_name: Schema.String,
@@ -11,5 +11,9 @@ const UserInfoSchema = Schema.Struct({
   org: Schema.String,
   'p1.region': Schema.String,
 });
+
+interface UserInfo extends Schema.Schema.Type<typeof _UserInfoSchema> {}
+
+const UserInfoSchema: Schema.Schema<UserInfo, UserInfo> = _UserInfoSchema;
 
 export { UserInfoSchema };

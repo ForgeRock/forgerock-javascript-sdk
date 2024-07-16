@@ -1,4 +1,5 @@
 import { Schema } from '@effect/schema';
+
 const PingOnePathParams = Schema.Struct({ envid: Schema.String, connectionid: Schema.String });
 
 const ProtectSDKRequestFormData = Schema.Struct({
@@ -16,7 +17,7 @@ const UsernamePasswordFormData = Schema.Struct({
 
 const PossibleFormDatas = Schema.Union(ProtectSDKRequestFormData, UsernamePasswordFormData);
 
-const PingOneCustomHtmlResponseBody = Schema.Struct({
+const _PingOneCustomHtmlResponseBody = Schema.Struct({
   interactionId: Schema.String,
   interactionToken: Schema.String,
   _links: Schema.Struct({
@@ -47,8 +48,14 @@ const PingOneCustomHtmlResponseBody = Schema.Struct({
     }),
   }),
 });
+interface PingOneCustomHtmlResponseBody
+  extends Schema.Schema.Type<typeof _PingOneCustomHtmlResponseBody> {}
+const PingOneCustomHtmlResponseBody: Schema.Schema<
+  PingOneCustomHtmlResponseBody,
+  PingOneCustomHtmlResponseBody
+> = _PingOneCustomHtmlResponseBody;
 
-const PingOneCustomHtmlResponseErrorBody = Schema.Struct({
+const _PingOneCustomHtmlResponseErrorBody = Schema.Struct({
   interactionId: Schema.String,
   companyId: Schema.String,
   connectionId: Schema.String,
@@ -83,5 +90,12 @@ const PingOneCustomHtmlResponseErrorBody = Schema.Struct({
   ),
   isResponseCompatibleWithMobileAndWebSdks: Schema.Boolean,
 });
+
+interface PingOneCustomHtmlResponseErrorBody
+  extends Schema.Schema.Type<typeof _PingOneCustomHtmlResponseErrorBody> {}
+const PingOneCustomHtmlResponseErrorBody: Schema.Schema<
+  PingOneCustomHtmlResponseErrorBody,
+  PingOneCustomHtmlResponseErrorBody
+> = _PingOneCustomHtmlResponseErrorBody;
 
 export { PingOnePathParams, PingOneCustomHtmlResponseBody, PingOneCustomHtmlResponseErrorBody };

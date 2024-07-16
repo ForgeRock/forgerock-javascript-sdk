@@ -1,6 +1,6 @@
 import { Schema } from '@effect/schema';
 
-const TokenRequestBody = Schema.Struct({
+const _TokenRequestBody = Schema.Struct({
   client_id: Schema.String,
   code: Schema.String,
   grant_type: Schema.Union(Schema.Literal('authorization_code')),
@@ -8,7 +8,10 @@ const TokenRequestBody = Schema.Struct({
   code_verifier: Schema.String,
 });
 
-const TokenResponseBody = Schema.Struct({
+interface TokenRequestBody extends Schema.Schema.Type<typeof _TokenRequestBody> {}
+const TokenRequestBody: Schema.Schema<TokenRequestBody, TokenRequestBody> = _TokenRequestBody;
+
+const _TokenResponseBody = Schema.Struct({
   access_token: Schema.String,
   token_type: Schema.String, //Schema.Union(Schema.Literal('Bearer')),
   expires_in: Schema.Number,
@@ -16,4 +19,8 @@ const TokenResponseBody = Schema.Struct({
   scope: Schema.String,
   id_token: Schema.String,
 });
+
+interface TokenResponseBody extends Schema.Schema.Type<typeof _TokenResponseBody> {}
+const TokenResponseBody: Schema.Schema<TokenResponseBody, TokenResponseBody> = _TokenResponseBody;
+
 export { TokenRequestBody, TokenResponseBody };

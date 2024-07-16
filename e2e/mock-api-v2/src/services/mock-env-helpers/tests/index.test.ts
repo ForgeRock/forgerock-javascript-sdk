@@ -11,21 +11,19 @@ import { CustomHtmlRequestBody, QueryTypes } from '../../../types';
 import { PingProtectNode } from '../../../responses/custom-html-template/ping-protect-node';
 import { UsernamePassword } from '../../../responses/username-password';
 
-it('should map data to value in a DavinciFormData', () =>
-  // eslint-disable-next-line require-yield
-  Effect.gen(function* () {
-    const data = Option.some({
-      actionKey: 'the action key',
-      formData: {
-        value: {
-          username: 'ryan',
-          password: 'password',
-        },
+it('should map data to value in a DavinciFormData', () => {
+  const data = Option.some({
+    actionKey: 'the action key',
+    formData: {
+      value: {
+        username: 'ryan',
+        password: 'password',
       },
-    });
-    const result = mapDataToValue(data);
-    expect({ username: 'ryan', password: 'password' }).toEqual(result);
-  }));
+    },
+  });
+  const result = mapDataToValue(data);
+  expect(Option.some({ username: 'ryan', password: 'password' })).toEqual(result);
+});
 
 it('should get an array from the response map', () =>
   Effect.gen(function* () {

@@ -8,6 +8,7 @@ const FormDataResponseUsernamePassword = Schema.Struct({
   username: Schema.String,
   password: Schema.String,
 });
+
 const PingProtectSDKResponse = Schema.Struct({ pingprotectsdk: Schema.String });
 
 const PossibleFormDatas = Schema.Struct({
@@ -26,7 +27,7 @@ const PingOneRequestQuery = Schema.Struct({
  * The body, composed with the `PossibleFormDatas`
  * for a PingOneRequest
  */
-const PingOneCustomHtmlRequestBody = Schema.Struct({
+const _PingOneCustomHtmlRequestBody = Schema.Struct({
   id: Schema.String,
   eventName: Schema.String,
   interactionId: Schema.String,
@@ -41,5 +42,11 @@ const PingOneCustomHtmlRequestBody = Schema.Struct({
     }),
   }),
 });
+interface PingOneCustomHtmlRequestBody
+  extends Schema.Schema.Type<typeof _PingOneCustomHtmlRequestBody> {}
+const PingOneCustomHtmlRequestBody: Schema.Schema<
+  PingOneCustomHtmlRequestBody,
+  PingOneCustomHtmlRequestBody
+> = _PingOneCustomHtmlRequestBody;
 
 export { PingOneCustomHtmlRequestBody, PingOneRequestQuery };
