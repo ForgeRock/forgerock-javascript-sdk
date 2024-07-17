@@ -29,6 +29,13 @@ const config: PlaywrightTestConfig = {
       cwd: workspaceRoot,
     },
     {
+      command: 'npx nx serve e2e-mock-api-v2',
+      url: 'http://localhost:9444/healthcheck',
+      ignoreHTTPSErrors: true,
+      reuseExistingServer: !process.env.CI,
+      cwd: workspaceRoot,
+    },
+    {
       command: 'npx nx serve autoscript-apps',
       url: 'http://localhost:8443',
       ignoreHTTPSErrors: true,

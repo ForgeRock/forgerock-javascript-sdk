@@ -1,4 +1,4 @@
-import { Effect, Layer } from 'effect';
+import { Config, Effect, Layer, pipe } from 'effect';
 import { RouterBuilder, Middlewares } from 'effect-http';
 import { NodeRuntime } from '@effect/platform-node';
 import { NodeServer } from 'effect-http-node';
@@ -32,11 +32,16 @@ const Layers = Layer.mergeAll(mockTokens, authorizeMock, mockCustomHtmlTemplate)
   Layer.provide(mockRequest),
 );
 
-app.pipe(
+const PORT = Config.integer('PORT').pipe(Config.withDefault(9444));
+
+const program = app.pipe(
   Effect.provide(Layers),
   Effect.provide(mockRequest),
   Effect.provideService(UserInfo, userInfoMock),
   Effect.provideService(CookieService, cookieServiceTest),
-  NodeServer.listen({ port: 9443 }),
+);
+
+pipe(
+  Effect.flatMap(PORT, (port) => program.pipe(NodeServer.listen({ port }))),
   NodeRuntime.runMain,
 );
