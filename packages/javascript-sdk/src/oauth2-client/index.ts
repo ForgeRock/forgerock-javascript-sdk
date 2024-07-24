@@ -34,6 +34,9 @@ const allowedErrors = {
   // AM error for consent requirement
   AuthenticationConsentRequired: 'Authentication or consent required',
 
+  // Ping federate consent requirement
+  AuthenticationIsRequired: 'Authentication is required.',
+
   // Manual iframe error
   AuthorizationTimeout: 'Authorization timed out',
 

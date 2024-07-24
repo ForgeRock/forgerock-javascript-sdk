@@ -162,6 +162,7 @@ abstract class TokenManager {
 
       // Check if error is not one of our allowed errors
       if (
+        allowedErrors.AuthenticationIsRequired !== err.message &&
         allowedErrors.AuthenticationConsentRequired !== err.message &&
         allowedErrors.AuthorizationTimeout !== err.message &&
         allowedErrors.FailedToFetch !== err.message &&
