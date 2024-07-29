@@ -1,15 +1,18 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "lib": ["ES2020", "DOM"],
-    "skipLibCheck": true,
-    "target": "ES2020",
-    "module": "ES2020",
-    "verbatimModuleSyntax": true,
-    "declaration": true,
-    "noEmit": false,
+    "outDir": "../../dist/packages/javascript-sdk",
     "sourceMap": true,
-    "declarationMap": true
+    "noPropertyAccessFromIndexSignature": false,
+    "lib": ["DOM", "DOM.Iterable", "es2023"],
+    "module": "ES2020",
+    "target": "ES2020",
+    "declaration": true,
+    "declarationMap": true,
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "moduleResolution": "Bundler"
   },
   "include": ["src/**/*.ts", "src/lib/ping-signals-sdk.js"],
   "files": [],

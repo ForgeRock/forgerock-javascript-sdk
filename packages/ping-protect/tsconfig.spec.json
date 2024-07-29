@@ -1,8 +1,19 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "outDir": "../../dist/out-tsc",
-    "types": ["vitest/globals", "vitest/importMeta", "vite/client", "node"]
+    "outDir": "../../dist/packages/javascript-sdk",
+    "sourceMap": true,
+    "noPropertyAccessFromIndexSignature": false,
+    "lib": ["DOM", "DOM.Iterable", "es2023"],
+    "module": "ES2020",
+    "target": "ES2020",
+    "declaration": true,
+    "declarationMap": true,
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "moduleResolution": "Bundler",
+    "types": ["node", "vitest", "vitest/client"]
   },
   "include": [
     "vite.config.ts",
