@@ -51,7 +51,9 @@ class MetadataCallback extends FRCallback {
    * or will try to return the ping protect initialization
    * or a protect evaluation callback
    */
-  parse(index: number) {
+  getDerivedCallback(
+    index: number,
+  ): MetadataCallback | PingOneProtectEvaluationCallback | PingOneProtectInitializeCallback {
     try {
       const payload = this.payload.output[index].value as Metadata;
       /**

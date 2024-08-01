@@ -21,7 +21,7 @@ test('returns metadata if no type matches', () => {
       },
     ],
   };
-  const result = new MetadataCallback(data).parse(0);
+  const result = new MetadataCallback(data).getDerivedCallback(0);
   expect(result).toEqual(new MetadataCallback(data).getData());
 });
 
@@ -49,7 +49,7 @@ test('returns initializeCallback', () => {
     ],
   };
 
-  const result = new MetadataCallback(data).parse(0);
+  const result = new MetadataCallback(data).getDerivedCallback(0);
   expect(result).toEqual(new PingOneProtectInitializeCallback(data));
 });
 
@@ -68,7 +68,7 @@ test('returns evaluation callback', () => {
       },
     ],
   };
-  const result = new MetadataCallback(data).parse(0);
+  const result = new MetadataCallback(data).getDerivedCallback(0);
   expect(result).toEqual(new PingOneProtectInitializeCallback(data));
 });
 
@@ -91,7 +91,7 @@ test('throws an error when index is passed out of range', () => {
   const callback = new MetadataCallback(data);
 
   // how to test for thrown error in vitest, needs cb
-  expect(() => callback.parse(4)).toThrowError();
+  expect(() => callback.getDerivedCallback(4)).toThrowError();
 });
 
 test('should grab value from array based on index', () => {
@@ -114,7 +114,7 @@ test('should grab value from array based on index', () => {
     ],
   };
 
-  const result = new MetadataCallback(data).parse(1);
+  const result = new MetadataCallback(data).getDerivedCallback(1);
 
   // how to test for thrown error in vitest, needs cb
   expect(result).toEqual(new PingOneProtectEvaluationCallback(data));

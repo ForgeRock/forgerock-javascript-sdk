@@ -10,6 +10,7 @@
 
 import FRCallback from '.';
 import type { Callback } from '../../auth/interfaces';
+import HiddenValueCallback from './hidden-value-callback';
 
 /**
  * @class - Represents a callback used to initialize and start device and behavioral data collection.
@@ -41,7 +42,10 @@ class PingOneProtectInitializeCallback extends FRCallback {
     return config;
   }
 
-  public setClientError(errorMessage: string): void {
+  public setClientError(errorMessage: string, callback?: HiddenValueCallback): void {
+    if (callback) {
+      callback.setInputValue(errorMessage, /clientError/);
+    }
     this.setInputValue(errorMessage, /clientError/);
   }
 }

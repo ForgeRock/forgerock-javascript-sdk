@@ -1118,3 +1118,108 @@ export const wellKnownPing = {
   ],
   code_challenge_methods_supported: ['plain', 'S256'],
 };
+
+export const MetadataMarketPlaceInitialize = {
+  authId: 'foo',
+  callbacks: [
+    {
+      type: 'MetadataCallback',
+      output: [
+        {
+          name: 'data',
+          value: {
+            _type: 'PingOneProtect',
+            _action: 'protect_initialize',
+            envId: 'some_id',
+            consoleLogEnabled: true,
+            deviceAttributesToIgnore: [],
+            customHost: '',
+            lazyMetadata: true,
+            behavioralDataCollection: true,
+            disableHub: true,
+            deviceKeyRsyncIntervals: 10,
+            enableTrust: true,
+            disableTags: true,
+          },
+        },
+      ],
+    },
+    {
+      type: 'HiddenValueCallback',
+      output: [
+        {
+          name: 'value',
+          value: '',
+        },
+        {
+          name: 'id',
+          value: 'clientError',
+        },
+      ],
+      input: [
+        {
+          name: 'IDToken1',
+          value: '',
+        },
+      ],
+    },
+  ],
+};
+
+export const MetadataMarketPlacePingOneEvaluation = {
+  authId: 'foo',
+  callbacks: [
+    {
+      type: 'MetadataCallback',
+      output: [
+        {
+          name: 'data',
+          value: {
+            _type: 'PingOneProtect',
+            _action: 'protect_risk_evaluation',
+            envId: 'some_id',
+            pauseBehavioralData: true,
+          },
+        },
+      ],
+    },
+    {
+      type: 'HiddenValueCallback',
+      output: [
+        {
+          name: 'value',
+          value: '',
+        },
+        {
+          name: 'id',
+          value: 'pingone_risk_evaluation_signals',
+        },
+      ],
+      input: [
+        {
+          name: 'IDToken1',
+          value: 'pingone_risk_evaluation_signals',
+        },
+      ],
+    },
+    {
+      type: 'HiddenValueCallback',
+      output: [
+        {
+          name: 'value',
+          value: '',
+        },
+        {
+          name: 'id',
+          value: 'clientError',
+        },
+      ],
+      input: [
+        {
+          name: 'IDToken1',
+          value: '',
+        },
+      ],
+    },
+  ],
+};

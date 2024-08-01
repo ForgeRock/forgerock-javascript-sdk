@@ -29,6 +29,9 @@
         "development": {
           "watch": true
         },
+        "example-server": {
+          "main": "e2e/mock-api-v2/src/example-server.ts"
+        },
         "production": {
           "esbuildOptions": {
             "sourcemap": false,
@@ -46,8 +49,8 @@
         "buildTarget": "e2e-mock-api-v2:build"
       },
       "configurations": {
-        "development": {
-          "buildTarget": "e2e-mock-api-v2:build:development"
+        "example-server": {
+          "buildTarget": "e2e-mock-api-v2:build:example-server"
         },
         "production": {
           "buildTarget": "e2e-mock-api-v2:build:production"
