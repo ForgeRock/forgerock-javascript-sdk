@@ -6,11 +6,14 @@
   "tags": ["scope:app"],
   "targets": {
     "build": {
-      "executor": "@nx/vite:build",
-      "outputs": ["{options.outputPath}"],
+      "inputs": ["default", "^default"],
+      "outputs": [
+        "{projectRoot}/{options.outDir}",
+        "{workspaceRoot}/dist/e2e/token-vault-proxy"
+      ],
       "defaultConfiguration": "production",
       "options": {
-        "outputPath": "dist/e2e/token-vault-proxy"
+        "outDir": "../../dist/e2e/token-vault-proxy"
       },
       "configurations": {
         "development": {
@@ -22,44 +25,27 @@
       }
     },
     "serve": {
-      "executor": "@nx/vite:dev-server",
       "defaultConfiguration": "development",
       "options": {
-        "buildTarget": "token-vault-proxy:build",
         "host": "localhost",
         "port": 5833
       },
       "configurations": {
-        "development": {
-          "buildTarget": "token-vault-proxy:build:development",
-          "hmr": true
-        },
-        "production": {
-          "buildTarget": "token-vault-proxy:build:production",
-          "hmr": false
-        }
+        "development": {},
+        "production": {}
       }
     },
     "preview": {
-      "executor": "@nx/vite:preview-server",
       "defaultConfiguration": "development",
-      "options": {
-        "buildTarget": "token-vault-proxy:build"
-      },
       "configurations": {
-        "development": {
-          "buildTarget": "token-vault-proxy:build:development"
-        },
-        "production": {
-          "buildTarget": "token-vault-proxy:build:production"
-        }
+        "development": {},
+        "production": {}
       }
     },
     "lint": {
-      "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["e2e/token-vault-proxy/**/*.ts"]
+        "args": ["./src/**/*.ts"],
+        "ignore-path": ".eslintignore"
       }
     }
   }

@@ -3,6 +3,7 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "e2e/mock-api/src",
   "projectType": "application",
+  "tags": ["scope:e2e"],
   "targets": {
     "build": {
       "executor": "@nx/js:tsc",
@@ -38,13 +39,12 @@
       }
     },
     "lint": {
-      "executor": "@nx/eslint:lint",
       "options": {
-        "lintFilePatterns": ["e2e/mock-api/**/*.ts"],
         "fix": true,
-        "ignorePath": ".gitignore"
+        "verbose": true,
+        "ignore-path": ".eslintignore",
+        "args": ["./src/**/*.ts"]
       }
     }
-  },
-  "tags": ["scope:e2e"]
+  }
 }

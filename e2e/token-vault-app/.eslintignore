@@ -1,0 +1,11 @@
+!src/*
+!tests/*
+README.md
+LICENSE
+CHANGELOG.md
+*.md
+*.env*
+.babelrc
+.eslintignore
+*.html
+favicon.ico

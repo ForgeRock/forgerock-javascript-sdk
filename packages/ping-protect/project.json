@@ -3,6 +3,7 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "packages/ping-protect/src",
   "projectType": "library",
+  "tags": ["scope:package"],
   "targets": {
     "docs": {
       "command": "npx typedoc --options ./packages/ping-protect/typedoc.json"
@@ -16,34 +17,36 @@
       "command": "cp packages/ping-protect/README.md dist/packages/ping-protect"
     },
     "package": {
-      "executor": "@nx/vite:build",
-      "outputs": ["{options.outputPath}"],
-      "options": {
-        "outputPath": "dist/packages/ping-protect",
-        "main": "packages/ping-protect/src/index.ts",
-        "tsConfig": "packages/ping-protect/tsconfig.lib.json",
-        "updateBuildableProjectDepsInPackageJson": false
-      }
+      "dependsOn": ["^build"],
+      "inputs": [
+        "default",
+        "^default",
+        {
+          "externalDependencies": ["vite"]
+        }
+      ],
+      "outputs": ["{projectRoot}/{options.outDir}", "{projectRoot}/dist"]
     },
     "lint": {
-      "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["packages/ping-protect/**/*.ts"]
+        "args": ["./**/*.ts"],
+        "fix": true,
+        "ignore-path": ".eslintignore"
       }
     },
     "test": {
-      "executor": "@nx/vite:test",
-      "outputs": ["{workspaceRoot}/coverage/packages/ping-protect"],
-      "options": {
-        "configFile": "packages/ping-protect/vite.config.ts"
-      },
-      "configurations": {
-        "watch": {
-          "watch": true
+      "dependsOn": ["^test"],
+      "inputs": [
+        "default",
+        "^default",
+        {
+          "externalDependencies": ["vitest"]
         }
+      ],
+      "options": {
+        "config": "./vite.config.ts",
+        "coverage": true
       }
     }
-  },
-  "tags": ["scope:package"]
+  }
 }

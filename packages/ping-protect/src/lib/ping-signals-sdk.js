@@ -10114,7 +10114,7 @@ if (typeof window !== 'undefined') {
         })(),
         n = (function () {
           function t() {
-            (this._wrap = new o(this)), (this._subscriptions = new Array());
+            (this._wrap = new o(this)), (this._subscriptions = []);
           }
           return (
             (t.prototype.subscribe = function (t) {
@@ -13577,7 +13577,7 @@ if (typeof window !== 'undefined') {
           (n.prototype.collectBehavioralData = function (e) {
             if (this.isBehavioralDataPaused) return !1;
             var n = t.PointerConfig.instance.pointerParams.behavioralBlacklist;
-            return !(e && n && n[e]) || !Boolean(window.location.href.match(n[e]));
+            return !(e && n && n[e]) || !window.location.href.match(n[e]);
           }),
           (n.prototype.getElementsStID = function (e) {
             try {
@@ -13627,7 +13627,7 @@ if (typeof window !== 'undefined') {
             try {
               if (
                 (null === n || void 0 === n ? void 0 : n.context) &&
-                !Boolean(window.location.href.match(n.context))
+                !window.location.href.match(n.context)
               )
                 return !1;
               var i = '';

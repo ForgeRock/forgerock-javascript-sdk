@@ -6,10 +6,13 @@
   "tags": ["scope:app"],
   "targets": {
     "build": {
-      "executor": "@nx/vite:build",
-      "outputs": ["{options.outputPath}"],
+      "inputs": ["default", "^default"],
+      "outputs": [
+        "{projectRoot}/{options.outDir}",
+        "{workspaceRoot}/dist/e2e/autoscript-apps"
+      ],
       "options": {
-        "outputPath": "dist/e2e/autoscript-apps"
+        "outDir": "../../dist/e2e/autoscript-apps"
       },
       "configurations": {
         "development": {
@@ -18,36 +21,17 @@
       }
     },
     "serve": {
-      "executor": "@nx/vite:dev-server",
       "defaultConfiguration": "development",
-      "options": {
-        "buildTarget": "autoscript-apps:build",
-        "hmr": false
-      },
       "configurations": {
-        "development": {
-          "buildTarget": "autoscript-apps:build:development",
-          "hmr": true
-        },
-        "production": {
-          "buildTarget": "autoscript-apps:build:production",
-          "hmr": false
-        }
+        "development": {},
+        "production": {}
       }
     },
     "preview": {
-      "executor": "@nx/vite:preview-server",
       "defaultConfiguration": "production",
-      "options": {
-        "buildTarget": "autoscript-apps:build"
-      },
       "configurations": {
-        "development": {
-          "buildTarget": "autoscript-apps:build:development"
-        },
-        "production": {
-          "buildTarget": "autoscript-apps:build:production"
-        }
+        "development": {},
+        "production": {}
       }
     }
   }

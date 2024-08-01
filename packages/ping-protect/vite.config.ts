@@ -13,6 +13,7 @@ export default defineConfig({
   //  ],
   // },
   build: {
+    outDir: '../../dist',
     lib: {
       name: 'ping-protect',
       entry: 'src/index.ts',
@@ -21,7 +22,7 @@ export default defineConfig({
     },
     rollupOptions: {
       output: {
-        dir: 'dist/packages/ping-protect',
+        dir: '../../dist/packages/ping-protect',
         preserveModules: true,
         preserveModulesRoot: './src',
       },
@@ -30,6 +31,7 @@ export default defineConfig({
   test: {
     reporters: ['default'],
     globals: true,
+    watch: false,
     setupFiles: ['./vitest.setup.ts'],
     coverage: {
       provider: 'v8',

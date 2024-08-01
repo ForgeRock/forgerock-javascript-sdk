@@ -1,0 +1,7 @@
+!src/*
+!tests/*
+README.md
+LICENSE
+CHANGELOG.md
+*.md
+dist

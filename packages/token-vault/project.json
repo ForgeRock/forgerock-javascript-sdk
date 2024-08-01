@@ -3,6 +3,7 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "packages/token-vault/src",
   "projectType": "library",
+  "tags": ["scope:package"],
   "targets": {
     "build": {
       "executor": "@nx/js:tsc",
@@ -15,24 +16,25 @@
       }
     },
     "test": {
-      "executor": "@nx/vite:test",
-      "outputs": ["{workspaceRoot}/coverage/packages/token-vault"],
-      "options": {
-        "configFile": "packages/token-vault/vite.config.ts"
-      },
-      "configurations": {
-        "watch": {
-          "watch": true
+      "dependsOn": ["^test"],
+      "inputs": [
+        "default",
+        "^default",
+        {
+          "externalDependencies": ["vitest"]
         }
+      ],
+      "options": {
+        "config": "./vite.config.ts",
+        "coverage": true
       }
     },
     "lint": {
-      "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["packages/token-vault/**/*.ts"]
+        "args": ["./**/*.ts"],
+        "fix": true,
+        "ignore-path": ".eslintignore"
       }
     }
-  },
-  "tags": ["scope:package"]
+  }
 }

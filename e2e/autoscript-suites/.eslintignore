@@ -1,0 +1,4 @@
+*.md
+*.eslintignore
+*.eslintrc.json
+!src/**/*

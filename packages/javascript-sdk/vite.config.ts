@@ -8,6 +8,7 @@ export default defineConfig({
   cacheDir: '../../node_modules/.vite/packages/javascript-sdk',
 
   build: {
+    outDir: '../../dist',
     lib: {
       entry: 'src/index.ts',
       name: 'javascript-sdk',
@@ -40,7 +41,7 @@ export default defineConfig({
     globals: true,
     environment: 'jsdom',
     include: ['src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
-
+    watch: false,
     reporters: ['default'],
     setupFiles: ['./vitest.setup.ts'],
     coverage: {

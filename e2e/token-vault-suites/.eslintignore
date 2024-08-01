@@ -1,0 +1,4 @@
+.eslintignore
+!src/**/*
+.env*
+*.md
