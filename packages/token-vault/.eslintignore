@@ -9,3 +9,4 @@ CHANGELOG.md
 .eslintignore
 *.html
 favicon.ico
+node_modules

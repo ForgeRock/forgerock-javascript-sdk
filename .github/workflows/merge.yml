@@ -29,8 +29,8 @@ jobs:
           fetch-depth: 0
       - uses: actions/cache/restore@v4
         with:
-          path: ~/.npm
-          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
+          path: ~/.pnpm
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/package-lock.json') }}
 
       # This line enables distribution
       # The "--stop-agents-after" is optional, but allows idle agents to shut down once the "e2e-ci" targets have been requested
@@ -40,7 +40,7 @@ jobs:
         id: cache
         with:
           node-version: ${{ matrix.node }}
-          cache: 'npm'
+          cache: 'pnpm'
           cache-dependency-path: '**/package-lock.json'
 
       - run: npx playwright install

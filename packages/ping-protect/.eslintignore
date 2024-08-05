@@ -10,3 +10,4 @@ CHANGELOG.md
 *.html
 favicon.ico
 src/lib/ping-signals-sdk.js
+node_modules

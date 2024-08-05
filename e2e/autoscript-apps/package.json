@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/ForgeRock/forgerock-javascript-sdk/issues"
   },
-  "homepage": "https://github.com/ForgeRock/forgerock-javascript-sdk#readme"
+  "homepage": "https://github.com/ForgeRock/forgerock-javascript-sdk#readme",
+  "dependencies": {
+    "@forgerock/javascript-sdk": "workspace:*",
+    "@forgerock/ping-protect": "workspace:*"
+  }
 }

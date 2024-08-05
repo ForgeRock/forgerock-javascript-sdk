@@ -9,6 +9,6 @@
     ".": "./src/index.js"
   },
   "peerDependencies": {
-    "@forgerock/javascript-sdk": "4.4.2"
+    "@forgerock/javascript-sdk": "workspace:*"
   }
 }
