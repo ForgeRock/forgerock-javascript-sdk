@@ -1,9 +1,10 @@
 {
   "name": "@forgerock/javascript-sdk",
   "description": "ForgeRock JavaScript SDK",
+  "packageManager": "pnpm@9.5.0",
   "engines": {
     "node": "^20 || ^18",
-    "npm": ">= 7.0.0"
+    "pnpm": ">= 9.5.0"
   },
   "private": true,
   "scripts": {
