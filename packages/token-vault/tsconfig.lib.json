@@ -1,7 +1,7 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "outDir": "../../dist/out-tsc",
+    "outDir": "dist",
     "target": "ES2020",
     "module": "ES2020",
     "moduleResolution": "Node",

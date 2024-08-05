@@ -2,3 +2,4 @@
 !src/**/*
 .env*
 *.md
+node_modules

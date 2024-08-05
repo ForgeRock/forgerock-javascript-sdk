@@ -1,0 +1,21 @@
+{
+  "name": "mock-api-v2",
+  "version": "1.0.0",
+  "description": "## Docs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@effect/language-service": "catalog:effect",
+    "@effect/platform": "catalog:effect",
+    "@effect/platform-node": "catalog:effect",
+    "@effect/schema": "catalog:effect",
+    "@effect/vitest": "catalog:effect",
+    "effect": "catalog:effect",
+    "effect-http": "catalog:effect",
+    "effect-http-node": "catalog:effect"
+  }
+}

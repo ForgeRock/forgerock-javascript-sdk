@@ -3,10 +3,14 @@
   "version": "4.4.2",
   "private": false,
   "type": "module",
-  "module": "./src/index.js",
-  "main": "./src/index.js",
+  "files": ["dist/*", "LICENSE", "README.md"],
+  "module": "./dist/index.js",
+  "main": "./dist/index.cjs",
   "exports": {
-    ".": "./src/index.js"
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
   },
   "peerDependencies": {
     "@forgerock/javascript-sdk": "workspace:*"

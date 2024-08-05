@@ -9,18 +9,6 @@
       "command": "npx typedoc --options packages/javascript-sdk/typedoc.json"
     },
     "build": {
-      "dependsOn": ["packagejson"],
-      "command": "node ./tools/release/sdk-exports.mjs"
-    },
-    "packagejson": {
-      "dependsOn": ["package", "readme"],
-      "command": "cp packages/javascript-sdk/package.json dist/packages/javascript-sdk"
-    },
-    "readme": {
-      "dependsOn": ["package"],
-      "command": "cp packages/javascript-sdk/README.md dist/packages/javascript-sdk"
-    },
-    "package": {
       "dependsOn": ["^build"],
       "inputs": [
         "default",
@@ -29,9 +17,9 @@
           "externalDependencies": ["vite"]
         }
       ],
-      "outputs": ["{projectRoot}/{options.outDir}", "{projectRoot}/dist"],
+      "outputs": ["{options.outDir}"],
       "options": {
-        "outDir": "../../dist/packages/javascript-sdk"
+        "outDir": "packages/javascript-sdk/dist"
       }
     },
     "lint": {

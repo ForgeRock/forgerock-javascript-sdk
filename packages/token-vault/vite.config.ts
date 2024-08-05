@@ -1,19 +1,40 @@
 /// <reference types='vitest' />
 import { defineConfig } from 'vite';
 
-import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
+import dts from 'vite-plugin-dts';
+import { copyFileSync } from 'node:fs';
 
 export default defineConfig({
   root: __dirname,
   cacheDir: '../../node_modules/.vite/packages/token-vault',
-
-  plugins: [nxViteTsPaths()],
-
-  // Uncomment this if you are using workers.
-  // worker: {
-  //  plugins: [ nxViteTsPaths() ],
-  // },
-
+  build: {
+    lib: {
+      entry: 'src/index.ts',
+      name: 'token-vault',
+      formats: ['es', 'cjs'],
+      fileName(format, name) {
+        return `${name}.${format === 'cjs' ? 'cjs' : 'js'}`;
+      },
+    },
+    rollupOptions: {
+      output: {
+        dir: 'dist',
+        preserveModules: true,
+      },
+    },
+  },
+  plugins: [
+    dts({
+      tsconfigPath: 'tsconfig.lib.json',
+      rollupTypes: false,
+      include: './src/**/*.ts',
+      exclude: './src/**/*.test.ts',
+      entryRoot: 'src',
+      afterBuild: (files) => {
+        return files.forEach((value, key) => copyFileSync(key, key.replace('.ts', '.cts')));
+      },
+    }),
+  ],
   test: {
     globals: true,
     environment: 'jsdom',

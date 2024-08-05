@@ -1,3 +1,14 @@
 packages:
   - packages/*
   - e2e/*
+
+catalogs:
+  effect:
+    '@effect/language-service': ^0.1.0
+    '@effect/platform': ^0.58.27
+    '@effect/platform-node': ^0.53.26
+    '@effect/schema': ^0.68.23
+    '@effect/vitest': ^0.6.7
+    effect: ^3.5.3
+    effect-http: ^0.73.0
+    effect-http-node: ^0.16.1

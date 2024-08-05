@@ -4,6 +4,19 @@
   "description": "ForgeRock JavaScript SDK",
   "author": "ForgeRock",
   "license": "MIT",
+  "files": ["dist/*", "LICENSE", "README.md"],
+  "module": "./dist/src/index.js",
+  "main": "./dist/src/index.cjs",
+  "exports": {
+    ".": {
+      "import": "./dist/src/index.js",
+      "require": "./dist/src/index.cjs"
+    },
+    "./src/*": {
+      "import": "./dist/src/*/*.js",
+      "require": "./dist/src/*/*.cjs"
+    }
+  },
   "repository": {
     "url": "https://github.com/ForgeRock/forgerock-javascript-sdk"
   },
@@ -11,8 +24,5 @@
     "url": "https://github.com/ForgeRock/forgerock-javascript-sdk/issues"
   },
   "homepage": "https://github.com/ForgeRock/forgerock-javascript-sdk#readme",
-  "main": "./src/index.ts",
-  "module": "./src/index.ts",
-  "exports": "./src/index.ts",
   "type": "module"
 }

@@ -2,13 +2,10 @@
   "targetDefaults": {
     "nx-release-publish": {
       "options": {
-        "packageRoot": "dist/packages/{projectName}"
+        "packageRoot": "packages/{projectName}"
       }
     },
     "docs": {
-      "cache": true
-    },
-    "packagejson": {
       "cache": true
     },
     "e2e": {
@@ -18,9 +15,6 @@
       "dependsOn": ["^build"],
       "cache": true,
       "inputs": ["production", "^production"]
-    },
-    "readme": {
-      "cache": true
     },
     "build-interceptor": {
       "cache": true
@@ -62,12 +56,6 @@
     "prepare": [
       {
         "target": "prepare",
-        "projects": "dependencies"
-      }
-    ],
-    "package": [
-      {
-        "target": "package",
         "projects": "dependencies"
       }
     ]

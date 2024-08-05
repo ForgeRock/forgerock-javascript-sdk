@@ -8,7 +8,7 @@ export default defineConfig({
   cacheDir: '../../node_modules/.vite/packages/javascript-sdk',
 
   build: {
-    outDir: '../../dist',
+    outDir: 'dist',
     lib: {
       entry: 'src/index.ts',
       name: 'javascript-sdk',
@@ -19,19 +19,18 @@ export default defineConfig({
     },
     rollupOptions: {
       output: {
-        dir: 'dist/packages/javascript-sdk',
+        dir: 'dist',
         preserveModules: true,
-        preserveModulesRoot: 'packages/javascript-sdk',
       },
     },
   },
   plugins: [
     dts({
-      copyDtsFiles: true,
-      outDir: '../../dist',
+      tsconfigPath: 'tsconfig.lib.json',
       rollupTypes: false,
-      insertTypesEntry: true,
-      tsconfigPath: './tsconfig.lib.json',
+      include: './src/**/*.ts',
+      exclude: './src/**/*.test.ts',
+      entryRoot: 'src',
       afterBuild: (files) => {
         return files.forEach((value, key) => copyFileSync(key, key.replace('.ts', '.cts')));
       },

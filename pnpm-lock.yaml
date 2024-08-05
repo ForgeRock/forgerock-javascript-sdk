@@ -4,6 +4,33 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+catalogs:
+  effect:
+    '@effect/language-service':
+      specifier: ^0.1.0
+      version: 0.1.0
+    '@effect/platform':
+      specifier: ^0.58.27
+      version: 0.58.27
+    '@effect/platform-node':
+      specifier: ^0.53.26
+      version: 0.53.26
+    '@effect/schema':
+      specifier: ^0.68.23
+      version: 0.68.23
+    '@effect/vitest':
+      specifier: ^0.6.7
+      version: 0.6.7
+    effect:
+      specifier: ^3.5.3
+      version: 3.5.3
+    effect-http:
+      specifier: ^0.73.0
+      version: 0.73.0
+    effect-http-node:
+      specifier: ^0.16.1
+      version: 0.16.1
+
 importers:
   .:
     devDependencies:
@@ -16,21 +43,6 @@ importers:
       '@commitlint/prompt':
         specifier: ^19.1.0
         version: 19.2.2(@types/node@18.19.26)(typescript@5.5.3)
-      '@effect/language-service':
-        specifier: ^0.1.0
-        version: 0.1.0
-      '@effect/platform':
-        specifier: ^0.58.27
-        version: 0.58.27(@effect/schema@0.68.23(effect@3.5.3))(effect@3.5.3)
-      '@effect/platform-node':
-        specifier: ^0.53.26
-        version: 0.53.26(@effect/platform@0.58.27(@effect/schema@0.68.23(effect@3.5.3))(effect@3.5.3))(effect@3.5.3)
-      '@effect/schema':
-        specifier: ^0.68.23
-        version: 0.68.23(effect@3.5.3)
-      '@effect/vitest':
-        specifier: ^0.6.7
-        version: 0.6.7(effect@3.5.3)(vitest@1.5.0(@types/node@18.19.26)(@vitest/ui@1.5.0)(jsdom@22.1.0)(sass@1.75.0))
       '@nrwl/devkit':
         specifier: 19.5.5
         version: 19.5.5(nx@19.5.5(@swc-node/register@1.9.2(@swc/core@1.5.7(@swc/helpers@0.5.12))(@swc/types@0.1.7)(typescript@5.5.3))(@swc/core@1.5.7(@swc/helpers@0.5.12)))
@@ -118,15 +130,6 @@ importers:
       cz-git:
         specifier: ^1.6.1
         version: 1.9.1
-      effect:
-        specifier: ^3.5.3
-        version: 3.5.3
-      effect-http:
-        specifier: ^0.73.0
-        version: 0.73.0(@effect/platform@0.58.27(@effect/schema@0.68.23(effect@3.5.3))(effect@3.5.3))(@effect/schema@0.68.23(effect@3.5.3))(effect@3.5.3)
-      effect-http-node:
-        specifier: ^0.16.1
-        version: 0.16.1(@effect/platform-node@0.53.26(@effect/platform@0.58.27(@effect/schema@0.68.23(effect@3.5.3))(effect@3.5.3))(effect@3.5.3))(@effect/platform@0.58.27(@effect/schema@0.68.23(effect@3.5.3))(effect@3.5.3))(@effect/schema@0.68.23(effect@3.5.3))(effect-http@0.73.0(@effect/platform@0.58.27(@effect/schema@0.68.23(effect@3.5.3))(effect@3.5.3))(@effect/schema@0.68.23(effect@3.5.3))(effect@3.5.3))(effect@3.5.3)
       esbuild:
         specifier: ^0.19.2
         version: 0.19.12
@@ -235,17 +238,55 @@ importers:
 
   e2e/autoscript-apps:
     dependencies:
-      rxjs:
-        specifier: ^7.4.0
-        version: 7.8.1
+      '@forgerock/javascript-sdk':
+        specifier: workspace:*
+        version: link:../../packages/javascript-sdk
+      '@forgerock/ping-protect':
+        specifier: workspace:*
+        version: link:../../packages/ping-protect
 
   e2e/autoscript-suites: {}
 
   e2e/mock-api: {}
 
-  e2e/token-vault-app: {}
+  e2e/mock-api-v2:
+    dependencies:
+      '@effect/language-service':
+        specifier: catalog:effect
+        version: 0.1.0
+      '@effect/platform':
+        specifier: catalog:effect
+        version: 0.58.27(@effect/schema@0.68.23(effect@3.5.3))(effect@3.5.3)
+      '@effect/platform-node':
+        specifier: catalog:effect
+        version: 0.53.26(@effect/platform@0.58.27(@effect/schema@0.68.23(effect@3.5.3))(effect@3.5.3))(effect@3.5.3)
+      '@effect/schema':
+        specifier: catalog:effect
+        version: 0.68.23(effect@3.5.3)
+      '@effect/vitest':
+        specifier: catalog:effect
+        version: 0.6.7(effect@3.5.3)(vitest@1.5.0(@types/node@18.19.26)(@vitest/ui@1.5.0)(jsdom@22.1.0)(sass@1.75.0))
+      effect:
+        specifier: catalog:effect
+        version: 3.5.3
+      effect-http:
+        specifier: catalog:effect
+        version: 0.73.0(@effect/platform@0.58.27(@effect/schema@0.68.23(effect@3.5.3))(effect@3.5.3))(@effect/schema@0.68.23(effect@3.5.3))(effect@3.5.3)
+      effect-http-node:
+        specifier: catalog:effect
+        version: 0.16.1(@effect/platform-node@0.53.26(@effect/platform@0.58.27(@effect/schema@0.68.23(effect@3.5.3))(effect@3.5.3))(effect@3.5.3))(@effect/platform@0.58.27(@effect/schema@0.68.23(effect@3.5.3))(effect@3.5.3))(@effect/schema@0.68.23(effect@3.5.3))(effect-http@0.73.0(@effect/platform@0.58.27(@effect/schema@0.68.23(effect@3.5.3))(effect@3.5.3))(@effect/schema@0.68.23(effect@3.5.3))(effect@3.5.3))(effect@3.5.3)
 
-  e2e/token-vault-proxy: {}
+  e2e/token-vault-app:
+    dependencies:
+      '@forgerock/token-vault':
+        specifier: workspace:*
+        version: link:../../packages/token-vault
+
+  e2e/token-vault-proxy:
+    dependencies:
+      '@forgerock/token-vault':
+        specifier: workspace:*
+        version: link:../../packages/token-vault
 
   e2e/token-vault-suites: {}
 
@@ -254,14 +295,14 @@ importers:
   packages/ping-protect:
     dependencies:
       '@forgerock/javascript-sdk':
-        specifier: 4.4.2
-        version: 4.4.2
+        specifier: workspace:*
+        version: link:../javascript-sdk
 
   packages/token-vault:
     dependencies:
       '@forgerock/javascript-sdk':
-        specifier: ^4.4.1-alpha.2
-        version: 4.4.2
+        specifier: workspace:*
+        version: link:../javascript-sdk
 
 packages:
   '@aashutoshrathi/word-wrap@1.2.6':
@@ -1907,12 +1948,6 @@ packages:
         integrity: sha512-Ys+3g2TaW7gADOJzPt83SJtCDhMjndcDMFVQ/Tj9iA1BfJzFKD9mAUXT3OenpuPHbI6P/myECxRJrofUsDx/5g==,
       }
     engines: { node: ^12.22.0 || ^14.17.0 || >=16.0.0 }
-
-  '@forgerock/javascript-sdk@4.4.2':
-    resolution:
-      {
-        integrity: sha512-WQh36glejGFj1TySezXJLZnUdKNn4h/6PgfiCEwZ2VIuwGWTOzguzS5u0gvUq6/Pm5JFfBH7Rr/06RSGy6TEGQ==,
-      }
 
   '@humanwhocodes/config-array@0.11.14':
     resolution:
@@ -11487,8 +11522,6 @@ snapshots:
 
   '@eslint/js@8.57.0': {}
 
-  '@forgerock/javascript-sdk@4.4.2': {}
-
   '@humanwhocodes/config-array@0.11.14':
     dependencies:
       '@humanwhocodes/object-schema': 2.0.3
@@ -11798,6 +11831,21 @@ snapshots:
       - typescript
       - verdaccio
 
+  '@nrwl/js@19.5.5(@babel/traverse@7.24.1)(@swc-node/register@1.9.2(@swc/core@1.5.7(@swc/helpers@0.5.12))(@swc/types@0.1.7)(typescript@5.5.3))(@swc/core@1.5.7(@swc/helpers@0.5.12))(@types/node@18.19.26)(nx@19.5.5(@swc-node/register@1.9.2(@swc/core@1.5.7(@swc/helpers@0.5.12))(@swc/types@0.1.7)(typescript@5.5.3))(@swc/core@1.5.7(@swc/helpers@0.5.12)))(typescript@5.4.5)(verdaccio@5.30.3(typanion@3.14.0))':
+    dependencies:
+      '@nx/js': 19.5.5(@babel/traverse@7.24.1)(@swc-node/register@1.9.2(@swc/core@1.5.7(@swc/helpers@0.5.12))(@swc/types@0.1.7)(typescript@5.5.3))(@swc/core@1.5.7(@swc/helpers@0.5.12))(@types/node@18.19.26)(nx@19.5.5(@swc-node/register@1.9.2(@swc/core@1.5.7(@swc/helpers@0.5.12))(@swc/types@0.1.7)(typescript@5.5.3))(@swc/core@1.5.7(@swc/helpers@0.5.12)))(typescript@5.4.5)(verdaccio@5.30.3(typanion@3.14.0))
+    transitivePeerDependencies:
+      - '@babel/traverse'
+      - '@swc-node/register'
+      - '@swc/core'
+      - '@swc/wasm'
+      - '@types/node'
+      - debug
+      - nx
+      - supports-color
+      - typescript
+      - verdaccio
+
   '@nrwl/js@19.5.5(@babel/traverse@7.24.1)(@swc-node/register@1.9.2(@swc/core@1.5.7(@swc/helpers@0.5.12))(@swc/types@0.1.7)(typescript@5.5.3))(@swc/core@1.5.7(@swc/helpers@0.5.12))(@types/node@18.19.26)(nx@19.5.5(@swc-node/register@1.9.2(@swc/core@1.5.7(@swc/helpers@0.5.12))(@swc/types@0.1.7)(typescript@5.5.3))(@swc/core@1.5.7(@swc/helpers@0.5.12)))(typescript@5.5.3)(verdaccio@5.30.3(typanion@3.14.0))':
     dependencies:
       '@nx/js': 19.5.5(@babel/traverse@7.24.1)(@swc-node/register@1.9.2(@swc/core@1.5.7(@swc/helpers@0.5.12))(@swc/types@0.1.7)(typescript@5.5.3))(@swc/core@1.5.7(@swc/helpers@0.5.12))(@types/node@18.19.26)(nx@19.5.5(@swc-node/register@1.9.2(@swc/core@1.5.7(@swc/helpers@0.5.12))(@swc/types@0.1.7)(typescript@5.5.3))(@swc/core@1.5.7(@swc/helpers@0.5.12)))(typescript@5.5.3)(verdaccio@5.30.3(typanion@3.14.0))
@@ -12041,7 +12089,7 @@ snapshots:
       '@babel/preset-env': 7.24.4(@babel/core@7.24.4)
       '@babel/preset-typescript': 7.24.1(@babel/core@7.24.4)
       '@babel/runtime': 7.24.4
-      '@nrwl/js': 19.5.5(@babel/traverse@7.24.1)(@swc-node/register@1.9.2(@swc/core@1.5.7(@swc/helpers@0.5.12))(@swc/types@0.1.7)(typescript@5.5.3))(@swc/core@1.5.7(@swc/helpers@0.5.12))(@types/node@18.19.26)(nx@19.5.5(@swc-node/register@1.9.2(@swc/core@1.5.7(@swc/helpers@0.5.12))(@swc/types@0.1.7)(typescript@5.5.3))(@swc/core@1.5.7(@swc/helpers@0.5.12)))(typescript@5.5.3)(verdaccio@5.30.3(typanion@3.14.0))
+      '@nrwl/js': 19.5.5(@babel/traverse@7.24.1)(@swc-node/register@1.9.2(@swc/core@1.5.7(@swc/helpers@0.5.12))(@swc/types@0.1.7)(typescript@5.5.3))(@swc/core@1.5.7(@swc/helpers@0.5.12))(@types/node@18.19.26)(nx@19.5.5(@swc-node/register@1.9.2(@swc/core@1.5.7(@swc/helpers@0.5.12))(@swc/types@0.1.7)(typescript@5.5.3))(@swc/core@1.5.7(@swc/helpers@0.5.12)))(typescript@5.4.5)(verdaccio@5.30.3(typanion@3.14.0))
       '@nx/devkit': 19.5.5(nx@19.5.5(@swc-node/register@1.9.2(@swc/core@1.5.7(@swc/helpers@0.5.12))(@swc/types@0.1.7)(typescript@5.5.3))(@swc/core@1.5.7(@swc/helpers@0.5.12)))
       '@nx/workspace': 19.5.5(@swc-node/register@1.9.2(@swc/core@1.5.7(@swc/helpers@0.5.12))(@swc/types@0.1.7)(typescript@5.5.3))(@swc/core@1.5.7(@swc/helpers@0.5.12))
       babel-plugin-const-enum: 1.2.0(@babel/core@7.24.4)

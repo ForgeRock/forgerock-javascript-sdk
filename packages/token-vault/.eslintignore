@@ -10,3 +10,4 @@ CHANGELOG.md
 *.html
 favicon.ico
 node_modules
+dist
