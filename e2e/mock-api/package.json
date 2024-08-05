@@ -7,5 +7,15 @@
   "keywords": [],
   "author": "",
   "type": "commonjs",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "uuid": "catalog:",
+    "express": "catalog:express",
+    "@types/express": "catalog:express",
+    "@types/node": "catalog:",
+    "@types/superagent": "8.1.8",
+    "cookie-parser": "catalog:express",
+    "cors": "catalog:express",
+    "superagent": "catalog:express"
+  }
 }

@@ -5,6 +5,7 @@
   "private": true,
   "devDependencies": {},
   "dependencies": {
+    "@forgerock/javascript-sdk": "workspace:*",
     "@forgerock/token-vault": "workspace:*"
   }
 }

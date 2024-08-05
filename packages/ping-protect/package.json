@@ -5,14 +5,15 @@
   "type": "module",
   "files": ["dist/*", "LICENSE", "README.md"],
   "module": "./dist/index.js",
-  "main": "./dist/index.cjs",
+  "main": "./dist/index.js",
   "exports": {
-    ".": {
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs"
-    }
+    ".": "./dist/index.js"
   },
   "peerDependencies": {
     "@forgerock/javascript-sdk": "workspace:*"
+  },
+  "devDependencies": {
+    "vite-plugin-dts": "catalog:",
+    "vitest-canvas-mock": "catalog:"
   }
 }

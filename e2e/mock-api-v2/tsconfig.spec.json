@@ -4,14 +4,7 @@
     "outDir": "../../dist/out-tsc",
     "module": "ES2020",
     "moduleResolution": "NodeNext",
-    "target": "ES2020",
-    "types": [
-      "vitest/globals",
-      "vitest/importMeta",
-      "vite/client",
-      "node",
-      "vitest"
-    ]
+    "target": "ES2020"
   },
   "include": [
     "vite.config.ts",

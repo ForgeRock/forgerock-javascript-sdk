@@ -8,6 +8,9 @@ env:
 jobs:
   pr:
     runs-on: ubuntu-latest
+    permissions:
+      contents: 'read'
+      actions: 'read'
     steps:
       - uses: actions/checkout@v4
         with:
@@ -20,24 +23,32 @@ jobs:
         with:
           path: ~/.pnpm
           key: ${{ runner.os }}-pnpm-${{ hashFiles('**/package-lock.json') }}
+      - uses: pnpm/action-setup@v4
+        with:
+          run_install: false
+
       - run: pnpm install
       # This line enables distribution
       # The "--stop-agents-after" is optional, but allows idle agents to shut down once the "e2e-ci" targets have been requested
-      - run: npx nx-cloud start-ci-run --distribute-on="5 linux-medium-js" --stop-agents-after="e2e-ci" --verbose
+      - run: pnpm dlx nx-cloud start-ci-run --distribute-on="3 linux-medium-js" --stop-agents-after="e2e-ci"
 
       - uses: actions/setup-node@v4
         id: cache
         with:
           node-version: '20.10.0'
           cache: 'pnpm'
-          cache-dependency-path: '**/package-lock.json'
-      - run: npx playwright install
+          cache-dependency-path: 'pnpm-lock.yaml'
+
       - uses: nrwl/nx-set-shas@v4
+        with:
+          main-branch-name: develop
+          fallback-sha: ${{ github.event.pull_request.base.sha }}
+
       # This line is needed for nx affected to work when CI is running on a PR
       - run: git branch --track develop origin/develop
 
       - name: Validate all commits from PR
-        run: npx commitlint --from ${{ github.event.pull_request.base.sha }} --to ${{ github.event.pull_request.head.sha }} --verbose
+        run: pnpm exec commitlint --from ${{ github.event.pull_request.base.sha }} --to ${{ github.event.pull_request.head.sha }} --verbose
 
-      - run: npx nx-cloud record -- nx format:check --verbose
-      - run: npx nx affected -t lint test build e2e-ci --verbose
+      - run: pnpm exec nx-cloud record -- nx format:check --verbose
+      - run: pnpm exec nx affected -t lint test build e2e-ci

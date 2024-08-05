@@ -12,7 +12,7 @@ await releaseVersion({
   gitTag: true, // tag beta so we know what we released
 });
 
-exec('npx nx run-many -t build --projects=tag:scope:package');
+exec('pnpm nx run-many -t build --projects=tag:scope:package');
 // The returned number value from releasePublish will be zero if all projects are published successfully, non-zero if not
 const publishStatus = await releasePublish({
   tag: 'beta', // sanity - lets at least tag as beta in case somehow it publishes to npm.

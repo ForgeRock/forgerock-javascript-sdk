@@ -14,8 +14,10 @@
     "@effect/platform-node": "catalog:effect",
     "@effect/schema": "catalog:effect",
     "@effect/vitest": "catalog:effect",
+    "@types/node": "catalog:",
     "effect": "catalog:effect",
     "effect-http": "catalog:effect",
-    "effect-http-node": "catalog:effect"
+    "effect-http-node": "catalog:effect",
+    "fast-check": "catalog:effect"
   }
 }

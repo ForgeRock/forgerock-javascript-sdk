@@ -10,7 +10,6 @@ const __dirname = url.fileURLToPath(new url.URL('.', import.meta.url));
 
 const app = await runServer(path.resolve(__dirname, '../../.verdaccio/config.yml'));
 app.listen(4873, async () => {
-  exec('npx npm-cli-login -u test -p 1234 -e test@domain.test -r http://localhost:4873');
   const { workspaceVersion, projectsVersionData } = await releaseVersion({
     specifier: 'prerelease', // this add the extra .0/1/2/3/* to the version
     preid: 'beta', // for sanity check - set preid to beta
@@ -20,7 +19,7 @@ app.listen(4873, async () => {
     gitCommit: false, // for local releases we dont want git
     gitTag: false, // same as above
   });
-  exec('npx nx run-many -t build --projects=tag:scope:package');
+  exec('pnpm nx run-many -t build --projects=tag:scope:package');
   console.log('Releasing following versions in verdaccio: ', projectsVersionData);
   console.log('Workspace version (root package.json) should match: ', workspaceVersion);
   // The returned number value from releasePublish will be zero if all projects are published successfully, non-zero if not

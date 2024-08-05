@@ -21,16 +21,17 @@ export default defineConfig({
       output: {
         dir: 'dist',
         preserveModules: true,
+        preserveModulesRoot: 'src',
       },
     },
   },
   plugins: [
     dts({
       tsconfigPath: 'tsconfig.lib.json',
-      rollupTypes: false,
+      rollupTypes: true,
       include: './src/**/*.ts',
       exclude: './src/**/*.test.ts',
-      entryRoot: 'src',
+      // entryRoot: 'src',
       afterBuild: (files) => {
         return files.forEach((value, key) => copyFileSync(key, key.replace('.ts', '.cts')));
       },

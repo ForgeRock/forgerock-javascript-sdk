@@ -16,5 +16,11 @@
   "homepage": "https://github.com/ForgeRock/forgerock-javascript-sdk#readme",
   "nx": {
     "includedScripts": []
+  },
+  "devDependencies": {
+    "@playwright/test": "catalog:playwright",
+    "@types/node": "catalog:",
+    "playwright": "catalog:playwright",
+    "uuid": "catalog:"
   }
 }

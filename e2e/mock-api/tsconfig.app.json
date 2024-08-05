@@ -6,8 +6,7 @@
     "moduleResolution": "Node16",
     "target": "ES6",
     "composite": true,
-    "allowJs": true,
-    "types": ["node", "express"]
+    "allowJs": true
   },
   "exclude": ["**/*.spec.ts", "**/*.test.ts", "jest.config.ts"],
   "include": ["**/*.ts", "**/*.js"]

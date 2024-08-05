@@ -15,5 +15,8 @@
   },
   "peerDependencies": {
     "@forgerock/javascript-sdk": "workspace:*"
+  },
+  "devDependencies": {
+    "vite-plugin-dts": "catalog:"
   }
 }

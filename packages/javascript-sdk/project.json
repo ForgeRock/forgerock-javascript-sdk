@@ -16,11 +16,7 @@
         {
           "externalDependencies": ["vite"]
         }
-      ],
-      "outputs": ["{options.outDir}"],
-      "options": {
-        "outDir": "packages/javascript-sdk/dist"
-      }
+      ]
     },
     "lint": {
       "options": {

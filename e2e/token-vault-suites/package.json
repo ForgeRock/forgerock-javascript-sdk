@@ -2,7 +2,6 @@
   "name": "token-vault-suites",
   "description": "ForgeRock Token Vault E2E Suites",
   "private": true,
-  "devDependencies": {},
   "version": "0.0.0",
   "main": "src/index.js",
   "author": "",
@@ -14,5 +13,10 @@
   "bugs": {
     "url": "https://github.com/ForgeRock/forgerock-javascript-sdk/issues"
   },
-  "homepage": "https://github.com/ForgeRock/forgerock-javascript-sdk#readme"
+  "homepage": "https://github.com/ForgeRock/forgerock-javascript-sdk#readme",
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "@playwright/test": "catalog:playwright",
+    "playwright": "catalog:playwright"
+  }
 }

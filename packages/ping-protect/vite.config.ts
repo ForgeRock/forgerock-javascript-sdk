@@ -1,5 +1,4 @@
 /// <reference types="vitest" />
-import { copyFileSync } from 'node:fs';
 import { defineConfig } from 'vite';
 import dts from 'vite-plugin-dts';
 export default defineConfig({
@@ -9,15 +8,14 @@ export default defineConfig({
     lib: {
       entry: 'src/index.ts',
       name: 'ping-protect',
-      formats: ['es', 'cjs'],
-      fileName(format, name) {
-        return `${name}.${format === 'cjs' ? 'cjs' : 'js'}`;
-      },
+      formats: ['es'],
+      fileName: () => `index.js`,
     },
     rollupOptions: {
       output: {
         dir: 'dist',
         preserveModules: true,
+        preserveModulesRoot: 'src',
       },
     },
   },
@@ -28,9 +26,6 @@ export default defineConfig({
       include: './src/**/*.ts',
       exclude: './src/**/*.test.ts',
       entryRoot: 'src',
-      afterBuild: (files) => {
-        return files.forEach((value, key) => copyFileSync(key, key.replace('.ts', '.cts')));
-      },
     }),
   ],
   test: {
