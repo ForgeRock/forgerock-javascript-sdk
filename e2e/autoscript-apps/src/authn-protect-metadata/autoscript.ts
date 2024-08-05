@@ -79,13 +79,13 @@ function autoscript() {
           },
         ),
         mergeMap((step) => {
-          console.log('submitted step', step);
+          console.log('Submitting ping protect start');
           return forgerock.FRAuth.next(step);
         }),
         rxDelay(delay),
-        mergeMap(async (step) => {
-          console.log('the step from next', step);
 
+        mergeMap(async (step) => {
+          console.warn(step);
           const metadataCb = (step as forgerock.Step).getCallbackOfType(
             forgerock.CallbackType.MetadataCallback,
           ) as forgerock.MetadataCallback;
@@ -95,19 +95,16 @@ function autoscript() {
           ) as forgerock.PingOneProtectEvaluationCallback;
 
           try {
+            console.log('getting data');
             const data = await PIProtect.getData();
 
-            console.log(step);
             const hiddenCb = (step as forgerock.Step).getCallbacksOfType(
               forgerock.CallbackType.HiddenValueCallback,
             )[0] as forgerock.HiddenValueCallback;
 
-            console.log('got it', hiddenCb);
+            hiddenCb.setInputValue(data);
 
-            hiddenCb.setInputValue(data, 'pingone_risk_evaluation_signals');
-
-            console.log('hiddenCb', hiddenCb);
-
+            console.log('Submitting ping protect evaluation');
             return forgerock.FRAuth.next(step);
           } catch (err) {
             return err;
