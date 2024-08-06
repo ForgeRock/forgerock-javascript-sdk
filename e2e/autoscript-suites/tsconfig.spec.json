@@ -5,19 +5,6 @@
     "strict": false,
     "noImplicitAny": false
   },
-  "include": [
-    "playwright.config.ts",
-    "utilities/*",
-    "suites/*",
-    "**/*.test.ts",
-    "**/*.spec.ts",
-    "**/*.test.tsx",
-    "**/*.spec.tsx",
-    "**/*.test.js",
-    "**/*.spec.js",
-    "**/*.test.jsx",
-    "**/*.spec.jsx",
-    "**/*.d.ts"
-  ],
+  "include": ["jest.config.ts", "**/*.test.ts", "**/*.spec.ts", "**/*.d.ts"],
   "exclude": ["dist/"]
 }

@@ -1,4 +1,12 @@
 {
   "extends": "../../tsconfig.base.json",
-  "exclude": ["lib", "lib-esm", "bundles", "jest.env.config.ts"]
+  "exclude": [],
+  "references": [
+    {
+      "path": "./tsconfig.lib.json"
+    },
+    {
+      "path": "./tsconfig.spec.json"
+    }
+  ]
 }

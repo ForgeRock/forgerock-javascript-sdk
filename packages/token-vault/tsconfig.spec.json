@@ -2,6 +2,7 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "../../dist/out-tsc",
+    "composite": true,
     "types": [
       "vitest/globals",
       "vitest/importMeta",
@@ -10,10 +11,5 @@
       "vitest"
     ]
   },
-  "include": [
-    "vite.config.ts",
-    "vitest.config.ts",
-    "src/**/*.test.ts",
-    "src/**/*.spec.ts"
-  ]
+  "include": ["src/**/*.test.ts", "src/**/*.spec.ts", "**/*.d.ts"]
 }

@@ -10,5 +10,10 @@
     "noPropertyAccessFromIndexSignature": false,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true
-  }
+  },
+  "references": [
+    {
+      "path": "./tsconfig.app.json"
+    }
+  ]
 }

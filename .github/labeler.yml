@@ -20,9 +20,17 @@ sdk:
   - packages/javascript-sdk/*
   - packages/javascript-sdk/**/*
 
+ping-protect:
+  - packages/ping-protect/*
+  - packages/ping-protect/**/*
+
+token-vault:
+  - packages/token-vault/*
+  - packages/token-vault/**/*
+
 test:
   - e2e/**/*
-  - jest*
+  - vitest*
   - packages/**/*.test.ts
   - packages/**/*.test.js
   - samples/**/*.test.ts

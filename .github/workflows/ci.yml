@@ -15,22 +15,10 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - uses: actions/cache/restore@v4
-        with:
-          path: ~/.pnpm
-          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/package-lock.json') }}
-      - uses: actions/cache/save@v4
-        with:
-          path: ~/.pnpm
-          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/package-lock.json') }}
+
       - uses: pnpm/action-setup@v4
         with:
           run_install: false
-
-      - run: pnpm install
-      # This line enables distribution
-      # The "--stop-agents-after" is optional, but allows idle agents to shut down once the "e2e-ci" targets have been requested
-      - run: pnpm dlx nx-cloud start-ci-run --distribute-on="3 linux-medium-js" --stop-agents-after="e2e-ci"
 
       - uses: actions/setup-node@v4
         id: cache
@@ -39,10 +27,14 @@ jobs:
           cache: 'pnpm'
           cache-dependency-path: 'pnpm-lock.yaml'
 
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - run: pnpm dlx nx-cloud start-ci-run --distribute-on="3 linux-medium-js" --stop-agents-after="e2e-ci"
+
       - uses: nrwl/nx-set-shas@v4
         with:
           main-branch-name: develop
-          fallback-sha: ${{ github.event.pull_request.base.sha }}
 
       # This line is needed for nx affected to work when CI is running on a PR
       - run: git branch --track develop origin/develop

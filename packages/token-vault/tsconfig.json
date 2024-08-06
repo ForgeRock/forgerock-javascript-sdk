@@ -9,6 +9,12 @@
     "noFallthroughCasesInSwitch": true,
     "lib": ["DOM", "WebWorker", "Webworker.Iterable", "ES2020"]
   },
-  "files": [],
-  "include": ["vite.config.ts"]
+  "references": [
+    {
+      "path": "./tsconfig.lib.json"
+    },
+    {
+      "path": "./tsconfig.spec.json"
+    }
+  ]
 }

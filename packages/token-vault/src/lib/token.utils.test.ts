@@ -1,5 +1,4 @@
 import { tokenExpiryWithinThreshold } from './token.utils.js';
-import { vi } from 'vitest';
 
 const oauthThreshold = 120000;
 const aboutToExpire = 60000;
