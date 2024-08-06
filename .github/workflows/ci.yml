@@ -33,6 +33,13 @@ jobs:
           cache-dependency-path: '**/package-lock.json'
       - run: npx playwright install
       - uses: nrwl/nx-set-shas@v4
+        with:
+          main-branch-name: 'develop'
+
+      - run: |
+          echo "BASE: ${{ env.NX_BASE }}"
+          echo "HEAD: ${{ env.NX_HEAD }}"
+
       # This line is needed for nx affected to work when CI is running on a PR
       - run: git branch --track develop origin/develop
 
