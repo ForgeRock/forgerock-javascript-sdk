@@ -69,6 +69,7 @@
     "projects": ["packages/*"],
     "releaseTagPattern": "v{version}",
     "version": {
+      "preVersionCommand": "pnpm build",
       "generatorOptions": {
         "currentVersionResolver": "registry"
       }
