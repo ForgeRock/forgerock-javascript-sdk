@@ -8,6 +8,7 @@ export default defineConfig({
   root: __dirname,
   cacheDir: '../../node_modules/.vite/packages/token-vault',
   build: {
+    outDir: './dist',
     lib: {
       entry: 'src/index.ts',
       name: 'token-vault',
@@ -18,7 +19,7 @@ export default defineConfig({
     },
     rollupOptions: {
       output: {
-        dir: 'dist',
+        dir: './dist',
         preserveModules: true,
       },
     },

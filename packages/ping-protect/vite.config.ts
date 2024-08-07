@@ -5,6 +5,7 @@ export default defineConfig({
   cacheDir: '../../node_modules/.vite/ping-protect',
 
   build: {
+    outDir: './dist',
     lib: {
       entry: 'src/index.ts',
       name: 'ping-protect',
@@ -13,7 +14,6 @@ export default defineConfig({
     },
     rollupOptions: {
       output: {
-        dir: 'dist',
         preserveModules: true,
         preserveModulesRoot: 'src',
       },
@@ -21,11 +21,12 @@ export default defineConfig({
   },
   plugins: [
     dts({
+      outDir: './dist',
+      entryRoot: 'src',
       tsconfigPath: 'tsconfig.lib.json',
-      rollupTypes: false,
+      rollupTypes: true,
       include: './src/**/*.ts',
       exclude: './src/**/*.test.ts',
-      entryRoot: 'src',
     }),
   ],
   test: {

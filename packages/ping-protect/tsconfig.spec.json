@@ -3,7 +3,8 @@
   "compilerOptions": {
     "outDir": "../../dist/out-tsc",
     "types": ["vitest/globals", "vitest/importMeta", "vite/client", "node"],
-    "composite": true
+    "composite": true,
+    "moduleResolution": "NodeNext"
   },
   "include": ["src/**/*", "src/**/*.test.ts", "src/**/*.spec.ts", "**/*.d.ts"]
 }

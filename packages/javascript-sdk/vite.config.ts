@@ -8,7 +8,7 @@ export default defineConfig({
   cacheDir: '../../node_modules/.vite/packages/javascript-sdk',
 
   build: {
-    outDir: 'dist',
+    outDir: './dist',
     lib: {
       entry: 'src/index.ts',
       name: 'javascript-sdk',
@@ -19,7 +19,7 @@ export default defineConfig({
     },
     rollupOptions: {
       output: {
-        dir: 'dist',
+        dir: './dist',
         preserveModules: true,
         preserveModulesRoot: 'src',
       },

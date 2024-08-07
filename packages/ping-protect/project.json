@@ -17,10 +17,7 @@
           "externalDependencies": ["vite"]
         }
       ],
-      "outputs": ["{options.outDir}"],
-      "options": {
-        "outDir": "packages/ping-protect/dist"
-      }
+      "outputs": ["{options.outDir}"]
     },
     "lint": {
       "options": {
