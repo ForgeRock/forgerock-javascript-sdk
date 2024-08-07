@@ -70,8 +70,7 @@
     "releaseTagPattern": "v{version}",
     "version": {
       "generatorOptions": {
-        "currentVersionResolver": "git-tag",
-        "specifierSource": "conventional-commits"
+        "currentVersionResolver": "registry"
       }
     },
     "changelog": {
@@ -108,12 +107,7 @@
         "testTargetName": "test",
         "serveStaticTargetName": "serve-static"
       },
-      "include": [
-        "e2e/autoscript-apps/**/*",
-        "e2e/token-vault-proxy/**/*",
-        "e2e/mock-api-v2/**/*",
-        "packages/token-vault/**/*"
-      ]
+      "include": ["e2e/**/*", "packages/**/*"]
     },
     {
       "plugin": "@nx/vite/plugin",
@@ -142,13 +136,16 @@
   "useDaemonProcess": true,
   "namedInputs": {
     "default": ["{projectRoot}/**/*", "sharedGlobals"],
-    "sharedGlobals": ["{workspaceRoot}/.github/workflows/ci=github.yml"],
+    "sharedGlobals": [
+      "{workspaceRoot}/.github/workflows/ci.yml",
+      "{workspaceRoot}/.github/workflows/merge.yml"
+    ],
     "production": [
       "default",
       "!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap)",
       "!{projectRoot}/tsconfig.spec.json"
     ]
   },
-  "useInferencePlugins": false,
+  "useInferencePlugins": true,
   "defaultBase": "develop"
 }
