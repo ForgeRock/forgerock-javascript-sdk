@@ -19,7 +19,8 @@
     }
   },
   "repository": {
-    "url": "https://github.com/ForgeRock/forgerock-javascript-sdk"
+    "url": "https://github.com/ForgeRock/forgerock-javascript-sdk",
+    "directory": "packages/javascript-sdk"
   },
   "bugs": {
     "url": "https://github.com/ForgeRock/forgerock-javascript-sdk/issues"

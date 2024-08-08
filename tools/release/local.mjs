@@ -4,7 +4,6 @@ import * as url from 'url';
 import * as console from 'console';
 
 import { releasePublish, releaseVersion } from 'nx/release/index.js';
-import { exec } from 'child_process';
 
 const __dirname = url.fileURLToPath(new url.URL('.', import.meta.url));
 

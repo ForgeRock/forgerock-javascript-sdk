@@ -9,6 +9,10 @@
   "exports": {
     ".": "./dist/index.js"
   },
+  "repository": {
+    "url": "https://github.com/ForgeRock/forgerock-javascript-sdk",
+    "directory": "packages/ping-protect"
+  },
   "peerDependencies": {
     "@forgerock/javascript-sdk": "workspace:*"
   },

@@ -2,6 +2,10 @@
   "name": "@forgerock/token-vault",
   "version": "4.4.2",
   "private": false,
+  "repository": {
+    "url": "https://github.com/ForgeRock/forgerock-javascript-sdk",
+    "directory": "packages/token-vault"
+  },
   "type": "module",
   "files": ["dist/*", "LICENSE", "README.md"],
   "module": "./dist/index.js",
