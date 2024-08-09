@@ -1,10 +1,8 @@
 {
+  "cliOptions": {
+    "packageManager": "pnpm"
+  },
   "targetDefaults": {
-    "nx-release-publish": {
-      "options": {
-        "packageRoot": "packages/{projectName}"
-      }
-    },
     "docs": {
       "cache": true
     },
@@ -69,26 +67,6 @@
     "libsDir": ""
   },
   "generators": {},
-  "release": {
-    "projects": ["packages/*"],
-    "releaseTagPattern": "v{version}",
-    "version": {
-      "preVersionCommand": "pnpm build",
-      "generatorOptions": {
-        "currentVersionResolver": "registry"
-      }
-    },
-    "changelog": {
-      "git": {
-        "commit": true,
-        "tag": true
-      },
-      "workspaceChangelog": {
-        "createRelease": "github"
-      },
-      "projectChangelogs": true
-    }
-  },
   "plugins": [
     {
       "plugin": "@nx/playwright/plugin",
