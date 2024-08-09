@@ -1,0 +1,68 @@
+##########
+# This action will not release until the PR is merged
+# It will create a release-pr and update it on pushes to develop
+# if there are no changesets in a given PR then there is nothing to release
+# But the branch still gets updated if it exists
+# ########
+name: Publish
+on:
+  push:
+    branches:
+      - develop
+      - master
+env:
+  CI: true
+  PNPM_CACHE_FOLDER: .pnpm-store
+jobs:
+  version:
+    env:
+      NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
+      NX_CLOUD_ENCRYPTION_KEY: ${{ secrets.NX_CLOUD_ENCRYPTION_KEY }}
+      NX_CLOUD_DISTRIBUTED_EXECUTION: true
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GH_TOKEN: ${{ secrets.GH_TOKEN }}
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      HUSKY: 0
+    permissions:
+      contents: write #  to create release (changesets/action)
+      issues: write # to post issue comments (changesets/action)
+      pull-requests: write #  to create pull request (changesets/action)
+      id-token: write # give id token write for provenance
+
+    timeout-minutes: 15
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout code repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: pnpm/action-setup@v4
+        with:
+          run_install: false
+
+      - name: setup node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.10.0
+          cache: 'pnpm'
+          cache-dependency-path: 'pnpm-lock.yaml'
+
+      - name: Setup npmrc
+        run: echo "//registry.npmjs.org/:_authToken=${{ env.NPM_TOKEN }}" > .npmrc
+
+      - name: setup pnpm config
+        run: pnpm config set store-dir $PNPM_CACHE_FOLDER
+      - name: install dependencies
+
+        run: pnpm install --frozen-lockfile
+
+      - name: publish
+        uses: changesets/action@v1
+        with:
+          publish: pnpm release-packages ## command in root package.json that builds and publishes
+          title: Release PR
+          branch: master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_CONFIG_PROVENANCE: true

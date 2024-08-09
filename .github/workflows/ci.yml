@@ -43,4 +43,5 @@ jobs:
         run: pnpm exec commitlint --from ${{ github.event.pull_request.base.sha }} --to ${{ github.event.pull_request.head.sha }} --verbose
 
       - run: pnpm exec nx-cloud record -- nx format:check --verbose
+
       - run: pnpm exec nx affected -t lint test build e2e-ci
