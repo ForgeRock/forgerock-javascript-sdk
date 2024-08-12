@@ -2,6 +2,7 @@
 import { defineConfig } from 'vite';
 import dts from 'vite-plugin-dts';
 export default defineConfig({
+  root: __dirname,
   cacheDir: '../../node_modules/.vite/ping-protect',
 
   build: {
@@ -21,12 +22,11 @@ export default defineConfig({
   },
   plugins: [
     dts({
-      outDir: './dist',
-      entryRoot: 'src',
       tsconfigPath: 'tsconfig.lib.json',
       rollupTypes: true,
       include: './src/**/*.ts',
       exclude: './src/**/*.test.ts',
+      entryRoot: 'src',
     }),
   ],
   test: {
@@ -35,6 +35,7 @@ export default defineConfig({
     watch: false,
     setupFiles: ['./vitest.setup.ts'],
     coverage: {
+      enabled: !!process.env['CI'],
       provider: 'v8',
       reportsDirectory: '../../coverage/packages/ping-protect',
     },

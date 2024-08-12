@@ -13,10 +13,7 @@
       "dependsOn": ["^build"],
       "cache": true,
       "inputs": ["production", "^production"],
-      "outputs": [
-        "{workspaceRoot}/{projectRoot}/dist",
-        "{workspaceRoot}/dist/{projectName}"
-      ]
+      "outputs": ["{projectRoot}/dist", "{workspaceRoot}/dist/{projectName}"]
     },
     "build-interceptor": {
       "cache": true

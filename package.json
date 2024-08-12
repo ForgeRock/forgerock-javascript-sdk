@@ -2,14 +2,11 @@
   "name": "@forgerock/javascript-sdk",
   "description": "ForgeRock JavaScript SDK",
   "packageManager": "pnpm@9.6.0",
-  "engines": {
-    "node": "^20 || ^18",
-    "pnpm": ">= 9.5.0"
-  },
+  "engines": { "node": "^20 || ^18", "pnpm": ">= 9.5.0" },
   "private": true,
   "scripts": {
     "build": "nx affected --target=build",
-    "clean": "shx rm -rf ./{coverage,bundles,dist,docs,lib,lib-esm,node_modules,tests,tmp,todos,users}/ ./samples/*/node_modules/ ./samples/_static/js/*/ ./samples/todo-api/{todos,users} ./packages/*/{bundles,lib,lib-esm}/ && git clean -fX -e \"!.env*,nx-cloud.env\"",
+    "clean": "pnpm -r clean && rm -rf ./dist ./node_modules/",
     "commit": "git cz",
     "docs": "nx affected --target=typedoc",
     "e2e": "nx affected:e2e",
@@ -40,17 +37,18 @@
     "@commitlint/cli": "^19.1.0",
     "@commitlint/config-conventional": "^19.1.0",
     "@commitlint/prompt": "^19.1.0",
-    "@nx/devkit": "19.5.5",
-    "@nx/esbuild": "19.5.5",
-    "@nx/eslint": "19.5.5",
-    "@nx/eslint-plugin": "19.5.5",
-    "@nx/express": "19.5.5",
-    "@nx/js": "19.5.5",
-    "@nx/node": "19.5.5",
-    "@nx/playwright": "19.5.5",
-    "@nx/vite": "19.5.5",
-    "@nx/web": "19.5.5",
-    "@nx/workspace": "19.5.5",
+    "@nx/devkit": "19.5.7",
+    "@nx/esbuild": "19.5.7",
+    "@nx/eslint": "19.5.7",
+    "@nx/eslint-plugin": "19.5.7",
+    "@nx/express": "19.5.7",
+    "@nx/js": "19.5.7",
+    "@nx/node": "19.5.7",
+    "@nx/playwright": "19.5.7",
+    "@nx/vite": "19.5.7",
+    "@nx/web": "19.5.7",
+    "@nx/workspace": "19.5.7",
+    "@playwright/test": "catalog:playwright",
     "@swc-node/register": "1.9.2",
     "@swc/core": "1.5.7",
     "@swc/helpers": "0.5.12",
@@ -74,11 +72,11 @@
     "jsonc-eslint-parser": "^2.1.0",
     "lint-staged": "^13.2.2",
     "npm-cli-login": "^1.0.0",
-    "nx": "19.5.5",
+    "nx": "19.5.7",
+    "playwright": "catalog:playwright",
     "prettier": "^3.2.5",
     "pretty-quick": "^4.0.0",
     "sass": "^1.71.1",
-    "shx": "^0.3.4",
     "tslib": "^2.5.0",
     "typedoc": "^0.26.5",
     "typedoc-plugin-rename-defaults": "^0.7.1",
@@ -90,11 +88,7 @@
     "vitest": "^1.4.0"
   },
   "config": {
-    "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog"
-    }
+    "commitizen": { "path": "./node_modules/cz-conventional-changelog" }
   },
-  "nx": {
-    "includedScripts": []
-  }
+  "nx": { "includedScripts": [] }
 }

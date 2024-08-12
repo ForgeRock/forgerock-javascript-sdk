@@ -6,7 +6,6 @@ import { copyFileSync } from 'fs';
 export default defineConfig({
   root: __dirname,
   cacheDir: '../../node_modules/.vite/packages/javascript-sdk',
-
   build: {
     outDir: './dist',
     lib: {
@@ -19,7 +18,6 @@ export default defineConfig({
     },
     rollupOptions: {
       output: {
-        dir: './dist',
         preserveModules: true,
         preserveModulesRoot: 'src',
       },
@@ -28,10 +26,10 @@ export default defineConfig({
   plugins: [
     dts({
       tsconfigPath: 'tsconfig.lib.json',
-      rollupTypes: true,
+      rollupTypes: false,
       include: './src/**/*.ts',
       exclude: './src/**/*.test.ts',
-      // entryRoot: 'src',
+      entryRoot: 'src',
       afterBuild: (files) => {
         return files.forEach((value, key) => copyFileSync(key, key.replace('.ts', '.cts')));
       },
@@ -45,6 +43,7 @@ export default defineConfig({
     reporters: ['default'],
     setupFiles: ['./vitest.setup.ts'],
     coverage: {
+      enabled: !!process.env['CI'],
       provider: 'v8',
       reportsDirectory: '../../coverage/packages/javascript-sdk',
     },

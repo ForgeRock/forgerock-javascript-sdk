@@ -44,6 +44,7 @@ export default defineConfig({
     pool: 'forks',
     reporters: ['default'],
     coverage: {
+      enabled: !!process.env['CI'],
       reportsDirectory: '../../coverage/packages/token-vault',
       provider: 'v8',
     },

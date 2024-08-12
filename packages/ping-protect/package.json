@@ -6,6 +6,9 @@
   "files": ["dist/*", "LICENSE", "README.md"],
   "module": "./dist/index.js",
   "main": "./dist/index.js",
+  "scripts": {
+    "clean": "rm -rf ./dist ./coverage"
+  },
   "exports": {
     ".": "./dist/index.js"
   },

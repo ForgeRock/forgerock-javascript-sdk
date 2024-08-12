@@ -18,9 +18,7 @@
     "includedScripts": []
   },
   "devDependencies": {
-    "@playwright/test": "catalog:playwright",
     "@types/node": "catalog:",
-    "playwright": "catalog:playwright",
     "uuid": "catalog:"
   }
 }

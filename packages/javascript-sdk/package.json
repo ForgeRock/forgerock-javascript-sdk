@@ -7,7 +7,9 @@
   "files": ["dist/*", "LICENSE", "README.md"],
   "module": "./dist/index.js",
   "main": "./dist/index.cjs",
-  "types": "./dist/index.d.ts",
+  "scripts": {
+    "clean": "rm -rf ./dist ./coverage"
+  },
   "exports": {
     ".": {
       "import": "./dist/index.js",

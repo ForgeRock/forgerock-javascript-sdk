@@ -15,8 +15,6 @@
   },
   "homepage": "https://github.com/ForgeRock/forgerock-javascript-sdk#readme",
   "devDependencies": {
-    "@types/node": "catalog:",
-    "@playwright/test": "catalog:playwright",
-    "playwright": "catalog:playwright"
+    "@types/node": "catalog:"
   }
 }

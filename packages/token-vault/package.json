@@ -17,6 +17,9 @@
       "default": "./dist/index.js"
     }
   },
+  "scripts": {
+    "clean": "rm -rf ./dist ./coverage"
+  },
   "peerDependencies": {
     "@forgerock/javascript-sdk": "workspace:*"
   },

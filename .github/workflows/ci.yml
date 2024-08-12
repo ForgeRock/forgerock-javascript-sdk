@@ -30,7 +30,10 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - run: pnpm dlx nx-cloud start-ci-run --distribute-on="3 linux-medium-js" --stop-agents-after="e2e-ci"
+      - name: Install Playwright Browsers
+        run: pnpm dlx playwright install --with-deps
+
+      - run: pnpm dlx nx-cloud start-ci-run --distribute-on=".nx/workflows/dynamic-changesets.yaml" --stop-agents-after="e2e-ci"
 
       - uses: nrwl/nx-set-shas@v4
         with:
@@ -42,6 +45,12 @@ jobs:
       - name: Validate all commits from PR
         run: pnpm exec commitlint --from ${{ github.event.pull_request.base.sha }} --to ${{ github.event.pull_request.head.sha }} --verbose
 
-      - run: pnpm exec nx-cloud record -- nx format:check --verbose
+      - run: pnpm exec nx-cloud record -- nx format:check
 
-      - run: pnpm exec nx affected -t lint test build e2e-ci
+      - run: pnpm exec nx affected -t build lint test e2e-ci
+
+      - name: Report Code Coverage
+        uses: codecov/codecov-action@v4.5.0
+        with:
+          files: coverage/**/*.xml
+          token: ${{ secrets.CODECOV_TOKEN }}
