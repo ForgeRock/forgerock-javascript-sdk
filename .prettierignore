@@ -4,5 +4,6 @@
 /.nx/cache
 package-lock.json
 */*/package-lock.json
+packages/*/dist/*
 
 /.nx/workspace-data
