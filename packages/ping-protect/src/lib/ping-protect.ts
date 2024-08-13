@@ -1,7 +1,33 @@
+import {
+  MetadataCallback,
+  PingOneProtectEvaluationCallback,
+  PingOneProtectInitializeCallback,
+} from '@forgerock/javascript-sdk';
+
 export interface Identifiers {
   [key: string]: string;
 }
 
+type Metadata =
+  | {
+      _type: 'PingOneProtect';
+      _action: 'protect_risk_evaluation';
+      envId: string;
+      pauseBehavioralData: string;
+    }
+  | {
+      _type: 'PingOneProtect';
+      _action: 'protect_initialize';
+      consoleLogEnabled: boolean;
+      deviceAttributesToIgnore: string[];
+      customHost: string;
+      lazyMetadata: boolean;
+      behavioralDataCollection: boolean;
+      deviceKeyRsyncIntervals: number;
+      enableTrust: boolean;
+      disableTags: boolean;
+      disableHub: boolean;
+    };
 /**
  * InitParams - Interface for the init method parameters
  * envId: string - Required; the environment id from your PingOne tenant
@@ -85,5 +111,50 @@ export abstract class PIProtect {
    */
   public static resumeBehavioralData(): void {
     window._pingOneSignals.resumeBehavioralData();
+  }
+  /**
+   * Will parse the given callback from initialization
+   * and either return the metadata provided
+   * or will try to return the ping protect initialization
+   * or a protect evaluation callback
+   */
+  public static getDerivedCallback(
+    callback: MetadataCallback,
+    index: number,
+  ):
+    | MetadataCallback
+    | PingOneProtectEvaluationCallback
+    | PingOneProtectInitializeCallback
+    | Promise<string> {
+    try {
+      const payload = callback.payload.output[index].value as Metadata;
+      /**
+       * parse logic begins with an if we have a _type
+       * then we should continue to the next logical step
+       *
+       */
+      if (payload._type && payload._type === 'PingOneProtect') {
+        /**
+         * Next we need to evaluate if the metadata
+         * is protect related
+         */
+        if (payload._action && payload._action === 'protect_initialize') {
+          /***
+           * Because we have determined this is a protect callback, we should convert it
+           * based on the type of callback it is
+           ***/
+          return new PingOneProtectInitializeCallback(callback.payload);
+        } else if (payload._action === 'protect_risk_evaluation') {
+          return new PingOneProtectEvaluationCallback(callback.payload);
+        }
+      }
+      /**
+       * if we don't havea  protect initialize or evaluation
+       * type we just return the metadata
+       */
+      return new MetadataCallback(callback.payload).getData();
+    } catch (err) {
+      throw new Error(`failed to parse callback, ${err}`);
+    }
   }
 }

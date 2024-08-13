@@ -12,9 +12,6 @@ import * as forgerock from '@forgerock/javascript-sdk';
 import { PIProtect } from '@forgerock/ping-protect';
 import { delay as rxDelay, map, mergeMap } from 'rxjs/operators';
 import { from } from 'rxjs';
-import HiddenValueCallback from '../../../../dist/packages/javascript-sdk/src/fr-auth/callbacks/hidden-value-callback';
-import MetadataCallback from '../../../../packages/javascript-sdk/src/fr-auth/callbacks/metadata-callback';
-import PingOneProtectEvaluationCallback from '../../../../packages/javascript-sdk/src/fr-auth/callbacks/ping-protect-evaluation-callback';
 
 function autoscript() {
   const delay = 0;
@@ -52,8 +49,7 @@ function autoscript() {
             const cb = (step as forgerock.Step).getCallbackOfType(
               'MetadataCallback',
             ) as forgerock.MetadataCallback;
-
-            const parsed = cb.getDerivedCallback(0);
+            const parsed = PIProtect.getDerivedCallback(cb, 0);
 
             try {
               if ('getConfig' in parsed) {
@@ -66,7 +62,10 @@ function autoscript() {
                 'MetadataCallback',
               ) as forgerock.MetadataCallback;
 
-              const parsed = cb.getDerivedCallback(0) as forgerock.PingOneProtectInitializeCallback;
+              const parsed = cb.getDerivedCallback(
+                cb,
+                0,
+              ) as forgerock.PingOneProtectInitializeCallback;
               const hiddenCb = (step as forgerock.Step).getCallbackOfType(
                 forgerock.CallbackType.HiddenValueCallback,
               );
@@ -90,7 +89,8 @@ function autoscript() {
             forgerock.CallbackType.MetadataCallback,
           ) as forgerock.MetadataCallback;
 
-          const parsed = metadataCb.getDerivedCallback(
+          const parsed = PIProtect.getDerivedCallback(
+            metadataCb,
             0,
           ) as forgerock.PingOneProtectEvaluationCallback;
 
