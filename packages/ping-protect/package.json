@@ -10,10 +10,7 @@
   "module": "./dist/index.js",
   "main": "./dist/index.js",
   "scripts": {
-    "build": "vite build",
     "clean": "rm -rf ./dist ./coverage",
-    "lint": "eslint ./**/*.ts --ignore-path=.eslintignore ./src/**/*",
-    "test": "vitest",
     "test:ui": "vitest --ui",
     "test:watch": "vitest --watch"
   },

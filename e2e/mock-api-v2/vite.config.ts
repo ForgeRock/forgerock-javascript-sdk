@@ -7,11 +7,15 @@ export default defineConfig({
   cacheDir: '../../node_modules/.vite/e2e/mock-api-v2',
   plugins: [nodePolyfills({ protocolImports: true })],
   build: {
+    outDir: './dist',
     target: 'node12',
     lib: {
       entry: './src/main.ts',
       formats: ['es'],
     },
+  },
+  server: {
+    port: 9444,
   },
   ssr: {
     noExternal: true,

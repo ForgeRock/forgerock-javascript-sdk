@@ -8,11 +8,7 @@
   },
   "devDependencies": {},
   "scripts": {
-    "build": "vite build",
-    "build-interceptor": "vite build",
-    "lint": "eslint --ignore-path=.eslintignore ./src/**/*",
-    "serve": "vite dev",
-    "preview": "vite preview"
+    "build-interceptor": "vite build"
   },
   "dependencies": {
     "@forgerock/javascript-sdk": "workspace:*",

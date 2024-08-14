@@ -15,7 +15,6 @@
   "scripts": {
     "build": "vite build",
     "build-interceptor": "vite build --config=./vite.interceptor.config.ts",
-    "lint": "eslint --ignore-path=.eslintignore ./src/**/*",
     "test:watch": "vitest --watch",
     "test:ui": "vitest --ui",
     "serve": "vite dev",

@@ -6,7 +6,7 @@ import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
 export default defineConfig({
   root: __dirname,
   build: {
-    outDir: '../../dist/e2e/token-vault-app',
+    outDir: './dist/e2e/token-vault-app',
     reportCompressedSize: true,
     commonjsOptions: { transformMixedEsModules: true },
     target: 'esnext',

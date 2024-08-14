@@ -9,9 +9,8 @@
   "type": "commonjs",
   "license": "ISC",
   "scripts": {
-    "build": "tsc -p tsconfig.app.json",
-    "serve": "node ../../dist/mock-api/src/index.js",
-    "lint": "eslint --ignore-path=.eslintignore ./src/**/*"
+    "build": "tsc -b --clean",
+    "serve": "node ./dist/e2e/mock-api/src/index.js"
   },
   "devDependencies": {
     "uuid": "catalog:",

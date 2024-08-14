@@ -3,19 +3,30 @@
     "packageManager": "pnpm"
   },
   "targetDefaults": {
-    "docs": {
+    "lint": {
+      "dependsOn": ["^lint"],
       "cache": true
     },
+    "test": {
+      "dependsOn": ["^test"],
+      "cache": true
+    },
+    "serve": {
+      "dependsOn": ["build", "^build"],
+      "cache": false
+    },
     "e2e": {
+      "dependsOn": ["serve"],
       "cache": true
     },
     "build": {
       "dependsOn": ["^build"],
       "cache": true,
       "inputs": ["production", "^production"],
-      "outputs": ["{projectRoot}/dist", "{workspaceRoot}/dist/{projectName}"]
+      "outputs": ["{projectRoot}/dist"]
     },
     "build-interceptor": {
+      "dependsOn": ["^build"],
       "cache": true
     },
     "@nx/vite:test": {
@@ -31,11 +42,6 @@
       "cache": true,
       "dependsOn": ["^build"],
       "inputs": ["default", "^default"]
-    },
-    "@nx/esbuild:esbuild": {
-      "cache": true,
-      "dependsOn": ["^build"],
-      "inputs": ["production", "^production"]
     }
   },
   "parallel": 1,
@@ -46,15 +52,21 @@
         "projects": "dependencies"
       }
     ],
+    "lint": [
+      {
+        "target": "lint",
+        "projects": "dependencies"
+      }
+    ],
     "build": [
       {
         "target": "build",
         "projects": "dependencies"
       }
     ],
-    "prepare": [
+    "e2e": [
       {
-        "target": "prepare",
+        "target": "e2e",
         "projects": "dependencies"
       }
     ]
@@ -88,28 +100,6 @@
         "serveStaticTargetName": "serve-static"
       },
       "include": ["e2e/**/*", "packages/**/*"]
-    },
-    {
-      "plugin": "@nx/vite/plugin",
-      "options": {
-        "buildTargetName": "build-interceptor",
-        "serveTargetName": "serve",
-        "previewTargetName": "preview",
-        "testTargetName": "test",
-        "serveStaticTargetName": "serve-static"
-      },
-      "include": ["e2e/token-vault-app/**/*"]
-    },
-    {
-      "plugin": "@nx/vite/plugin",
-      "options": {
-        "buildTargetName": "package",
-        "serveTargetName": "serve",
-        "previewTargetName": "preview",
-        "testTargetName": "test",
-        "serveStaticTargetName": "serve-static"
-      },
-      "include": ["packages/javascript-sdk/**/*", "packages/ping-protect/**/*"]
     }
   ],
   "defaultProject": "javascript-sdk",

@@ -18,9 +18,7 @@
   },
   "homepage": "https://github.com/ForgeRock/forgerock-javascript-sdk#readme",
   "scripts": {
-    "e2e": "playwright test",
-    "e2e:ui": "playwright test --ui",
-    "lint": "eslint --ignore-path=.eslintignore ./src/**/*"
+    "e2e:ui": "playwright test --ui"
   },
   "devDependencies": {
     "@types/node": "catalog:"

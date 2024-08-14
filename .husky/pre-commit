@@ -1,4 +1,4 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-NX_ADD_PLUGINS=false npx lint-staged && NX_ADD_PLUGINS=false npx nx affected:lint && NX_ADD_PLUGINS=false npx nx affected:build 
+NX_ADD_PLUGINS=false pnpm exec lint-staged

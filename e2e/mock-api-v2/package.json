@@ -6,9 +6,9 @@
   "author": "",
   "license": "ISC",
   "scripts": {
-    "build": "tsc -p tsconfig.app.json",
-    "serve": "vite dev",
-    "lint": "eslint --ignore-path=.eslintignore ./src/**/*",
+    "clean": "rm -rf ./dist",
+    "build": "pnpm clean && tsc -b",
+    "serve": "node ./dist/e2e/mock-api-v2/src/main.js",
     "test": "vitest",
     "test:watch": "vitest --watch",
     "test:ui": "vitest --ui"

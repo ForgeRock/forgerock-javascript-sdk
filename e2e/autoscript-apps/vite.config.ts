@@ -76,7 +76,7 @@ export default defineConfig({
   // },
 
   build: {
-    outDir: '../../dist/e2e/autoscript-apps',
+    outDir: './dist',
     reportCompressedSize: true,
     commonjsOptions: {
       transformMixedEsModules: true,

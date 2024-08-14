@@ -1,6 +1,6 @@
 {
   "extends": ["../../.eslintrc.json"],
-  "ignorePatterns": ["!**/*", "README.md", ".DS_Store"],
+  "ignorePatterns": ["!**/*", "README.md", ".DS_Store", "dist"],
   "overrides": [
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
