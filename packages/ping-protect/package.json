@@ -3,11 +3,19 @@
   "version": "4.4.2",
   "private": false,
   "type": "module",
+  "nx": {
+    "tags": ["scope:lib", "scope:package"]
+  },
   "files": ["dist/*", "LICENSE", "README.md"],
   "module": "./dist/index.js",
   "main": "./dist/index.js",
   "scripts": {
-    "clean": "rm -rf ./dist ./coverage"
+    "build": "vite build",
+    "clean": "rm -rf ./dist ./coverage",
+    "lint": "eslint ./**/*.ts --ignore-path=.eslintignore ./src/**/*",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:watch": "vitest --watch"
   },
   "exports": {
     ".": "./dist/index.js"

@@ -5,6 +5,14 @@
   "main": "index.js",
   "author": "",
   "license": "ISC",
+  "scripts": {
+    "build": "tsc -p tsconfig.app.json",
+    "serve": "vite dev",
+    "lint": "eslint --ignore-path=.eslintignore ./src/**/*",
+    "test": "vitest",
+    "test:watch": "vitest --watch",
+    "test:ui": "vitest --ui"
+  },
   "dependencies": {
     "@effect/language-service": "catalog:effect",
     "@effect/platform": "catalog:effect",
@@ -15,6 +23,8 @@
     "effect": "catalog:effect",
     "effect-http": "catalog:effect",
     "effect-http-node": "catalog:effect",
-    "fast-check": "catalog:effect"
+    "fast-check": "catalog:effect",
+    "stream-browserify": "^3.0.0",
+    "vite-plugin-node-polyfills": "^0.22.0"
   }
 }

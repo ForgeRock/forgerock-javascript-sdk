@@ -12,6 +12,11 @@
   "bugs": {
     "url": "https://github.com/ForgeRock/forgerock-javascript-sdk/issues"
   },
+  "scripts": {
+    "build": "vite build",
+    "serve": "vite dev",
+    "preview": "vite preview"
+  },
   "homepage": "https://github.com/ForgeRock/forgerock-javascript-sdk#readme",
   "dependencies": {
     "@forgerock/javascript-sdk": "workspace:*",

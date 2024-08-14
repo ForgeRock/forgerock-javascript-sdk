@@ -3,7 +3,17 @@
   "version": "0.0.0",
   "description": "ForgeRock Token Vault Test Proxy",
   "private": true,
+  "nx": {
+    "tags": ["scope:token-vault"]
+  },
   "devDependencies": {},
+  "scripts": {
+    "build": "vite build",
+    "build-interceptor": "vite build",
+    "lint": "eslint --ignore-path=.eslintignore ./src/**/*",
+    "serve": "vite dev",
+    "preview": "vite preview"
+  },
   "dependencies": {
     "@forgerock/javascript-sdk": "workspace:*",
     "@forgerock/token-vault": "workspace:*"

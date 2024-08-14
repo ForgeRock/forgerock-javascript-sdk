@@ -1,18 +1,27 @@
 /// <reference types='vitest' />
 import { defineConfig } from 'vite';
-
-import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
+import { nodePolyfills } from 'vite-plugin-node-polyfills';
 
 export default defineConfig({
   root: __dirname,
   cacheDir: '../../node_modules/.vite/e2e/mock-api-v2',
-
-  plugins: [nxViteTsPaths()],
-
-  // Uncomment this if you are using workers.
-  // worker: {
-  //  plugins: [ nxViteTsPaths() ],
-  // },
+  plugins: [nodePolyfills({ protocolImports: true })],
+  build: {
+    target: 'node12',
+    lib: {
+      entry: './src/main.ts',
+      formats: ['es'],
+    },
+  },
+  ssr: {
+    noExternal: true,
+    target: 'node',
+  },
+  resolve: {
+    // Change default resolution to node rather than browser
+    mainFields: ['module', 'jsnext:main', 'jsnext'],
+    conditions: ['node'],
+  },
 
   test: {
     globals: true,

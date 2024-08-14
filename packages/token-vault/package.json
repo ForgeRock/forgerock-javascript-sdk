@@ -1,6 +1,9 @@
 {
   "name": "@forgerock/token-vault",
   "version": "4.4.2",
+  "nx": {
+    "tags": ["scope:lib", "scope:package"]
+  },
   "private": false,
   "repository": {
     "url": "https://github.com/ForgeRock/forgerock-javascript-sdk",
@@ -18,7 +21,12 @@
     }
   },
   "scripts": {
-    "clean": "rm -rf ./dist ./coverage"
+    "build": "vite build",
+    "clean": "rm -rf ./dist ./coverage",
+    "lint": "eslint ./**/*.ts --ignore-path=.eslintignore ./src/**/*",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:watch": "vitest --watch"
   },
   "peerDependencies": {
     "@forgerock/javascript-sdk": "workspace:*"
