@@ -4,6 +4,7 @@ packages:
 
 catalog:
   '@types/node': 18.19.26
+  dotenv: 16.4.5
   vite-plugin-dts: ^3.8.3
   vitest-canvas-mock: ^0.3.3
   uuid: ^9.0.1

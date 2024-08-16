@@ -22,7 +22,7 @@ const config: PlaywrightTestConfig = {
   },
   webServer: [
     {
-      command: 'pnpm nx run-many -t build serve -p mock-api',
+      command: 'pnpm nx serve mock-api',
       url: 'http://localhost:9443/healthcheck',
       ignoreHTTPSErrors: true,
       reuseExistingServer: !process.env.CI,

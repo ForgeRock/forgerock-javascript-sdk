@@ -3,13 +3,16 @@
   "version": "0.0.0",
   "private": true,
   "description": "",
-  "main": "./index.js",
+  "files": ["dist/*"],
+  "main": "./dist/e2e/mock-api/src/index.js",
+  "module": "./dist/e2e/mock-api/src/index.js",
+  "exports": "./dist/e2e/mock-api/src/index.js",
   "keywords": [],
   "author": "",
   "type": "commonjs",
   "license": "ISC",
   "scripts": {
-    "build": "tsc -b --clean",
+    "build": "rm -rf ./dist && tsc -b",
     "serve": "node ./dist/e2e/mock-api/src/index.js"
   },
   "devDependencies": {

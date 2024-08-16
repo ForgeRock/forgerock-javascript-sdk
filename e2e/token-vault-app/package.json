@@ -2,6 +2,9 @@
   "name": "token-vault-app",
   "description": "ForgeRock Token Vault Test App",
   "private": true,
+  "main": "./dist/e2e/token-vault-app/main.js",
+  "module": "./dist/e2e/token-vault-app/main.js",
+  "exports": "./dist/e2e/token-vault-app/main.js",
   "nx": {
     "tags": ["scope:app"]
   },
@@ -13,7 +16,7 @@
     "@types/node": "catalog:"
   },
   "scripts": {
-    "build": "vite build",
+    "build": "pnpm build-interceptor && vite build",
     "build-interceptor": "vite build --config=./vite.interceptor.config.ts",
     "test:watch": "vitest --watch",
     "test:ui": "vitest --ui",

@@ -2,8 +2,9 @@
   "name": "mock-api-v2",
   "version": "1.0.0",
   "description": "## Docs",
-  "main": "index.js",
-  "author": "",
+  "main": "./dist/e2e/mock-api-v2/src/main.js",
+  "module": "./dist/e2e/mock-api-v2/src/main.js",
+  "exports": "./dist/e2e/mock-api-v2/src/main.js",
   "license": "ISC",
   "scripts": {
     "clean": "rm -rf ./dist",

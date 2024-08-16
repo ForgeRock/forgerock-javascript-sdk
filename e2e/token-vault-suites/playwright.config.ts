@@ -1,6 +1,8 @@
 import { PlaywrightTestConfig } from '@playwright/test';
 import { nxE2EPreset } from '@nx/playwright/preset';
 import { workspaceRoot } from '@nx/devkit';
+import 'dotenv/config';
+
 // For CI, you may want to set BASE_URL to the deployed application.
 const baseURL = process.env['BASE_URL'] || 'http://localhost:5823';
 
@@ -32,6 +34,10 @@ const config: PlaywrightTestConfig = {
       ignoreHTTPSErrors: true,
       reuseExistingServer: !process.env.CI,
       cwd: workspaceRoot,
+      env: {
+        VITE_AM_URL: 'http://localhost:9443/am',
+        VITE_REALM_PATH: 'root',
+      },
     },
     {
       command: 'pnpm run nx serve token-vault-app',
@@ -39,6 +45,10 @@ const config: PlaywrightTestConfig = {
       ignoreHTTPSErrors: true,
       reuseExistingServer: !process.env.CI,
       cwd: workspaceRoot,
+      env: {
+        VITE_AM_URL: 'http://localhost:9443/am',
+        VITE_REALM_PATH: 'root',
+      },
     },
   ],
 };

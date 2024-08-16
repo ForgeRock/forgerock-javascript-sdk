@@ -7,6 +7,7 @@ export default defineConfig({
   root: __dirname,
   build: {
     outDir: './dist/e2e/token-vault-app',
+    copyPublicDir: true,
     reportCompressedSize: true,
     commonjsOptions: { transformMixedEsModules: true },
     target: 'esnext',
@@ -24,6 +25,9 @@ export default defineConfig({
     port: 5823,
   },
   server: {
+    fs: {
+      deny: ['*interceptor.js'],
+    },
     port: 5823,
     headers: {
       'Service-Worker-Allowed': '/',

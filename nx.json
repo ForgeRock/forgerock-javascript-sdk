@@ -4,11 +4,11 @@
   },
   "targetDefaults": {
     "lint": {
-      "dependsOn": ["^lint"],
+      "dependsOn": ["^build", "^lint"],
       "cache": true
     },
     "test": {
-      "dependsOn": ["^test"],
+      "dependsOn": ["^build", "^test"],
       "cache": true
     },
     "serve": {
@@ -16,7 +16,7 @@
       "cache": false
     },
     "e2e": {
-      "dependsOn": ["serve"],
+      "dependsOn": ["build", "serve"],
       "cache": true
     },
     "build": {
@@ -30,13 +30,18 @@
       "cache": true
     },
     "@nx/vite:test": {
-      "dependsOn": ["^test"],
+      "dependsOn": ["^build", "^test"],
       "inputs": ["default", "^default"],
       "cache": true
     },
     "@nx/eslint:lint": {
       "inputs": ["default", "{workspaceRoot}/.eslintrc.json"],
       "cache": true
+    },
+    "@nx/js:build": {
+      "cache": true,
+      "dependsOn": ["^build"],
+      "inputs": ["default", "^default"]
     },
     "@nx/vite:build": {
       "cache": true,

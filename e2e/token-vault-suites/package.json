@@ -3,8 +3,6 @@
   "description": "ForgeRock Token Vault E2E Suites",
   "private": true,
   "version": "0.0.0",
-  "main": "src/index.js",
-  "author": "",
   "nx": {
     "tags": ["scope:token-vault"]
   },

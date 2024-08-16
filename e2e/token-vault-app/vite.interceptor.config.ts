@@ -1,11 +1,12 @@
 import { defineConfig } from 'vite';
 import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
+import 'dotenv/config';
 
 export default defineConfig({
   root: __dirname,
   plugins: [nxViteTsPaths()],
   build: {
-    outDir: '../../e2e/token-vault-app/public/',
+    outDir: './public',
     reportCompressedSize: true,
     commonjsOptions: { transformMixedEsModules: true },
     minify: false,
