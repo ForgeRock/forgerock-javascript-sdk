@@ -1,4 +1,6 @@
 import {
+  CallbackType,
+  FRStep,
   MetadataCallback,
   PingOneProtectEvaluationCallback,
   PingOneProtectInitializeCallback,
@@ -112,6 +114,36 @@ export abstract class PIProtect {
   public static resumeBehavioralData(): void {
     window._pingOneSignals.resumeBehavioralData();
   }
+
+  public static hasInitializeCallback(step: FRStep) {
+    const { payload } = step.getCallbackOfType(CallbackType.MetadataCallback) as MetadataCallback;
+
+    const output = payload.output;
+    for (let i = 0; i < output.length; i++) {
+      const obj = output[i] as unknown as Record<string, Metadata>;
+      const value = obj.value;
+      if (value._type && value._type === 'PingOneProtect') {
+        if (value._action && value._action === 'protect_initialize') return true;
+        return true;
+      }
+    }
+    return false;
+  }
+
+  public static hasEvaluationCallback(step: FRStep) {
+    const { payload } = step.getCallbackOfType(CallbackType.MetadataCallback) as MetadataCallback;
+
+    const output = payload.output;
+    for (let i = 0; i < output.length; i++) {
+      const obj = output[i] as unknown as Record<string, Metadata>;
+      const value = obj.value;
+      if (value._type && value._type === 'PingOneProtect') {
+        if (value._action && value._action === 'protect_risk_evaluation') return true;
+        return true;
+      }
+    }
+    return false;
+  }
   /**
    * Will parse the given callback from initialization
    * and either return the metadata provided
@@ -119,40 +151,32 @@ export abstract class PIProtect {
    * or a protect evaluation callback
    */
   public static getDerivedCallback(
-    callback: MetadataCallback,
-    index: number,
-  ):
-    | MetadataCallback
-    | PingOneProtectEvaluationCallback
-    | PingOneProtectInitializeCallback
-    | Promise<string> {
+    step: FRStep,
+  ): MetadataCallback | PingOneProtectEvaluationCallback | PingOneProtectInitializeCallback {
     try {
-      const payload = callback.payload.output[index].value as Metadata;
-      /**
-       * parse logic begins with an if we have a _type
-       * then we should continue to the next logical step
-       *
+      /*
+       * We need to determine what types of callbacks we have in the metadata callback
        */
-      if (payload._type && payload._type === 'PingOneProtect') {
+      const hasInitializeCallback = PIProtect.hasInitializeCallback(step);
+      const hasEvaluationCallback = PIProtect.hasEvaluationCallback(step);
+
+      const frCallback = step.getCallbackOfType(CallbackType.MetadataCallback);
+
+      if (hasInitializeCallback) {
+        /***
+         * Because we have determined this is a protect callback, we should convert it
+         * based on the type of callback it is
+         ***/
+        return new PingOneProtectInitializeCallback(frCallback.payload);
+      } else if (hasEvaluationCallback) {
+        return new PingOneProtectEvaluationCallback(frCallback.payload);
+      } else {
         /**
-         * Next we need to evaluate if the metadata
-         * is protect related
+         * if we don't havea  protect initialize or evaluation
+         * type we just return the metadata
          */
-        if (payload._action && payload._action === 'protect_initialize') {
-          /***
-           * Because we have determined this is a protect callback, we should convert it
-           * based on the type of callback it is
-           ***/
-          return new PingOneProtectInitializeCallback(callback.payload);
-        } else if (payload._action === 'protect_risk_evaluation') {
-          return new PingOneProtectEvaluationCallback(callback.payload);
-        }
+        return new MetadataCallback(frCallback.payload);
       }
-      /**
-       * if we don't havea  protect initialize or evaluation
-       * type we just return the metadata
-       */
-      return new MetadataCallback(callback.payload).getData();
     } catch (err) {
       throw new Error(`failed to parse callback, ${err}`);
     }

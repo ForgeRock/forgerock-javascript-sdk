@@ -46,10 +46,7 @@ function autoscript() {
       .pipe(
         mergeMap(
           (step) => {
-            const cb = (step as forgerock.Step).getCallbackOfType(
-              'MetadataCallback',
-            ) as forgerock.MetadataCallback;
-            const parsed = PIProtect.getDerivedCallback(cb, 0);
+            const parsed = PIProtect.getDerivedCallback(step);
 
             try {
               if ('getConfig' in parsed) {
@@ -63,8 +60,7 @@ function autoscript() {
               ) as forgerock.MetadataCallback;
 
               const parsed = cb.getDerivedCallback(
-                cb,
-                0,
+                step,
               ) as forgerock.PingOneProtectInitializeCallback;
               const hiddenCb = (step as forgerock.Step).getCallbackOfType(
                 forgerock.CallbackType.HiddenValueCallback,
@@ -85,13 +81,8 @@ function autoscript() {
 
         mergeMap(async (step) => {
           console.warn(step);
-          const metadataCb = (step as forgerock.Step).getCallbackOfType(
-            forgerock.CallbackType.MetadataCallback,
-          ) as forgerock.MetadataCallback;
-
           const parsed = PIProtect.getDerivedCallback(
-            metadataCb,
-            0,
+            step,
           ) as forgerock.PingOneProtectEvaluationCallback;
 
           try {
