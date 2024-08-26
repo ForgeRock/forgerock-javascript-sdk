@@ -46,27 +46,19 @@ function autoscript() {
       .pipe(
         mergeMap(
           (step) => {
-            const parsed = PIProtect.getDerivedCallback(step);
+            const { metadataCallback, clientError } = PIProtect.handlePingMarketplaceNodes(step);
 
             try {
-              if ('getConfig' in parsed) {
-                const config = parsed.getConfig();
-                console.log('start protect');
-                return PIProtect.start(config);
-              }
+              const config = metadataCallback.getData();
+
+              console.log('start protect');
+              return PIProtect.start(config);
             } catch (err) {
               const cb = (step as forgerock.Step).getCallbackOfType(
                 'MetadataCallback',
               ) as forgerock.MetadataCallback;
 
-              const parsed = cb.getDerivedCallback(
-                step,
-              ) as forgerock.PingOneProtectInitializeCallback;
-              const hiddenCb = (step as forgerock.Step).getCallbackOfType(
-                forgerock.CallbackType.HiddenValueCallback,
-              );
-              console.log('ERROR ');
-              parsed.setClientError('we had a failure', hiddenCb);
+              clientError.setInputValue('we had a failure');
             }
           },
           (step) => {
@@ -81,19 +73,17 @@ function autoscript() {
 
         mergeMap(async (step) => {
           console.warn(step);
-          const parsed = PIProtect.getDerivedCallback(
-            step,
-          ) as forgerock.PingOneProtectEvaluationCallback;
+          const { metadataCallback, clientError, input } =
+            PIProtect.handlePingMarketplaceNodes(step);
 
           try {
-            console.log('getting data');
             const data = await PIProtect.getData();
 
             const hiddenCb = (step as forgerock.Step).getCallbacksOfType(
               forgerock.CallbackType.HiddenValueCallback,
             )[0] as forgerock.HiddenValueCallback;
 
-            hiddenCb.setInputValue(data);
+            input.setInputValue(data);
 
             console.log('Submitting ping protect evaluation');
             return forgerock.FRAuth.next(step);
