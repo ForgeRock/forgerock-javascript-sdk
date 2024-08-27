@@ -24,6 +24,7 @@ import PingOneProtectEvaluationCallback from './ping-protect-evaluation-callback
 import PingOneProtectInitializeCallback from './ping-protect-initialize-callback';
 import PollingWaitCallback from './polling-wait-callback';
 import ReCaptchaCallback from './recaptcha-callback';
+import ReCaptchaEnterpriseCallback from './recaptcha-enterprise-callback';
 import RedirectCallback from './redirect-callback';
 import SelectIdPCallback from './select-idp-callback';
 import SuspendedTextOutputCallback from './suspended-text-output-callback';
@@ -68,6 +69,8 @@ function createCallback(callback: Callback): FRCallback {
       return new PollingWaitCallback(callback);
     case CallbackType.ReCaptchaCallback:
       return new ReCaptchaCallback(callback);
+    case CallbackType.ReCaptchaEnterpriseCallback:
+      return new ReCaptchaEnterpriseCallback(callback);
     case CallbackType.RedirectCallback:
       return new RedirectCallback(callback);
     case CallbackType.SelectIdPCallback:
