@@ -1,28 +1,5 @@
-import { vi, expect, test, describe, it } from 'vitest';
+import { vi, expect, describe, it } from 'vitest';
 import { PIProtect } from './ping-protect';
-import {
-  standardPingProtectEvaluationStep,
-  standardPingProtectInitializeStep,
-} from './test/mock-data';
-
-test('returns initializeCallback', () => {
-  const step = standardPingProtectInitializeStep;
-
-  const result = PIProtect.handlePingMarketplaceNodes(step);
-  expect(result).toHaveProperty('clientError');
-  expect(result).toHaveProperty('metadataCallback');
-  expect(result).not.toHaveProperty('input');
-});
-
-test('returns evaluation callback', () => {
-  const step = standardPingProtectEvaluationStep;
-
-  const result = PIProtect.handlePingMarketplaceNodes(step);
-
-  expect(result).toHaveProperty('clientError');
-  expect(result).toHaveProperty('metadataCallback');
-  expect(result).toHaveProperty('input');
-});
 
 describe('PIProtect', () => {
   it('should be defined', () => {

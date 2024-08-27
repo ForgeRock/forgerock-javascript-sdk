@@ -1,5 +1,12 @@
-import { FRStep } from '@forgerock/javascript-sdk';
-import { HandleCallbackGroup } from './HandleCallbackGroup';
+import {
+  CallbackType,
+  FRStep,
+  HiddenValueCallback,
+  MetadataCallback,
+  PingOneProtectEvaluationCallback,
+  PingOneProtectInitializeCallback,
+} from '@forgerock/javascript-sdk';
+import { ProtectEvaluationConfig, ProtectInitializeConfig } from './ping-protect.types';
 
 export interface Identifiers {
   [key: string]: string;
@@ -41,6 +48,10 @@ declare global {
  * @class PIProtect - Class to interact with the underlying PingOne Signals SDK
  */
 export abstract class PIProtect {
+  /** ***********************************************************************************************
+   * The following methods are methods for the interacting with PingOne Signals SDK
+   */
+
   /**
    * @method getData - Method to get the device data
    * @returns {Promise<string>} - Returns the device data
@@ -90,7 +101,173 @@ export abstract class PIProtect {
     window._pingOneSignals.resumeBehavioralData();
   }
 
-  public static handlePingMarketplaceNodes(step: FRStep) {
-    return HandleCallbackGroup.getCallbacks(step);
+  /** ***********************************************************************************************
+   * Required when using the Ping Protect Marketplace nodes, which has generic callbacks
+   * But, can be used for native nodes and/or either callback type
+   */
+
+  public static getPauseBehavioralData(step: FRStep): boolean {
+    // Check for native callback first
+    try {
+      const nativeCallback = step.getCallbackOfType<PingOneProtectEvaluationCallback>(
+        CallbackType.PingOneProtectEvaluationCallback,
+      );
+
+      const shouldPause = nativeCallback?.getPauseBehavioralData();
+      return shouldPause || false;
+    } catch (err) {
+      // Do nothing
+    }
+
+    // If we are here, we are dealing with Marketplace nodes
+    const cbs = step.getCallbacksOfType(CallbackType.MetadataCallback);
+
+    if (cbs.length) {
+      return false;
+    }
+
+    const protectMetadataCb = cbs.find((cb) => {
+      const metadataCallback = cb as MetadataCallback;
+      const data = metadataCallback.getData() as { _type: string; _action: string };
+      return data._type === 'PingOneProtect';
+    });
+
+    if (!protectMetadataCb) {
+      return false;
+    }
+
+    const data: ProtectInitializeConfig | ProtectEvaluationConfig = (
+      protectMetadataCb as MetadataCallback
+    ).getData();
+
+    if (data._action === 'protect_risk_evaluation') {
+      return false;
+    } else {
+      return !!(data as ProtectInitializeConfig).behavioralDataCollection;
+    }
+  }
+
+  public static getNodeConfig(step: FRStep): ProtectInitializeConfig | undefined {
+    // Check for native callback first
+    try {
+      const nativeCallback = step.getCallbackOfType<PingOneProtectInitializeCallback>(
+        CallbackType.PingOneProtectInitializeCallback,
+      );
+
+      const config = nativeCallback?.getConfig() as ProtectInitializeConfig;
+      return config;
+    } catch (err) {
+      // Do nothing
+    }
+    const cbs = step.getCallbacksOfType(CallbackType.MetadataCallback);
+
+    if (cbs.length) {
+      return undefined;
+    }
+
+    const protectMetadataCb = cbs.find((cb) => {
+      const metadataCallback = cb as MetadataCallback;
+      const data = metadataCallback.getData() as { _type: string; _action: string };
+      return data._action === 'protect_initialize';
+    });
+
+    if (!protectMetadataCb) {
+      return undefined;
+    }
+
+    const data = (protectMetadataCb as MetadataCallback).getData() as ProtectInitializeConfig;
+
+    return data;
+  }
+
+  public static getPingProtectType(step: FRStep): 'initialize' | 'evaluate' | 'none' {
+    const cbs = step.getCallbacksOfType(CallbackType.MetadataCallback);
+
+    if (cbs.length) {
+      return 'none';
+    }
+
+    const protectMetadataCb = cbs.find((cb) => {
+      const metadataCallback = cb as MetadataCallback;
+      const data = metadataCallback.getData() as { _type: string; _action: string };
+      return data._type === 'PingOneProtect';
+    });
+
+    if (!protectMetadataCb) {
+      return 'none';
+    }
+
+    const data = (protectMetadataCb as MetadataCallback).getData() as ProtectInitializeConfig;
+
+    return data._action === 'protect_initialize' ? 'initialize' : 'evaluate';
+  }
+
+  public static setNodeClientError(step: FRStep, value: string): void {
+    // Check for native callback first
+    const nativeEvaluationCallback = step.getCallbacksOfType<PingOneProtectEvaluationCallback>(
+      CallbackType.PingOneProtectEvaluationCallback,
+    );
+    const nativeInitializeCallback = step.getCallbacksOfType<PingOneProtectInitializeCallback>(
+      CallbackType.PingOneProtectInitializeCallback,
+    );
+    const arr = [...nativeEvaluationCallback, ...nativeInitializeCallback];
+
+    if (arr.length) {
+      const cb = arr[0];
+      cb.setClientError(value);
+      return;
+    }
+
+    // If we are here, we are dealing with Marketplace nodes
+    const cbs = step.getCallbacksOfType(CallbackType.HiddenValueCallback);
+
+    if (cbs.length) {
+      return;
+    }
+
+    const clientErrorCb = cbs.find((cb) => {
+      const hiddenValueCallback = cb as HiddenValueCallback;
+      const output = hiddenValueCallback.getOutputByName<string>('id', '');
+      return output === 'clientError';
+    });
+
+    if (!clientErrorCb) {
+      return;
+    }
+
+    (clientErrorCb as HiddenValueCallback).setInputValue(value);
+  }
+
+  public static setNodeInputValue(step: FRStep, value: string): void {
+    // Check for native callback first
+    try {
+      const nativeCallback = step.getCallbackOfType<PingOneProtectEvaluationCallback>(
+        CallbackType.PingOneProtectEvaluationCallback,
+      );
+
+      nativeCallback?.setData(value);
+      return;
+    } catch (err) {
+      // Do nothing
+    }
+
+    // If we are here, we are dealing with Marketplace nodes
+    const cbs = step.getCallbacksOfType(CallbackType.HiddenValueCallback);
+
+    if (cbs.length) {
+      return;
+    }
+
+    const inputCb = cbs.find((cb) => {
+      const hiddenValueCallback = cb as HiddenValueCallback;
+      const output = hiddenValueCallback.getOutputByName<string>('id', '');
+      return output === 'pingone_risk_evaluation_signals';
+    });
+
+    if (!inputCb) {
+      return;
+    }
+
+    (inputCb as HiddenValueCallback).setInputValue(value);
   }
 }
