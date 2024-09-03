@@ -1,11 +1,20 @@
-import { DaVinciRequest } from './davinci.types';
-import { NodeState } from './node.types';
+/**
+ * Import the used types
+ */
+import type { SingleValueCollector } from './collector.types';
+import type { DaVinciRequest } from './davinci.types';
+import type { NextNode } from './node.types';
 
-export function transformSubmitRequest(node: NodeState): DaVinciRequest {
+/**
+ * @function transformSubmitRequest - Transforms a NextNode into a DaVinciRequest for form submissions
+ * @param {NextNode} node - The node to transform into a DaVinciRequest
+ * @returns {DaVinciRequest} - The transformed request object
+ */
+export function transformSubmitRequest(node: NextNode): DaVinciRequest {
   // Filter out ActionCollectors as they are not used in form submissions
-  const collectors = node.client.collectors?.filter(
+  const collectors = node.client?.collectors?.filter(
     (collector) => collector.category === 'SingleValueCollector',
-  );
+  ) as SingleValueCollector[];
 
   const formData = collectors?.reduce<{
     [key: string]: string | number | boolean;
@@ -21,14 +30,20 @@ export function transformSubmitRequest(node: NodeState): DaVinciRequest {
     parameters: {
       eventType: 'submit',
       data: {
-        actionKey: 'SIGNON',
+        actionKey: node.client?.action || '',
         formData: formData || {},
       },
     },
   };
 }
 
-export function transformActionRequest(node: NodeState, action: string): DaVinciRequest {
+/**
+ * @function transformActionRequest - Transforms a NextNode into a DaVinciRequest for action requests
+ * @param {NextNode} node - The node to transform into a DaVinciRequest
+ * @param {string} action - The action to transform into a DaVinciRequest
+ * @returns {DaVinciRequest} - The transformed request object
+ */
+export function transformActionRequest(node: NextNode, action: string): DaVinciRequest {
   return {
     id: node.server.id || '',
     eventName: node.server.eventName || '',
