@@ -1,2 +1,1 @@
-export * from './lib/davinci.api';
-export * from './lib/davinci.types';
+export { davinci } from './lib/client.store';
