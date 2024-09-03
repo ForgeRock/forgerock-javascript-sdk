@@ -3,7 +3,7 @@ import { describe, it, expect } from 'vitest';
 import { returnActionCollector } from './collector.utils';
 import { returnSingleValueCollector } from './collector.utils';
 
-import { ActionCollectorTypes, SingleValueCollectorTypes } from './node.types';
+import { ActionCollectorTypes, SingleValueCollectorTypes } from './collector.types';
 import { DaVinciField } from './davinci.types';
 
 describe('returnActionCollector', () => {
