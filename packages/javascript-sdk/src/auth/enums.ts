@@ -36,6 +36,7 @@ enum CallbackType {
   PingOneProtectInitializeCallback = 'PingOneProtectInitializeCallback',
   PollingWaitCallback = 'PollingWaitCallback',
   ReCaptchaCallback = 'ReCaptchaCallback',
+  ReCaptchaEnterpriseCallback = 'ReCaptchaEnterpriseCallback',
   RedirectCallback = 'RedirectCallback',
   SelectIdPCallback = 'SelectIdPCallback',
   StringAttributeInputCallback = 'StringAttributeInputCallback',

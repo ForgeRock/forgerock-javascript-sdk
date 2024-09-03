@@ -1118,3 +1118,44 @@ export const wellKnownPing = {
   ],
   code_challenge_methods_supported: ['plain', 'S256'],
 };
+
+export const recaptchaEnterpriseCallback = {
+  authId: 'foo',
+  callbacks: [
+    {
+      type: 'ReCaptchaEnterpriseCallback',
+      output: [
+        {
+          name: 'recaptchaSiteKey',
+          value: '6LdSu_spAAAAAKz3UhIy4JYQld2lm_WRt7dEhf9T',
+        },
+        {
+          name: 'captchaApiUri',
+          value: 'https://www.google.com/recaptcha/enterprise.js',
+        },
+        {
+          name: 'captchaDivClass',
+          value: 'g-recaptcha',
+        },
+      ],
+      input: [
+        {
+          name: 'IDToken1token',
+          value: '',
+        },
+        {
+          name: 'IDToken1action',
+          value: '',
+        },
+        {
+          name: 'IDToken1clientError',
+          value: '',
+        },
+        {
+          name: 'IDToken1payload',
+          value: '',
+        },
+      ],
+    },
+  ],
+};
