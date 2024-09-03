@@ -10,6 +10,23 @@
 
 import FRCallback from '.';
 import type { Callback } from '../../auth/interfaces';
+//"input": [
+//                    {
+//                        "name": "IDToken1token",
+//                        "value": ""
+//                    },
+//                    {
+//                        "name": "IDToken1action",
+//                        "value": ""
+//                    },
+//                    {
+//                        "name": "IDToken1clientError",
+//                        "value": ""
+//                    },
+//                    {
+//                        "name": "IDToken1payload",
+//                        "value": ""
+//                    }
 
 /**
  * Represents a callback used to integrate reCAPTCHA.
@@ -30,10 +47,43 @@ class ReCaptchaEnterpriseCallback extends FRCallback {
   }
 
   /**
+   * Get the api url
+   */
+  public getApiUrl(): string {
+    return this.getOutputByName<string>('captchaApiUri', '');
+  }
+  /**
+   * Get the class name
+   */
+  public getElementClass(): string {
+    return this.getOutputByName<string>('captchaDivClass', '');
+  }
+  /**
    * Sets the reCAPTCHA result.
    */
   public setResult(result: string): void {
     this.setInputValue(result);
+  }
+
+  /**
+   * Set client client error
+   */
+  public setClientError(error: string) {
+    this.setInputValue(error, 'IDToken1clientError');
+  }
+
+  /**
+   * Set the recaptcha payload
+   */
+  public setPayload(payload: unknown) {
+    this.setInputValue(payload, 'IDToken1payload');
+  }
+
+  /**
+   * Set the recaptcha action
+   */
+  public setAction(action: string) {
+    this.setInputValue(action, 'IDToken1action');
   }
 }
 
