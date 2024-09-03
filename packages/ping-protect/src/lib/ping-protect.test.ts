@@ -4,7 +4,7 @@ import {
   noProtectType,
   standardPingProtectEvaluationStep,
   standardPingProtectInitializeStep,
-} from './marketplace-data.mock';
+} from './ping-protect.mock.data';
 import { CallbackType, HiddenValueCallback } from '@forgerock/javascript-sdk';
 
 describe('PIProtect', () => {

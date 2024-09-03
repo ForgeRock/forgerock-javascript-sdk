@@ -55,8 +55,7 @@ function autoscript() {
               const cb = (step as forgerock.Step).getCallbackOfType(
                 'MetadataCallback',
               ) as forgerock.MetadataCallback;
-
-              clientError.setInputValue('we had a failure');
+              PIProtect.setNodeClientError('Error!');
             }
           },
           (step) => {

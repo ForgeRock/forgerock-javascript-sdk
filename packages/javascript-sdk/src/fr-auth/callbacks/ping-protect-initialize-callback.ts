@@ -10,7 +10,6 @@
 
 import FRCallback from '.';
 import type { Callback } from '../../auth/interfaces';
-import HiddenValueCallback from './hidden-value-callback';
 
 /**
  * @class - Represents a callback used to initialize and start device and behavioral data collection.
@@ -42,69 +41,9 @@ class PingOneProtectInitializeCallback extends FRCallback {
     return config;
   }
 
-  public setClientError(errorMessage: string, callback?: HiddenValueCallback): void {
-    if (callback) {
-      callback.setInputValue(errorMessage, /clientError/);
-    }
+  public setClientError(errorMessage: string): void {
     this.setInputValue(errorMessage, /clientError/);
   }
 }
 
 export default PingOneProtectInitializeCallback;
-
-/**
- * Example of callback:
-
-{
-  type: 'PingOneProtectInitializeCallback',
-  output: [
-    {
-      name: 'envId',
-      value: '02fb4743-189a-4bc7-9d6c-a919edfe6447',
-    },
-    {
-      name: 'consoleLogEnabled',
-      value: true,
-    },
-    {
-      name: 'deviceAttributesToIgnore',
-      value: [],
-    },
-    {
-      name: 'customHost',
-      value: '',
-    },
-    {
-      name: 'lazyMetadata',
-      value: false,
-    },
-    {
-      name: 'behavioralDataCollection',
-      value: true,
-    },
-    {
-      name: 'deviceKeyRsyncIntervals',
-      value: 14,
-    },
-    {
-      name: 'enableTrust',
-      value: false,
-    },
-    {
-      name: 'disableTags',
-      value: false,
-    },
-    {
-      name: 'disableHub',
-      value: false,
-    },
-  ],
-  input: [
-    {
-      name: 'IDToken1clientError',
-      value: '',
-    },
-  ],
-}
-
-*/

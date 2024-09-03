@@ -104,3 +104,47 @@ export const standardPingProtectEvaluationStep = new FRStep({
     },
   ],
 });
+
+export const noProtectType = new FRStep({
+  authId: 'foo',
+  callbacks: [
+    {
+      type: 'HiddenValueCallback' as CallbackType.HiddenValueCallback,
+      output: [
+        {
+          name: 'value',
+          value: '',
+        },
+        {
+          name: 'id',
+          value: 'pingone_risk_evaluation_signals',
+        },
+      ],
+      input: [
+        {
+          name: 'IDToken1',
+          value: 'pingone_risk_evaluation_signals',
+        },
+      ],
+    },
+    {
+      type: 'HiddenValueCallback' as CallbackType.HiddenValueCallback,
+      output: [
+        {
+          name: 'value',
+          value: '',
+        },
+        {
+          name: 'id',
+          value: 'clientError',
+        },
+      ],
+      input: [
+        {
+          name: 'IDToken1',
+          value: 'clientError',
+        },
+      ],
+    },
+  ],
+});
