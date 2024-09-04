@@ -1,3 +1,6 @@
+/**
+ * Import the PKCE and ResponseType utilities from the JavaScript SDK
+ */
 import { PKCE, ResponseType } from '@forgerock/javascript-sdk';
 import { generateAndStoreAuthUrlValues } from '@forgerock/javascript-sdk/src/oauth2-client/state-pkce';
 
@@ -19,11 +22,11 @@ export interface GetAuthorizationUrlOptions {
  * @function createAuthorizeUrl - Create authorization URL for initial call to DaVinci
  * @param baseUrl {string}
  * @param options {GetAuthorizationUrlOptions}
- * @returns
+ * @returns {Promise<string>} - the authorization URL
  */
 export async function createAuthorizeUrl(
   baseUrl: string,
-  options: GetAuthorizationUrlOptions,
+  options: GetAuthorizationUrlOptions
 ): Promise<string> {
   /**
    * Generate state and verifier for PKCE

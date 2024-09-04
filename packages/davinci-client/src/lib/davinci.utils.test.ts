@@ -1,15 +1,16 @@
 import { describe, it, expect } from 'vitest';
 
 import { transformSubmitRequest, transformActionRequest } from './davinci.utils';
-import { NodeState } from './node.types';
+import { NextNode } from './node.types';
 
 describe('transformNextRequest', () => {
   it('should transform node state to DaVinciRequest for next request', () => {
-    const node: NodeState = {
+    const node: NextNode = {
       cache: {
         key: '123',
       },
       client: {
+        action: 'SIGNON',
         collectors: [
           {
             category: 'SingleValueCollector',
@@ -29,12 +30,13 @@ describe('transformNextRequest', () => {
           },
         ],
       },
+      error: null,
       server: {
         id: '123',
         eventName: 'login',
         interactionId: '456',
       },
-      status: 'continue',
+      status: 'next',
     };
 
     const expectedRequest = {
@@ -63,14 +65,16 @@ describe('transformNextRequest', () => {
         key: '123',
       },
       client: {
+        action: 'SIGNON',
         collectors: [],
       },
+      error: null,
       server: {
         id: '123',
         eventName: 'login',
         interactionId: '456',
       },
-      status: 'continue',
+      status: 'next' as const,
     };
 
     const expectedRequest = {
@@ -98,14 +102,16 @@ describe('transformActionRequest', () => {
         key: '123',
       },
       client: {
+        action: 'SIGNON',
         collectors: [],
       },
+      error: null,
       server: {
         id: '123',
         eventName: 'click',
         interactionId: '456',
       },
-      status: 'continue',
+      status: 'next' as const,
     };
     const action = 'SUBMIT_FORM';
 
