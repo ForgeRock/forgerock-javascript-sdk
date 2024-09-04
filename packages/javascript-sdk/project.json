@@ -13,7 +13,7 @@
     },
     "packagejson": {
       "dependsOn": ["package", "readme"],
-      "command": "cp packages/javascript-sdk/package.json dist/packages/javascript-sdk"
+      "command": "cp packages/javascript-sdk/package.json packages/javascript-sdk/LICENSE dist/packages/javascript-sdk"
     },
     "readme": {
       "dependsOn": ["package"],

@@ -46,6 +46,8 @@ import {
   wellKnownForgeRock,
   wellKnownPing,
   recaptchaEnterpriseCallback,
+  MetadataMarketPlaceInitialize,
+  MetadataMarketPlacePingOneEvaluation,
 } from './responses.js';
 import initialRegResponse from './response.registration.js';
 import wait from './wait.js';
@@ -87,6 +89,8 @@ export default function (app) {
         res.json(pingProtectInitialize);
       } else if (req.query.authIndexValue === 'IDMSocialLogin') {
         res.json(selectIdPCallback);
+      } else if (req.query.authIndexValue === 'TEST_MetadataMarketPlace') {
+        res.json(MetadataMarketPlaceInitialize);
       } else if (req.query.authIndexValue === 'AMSocialLogin') {
         res.json(idpChoiceCallback);
       } else if (req.query.authIndexValue === 'RecaptchaEnterprise') {
@@ -113,7 +117,6 @@ export default function (app) {
       console.log(req.body.callbacks);
       if (req.body.callbacks[0].type === 'NameCallback') {
         const [username, password] = req.body.callbacks;
-        console.log(username, password);
         if (username && username.type === 'NameCallback' && username.input[0].value === 'demo') {
           if (
             password &&
@@ -124,14 +127,45 @@ export default function (app) {
           }
         }
       } else {
-        console.log('in the else');
         const [captcha] = req.body.callbacks;
-        console.log('here?', captcha);
         if (captcha && captcha.input[0].value === '123') {
-          console.log('success?');
           res.json(authSuccess);
         }
       }
+    } else if (req.query.authIndexValue === 'TEST_MetadataMarketPlace') {
+      if (req.body.callbacks.find((cb) => cb.type === 'MetadataCallback')) {
+        const metadataCb = req.body.callbacks.find((cb) => cb.type === 'MetadataCallback');
+        const action = metadataCb.output[0].value._action;
+        console.log('the action', action);
+        if (action === 'protect_initialize') {
+          if (req.body.callbacks.find((cb) => cb.type === 'HiddenValueCallback')) {
+            const hiddenCb = req.body.callbacks.find((cb) => cb.type === 'HiddenValueCallback');
+            if (hiddenCb.input[0].value === 'we had an error') {
+              return res.json(authFail);
+            }
+            return res.json(MetadataMarketPlacePingOneEvaluation);
+          }
+        }
+        if (action === 'protect_risk_evaluation') {
+          if (req.body.callbacks.find((cb) => cb.type === 'HiddenValueCallback')) {
+            const hiddenCb = req.body.callbacks.find((cb) => cb.type === 'HiddenValueCallback');
+            if (hiddenCb.input[0].value === 'we had an error') {
+              return res.json(authFail);
+            }
+            return res.json(authSuccess);
+          }
+        }
+      } else {
+        if (req.body.callbacks.find((cb) => cb.type === 'PingOneEvaluationCallback')) {
+          const cb = req.body.callbacks.find((cb) => cb.type === 'PingOneEvaluationCallback');
+          if (cb.input[0].value === 'the value to set') {
+            return res.json(authSuccess);
+          } else {
+            return res.json(authFail);
+          }
+        }
+      }
+      return res.json(MetadataMarketPlacePingOneEvaluation);
     } else if (req.query.authIndexValue === 'QRCodeTest') {
       // If QR Code callbacks are being returned, return success
       if (req.body.callbacks.find((cb) => cb.type === 'HiddenValueCallback')) {

@@ -20,7 +20,6 @@ export default defineConfig({
       output: {
         dir: 'dist/packages/javascript-sdk',
         preserveModules: true,
-        preserveModulesRoot: 'packages/javascript-sdk',
       },
     },
   },
@@ -28,8 +27,9 @@ export default defineConfig({
     dts({
       copyDtsFiles: true,
       outDir: '../../dist',
+      declarationOnly: true,
       rollupTypes: false,
-      insertTypesEntry: true,
+      insertTypesEntry: false,
       tsconfigPath: './tsconfig.lib.json',
       afterBuild: (files) => {
         return files.forEach((value, key) => copyFileSync(key, key.replace('.ts', '.cts')));
