@@ -1,0 +1,7 @@
+{
+  "name": "davinci-app",
+  "description": "Ping DaVinci Client Test App",
+  "private": true,
+  "devDependencies": {},
+  "version": "0.0.0"
+}

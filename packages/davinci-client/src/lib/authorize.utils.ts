@@ -13,6 +13,7 @@ import { generateAndStoreAuthUrlValues } from '@forgerock/javascript-sdk/src/oau
  */
 export interface GetAuthorizationUrlOptions {
   clientId: string;
+  login: 'redirect';
   redirectUri: string;
   responseType: string;
   scope: string;
@@ -26,13 +27,14 @@ export interface GetAuthorizationUrlOptions {
  */
 export async function createAuthorizeUrl(
   baseUrl: string,
-  options: GetAuthorizationUrlOptions
+  options: GetAuthorizationUrlOptions,
 ): Promise<string> {
   /**
    * Generate state and verifier for PKCE
    */
   const { authorizeUrlOptions } = generateAndStoreAuthUrlValues({
     clientId: options.clientId,
+    login: options.login,
     serverConfig: { baseUrl },
     responseType: ResponseType.Code,
   });

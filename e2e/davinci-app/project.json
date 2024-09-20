@@ -1,0 +1,71 @@
+{
+  "name": "davinci-app",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "e2e/davinci-app/src",
+  "tags": ["scope:app"],
+  "targets": {
+    "build": {
+      "executor": "@nx/vite:build",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "emptyOutDir": false,
+        "outputPath": "dist/e2e/davinci-app"
+      },
+      "configurations": {
+        "development": {
+          "mode": "development"
+        },
+        "production": {
+          "mode": "production"
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nx/vite:dev-server",
+      "dependsOn": ["davinci-app:build"],
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "davinci-app:build",
+        "host": "localhost",
+        "port": 5823
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "davinci-app:build:development",
+          "hmr": true
+        },
+        "production": {
+          "buildTarget": "davinci-app:build:production",
+          "hmr": false
+        }
+      }
+    },
+    "preview": {
+      "executor": "@nx/vite:preview-server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "davinci-app:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "davinci-app:build:development"
+        },
+        "production": {
+          "buildTarget": "davinci-app:build:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": [
+          "e2e/davinci-app/**/*.ts",
+          "e2e/davinci-app/**/*.tsx"
+        ]
+      }
+    }
+  }
+}
