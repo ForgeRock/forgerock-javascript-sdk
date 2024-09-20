@@ -8,5 +8,12 @@
   "dependencies": {
     "@forgerock/javascript-sdk": "*",
     "@reduxjs/toolkit": "^2.2.5"
+  },
+  "exports": {
+    ".": {
+      "import": "./src/index.js",
+      "require": "./src/index.js"
+    },
+    "./types": "./src/types.js"
   }
 }

@@ -1,5 +1,5 @@
-import { SingleValueCollector, ActionCollector } from './collector.types';
-import { ErrorDetail, Links } from './davinci.types';
+import type { SingleValueCollector, ActionCollector } from './collector.types';
+import type { ErrorDetail, Links } from './davinci.types';
 
 export interface DaVinciValidationError {
   code: string;
