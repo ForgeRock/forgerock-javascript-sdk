@@ -14,13 +14,13 @@ import {
   returnSocialLoginCollector,
   returnSubmitCollector,
   returnTextCollector,
-} from './collector.utils';
+} from './collector.utils.js';
 
 /**
  * Import the types
  */
-import { SingleValueCollector, ActionCollector } from './collector.types';
-import {
+import type { SingleValueCollector, ActionCollector } from './collector.types';
+import type {
   DaVinciField,
   DaVinciCacheEntry,
   DavinciErrorResponse,
@@ -28,7 +28,7 @@ import {
   DavinciSuccessResponse,
   DaVinciErrorCacheEntry,
 } from './davinci.types';
-import { NextNode, SuccessNode, ErrorNode, StartNode } from './node.types';
+import type { NextNode, SuccessNode, ErrorNode, StartNode } from './node.types';
 
 /**
  * @const initialNodeState - Initial state for the node slice

@@ -7,14 +7,14 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query';
 /**
  * Import internal modules
  */
-import { createAuthorizeUrl } from './authorize.utils';
-import { nodeSlice } from './node.slice';
-import { transformActionRequest, transformSubmitRequest } from './davinci.utils';
+import { createAuthorizeUrl } from './authorize.utils.js';
+import { nodeSlice } from './node.slice.js';
+import { transformActionRequest, transformSubmitRequest } from './davinci.utils.js';
 
 /**
  * Import the DaVinci types
  */
-import {
+import type {
   DaVinciAction,
   DaVinciCacheEntry,
   DaVinciErrorCacheEntry,
@@ -101,7 +101,7 @@ export const davinciApi = createApi({
         if (cacheEntry.isSuccess && 'eventName' in cacheEntry.data) {
           const cacheNextEntry = cacheEntry as DaVinciCacheEntry<DavinciNextResponse>;
           api.dispatch(nodeSlice.actions.next(cacheNextEntry));
-        } else if (cacheEntry.isSuccess && 'success' in cacheEntry.data) {
+        } else if (cacheEntry.isSuccess && cacheEntry.data.status === 'COMPLETED') {
           const cacheSuccessEntry = cacheEntry as DaVinciCacheEntry<DavinciSuccessResponse>;
           api.dispatch(nodeSlice.actions.success(cacheSuccessEntry));
         } else if (cacheEntry.isError) {
@@ -157,7 +157,7 @@ export const davinciApi = createApi({
         if (cacheEntry.isSuccess && 'eventName' in cacheEntry.data) {
           const cacheNextEntry = cacheEntry as DaVinciCacheEntry<DavinciNextResponse>;
           api.dispatch(nodeSlice.actions.next(cacheNextEntry));
-        } else if (cacheEntry.isSuccess && 'success' in cacheEntry.data) {
+        } else if (cacheEntry.isSuccess && cacheEntry.data.status === 'COMPLETED') {
           const cacheSuccessEntry = cacheEntry as DaVinciCacheEntry<DavinciSuccessResponse>;
           api.dispatch(nodeSlice.actions.success(cacheSuccessEntry));
         } else if (cacheEntry.isError) {
@@ -192,6 +192,7 @@ export const davinciApi = createApi({
         try {
           const authorizeUrl = await createAuthorizeUrl(baseUrl, {
             clientId: state?.config?.clientId,
+            login: 'redirect', // TODO: improve this in SDK to be more semantic
             redirectUri: state?.config?.redirectUri,
             responseType: state?.config?.responseType,
             scope: state?.config?.scope,
@@ -232,7 +233,7 @@ export const davinciApi = createApi({
         if (cacheEntry.isSuccess && 'eventName' in cacheEntry.data) {
           const cacheNextEntry = cacheEntry as DaVinciCacheEntry<DavinciNextResponse>;
           api.dispatch(nodeSlice.actions.next(cacheNextEntry));
-        } else if (cacheEntry.isSuccess && 'success' in cacheEntry.data) {
+        } else if (cacheEntry.isSuccess && cacheEntry.data.status === 'COMPLETED') {
           const cacheSuccessEntry = cacheEntry as DaVinciCacheEntry<DavinciSuccessResponse>;
           api.dispatch(nodeSlice.actions.success(cacheSuccessEntry));
         } else if (cacheEntry.isError) {

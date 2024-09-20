@@ -45,7 +45,7 @@ export interface ActionCollector {
   };
 }
 
-export interface FlowCollector extends ActionCollector {}
-export interface SocialLoginCollector extends ActionCollector {}
-export interface PasswordCollector extends SingleValueCollector {}
-export interface TextCollector extends SingleValueCollector {}
+export type FlowCollector = ActionCollector;
+export type SocialLoginCollector = ActionCollector;
+export type PasswordCollector = SingleValueCollector;
+export type TextCollector = SingleValueCollector;

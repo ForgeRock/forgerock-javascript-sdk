@@ -112,5 +112,7 @@
   "nx": {
     "includedScripts": []
   },
-  "dependencies": {}
+  "dependencies": {
+    "@reduxjs/toolkit": "^2.2.7"
+  }
 }

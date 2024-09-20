@@ -4,6 +4,7 @@ import type * as nodes from './lib/node.types';
 
 export type DaVinciConfig = config.DaVinciConfig;
 
+export type StartNode = nodes.StartNode;
 export type NextNode = nodes.NextNode;
 export type ErrorNode = nodes.ErrorNode;
 export type SuccessNode = nodes.SuccessNode;

@@ -113,8 +113,7 @@ export const error1b = {
           {
             code: 'INVALID_VALUE',
             target: 'newPassword',
-            message:
-              'New password did not satisfy password policy requirements',
+            message: 'New password did not satisfy password policy requirements',
             innerError: {
               unsatisfiedRequirements: ['history'],
               history:
@@ -178,8 +177,7 @@ export const error1d = {
       rawResponse: {
         id: 'cc33f141-18ea-4e94-ad2b-ce031df11b3a',
         code: 'INVALID_DATA',
-        message:
-          'Validation Error : [email must be a well-formed email address]',
+        message: 'Validation Error : [email must be a well-formed email address]',
         details: [
           {
             code: 'INVALID_VALUE',

@@ -1,7 +1,8 @@
 import { describe, it, expect } from 'vitest';
 
-import { transformSubmitRequest, transformActionRequest } from './davinci.utils';
-import { NextNode } from './node.types';
+import { transformSubmitRequest, transformActionRequest } from './davinci.utils.js';
+
+import type { NextNode } from './node.types';
 
 describe('transformNextRequest', () => {
   it('should transform node state to DaVinciRequest for next request', () => {

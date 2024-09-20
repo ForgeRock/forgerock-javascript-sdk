@@ -6,22 +6,22 @@ import { configureStore } from '@reduxjs/toolkit';
 /**
  * Import RTK slices and api
  */
-import { nodeSlice } from './node.slice';
-import { davinciApi } from './davinci.api';
-import { configSlice } from './config.slice';
+import { nodeSlice } from './node.slice.js';
+import { davinciApi } from './davinci.api.js';
+import { configSlice } from './config.slice.js';
 
 /**
  * Import the DaVinciRequest types
  */
-import { DaVinciConfig } from './config.types';
-import { DaVinciAction, DaVinciRequest } from './davinci.types';
-import { SingleValueCollector } from './collector.types';
+import type { DaVinciConfig } from './config.types';
+import type { DaVinciAction, DaVinciRequest } from './davinci.types';
+import type { SingleValueCollector } from './collector.types';
 
 /**
  * Create a client function that returns a set of methods
  * to interact with and normalize the DaVinci API.
  *
- * @function davinci - returns an "observable" client for DaVinci flows
+ * @function davinciClient - returns an "observable" client for DaVinci flows
  * @param {ConfigurationOptions} options - the configuration options for the client
  * @returns {Observable} - an observable client for DaVinci flows
  */
