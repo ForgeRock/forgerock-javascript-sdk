@@ -1,7 +1,10 @@
 {
   "name": "@forgerock/javascript-sdk",
   "description": "ForgeRock JavaScript SDK",
-  "engines": { "node": "^20 || ^18", "npm": ">= 7.0.0" },
+  "engines": {
+    "node": "^20 || ^18",
+    "npm": ">= 7.0.0"
+  },
   "private": true,
   "scripts": {
     "build": "nx affected --target=build",
@@ -30,6 +33,7 @@
   },
   "homepage": "https://github.com/ForgeRock/forgerock-javascript-sdk#readme",
   "devDependencies": {
+    "@arethetypeswrong/cli": "^0.16.4",
     "@commitlint/cli": "^19.1.0",
     "@commitlint/config-conventional": "^19.1.0",
     "@commitlint/prompt": "^19.1.0",
@@ -100,7 +104,7 @@
     "uuid": "^9.0.1",
     "verdaccio": "^5.29.2",
     "vite": "^5.2.6",
-    "vite-plugin-dts": "^3.8.3",
+    "vite-plugin-dts": "^4.2.2",
     "vite-plugin-eslint": "^1.8.1",
     "vite-tsconfig-paths": "^4.3.2",
     "vitest": "^1.4.0",
@@ -108,8 +112,11 @@
   },
   "workspaces": ["e2e/*", "packages/*"],
   "config": {
-    "commitizen": { "path": "./node_modules/cz-conventional-changelog" }
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   },
-  "nx": { "includedScripts": [] },
-  "dependencies": {}
+  "nx": {
+    "includedScripts": []
+  }
 }

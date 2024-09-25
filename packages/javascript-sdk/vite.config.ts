@@ -3,17 +3,6 @@ import { defineConfig } from 'vite';
 import dts from 'vite-plugin-dts';
 import { copyFileSync } from 'fs';
 
-// // These options were migrated by @nx/vite:convert-to-inferred from the project.json file.
-// const configValues = { default: {} };
-
-// // Determine the correct configValue to use based on the configuration
-// const nxConfiguration = process.env.NX_TASK_TARGET_CONFIGURATION ?? 'default';
-
-// const options = {
-//   ...configValues.default,
-//   ...(configValues[nxConfiguration] ?? {}),
-// };
-
 export default defineConfig({
   root: __dirname,
   cacheDir: '../../node_modules/.vite/packages/javascript-sdk',
@@ -29,18 +18,16 @@ export default defineConfig({
     },
     rollupOptions: {
       output: {
-        dir: 'dist/packages/javascript-sdk',
+        dir: './dist',
         preserveModules: true,
+        preserveModulesRoot: 'src',
       },
     },
   },
   plugins: [
     dts({
-      copyDtsFiles: true,
-      outDir: '../../dist',
-      declarationOnly: true,
-      rollupTypes: false,
-      insertTypesEntry: false,
+      declarationOnly: false,
+      entryRoot: 'src',
       tsconfigPath: './tsconfig.lib.json',
       afterBuild: (files) => {
         return files.forEach((value, key) => copyFileSync(key, key.replace('.ts', '.cts')));
@@ -51,7 +38,7 @@ export default defineConfig({
     globals: true,
     environment: 'jsdom',
     include: ['src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
-
+    watch: !process.env['CI'],
     reporters: ['default'],
     setupFiles: ['./vitest.setup.ts'],
     coverage: {

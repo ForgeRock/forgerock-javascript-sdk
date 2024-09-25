@@ -2,7 +2,7 @@
   "targetDefaults": {
     "nx-release-publish": {
       "options": {
-        "packageRoot": "dist/packages/{projectName}"
+        "packageRoot": "packages/{projectName}/dist"
       }
     },
     "docs": {
@@ -31,6 +31,7 @@
       "cache": true
     },
     "@nx/eslint:lint": {
+      "dependsOn": ["^build", "^lint"],
       "inputs": ["default", "{workspaceRoot}/.eslintrc.json"],
       "cache": true
     },

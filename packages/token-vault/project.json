@@ -6,14 +6,14 @@
   "tags": ["scope:package"],
   "targets": {
     "build": {
-      "executor": "@nx/js:tsc",
-      "output": "dist/packages/token-vault",
-      "options": {
-        "tsConfig": "packages/token-vault/tsconfig.lib.json",
-        "main": "packages/javascript-sdk/src/index.ts",
-        "assets": ["packages/token-vault/src/*.md"],
-        "outputPath": "dist/packages/token-vault"
-      }
+      "inputs": [
+        "default",
+        "^default",
+        {
+          "externalDependencies": ["vite"]
+        }
+      ],
+      "outputs": ["{projectRoot}/{options.outDir}", "{projectRoot}/dist"]
     },
     "test": {
       "dependsOn": ["^test"],

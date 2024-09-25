@@ -9,14 +9,6 @@
       "command": "npx typedoc --options ./packages/ping-protect/typedoc.json"
     },
     "build": {
-      "dependsOn": ["readme"],
-      "command": "tsc -p packages/ping-protect/tsconfig.lib.json -outDir ../../dist --emitDeclarationOnly"
-    },
-    "readme": {
-      "dependsOn": ["package"],
-      "command": "cp packages/ping-protect/README.md dist/packages/ping-protect"
-    },
-    "package": {
       "inputs": [
         "default",
         "^default",
