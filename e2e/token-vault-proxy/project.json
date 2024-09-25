@@ -53,7 +53,8 @@
         "production": {
           "buildTarget": "token-vault-proxy:build:production"
         }
-      }
+      },
+      "dependsOn": ["build"]
     },
     "lint": {
       "executor": "@nx/eslint:lint",

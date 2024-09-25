@@ -43,6 +43,9 @@
       "cache": true,
       "dependsOn": ["^build"],
       "inputs": ["production", "^production"]
+    },
+    "e2e-ci--**/*": {
+      "dependsOn": ["^mock-api:build"]
     }
   },
   "parallel": 1,

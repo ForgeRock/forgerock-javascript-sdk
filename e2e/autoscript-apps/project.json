@@ -48,7 +48,8 @@
         "production": {
           "buildTarget": "autoscript-apps:build:production"
         }
-      }
+      },
+      "dependsOn": ["build"]
     }
   }
 }

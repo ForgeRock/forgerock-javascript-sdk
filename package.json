@@ -1,10 +1,7 @@
 {
   "name": "@forgerock/javascript-sdk",
   "description": "ForgeRock JavaScript SDK",
-  "engines": {
-    "node": "^20 || ^18",
-    "npm": ">= 7.0.0"
-  },
+  "engines": { "node": "^20 || ^18", "npm": ">= 7.0.0" },
   "private": true,
   "scripts": {
     "build": "nx affected --target=build",
@@ -41,18 +38,18 @@
     "@effect/platform-node": "^0.53.26",
     "@effect/schema": "^0.68.23",
     "@effect/vitest": "^0.6.7",
-    "@nrwl/devkit": "19.5.1",
-    "@nx/devkit": "19.5.1",
-    "@nx/esbuild": "19.5.1",
-    "@nx/eslint": "19.5.1",
-    "@nx/eslint-plugin": "19.5.1",
-    "@nx/express": "19.5.1",
-    "@nx/js": "19.5.1",
-    "@nx/node": "19.5.1",
-    "@nx/playwright": "19.5.1",
-    "@nx/vite": "19.5.1",
-    "@nx/web": "19.5.1",
-    "@nx/workspace": "19.5.1",
+    "@nrwl/devkit": "19.8.1",
+    "@nx/devkit": "19.8.1",
+    "@nx/esbuild": "19.8.1",
+    "@nx/eslint": "19.8.1",
+    "@nx/eslint-plugin": "19.8.1",
+    "@nx/express": "19.8.1",
+    "@nx/js": "19.8.1",
+    "@nx/node": "19.8.1",
+    "@nx/playwright": "19.8.1",
+    "@nx/vite": "19.8.1",
+    "@nx/web": "19.8.1",
+    "@nx/workspace": "19.8.1",
     "@playwright/test": "^1.43.0",
     "@swc-node/register": "1.9.2",
     "@swc/core": "1.5.7",
@@ -87,8 +84,8 @@
     "lint-staged": "^13.2.2",
     "mkcert": "^3.2.0",
     "npm-cli-login": "^1.0.0",
-    "nx": "19.5.1",
-    "nx-cloud": "19.0.0",
+    "nx": "19.8.1",
+    "nx-cloud": "19.1.0",
     "playwright": "^1.43.0",
     "prettier": "^3.2.5",
     "pretty-quick": "^4.0.0",
@@ -111,12 +108,8 @@
   },
   "workspaces": ["e2e/*", "packages/*"],
   "config": {
-    "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog"
-    }
+    "commitizen": { "path": "./node_modules/cz-conventional-changelog" }
   },
-  "nx": {
-    "includedScripts": []
-  },
+  "nx": { "includedScripts": [] },
   "dependencies": {}
 }
