@@ -3,13 +3,11 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "/e2e/token-vault-suites/src",
   "projectType": "application",
+  "tags": ["scope:e2e"],
+  "implicitDependencies": ["token-vault-app", "token-vault-proxy"],
   "targets": {
     "e2e": {
-      "executor": "@nx/playwright:playwright",
-      "options": {
-        "config": "e2e/token-vault-suites/playwright.config.ts",
-        "skipInstall": true
-      },
+      "options": {},
       "configurations": {
         "ui": {
           "ui": true
@@ -17,13 +15,11 @@
       }
     },
     "lint": {
-      "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["e2e/token-vault-suites/**/*.{ts,tsx,js,jsx}"]
+        "fix": true,
+        "ignore-path": ".eslintignore",
+        "args": ["**/*.ts"]
       }
     }
-  },
-  "tags": ["scope:e2e"],
-  "implicitDependencies": ["token-vault-app", "token-vault-proxy"]
+  }
 }

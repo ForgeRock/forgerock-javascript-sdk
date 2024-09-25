@@ -3,6 +3,7 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "packages/javascript-sdk/src",
   "projectType": "library",
+  "tags": ["scope:sdk", "scope:package"],
   "targets": {
     "docs": {
       "command": "npx typedoc --options packages/javascript-sdk/typedoc.json"
@@ -20,33 +21,37 @@
       "command": "cp packages/javascript-sdk/README.md dist/packages/javascript-sdk"
     },
     "package": {
-      "executor": "@nx/vite:build",
-      "outputs": ["{options.outputPath}"],
+      "dependsOn": ["^build"],
+      "inputs": [
+        "default",
+        "^default",
+        {
+          "externalDependencies": ["vite"]
+        }
+      ],
+      "outputs": ["{projectRoot}/{options.outDir}", "{projectRoot}/dist"],
       "options": {
-        "outputPath": "dist/packages/javascript-sdk",
-        "main": "packages/javascript-sdk/src/index.ts",
-        "tsConfig": "packages/javascript-sdk/tsconfig.lib.json",
-        "updateBuildableProjectDepsInPackageJson": false,
-        "generateExportsField": false,
-        "generatePackageJson": false,
-        "clean": true
+        "outDir": "../../dist/packages/javascript-sdk"
       }
     },
     "lint": {
-      "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["packages/javascript-sdk/**/*.ts"],
         "fix": true,
-        "ignorePath": ".gitignore"
+        "ignore-path": ".eslintignore",
+        "args": ["**/*.ts"]
       }
     },
     "test": {
-      "executor": "@nx/vite:test",
-      "outputs": ["{workspaceRoot}/coverage/packages/javascript-sdk"],
+      "dependsOn": ["^test"],
+      "inputs": [
+        "default",
+        "^default",
+        {
+          "externalDependencies": ["vitest"]
+        }
+      ],
       "options": {
-        "testPathPattern": ["packages/javascript-sdk/src"],
-        "codeCoverage": true
+        "testPathPattern": ["packages/javascript-sdk/src"]
       },
       "configurations": {
         "watch": {
@@ -55,6 +60,5 @@
         }
       }
     }
-  },
-  "tags": ["scope:sdk", "scope:package"]
+  }
 }

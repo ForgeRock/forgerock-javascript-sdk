@@ -20,6 +20,7 @@ export default defineConfig({
     include: ['src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
     pool: 'forks',
     reporters: ['default'],
+    watch: !!process.env['CI'],
     coverage: {
       reportsDirectory: '../../coverage/packages/token-vault',
       provider: 'v8',

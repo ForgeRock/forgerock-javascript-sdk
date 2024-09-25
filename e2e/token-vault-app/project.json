@@ -6,13 +6,16 @@
   "tags": ["scope:app"],
   "targets": {
     "build": {
-      "executor": "@nx/vite:build",
       "dependsOn": ["token-vault-app:build-interceptor"],
-      "outputs": ["{options.outputPath}"],
+      "inputs": ["default", "^default"],
+      "outputs": [
+        "{projectRoot}/{options.outDir}",
+        "{workspaceRoot}/dist/e2e/token-vault-app"
+      ],
       "defaultConfiguration": "production",
       "options": {
         "emptyOutDir": false,
-        "outputPath": "dist/e2e/token-vault-app"
+        "outDir": "../../dist/e2e/token-vault-app"
       },
       "configurations": {
         "development": {
@@ -24,58 +27,48 @@
       }
     },
     "build-interceptor": {
-      "executor": "@nx/vite:build",
-      "outputs": ["{options.outputPath}"],
+      "dependsOn": ["^build"],
+      "inputs": [
+        "default",
+        "^default",
+        {
+          "externalDependencies": ["vite"]
+        }
+      ],
+      "outputs": [
+        "{projectRoot}/{options.outDir}",
+        "{workspaceRoot}/dist/e2e/token-vault-app"
+      ],
       "options": {
-        "configFile": "e2e/token-vault-app/vite.interceptor.config.ts",
         "emptyOutDir": false,
-        "outputPath": "e2e/token-vault-app/public/"
+        "config": "./vite.interceptor.config.ts",
+        "outDir": "./public"
       }
     },
     "serve": {
-      "executor": "@nx/vite:dev-server",
       "dependsOn": ["token-vault-app:build"],
       "defaultConfiguration": "development",
       "options": {
-        "buildTarget": "token-vault-app:build",
         "host": "localhost",
         "port": 5823
       },
       "configurations": {
-        "development": {
-          "buildTarget": "token-vault-app:build:development",
-          "hmr": true
-        },
-        "production": {
-          "buildTarget": "token-vault-app:build:production",
-          "hmr": false
-        }
+        "development": {},
+        "production": {}
       }
     },
     "preview": {
-      "executor": "@nx/vite:preview-server",
       "defaultConfiguration": "development",
-      "options": {
-        "buildTarget": "token-vault-app:build"
-      },
       "configurations": {
-        "development": {
-          "buildTarget": "token-vault-app:build:development"
-        },
-        "production": {
-          "buildTarget": "token-vault-app:build:production"
-        }
-      },
-      "dependsOn": ["build"]
+        "development": {},
+        "production": {}
+      }
     },
     "lint": {
-      "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": [
-          "e2e/token-vault-app/**/*.ts",
-          "e2e/token-vault-app/**/*.tsx"
-        ]
+        "fix": true,
+        "ignore-path": ".eslintignore",
+        "args": ["**/*.ts"]
       }
     }
   }

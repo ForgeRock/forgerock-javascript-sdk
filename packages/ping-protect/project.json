@@ -3,40 +3,45 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "packages/ping-protect/src",
   "projectType": "library",
+  "tags": ["scope:package"],
   "targets": {
     "docs": {
       "command": "npx typedoc --options ./packages/ping-protect/typedoc.json"
     },
     "build": {
       "dependsOn": ["readme"],
-      "command": "tsc -p packages/ping-protect/tsconfig.lib.json -outDir dist --emitDeclarationOnly"
+      "command": "tsc -p packages/ping-protect/tsconfig.lib.json -outDir ../../dist --emitDeclarationOnly"
     },
     "readme": {
       "dependsOn": ["package"],
       "command": "cp packages/ping-protect/README.md dist/packages/ping-protect"
     },
     "package": {
-      "executor": "@nx/vite:build",
-      "outputs": ["{options.outputPath}"],
-      "options": {
-        "outputPath": "dist/packages/ping-protect",
-        "main": "packages/ping-protect/src/index.ts",
-        "tsConfig": "packages/ping-protect/tsconfig.lib.json",
-        "updateBuildableProjectDepsInPackageJson": false
-      }
+      "inputs": [
+        "default",
+        "^default",
+        {
+          "externalDependencies": ["vite"]
+        }
+      ],
+      "outputs": ["{projectRoot}/{options.outDir}", "{projectRoot}/dist"]
     },
     "lint": {
-      "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["packages/ping-protect/**/*.ts"]
+        "args": ["**/*.ts"]
       }
     },
     "test": {
-      "executor": "@nx/vite:test",
-      "outputs": ["{workspaceRoot}/coverage/packages/ping-protect"],
+      "dependsOn": ["^test"],
+      "inputs": [
+        "default",
+        "^default",
+        {
+          "externalDependencies": ["vitest"]
+        }
+      ],
       "options": {
-        "configFile": "packages/ping-protect/vite.config.ts"
+        "config": "./vite.config.ts"
       },
       "configurations": {
         "watch": {
@@ -44,6 +49,5 @@
         }
       }
     }
-  },
-  "tags": ["scope:package"]
+  }
 }

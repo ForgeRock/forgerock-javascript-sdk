@@ -107,6 +107,53 @@
         "ciTargetName": "e2e-ci",
         "targetName": "e2e"
       }
+    },
+    {
+      "plugin": "@nx/eslint/plugin",
+      "options": {
+        "targetName": "lint"
+      }
+    },
+    {
+      "plugin": "@nx/vite/plugin",
+      "options": {
+        "buildTargetName": "build",
+        "serveTargetName": "serve",
+        "previewTargetName": "preview",
+        "testTargetName": "test",
+        "serveStaticTargetName": "serve-static",
+        "typecheckTargetName": "typecheck"
+      },
+      "include": [
+        "e2e/autoscript-apps/**/*",
+        "e2e/token-vault-proxy/**/*",
+        "e2e/mock-api-v2/**/*",
+        "packages/token-vault/**/*"
+      ]
+    },
+    {
+      "plugin": "@nx/vite/plugin",
+      "options": {
+        "buildTargetName": "build-interceptor",
+        "serveTargetName": "serve",
+        "previewTargetName": "preview",
+        "testTargetName": "test",
+        "serveStaticTargetName": "serve-static",
+        "typecheckTargetName": "typecheck"
+      },
+      "include": ["e2e/token-vault-app/**/*"]
+    },
+    {
+      "plugin": "@nx/vite/plugin",
+      "options": {
+        "buildTargetName": "package",
+        "serveTargetName": "serve",
+        "previewTargetName": "preview",
+        "testTargetName": "test",
+        "serveStaticTargetName": "serve-static",
+        "typecheckTargetName": "typecheck"
+      },
+      "include": ["packages/javascript-sdk/**/*", "packages/ping-protect/**/*"]
     }
   ],
   "defaultProject": "javascript-sdk",

@@ -19,6 +19,7 @@ export default defineConfig({
     cache: {
       dir: '../../node_modules/.vitest',
     },
+    watch: !!process.env['CI'],
     environment: 'jsdom',
     include: ['src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
 

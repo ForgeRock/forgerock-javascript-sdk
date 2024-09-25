@@ -57,19 +57,33 @@
         }
       }
     },
-    "lint": {
-      "executor": "@nx/eslint:lint"
-    },
     "test": {
-      "executor": "@nx/vite:test",
-      "outputs": ["{options.reportsDirectory}"],
+      "dependsOn": ["^test"],
+      "inputs": [
+        "default",
+        "^default",
+        {
+          "externalDependencies": ["vitest"]
+        }
+      ],
+      "outputs": [
+        "{projectRoot}/{options.coverage.reportsDirectory}",
+        "{workspaceRoot}/coverage/e2e/mock-api-v2"
+      ],
       "options": {
-        "reportsDirectory": "../../coverage/e2e/mock-api-v2"
+        "coverage.reportsDirectory": "../../coverage/e2e/mock-api-v2"
       },
       "configurations": {
         "watch": {
           "watch": true
         }
+      }
+    },
+    "lint": {
+      "options": {
+        "fix": true,
+        "ignore-path": ".eslintignore",
+        "args": ["**/*.ts"]
       }
     }
   }
