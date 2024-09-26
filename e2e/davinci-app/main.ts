@@ -1,8 +1,8 @@
 import './style.css';
 
 import { Config, FRUser, TokenManager } from '@forgerock/javascript-sdk';
-
 import davinci from '@forgerock/davinci-client';
+
 import usernameComponent from './components/text.js';
 import passwordComponent from './components/password.js';
 import submitButtonComponent from './components/submit-button.js';
@@ -48,7 +48,7 @@ const config = {
     header.innerText = nextNode.client?.name || '';
     formEl!.appendChild(header);
 
-    const collectors = client.collectors();
+    const collectors = client.getCollectors();
     collectors.forEach((collector: SingleValueCollector | ActionCollector) => {
       if (collector.type === 'TextCollector' && collector.name === 'protectsdk') {
         protect(
@@ -90,7 +90,7 @@ const config = {
 
     if (
       client
-        .collectors()
+        .getCollectors()
         .find(
           (collector: SingleValueCollector | ActionCollector) => collector.name === 'protectsdk',
         )

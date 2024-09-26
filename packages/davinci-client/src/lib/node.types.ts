@@ -10,6 +10,8 @@ export interface DaVinciValidationError {
   details?: ErrorDetail[];
 }
 
+export type Collectors = (SingleValueCollector | ActionCollector)[];
+
 export interface ErrorNode {
   cache: {
     key: string;
@@ -33,7 +35,7 @@ export interface NextNode {
   };
   client: {
     action: string;
-    collectors: (SingleValueCollector | ActionCollector)[];
+    collectors: Collectors;
     description?: string;
     name?: string;
   };

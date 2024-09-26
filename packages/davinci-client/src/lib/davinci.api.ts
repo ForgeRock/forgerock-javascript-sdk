@@ -14,15 +14,17 @@ import { transformActionRequest, transformSubmitRequest } from './davinci.utils.
 /**
  * Import the DaVinci types
  */
+import { RootStateWithNode } from './client.store.utils.js';
 import type {
-  DaVinciAction,
   DaVinciCacheEntry,
   DaVinciErrorCacheEntry,
-  DaVinciRequest,
+  DavinciBaseResponse,
   DavinciErrorResponse,
   DavinciNextResponse,
   DavinciSuccessResponse,
 } from './davinci.types';
+import { NextNode } from './node.types.js';
+import { StartNode } from '../types.js';
 
 /**
  * @const davinciApi - Define the DaVinci API for Redux state management
@@ -42,13 +44,14 @@ export const davinciApi = createApi({
     /**
      * @method flow - method for initiating a new flow with the DaVinci API
      */
-    flow: builder.mutation<any, DaVinciAction>({
+    flow: builder.mutation({
       async queryFn(params, api, __, baseQuery) {
-        const state: any = api.getState();
+        const state = api.getState() as RootStateWithNode<NextNode>;
         const requestBody = transformActionRequest(state.node, params.action);
 
         const response = await baseQuery({
-          url: state.node.server._links?.next?.href,
+          // TODO: If we don't have a `next.href`, we should handle this better
+          url: state.node.server._links?.next?.href || '',
           credentials: 'include',
           method: 'POST',
           headers: {
@@ -94,19 +97,25 @@ export const davinciApi = createApi({
          */
         const cacheEntry = api.getCacheEntry();
 
+        if (cacheEntry.isError) {
+          const cacheErrorEntry = cacheEntry as DaVinciErrorCacheEntry<DavinciErrorResponse>;
+          api.dispatch(nodeSlice.actions.error(cacheErrorEntry));
+
+          return; // Filter out errors
+        }
+
+        const successResponse = cacheEntry as DaVinciCacheEntry<DavinciBaseResponse>;
+
         /**
          * Detect the type of response and dispatch the appropriate action
          * This leads to a new node in the state
          */
-        if (cacheEntry.isSuccess && 'eventName' in cacheEntry.data) {
+        if (cacheEntry.isSuccess && 'eventName' in successResponse) {
           const cacheNextEntry = cacheEntry as DaVinciCacheEntry<DavinciNextResponse>;
           api.dispatch(nodeSlice.actions.next(cacheNextEntry));
-        } else if (cacheEntry.isSuccess && cacheEntry.data.status === 'COMPLETED') {
+        } else if (cacheEntry.isSuccess && successResponse.status === 'fulfilled') {
           const cacheSuccessEntry = cacheEntry as DaVinciCacheEntry<DavinciSuccessResponse>;
           api.dispatch(nodeSlice.actions.success(cacheSuccessEntry));
-        } else if (cacheEntry.isError) {
-          const cacheErrorEntry = cacheEntry as DaVinciErrorCacheEntry<DavinciErrorResponse>;
-          api.dispatch(nodeSlice.actions.error(cacheErrorEntry));
         }
       },
     }),
@@ -114,9 +123,10 @@ export const davinciApi = createApi({
     /**
      * @method next - method for initiating the next node in the current flow
      */
-    next: builder.mutation<any, DaVinciRequest | void>({
+    next: builder.mutation({
       async queryFn(body, api, __, baseQuery) {
-        const state: any = api.getState();
+        const state = api.getState() as RootStateWithNode<NextNode>;
+
         let requestBody;
 
         if (!body) {
@@ -126,7 +136,7 @@ export const davinciApi = createApi({
         }
 
         const response = await baseQuery({
-          url: state.node.server._links?.next?.href,
+          url: state.node.server._links?.next?.href || '',
           credentials: 'include',
           method: 'POST',
           headers: {
@@ -152,27 +162,43 @@ export const davinciApi = createApi({
            * want to do anything with it for now.
            */
         }
+
+        /**
+         * The original DaVinci response is appended to the cache, so we are going
+         * to pull it and dispatch the appropriate action based on the response.
+         */
         const cacheEntry = api.getCacheEntry();
 
-        if (cacheEntry.isSuccess && 'eventName' in cacheEntry.data) {
-          const cacheNextEntry = cacheEntry as DaVinciCacheEntry<DavinciNextResponse>;
-          api.dispatch(nodeSlice.actions.next(cacheNextEntry));
-        } else if (cacheEntry.isSuccess && cacheEntry.data.status === 'COMPLETED') {
-          const cacheSuccessEntry = cacheEntry as DaVinciCacheEntry<DavinciSuccessResponse>;
-          api.dispatch(nodeSlice.actions.success(cacheSuccessEntry));
-        } else if (cacheEntry.isError) {
+        if (cacheEntry.isError) {
           const cacheErrorEntry = cacheEntry as DaVinciErrorCacheEntry<DavinciErrorResponse>;
           api.dispatch(nodeSlice.actions.error(cacheErrorEntry));
+
+          return; // Filter out errors
+        }
+
+        const successResponse = cacheEntry as DaVinciCacheEntry<DavinciBaseResponse>;
+
+        /**
+         * Detect the type of response and dispatch the appropriate action
+         * This leads to a new node in the state
+         */
+        if (cacheEntry.isSuccess && 'eventName' in successResponse) {
+          const cacheNextEntry = cacheEntry as DaVinciCacheEntry<DavinciNextResponse>;
+          api.dispatch(nodeSlice.actions.next(cacheNextEntry));
+        } else if (cacheEntry.isSuccess && successResponse.status === 'fulfilled') {
+          const cacheSuccessEntry = cacheEntry as DaVinciCacheEntry<DavinciSuccessResponse>;
+          api.dispatch(nodeSlice.actions.success(cacheSuccessEntry));
         }
       },
     }),
 
     /**
      * @method start - method for initiating a DaVinci flow
+     * @param - needs no arguments, but need to declare types to make it explicit
      */
-    start: builder.mutation<any, void>({
+    start: builder.mutation<unknown, void>({
       async queryFn(_, api, __, baseQuery) {
-        const state: any = api.getState();
+        const state = api.getState() as RootStateWithNode<StartNode>;
 
         if (!state) {
           return {
@@ -228,17 +254,32 @@ export const davinciApi = createApi({
            * want to do anything with it for now.
            */
         }
+
+        /**
+         * The original DaVinci response is appended to the cache, so we are going
+         * to pull it and dispatch the appropriate action based on the response.
+         */
         const cacheEntry = api.getCacheEntry();
 
-        if (cacheEntry.isSuccess && 'eventName' in cacheEntry.data) {
-          const cacheNextEntry = cacheEntry as DaVinciCacheEntry<DavinciNextResponse>;
-          api.dispatch(nodeSlice.actions.next(cacheNextEntry));
-        } else if (cacheEntry.isSuccess && cacheEntry.data.status === 'COMPLETED') {
-          const cacheSuccessEntry = cacheEntry as DaVinciCacheEntry<DavinciSuccessResponse>;
-          api.dispatch(nodeSlice.actions.success(cacheSuccessEntry));
-        } else if (cacheEntry.isError) {
+        if (cacheEntry.isError) {
           const cacheErrorEntry = cacheEntry as DaVinciErrorCacheEntry<DavinciErrorResponse>;
           api.dispatch(nodeSlice.actions.error(cacheErrorEntry));
+
+          return; // Filter out errors
+        }
+
+        const successResponse = cacheEntry as DaVinciCacheEntry<DavinciBaseResponse>;
+
+        /**
+         * Detect the type of response and dispatch the appropriate action
+         * This leads to a new node in the state
+         */
+        if (cacheEntry.isSuccess && 'eventName' in successResponse) {
+          const cacheNextEntry = cacheEntry as DaVinciCacheEntry<DavinciNextResponse>;
+          api.dispatch(nodeSlice.actions.next(cacheNextEntry));
+        } else if (cacheEntry.isSuccess && successResponse.status === 'fulfilled') {
+          const cacheSuccessEntry = cacheEntry as DaVinciCacheEntry<DavinciSuccessResponse>;
+          api.dispatch(nodeSlice.actions.success(cacheSuccessEntry));
         }
       },
     }),
