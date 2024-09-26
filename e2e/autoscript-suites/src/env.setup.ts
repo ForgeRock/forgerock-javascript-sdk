@@ -12,13 +12,13 @@ import { setup as setupDevServer } from 'jest-dev-server';
 
 const liveServers = [
   {
-    command: 'npm run start:server:live',
+    command: 'pnpm run start:server:live',
     port: 9443,
   },
 ];
 const mockServers = [
   {
-    command: 'npm run start:server',
+    command: 'pnpm run start:server',
     port: 9443,
   },
 ];

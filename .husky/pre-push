@@ -1,4 +1,4 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-# CI=true npm run nx affected:test  && CI=true npx nx affected:e2e
+# CI=true pnpm run nx affected:test  && CI=true npx nx affected:e2e

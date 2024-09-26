@@ -1,5 +1,5 @@
 {
   "*": [
-    "npm run nx format:write"
+    "pnpm run nx format:write"
   ]
 }

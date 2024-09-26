@@ -76,14 +76,14 @@ To try out the ForgeRock JavaScript SDK, perform these steps:
 5. Build the ForgeRock JavaScript SDK:
 
    ```
-   npm run build
+   pnpm run build
    ```
 
 6. Open `samples/embedded-login/index.html` and edit the configuration values to match your AM instance.
 
 7. Serve the `samples` directory by using a simple HTTP server.
 
-   - Run `npm run start:samples`
+   - Run `pnpm run start:samples`
 
 8. Edit your `/etc/hosts` file to point your localhost (e.g. `127.0.0.1`) to `sdkapp.example.com`
 
@@ -100,13 +100,13 @@ ForgeRock provides these samples to help demonstrate SDK functionality/implement
 
   In most real-world scenarios, you will want to have full control over the UI. In these cases, you can use `FRAuth` to obtain typed callback instances from authentication trees and render the UI in whatever way makes sense for your application.
 
-  You can run this sample app with the `npm run start:samples` command. Please [see the Getting Started instructions](#getting-started) for more details.
+  You can run this sample app with the `pnpm run start:samples` command. Please [see the Getting Started instructions](#getting-started) for more details.
 
 - **Central login - `/samples/central-login`**
 
   In cases in which a centralized login application is desired, in contrast to an embedded login form, the SDK provides a method for leveraging an OAuth flow known as Authorization Code Flow (with PKCE). By using an option (login of "redirect") provided by `TokenManager` to request OAuth/OIDC tokens, when the user is not authenticated, the SDK will redirect the user to the configured login application with the ForgeRock platform. Once authenticated, the user will be redirected back to the original application to attain OAuth/OIDC tokens to complete the user flow.
 
-  You can run this sample app with the `npm run start:samples` command. Please [see the Getting Started instructions](#getting-started) for more details.
+  You can run this sample app with the `pnpm run start:samples` command. Please [see the Getting Started instructions](#getting-started) for more details.
 
 - **React todos - `/samples/reactjs-todos`**
 

@@ -11,10 +11,7 @@ export default defineConfig({
     lib: {
       entry: 'src/index.ts',
       name: 'javascript-sdk',
-      formats: ['es', 'cjs'],
-      fileName(format, name) {
-        return `${name}.${format === 'cjs' ? 'cjs' : 'js'}`;
-      },
+      formats: ['es'],
     },
     rollupOptions: {
       output: {

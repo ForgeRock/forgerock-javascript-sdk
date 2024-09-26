@@ -3,5 +3,9 @@
   "version": "0.0.0",
   "description": "ForgeRock Token Vault Test Proxy",
   "private": true,
-  "devDependencies": {}
+  "devDependencies": {},
+  "dependencies": {
+    "@forgerock/javascript-sdk": "workspace:*",
+    "@forgerock/token-vault": "workspace:*"
+  }
 }

@@ -3,6 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "dependencies": {
+    "@forgerock/javascript-sdk": "workspace:*",
+    "@forgerock/ping-protect": "workspace:*",
     "rxjs": "^7.4.0"
   },
   "description": "apps for e2e on js sdk",

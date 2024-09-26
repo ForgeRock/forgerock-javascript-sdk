@@ -12,7 +12,7 @@
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "moduleResolution": "Bundler",
+    "moduleResolution": "Node16",
     "types": ["node", "vitest", "vitest/client"]
   },
   "include": [

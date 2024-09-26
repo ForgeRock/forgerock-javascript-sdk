@@ -20,21 +20,21 @@ const config: PlaywrightTestConfig = {
   },
   webServer: [
     {
-      command: 'npm run nx serve mock-api',
+      command: 'pnpm run nx serve mock-api',
       url: 'http://localhost:9443/healthcheck',
       ignoreHTTPSErrors: true,
       reuseExistingServer: !process.env.CI,
       cwd: workspaceRoot,
     },
     {
-      command: 'npm run nx serve token-vault-proxy',
+      command: 'pnpm run nx serve token-vault-proxy',
       port: 5833,
       ignoreHTTPSErrors: true,
       reuseExistingServer: !process.env.CI,
       cwd: workspaceRoot,
     },
     {
-      command: 'npm run nx serve token-vault-app',
+      command: 'pnpm run nx serve token-vault-app',
       port: 5823,
       ignoreHTTPSErrors: true,
       reuseExistingServer: !process.env.CI,

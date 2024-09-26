@@ -1,6 +1,6 @@
 {
   "name": "@forgerock/token-vault",
-  "version": "4.4.1-alpha.2",
+  "version": "4.4.1",
   "private": false,
   "type": "module",
   "module": "./dist/index.js",
@@ -14,6 +14,6 @@
     }
   },
   "peerDependencies": {
-    "@forgerock/javascript-sdk": "^4.4.2"
+    "@forgerock/javascript-sdk": "workspace:*"
   }
 }

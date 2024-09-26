@@ -15,6 +15,7 @@
     "format:staged": "pretty-quick --staged",
     "lint": "nx affected --target=lint",
     "nx": "nx",
+    "preinstall": "npx only-allow pnpm",
     "prepare": "husky install",
     "publish:local": "node ./tools/release/local.mjs",
     "publish:dev": "node ./tools/release/dev.mjs",
@@ -33,7 +34,6 @@
   },
   "homepage": "https://github.com/ForgeRock/forgerock-javascript-sdk#readme",
   "devDependencies": {
-    "@arethetypeswrong/cli": "^0.16.4",
     "@commitlint/cli": "^19.1.0",
     "@commitlint/config-conventional": "^19.1.0",
     "@commitlint/prompt": "^19.1.0",
@@ -42,7 +42,6 @@
     "@effect/platform-node": "^0.53.26",
     "@effect/schema": "^0.68.23",
     "@effect/vitest": "^0.6.7",
-    "@nrwl/devkit": "19.8.1",
     "@nx/devkit": "19.8.1",
     "@nx/esbuild": "19.8.1",
     "@nx/eslint": "19.8.1",
@@ -89,7 +88,6 @@
     "mkcert": "^3.2.0",
     "npm-cli-login": "^1.0.0",
     "nx": "19.8.1",
-    "nx-cloud": "19.1.0",
     "playwright": "^1.43.0",
     "prettier": "^3.2.5",
     "pretty-quick": "^4.0.0",
@@ -118,5 +116,9 @@
   },
   "nx": {
     "includedScripts": []
+  },
+  "packageManager": "pnpm@9.6.0+sha512.38dc6fba8dba35b39340b9700112c2fe1e12f10b17134715a4aa98ccf7bb035e76fd981cf0bb384dfa98f8d6af5481c2bef2f4266a24bfa20c34eb7147ce0b5e",
+  "dependencies": {
+    "nx-cloud": "^19.1.0"
   }
 }

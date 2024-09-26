@@ -12,17 +12,11 @@
     "url": "https://github.com/ForgeRock/forgerock-javascript-sdk/issues"
   },
   "homepage": "https://github.com/ForgeRock/forgerock-javascript-sdk#readme",
-  "main": "./dist/index.cjs",
+  "main": "./dist/index.js",
   "module": "./dist/index.js",
   "exports": {
-    ".": {
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs"
-    },
-    "./src/*": {
-      "import": "./dist/*.js",
-      "require": "./dist/*.cjs"
-    }
+    ".": "./dist/index.js",
+    "./src/*": "./dist/*.js"
   },
   "type": "module"
 }
