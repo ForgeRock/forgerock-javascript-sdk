@@ -9,19 +9,21 @@ export default defineConfig({
       entry: 'src/index.ts',
       name: 'ping-protect',
       formats: ['es'],
-      fileName: () => `src/index.js`,
+      fileName: (extension, filename) => `${filename}.js`,
     },
     rollupOptions: {
+      external: ['@forgerock/javascript-sdk'],
       output: {
         dir: './dist',
         preserveModules: true,
-        preserveModulesRoot: './src',
+        preserveModulesRoot: 'src',
       },
     },
   },
   plugins: [
     dts({
       declarationOnly: false,
+      rollupTypes: true,
       entryRoot: 'src',
       tsconfigPath: './tsconfig.lib.json',
     }),

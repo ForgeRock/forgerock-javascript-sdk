@@ -8,9 +8,6 @@
     "docs": {
       "cache": true
     },
-    "packagejson": {
-      "cache": true
-    },
     "e2e": {
       "cache": true
     },
@@ -19,14 +16,11 @@
       "cache": true,
       "inputs": ["production", "^production"]
     },
-    "readme": {
-      "cache": true
-    },
     "build-interceptor": {
       "cache": true
     },
     "@nx/vite:test": {
-      "dependsOn": ["^test"],
+      "dependsOn": ["^build", "^test"],
       "inputs": ["default", "^default"],
       "cache": true
     },
@@ -37,7 +31,7 @@
     },
     "@nx/vite:build": {
       "cache": true,
-      "dependsOn": ["^build"],
+      "dependsOn": ["^build", "^build-interceptor"],
       "inputs": ["default", "^default"]
     },
     "@nx/esbuild:esbuild": {
@@ -46,41 +40,15 @@
       "inputs": ["production", "^production"]
     },
     "e2e-ci--**/*": {
-      "dependsOn": ["^mock-api:build"]
+      "dependsOn": ["^mock-api:build", "^build"],
+      "cache": true
     }
   },
   "parallel": 1,
-  "targetDependencies": {
-    "test": [
-      {
-        "target": "test",
-        "projects": "dependencies"
-      }
-    ],
-    "build": [
-      {
-        "target": "build",
-        "projects": "dependencies"
-      }
-    ],
-    "prepare": [
-      {
-        "target": "prepare",
-        "projects": "dependencies"
-      }
-    ],
-    "package": [
-      {
-        "target": "package",
-        "projects": "dependencies"
-      }
-    ]
-  },
   "workspaceLayout": {
     "appsDir": "",
     "libsDir": ""
   },
-  "generators": {},
   "release": {
     "projects": ["packages/*"],
     "releaseTagPattern": "v{version}",
@@ -125,12 +93,7 @@
         "serveStaticTargetName": "serve-static",
         "typecheckTargetName": "typecheck"
       },
-      "include": [
-        "e2e/autoscript-apps/**/*",
-        "e2e/token-vault-proxy/**/*",
-        "e2e/mock-api-v2/**/*",
-        "packages/token-vault/**/*"
-      ]
+      "include": ["e2e/**/*", "packages/**/*"]
     },
     {
       "plugin": "@nx/vite/plugin",
@@ -143,31 +106,19 @@
         "typecheckTargetName": "typecheck"
       },
       "include": ["e2e/token-vault-app/**/*"]
-    },
-    {
-      "plugin": "@nx/vite/plugin",
-      "options": {
-        "buildTargetName": "package",
-        "serveTargetName": "serve",
-        "previewTargetName": "preview",
-        "testTargetName": "test",
-        "serveStaticTargetName": "serve-static",
-        "typecheckTargetName": "typecheck"
-      },
-      "include": ["packages/javascript-sdk/**/*", "packages/ping-protect/**/*"]
     }
   ],
   "defaultProject": "javascript-sdk",
   "useDaemonProcess": true,
   "namedInputs": {
     "default": ["{projectRoot}/**/*", "sharedGlobals"],
-    "sharedGlobals": [],
+    "sharedGlobals": ["{workspaceRoot}/.github/workflows/ci=github.yml"],
     "production": [
       "default",
       "!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap)",
       "!{projectRoot}/tsconfig.spec.json"
     ]
   },
-  "useInferencePlugins": false,
+  "useInferencePlugins": true,
   "defaultBase": "develop"
 }

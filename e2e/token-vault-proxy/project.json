@@ -6,6 +6,7 @@
   "tags": ["scope:app"],
   "targets": {
     "build": {
+      "dependsOn": ["^build"],
       "inputs": ["default", "^default"],
       "outputs": [
         "{projectRoot}/{options.outDir}",

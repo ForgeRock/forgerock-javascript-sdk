@@ -15,8 +15,26 @@
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "exports": {
-    ".": "./dist/index.js",
-    "./src/*": "./dist/*.js"
+    ".": {
+      "import": {
+        "types": "./dist/index.ts.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.ts.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    },
+    "./src/*": {
+      "import": {
+        "types": "./dist/*/*.d.ts",
+        "default": "./dist/*/*.js"
+      },
+      "require": {
+        "types": "./dist/*/*.d.cts",
+        "default": "./dist/*/*.js"
+      }
+    }
   },
   "type": "module"
 }

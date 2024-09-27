@@ -15,11 +15,6 @@ jobs:
       - uses: pnpm/action-setup@v4
         with:
           run_install: false
-
-      # This line enables distribution
-      # The "--stop-agents-after" is optional, but allows idle agents to shut down once the "e2e-ci" targets have been requested
-      - run: pnpm dlx nx-cloud start-ci-run --distribute-on="5 linux-medium-js" --stop-agents-after="e2e-ci" --verbose
-
       - uses: actions/setup-node@v4
         id: cache
         with:
@@ -28,6 +23,10 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
+      # This line enables distribution
+      # The "--stop-agents-after" is optional, but allows idle agents to shut down once the "e2e-ci" targets have been requested
+      - run: pnpm dlx nx-cloud start-ci-run --distribute-on="5 linux-medium-js" --stop-agents-after="e2e-ci" --verbose
+
       - run: pnpm dlx playwright install
 
       - uses: nrwl/nx-set-shas@v4
@@ -35,4 +34,4 @@ jobs:
       - run: git branch --track develop origin/develop
 
       - run: pnpm exec nx-cloud record -- nx format:check --verbose
-      - run: pnpm exec nx affected -t lint test build e2e-ci --verbose
+      - run: pnpm exec nx affected -t build lint test e2e-ci --verbose

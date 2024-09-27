@@ -1,10 +1,10 @@
 import { vi, expect, describe, it } from 'vitest';
-import { PIProtect } from './ping-protect';
+import { PIProtect } from './ping-protect.js';
 import {
   noProtectType,
   standardPingProtectEvaluationStep,
   standardPingProtectInitializeStep,
-} from './ping-protect.mock.data';
+} from './ping-protect.mock.data.js';
 import { CallbackType, HiddenValueCallback } from '@forgerock/javascript-sdk';
 
 describe('PIProtect', () => {

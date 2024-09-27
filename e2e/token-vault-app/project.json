@@ -6,7 +6,7 @@
   "tags": ["scope:app"],
   "targets": {
     "build": {
-      "dependsOn": ["token-vault-app:build-interceptor"],
+      "dependsOn": ["^build", "token-vault-app:build-interceptor"],
       "inputs": ["default", "^default"],
       "outputs": [
         "{projectRoot}/{options.outDir}",
