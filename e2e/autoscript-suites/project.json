@@ -5,9 +5,9 @@
   "sourceRoot": "e2e/autoscript-suites/src",
   "projectType": "application",
   "tags": [],
-  "implicitDependencies": ["autoscript-apps"],
   "targets": {
     "e2e": {
+      "dependsOn": ["javascript-sdk:build", "ping-protect:build"],
       "options": {},
       "configurations": {
         "ui": {

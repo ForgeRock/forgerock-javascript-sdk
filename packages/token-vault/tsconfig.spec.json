@@ -2,6 +2,9 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "../../dist/out-tsc",
+    "composite": true,
+    "moduleResolution": "Node16",
+    "module": "Node16",
     "types": [
       "vitest/globals",
       "vitest/importMeta",

@@ -5,7 +5,6 @@ export default defineConfig({
   build: {
     outDir: './public',
     reportCompressedSize: true,
-    commonjsOptions: { transformMixedEsModules: true },
     minify: false,
     emptyOutDir: false,
     rollupOptions: {

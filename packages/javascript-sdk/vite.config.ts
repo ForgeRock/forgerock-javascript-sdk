@@ -5,10 +5,11 @@ import { copyFileSync } from 'fs';
 
 export default defineConfig({
   root: __dirname,
-  cacheDir: '../../node_modules/.vite/packages/javascript-sdk',
+  cacheDir: '../../node_modules/.vite/',
 
   build: {
     outDir: './dist',
+    target: ['esnext', 'es2020'],
     lib: {
       entry: 'src/index.ts',
       name: 'javascript-sdk',
@@ -33,7 +34,8 @@ export default defineConfig({
       rollupTypes: true,
       tsconfigPath: './tsconfig.lib.json',
       afterBuild: () => {
-        copyFileSync('dist/index.ts.d.ts', 'dist/index.ts.d.cts');
+        copyFileSync('dist/index.ts.d.ts', 'dist/index.d.cts');
+        copyFileSync('dist/index.ts.d.ts', 'dist/index.d.ts');
       },
     }),
   ],

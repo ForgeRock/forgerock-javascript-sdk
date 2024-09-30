@@ -16,7 +16,7 @@
           "externalDependencies": ["vite"]
         }
       ],
-      "outputs": ["{projectRoot}/{options.outDir}", "{projectRoot}/dist"]
+      "outputs": ["{projectRoot}/dist"]
     },
     "lint": {
       "options": {
@@ -26,7 +26,6 @@
       }
     },
     "test": {
-      "dependsOn": ["^test"],
       "inputs": [
         "default",
         "^default",

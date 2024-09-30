@@ -2,7 +2,7 @@
   "targetDefaults": {
     "nx-release-publish": {
       "options": {
-        "packageRoot": "packages/{projectName}/dist"
+        "packageRoot": "packages/{projectName}"
       }
     },
     "docs": {
@@ -12,35 +12,41 @@
       "cache": true
     },
     "build": {
-      "dependsOn": ["^build"],
       "cache": true,
-      "inputs": ["production", "^production"]
+      "inputs": ["!{projectRoot}/**/*.md"]
     },
     "build-interceptor": {
-      "cache": true
+      "cache": true,
+      "inputs": ["!{projectRoot}/**/*.md"]
     },
     "@nx/vite:test": {
-      "dependsOn": ["^build", "^test"],
-      "inputs": ["default", "^default"],
+      "inputs": ["default", "^default", "!{projectRoot}/**/*.md"],
       "cache": true
     },
     "@nx/eslint:lint": {
-      "dependsOn": ["^build", "^lint"],
-      "inputs": ["default", "{workspaceRoot}/.eslintrc.json"],
+      "inputs": [
+        "{workspaceRoot}/.eslintrc.json",
+        "default",
+        "^default",
+        "!{projectRoot}/**/*.md"
+      ],
       "cache": true
     },
     "@nx/vite:build": {
       "cache": true,
-      "dependsOn": ["^build", "^build-interceptor"],
-      "inputs": ["default", "^default"]
+      "inputs": ["default", "^default", "!{projectRoot}/**/*.md"]
     },
     "@nx/esbuild:esbuild": {
       "cache": true,
-      "dependsOn": ["^build"],
-      "inputs": ["production", "^production"]
+      "inputs": ["production", "^production", "!{projectRoot}/**/*.md"]
     },
     "e2e-ci--**/*": {
-      "dependsOn": ["^mock-api:build", "^build"],
+      "dependsOn": [
+        "javascript-sdk:build",
+        "token-vault:build",
+        "ping-protect:build",
+        "token-vault:build-interceptor"
+      ],
       "cache": true
     }
   },

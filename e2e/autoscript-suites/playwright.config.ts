@@ -29,7 +29,7 @@ const config: PlaywrightTestConfig = {
       cwd: workspaceRoot,
     },
     {
-      command: 'pnpm nx serve e2e-mock-api-v2',
+      command: 'pnpm nx serve mock-api-v2',
       url: 'http://localhost:9444/healthcheck',
       ignoreHTTPSErrors: true,
       reuseExistingServer: !process.env.CI,

@@ -27,7 +27,7 @@ jobs:
       # The "--stop-agents-after" is optional, but allows idle agents to shut down once the "e2e-ci" targets have been requested
       - run: pnpm dlx nx-cloud start-ci-run --distribute-on="5 linux-medium-js" --stop-agents-after="e2e-ci" --verbose
 
-      - run: pnpm dlx playwright install
+      - run: pnpm exec playwright install
 
       - uses: nrwl/nx-set-shas@v4
       # This line is needed for nx affected to work when CI is running on a PR

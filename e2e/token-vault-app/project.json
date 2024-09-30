@@ -6,16 +6,16 @@
   "tags": ["scope:app"],
   "targets": {
     "build": {
-      "dependsOn": ["^build", "token-vault-app:build-interceptor"],
-      "inputs": ["default", "^default"],
-      "outputs": [
-        "{projectRoot}/{options.outDir}",
-        "{workspaceRoot}/dist/e2e/token-vault-app"
+      "dependsOn": [
+        "javascript-sdk:build",
+        "token-vault:build",
+        "build-interceptor"
       ],
+      "inputs": ["default", "^default"],
+      "outputs": ["{projectRoot}/dist"],
       "defaultConfiguration": "production",
       "options": {
-        "emptyOutDir": false,
-        "outDir": "../../dist/e2e/token-vault-app"
+        "emptyOutDir": false
       },
       "configurations": {
         "development": {
@@ -27,7 +27,7 @@
       }
     },
     "build-interceptor": {
-      "dependsOn": ["^build"],
+      "dependsOn": ["token-vault:build"],
       "inputs": [
         "default",
         "^default",
@@ -46,7 +46,6 @@
       }
     },
     "serve": {
-      "dependsOn": ["token-vault-app:build"],
       "defaultConfiguration": "development",
       "options": {
         "host": "localhost",

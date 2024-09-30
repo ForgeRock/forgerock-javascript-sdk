@@ -3,12 +3,11 @@ import { defineConfig } from 'vite';
 
 export default defineConfig({
   root: __dirname,
+  cacheDir: '../../node_modules/.vite/e2e/token-vault-app',
   build: {
-    outDir: '../../dist/e2e/token-vault-app',
+    outDir: './dist',
     reportCompressedSize: true,
-    commonjsOptions: { transformMixedEsModules: true },
     target: 'esnext',
-    minify: false,
     rollupOptions: {
       input: {
         main: path.resolve(__dirname, 'index.html'),

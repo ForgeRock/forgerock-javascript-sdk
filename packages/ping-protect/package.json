@@ -6,6 +6,11 @@
   "files": ["dist"],
   "module": "./dist/index.js",
   "main": "./dist/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:ForgeRock/forgerock-javascript-sdk.git",
+    "directory": "packages/ping-protect"
+  },
   "exports": {
     ".": {
       "types": "./dist/index.ts.d.ts",

@@ -7,7 +7,7 @@
  * This software may be modified and distributed under the terms
  * of the MIT license. See the LICENSE file for details.
  */
-
+import { vi, expect, describe, it, afterAll, beforeEach } from 'vitest';
 import HttpClient from '../../src/http-client/index';
 import TokenStorage from '../../src/token-storage';
 import {
@@ -32,8 +32,8 @@ import {
 
 // TODO: figure out how to move these mock functions in separate file
 // Because Jest hoists mocks above the imports, importing doesn't work :(
-jest.mock('../../src/token-storage');
-jest.mock('../../src/config', () => {
+vi.mock('../../src/token-storage');
+vi.mock('../../src/config', () => {
   return {
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     get() {
@@ -46,9 +46,10 @@ jest.mock('../../src/config', () => {
     },
   };
 });
-jest.mock('../../src/http-client/index', () => {
-  const originalHttpClient = jest.requireActual('../../src/http-client/index');
-  const mockResponse = jest.fn(function (options: any): Promise<Response> {
+
+vi.mock('../../src/http-client/index', () => {
+  const originalHttpClient = vi.requireActual('../../src/http-client/index');
+  const mockResponse = vi.fn(function (options: any): Promise<Response> {
     if (options.url === 'https://request-auth-by-tree.com/ig') {
       return Promise.resolve(mockAuthzByTreeResFromIG);
     } else if (options.url === 'https://request-auth-by-tree.com/rest') {
@@ -64,7 +65,7 @@ jest.mock('../../src/http-client/index', () => {
   });
   return {
     request: originalHttpClient.default.request,
-    stepIterator: jest.fn().mockResolvedValue({}),
+    stepIterator: vi.fn().mockResolvedValue({}),
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     _request: mockResponse,
   };
@@ -85,7 +86,7 @@ describe('Test HttpClient request for txn auth', () => {
   };
 
   afterAll(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
   beforeEach(() => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

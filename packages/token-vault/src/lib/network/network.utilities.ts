@@ -1,5 +1,5 @@
 /// reference libs="WebWorker"
-import { ConfigOptions } from '@forgerock/javascript-sdk';
+import type { ConfigOptions } from '@forgerock/javascript-sdk';
 import type {
   ConfigurablePaths,
   CustomPathConfig,

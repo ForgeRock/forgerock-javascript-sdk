@@ -6,6 +6,7 @@
   "tags": ["scope:package"],
   "targets": {
     "build": {
+      "dependsOn": ["javascript-sdk:build"],
       "inputs": [
         "default",
         "^default",
@@ -13,10 +14,10 @@
           "externalDependencies": ["vite"]
         }
       ],
-      "outputs": ["{projectRoot}/{options.outDir}", "{projectRoot}/dist"]
+      "outputs": ["{projectRoot}/dist"]
     },
     "test": {
-      "dependsOn": ["^test"],
+      "dependsOn": ["javascript-sdk:build"],
       "inputs": [
         "default",
         "^default",
@@ -34,6 +35,7 @@
       }
     },
     "lint": {
+      "dependsOn": ["javascript-sdk:build"],
       "options": {
         "fix": true,
         "ignore-path": ".eslintignore",

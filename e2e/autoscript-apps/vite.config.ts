@@ -1,18 +1,5 @@
-/// <reference types='vitest' />
-import * as path from 'path';
 import { defineConfig } from 'vite';
-import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
-
-// These options were migrated by @nx/vite:convert-to-inferred from the project.json file.
-const configValues = { default: {}, development: {} };
-
-// Determine the correct configValue to use based on the configuration
-const nxConfiguration = process.env.NX_TASK_TARGET_CONFIGURATION ?? 'default';
-
-const options = {
-  ...configValues.default,
-  ...(configValues[nxConfiguration] ?? {}),
-};
+import * as path from 'path';
 
 const pages = [
   'authn-basic',
@@ -67,20 +54,9 @@ export default defineConfig({
       'Access-Control-Allow-Origin': 'http://localhost:8443',
     },
   },
-
-  plugins: [nxViteTsPaths()],
-
-  // Uncomment this if you are using workers.
-  // worker: {
-  //  plugins: [ nxViteTsPaths() ],
-  // },
-
   build: {
-    outDir: '../../dist/e2e/autoscript-apps',
+    outDir: './dist',
     reportCompressedSize: true,
-    commonjsOptions: {
-      transformMixedEsModules: true,
-    },
     rollupOptions: {
       input: {
         main: path.resolve(__dirname, 'index.html'),
@@ -93,7 +69,7 @@ export default defineConfig({
         ),
       },
       output: {
-        entryFileNames: '[name]/main.js',
+        entryFileNames: 'src/[name]/main.js',
       },
     },
   },

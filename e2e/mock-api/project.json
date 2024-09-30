@@ -7,10 +7,11 @@
   "targets": {
     "build": {
       "executor": "@nx/js:tsc",
-      "outputs": ["{options.outputPath}"],
+      "outputs": ["{projectRoot}/dist"],
       "options": {
-        "outputPath": "dist/e2e/mock-api",
+        "outputPath": "e2e/mock-api/dist",
         "main": "e2e/mock-api/src/index.js",
+        "clean": true,
         "tsConfig": "e2e/mock-api/tsconfig.app.json",
         "assets": ["e2e/mock-api/src/assets", "e2e/mock-api/package.json"]
       },
@@ -33,7 +34,7 @@
     },
     "serve": {
       "executor": "@nx/js:node",
-      "outputs": ["{options.outputPath}"],
+      "outputs": ["{projectRoot}/dist"],
       "options": {
         "buildTarget": "mock-api:build"
       }

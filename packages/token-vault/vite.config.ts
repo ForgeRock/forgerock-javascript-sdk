@@ -10,9 +10,9 @@ export default defineConfig({
     lib: {
       entry: 'src/index.ts',
       name: 'token-vault',
-      formats: ['es', 'cjs'],
+      formats: ['es'],
       fileName(format, name) {
-        return `${name}.${format === 'cjs' ? 'cjs' : 'js'}`;
+        return `${name}.js`;
       },
     },
     rollupOptions: {
