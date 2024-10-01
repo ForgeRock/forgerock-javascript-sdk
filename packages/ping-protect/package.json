@@ -8,7 +8,7 @@
   "main": "./dist/index.js",
   "repository": {
     "type": "git",
-    "url": "git@github.com:ForgeRock/forgerock-javascript-sdk.git",
+    "url": "git+https://github.com:ForgeRock/forgerock-javascript-sdk.git",
     "directory": "packages/ping-protect"
   },
   "exports": {

@@ -1,4 +1,14 @@
 {
+  "namedInputs": {
+    "default": ["{projectRoot}/**/*", "sharedGlobals"],
+    "sharedGlobals": ["{workspaceRoot}/.github/workflows/ci=github.yml"],
+    "production": [
+      "default",
+      "!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap)",
+      "!{projectRoot}/tsconfig.spec.json"
+    ],
+    "noMarkdown": ["!{projectRoot}/**/*.md"]
+  },
   "targetDefaults": {
     "nx-release-publish": {
       "options": {
@@ -9,43 +19,39 @@
       "cache": true
     },
     "e2e": {
+      "inputs": ["noMarkdown", "^noMarkdown"],
       "cache": true
     },
     "build": {
-      "cache": true,
-      "inputs": ["!{projectRoot}/**/*.md"]
+      "inputs": ["noMarkdown", "^noMarkdown"],
+      "cache": true
     },
     "build-interceptor": {
       "cache": true,
-      "inputs": ["!{projectRoot}/**/*.md"]
+      "inputs": ["noMarkdown", "^noMarkdown"]
     },
     "@nx/vite:test": {
-      "inputs": ["default", "^default", "!{projectRoot}/**/*.md"],
+      "inputs": ["noMarkdown", "^noMarkdown"],
       "cache": true
     },
     "@nx/eslint:lint": {
-      "inputs": [
-        "{workspaceRoot}/.eslintrc.json",
-        "default",
-        "^default",
-        "!{projectRoot}/**/*.md"
-      ],
+      "inputs": ["noMarkdown", "^noMarkdown"],
       "cache": true
     },
     "@nx/vite:build": {
       "cache": true,
-      "inputs": ["default", "^default", "!{projectRoot}/**/*.md"]
+      "inputs": ["noMarkdown", "^noMarkdown"]
     },
     "@nx/esbuild:esbuild": {
       "cache": true,
-      "inputs": ["production", "^production", "!{projectRoot}/**/*.md"]
+      "inputs": ["noMarkdown", "^noMarkdown"]
     },
     "e2e-ci--**/*": {
+      "inputs": ["noMarkdown", "^noMarkdown"],
       "dependsOn": [
         "javascript-sdk:build",
-        "token-vault:build",
         "ping-protect:build",
-        "token-vault:build-interceptor"
+        "token-vault:build"
       ],
       "cache": true
     }
@@ -116,15 +122,7 @@
   ],
   "defaultProject": "javascript-sdk",
   "useDaemonProcess": true,
-  "namedInputs": {
-    "default": ["{projectRoot}/**/*", "sharedGlobals"],
-    "sharedGlobals": ["{workspaceRoot}/.github/workflows/ci=github.yml"],
-    "production": [
-      "default",
-      "!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap)",
-      "!{projectRoot}/tsconfig.spec.json"
-    ]
-  },
+
   "useInferencePlugins": true,
   "defaultBase": "develop"
 }

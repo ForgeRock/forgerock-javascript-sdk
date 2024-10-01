@@ -14,7 +14,9 @@
     "url": "https://github.com/ForgeRock/forgerock-javascript-sdk/issues"
   },
   "homepage": "https://github.com/ForgeRock/forgerock-javascript-sdk#readme",
-  "nx": {
-    "includedScripts": []
+  "dependencies": {
+    "@forgerock/javascript-sdk": "workspace:*",
+    "@forgerock/ping-protect": "workspace:*",
+    "@forgerock/token-vault": "workspace:*"
   }
 }
