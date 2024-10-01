@@ -2,21 +2,21 @@
   "extends": "../../tsconfig.base.json",
   "files": [],
   "compilerOptions": {
-    "target": "ESNext",
     "useDefineForClassFields": true,
-    "module": "ESNext",
     "lib": ["ESNext", "DOM", "WebWorker", "Webworker.Iterable"],
-    "moduleResolution": "Node",
-    "strict": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "esModuleInterop": true,
     "noUnusedLocals": true,
     "noUnusedParameters": false,
     "noImplicitReturns": true,
-    "skipLibCheck": true,
-    "types": ["vite/client", "vitest"]
+    "skipLibCheck": true
   },
-  "include": ["src", "src/interceptor.ts"],
-  "references": []
+  "references": [
+    {
+      "path": "./tsconfig.spec.json"
+    },
+    {
+      "path": "./tsconfig.app.json"
+    }
+  ]
 }

@@ -1,10 +1,14 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "outDir": "../../dist/out-tsc",
-    "types": ["vite/client", "node"],
-    "moduleResolution": "node"
+    "outDir": "dist",
+    "composite": true,
+    "moduleResolution": "Bundler",
+    "target": "ESNext",
+    "module": "ESNext",
+    "types": ["vite/client"],
+    "moduleDetection": "force"
   },
   "exclude": ["src/**/*.spec.ts", "src/**/*.test.ts"],
-  "include": ["src/**/*.ts", "src/interceptor.ts"]
+  "include": ["src/**/*.ts"]
 }

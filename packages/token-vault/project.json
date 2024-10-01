@@ -3,22 +3,30 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "packages/token-vault/src",
   "projectType": "library",
+  "tags": ["scope:package"],
   "targets": {
     "build": {
-      "executor": "@nx/js:tsc",
-      "output": "dist/packages/token-vault",
-      "options": {
-        "tsConfig": "packages/token-vault/tsconfig.lib.json",
-        "main": "packages/javascript-sdk/src/index.ts",
-        "assets": ["packages/token-vault/src/*.md"],
-        "outputPath": "dist/packages/token-vault"
-      }
+      "dependsOn": ["javascript-sdk:build"],
+      "inputs": [
+        "default",
+        "^default",
+        {
+          "externalDependencies": ["vite"]
+        }
+      ],
+      "outputs": ["{projectRoot}/dist"]
     },
     "test": {
-      "executor": "@nx/vite:test",
-      "outputs": ["{workspaceRoot}/coverage/packages/token-vault"],
+      "dependsOn": ["javascript-sdk:build"],
+      "inputs": [
+        "default",
+        "^default",
+        {
+          "externalDependencies": ["vitest"]
+        }
+      ],
       "options": {
-        "configFile": "packages/token-vault/vite.config.ts"
+        "config": "./vite.config.ts"
       },
       "configurations": {
         "watch": {
@@ -27,12 +35,12 @@
       }
     },
     "lint": {
-      "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"],
+      "dependsOn": ["javascript-sdk:build"],
       "options": {
-        "lintFilePatterns": ["packages/token-vault/**/*.ts"]
+        "fix": true,
+        "ignore-path": ".eslintignore",
+        "args": ["**/*.ts"]
       }
     }
-  },
-  "tags": ["scope:package"]
+  }
 }

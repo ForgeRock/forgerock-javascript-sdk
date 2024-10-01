@@ -7,14 +7,14 @@
  * This software may be modified and distributed under the terms
  * of the MIT license. See the LICENSE file for details.
  */
-
+import { vi, expect, describe, it, beforeAll } from 'vitest';
 import Config from '../config';
 import FRDevice from './index';
 
 Object.defineProperty(window, 'crypto', {
   writable: true,
   value: {
-    getRandomValues: jest.fn().mockImplementation(() => ['714524572', '2799534390', '3707617532']),
+    getRandomValues: vi.fn().mockImplementation(() => ['714524572', '2799534390', '3707617532']),
   },
 });
 

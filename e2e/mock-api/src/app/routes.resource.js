@@ -47,8 +47,8 @@ async function authorization(req, res, next) {
     const response = await request
       // eslint-disable-next-line
       .post(`${AM_URL}/json/${realms}/policies/?_action=evaluate`)
-      .key(key)
-      .cert(cert)
+      // .key(key)
+      // .cert(cert)
       .set('Content-Type', 'application/json')
       .set('Accept-API-Version', 'resource=2.1')
       .set('iPlanetDirectoryPro', session.tokenId)

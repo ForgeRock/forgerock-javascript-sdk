@@ -1,9 +1,10 @@
+import { vi, afterAll, describe, it, expect } from 'vitest';
 import OAuth2Client from '../../src/oauth2-client';
 import PKCE from '../../src/util/pkce';
 import { ResponseType } from '../../src/oauth2-client';
 import { FRLogger } from '../../src/util/logger';
 
-jest.mock('../../src/config', () => {
+vi.mock('../../src/config', () => {
   return {
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
     get() {
@@ -20,7 +21,7 @@ jest.mock('../../src/config', () => {
     },
   };
 });
-jest.mock('../../src/util/pkce', () => {
+vi.mock('../../src/util/pkce', () => {
   return {
     createVerifier(): string {
       return 'abcd';
@@ -34,7 +35,7 @@ jest.mock('../../src/util/pkce', () => {
   };
 });
 afterAll(() => {
-  jest.clearAllMocks();
+  vi.clearAllMocks();
 });
 describe('Test OAuth2Client methods', () => {
   it('should construct proper authorization URL', async () => {

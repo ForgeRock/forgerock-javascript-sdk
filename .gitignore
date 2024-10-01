@@ -2,8 +2,10 @@
 .DS_Store
 */DS_Store
 **/*.DS_Store
+.pnpm-store/*
 # Generated code
 tmp/
+e2e/**/dist
 */dist/*
 dist/*
 packages/*/dist/

@@ -22,21 +22,21 @@ const config: PlaywrightTestConfig = {
   },
   webServer: [
     {
-      command: 'npx nx serve mock-api',
+      command: 'pnpm nx serve mock-api',
       url: 'http://localhost:9443/healthcheck',
       ignoreHTTPSErrors: true,
       reuseExistingServer: !process.env.CI,
       cwd: workspaceRoot,
     },
     {
-      command: 'npx nx serve e2e-mock-api-v2',
+      command: 'pnpm nx serve mock-api-v2',
       url: 'http://localhost:9444/healthcheck',
       ignoreHTTPSErrors: true,
       reuseExistingServer: !process.env.CI,
       cwd: workspaceRoot,
     },
     {
-      command: 'npx nx serve autoscript-apps',
+      command: 'pnpm nx serve autoscript-apps',
       url: 'http://localhost:8443',
       ignoreHTTPSErrors: true,
       reuseExistingServer: !process.env.CI,

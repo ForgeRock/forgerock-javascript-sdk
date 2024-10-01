@@ -520,6 +520,7 @@ export const otpQRCodeCallbacks = {
         {
           name: 'message',
           value:
+            // eslint-disable-next-line quotes
             "window.QRCodeReader.createCode({\n    id: 'callback_0',\n    text: 'otpauth\\x3A\\x2F\\x2Ftotp\\x2FForgeRock\\x3Ajlowery\\x3Fperiod\\x3D30\\x26b\\x3D032b75\\x26digits\\x3D6\\x26secret\\QITSTC234FRIU8DD987DW3VPICFY\\x3D\\x3D\\x3D\\x3D\\x3D\\x3D\\x26issuer\\x3DForgeRock',\n    version: '20',\n    code: 'L'\n});",
         },
         {

@@ -1,3 +1,4 @@
+import { vi, describe, it, expect } from 'vitest';
 import { CallbackType } from '../../auth/enums';
 import PingOneProtectEvaluationCallback from './ping-protect-evaluation-callback';
 
@@ -10,7 +11,7 @@ describe('PingOneProtectEvaluationCallback', () => {
       type: 'PingOneProtectEvaluationCallback' as CallbackType.PingOneProtectEvaluationCallback,
       output: [{ name: 'pauseBehavioralData', value: true }],
     });
-    const mock = jest.spyOn(callback, 'getPauseBehavioralData');
+    const mock = vi.spyOn(callback, 'getPauseBehavioralData');
     callback.getPauseBehavioralData();
     expect(mock).toHaveBeenCalled();
   });
@@ -29,7 +30,7 @@ describe('PingOneProtectEvaluationCallback', () => {
         },
       ],
     });
-    const mock = jest.spyOn(callback, 'setData');
+    const mock = vi.spyOn(callback, 'setData');
     callback.setData('data');
     expect(mock).toHaveBeenCalledWith('data');
     expect(callback.getInputValue('IDToken1signals')).toBe('data');
@@ -49,7 +50,7 @@ describe('PingOneProtectEvaluationCallback', () => {
         },
       ],
     });
-    const mock = jest.spyOn(callback, 'setClientError');
+    const mock = vi.spyOn(callback, 'setClientError');
     callback.setClientError('error i just set');
     expect(mock).toHaveBeenCalledWith('error i just set');
     expect(callback.getInputValue('IDToken1clientError')).toBe('error i just set');

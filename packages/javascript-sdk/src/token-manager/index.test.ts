@@ -1,13 +1,14 @@
+import { vi, describe, it, expect } from 'vitest';
 import TokenManager from '.';
 import Config from '../config';
 import OAuth2Client from '../oauth2-client';
 
-jest.spyOn(OAuth2Client, 'getAuthCodeByIframe').mockImplementation(() => {
+vi.spyOn(OAuth2Client, 'getAuthCodeByIframe').mockImplementation(() => {
   return Promise.resolve('http://myapi.com?code=123&state=123');
 });
 // TokenManager.tokenExchange is private
 // so cast as any so typescript lets us spy.
-jest.spyOn(TokenManager as any, 'tokenExchange').mockImplementation(() => {
+vi.spyOn(TokenManager as any, 'tokenExchange').mockImplementation(() => {
   return Promise.resolve('abctoken');
 });
 describe('TokenManager', () => {

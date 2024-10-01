@@ -1,15 +1,14 @@
 {
   "name": "autoscript-suites",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "includedScripts": [],
   "sourceRoot": "e2e/autoscript-suites/src",
   "projectType": "application",
+  "tags": [],
   "targets": {
     "e2e": {
-      "executor": "@nx/playwright:playwright",
-      "options": {
-        "config": "e2e/autoscript-suites/playwright.config.ts",
-        "skipInstall": true
-      },
+      "dependsOn": ["javascript-sdk:build", "ping-protect:build"],
+      "options": {},
       "configurations": {
         "ui": {
           "ui": true,
@@ -18,14 +17,11 @@
       }
     },
     "lint": {
-      "executor": "@nx/eslint:lint",
       "options": {
-        "lintFilePatterns": ["e2e/autoscript-suites/**/*.{js,ts}"],
         "fix": true,
-        "ignorePath": ".gitignore"
+        "ignore-path": ".eslintignore",
+        "args": ["**/*.ts"]
       }
     }
-  },
-  "tags": [],
-  "implicitDependencies": ["autoscript-apps"]
+  }
 }

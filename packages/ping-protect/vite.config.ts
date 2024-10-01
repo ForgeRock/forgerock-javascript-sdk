@@ -1,36 +1,38 @@
 /// <reference types="vitest" />
 import { defineConfig } from 'vite';
+import dts from 'vite-plugin-dts';
 
 export default defineConfig({
   cacheDir: '../../node_modules/.vite/ping-protect',
-
-  // Uncomment this if you are using workers.
-  // worker: {
-  //  plugins: [
-  //    viteTsConfigPaths({
-  //      root: '../../',
-  //    }),
-  //  ],
-  // },
   build: {
     lib: {
-      name: 'ping-protect',
       entry: 'src/index.ts',
+      name: 'ping-protect',
       formats: ['es'],
-      fileName: () => `src/index.js`,
+      fileName: (extension, filename) => `${filename}.js`,
     },
     rollupOptions: {
+      external: ['@forgerock/javascript-sdk'],
       output: {
-        dir: 'dist/packages/ping-protect',
+        dir: './dist',
         preserveModules: true,
-        preserveModulesRoot: './src',
+        preserveModulesRoot: 'src',
       },
     },
   },
+  plugins: [
+    dts({
+      declarationOnly: false,
+      rollupTypes: true,
+      entryRoot: 'src',
+      tsconfigPath: './tsconfig.lib.json',
+    }),
+  ],
   test: {
     reporters: ['default'],
     globals: true,
     setupFiles: ['./vitest.setup.ts'],
+    watch: !process.env['CI'],
     coverage: {
       provider: 'v8',
       reportsDirectory: '../../coverage/packages/ping-protect',

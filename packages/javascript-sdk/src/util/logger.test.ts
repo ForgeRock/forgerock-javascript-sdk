@@ -1,3 +1,4 @@
+import { vi, describe, it, expect } from 'vitest';
 import { FRLogger } from './logger';
 import Config from '../config';
 import { LoggerFunctions } from '../config/interfaces';
@@ -33,7 +34,7 @@ describe('Logger Class', () => {
       realmPath: 'alpha',
       logLevel: 'info',
     });
-    const spy = jest.spyOn(FRLogger, 'error').mockImplementation();
+    const spy = vi.spyOn(FRLogger, 'error').mockImplementation();
     FRLogger.error('test');
     expect(spy).toHaveBeenCalled();
     spy.mockRestore();
@@ -47,7 +48,7 @@ describe('Logger Class', () => {
       realmPath: 'alpha',
       logLevel: 'info',
     });
-    const spy = jest.spyOn(FRLogger, 'warn').mockImplementation();
+    const spy = vi.spyOn(FRLogger, 'warn').mockImplementation();
     FRLogger.warn('test');
     expect(spy).toHaveBeenCalled();
     spy.mockRestore();
@@ -61,7 +62,7 @@ describe('Logger Class', () => {
       realmPath: 'alpha',
       logLevel: 'info',
     });
-    const spy = jest.spyOn(FRLogger, 'log').mockImplementation();
+    const spy = vi.spyOn(FRLogger, 'log').mockImplementation();
     FRLogger.log('test');
     expect(spy).toHaveBeenCalled();
     spy.mockRestore();
@@ -75,7 +76,7 @@ describe('Logger Class', () => {
       realmPath: 'alpha',
       logLevel: 'none',
     });
-    const spy = jest.spyOn(console, 'error').mockImplementation();
+    const spy = vi.spyOn(console, 'error').mockImplementation();
     FRLogger.error('test');
     expect(spy).not.toHaveBeenCalled();
     spy.mockRestore();
@@ -89,9 +90,9 @@ describe('Logger Class', () => {
       realmPath: 'alpha',
       logLevel: 'error',
     });
-    const spyError = jest.spyOn(console, 'error').mockImplementation();
-    const spyWarn = jest.spyOn(console, 'warn').mockImplementation();
-    const spyInfo = jest.spyOn(console, 'info').mockImplementation();
+    const spyError = vi.spyOn(console, 'error').mockImplementation();
+    const spyWarn = vi.spyOn(console, 'warn').mockImplementation();
+    const spyInfo = vi.spyOn(console, 'info').mockImplementation();
     FRLogger.log('info');
     expect(spyInfo).not.toHaveBeenCalled();
     FRLogger.warn('test');
@@ -111,7 +112,7 @@ describe('Logger Class', () => {
       realmPath: 'alpha',
       logLevel: 'none',
     });
-    const spy = jest.spyOn(console, 'warn').mockImplementation();
+    const spy = vi.spyOn(console, 'warn').mockImplementation();
     FRLogger.warn('test');
     expect(spy).not.toHaveBeenCalled();
     spy.mockRestore();
@@ -125,17 +126,17 @@ describe('Logger Class', () => {
       realmPath: 'alpha',
       logLevel: 'none',
     });
-    const spy = jest.spyOn(console, 'log').mockImplementation();
+    const spy = vi.spyOn(console, 'log').mockImplementation();
     FRLogger.log('test');
 
     expect(spy).not.toHaveBeenCalled();
     spy.mockRestore();
   });
   it('should allow a custom logger', () => {
-    const myloggerFn: LoggerFunctions<typeof jest.fn, typeof jest.fn, typeof jest.fn> = {
-      warn: jest.fn(),
-      error: jest.fn(),
-      log: jest.fn(),
+    const myloggerFn: LoggerFunctions<typeof vi.fn, typeof vi.fn, typeof vi.fn> = {
+      warn: vi.fn(),
+      error: vi.fn(),
+      log: vi.fn(),
     };
 
     Config.set({
@@ -158,10 +159,10 @@ describe('Logger Class', () => {
     expect(myloggerFn.error).toHaveBeenCalled();
   });
   it('should allow a custom logger but not call methods that arent allowed', () => {
-    const myloggerFn: LoggerFunctions<typeof jest.fn, typeof jest.fn, typeof jest.fn> = {
-      warn: jest.fn(),
-      error: jest.fn(),
-      log: jest.fn(),
+    const myloggerFn: LoggerFunctions<typeof vi.fn, typeof vi.fn, typeof vi.fn> = {
+      warn: vi.fn(),
+      error: vi.fn(),
+      log: vi.fn(),
     };
 
     Config.set({
@@ -192,9 +193,9 @@ describe('Logger Class', () => {
       realmPath: 'alpha',
       logLevel: 'warn',
     });
-    const spyWarn = jest.spyOn(console, 'warn').mockImplementation();
-    const spyError = jest.spyOn(console, 'error').mockImplementation();
-    const spyLog = jest.spyOn(console, 'log').mockImplementation();
+    const spyWarn = vi.spyOn(console, 'warn').mockImplementation();
+    const spyError = vi.spyOn(console, 'error').mockImplementation();
+    const spyLog = vi.spyOn(console, 'log').mockImplementation();
 
     FRLogger.warn('test');
     expect(console.warn).toHaveBeenCalled();
@@ -218,9 +219,9 @@ describe('Logger Class', () => {
       realmPath: 'alpha',
       logLevel: 'info',
     });
-    const spyWarn = jest.spyOn(console, 'warn').mockImplementation();
-    const spyError = jest.spyOn(console, 'error').mockImplementation();
-    const spyLog = jest.spyOn(console, 'log').mockImplementation();
+    const spyWarn = vi.spyOn(console, 'warn').mockImplementation();
+    const spyError = vi.spyOn(console, 'error').mockImplementation();
+    const spyLog = vi.spyOn(console, 'log').mockImplementation();
 
     FRLogger.warn('test');
     expect(console.warn).toHaveBeenCalled();
@@ -244,9 +245,9 @@ describe('Logger Class', () => {
       realmPath: 'alpha',
       logLevel: 'debug',
     });
-    const spyWarn = jest.spyOn(console, 'warn').mockImplementation();
-    const spyError = jest.spyOn(console, 'error').mockImplementation();
-    const spyLog = jest.spyOn(console, 'log').mockImplementation();
+    const spyWarn = vi.spyOn(console, 'warn').mockImplementation();
+    const spyError = vi.spyOn(console, 'error').mockImplementation();
+    const spyLog = vi.spyOn(console, 'log').mockImplementation();
 
     FRLogger.warn('test');
     expect(console.warn).toHaveBeenCalled();
@@ -270,9 +271,9 @@ describe('Logger Class', () => {
       realmPath: 'alpha',
       logLevel: 'error',
     });
-    const spyWarn = jest.spyOn(console, 'warn').mockImplementation();
-    const spyError = jest.spyOn(console, 'error').mockImplementation();
-    const spyLog = jest.spyOn(console, 'log').mockImplementation();
+    const spyWarn = vi.spyOn(console, 'warn').mockImplementation();
+    const spyError = vi.spyOn(console, 'error').mockImplementation();
+    const spyLog = vi.spyOn(console, 'log').mockImplementation();
 
     FRLogger.warn('test');
     expect(console.warn).not.toHaveBeenCalled();
@@ -296,10 +297,10 @@ describe('Logger Class', () => {
       realmPath: 'alpha',
       logLevel: 'info',
     });
-    const spyWarn = jest.spyOn(console, 'warn').mockImplementation();
-    const spyError = jest.spyOn(console, 'error').mockImplementation();
-    const spyLog = jest.spyOn(console, 'log').mockImplementation();
-    const spyInfo = jest.spyOn(console, 'info').mockImplementation();
+    const spyWarn = vi.spyOn(console, 'warn').mockImplementation();
+    const spyError = vi.spyOn(console, 'error').mockImplementation();
+    const spyLog = vi.spyOn(console, 'log').mockImplementation();
+    const spyInfo = vi.spyOn(console, 'info').mockImplementation();
 
     FRLogger.warn('test');
     expect(console.warn).toHaveBeenCalled();

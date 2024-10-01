@@ -1,5 +1,5 @@
 {
-  "name": "e2e-mock-api-v2",
+  "name": "mock-api-v2",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "e2e/mock-api-v2/src",
   "projectType": "application",
@@ -7,11 +7,11 @@
   "targets": {
     "build": {
       "executor": "@nx/esbuild:esbuild",
-      "outputs": ["{options.outputPath}"],
+      "outputs": ["{projectRoot}/dist"],
       "defaultConfiguration": "production",
       "options": {
         "platform": "node",
-        "outputPath": "dist/e2e/mock-api-v2",
+        "outputPath": "e2e/mock-api-v2/dist",
         "format": ["cjs"],
         "bundle": false,
         "main": "e2e/mock-api-v2/src/main.ts",
@@ -46,30 +46,43 @@
       "executor": "@nx/js:node",
       "defaultConfiguration": "development",
       "options": {
-        "buildTarget": "e2e-mock-api-v2:build"
+        "buildTarget": "mock-api-v2:build"
       },
       "configurations": {
         "example-server": {
-          "buildTarget": "e2e-mock-api-v2:build:example-server"
+          "buildTarget": "mock-api-v2:build:example-server"
         },
         "production": {
-          "buildTarget": "e2e-mock-api-v2:build:production"
+          "buildTarget": "mock-api-v2:build:production"
         }
       }
     },
-    "lint": {
-      "executor": "@nx/eslint:lint"
-    },
     "test": {
-      "executor": "@nx/vite:test",
-      "outputs": ["{options.reportsDirectory}"],
+      "inputs": [
+        "default",
+        "^default",
+        {
+          "externalDependencies": ["vitest"]
+        }
+      ],
+      "outputs": [
+        "{projectRoot}/{options.coverage.reportsDirectory}",
+        "{workspaceRoot}/coverage/e2e/mock-api-v2"
+      ],
       "options": {
-        "reportsDirectory": "../../coverage/e2e/mock-api-v2"
+        "coverage.reportsDirectory": "../../coverage/e2e/mock-api-v2"
       },
       "configurations": {
         "watch": {
           "watch": true
         }
+      }
+    },
+    "lint": {
+      "options": {
+        "fix": true,
+        "ignore-path": ".eslintignore",
+        "args": ["**/*.ts"]
       }
     }
   }

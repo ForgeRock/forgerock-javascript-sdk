@@ -2,81 +2,59 @@
   "targetDefaults": {
     "nx-release-publish": {
       "options": {
-        "packageRoot": "dist/packages/{projectName}"
+        "packageRoot": "packages/{projectName}"
       }
     },
     "docs": {
-      "cache": true
-    },
-    "packagejson": {
       "cache": true
     },
     "e2e": {
       "cache": true
     },
     "build": {
-      "dependsOn": ["^build"],
       "cache": true,
-      "inputs": ["production", "^production"]
-    },
-    "readme": {
-      "cache": true
+      "inputs": ["!{projectRoot}/**/*.md"]
     },
     "build-interceptor": {
-      "cache": true
+      "cache": true,
+      "inputs": ["!{projectRoot}/**/*.md"]
     },
     "@nx/vite:test": {
-      "dependsOn": ["^test"],
-      "inputs": ["default", "^default"],
+      "inputs": ["default", "^default", "!{projectRoot}/**/*.md"],
       "cache": true
     },
     "@nx/eslint:lint": {
-      "inputs": ["default", "{workspaceRoot}/.eslintrc.json"],
+      "inputs": [
+        "{workspaceRoot}/.eslintrc.json",
+        "default",
+        "^default",
+        "!{projectRoot}/**/*.md"
+      ],
       "cache": true
     },
     "@nx/vite:build": {
       "cache": true,
-      "dependsOn": ["^build"],
-      "inputs": ["default", "^default"]
+      "inputs": ["default", "^default", "!{projectRoot}/**/*.md"]
     },
     "@nx/esbuild:esbuild": {
       "cache": true,
-      "dependsOn": ["^build"],
-      "inputs": ["production", "^production"]
+      "inputs": ["production", "^production", "!{projectRoot}/**/*.md"]
+    },
+    "e2e-ci--**/*": {
+      "dependsOn": [
+        "javascript-sdk:build",
+        "token-vault:build",
+        "ping-protect:build",
+        "token-vault:build-interceptor"
+      ],
+      "cache": true
     }
   },
   "parallel": 1,
-  "targetDependencies": {
-    "test": [
-      {
-        "target": "test",
-        "projects": "dependencies"
-      }
-    ],
-    "build": [
-      {
-        "target": "build",
-        "projects": "dependencies"
-      }
-    ],
-    "prepare": [
-      {
-        "target": "prepare",
-        "projects": "dependencies"
-      }
-    ],
-    "package": [
-      {
-        "target": "package",
-        "projects": "dependencies"
-      }
-    ]
-  },
   "workspaceLayout": {
     "appsDir": "",
     "libsDir": ""
   },
-  "generators": {},
   "release": {
     "projects": ["packages/*"],
     "releaseTagPattern": "v{version}",
@@ -104,19 +82,49 @@
         "ciTargetName": "e2e-ci",
         "targetName": "e2e"
       }
+    },
+    {
+      "plugin": "@nx/eslint/plugin",
+      "options": {
+        "targetName": "lint"
+      }
+    },
+    {
+      "plugin": "@nx/vite/plugin",
+      "options": {
+        "buildTargetName": "build",
+        "serveTargetName": "serve",
+        "previewTargetName": "preview",
+        "testTargetName": "test",
+        "serveStaticTargetName": "serve-static",
+        "typecheckTargetName": "typecheck"
+      },
+      "include": ["e2e/**/*", "packages/**/*"]
+    },
+    {
+      "plugin": "@nx/vite/plugin",
+      "options": {
+        "buildTargetName": "build-interceptor",
+        "serveTargetName": "serve",
+        "previewTargetName": "preview",
+        "testTargetName": "test",
+        "serveStaticTargetName": "serve-static",
+        "typecheckTargetName": "typecheck"
+      },
+      "include": ["e2e/token-vault-app/**/*"]
     }
   ],
   "defaultProject": "javascript-sdk",
   "useDaemonProcess": true,
   "namedInputs": {
     "default": ["{projectRoot}/**/*", "sharedGlobals"],
-    "sharedGlobals": [],
+    "sharedGlobals": ["{workspaceRoot}/.github/workflows/ci=github.yml"],
     "production": [
       "default",
       "!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap)",
       "!{projectRoot}/tsconfig.spec.json"
     ]
   },
-  "useInferencePlugins": false,
+  "useInferencePlugins": true,
   "defaultBase": "develop"
 }

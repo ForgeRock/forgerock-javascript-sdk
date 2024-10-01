@@ -2,11 +2,13 @@
   "name": "autoscript-apps",
   "version": "0.0.0",
   "private": true,
+  "type": "module",
   "dependencies": {
+    "@forgerock/javascript-sdk": "workspace:*",
+    "@forgerock/ping-protect": "workspace:*",
     "rxjs": "^7.4.0"
   },
   "description": "apps for e2e on js sdk",
-  "main": "./src/index.ts",
   "license": "ISC",
   "repository": {
     "type": "git",

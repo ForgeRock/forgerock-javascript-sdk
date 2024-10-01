@@ -5,34 +5,37 @@ import { copyFileSync } from 'fs';
 
 export default defineConfig({
   root: __dirname,
-  cacheDir: '../../node_modules/.vite/packages/javascript-sdk',
+  cacheDir: '../../node_modules/.vite/',
 
   build: {
+    outDir: './dist',
+    target: ['esnext', 'es2020'],
     lib: {
       entry: 'src/index.ts',
       name: 'javascript-sdk',
       formats: ['es', 'cjs'],
-      fileName(format, name) {
-        return `${name}.${format === 'cjs' ? 'cjs' : 'js'}`;
+      fileName: (format, fileName) => {
+        const extension = format === 'es' ? 'js' : 'cjs';
+        return `${fileName}.${extension}`;
       },
     },
     rollupOptions: {
       output: {
-        dir: 'dist/packages/javascript-sdk',
+        dir: './dist',
+        preserveModulesRoot: './src',
         preserveModules: true,
       },
     },
   },
   plugins: [
     dts({
-      copyDtsFiles: true,
-      outDir: '../../dist',
-      declarationOnly: true,
-      rollupTypes: false,
-      insertTypesEntry: false,
+      declarationOnly: false,
+      entryRoot: 'src',
+      rollupTypes: true,
       tsconfigPath: './tsconfig.lib.json',
-      afterBuild: (files) => {
-        return files.forEach((value, key) => copyFileSync(key, key.replace('.ts', '.cts')));
+      afterBuild: () => {
+        copyFileSync('dist/index.ts.d.ts', 'dist/index.d.cts');
+        copyFileSync('dist/index.ts.d.ts', 'dist/index.d.ts');
       },
     }),
   ],
@@ -40,7 +43,7 @@ export default defineConfig({
     globals: true,
     environment: 'jsdom',
     include: ['src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
-
+    watch: !process.env['CI'],
     reporters: ['default'],
     setupFiles: ['./vitest.setup.ts'],
     coverage: {
