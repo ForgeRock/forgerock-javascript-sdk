@@ -36,7 +36,8 @@ const config: PlaywrightTestConfig = {
       cwd: workspaceRoot,
     },
     {
-      command: 'pnpm nx serve autoscript-apps',
+      command:
+        'pnpm nx build javascript-sdk && pnpm nx build ping-protect && pnpm nx serve autoscript-apps',
       url: 'http://localhost:8443',
       ignoreHTTPSErrors: true,
       reuseExistingServer: !process.env.CI,
