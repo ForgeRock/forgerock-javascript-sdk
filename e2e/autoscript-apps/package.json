@@ -10,6 +10,11 @@
   },
   "description": "apps for e2e on js sdk",
   "license": "ISC",
+  "scripts": {
+    "build": "vite build",
+    "serve": "vite dev",
+    "preview": "vite preview"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ForgeRock/forgerock-javascript-sdk.git"
@@ -17,5 +22,12 @@
   "bugs": {
     "url": "https://github.com/ForgeRock/forgerock-javascript-sdk/issues"
   },
-  "homepage": "https://github.com/ForgeRock/forgerock-javascript-sdk#readme"
+  "homepage": "https://github.com/ForgeRock/forgerock-javascript-sdk#readme",
+  "nx": {
+    "implicitDependencies": [
+      "@forgerock/javascript-sdk",
+      "@forgerock/ping-protect",
+      "@forgerock/token-vault"
+    ]
+  }
 }

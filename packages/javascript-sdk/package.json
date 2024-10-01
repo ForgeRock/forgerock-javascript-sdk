@@ -10,6 +10,16 @@
     "url": "git@github.com:ForgeRock/forgerock-javascript-sdk.git",
     "directory": "packages/javascript-sdk"
   },
+  "nx": {
+    "tags": ["scope:sdk", "scope:package"]
+  },
+  "scripts": {
+    "build": "vite build",
+    "lint": "eslint **/*.ts --ignore-path .eslintignore --fix",
+    "test": "vitest",
+    "docs": "typedoc --options typedoc.json",
+    "publint": "publint ."
+  },
   "bugs": {
     "url": "https://github.com/ForgeRock/forgerock-javascript-sdk/issues"
   },

@@ -9,6 +9,15 @@
       "cache": true
     },
     "e2e": {
+      "dependsOn": ["^build"],
+      "cache": true
+    },
+    "test": {
+      "dependsOn": ["^build", "^test"],
+      "cache": true
+    },
+    "lint": {
+      "dependsOn": ["^build", "^lint"],
       "cache": true
     },
     "build": {

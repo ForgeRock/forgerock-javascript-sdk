@@ -6,6 +6,9 @@
   "files": ["dist"],
   "module": "./dist/index.js",
   "main": "./dist/index.js",
+  "nx": {
+    "tags": ["scope:package"]
+  },
   "repository": {
     "type": "git",
     "url": "git@github.com:ForgeRock/forgerock-javascript-sdk.git",
@@ -18,6 +21,13 @@
     }
   },
   "types": "./dist/index.ts.d.ts",
+  "scripts": {
+    "build": "vite build --outDir dist",
+    "lint": "eslint **/*.ts --ignore-path .eslintignore --fix",
+    "test": "vitest",
+    "docs": "typedoc --options typedoc.json",
+    "publint": "publint ."
+  },
   "peerDependencies": {
     "@forgerock/javascript-sdk": "workspace:*"
   }

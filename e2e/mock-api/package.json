@@ -6,6 +6,15 @@
   "main": "./index.js",
   "keywords": [],
   "author": "",
-  "type": "commonjs",
-  "license": "ISC"
+  "license": "ISC",
+  "scripts": {
+    "build": "esbuild src/index.js --bundle --platform=node --format=cjs --target=node20 --outdir=dist",
+    "watch": "tsc -p tsconfig.app.json --clean src/main.ts --watch",
+    "serve": "pnpm build && node dist/index.js",
+    "lint": "eslint **/*.ts --ignore-path .eslintignore --fix"
+  },
+  "devDependencies": {
+    "esbuild": "^0.19.2"
+  },
+  "nx": {}
 }
