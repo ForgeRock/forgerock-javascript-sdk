@@ -1,0 +1,15 @@
+{
+  "name": "@forgerock/token-vault-interceptor",
+  "version": "0.0.1",
+  "dependencies": {
+    "@forgerock/token-vault": "workspace:*"
+  },
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "typings": "./dist/index.d.ts",
+  "private": true,
+  "exports": {
+    ".": "./dist/index.js"
+  }
+}

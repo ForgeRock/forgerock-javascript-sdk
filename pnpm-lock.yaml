@@ -206,6 +206,12 @@ importers:
       superagent:
         specifier: ^8.1.2
         version: 8.1.2
+      swc-loader:
+        specifier: 0.1.15
+        version: 0.1.15(@swc/core@1.5.7(@swc/helpers@0.5.12))(webpack@5.95.0(@swc/core@1.5.7(@swc/helpers@0.5.12))(esbuild@0.19.12))
+      ts-node:
+        specifier: 10.9.1
+        version: 10.9.1(@swc/core@1.5.7(@swc/helpers@0.5.12))(@types/node@18.19.26)(typescript@5.5.3)
       tslib:
         specifier: ^2.5.0
         version: 2.6.3
@@ -258,17 +264,7 @@ importers:
         specifier: ^7.4.0
         version: 7.8.1
 
-  e2e/autoscript-suites:
-    dependencies:
-      '@forgerock/javascript-sdk':
-        specifier: workspace:*
-        version: link:../../packages/javascript-sdk
-      '@forgerock/ping-protect':
-        specifier: workspace:*
-        version: link:../../packages/ping-protect
-      '@forgerock/token-vault':
-        specifier: workspace:*
-        version: link:../../packages/token-vault
+  e2e/autoscript-suites: {}
 
   e2e/mock-api: {}
 
@@ -277,6 +273,15 @@ importers:
       '@forgerock/javascript-sdk':
         specifier: workspace:*
         version: link:../../packages/javascript-sdk
+      '@forgerock/token-vault':
+        specifier: workspace:*
+        version: link:../../packages/token-vault
+      '@forgerock/token-vault-interceptor':
+        specifier: workspace:*
+        version: link:../token-vault-interceptor
+
+  e2e/token-vault-interceptor:
+    dependencies:
       '@forgerock/token-vault':
         specifier: workspace:*
         version: link:../../packages/token-vault
@@ -290,14 +295,7 @@ importers:
         specifier: workspace:*
         version: link:../../packages/token-vault
 
-  e2e/token-vault-suites:
-    dependencies:
-      '@forgerock/javascript-sdk':
-        specifier: workspace:*
-        version: link:../../packages/javascript-sdk
-      '@forgerock/token-vault':
-        specifier: workspace:*
-        version: link:../../packages/token-vault
+  e2e/token-vault-suites: {}
 
   packages/javascript-sdk: {}
 
@@ -12778,6 +12776,15 @@ packages:
         integrity: sha512-CVbSfaLpstV65OnSjbXfVd6Sta3q3F7Cj/yYuvHMp1P90LztOLs6PfUnKEVAeiIVQt9u2SaPwv0LiH/OyMjHRw==,
       }
 
+  swc-loader@0.1.15:
+    resolution:
+      {
+        integrity: sha512-cn1WPIeQJvXM4bbo3OwdEIapsQ4uUGOfyFj0h2+2+brT0k76DCGnZXDE2KmcqTd2JSQ+b61z2NPMib7eEwMYYw==,
+      }
+    peerDependencies:
+      '@swc/core': ^1.2.52
+      webpack: '>=2'
+
   symbol-tree@3.2.4:
     resolution:
       {
@@ -23115,6 +23122,12 @@ snapshots:
       picocolors: 1.1.0
 
   swagger-ui-dist@5.17.14: {}
+
+  swc-loader@0.1.15(@swc/core@1.5.7(@swc/helpers@0.5.12))(webpack@5.95.0(@swc/core@1.5.7(@swc/helpers@0.5.12))(esbuild@0.19.12)):
+    dependencies:
+      '@swc/core': 1.5.7(@swc/helpers@0.5.12)
+      loader-utils: 2.0.4
+      webpack: 5.95.0(@swc/core@1.5.7(@swc/helpers@0.5.12))(esbuild@0.19.12)
 
   symbol-tree@3.2.4: {}
 

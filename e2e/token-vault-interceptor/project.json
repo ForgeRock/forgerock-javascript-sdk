@@ -1,8 +1,8 @@
 {
-  "name": "token-vault-app",
+  "name": "@forgerock/token-vault-interceptor",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "projectType": "application",
-  "sourceRoot": "e2e/token-vault-app/src",
+  "sourceRoot": "e2e/token-vault-interceptor/src",
+  "projectType": "library",
   "tags": ["scope:app"],
   "targets": {
     "build": {
@@ -19,24 +19,6 @@
         "production": {
           "mode": "production"
         }
-      }
-    },
-    "serve": {
-      "defaultConfiguration": "development",
-      "options": {
-        "host": "localhost",
-        "port": 5823
-      },
-      "configurations": {
-        "development": {},
-        "production": {}
-      }
-    },
-    "preview": {
-      "defaultConfiguration": "development",
-      "configurations": {
-        "development": {},
-        "production": {}
       }
     },
     "lint": {

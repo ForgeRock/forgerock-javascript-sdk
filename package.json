@@ -94,6 +94,8 @@
     "sass": "^1.71.1",
     "shx": "^0.3.4",
     "superagent": "^8.1.2",
+    "swc-loader": "0.1.15",
+    "ts-node": "10.9.1",
     "tslib": "^2.5.0",
     "typedoc": "^0.26.5",
     "typedoc-plugin-rename-defaults": "^0.7.1",

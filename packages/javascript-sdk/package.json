@@ -28,7 +28,7 @@
         "default": "./dist/index.cjs"
       }
     },
-    "./src/*": {
+    "./src/": {
       "import": {
         "types": "./dist/*.d.ts",
         "default": "./dist/*.js"

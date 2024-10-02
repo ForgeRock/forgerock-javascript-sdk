@@ -6,7 +6,6 @@
   "tags": ["scope:e2e"],
   "targets": {
     "e2e": {
-      "dependsOn": ["javascript-sdk:build", "token-vault:build"],
       "options": {},
       "configurations": {
         "ui": {
