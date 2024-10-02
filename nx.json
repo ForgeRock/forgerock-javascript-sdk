@@ -5,7 +5,9 @@
     "production": [
       "default",
       "!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap)",
-      "!{projectRoot}/tsconfig.spec.json"
+      "!{projectRoot}/tsconfig.spec.json",
+      "!{projectRoot}/src/test-setup.[jt]s",
+      "!{projectRoot}/test-setup.[jt]s"
     ],
     "noMarkdown": ["!{projectRoot}/**/*.md"]
   },
@@ -25,6 +27,9 @@
     "build": {
       "inputs": ["noMarkdown", "^noMarkdown"],
       "cache": true
+    },
+    "serve": {
+      "dependsOn": ["build", "^build"]
     },
     "build-interceptor": {
       "cache": true,
@@ -118,11 +123,21 @@
         "typecheckTargetName": "typecheck"
       },
       "include": ["e2e/token-vault-app/**/*"]
+    },
+    {
+      "plugin": "@nx/vite/plugin",
+      "options": {
+        "buildTargetName": "vite:build",
+        "testTargetName": "vite:test",
+        "serveTargetName": "vite:serve",
+        "previewTargetName": "vite:preview",
+        "serveStaticTargetName": "vite:serve-static",
+        "typecheckTargetName": "vite:typecheck"
+      }
     }
   ],
   "defaultProject": "javascript-sdk",
   "useDaemonProcess": true,
-
   "useInferencePlugins": true,
   "defaultBase": "develop"
 }

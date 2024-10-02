@@ -27,16 +27,14 @@ const config: PlaywrightTestConfig = {
       cwd: workspaceRoot,
     },
     {
-      command:
-        'pnpm nx build javascript-sdk && pnpm nx build token-vault  && pnpm nx serve token-vault-proxy',
+      command: 'pnpm nx serve token-vault-proxy',
       port: 5833,
       ignoreHTTPSErrors: true,
       reuseExistingServer: !process.env.CI,
       cwd: workspaceRoot,
     },
     {
-      command:
-        'pnpm nx build javascript-sdk && pnpm nx build token-vault && pnpm nx serve token-vault-app',
+      command: 'pnpm nx serve token-vault-app',
       port: 5823,
       ignoreHTTPSErrors: true,
       reuseExistingServer: !process.env.CI,
