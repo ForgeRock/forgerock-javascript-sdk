@@ -1,19 +1,21 @@
 {
   "name": "@forgerock/davinci-client",
-  "version": "0.0.1",
-  "main": "./index.js",
-  "module": "./index.mjs",
-  "typings": "./index.d.ts",
-  "private": true,
+  "version": "0.0.1-davinci.1",
+  "main": "./dist/src/index.js",
+  "module": "./dist/src/index.js",
+  "typings": "./dist/src/index.d.ts",
+  "type": "module",
+  "files": ["dist"],
   "dependencies": {
-    "@forgerock/javascript-sdk": "*",
-    "@reduxjs/toolkit": "^2.2.5"
+    "@forgerock/javascript-sdk": "workspace:*",
+    "@reduxjs/toolkit": "^2.2.5",
+    "immer": "10.1.1"
   },
   "exports": {
     ".": {
-      "import": "./src/index.js",
-      "require": "./src/index.js"
+      "import": "./dist/src/index.js",
+      "require": "./dist/src/index.js"
     },
-    "./types": "./src/types.js"
+    "./types": "./dist/src/types.js"
   }
 }

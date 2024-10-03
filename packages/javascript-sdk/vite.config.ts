@@ -32,12 +32,12 @@ export default defineConfig({
       declarationOnly: false,
       entryRoot: 'src',
       rollupTypes: false,
+      insertTypesEntry: true,
       tsconfigPath: './tsconfig.lib.json',
-      afterBuild: (map) => {
-        const files = map.keys();
-        for (const file of files) {
-          copyFileSync(file, file.replace('d.ts', 'd.cts'));
-        }
+      afterBuild: (file) => {
+        file.forEach((v, k) => {
+          copyFileSync(k, k.replace('.d.ts', '.d.cts'));
+        });
       },
     }),
   ],

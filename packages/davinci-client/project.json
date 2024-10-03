@@ -6,19 +6,14 @@
   "tags": ["scope:package"],
   "targets": {
     "build": {
-      "executor": "@nx/vite:build",
+      "executor": "@nx/js:tsc",
       "outputs": ["{options.outputPath}"],
-      "defaultConfiguration": "production",
       "options": {
-        "outputPath": "dist/packages/davinci-client"
-      },
-      "configurations": {
-        "development": {
-          "mode": "development"
-        },
-        "production": {
-          "mode": "production"
-        }
+        "outputPath": "packages/davinci-client/dist",
+        "main": "packages/davinci-client/src/index.ts",
+        "tsConfig": "packages/davinci-client/tsconfig.lib.json",
+        "generateExportsField": false,
+        "assets": []
       }
     },
     "test": {
