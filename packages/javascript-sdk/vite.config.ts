@@ -31,11 +31,13 @@ export default defineConfig({
     dts({
       declarationOnly: false,
       entryRoot: 'src',
-      rollupTypes: true,
+      rollupTypes: false,
+      insertTypesEntry: true,
       tsconfigPath: './tsconfig.lib.json',
-      afterBuild: () => {
-        copyFileSync('dist/index.ts.d.ts', 'dist/index.d.cts');
-        copyFileSync('dist/index.ts.d.ts', 'dist/index.d.ts');
+      afterBuild: (file) => {
+        file.forEach((v, k) => {
+          copyFileSync(k, k.replace('.d.ts', '.d.cts'));
+        });
       },
     }),
   ],

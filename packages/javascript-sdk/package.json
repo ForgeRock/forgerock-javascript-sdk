@@ -1,6 +1,6 @@
 {
   "name": "@forgerock/javascript-sdk",
-  "version": "4.4.2",
+  "version": "4.4.3-davinci.1",
   "description": "ForgeRock JavaScript SDK",
   "author": "ForgeRock",
   "license": "MIT",
@@ -16,7 +16,18 @@
   "homepage": "https://github.com/ForgeRock/forgerock-javascript-sdk#readme",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
+    "./src/*": {
+      "import": {
+        "types": "./dist/*.d.ts",
+        "default": "./dist/*.js"
+      },
+      "require": {
+        "types": "./dist/*.d.cts",
+        "default": "./dist/*.cjs"
+      }
+    },
     ".": {
       "import": {
         "types": "./dist/index.d.ts",
@@ -25,17 +36,8 @@
       "require": {
         "types": "./dist/index.d.cts",
         "default": "./dist/index.cjs"
-      }
-    },
-    "./src/*": {
-      "import": {
-        "types": "./dist/*/*.d.ts",
-        "default": "./dist/*/*.js"
       },
-      "require": {
-        "types": "./dist/*/*.d.cts",
-        "default": "./dist/*/*.cjs"
-      }
+      "default": "./dist/*.js"
     }
   },
   "type": "module"
