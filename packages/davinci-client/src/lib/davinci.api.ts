@@ -22,7 +22,7 @@ import type {
   DavinciErrorResponse,
   DavinciNextResponse,
   DavinciSuccessResponse,
-} from './davinci.types';
+} from './davinci.types.d.ts';
 
 /**
  * @const davinciApi - Define the DaVinci API for Redux state management

@@ -6,33 +6,42 @@
   "tags": ["scope:package"],
   "targets": {
     "build": {
-      "executor": "@nx/vite:build",
-      "outputs": ["{options.outputPath}"],
-      "defaultConfiguration": "production",
-      "options": {
-        "outputPath": "dist/packages/davinci-client"
-      },
-      "configurations": {
-        "development": {
-          "mode": "development"
-        },
-        "production": {
-          "mode": "production"
+      "inputs": [
+        "default",
+        "^default",
+        {
+          "externalDependencies": ["vite"]
         }
-      }
+      ],
+      "outputs": ["{projectRoot}/dist"]
     },
     "test": {
-      "executor": "@nx/vite:test",
-      "outputs": ["{options.reportsDirectory}"],
+      "inputs": [
+        "noMarkdown",
+        "^noMarkdown",
+        {
+          "externalDependencies": ["vitest"]
+        }
+      ],
+      "outputs": [
+        "{projectRoot}/{options.coverage.reportsDirectory}",
+        "{workspaceRoot}/coverage/packages/davinci-client"
+      ],
       "options": {
-        "reportsDirectory": "../../coverage/packages/davinci-client"
+        "coverage.reportsDirectory": "../../coverage/packages/davinci-client"
       }
     },
     "lint": {
-      "executor": "@nx/eslint:lint",
+      "inputs": [
+        "noMarkdown",
+        "^noMarkdown",
+        {
+          "externalDependencies": ["eslint"]
+        }
+      ],
       "options": {
-        "lintFilePatterns": ["packages/davinci-client/**/*.ts"],
-        "fix": true
+        "fix": true,
+        "args": ["**/*.ts"]
       }
     }
   }

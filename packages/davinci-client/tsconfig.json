@@ -4,9 +4,9 @@
     "module": "commonjs",
     "forceConsistentCasingInFileNames": true,
     "strict": true,
-    "noImplicitAny": false,
-    "noImplicitOverride": false,
-    "noPropertyAccessFromIndexSignature": false,
+    "resolveJsonModule": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true
   },

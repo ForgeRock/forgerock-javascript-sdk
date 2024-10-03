@@ -1,8 +1,6 @@
 import * as path from 'path';
 import { defineConfig } from 'vite';
 
-import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
-
 export default defineConfig({
   root: __dirname,
   build: {
@@ -31,5 +29,4 @@ export default defineConfig({
     },
     strictPort: true,
   },
-  plugins: [nxViteTsPaths()],
 });

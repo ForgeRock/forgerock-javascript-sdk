@@ -6,12 +6,14 @@
   "tags": ["scope:app"],
   "targets": {
     "build": {
-      "executor": "@nx/vite:build",
-      "outputs": ["{options.outputPath}"],
+      "outputs": [
+        "{projectRoot}/{options.outDir}",
+        "{workspaceRoot}/dist/e2e/davinci-app"
+      ],
       "defaultConfiguration": "production",
       "options": {
         "emptyOutDir": false,
-        "outputPath": "dist/e2e/davinci-app"
+        "outDir": "../../dist/e2e/davinci-app"
       },
       "configurations": {
         "development": {
@@ -23,48 +25,34 @@
       }
     },
     "serve": {
-      "executor": "@nx/vite:dev-server",
       "dependsOn": ["davinci-app:build"],
       "defaultConfiguration": "development",
       "options": {
-        "buildTarget": "davinci-app:build",
         "host": "localhost",
         "port": 5823
       },
       "configurations": {
-        "development": {
-          "buildTarget": "davinci-app:build:development",
-          "hmr": true
-        },
-        "production": {
-          "buildTarget": "davinci-app:build:production",
-          "hmr": false
-        }
+        "development": {},
+        "production": {}
       }
     },
     "preview": {
-      "executor": "@nx/vite:preview-server",
       "defaultConfiguration": "development",
-      "options": {
-        "buildTarget": "davinci-app:build"
-      },
       "configurations": {
-        "development": {
-          "buildTarget": "davinci-app:build:development"
-        },
-        "production": {
-          "buildTarget": "davinci-app:build:production"
-        }
+        "development": {},
+        "production": {}
       }
     },
     "lint": {
-      "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"],
+      "inputs": [
+        "noMarkdown",
+        "^noMarkdown",
+        {
+          "externalDependencies": ["eslint"]
+        }
+      ],
       "options": {
-        "lintFilePatterns": [
-          "e2e/davinci-app/**/*.ts",
-          "e2e/davinci-app/**/*.tsx"
-        ]
+        "args": ["**/*.ts"]
       }
     }
   }

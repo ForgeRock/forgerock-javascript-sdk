@@ -13,9 +13,9 @@ import { configSlice } from './config.slice.js';
 /**
  * Import the DaVinciRequest types
  */
-import type { DaVinciConfig } from './config.types';
-import type { DaVinciAction, DaVinciRequest } from './davinci.types';
-import type { SingleValueCollector } from './collector.types';
+import type { DaVinciConfig } from './config.types.js';
+import type { DaVinciAction, DaVinciRequest } from './davinci.types.js';
+import type { SingleValueCollector } from './collector.types.js';
 
 /**
  * Create a client function that returns a set of methods

@@ -3,8 +3,8 @@ import { describe, it, expect } from 'vitest';
 import { returnActionCollector } from './collector.utils.js';
 import { returnSingleValueCollector } from './collector.utils.js';
 
-import type { ActionCollectorTypes, SingleValueCollectorTypes } from './collector.types';
-import type { DaVinciField } from './davinci.types';
+import type { ActionCollectorTypes, SingleValueCollectorTypes } from './collector.types.js';
+import type { DaVinciField } from './davinci.types.d.ts';
 
 describe('returnActionCollector', () => {
   const mockField: DaVinciField = {

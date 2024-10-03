@@ -6,14 +6,14 @@ import type {
   PasswordCollector,
   SocialLoginCollector,
   TextCollector,
-} from './collector.types';
-import type { DaVinciField } from './davinci.types';
+} from './collector.types.js';
+import type { DaVinciField } from './davinci.types.js';
 import type {
   ActionCollector,
   ActionCollectorTypes,
   SingleValueCollector,
   SingleValueCollectorTypes,
-} from './collector.types';
+} from './collector.types.js';
 
 /**
  * @function returnActionCollector - Creates an ActionCollector object based on the provided field and index.
@@ -36,7 +36,7 @@ export function returnActionCollector(
       key: field.key,
       label: field.label,
       type: field.type,
-      url: field.links?.authenticate?.href,
+      url: field.links?.['authenticate']?.href,
     },
   };
 }
