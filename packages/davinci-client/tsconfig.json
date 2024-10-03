@@ -1,13 +1,14 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "module": "NodeNext", // or "es2020", "es2015", etc.
-    "target": "ES2020", // Align with your desired browser support
-    "outDir": "dist",
-    "declaration": true,
-    "esModuleInterop": true,
-    "strict": false,
-    "skipLibCheck": true
+    "module": "commonjs",
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "resolveJsonModule": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true
   },
   "files": [],
   "include": [],

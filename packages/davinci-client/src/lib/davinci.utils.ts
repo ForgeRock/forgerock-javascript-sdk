@@ -1,9 +1,9 @@
 /**
  * Import the used types
  */
-import type { SingleValueCollector } from './collector.types';
-import type { DaVinciRequest } from './davinci.types';
-import type { NextNode } from './node.types';
+import type { SingleValueCollector } from './collector.types.js';
+import type { DaVinciRequest } from './davinci.types.js';
+import type { NextNode } from './node.types.js';
 
 /**
  * @function transformSubmitRequest - Transforms a NextNode into a DaVinciRequest for form submissions

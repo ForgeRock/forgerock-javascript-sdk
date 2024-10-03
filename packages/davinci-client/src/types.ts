@@ -1,6 +1,6 @@
-import type * as collectors from './lib/collector.types';
-import type * as config from './lib/config.types';
-import type * as nodes from './lib/node.types';
+import type * as collectors from './lib/collector.types.js';
+import type * as config from './lib/config.types.js';
+import type * as nodes from './lib/node.types.js';
 
 export type DaVinciConfig = config.DaVinciConfig;
 
