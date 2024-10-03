@@ -2,12 +2,12 @@
  * Import the createSlice and PayloadAction utilities from Redux Toolkit
  * @see https://redux-toolkit.js.org/api/createslice
  */
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
 /**
  * Import the types
  */
-import type { DaVinciConfig } from './config.types';
+import type { DaVinciConfig } from './config.types.js';
 
 /**
  * @const configSlice - Define the configuration slice for Redux state management

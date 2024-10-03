@@ -1,7 +1,13 @@
 /**
  * Import the required utilities from Redux Toolkit
  */
-import { createAction, createReducer, createSlice, Draft, PayloadAction } from '@reduxjs/toolkit';
+import {
+  createAction,
+  createReducer,
+  createSlice,
+  type Draft,
+  type PayloadAction,
+} from '@reduxjs/toolkit';
 
 /**
  * Import the collector utilities
@@ -19,7 +25,7 @@ import {
 /**
  * Import the types
  */
-import type { SingleValueCollector, ActionCollector } from './collector.types';
+import type { SingleValueCollector, ActionCollector } from './collector.types.d.ts';
 import type {
   DaVinciField,
   DaVinciCacheEntry,
@@ -27,8 +33,8 @@ import type {
   DavinciNextResponse,
   DavinciSuccessResponse,
   DaVinciErrorCacheEntry,
-} from './davinci.types';
-import type { NextNode, SuccessNode, ErrorNode, StartNode } from './node.types';
+} from './davinci.types.d.ts';
+import type { NextNode, SuccessNode, ErrorNode, StartNode } from './node.types.d.ts';
 
 /**
  * @const initialNodeState - Initial state for the node slice

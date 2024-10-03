@@ -1,8 +1,7 @@
-/// <reference types='vitest' />
 import { defineConfig } from 'vite';
 import dts from 'vite-plugin-dts';
-import { externalizeDeps } from 'vite-plugin-externalize-deps';
 import * as path from 'path';
+import * as pkg from './package.json';
 
 export default defineConfig({
   root: __dirname,
@@ -10,53 +9,52 @@ export default defineConfig({
 
   plugins: [
     dts({
-      rollupTypes: true,
+      rollupTypes: false,
       insertTypesEntry: false,
+      entryRoot: 'src',
       tsconfigPath: path.join(__dirname, 'tsconfig.lib.json'),
     }),
-    externalizeDeps(),
   ],
 
-  // Configuration for building your library.
-  // See: https://vitejs.dev/guide/build.html#library-mode
   build: {
     outDir: './dist',
-    reportCompressedSize: true,
-    commonjsOptions: {
-      transformMixedEsModules: true,
-    },
-    lib: {
-      // Could also be a dictionary or array of multiple entry points.
-      entry: 'src/index.ts',
-      name: 'davinci-client',
-      fileName: (ext, name) => `${name}.js`,
-      // Change this to the formats you want to support.
-      // Don't forget to update your package.json as well.
-      formats: ['es'],
-    },
+    target: ['esnext', 'es2020'],
     rollupOptions: {
-      external: ['./src/lib/mock-data'],
       output: {
         // This is the directory your library will be compiled to.
         dir: './dist',
         preserveModules: true,
+        preserveModulesRoot: 'src',
       },
-      // External packages that should not be bundled into your library.
+      external: Array.from(Object.keys(pkg.dependencies) || []).concat([
+        './src/lib/mock-data',
+        '@reduxjs/toolkit/query',
+        '@forgerock/javascript-sdk',
+        '@forgerock/javascript-sdk/src/oauth2-client/state-pkce',
+        'javascript-sdk',
+      ]),
     },
+    lib: {
+      entry: 'src/index.ts',
+      name: 'davinci-client',
+      fileName: (format, fileName) => {
+        const extension = format === 'es' ? 'js' : 'cjs';
+        return `${fileName}.${extension}`;
+      },
+      formats: ['es'],
+    },
+    reportCompressedSize: true,
+    commonjsOptions: { transformMixedEsModules: true },
   },
 
   test: {
-    globals: true,
     cache: {
       dir: '../../node_modules/.vitest',
     },
+    globals: true,
     environment: 'jsdom',
     include: ['src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
-
     reporters: ['default'],
-    coverage: {
-      reportsDirectory: '../../coverage/packages/davinci-client',
-      provider: 'v8',
-    },
+    coverage: { reportsDirectory: '../../coverage/packages/davinci-client', provider: 'v8' },
   },
 });
