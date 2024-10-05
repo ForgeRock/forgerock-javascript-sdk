@@ -10,24 +10,26 @@ import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import type { DaVinciConfig } from './config.types.js';
 
 /**
+ * @const initialState - The initial state of the configuration slice
+ * NOTE: The clientId, redirectUri, responseType, and scope are set to empty strings
+ */
+const initialState = {
+  clientId: '',
+  redirectUri: '',
+  responseType: '',
+  scope: '',
+  serverConfig: {
+    baseUrl: '',
+  },
+};
+
+/**
  * @const configSlice - Define the configuration slice for Redux state management
  * @see https://redux-toolkit.js.org/api/createslice
  */
 export const configSlice = createSlice({
   name: 'config',
-  /**
-   * @const initialState - The initial state of the configuration slice
-   * NOTE: The clientId, redirectUri, responseType, and scope are set to empty strings
-   */
-  initialState: {
-    clientId: '',
-    redirectUri: '',
-    responseType: '',
-    scope: '',
-    serverConfig: {
-      baseUrl: '',
-    },
-  },
+  initialState,
   reducers: {
     /**
      * @method set - Set the configuration for the DaVinci client

@@ -1,0 +1,13 @@
+node_modules
+*.md
+LICENSE
+.babelrc
+.env*
+.bin
+dist
+.eslintignore
+public
+*.json
+*.html
+*.css
+*.d.ts
