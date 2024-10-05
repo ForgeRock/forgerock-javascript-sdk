@@ -2,6 +2,12 @@
  * Request for DaVinci API
  */
 
+import type {
+  FetchBaseQueryError,
+  FetchBaseQueryMeta,
+  MutationResultSelectorResult,
+} from '@reduxjs/toolkit/query';
+
 export interface DaVinciRequest {
   id: string;
   eventName: string;
@@ -10,7 +16,7 @@ export interface DaVinciRequest {
     eventType: 'submit' | 'action';
     data: {
       actionKey: string;
-      formData?: Record<string, any>;
+      formData?: Record<string, unknown>;
     };
   };
 }
@@ -19,7 +25,7 @@ export interface DaVinciRequest {
  * Base Response for DaVinci API
  */
 
-export interface DavinciBaseResponse {
+export interface DaVinciBaseResponse {
   // Optional properties
   capabilityName?: string;
   companyId?: string;
@@ -29,6 +35,7 @@ export interface DavinciBaseResponse {
   interactionId?: string;
   interactionToken?: string;
   isResponseCompatibleWithMobileAndWebSdks?: boolean;
+  status?: string;
 }
 
 // Common REST "_links" property
@@ -51,7 +58,7 @@ export interface DaVinciField {
   // Optional properties
   links?: Links;
 }
-export interface DavinciNextResponse extends DavinciBaseResponse {
+export interface DavinciNextResponse extends DaVinciBaseResponse {
   // Optional properties
   _links?: Links;
   eventName?: string;
@@ -103,20 +110,47 @@ export interface ErrorDetail {
   statusCode?: number;
 }
 
-export interface DavinciErrorResponse extends DavinciBaseResponse {
-  code: string;
+/**
+ * The original DaVinci response is appended to the cache, so we are going
+ * to pull it and dispatch the appropriate action based on the response.
+ */
+export type DaVinciCacheEntry = {
+  data?: DaVinciBaseResponse;
+  error?: { data: DaVinciBaseResponse; status: number };
+} & {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  data?: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  error?: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+} & MutationResultSelectorResult<any>;
+
+export interface DavinciErrorResponse extends DaVinciBaseResponse {
+  code: string | number;
   message: string;
 
   // Optional properties
   cause?: string | null;
   details?: ErrorDetail[];
   doNotSendToOE?: boolean;
+  error?: {
+    code?: string;
+    message?: string;
+  };
   errorCategory?: string;
   errorMessage?: string;
   expected?: boolean;
   isErrorCustomized?: boolean;
   httpResponseCode: number;
   metricAttributes?: {
+    [key: string]: unknown;
+  };
+}
+
+export interface DaVinciFailureResponse extends DaVinciBaseResponse {
+  error?: {
+    code?: string;
+    message?: string;
     [key: string]: unknown;
   };
 }
@@ -132,7 +166,7 @@ export interface OAuthDetails {
   [key: string]: unknown;
 }
 
-export interface DavinciSuccessResponse extends DavinciBaseResponse {
+export interface DaVinciSuccessResponse extends DaVinciBaseResponse {
   environment: {
     id: string;
     [key: string]: unknown;
@@ -167,23 +201,6 @@ export interface DaVinciAction {
   action: string;
 }
 
-/**
- * Redux Toolkit Cache Entry Types
- */
-
-export interface DaVinciCacheEntry<T> {
-  data: T;
-  requestId: string;
-  status: 'fulfilled' | 'pending' | 'rejected';
-  endpointName: 'next' | 'flow' | 'start';
-  startedTimeStamp: number;
-  fulfilledTimeStamp: number;
-  isUninitialized: boolean;
-  isLoading: boolean;
-  isSuccess: boolean;
-  isError: boolean;
-}
-
 export interface DaVinciErrorCacheEntry<T> {
   error: {
     data: T;
@@ -197,4 +214,10 @@ export interface DaVinciErrorCacheEntry<T> {
   isLoading: boolean;
   isSuccess: boolean;
   isError: boolean;
+}
+
+export interface ThrownQueryError {
+  error: FetchBaseQueryError;
+  isHandledError: boolean;
+  meta: FetchBaseQueryMeta;
 }

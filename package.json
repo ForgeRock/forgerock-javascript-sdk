@@ -108,7 +108,6 @@
     "vitest": "^1.4.0",
     "vitest-canvas-mock": "^0.3.3"
   },
-  "workspaces": ["e2e/*", "packages/*"],
   "config": {
     "commitizen": { "path": "./node_modules/cz-conventional-changelog" }
   },
