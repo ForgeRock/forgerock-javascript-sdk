@@ -9,6 +9,9 @@ export type NextNode = nodes.NextNode;
 export type ErrorNode = nodes.ErrorNode;
 export type SuccessNode = nodes.SuccessNode;
 
+export type Collectors = nodes.Collectors;
+export type DaVinciValidationError = nodes.DaVinciError;
+
 export type ActionCollector = collectors.ActionCollector;
 export type SingleValueCollector = collectors.SingleValueCollector;
 

@@ -2,18 +2,16 @@
  * Import the required types
  */
 import type {
-  FlowCollector,
-  PasswordCollector,
-  SocialLoginCollector,
-  TextCollector,
-} from './collector.types.js';
-import type { DaVinciField } from './davinci.types.js';
-import type {
   ActionCollector,
   ActionCollectorTypes,
+  FlowCollector,
+  PasswordCollector,
   SingleValueCollector,
   SingleValueCollectorTypes,
-} from './collector.types.js';
+  SocialLoginCollector,
+  TextCollector,
+} from './collector.types';
+import type { DaVinciField } from './davinci.types';
 
 /**
  * @function returnActionCollector - Creates an ActionCollector object based on the provided field and index.

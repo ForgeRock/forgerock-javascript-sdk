@@ -192,10 +192,22 @@ export const error1d = {
   isResponseCompatibleWithMobileAndWebSdks: true,
 };
 
-export const error2 = {
+export const error2a = {
   interactionId: '18bd524d-4afd-4f79-a0b5-a4f16b63bf48',
   code: 'requestTimedOut',
   message: 'Request timed out. Please try again.',
+};
+
+// HTTP status code was 200, but the response was an failure
+export const error2b = {
+  environment: {
+    id: '02fb4743-189a-4bc7-9d6c-a919edfe6447',
+  },
+  status: 'FAILED',
+  error: {
+    code: 'server_error',
+    message: 'Request timed out. Please try again.',
+  },
 };
 
 export const error3 = {

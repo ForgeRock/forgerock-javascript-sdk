@@ -1,30 +1,56 @@
 import type { SingleValueCollector, ActionCollector } from './collector.types.js';
 import type { ErrorDetail, Links } from './davinci.types.js';
 
-export interface DaVinciValidationError {
-  code: string;
-  message: string;
-  httpCode: number;
-  // TODO: Improve error type identification
-  type: 'genericError' | 'validationError' | 'networkError' | 'unknownError';
+export interface DaVinciError {
+  code: string | number;
   details?: ErrorDetail[];
+  internalHttpStatus?: number;
+  message?: string;
+  status: 'error' | 'failure' | 'unknown';
 }
+
+export type Collectors = (SingleValueCollector | ActionCollector)[];
 
 export interface ErrorNode {
   cache: {
     key: string;
   };
-  client: null;
-  error: DaVinciValidationError;
+  client: {
+    status: 'error';
+  };
+  error: DaVinciError;
+  httpStatus: number;
   server: {
     _links?: Links;
+    eventName?: string;
+    href?: string;
     id?: string;
     interactionId?: string;
     interactionToken?: string;
-    href?: string;
-    eventName?: string;
+    status: 'error';
   } | null;
   status: 'error';
+}
+
+export interface FailureNode {
+  cache: {
+    key: string;
+  };
+  client: {
+    status: 'failure';
+  };
+  error: DaVinciError;
+  httpStatus: number;
+  server: {
+    _links?: Links;
+    eventName?: string;
+    href?: string;
+    id?: string;
+    interactionId?: string;
+    interactionToken?: string;
+    status: 'failure';
+  } | null;
+  status: 'failure';
 }
 
 export interface NextNode {
@@ -33,11 +59,13 @@ export interface NextNode {
   };
   client: {
     action: string;
-    collectors: (SingleValueCollector | ActionCollector)[];
+    collectors: Collectors;
     description?: string;
     name?: string;
+    status: 'next';
   };
   error: null;
+  httpStatus: number;
   server: {
     _links?: Links;
     id?: string;
@@ -45,15 +73,20 @@ export interface NextNode {
     interactionToken?: string;
     href?: string;
     eventName?: string;
+    status: 'next';
   };
   status: 'next';
 }
 
 export interface StartNode {
   cache: null;
-  client: null;
+  client: {
+    status: 'start';
+  };
   error: null;
-  server: null;
+  server: {
+    status: 'start';
+  };
   status: 'start';
 }
 
@@ -66,8 +99,10 @@ export interface SuccessNode {
       code?: string;
       state?: string;
     };
+    status: 'success';
   } | null;
   error: null;
+  httpStatus: number;
   server: {
     _links?: Links;
     eventName?: string;
@@ -76,6 +111,7 @@ export interface SuccessNode {
     interactionToken?: string;
     href?: string;
     session?: string;
+    status: 'success';
   };
   status: 'success';
 }

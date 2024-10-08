@@ -1,11 +1,7 @@
 /**
- * Import necessary Redux Toolkit modules
- */
-import { configureStore } from '@reduxjs/toolkit';
-
-/**
  * Import RTK slices and api
  */
+import { createClientStore } from './client.store.utils.js';
 import { nodeSlice } from './node.slice.js';
 import { davinciApi } from './davinci.api.js';
 import { configSlice } from './config.slice.js';
@@ -26,37 +22,13 @@ import type { SingleValueCollector } from './collector.types.js';
  * @returns {Observable} - an observable client for DaVinci flows
  */
 export async function davinci({ config }: { config: DaVinciConfig }) {
-  const store = configureStore({
-    reducer: {
-      config: configSlice.reducer,
-      node: nodeSlice.reducer,
-      [davinciApi.reducerPath]: davinciApi.reducer,
-    },
-    middleware: (getDefaultMiddleware) => {
-      return getDefaultMiddleware().concat(davinciApi.middleware);
-    },
-  });
+  const store = createClientStore();
 
   store.dispatch(configSlice.actions.set(config));
 
   return {
     // Pass store methods to the client
     subscribe: store.subscribe,
-    getState: store.getState,
-
-    /**
-     * @method collectors - A convenience method to get the collectors from state
-     * @returns {Collector[]} - The collectors from the current node in state
-     */
-    collectors: () => {
-      const state = store.getState();
-      // Let's check if the node has a client and collectors
-      if (state.node.client && 'collectors' in state.node.client) {
-        return state.node.client?.collectors || [];
-      }
-      // Return an empty array if no client or collectors are found
-      return [];
-    },
 
     /**
      * @method flow - Method for initiating a new flow, different than current flow
@@ -66,7 +38,7 @@ export async function davinci({ config }: { config: DaVinciConfig }) {
     flow: (action: DaVinciAction) => {
       return async function () {
         await store.dispatch(davinciApi.endpoints.flow.initiate(action));
-        const node = store.getState().node;
+        const node = nodeSlice.selectSlice(store.getState());
         return node;
       };
     },
@@ -78,16 +50,8 @@ export async function davinci({ config }: { config: DaVinciConfig }) {
      */
     next: async (args?: DaVinciRequest) => {
       await store.dispatch(davinciApi.endpoints.next.initiate(args));
-      const node = store.getState().node;
+      const node = nodeSlice.selectSlice(store.getState());
       return node;
-    },
-
-    /**
-     * @method node - Just a convenience method to get the node from state
-     * @returns {Node} - the current node from state
-     */
-    node: () => {
-      return store.getState().node;
     },
 
     /**
@@ -109,6 +73,81 @@ export async function davinci({ config }: { config: DaVinciConfig }) {
       return function (value: string, index?: number) {
         store.dispatch(nodeSlice.actions.update({ id, value, index }));
       };
+    },
+
+    /**
+     * @method client - Selector to get the node.client from state
+     * @returns {Node.client} - the client property from the current node
+     */
+    getClient: () => nodeSlice.selectors.selectClient(store.getState()),
+
+    /**
+     * @method collectors - Selector to get the collectors from state
+     * @returns {Collector[]} - The collectors from the current node in state
+     */
+    getCollectors: () => {
+      const state = store.getState();
+      const client = nodeSlice.selectors.selectClient(state);
+      // Let's check if the node has a client and collectors
+      if (client && 'collectors' in client) {
+        return nodeSlice.selectors.selectCollectors(state) || [];
+      }
+      // Return an empty array if no client or collectors are found
+      return [];
+    },
+
+    getError: () => {
+      const state = store.getState();
+      return nodeSlice.selectors.selectError(state);
+    },
+
+    /**
+     * @method node - Selector to get the node from state
+     * @returns {Node} - the current node from state
+     */
+    getNode: () => {
+      return nodeSlice.selectSlice(store.getState());
+    },
+
+    /**
+     * @method server - Selector to get the node.server from state
+     * @returns {Node.server} - the server property from the current node
+     */
+    getServer: () => {
+      const state = store.getState();
+      return nodeSlice.selectors.selectServer(state);
+    },
+
+    /**
+     * Utilities to help query cached responses from server
+     */
+    cache: {
+      getLatestResponse: () => {
+        const node = nodeSlice.selectSlice(store.getState());
+
+        if (!node.cache?.key) {
+          console.error(`Cannot find current node's cache key or no current node`);
+          return null;
+        }
+
+        const flowItem = davinciApi.endpoints.flow.select(node.cache.key);
+        const nextItem = davinciApi.endpoints.next.select(node.cache.key);
+        const startItem = davinciApi.endpoints.start.select(node.cache.key);
+
+        return flowItem || nextItem || startItem;
+      },
+      getResponseWithId: (requestId: string) => {
+        if (!requestId) {
+          console.error('Please provide the cache key');
+          return null;
+        }
+
+        const flowItem = davinciApi.endpoints.flow.select(requestId);
+        const nextItem = davinciApi.endpoints.next.select(requestId);
+        const startItem = davinciApi.endpoints.start.select(requestId);
+
+        return flowItem || nextItem || startItem;
+      },
     },
   };
 }

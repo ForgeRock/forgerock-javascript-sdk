@@ -44,15 +44,10 @@
       }
     },
     "lint": {
-      "inputs": [
-        "noMarkdown",
-        "^noMarkdown",
-        {
-          "externalDependencies": ["eslint"]
-        }
-      ],
       "options": {
-        "args": ["**/*.ts", "**/*.tsx"]
+        "fix": true,
+        "ignore-path": ".eslintignore",
+        "args": ["**/*.ts"]
       }
     }
   }
