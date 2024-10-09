@@ -6,7 +6,6 @@
   "tags": [],
   "targets": {
     "e2e": {
-      "dependsOn": ["javascript-sdk:build", "ping-protect:build"],
       "options": {},
       "configurations": {
         "ui": {
@@ -14,6 +13,10 @@
           "headed": true
         }
       }
+    },
+    "cbt": {
+      "command": "pnpm browserstack-node-sdk playwright test --config ./e2e/autoscript-suites/playwright.config.cbt.ts",
+      "cwd": "e2e/autoscript-suites"
     },
     "lint": {
       "options": {

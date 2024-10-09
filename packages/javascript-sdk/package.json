@@ -16,6 +16,7 @@
   "homepage": "https://github.com/ForgeRock/forgerock-javascript-sdk#readme",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
+  "sideEffects": false,
   "exports": {
     ".": {
       "import": {
@@ -27,14 +28,14 @@
         "default": "./dist/index.cjs"
       }
     },
-    "./src/*": {
+    "./src/": {
       "import": {
-        "types": "./dist/*/*.d.ts",
-        "default": "./dist/*/*.js"
+        "types": "./dist/*.d.ts",
+        "default": "./dist/*.js"
       },
       "require": {
-        "types": "./dist/*/*.d.cts",
-        "default": "./dist/*/*.cjs"
+        "types": "./dist/*.d.cts",
+        "default": "./dist/*.cjs"
       }
     }
   },
