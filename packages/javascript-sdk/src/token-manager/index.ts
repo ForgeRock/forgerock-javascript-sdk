@@ -168,6 +168,7 @@ abstract class TokenManager {
         allowedErrors.FailedToFetch !== err.message &&
         allowedErrors.NetworkError !== err.message &&
         allowedErrors.InteractionNotAllowed !== err.message &&
+        allowedErrors.RequestRequiresConsent !== err.message &&
         // Check for Ping Identity Login Required error
         // Long message, so just check substring
         !err.message.includes(allowedErrors.LoginRequired) &&

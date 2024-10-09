@@ -54,6 +54,8 @@ const allowedErrors = {
 
   // PingOne login error
   LoginRequired: 'User authentication is required',
+
+  RequestRequiresConsent: 'The request requires consent.',
 };
 
 /**
