@@ -125,7 +125,7 @@ abstract class TokenManager {
     /**
      * Generate state and verifier for PKCE
      */
-    const { authorizeUrlOptions } = generateAndStoreAuthUrlValues({
+    const [pkceValues, storePkceValues] = generateAndStoreAuthUrlValues({
       ...config,
       clientId,
       prefix,
@@ -138,7 +138,7 @@ abstract class TokenManager {
     try {
       // Check expected browser support
       // To support legacy browsers, iframe works best with short timeout
-      const parsedUrl = new URL(await OAuth2Client.getAuthCodeByIframe(authorizeUrlOptions));
+      const parsedUrl = new URL(await OAuth2Client.getAuthCodeByIframe(pkceValues));
 
       // Throw if we have an error param or have no authorization code
       if (parsedUrl.searchParams.get('error')) {
@@ -180,7 +180,10 @@ abstract class TokenManager {
         throw err;
       }
 
-      const authorizeUrl = await OAuth2Client.createAuthorizeUrl(authorizeUrlOptions);
+      const authorizeUrl = await OAuth2Client.createAuthorizeUrl(pkceValues);
+
+      // Before redirecting, store PKCE values
+      storePkceValues();
 
       return location.assign(authorizeUrl);
     }
@@ -188,8 +191,8 @@ abstract class TokenManager {
      * Exchange authorization code for tokens
      */
     return await this.tokenExchange(options, {
-      state: authorizeUrlOptions.state,
-      verifier: authorizeUrlOptions.verifier,
+      state: pkceValues.state,
+      verifier: pkceValues.verifier,
     });
   }
 
