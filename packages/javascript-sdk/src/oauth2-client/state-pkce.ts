@@ -28,12 +28,10 @@ export function generateAndStoreAuthUrlValues(options: GenerateAndStoreAuthUrlVa
     verifier,
   };
 
-  if (options.login === 'redirect') {
-    // Since `login` is configured for "redirect", store authorize values and redirect
-    sessionStorage.setItem(storageKey, JSON.stringify(authorizeUrlOptions));
-  }
-
-  return { state, verifier, authorizeUrlOptions };
+  return [
+    authorizeUrlOptions,
+    () => sessionStorage.setItem(storageKey, JSON.stringify(authorizeUrlOptions)),
+  ] as const;
 }
 
 /**
