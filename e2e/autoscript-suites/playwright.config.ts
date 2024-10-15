@@ -1,4 +1,4 @@
-import { PlaywrightTestConfig } from '@playwright/test';
+import { devices, PlaywrightTestConfig } from '@playwright/test';
 import { nxE2EPreset } from '@nx/playwright/preset';
 import { workspaceRoot } from '@nx/devkit';
 
@@ -36,12 +36,27 @@ const config: PlaywrightTestConfig = {
       cwd: workspaceRoot,
     },
     {
-      command:
-        'pnpm nx build javascript-sdk && pnpm nx build ping-protect && pnpm nx serve autoscript-apps',
+      command: 'pnpm nx serve autoscript-apps',
       url: 'http://localhost:8443',
       ignoreHTTPSErrors: true,
       reuseExistingServer: !process.env.CI,
       cwd: workspaceRoot,
+    },
+  ],
+  projects: [
+    {
+      name: 'chromium',
+      use: { ...devices['Desktop Chrome'] },
+    },
+
+    {
+      name: 'firefox',
+      use: { ...devices['Desktop Firefox'] },
+    },
+
+    {
+      name: 'webkit',
+      use: { ...devices['Desktop Safari'] },
     },
   ],
 };

@@ -48,11 +48,7 @@
     },
     "e2e-ci--**/*": {
       "inputs": ["noMarkdown", "^noMarkdown"],
-      "dependsOn": [
-        "javascript-sdk:build",
-        "ping-protect:build",
-        "token-vault:build"
-      ],
+      "dependsOn": ["^build"],
       "cache": true
     }
   },
@@ -122,7 +118,6 @@
   ],
   "defaultProject": "javascript-sdk",
   "useDaemonProcess": true,
-
   "useInferencePlugins": true,
   "defaultBase": "develop"
 }

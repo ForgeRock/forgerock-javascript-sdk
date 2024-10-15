@@ -6,7 +6,7 @@
   "tags": ["scope:package"],
   "targets": {
     "build": {
-      "dependsOn": ["javascript-sdk:build"],
+      "dependsOn": ["^build"],
       "inputs": [
         "default",
         "^default",

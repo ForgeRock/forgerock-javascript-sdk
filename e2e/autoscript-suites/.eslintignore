@@ -7,3 +7,7 @@ LICENSE
 dist
 .eslintignore
 *.html
+browserstack.yml
+log/*
+obs*
+*.log

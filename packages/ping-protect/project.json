@@ -9,7 +9,7 @@
       "command": "npx typedoc --options ./packages/ping-protect/typedoc.json"
     },
     "build": {
-      "dependsOn": ["javascript-sdk:build"],
+      "dependsOn": ["^build"],
       "inputs": [
         "default",
         "^default",

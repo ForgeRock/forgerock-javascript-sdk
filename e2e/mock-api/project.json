@@ -33,6 +33,7 @@
       }
     },
     "serve": {
+      "dependsOn": ["build"],
       "executor": "@nx/js:node",
       "outputs": ["{projectRoot}/dist"],
       "options": {
