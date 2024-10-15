@@ -7,9 +7,9 @@ interceptor({
   },
   forgerock: {
     serverConfig: {
-      baseUrl: import.meta.env.VITE_AM_URL,
+      baseUrl: import.meta.env.VITE_AM_URL || 'http://localhost:9443/am',
       timeout: 5000,
     },
-    realmPath: import.meta.env.VITE_AM_REALM,
+    realmPath: import.meta.env.VITE_AM_REALM || 'root',
   },
 });

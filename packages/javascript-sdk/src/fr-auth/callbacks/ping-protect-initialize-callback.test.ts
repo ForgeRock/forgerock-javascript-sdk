@@ -1,3 +1,4 @@
+import { vi, describe, expect, it } from 'vitest';
 import { CallbackType } from '../../auth/enums';
 import PingOneProtectInitializeCallback from './ping-protect-initialize-callback';
 
@@ -61,7 +62,7 @@ describe('PingOneProtectInitializeCallback', () => {
         },
       ],
     });
-    const mock = jest.spyOn(callback, 'getConfig');
+    const mock = vi.spyOn(callback, 'getConfig');
     const config = callback.getConfig();
     expect(mock).toHaveBeenCalled();
     expect(config).toMatchObject({
@@ -133,7 +134,7 @@ describe('PingOneProtectInitializeCallback', () => {
         },
       ],
     });
-    const mock = jest.spyOn(callback, 'setClientError');
+    const mock = vi.spyOn(callback, 'setClientError');
     callback.setClientError('error i just set');
     expect(mock).toHaveBeenCalled();
     expect(callback.getInputValue('IDToken1clientError')).toBe('error i just set');

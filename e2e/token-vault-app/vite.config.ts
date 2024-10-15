@@ -1,18 +1,24 @@
+import * as path from 'path';
 import { defineConfig } from 'vite';
 
-import viteTsConfigPaths from 'vite-tsconfig-paths';
-
 export default defineConfig({
+  root: __dirname,
+  cacheDir: '../../node_modules/.vite/e2e/token-vault-app',
   build: {
-    minify: false,
+    outDir: './dist',
+    reportCompressedSize: true,
+    target: 'esnext',
     rollupOptions: {
       input: {
-        main: './e2e/token-vault-app/src/main.ts',
+        main: path.resolve(__dirname, 'index.html'),
       },
       output: {
         entryFileNames: 'main.js',
       },
     },
+  },
+  preview: {
+    port: 5823,
   },
   server: {
     port: 5823,
@@ -22,9 +28,4 @@ export default defineConfig({
     },
     strictPort: true,
   },
-  plugins: [
-    viteTsConfigPaths({
-      root: '../../',
-    }),
-  ],
 });

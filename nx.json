@@ -1,143 +1,128 @@
 {
-  "npmScope": "forgerock",
+  "namedInputs": {
+    "default": ["{projectRoot}/**/*", "sharedGlobals"],
+    "sharedGlobals": ["{workspaceRoot}/.github/workflows/ci=github.yml"],
+    "production": [
+      "default",
+      "!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap)",
+      "!{projectRoot}/tsconfig.spec.json"
+    ],
+    "noMarkdown": ["!{projectRoot}/**/*.md"]
+  },
   "targetDefaults": {
+    "nx-release-publish": {
+      "options": {
+        "packageRoot": "packages/{projectName}"
+      }
+    },
+    "docs": {
+      "cache": true
+    },
     "e2e": {
-      "dependsOn": ["plugins-wait-for-api:build"]
-    },
-    "test:unit": {
-      "dependsOn": ["^test"]
-    },
-    "test": {
-      "dependsOn": ["^test"],
-      "inputs": ["default", "^default"]
-    },
-    "tsc": {
-      "dependsOn": ["^tsc"]
+      "inputs": ["noMarkdown", "^noMarkdown"],
+      "cache": true
     },
     "build": {
-      "dependsOn": ["^build"]
+      "inputs": ["noMarkdown", "^noMarkdown"],
+      "cache": true
     },
-    "prepare": {
-      "dependsOn": ["^prepare"]
+    "build-interceptor": {
+      "cache": true,
+      "inputs": ["noMarkdown", "^noMarkdown"]
     },
-    "package": {
-      "dependsOn": ["^package"]
+    "@nx/vite:test": {
+      "inputs": ["noMarkdown", "^noMarkdown"],
+      "cache": true
     },
-    "lint": {
-      "inputs": ["default", "{workspaceRoot}/.eslintrc.json"]
+    "@nx/eslint:lint": {
+      "inputs": ["noMarkdown", "^noMarkdown"],
+      "cache": true
+    },
+    "@nx/vite:build": {
+      "cache": true,
+      "inputs": ["noMarkdown", "^noMarkdown"]
+    },
+    "@nx/esbuild:esbuild": {
+      "cache": true,
+      "inputs": ["noMarkdown", "^noMarkdown"]
+    },
+    "e2e-ci--**/*": {
+      "inputs": ["noMarkdown", "^noMarkdown"],
+      "dependsOn": [
+        "javascript-sdk:build",
+        "ping-protect:build",
+        "token-vault:build"
+      ],
+      "cache": true
     }
   },
-  "targetDependencies": {
-    "test:unit": [
-      {
-        "target": "test",
-        "projects": "dependencies"
-      }
-    ],
-    "test": [
-      {
-        "target": "test",
-        "projects": "dependencies"
-      }
-    ],
-    "tsc": [
-      {
-        "target": "tsc",
-        "projects": "dependencies"
-      }
-    ],
-    "build": [
-      {
-        "target": "build",
-        "projects": "dependencies"
-      }
-    ],
-    "prepare": [
-      {
-        "target": "prepare",
-        "projects": "dependencies"
-      }
-    ],
-    "package": [
-      {
-        "target": "package",
-        "projects": "dependencies"
-      }
-    ]
-  },
+  "parallel": 1,
   "workspaceLayout": {
     "appsDir": "",
     "libsDir": ""
   },
-  "tasksRunnerOptions": {
-    "default": {
-      "runner": "nx-cloud",
+  "release": {
+    "projects": ["packages/*"],
+    "releaseTagPattern": "v{version}",
+    "version": {
+      "generatorOptions": {
+        "currentVersionResolver": "git-tag",
+        "specifierSource": "conventional-commits"
+      }
+    },
+    "changelog": {
+      "git": {
+        "commit": true,
+        "tag": true
+      },
+      "workspaceChangelog": {
+        "createRelease": "github"
+      },
+      "projectChangelogs": true
+    }
+  },
+  "plugins": [
+    {
+      "plugin": "@nx/playwright/plugin",
       "options": {
-        "cacheableOperations": [
-          "build",
-          "build-interceptor",
-          "build-types",
-          "bundle-types",
-          "bundle",
-          "test",
-          "lint",
-          "package",
-          "prepare",
-          "e2e",
-          "version",
-          "config",
-          "tsc",
-          "typedoc"
-        ],
-        "useDaemonProcess": true
+        "ciTargetName": "e2e-ci",
+        "targetName": "e2e"
       }
-    }
-  },
-  "affected": {
-    "defaultBase": "develop"
-  },
-  "cli": {
-    "defaultCollection": "@nx/react"
-  },
-  "generators": {
-    "@nx/web:application": {
-      "style": "css",
-      "linter": "eslint",
-      "unitTestRunner": "jest",
-      "e2eTestRunner": "none"
     },
-    "@nx/web:library": {
-      "style": "css",
-      "linter": "eslint",
-      "unitTestRunner": "jest"
-    },
-    "@nx/angular:application": {
-      "style": "css",
-      "linter": "eslint",
-      "unitTestRunner": "jest",
-      "e2eTestRunner": "none"
-    },
-    "@nx/angular:library": {
-      "linter": "eslint",
-      "unitTestRunner": "jest"
-    },
-    "@nx/angular:component": {
-      "style": "css"
-    },
-    "@nx/react": {
-      "application": {
-        "style": "css",
-        "linter": "eslint",
-        "babel": true
-      },
-      "component": {
-        "style": "css"
-      },
-      "library": {
-        "style": "css",
-        "linter": "eslint"
+    {
+      "plugin": "@nx/eslint/plugin",
+      "options": {
+        "targetName": "lint"
       }
+    },
+    {
+      "plugin": "@nx/vite/plugin",
+      "options": {
+        "buildTargetName": "build",
+        "serveTargetName": "serve",
+        "previewTargetName": "preview",
+        "testTargetName": "test",
+        "serveStaticTargetName": "serve-static",
+        "typecheckTargetName": "typecheck"
+      },
+      "include": ["e2e/**/*", "packages/**/*"]
+    },
+    {
+      "plugin": "@nx/vite/plugin",
+      "options": {
+        "buildTargetName": "build-interceptor",
+        "serveTargetName": "serve",
+        "previewTargetName": "preview",
+        "testTargetName": "test",
+        "serveStaticTargetName": "serve-static",
+        "typecheckTargetName": "typecheck"
+      },
+      "include": ["e2e/token-vault-app/**/*"]
     }
-  },
-  "defaultProject": "javascript-sdk"
+  ],
+  "defaultProject": "javascript-sdk",
+  "useDaemonProcess": true,
+
+  "useInferencePlugins": true,
+  "defaultBase": "develop"
 }

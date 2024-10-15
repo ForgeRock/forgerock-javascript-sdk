@@ -14,6 +14,8 @@ import MetadataCallback from './fr-auth/callbacks/metadata-callback';
 import NameCallback from './fr-auth/callbacks/name-callback';
 import PasswordCallback from './fr-auth/callbacks/password-callback';
 import PollingWaitCallback from './fr-auth/callbacks/polling-wait-callback';
+import PingOneProtectEvaluationCallback from './fr-auth/callbacks/ping-protect-evaluation-callback';
+import PingOneProtectInitializeCallback from './fr-auth/callbacks/ping-protect-initialize-callback';
 import ReCaptchaCallback from './fr-auth/callbacks/recaptcha-callback';
 import RedirectCallback from './fr-auth/callbacks/redirect-callback';
 import SelectIdPCallback from './fr-auth/callbacks/select-idp-callback';
@@ -79,6 +81,8 @@ test('ensure the sdk exports are exported from the index', () => {
     OAuth2Client,
     PasswordCallback,
     PKCE,
+    PingOneProtectEvaluationCallback,
+    PingOneProtectInitializeCallback,
     PolicyKey,
     PollingWaitCallback,
     ReCaptchaCallback,

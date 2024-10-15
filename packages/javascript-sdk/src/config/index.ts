@@ -28,6 +28,7 @@ function setDefaults(options: ConfigOptions): ConfigOptions {
     ...options,
     oauthThreshold: options.oauthThreshold || DEFAULT_OAUTH_THRESHOLD,
     logLevel: options.logLevel || 'none',
+    platformHeader: options.platformHeader || false,
     prefix: options.prefix || PREFIX,
   };
 }
@@ -78,6 +79,7 @@ abstract class Config {
         'Missing well-known property. Use `Config.set` method if not using well-known endpoint.',
       );
     }
+    // @ts-expect-error safety against runtimes without typescript
     if (options.serverConfig.baseUrl) {
       console.warn(
         'The baseUrl property passed in will be ignored, and replaced with well-known origin.',
@@ -135,4 +137,3 @@ abstract class Config {
 
 export default Config;
 export type { ConfigOptions, ServerConfig, ValidConfigOptions, StepOptions };
-export { DEFAULT_TIMEOUT };

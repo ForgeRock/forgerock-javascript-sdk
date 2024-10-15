@@ -3,33 +3,39 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "packages/ping-protect/src",
   "projectType": "library",
+  "tags": ["scope:package"],
   "targets": {
+    "docs": {
+      "command": "npx typedoc --options ./packages/ping-protect/typedoc.json"
+    },
     "build": {
-      "executor": "@nx/js:tsc",
-      "outputs": ["{options.outputPath}"],
-      "options": {
-        "outputPath": "dist/packages/ping-protect",
-        "main": "packages/ping-protect/src/index.ts",
-        "tsConfig": "packages/ping-protect/tsconfig.lib.json",
-        "assets": [
-          "packages/ping-protect/*.md",
-          "packages/ping-protect/src/lib/ping-signals-sdk.js"
-        ]
-      }
+      "dependsOn": ["javascript-sdk:build"],
+      "inputs": [
+        "default",
+        "^default",
+        {
+          "externalDependencies": ["vite"]
+        }
+      ],
+      "outputs": ["{projectRoot}/dist"]
     },
     "lint": {
-      "executor": "@nx/linter:eslint",
-      "outputs": ["{options.outputFile}"],
+      "dependsOn": ["javascript-sdk:build"],
       "options": {
-        "lintFilePatterns": ["packages/ping-protect/**/*.ts"]
+        "args": ["**/*.ts"]
       }
     },
     "test": {
-      "executor": "@nx/vite:test",
-      "outputs": ["coverage/packages/ping-protect"],
+      "dependsOn": ["javascript-sdk:build"],
+      "inputs": [
+        "default",
+        "^default",
+        {
+          "externalDependencies": ["vitest"]
+        }
+      ],
       "options": {
-        "passWithNoTests": true,
-        "reportsDirectory": "../../coverage/packages/ping-protect"
+        "config": "./vite.config.ts"
       },
       "configurations": {
         "watch": {
@@ -37,6 +43,5 @@
         }
       }
     }
-  },
-  "tags": []
+  }
 }

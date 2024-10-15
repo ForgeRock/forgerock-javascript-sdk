@@ -2,6 +2,10 @@
   "name": "token-vault-app",
   "description": "ForgeRock Token Vault Test App",
   "private": true,
-  "devDependencies": {},
+  "type": "module",
+  "dependencies": {
+    "@forgerock/javascript-sdk": "workspace:*",
+    "@forgerock/token-vault": "workspace:*"
+  },
   "version": "0.0.0"
 }

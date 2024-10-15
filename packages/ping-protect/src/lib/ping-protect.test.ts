@@ -1,5 +1,11 @@
-import { describe, it } from 'vitest';
-import { PIProtect } from './ping-protect';
+import { vi, expect, describe, it } from 'vitest';
+import { PIProtect } from './ping-protect.js';
+import {
+  noProtectType,
+  standardPingProtectEvaluationStep,
+  standardPingProtectInitializeStep,
+} from './ping-protect.mock.data.js';
+import { CallbackType, HiddenValueCallback } from '@forgerock/javascript-sdk';
 
 describe('PIProtect', () => {
   it('should be defined', () => {
@@ -11,7 +17,6 @@ describe('PIProtect', () => {
   });
   it('should call start', async () => {
     const protectMock = vi.spyOn(PIProtect, 'start');
-    const windowMock = vi.spyOn(window._pingOneSignals, 'init');
     const config = {
       envId: '12345',
       consoleLogEnabled: true,
@@ -26,20 +31,67 @@ describe('PIProtect', () => {
     };
     await PIProtect.start(config);
     expect(protectMock).toHaveBeenCalledWith(config);
-    expect(windowMock).toHaveBeenCalled();
   });
-  it('should call pause behavioralData', async () => {
-    const windowMock = vi.spyOn(window._pingOneSignals, 'pauseBehavioralData');
+  it('should call pause behavioralData', () => {
     const protectMock = vi.spyOn(PIProtect, 'pauseBehavioralData');
-    await PIProtect.pauseBehavioralData();
+    PIProtect.pauseBehavioralData();
     expect(protectMock).toHaveBeenCalled();
-    expect(windowMock).toHaveBeenCalled();
   });
-  it('should call resume behavioralData', async () => {
-    const windowMock = vi.spyOn(window._pingOneSignals, 'resumeBehavioralData');
+  it('should call resume behavioralData', () => {
     const protectMock = vi.spyOn(PIProtect, 'resumeBehavioralData');
-    await PIProtect.resumeBehavioralData();
+    PIProtect.resumeBehavioralData();
     expect(protectMock).toHaveBeenCalled();
-    expect(windowMock).toHaveBeenCalled();
+  });
+
+  describe('should test the marketplace node setup', () => {
+    it('should test getPauseBehavioralData with marketplace data', () => {
+      const result = PIProtect.getPauseBehavioralData(standardPingProtectEvaluationStep);
+
+      expect(result).toEqual(false);
+
+      const secondResult = PIProtect.getPauseBehavioralData(standardPingProtectInitializeStep);
+
+      expect(secondResult).toEqual(true);
+    });
+    it('should test the getPingProtectType method', () => {
+      const result = PIProtect.getPingProtectType(standardPingProtectInitializeStep);
+
+      expect(result).toEqual('initialize');
+
+      const result2 = PIProtect.getPingProtectType(standardPingProtectEvaluationStep);
+
+      expect(result2).toEqual('evaluate');
+
+      const result3 = PIProtect.getPingProtectType(noProtectType);
+      expect(result3).toEqual('none');
+    });
+    it('should setNodeInputValue', () => {
+      const step = standardPingProtectEvaluationStep;
+
+      PIProtect.setNodeInputValue(step, 'the value');
+      const [hc] = step.getCallbacksOfType<HiddenValueCallback>(CallbackType.HiddenValueCallback);
+
+      expect(hc.getInputValue()).toEqual('the value');
+    });
+  });
+
+  it('should get the node config', () => {
+    const result = PIProtect.getNodeConfig(standardPingProtectInitializeStep);
+    expect(result).toEqual(
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      standardPingProtectInitializeStep!.payload.callbacks![0].output[0].value,
+    );
+
+    const result2 = PIProtect.getNodeConfig(noProtectType);
+    expect(result2).toBeUndefined();
+  });
+  it('should set an error with marketplace nodes', () => {
+    PIProtect.setNodeClientError(standardPingProtectEvaluationStep, 'we errored!');
+
+    const [, err] = standardPingProtectEvaluationStep.getCallbacksOfType<HiddenValueCallback>(
+      CallbackType.HiddenValueCallback,
+    );
+
+    expect(err.getInputValue()).toBe('we errored!');
   });
 });

@@ -6,49 +6,30 @@
   "tags": ["scope:app"],
   "targets": {
     "build": {
-      "executor": "@nx/webpack:webpack",
-      "dependsOn": ["^build", "^tsc"],
-      "outputs": ["{options.outputPath}"],
+      "dependsOn": ["javascript-sdk:build", "ping-protect:build", "^build"],
+      "inputs": ["default", "^default"],
+      "outputs": ["{projectRoot}/dist"],
       "options": {
-        "outputPath": "dist/e2e/autoscript-apps",
-        "compiler": "babel",
-        "index": "e2e/autoscript-apps/src/index.html",
-        "main": "packages/javascript-sdk/src/index.ts",
-        "tsConfig": "e2e/autoscript-apps/tsconfig.app.json",
-        "webpackConfig": "e2e/autoscript-apps/webpack.config.js"
+        "outDir": "./dist"
       },
       "configurations": {
         "development": {
-          "optimization": false,
-          "watch": true
-        },
-        "production": {
-          "outputPath": "dist/e2e/autoscript-apps",
-          "optimized": true,
-          "watch": false
+          "mode": "development"
         }
-      },
-      "defaultConfiguration": "production"
+      }
     },
     "serve": {
-      "executor": "@nx/webpack:dev-server",
-      "dependsOn": ["^build"],
-      "defaultConfiguration": "production",
-      "options": {
-        "port": 8443,
-        "host": "sdkapp.example.com"
-      },
+      "defaultConfiguration": "development",
       "configurations": {
-        "production": {
-          "buildTarget": "autoscript-apps:build",
-          "open": false,
-          "hmr": false
-        },
-        "development": {
-          "buildTarget": "autoscript-apps:build:development",
-          "open": true,
-          "hmr": true
-        }
+        "development": {},
+        "production": {}
+      }
+    },
+    "preview": {
+      "defaultConfiguration": "production",
+      "configurations": {
+        "development": {},
+        "production": {}
       }
     }
   }

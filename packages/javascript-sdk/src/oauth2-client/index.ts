@@ -22,15 +22,20 @@ import { getEndpointPath, resolve, stringify } from '../util/url';
 import { ResponseType } from './enums';
 import type {
   AccessTokenResponse,
+  LogoutOptions,
   GetAuthorizationUrlOptions,
   GetOAuth2TokensOptions,
   OAuth2Tokens,
+  EndSessionOptions,
 } from './interfaces';
 import middlewareWrapper from '../util/middleware';
 
 const allowedErrors = {
   // AM error for consent requirement
   AuthenticationConsentRequired: 'Authentication or consent required',
+
+  // Ping federate consent requirement
+  AuthenticationIsRequired: 'Authentication is required.',
 
   // Manual iframe error
   AuthorizationTimeout: 'Authorization timed out',
@@ -49,6 +54,8 @@ const allowedErrors = {
 
   // PingOne login error
   LoginRequired: 'User authentication is required',
+
+  RequestRequiresConsent: 'The request requires consent.',
 };
 
 /**
@@ -210,17 +217,34 @@ abstract class OAuth2Client {
 
   /**
    * Invokes the OIDC end session endpoint.
+   * Can result in a redirect to `/signoff` if using PingOne
+   * It's best to explicitly provide the logout redirect URL in options
+   *
+   * @function endSession - call authorization server to end associated session
+   * @param options {LogoutOptions} - an extension of ConfigOptions, but with two additional props
+   * @param options.logoutRedirectUri {string} - the URL you want the AS to redirect to after signout
+   * @param options.redirect {boolean} - to explicitly deactivate redirect, pass `false`
    */
-  public static async endSession(options?: ConfigOptions): Promise<Response> {
-    const tokens = await TokenStorage.get();
-    const idToken = tokens && tokens.idToken;
+  public static async endSession(
+    options?: LogoutOptions | EndSessionOptions,
+  ): Promise<Response | void> {
+    // Shallow copy options to delete redirect props
+    const configOptions: LogoutOptions | EndSessionOptions = { ...options };
+
+    delete configOptions.redirect;
+
+    delete configOptions.logoutRedirectUri;
 
     const query: StringDict<string | undefined> = {};
-    if (idToken) {
-      query.id_token_hint = idToken;
-    }
 
-    const response = await this.request('endSession', query, true, undefined, options);
+    const tokens = await TokenStorage.get();
+    query.id_token_hint =
+      (tokens && tokens.idToken) || (options && 'idToken' in options ? options.idToken : '');
+
+    const response = await this.request('endSession', query, true, undefined, configOptions, {
+      redirect: options?.redirect,
+      logoutRedirectUri: options?.logoutRedirectUri,
+    });
     if (!isOkOr4xx(response)) {
       throw new Error(`Failed to end session; received ${response.status}`);
     }
@@ -263,8 +287,12 @@ abstract class OAuth2Client {
     includeToken?: boolean,
     init?: RequestInit,
     options?: ConfigOptions,
+    logoutOptions?: { redirect?: boolean; logoutRedirectUri?: string },
   ): Promise<Response> {
-    const { middleware, serverConfig } = Config.get(options);
+    const { redirectUri, middleware, serverConfig } = Config.get(options);
+    const endSessionRedirectUrl = logoutOptions?.logoutRedirectUri
+      ? logoutOptions.logoutRedirectUri
+      : redirectUri;
     const url = this.getUrl(endpoint, query, options);
 
     const getActionType = (endpoint: ConfigurablePaths): ActionTypes => {
@@ -294,7 +322,35 @@ abstract class OAuth2Client {
       { type: getActionType(endpoint) },
     );
     const req = runMiddleware(middleware);
-    return await withTimeout(fetch(req.url.toString(), req.init), serverConfig.timeout);
+
+    /*
+     * Check for PingOne related end session redirection requirement for third-party cookie support
+     */
+    if (
+      getActionType(endpoint) === ActionTypes.EndSession && // endSession action only
+      logoutOptions?.redirect === true // If redirect is explicitly `true`, do it!
+    ) {
+      // Add PingOne's redirect URL for signout before redirecting
+      // Intentionally NOT using `window.location.href` for security just using empty string for fallback.
+      req.url.searchParams.append('post_logout_redirect_uri', endSessionRedirectUrl || '');
+      window.location.assign(req.url.toString());
+
+      return new Response(); // Just return an empty response to keep the types the same.
+    } else if (
+      getActionType(endpoint) === ActionTypes.EndSession && // endSession action only
+      logoutOptions?.redirect !== false && // Only `false` explicitly disables this behavior for rare edge cases
+      // If we explicitly get a logout redirect URL, then that's enough of a hint to redirect
+      // If we don't have that, let's see if they are calling the typical PingOne `/signoff` endpoint
+      (logoutOptions?.logoutRedirectUri || this.getUrl('endSession').includes('/as/signoff'))
+    ) {
+      // Same as above
+      req.url.searchParams.append('post_logout_redirect_uri', endSessionRedirectUrl || '');
+      window.location.assign(req.url.toString());
+
+      return new Response(); // Just return an empty response to keep the types the same.
+    } else {
+      return await withTimeout(fetch(req.url.toString(), req.init), serverConfig.timeout);
+    }
   }
 
   private static containsAuthCode(url: string | null): boolean {

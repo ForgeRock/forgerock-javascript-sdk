@@ -71,18 +71,31 @@
     {
       "files": ["*.ts", "*.tsx", "!*.spec.ts", "!*.test*.ts"],
       "extends": ["plugin:@nx/typescript"],
-
       "rules": {
         "@typescript-eslint/no-unused-vars": [
           "error",
-          { "ignoreRestSiblings": true }
-        ]
+          {
+            "ignoreRestSiblings": true
+          }
+        ],
+        "@typescript-eslint/no-extra-semi": "error",
+        "no-extra-semi": "off"
       }
     },
     {
       "files": ["*.js", "*.jsx"],
       "extends": ["plugin:@nx/javascript"],
-      "rules": {}
+      "rules": {
+        "quotes": [
+          "error",
+          "single",
+          {
+            "allowTemplateLiterals": true
+          }
+        ],
+        "@typescript-eslint/no-extra-semi": "error",
+        "no-extra-semi": "off"
+      }
     },
     {
       "files": "*.json",

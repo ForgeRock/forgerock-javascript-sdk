@@ -5,26 +5,24 @@
     "target": "ESNext",
     "useDefineForClassFields": true,
     "module": "ESNext",
-    "lib": ["ESNext", "DOM"],
-    "moduleResolution": "Node",
+    "lib": ["ESNext", "DOM", "WebWorker", "Webworker.Iterable"],
+    "moduleResolution": "Bundler",
     "strict": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
     "esModuleInterop": true,
-    "noEmit": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noImplicitReturns": true,
     "skipLibCheck": true,
     "types": ["vite/client", "vitest"]
   },
-  "include": ["src"],
   "references": [
     {
-      "path": "./tsconfig.app.json"
+      "path": "./tsconfig.spec.json"
     },
     {
-      "path": "./tsconfig.spec.json"
+      "path": "./tsconfig.app.json"
     }
   ]
 }

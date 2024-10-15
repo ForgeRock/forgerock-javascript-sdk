@@ -9,8 +9,8 @@
  */
 
 import { v4 } from 'uuid';
-import { authPaths } from './constants';
-import { AM_URL, USERS } from './env.config';
+import { authPaths } from './constants.js';
+import { AM_URL, USERS } from './env.config.js';
 import {
   oauthTokens,
   authFail,
@@ -45,9 +45,12 @@ import {
   otpQRCodeCallbacks,
   wellKnownForgeRock,
   wellKnownPing,
-} from './responses';
-import initialRegResponse from './response.registration';
-import wait from './wait';
+  recaptchaEnterpriseCallback,
+  MetadataMarketPlaceInitialize,
+  MetadataMarketPlacePingOneEvaluation,
+} from './responses.js';
+import initialRegResponse from './response.registration.js';
+import wait from './wait.js';
 
 console.log(`Your user password from 'env.config' file: ${USERS[0].pw}`);
 
@@ -72,7 +75,7 @@ export default function (app) {
         res.json(initialRegResponse);
       } else if (req.query.authIndexValue === 'LoginWithEmail') {
         if (typeof req.query.suspendedId === 'string' && req.query.suspendedId.length) {
-          res.cookie('iPlanetDirectoryPro', 'abcd1234', { domain: 'example.com' });
+          res.cookie('iPlanetDirectoryPro', 'abcd1234', { domain: 'localhost' });
           res.json(authSuccess);
         } else {
           res.json(initialLoginWithEmailResponse);
@@ -86,8 +89,12 @@ export default function (app) {
         res.json(pingProtectInitialize);
       } else if (req.query.authIndexValue === 'IDMSocialLogin') {
         res.json(selectIdPCallback);
+      } else if (req.query.authIndexValue === 'TEST_MetadataMarketPlace') {
+        res.json(MetadataMarketPlaceInitialize);
       } else if (req.query.authIndexValue === 'AMSocialLogin') {
         res.json(idpChoiceCallback);
+      } else if (req.query.authIndexValue === 'RecaptchaEnterprise') {
+        res.json(initialBasicLogin);
       } else {
         if (req.path.includes('middleware')) {
           if (
@@ -106,6 +113,59 @@ export default function (app) {
       }
     } else if (req.query.authIndexValue === 'LoginWithEmail') {
       res.json(emailSuspend);
+    } else if (req.query.authIndexValue === 'RecaptchaEnterprise') {
+      console.log(req.body.callbacks);
+      if (req.body.callbacks[0].type === 'NameCallback') {
+        const [username, password] = req.body.callbacks;
+        if (username && username.type === 'NameCallback' && username.input[0].value === 'demo') {
+          if (
+            password &&
+            password.type === 'PasswordCallback' &&
+            password.input[0].value === 'Password'
+          ) {
+            res.json(recaptchaEnterpriseCallback);
+          }
+        }
+      } else {
+        const [captcha] = req.body.callbacks;
+        if (captcha && captcha.input[0].value === '123') {
+          res.json(authSuccess);
+        }
+      }
+    } else if (req.query.authIndexValue === 'TEST_MetadataMarketPlace') {
+      if (req.body.callbacks.find((cb) => cb.type === 'MetadataCallback')) {
+        const metadataCb = req.body.callbacks.find((cb) => cb.type === 'MetadataCallback');
+        const action = metadataCb.output[0].value._action;
+        console.log('the action', action);
+        if (action === 'protect_initialize') {
+          if (req.body.callbacks.find((cb) => cb.type === 'HiddenValueCallback')) {
+            const hiddenCb = req.body.callbacks.find((cb) => cb.type === 'HiddenValueCallback');
+            if (hiddenCb.input[0].value === 'we had an error') {
+              return res.json(authFail);
+            }
+            return res.json(MetadataMarketPlacePingOneEvaluation);
+          }
+        }
+        if (action === 'protect_risk_evaluation') {
+          if (req.body.callbacks.find((cb) => cb.type === 'HiddenValueCallback')) {
+            const hiddenCb = req.body.callbacks.find((cb) => cb.type === 'HiddenValueCallback');
+            if (hiddenCb.input[0].value === 'we had an error') {
+              return res.json(authFail);
+            }
+            return res.json(authSuccess);
+          }
+        }
+      } else {
+        if (req.body.callbacks.find((cb) => cb.type === 'PingOneEvaluationCallback')) {
+          const cb = req.body.callbacks.find((cb) => cb.type === 'PingOneEvaluationCallback');
+          if (cb.input[0].value === 'the value to set') {
+            return res.json(authSuccess);
+          } else {
+            return res.json(authFail);
+          }
+        }
+      }
+      return res.json(MetadataMarketPlacePingOneEvaluation);
     } else if (req.query.authIndexValue === 'QRCodeTest') {
       // If QR Code callbacks are being returned, return success
       if (req.body.callbacks.find((cb) => cb.type === 'HiddenValueCallback')) {
@@ -178,7 +238,7 @@ export default function (app) {
           res.json(pollingCallback);
         }
       } else if (req.body.callbacks.find((cb) => cb.type === 'PollingCallback')) {
-        res.cookie('iPlanetDirectoryPro', 'abcd1234', { domain: 'example.com' });
+        res.cookie('iPlanetDirectoryPro', 'abcd1234', { domain: 'localhost' });
         res.json(authSuccess);
       } else {
         res.json(authFail);
@@ -191,7 +251,7 @@ export default function (app) {
       } else if (pwCb.input[0].value !== USERS[0].pw) {
         res.status(401).json(authFail);
       } else {
-        res.cookie('iPlanetDirectoryPro', 'abcd1234', { domain: '.example.com' });
+        res.cookie('iPlanetDirectoryPro', 'abcd1234', { domain: 'localhost' });
         res.json(authSuccess);
       }
     } else if (req.query.authIndexValue === 'Registration') {
@@ -221,7 +281,7 @@ export default function (app) {
         kba2.input[1].value === 'AAA Engineering' &&
         terms.input[0].value === true
       ) {
-        res.cookie('iPlanetDirectoryPro', 'abcd1234', { domain: 'example.com' });
+        res.cookie('iPlanetDirectoryPro', 'abcd1234', { domain: 'localhost' });
         res.json(authSuccess);
       } else {
         res.status(401).json(authFail);
@@ -236,7 +296,7 @@ export default function (app) {
         if (pwCb.input[0].value !== 'abc123') {
           res.status(401).json(authFail);
         } else {
-          res.cookie('iPlanetDirectoryPro', 'abcd1234', { domain: 'example.com' });
+          res.cookie('iPlanetDirectoryPro', 'abcd1234', { domain: 'localhost' });
           res.json(authSuccess);
         }
       }
@@ -250,7 +310,7 @@ export default function (app) {
         }
       } else if (req.body.callbacks.find((cb) => cb.type === 'RedirectCallback')) {
         if (req.body.authId && req.query.code && req.query.state) {
-          res.cookie('iPlanetDirectoryPro', 'abcd1234', { domain: 'example.com' });
+          res.cookie('iPlanetDirectoryPro', 'abcd1234', { domain: 'localhost' });
           res.json(authSuccess);
         } else {
           res.status(401).json(authFail);
@@ -266,7 +326,7 @@ export default function (app) {
         }
       } else if (req.body.callbacks.find((cb) => cb.type === 'RedirectCallback')) {
         if (req.body.authId && req.query.code && req.query.state) {
-          res.cookie('iPlanetDirectoryPro', 'abcd1234', { domain: 'example.com' });
+          res.cookie('iPlanetDirectoryPro', 'abcd1234', { domain: 'localhost' });
           res.json(authSuccess);
         } else {
           res.status(401).json(authFail);
@@ -310,13 +370,13 @@ export default function (app) {
               !req.headers['x-logout-middleware'] &&
               !req.query['logout-middleware']
             ) {
-              res.cookie('iPlanetDirectoryPro', 'abcd1234', { domain: '.example.com' });
+              res.cookie('iPlanetDirectoryPro', 'abcd1234', { domain: 'localhost' });
               res.json(authSuccess);
             } else {
               res.status(406).send('Middleware additions are missing.');
             }
           } else {
-            res.cookie('iPlanetDirectoryPro', 'abcd1234', { domain: '.example.com' });
+            res.cookie('iPlanetDirectoryPro', 'abcd1234', { domain: 'localhost' });
             res.json(req.query.noSession === 'true' ? noSessionSuccess : authSuccess);
           }
         }
@@ -347,7 +407,7 @@ export default function (app) {
         value.identifier &&
         value.identifier.length > 0
       ) {
-        res.cookie('iPlanetDirectoryPro', 'abcd1234', { domain: 'example.com' });
+        res.cookie('iPlanetDirectoryPro', 'abcd1234', { domain: 'localhost' });
         res.json(authSuccess);
       } else {
         // Just failing the auth for testing, but in reality,
@@ -557,13 +617,13 @@ export default function (app) {
           !req.headers['x-auth-middleware'] &&
           !req.query['auth-middleware']
         ) {
-          res.clearCookie('iPlanetDirectoryPro', { domain: 'example.com', path: '/' });
+          res.clearCookie('iPlanetDirectoryPro', { domain: 'localhost', path: '/' });
           res.status(204).send();
         } else {
           res.status(406).send('Middleware header is missing.');
         }
       } else {
-        res.clearCookie('iPlanetDirectoryPro', { domain: 'example.com', path: '/' });
+        res.clearCookie('iPlanetDirectoryPro', { domain: 'localhost', path: '/' });
         res.status(204).send();
       }
     }

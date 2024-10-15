@@ -3,91 +3,45 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "packages/javascript-sdk/src",
   "projectType": "library",
+  "tags": ["scope:sdk", "scope:package"],
   "targets": {
-    "tsc": {
-      "executor": "@nx/js:tsc",
-      "outputs": ["{options.outputPath}"],
-      "options": {
-        "outputPath": "dist/out-tsc",
-        "main": "packages/javascript-sdk/src/index.ts",
-        "tsConfig": "packages/javascript-sdk/tsconfig.lib.json",
-        "assets": ["packages/javascript-sdk/*.md"]
-      },
-      "configurations": {
-        "cjs": {
-          "tsConfig": "packages/javascript-sdk/tsconfig.lib.json",
-          "outputPath": "dist/packages/javascript-sdk/cjs"
-        }
-      }
+    "docs": {
+      "command": "npx typedoc --options packages/javascript-sdk/typedoc.json"
     },
     "build": {
-      "dependsOn": ["bundle"],
-      "command": "node ./scripts/update-package-json-sdk.js"
-    },
-    "bundle": {
-      "executor": "@nx/rollup:rollup",
-      "options": {
-        "compiler": "tsc",
-        "entryFile": "packages/javascript-sdk/src/index.ts",
-        "outputPath": "dist/packages/javascript-sdk",
-        "assets": [
-          {
-            "input": "packages/javascript-sdk",
-            "glob": "README.md",
-            "output": "/"
-          },
-          {
-            "input": "packages/javascript-sdk",
-            "glob": "CHANGELOG.md",
-            "output": "/"
-          }
-        ],
-        "format": ["esm", "cjs"],
-        "deleteOutputPath": true,
-        "generateExportsField": false,
-        "main": "packages/javascript-sdk/src/index.ts",
-        "rollupConfig": "packages/javascript-sdk/rollup.config.js",
-        "updateBuildableProjectDepsInPackageJson": false,
-        "project": "packages/javascript-sdk/package.json",
-        "tsConfig": "packages/javascript-sdk/tsconfig.lib.json",
-        "cwd": "packages/javascript-sdk",
-        "parallel": true
-      },
-      "configurations": {
-        "production": {}
-      },
-      "outputs": ["{options.outputPath}"]
+      "inputs": [
+        "default",
+        "^default",
+        {
+          "externalDependencies": ["vite"]
+        }
+      ],
+      "outputs": ["{projectRoot}/dist"]
     },
     "lint": {
-      "executor": "@nx/linter:eslint",
-      "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["packages/javascript-sdk/**/*.ts"],
         "fix": true,
-        "ignorePath": ".gitignore"
+        "ignore-path": ".eslintignore",
+        "args": ["**/*.ts"]
       }
     },
     "test": {
-      "executor": "@nx/jest:jest",
-      "outputs": ["coverage/packages/javascript-sdk"],
+      "inputs": [
+        "default",
+        "^default",
+        {
+          "externalDependencies": ["vitest"]
+        }
+      ],
       "options": {
-        "jestConfig": "packages/javascript-sdk/jest.config.ts",
-        "testPathPattern": ["packages/javascript-sdk/src"],
-        "codeCoverage": true,
-        "passWithNoTests": true
+        "testPathPattern": ["packages/javascript-sdk/src"]
       },
       "configurations": {
         "watch": {
-          "watch": true
-        },
-        "unit": {},
-        "integration": {
-          "testPathPattern": ["packages/javascript-sdk/tests/integration"],
-          "passWithNoTests": true,
-          "codeCoverage": true
+          "watch": true,
+          "mode": "ui"
         }
       }
     }
-  },
-  "tags": ["scope:sdk"]
+  }
 }

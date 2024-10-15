@@ -10,7 +10,6 @@
 
 import type { Page } from '@playwright/test';
 import { AM_URL, BASE_URL, CLIENT_ID, RESOURCE_URL, SCOPE, REALM_PATH, USERS } from '../env.config';
-import 'core-js/stable';
 
 export async function setupAndGo(
   page: Page,
@@ -25,6 +24,7 @@ export async function setupAndGo(
     dialogInput?: string;
     email?: string;
     middleware?: string;
+    platformHeader?: string;
     preAuthenticated?: string;
     pw?: string;
     realmPath?: string;
@@ -40,12 +40,17 @@ export async function setupAndGo(
     wellknown?: string;
   },
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-): Promise<{ messageArray: string[]; networkArray: string[] }> {
+): Promise<{
+  headerArray: Headers[];
+  messageArray: string[];
+  networkArray: string[];
+}> {
+  const headerArray: Headers[] = [];
   const messageArray: string[] = [];
   const networkArray: string[] = [];
 
   // If anything fails, ensure we close the browser to end the process
-  const url = new URL(`${BASE_URL}/${path}`);
+  const url = new URL(`${BASE_URL}/src/${path}`);
 
   url.searchParams.set('amUrl', (config && config.amUrl) || AM_URL);
   url.searchParams.set('pauseBehaviorData', (config && config.pauseBehaviorData) || '');
@@ -53,6 +58,7 @@ export async function setupAndGo(
   config && config.code && url.searchParams.set('code', (config && config.code) || '');
   url.searchParams.set('email', (config && config.email) || '');
   url.searchParams.set('middleware', (config && config.middleware) || '');
+  url.searchParams.set('platformHeader', (config && config.platformHeader) || '');
   url.searchParams.set('preAuthenticated', (config && config.preAuthenticated) || '');
   url.searchParams.set('pw', (config && config.pw) || USERS[0].pw);
   url.searchParams.set('realmPath', (config && config.realmPath) || REALM_PATH);
@@ -72,21 +78,32 @@ export async function setupAndGo(
     console.log(url.toString());
   }
 
-  await page.goto(url.toString(), { waitUntil: 'commit' });
-
   // Listen for events on page
   page.on('console', async (msg) => {
-    return messageArray.push(msg.text());
+    messageArray.push(msg.text());
+    return Promise.resolve(true);
   });
 
-  page.on('request', (req) => {
+  page.on('request', async (req) => {
     networkArray.push(`${new URL(req.url()).pathname}, ${req.resourceType()}`);
   });
+
+  page.on('request', async (req) => {
+    const headers = await req.headers();
+
+    headerArray.push(new Headers(headers));
+  });
+
   page.on('dialog', async (dialog) => {
     await dialog.accept(config?.dialogInput || 'abc123');
   });
 
-  await page.waitForSelector(config?.selector || '.Test_Complete');
+  await page.goto(url.toString());
 
-  return { messageArray, networkArray };
+  // Test script complete
+  await page.waitForSelector('.Test_Complete', { state: 'attached' });
+
+  await page.removeListener('console', (msg) => console.log(msg.text()));
+
+  return { headerArray, messageArray, networkArray };
 }

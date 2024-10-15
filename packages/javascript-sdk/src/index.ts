@@ -40,6 +40,9 @@ import ValidatedCreatePasswordCallback from './fr-auth/callbacks/validated-creat
 import ValidatedCreateUsernameCallback from './fr-auth/callbacks/validated-create-username-callback';
 import { StepType } from './fr-auth/enums';
 import FRLoginFailure from './fr-auth/fr-login-failure';
+import PingOneProtectEvaluationCallback from './fr-auth/callbacks/ping-protect-evaluation-callback';
+import PingOneProtectInitializeCallback from './fr-auth/callbacks/ping-protect-initialize-callback';
+import ReCaptchaEnterpriseCallback from './fr-auth/callbacks/recaptcha-enterprise-callback';
 import FRLoginSuccess from './fr-auth/fr-login-success';
 import type { FRStepHandler } from './fr-auth/fr-step';
 import FRStep from './fr-auth/fr-step';
@@ -132,10 +135,13 @@ export {
   NameCallback,
   OAuth2Client,
   PasswordCallback,
+  PingOneProtectEvaluationCallback,
+  PingOneProtectInitializeCallback,
   PKCE,
   PolicyKey,
   PollingWaitCallback,
   ReCaptchaCallback,
+  ReCaptchaEnterpriseCallback,
   RedirectCallback,
   ResponseType,
   SelectIdPCallback,

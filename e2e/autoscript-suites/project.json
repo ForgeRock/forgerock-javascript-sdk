@@ -3,38 +3,27 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "e2e/autoscript-suites/src",
   "projectType": "application",
+  "tags": [],
   "targets": {
     "e2e": {
-      "executor": "@plugins/wait-for-api:run-targets",
-      "options": {
-        "targets": [
-          {
-            "target": "mock-api:serve",
-            "checkUrl": "https://api.example.com:9443/healthcheck",
-            "checkMaxTries": 50,
-            "rejectUnauthorized": false,
-            "reuseExistingServer": true
-          },
-          {
-            "target": "autoscript-apps:serve",
-            "checkUrl": "https://sdkapp.example.com:8443",
-            "checkMaxTries": 50,
-            "reuseExistingServer": true,
-            "rejectUnauthorized": false
-          }
-        ]
+      "options": {},
+      "configurations": {
+        "ui": {
+          "ui": true,
+          "headed": true
+        }
       }
     },
+    "cbt": {
+      "command": "pnpm browserstack-node-sdk playwright test --config ./e2e/autoscript-suites/playwright.config.cbt.ts",
+      "cwd": "e2e/autoscript-suites"
+    },
     "lint": {
-      "executor": "@nx/linter:eslint",
-      "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["e2e/autoscript-suites/**/*.{js,ts}"],
         "fix": true,
-        "ignorePath": ".gitignore"
+        "ignore-path": ".eslintignore",
+        "args": ["**/*.ts"]
       }
     }
-  },
-  "tags": [],
-  "implicitDependencies": ["autoscript-apps"]
+  }
 }

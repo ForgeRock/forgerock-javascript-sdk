@@ -10,7 +10,7 @@
 
 import type { ConfigOptions } from '../config/index';
 import Config from '../config/index';
-import { REQUESTED_WITH } from '../shared/constants';
+import { REQUESTED_WITH, X_REQUESTED_PLATFORM } from '../shared/constants';
 import { isOkOr4xx } from '../util/http';
 import { withTimeout } from '../util/timeout';
 import { ActionTypes } from '../config/enums';
@@ -25,7 +25,7 @@ abstract class SessionManager {
    * Ends the current session.
    */
   public static async logout(options?: ConfigOptions): Promise<Response> {
-    const { middleware, realmPath, serverConfig } = Config.get(options);
+    const { middleware, platformHeader, realmPath, serverConfig } = Config.get(options);
     const init: RequestInit = {
       credentials: 'include',
       headers: new Headers({
@@ -43,6 +43,26 @@ abstract class SessionManager {
       { type: ActionTypes.Logout },
     );
     const req = runMiddleware(middleware);
+
+    /**
+     * Run after as to now allow mutation by user
+     * Since the init headers can be an array, object or Headers class,
+     * we need to handle all types.
+     */
+    if (platformHeader) {
+      if (req.init.headers instanceof Headers) {
+        req.init.headers.set('X-Requested-Platform', X_REQUESTED_PLATFORM);
+      } else if (Array.isArray(req.init.headers)) {
+        req.init.headers.push(['X-Requested-Platform', X_REQUESTED_PLATFORM]);
+      } else if (req.init.headers) {
+        req.init.headers['X-Requested-Platform'] = X_REQUESTED_PLATFORM;
+      } else {
+        req.init.headers = {
+          'X-Requested-Platform': X_REQUESTED_PLATFORM,
+        };
+      }
+    }
+
     const response = await withTimeout(fetch(req.url.toString(), req.init), serverConfig.timeout);
     if (!isOkOr4xx(response)) {
       throw new Error(`Failed to log out; received ${response.status}`);

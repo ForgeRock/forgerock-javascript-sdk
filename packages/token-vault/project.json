@@ -3,54 +3,44 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "packages/token-vault/src",
   "projectType": "library",
+  "tags": ["scope:package"],
   "targets": {
     "build": {
-      "dependsOn": ["bundle-types"],
-      "command": "tsup --config packages/token-vault/tsup.config.ts"
-    },
-    "build-types": {
-      "dependsOn": ["^build"],
-      "executor": "@nx/js:tsc",
-      "outputs": ["{options.outputPath}"],
-      "options": {
-        "rootDir": ".",
-        "clean": false,
-        "outputPath": "dist/temp",
-        "main": "packages/token-vault/src/index.ts",
-        "tsConfig": "packages/token-vault/tsconfig.types.json",
-        "transformers": [
-          {
-            "name": "typescript-transform-paths/nx-transformer",
-            "options": { "afterDeclarations": true }
-          }
-        ]
-      }
-    },
-    "bundle-types": {
-      "command": "rollup -c packages/token-vault/rollup.config.js",
-      "dependsOn": ["build-types"]
+      "dependsOn": ["javascript-sdk:build"],
+      "inputs": [
+        "default",
+        "^default",
+        {
+          "externalDependencies": ["vite"]
+        }
+      ],
+      "outputs": ["{projectRoot}/dist"]
     },
     "test": {
-      "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/packages/token-vault"],
+      "dependsOn": ["javascript-sdk:build"],
+      "inputs": [
+        "default",
+        "^default",
+        {
+          "externalDependencies": ["vitest"]
+        }
+      ],
       "options": {
-        "jestConfig": "packages/token-vault/jest.config.ts",
-        "passWithNoTests": true
+        "config": "./vite.config.ts"
       },
       "configurations": {
-        "ci": {
-          "ci": true,
-          "codeCoverage": true
+        "watch": {
+          "watch": true
         }
       }
     },
     "lint": {
-      "executor": "@nx/linter:eslint",
-      "outputs": ["{options.outputFile}"],
+      "dependsOn": ["javascript-sdk:build"],
       "options": {
-        "lintFilePatterns": ["packages/token-vault/**/*.ts"]
+        "fix": true,
+        "ignore-path": ".eslintignore",
+        "args": ["**/*.ts"]
       }
     }
-  },
-  "tags": ["scope:package"]
+  }
 }

@@ -1,18 +1,23 @@
 {
   "name": "@forgerock/token-vault",
-  "version": "4.2.0",
+  "version": "4.4.3-beta.0",
   "private": false,
-  "type": "commonjs",
-  "module": "./index.mjs",
-  "main": "./index.js",
+  "type": "module",
+  "files": ["dist/*"],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com:ForgeRock/forgerock-javascript-sdk.git",
+    "directory": "packages/token-vault"
+  },
   "exports": {
     ".": {
-      "import": "./index.mjs",
-      "require": "./index.js",
-      "default": "./index.mjs"
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.js",
+      "default": "./dist/index.js"
     }
   },
   "peerDependencies": {
-    "@forgerock/javascript-sdk": "^4.1.2"
+    "@forgerock/javascript-sdk": "workspace:*"
   }
 }

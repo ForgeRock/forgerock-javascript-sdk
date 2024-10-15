@@ -1,9 +1,11 @@
 # OS files
 .DS_Store
 */DS_Store
-
+**/*.DS_Store
+.pnpm-store/*
 # Generated code
 tmp/
+e2e/**/dist
 */dist/*
 dist/*
 packages/*/dist/
@@ -29,7 +31,7 @@ packages/javascript-sdk/lib/
 .env.serve.development
 
 # Certificates
-*.pem
+# *.pem
 
 # IDEs
 .vscode
@@ -62,4 +64,6 @@ docs/packages/javascript-sdk
 **/playwright-report
 **/playwright/.cache
 
-.nx
+.nx/*
+!.nx/workflows
+**/vite.config.ts.timestamp-*

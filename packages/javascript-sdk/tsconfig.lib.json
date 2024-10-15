@@ -1,25 +1,26 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "outDir": "../../dist/temp/packages/javascript-sdk",
-    "declaration": true,
-    "lib": ["DOM", "DOM.Iterable"],
-    "moduleResolution": "node",
+    "outDir": "./dist",
     "sourceMap": true,
-    "strict": false,
     "noPropertyAccessFromIndexSignature": false,
+    "lib": ["DOM", "DOM.Iterable", "es2023"],
     "module": "ES2020",
-    "target": "ES2020"
+    "target": "ES2020",
+    "composite": true,
+    "declaration": true,
+    "declarationMap": true,
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "moduleResolution": "Bundler"
   },
-  "include": ["**/*.ts"],
+  "include": ["src/**/*.ts", "typedoc.json"],
   "exclude": [
     "**/*.spec.ts",
     "**/*.test.ts",
     "**/*.mock.ts",
     "tests/*",
-    "bundles",
-    "jest.env.config.ts",
-    "jest.config.ts",
     "**/*.mock.data.ts"
   ]
 }

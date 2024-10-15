@@ -1,14 +1,25 @@
 {
   "name": "@forgerock/ping-protect",
-  "version": "4.4.0",
+  "version": "4.6.0",
   "private": false,
-  "type": "commonjs",
-  "module": "./src/index.js",
-  "main": "./src/index.js",
-  "exports": {
-    ".": "./src/index.js"
+  "type": "module",
+  "files": ["dist"],
+  "module": "./dist/index.js",
+  "main": "./dist/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com:ForgeRock/forgerock-javascript-sdk.git",
+    "directory": "packages/ping-protect"
   },
+  "sideEffects": ["./dist/lib/ping-signals-sdk.js"],
+  "exports": {
+    ".": {
+      "types": "./dist/index.ts.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "types": "./dist/index.ts.d.ts",
   "peerDependencies": {
-    "@forgerock/javascript-sdk": "^4.4.0"
+    "@forgerock/javascript-sdk": "workspace:*"
   }
 }

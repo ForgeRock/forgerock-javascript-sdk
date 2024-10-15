@@ -14,9 +14,9 @@ Fork the repo to your own github account. From there, you can add the ForgeRock 
 
 - [ ] Please make all pull requests against `develop` branch.
 - [ ] Fill out the Pull Request template that appears when you open a PR.
-- [ ] Please ensure `npm run lint` reports no issues.
-- [ ] Please ensure `npm run build` reports no issues.
-- [ ] Please ensure `npm run test` reports no failures.
+- [ ] Please ensure `pnpm run lint` reports no issues.
+- [ ] Please ensure `pnpm run build` reports no issues.
+- [ ] Please ensure `pnpm run test` reports no failures.
 - [ ] Please ensure your PR passes all PR checks.
 - [ ] When your PR is ready to merge please rebase your commit into 1 commit.
 - [ ] Commits should be verified (meaning you cannot squash your commit on github).

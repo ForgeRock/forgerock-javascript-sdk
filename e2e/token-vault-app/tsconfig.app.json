@@ -1,16 +1,14 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
+    "outDir": "dist",
     "composite": true,
-    "outDir": "../../dist/out-tsc",
-    "types": ["vite/client", "node"],
-    "moduleResolution": "node"
+    "moduleResolution": "Bundler",
+    "target": "ESNext",
+    "module": "ESNext",
+    "types": ["vite/client"],
+    "moduleDetection": "force"
   },
   "exclude": ["src/**/*.spec.ts", "src/**/*.test.ts"],
-  "include": [
-    "src/**/*.ts",
-    "src/interceptor.ts",
-    "../../packages/token-vault/src/index.ts",
-    "../../packages/javascript-sdk/src/index.ts"
-  ]
+  "include": ["src/**/*.ts"]
 }

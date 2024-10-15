@@ -10,9 +10,8 @@
 
 import { env } from 'process';
 import request from 'superagent';
-import { session } from './app.auth';
-import { key, cert } from './app.certs';
-import { AM_URL, AM_PORT, FORGEOPS, REALM_PATH } from './env.config';
+import { session } from './app.auth.js';
+import { AM_URL, AM_PORT, FORGEOPS, REALM_PATH } from './env.config.js';
 import {
   authByTreeResponse,
   authByTxnResponse,
@@ -20,9 +19,9 @@ import {
   createTreeStepUpHeader,
   createTxnStepUpUrl,
   createTreeStepUpUrl,
-} from './responses';
-import { baz } from './routes.auth';
-import wait from './wait';
+} from './responses.js';
+import { baz } from './routes.auth.js';
+import wait from './wait.js';
 
 async function authorization(req, res, next) {
   if (env.NODE_ENV === 'LIVE' && req.hostname !== FORGEOPS) {
@@ -48,8 +47,8 @@ async function authorization(req, res, next) {
     const response = await request
       // eslint-disable-next-line
       .post(`${AM_URL}/json/${realms}/policies/?_action=evaluate`)
-      .key(key)
-      .cert(cert)
+      // .key(key)
+      // .cert(cert)
       .set('Content-Type', 'application/json')
       .set('Accept-API-Version', 'resource=2.1')
       .set('iPlanetDirectoryPro', session.tokenId)
@@ -74,8 +73,6 @@ export default function (app) {
         const authHeaderArr = req.headers.authorization.split(' ');
         response = await request
           .post(`${AM_URL}/oauth2/introspect`)
-          .key(key)
-          .cert(cert)
           .set('Content-Type', 'application/json')
           .set('iPlanetDirectoryPro', session.tokenId)
           .set('Accept-API-Version', 'resource=1.2')
@@ -84,8 +81,6 @@ export default function (app) {
         // Using SSO
         response = await request
           .post(`${AM_URL}/json/sessions/?_action=validate`)
-          .key(key)
-          .cert(cert)
           .set('Content-Type', 'application/json')
           .set('iPlanetDirectoryPro', session.tokenId)
           .set('Accept-API-Version', 'resource=2.1, protocol=1.0')

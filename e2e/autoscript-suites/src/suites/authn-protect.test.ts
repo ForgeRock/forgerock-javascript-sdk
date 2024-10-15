@@ -27,7 +27,7 @@ test.describe('Test basic login flow with Ping Protect', () => {
     expect(configObj.envId.length).toBeGreaterThan(5);
     expect(configObj.consoleLogEnabled).toBe(true);
     expect(configObj.deviceAttributesToIgnore).toStrictEqual(['userAgent']);
-    expect(configObj.customHost).toBe('https://example.com');
+    expect(configObj.customHost).toBe('http://localhost');
     expect(configObj.lazyMetadata).toBe(false);
     expect(configObj.behavioralDataCollection).toBe(true);
     expect(configObj.deviceKeyRsyncIntervals).toBe(14);
@@ -41,6 +41,7 @@ test.describe('Test basic login flow with Ping Protect', () => {
     expect(messageArray.includes('Basic login with Protect successful')).toBe(true);
     expect(messageArray.includes('Test script complete')).toBe(true);
   });
+
   test('should not pause behavioral data if false', async ({ browserName, page }) => {
     const { messageArray } = await setupAndGo(page, browserName, 'authn-protect/', {
       pauseBehaviorData: 'false',

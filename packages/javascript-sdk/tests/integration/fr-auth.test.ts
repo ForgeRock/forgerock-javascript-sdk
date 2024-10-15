@@ -8,6 +8,7 @@
  * of the MIT license. See the LICENSE file for details.
  */
 
+import { vi, expect, describe, it, afterAll } from 'vitest';
 import type PasswordCallback from '../../src/fr-auth/callbacks/password-callback';
 import { CallbackType } from '../../src/auth/enums';
 import Config from '../../src/config';
@@ -15,7 +16,8 @@ import FRAuth from '../../src/fr-auth';
 import type NameCallback from '../../src/fr-auth/callbacks/name-callback';
 import type FRStep from '../../src/fr-auth/fr-step';
 import { rawResponse } from './fr-auth.mock.data';
-jest.mock('../../src/config', () => {
+
+vi.mock('../../src/config', () => {
   return {
     set: (conf) => conf,
     // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
@@ -31,12 +33,12 @@ jest.mock('../../src/config', () => {
 });
 
 afterAll(() => {
-  jest.clearAllMocks();
-  jest.resetModules();
+  vi.clearAllMocks();
+  vi.resetModules();
 });
 describe('Test FRAuth.next functionality', () => {
   it('should be able to make initial next step', async () => {
-    global.fetch = jest.fn().mockImplementation(() => rawResponse);
+    global.fetch = vi.fn().mockImplementation(() => rawResponse);
     console.log(JSON.stringify(Config.set));
     Config.set({
       serverConfig: {

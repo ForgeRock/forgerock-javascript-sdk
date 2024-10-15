@@ -30,7 +30,7 @@ async function autoscript() {
   let scope = url.searchParams.get('scope') || 'openid profile me.read revoke';
   let wellKnownUrl =
     url.searchParams.get('wellKnownUrl') ||
-    'https://auth.example.com:9443/am/.well-known/oidc-configuration';
+    'http://localhost:9443/am/.well-known/oidc-configuration';
 
   console.log('Configure the SDK');
 
@@ -48,7 +48,7 @@ async function autoscript() {
   await forgerock.Config.setAsync({
     clientId,
     realmPath,
-    redirectUri: `${url.origin}/authn-central-login-wellknown/`,
+    redirectUri: `${url.origin}/src/authn-central-login-wellknown/`,
     scope,
     serverConfig: {
       wellknown: wellKnownUrl,

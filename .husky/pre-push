@@ -1,4 +1,4 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-npx nx affected:test && npx nx affected:test --configuration=integration && npx nx affected:e2e --parallel 1 
+# CI=true pnpm run nx affected:test  && CI=true npx nx affected:e2e

@@ -19,6 +19,7 @@ interface Action {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   payload: any;
 }
+
 /**
  * Custom Logger for logger
  */
@@ -50,13 +51,14 @@ interface ConfigOptions {
   oauthThreshold?: number;
   logLevel?: LogLevel;
   logger?: LoggerFunctions;
+  platformHeader?: boolean;
   prefix?: string;
 }
 
 /**
  * Async ConfigOptions for well-known endpoint usage
  */
-interface AsyncConfigOptions extends ConfigOptions {
+interface AsyncConfigOptions extends Omit<ConfigOptions, 'serverConfig'> {
   serverConfig: AsyncServerConfig;
 }
 
@@ -93,7 +95,7 @@ interface ServerConfig {
 /**
  * Configuration settings for async config with well-known
  */
-interface AsyncServerConfig extends ServerConfig {
+interface AsyncServerConfig extends Omit<ServerConfig, 'baseUrl'> {
   wellknown?: string;
 }
 
