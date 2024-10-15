@@ -67,3 +67,8 @@ docs/packages/javascript-sdk
 .nx/*
 !.nx/workflows
 **/vite.config.ts.timestamp-*
+
+.obs*
+*.log
+e2e/*/log/*
+.verdaccio/htpasswd
