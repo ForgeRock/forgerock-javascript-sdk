@@ -1,5 +1,15 @@
 # Changelog
 
+## v4.6.0 (2024-08-15)
+
+### 🚀 Features
+
+- support-metadata-marketplace-protect ([a3494b9](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/a3494b9))
+
+### ❤️ Thank You
+
+- ryanbas21
+
 ## [4.4.2] - 2024-05-15
 
 fix(ping-protect): update-module-type by @ryanbas21 in #434

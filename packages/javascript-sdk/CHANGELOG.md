@@ -1,5 +1,30 @@
 # Changelog
 
+## [4.6.0] - 2024-08-15
+
+### 🚀 Features
+
+- ping-fed-central-login ([57e7c80](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/57e7c80))
+
+- recaptcha-enterprise-callback ([006cec9](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/006cec9))
+
+- support-metadata-marketplace-protect ([a3494b9](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/a3494b9))
+
+- **javascript-sdk:** refactor authorize URL utilities for DaVinci ([b34e458](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/b34e458))
+
+- **javascript-sdk:** recaptcha-enterprise ([8b4656c](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/8b4656c))
+
+### 🩹 Fixes
+
+- **javascript-sdk:** allowed-error-messages ([88ece3f](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/88ece3f))
+
+- **javascript-sdk:** change pkce utility to return storage function ([b4e0fbe](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/b4e0fbe))
+
+### ❤️ Thank You
+
+- Justin Lowery
+- ryanbas21
+
 ## [4.4.2] - 2024-05-15
 
 Features:
