@@ -20,11 +20,16 @@
     "docs": {
       "cache": true
     },
+    "serve": {
+      "cache": false,
+      "dependsOn": ["^build"]
+    },
     "e2e": {
       "inputs": ["noMarkdown", "^noMarkdown"],
       "cache": true
     },
     "build": {
+      "dependsOn": ["^build"],
       "inputs": ["noMarkdown", "^noMarkdown"],
       "cache": true
     },
@@ -32,6 +37,7 @@
       "dependsOn": ["build", "^build"]
     },
     "build-interceptor": {
+      "dependsOn": ["^build"],
       "cache": true,
       "inputs": ["noMarkdown", "^noMarkdown"]
     },
@@ -40,10 +46,12 @@
       "cache": true
     },
     "@nx/eslint:lint": {
+      "dependsOn": ["^build", "^lint"],
       "inputs": ["noMarkdown", "^noMarkdown"],
       "cache": true
     },
     "@nx/vite:build": {
+      "dependsOn": ["^build"],
       "cache": true,
       "inputs": ["noMarkdown", "^noMarkdown"]
     },
@@ -53,11 +61,6 @@
     },
     "e2e-ci--**/*": {
       "inputs": ["noMarkdown", "^noMarkdown"],
-      "dependsOn": [
-        "javascript-sdk:build",
-        "ping-protect:build",
-        "token-vault:build"
-      ],
       "cache": true
     }
   },
@@ -139,5 +142,6 @@
   "defaultProject": "javascript-sdk",
   "useDaemonProcess": true,
   "useInferencePlugins": true,
-  "defaultBase": "develop"
+  "defaultBase": "develop",
+  "useLegacyCache": true
 }

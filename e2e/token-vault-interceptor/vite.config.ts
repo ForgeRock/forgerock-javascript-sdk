@@ -12,9 +12,9 @@ export default defineConfig({
     reportCompressedSize: true,
     lib: {
       entry: 'src/interceptor.ts',
-      name: 'token-vault-interceptor',
+      name: 'tokenvaultinterceptor',
       fileName: 'index',
-      formats: ['es'],
+      formats: ['iife'],
     },
   },
   plugins: [

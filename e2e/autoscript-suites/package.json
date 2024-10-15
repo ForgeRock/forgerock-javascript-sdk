@@ -4,6 +4,7 @@
   "private": true,
   "description": "ForgeRock JavaScript SDK E2E Suites",
   "main": "index.js",
+  "type": "module",
   "author": "",
   "license": "ISC",
   "repository": {

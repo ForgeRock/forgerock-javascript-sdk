@@ -2,6 +2,7 @@
   "name": "token-vault-suites",
   "description": "ForgeRock Token Vault E2E Suites",
   "private": true,
+  "type": "module",
   "version": "0.0.0",
   "main": "src/index.js",
   "author": "",

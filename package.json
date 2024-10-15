@@ -1,10 +1,7 @@
 {
   "name": "@forgerock/javascript-sdk",
   "description": "ForgeRock JavaScript SDK",
-  "engines": {
-    "node": "^20 || ^18",
-    "npm": ">= 7.0.0"
-  },
+  "engines": { "node": "^20 || ^18", "npm": ">= 7.0.0" },
   "private": true,
   "scripts": {
     "build": "nx affected --target=build",
@@ -42,17 +39,17 @@
     "@effect/platform-node": "^0.53.26",
     "@effect/schema": "^0.68.23",
     "@effect/vitest": "^0.6.7",
-    "@nx/devkit": "19.8.1",
-    "@nx/esbuild": "19.8.1",
-    "@nx/eslint": "19.8.1",
-    "@nx/eslint-plugin": "19.8.1",
-    "@nx/express": "19.8.1",
-    "@nx/js": "19.8.1",
-    "@nx/node": "19.8.1",
-    "@nx/playwright": "19.8.1",
-    "@nx/vite": "19.8.1",
-    "@nx/web": "19.8.1",
-    "@nx/workspace": "19.8.1",
+    "@nx/devkit": "20.0.1",
+    "@nx/esbuild": "20.0.1",
+    "@nx/eslint": "20.0.1",
+    "@nx/eslint-plugin": "20.0.1",
+    "@nx/express": "20.0.1",
+    "@nx/js": "20.0.1",
+    "@nx/node": "20.0.1",
+    "@nx/playwright": "20.0.1",
+    "@nx/vite": "20.0.1",
+    "@nx/web": "20.0.1",
+    "@nx/workspace": "20.0.1",
     "@playwright/test": "^1.47.2",
     "@swc-node/register": "1.9.2",
     "@swc/core": "1.5.7",
@@ -87,7 +84,7 @@
     "lint-staged": "^13.2.2",
     "mkcert": "^3.2.0",
     "npm-cli-login": "^1.0.0",
-    "nx": "19.8.1",
+    "nx": "20.0.1",
     "playwright": "^1.47.2",
     "prettier": "^3.2.5",
     "pretty-quick": "^4.0.0",
@@ -112,18 +109,11 @@
   },
   "workspaces": ["e2e/*", "packages/*"],
   "config": {
-    "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog"
-    }
+    "commitizen": { "path": "./node_modules/cz-conventional-changelog" }
   },
-  "nx": {
-    "includedScripts": []
-  },
+  "nx": { "includedScripts": [] },
   "packageManager": "pnpm@9.6.0+sha512.38dc6fba8dba35b39340b9700112c2fe1e12f10b17134715a4aa98ccf7bb035e76fd981cf0bb384dfa98f8d6af5481c2bef2f4266a24bfa20c34eb7147ce0b5e",
-  "dependencies": {
-    "browserstack-node-sdk": "1.34.17",
-    "nx-cloud": "^19.1.0"
-  },
+  "dependencies": { "browserstack-node-sdk": "1.34.17", "nx-cloud": "19.1.0" },
   "pnpm": {
     "overrides": {
       "ssri@>=5.2.2 <6.0.2": ">=6.0.2",

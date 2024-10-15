@@ -5,11 +5,9 @@
     "@forgerock/token-vault": "workspace:*"
   },
   "type": "module",
-  "main": "./dist/index.js",
-  "module": "./dist/index.mjs",
+  "main": "./dist/index.iife.js",
+  "module": "./dist/index.iife.js",
+  "exports": "./dist/index.iife.js",
   "typings": "./dist/index.d.ts",
-  "private": true,
-  "exports": {
-    ".": "./dist/index.js"
-  }
+  "private": true
 }

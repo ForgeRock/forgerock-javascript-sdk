@@ -21,6 +21,24 @@
         }
       }
     },
+    "build-interceptor": {
+      "inputs": [
+        "default",
+        "^default",
+        {
+          "externalDependencies": ["vite"]
+        }
+      ],
+      "outputs": [
+        "{projectRoot}/{options.outDir}",
+        "{workspaceRoot}/dist/e2e/token-vault-app"
+      ],
+      "options": {
+        "emptyOutDir": false,
+        "config": "./vite.interceptor.config.ts",
+        "outDir": "./public"
+      }
+    },
     "serve": {
       "defaultConfiguration": "development",
       "options": {
