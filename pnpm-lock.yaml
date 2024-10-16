@@ -269,7 +269,14 @@ importers:
 
   e2e/autoscript-suites: {}
 
-  e2e/davinci-app: {}
+  e2e/davinci-app:
+    dependencies:
+      '@forgerock/davinci-client':
+        specifier: workspace:*
+        version: link:../../packages/davinci-client
+      '@forgerock/javascript-sdk':
+        specifier: workspace:*
+        version: link:../../packages/javascript-sdk
 
   e2e/mock-api: {}
 
@@ -287,6 +294,9 @@ importers:
 
   e2e/token-vault-interceptor:
     dependencies:
+      '@forgerock/javascript-sdk':
+        specifier: workspace:*
+        version: link:../../packages/javascript-sdk
       '@forgerock/token-vault':
         specifier: workspace:*
         version: link:../../packages/token-vault
