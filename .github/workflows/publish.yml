@@ -1,0 +1,102 @@
+name: ForgeRock Pull Request CI
+on:
+  push:
+    branches:
+      - master
+      - develop
+env:
+  NX_CLOUD_ENCRYPTION_KEY: ${{ secrets.NX_CLOUD_ENCRYPTION_KEY }}
+  NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
+  NX_CLOUD_DISTRIBUTED_EXECUTION: true
+  PNPM_CACHE_FOLDER: .pnpm-store
+  NPM_ACCESS_TOKEN: ${{ secrets.NPM_ACCESS_TOKEN }}
+
+jobs:
+  pr:
+    permissions:
+      contents: write #  to create release (changesets/action)
+      issues: write # to post issue comments (changesets/action)
+      pull-requests: write #  to create pull request (changesets/action)
+      id-token: write # give id token write for provenance
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: pnpm/action-setup@v4
+        with:
+          run_install: false
+      - uses: actions/setup-node@v4
+        id: cache
+        with:
+          node-version: '20.10.0'
+          cache: 'pnpm'
+
+      - name: Import GPG key
+        id: import-gpg
+        uses: crazy-max/ghaction-import-gpg@v6
+        with:
+          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+          git_user_signingkey: true
+          git_commit_gpgsign: true
+
+      - run: git config --global commit.gpgsign true
+      - run: git config --global user.email "${{ steps.import-gpg.outputs.email }}"
+      - run: git config --global user.name "github-actions[bot]"
+
+      - name: Setup npmrc
+        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_ACCESS_TOKEN }}" > .npmrc
+
+      - run: pnpm install --frozen-lockfile
+
+      # This line enables distribution
+      # The "--stop-agents-after" is optional, but allows idle agents to shut down once the "e2e-ci" targets have been requested
+      - run: pnpm dlx nx-cloud start-ci-run --distribute-on="5 linux-medium-js" --stop-agents-after="e2e-ci" --verbose
+
+      - run: pnpm exec playwright install
+
+      - uses: nrwl/nx-set-shas@v4
+        with:
+          main-branch-name: master
+
+      - name: setup pnpm config
+        run: pnpm config set store-dir $PNPM_CACHE_FOLDER
+
+      - run: pnpm exec nx-cloud record -- nx format:check --verbose
+      - run: pnpm exec nx affected -t build lint test e2e-ci --verbose
+
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: playwright-report
+          path: |
+            ./dist/.playwright/**
+            ./dist/**
+          retention-days: 30
+
+      - name: publish
+        uses: changesets/action@v1
+        id: changesets
+        with:
+          publish: pnpm ci:publish
+          title: Release PR
+          branch: master
+          setupGitUser: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_CONFIG_PROVENANCE: true
+
+      - name: rebase develop with main on publish
+        if: ${{ steps.changesets.outputs.published == 'true' }}
+        run: |
+          git checkout master
+          git fetch --all
+          git pull origin master
+
+          git checkout develop
+          git restore .
+          git rebase master
+          git push -f
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_CONFIG_PROVENANCE: true
