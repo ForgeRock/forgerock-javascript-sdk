@@ -33,11 +33,6 @@
       "inputs": ["noMarkdown", "^noMarkdown"],
       "cache": true
     },
-    "build-interceptor": {
-      "dependsOn": ["^build"],
-      "cache": true,
-      "inputs": ["noMarkdown", "^noMarkdown"]
-    },
     "@nx/vite:test": {
       "inputs": ["noMarkdown", "^noMarkdown"],
       "cache": true
