@@ -1,18 +1,8 @@
-import { PlaywrightTestConfig } from '@playwright/test';
-import { nxE2EPreset } from '@nx/playwright/preset';
 import { workspaceRoot } from '@nx/devkit';
-import { fileURLToPath } from 'url';
+import { PlaywrightTestConfig } from '@playwright/test';
+import { baseConfig } from './playwright.config';
 
-const __filename = fileURLToPath(import.meta.url);
-
-// For CI, you may want to set BASE_URL to the deployed application.
-const baseURL = process.env['BASE_URL'] || 'http://localhost:8443';
-
-const baseConfig = nxE2EPreset(__filename, {
-  testDir: './src/suites',
-});
-
-const config: PlaywrightTestConfig = {
+export const config: PlaywrightTestConfig = {
   ...baseConfig,
   reporter: process.env.CI ? 'github' : 'list',
   testIgnore: '**/authz-txn*',
@@ -47,5 +37,3 @@ const config: PlaywrightTestConfig = {
     },
   ],
 };
-
-export default config;

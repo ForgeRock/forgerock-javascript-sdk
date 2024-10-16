@@ -35,3 +35,12 @@ jobs:
 
       - run: pnpm exec nx-cloud record -- nx format:check --verbose
       - run: pnpm exec nx affected -t build lint test e2e-ci --verbose
+
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: playwright-report
+          path: |
+            ./dist/.playwright/**
+            ./dist/**
+          retention-days: 30

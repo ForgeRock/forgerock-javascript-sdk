@@ -539,7 +539,7 @@ export default function (app) {
     const domain = req.url.includes('localhost') ? 'localhost' : 'example.com';
 
     res.clearCookie('redirected');
-    res.cookie('iPlanetDirectoryPro', 'abcd1234', { domain, sameSite: 'none', secure: true });
+    res.cookie('iPlanetDirectoryPro', 'abcd1234', { domain, sameSite: 'none' });
 
     const url = new URL(`${req.protocol}://${req.headers.host}${authPaths.authorize[1]}`);
     url.searchParams.set('client_id', req.query.client_id);
