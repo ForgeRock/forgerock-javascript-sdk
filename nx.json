@@ -25,6 +25,7 @@
       "dependsOn": ["^build"]
     },
     "e2e": {
+      "dependsOn": ["^build"],
       "inputs": ["noMarkdown", "^noMarkdown"],
       "cache": true
     },
@@ -34,6 +35,7 @@
       "cache": true
     },
     "@nx/vite:test": {
+      "dependsOn": ["^test"],
       "inputs": ["noMarkdown", "^noMarkdown"],
       "cache": true
     },
@@ -48,10 +50,12 @@
       "inputs": ["noMarkdown", "^noMarkdown"]
     },
     "@nx/esbuild:esbuild": {
+      "dependsOn": ["^build"],
       "cache": true,
       "inputs": ["noMarkdown", "^noMarkdown"]
     },
     "e2e-ci--**/*": {
+      "dependsOn": ["^build"],
       "inputs": ["noMarkdown", "^noMarkdown"],
       "cache": true
     },

@@ -46,7 +46,6 @@ export default defineConfig({
       'Access-Control-Allow-Headers': 'x-authorize-middleware',
     },
   },
-
   preview: {
     port: 8443,
     host: 'localhost',

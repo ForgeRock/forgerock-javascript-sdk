@@ -7,11 +7,13 @@
   "type": "module",
   "files": ["dist"],
   "peerDependencies": {
-    "@forgerock/javascript-sdk": "workspace:*"
+    "@forgerock/javascript-sdk": "workspace:*",
+    "vitest": "^1.4.0"
   },
   "dependencies": {
-    "@reduxjs/toolkit": "^2.2.5",
-    "immer": "10.1.1",
+    "@reduxjs/toolkit": "2.3.0"
+  },
+  "devDependencies": {
     "vitest": "^1.4.0"
   },
   "exports": {

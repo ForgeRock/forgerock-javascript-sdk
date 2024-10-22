@@ -1,0 +1,18 @@
+{
+  "result": [
+    {
+      "_id": "8e569eb8-1eb8-4459-88a4-2151b7e4ba91",
+      "_rev": "594218113",
+      "createdDate": 1728415625836,
+      "lastAccessDate": 1728415625836,
+      "deviceName": "Push Device",
+      "uuid": "8e569eb8-1eb8-4459-88a4-2151b7e4ba91",
+      "deviceManagementStatus": false
+    }
+  ],
+  "resultCount": 1,
+  "pagedResultsCookie": null,
+  "totalPagedResultsPolicy": "NONE",
+  "totalPagedResults": -1,
+  "remainingPagedResults": -1
+}

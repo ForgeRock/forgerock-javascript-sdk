@@ -1,0 +1,19 @@
+{
+  "result": [
+    {
+      "_id": "4f5420a8-cfce-438b-843e-6b9ca6b738af",
+      "_rev": "212011009",
+      "createdDate": 1728415453606,
+      "lastAccessDate": 1728415453606,
+      "credentialId": "AbksZfsZ2GDXIGYA1ueAl4V7mMPyWFHlit3y4hL1S88IqnDT-WW71gOdx6h5NInMAkMusAQ11Je3XqlWtPAW7Yw",
+      "deviceName": "sdk_gphone64_arm64",
+      "uuid": "4f5420a8-cfce-438b-843e-6b9ca6b738af",
+      "deviceManagementStatus": false
+    }
+  ],
+  "resultCount": 1,
+  "pagedResultsCookie": null,
+  "totalPagedResultsPolicy": "NONE",
+  "totalPagedResults": -1,
+  "remainingPagedResults": -1
+}

@@ -1,22 +1,15 @@
 {
-  "name": "javascript-sdk",
+  "name": "device-client",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "packages/javascript-sdk/src",
+  "sourceRoot": "packages/self-service/src",
   "projectType": "library",
-  "tags": ["scope:sdk"],
+  "tags": ["scope:package"],
   "targets": {
-    "docs": {
-      "command": "npx typedoc --options packages/javascript-sdk/typedoc.json"
-    },
     "build": {
-      "inputs": [
-        "default",
-        "^default",
-        {
-          "externalDependencies": ["vite"]
-        }
-      ],
-      "outputs": ["{projectRoot}/dist"]
+      "outputs": ["{projectRoot}/{options.outDir}", "{projectRoot}/dist"],
+      "options": {
+        "assets": ["packages/self-service/*.md"]
+      }
     },
     "lint": {
       "options": {
