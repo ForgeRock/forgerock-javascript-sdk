@@ -4,7 +4,6 @@
   "dependencies": {
     "@forgerock/token-vault": "workspace:*"
   },
-  "type": "module",
   "main": "./dist/index.iife.js",
   "module": "./dist/index.iife.js",
   "exports": "./dist/index.iife.js",

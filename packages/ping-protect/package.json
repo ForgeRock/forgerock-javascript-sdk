@@ -21,5 +21,8 @@
   "types": "./dist/index.ts.d.ts",
   "peerDependencies": {
     "@forgerock/javascript-sdk": "workspace:*"
+  },
+  "scripts": {
+    "release": "pnpm publish"
   }
 }
