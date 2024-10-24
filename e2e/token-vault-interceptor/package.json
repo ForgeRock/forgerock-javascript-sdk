@@ -2,7 +2,6 @@
   "name": "@forgerock/token-vault-interceptor",
   "version": "0.0.1",
   "dependencies": {
-    "@forgerock/javascript-sdk": "workspace:*",
     "@forgerock/token-vault": "workspace:*"
   },
   "type": "module",

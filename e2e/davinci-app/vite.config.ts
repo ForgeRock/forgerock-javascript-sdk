@@ -6,7 +6,6 @@ export default defineConfig({
   build: {
     outDir: '../../dist/e2e/davinci-app',
     reportCompressedSize: true,
-    commonjsOptions: { transformMixedEsModules: true },
     target: 'esnext',
     minify: false,
     rollupOptions: {

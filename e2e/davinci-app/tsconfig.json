@@ -6,7 +6,7 @@
     "useDefineForClassFields": true,
     "module": "ESNext",
     "lib": ["ESNext", "DOM"],
-    "moduleResolution": "Node",
+    "moduleResolution": "Node16",
     "strict": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
@@ -14,8 +14,7 @@
     "noUnusedLocals": true,
     "noUnusedParameters": false,
     "noImplicitReturns": true,
-    "skipLibCheck": true,
-    "types": ["vite/client", "vitest"]
+    "skipLibCheck": true
   },
   "include": ["src"],
   "references": []

@@ -6,6 +6,7 @@
   "tags": ["scope:app"],
   "targets": {
     "build": {
+      "dependsOn": ["^build"],
       "outputs": [
         "{projectRoot}/{options.outDir}",
         "{workspaceRoot}/dist/e2e/davinci-app"

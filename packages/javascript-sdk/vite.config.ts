@@ -6,7 +6,6 @@ import { copyFileSync } from 'fs';
 export default defineConfig({
   root: __dirname,
   cacheDir: '../../node_modules/.vite/',
-
   build: {
     outDir: './dist',
     target: ['esnext', 'es2020'],
