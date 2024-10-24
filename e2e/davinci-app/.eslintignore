@@ -9,3 +9,6 @@ dist
 *.html
 *.svg
 *.css
+public
+*.json
+*.d.ts

@@ -4,7 +4,7 @@ export default function flowLinkComponent(
   formEl: HTMLFormElement,
   collector: ActionCollector,
   flow: (action: string) => void,
-  renderForm: (node: any) => void,
+  renderForm: () => void,
 ) {
   const button = document.createElement('button');
 
@@ -15,7 +15,7 @@ export default function flowLinkComponent(
   formEl?.appendChild(button);
 
   button.addEventListener('click', async () => {
-    const node = await flow(collector.output.key);
-    renderForm(node);
+    await flow(collector.output.key);
+    renderForm();
   });
 }

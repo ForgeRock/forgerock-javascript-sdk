@@ -44,14 +44,9 @@
       }
     },
     "lint": {
-      "inputs": [
-        "noMarkdown",
-        "^noMarkdown",
-        {
-          "externalDependencies": ["eslint"]
-        }
-      ],
       "options": {
+        "fix": true,
+        "ignore-path": ".eslintignore",
         "args": ["**/*.ts"]
       }
     }
