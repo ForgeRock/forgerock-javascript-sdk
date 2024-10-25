@@ -17,7 +17,18 @@
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "sideEffects": false,
+  "types": "./dist/index.d.ts",
   "exports": {
+    "./src/*": {
+      "import": {
+        "types": "./dist/*.d.ts",
+        "default": "./dist/*.js"
+      },
+      "require": {
+        "types": "./dist/*.d.cts",
+        "default": "./dist/*.cjs"
+      }
+    },
     ".": {
       "import": {
         "types": "./dist/index.d.ts",

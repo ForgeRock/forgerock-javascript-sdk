@@ -33,14 +33,6 @@
       "inputs": ["noMarkdown", "^noMarkdown"],
       "cache": true
     },
-    "serve": {
-      "dependsOn": ["build", "^build"]
-    },
-    "build-interceptor": {
-      "dependsOn": ["^build"],
-      "cache": true,
-      "inputs": ["noMarkdown", "^noMarkdown"]
-    },
     "@nx/vite:test": {
       "inputs": ["noMarkdown", "^noMarkdown"],
       "cache": true
@@ -62,6 +54,11 @@
     "e2e-ci--**/*": {
       "inputs": ["noMarkdown", "^noMarkdown"],
       "cache": true
+    },
+    "@nx/js:tsc": {
+      "cache": true,
+      "dependsOn": ["^build"],
+      "inputs": ["production", "^production"]
     }
   },
   "parallel": 1,
@@ -73,6 +70,7 @@
     "projects": ["packages/*"],
     "releaseTagPattern": "v{version}",
     "version": {
+      "preVersionCommand": "npx nx run-many -t build",
       "generatorOptions": {
         "currentVersionResolver": "git-tag",
         "specifierSource": "conventional-commits"

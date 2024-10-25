@@ -1,11 +1,11 @@
 {
-  "name": "@forgerock/javascript-sdk",
+  "name": "forgerock-javascript-sdk",
   "description": "ForgeRock JavaScript SDK",
   "engines": { "node": "^20 || ^18", "npm": ">= 7.0.0" },
   "private": true,
   "scripts": {
     "build": "nx affected --target=build",
-    "clean": "shx rm -rf ./{coverage,dist,docs,node_modules,tmp}/ ./{packages,e2e}/*/dist && git clean -fX -e \"!.env*,nx-cloud.env\"",
+    "clean": "shx rm -rf ./{coverage,dist,docs,node_modules,tmp}/ ./{packages,e2e}/*/{dist,node_modules} && git clean -fX -e \"!.env*,nx-cloud.env\"",
     "commit": "git cz",
     "docs": "nx affected --target=typedoc",
     "e2e": "CI=true nx affected:e2e",
@@ -103,11 +103,11 @@
     "vite": "^5.4.8",
     "vite-plugin-dts": "^4.2.2",
     "vite-plugin-eslint": "^1.8.1",
+    "vite-plugin-externalize-deps": "^0.8.0",
     "vite-tsconfig-paths": "^4.3.2",
     "vitest": "^1.4.0",
     "vitest-canvas-mock": "^0.3.3"
   },
-  "workspaces": ["e2e/*", "packages/*"],
   "config": {
     "commitizen": { "path": "./node_modules/cz-conventional-changelog" }
   },

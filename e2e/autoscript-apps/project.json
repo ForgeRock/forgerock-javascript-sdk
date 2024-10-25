@@ -6,7 +6,7 @@
   "tags": ["scope:app"],
   "targets": {
     "build": {
-      "dependsOn": ["javascript-sdk:build", "ping-protect:build", "^build"],
+      "dependsOn": ["^build"],
       "inputs": ["default", "^default"],
       "outputs": ["{projectRoot}/dist"],
       "options": {
