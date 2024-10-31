@@ -32,7 +32,7 @@ export async function createAuthorizeUrl(
   /**
    * Generate state and verifier for PKCE
    */
-  const [authorizeUrlOptions] = generateAndStoreAuthUrlValues({
+  const [authorizeUrlOptions, storeOptions] = generateAndStoreAuthUrlValues({
     clientId: options.clientId,
     login: options.login,
     serverConfig: { baseUrl },
@@ -53,6 +53,8 @@ export async function createAuthorizeUrl(
   });
 
   const url = new URL(`${baseUrl}as/authorize?${requestParams.toString()}`);
+
+  storeOptions();
 
   return url.toString();
 }
