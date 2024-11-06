@@ -50,5 +50,8 @@
       }
     }
   },
-  "type": "module"
+  "type": "module",
+  "scripts": {
+    "release": "pnpm publish"
+  }
 }
