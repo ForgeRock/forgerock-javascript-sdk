@@ -9,6 +9,8 @@
   "scripts": {
     "build": "nx affected --target=build",
     "clean": "shx rm -rf ./{coverage,dist,docs,node_modules,tmp}/ ./{packages,e2e}/*/{dist,node_modules}/ && git clean -fX -e \"!.env*,nx-cloud.env\"",
+    "ci:release": "pnpm -r release",
+    "changeset": "pnpm changeset",
     "commit": "git cz",
     "docs": "nx affected --target=typedoc",
     "e2e": "CI=true nx affected:e2e",
@@ -122,6 +124,8 @@
   },
   "packageManager": "pnpm@9.6.0+sha512.38dc6fba8dba35b39340b9700112c2fe1e12f10b17134715a4aa98ccf7bb035e76fd981cf0bb384dfa98f8d6af5481c2bef2f4266a24bfa20c34eb7147ce0b5e",
   "dependencies": {
+    "@changesets/changelog-github": "^0.5.0",
+    "@changesets/cli": "^2.27.9",
     "browserstack-node-sdk": "1.34.17",
     "nx-cloud": "19.1.0"
   },
