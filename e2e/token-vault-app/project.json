@@ -6,19 +6,14 @@
   "tags": ["scope:app"],
   "targets": {
     "build": {
-      "dependsOn": ["^build"],
       "inputs": ["default", "^default"],
       "outputs": ["{projectRoot}/dist"],
-      "defaultConfiguration": "production",
       "options": {
         "emptyOutDir": false
       },
       "configurations": {
         "development": {
           "mode": "development"
-        },
-        "production": {
-          "mode": "production"
         }
       }
     },

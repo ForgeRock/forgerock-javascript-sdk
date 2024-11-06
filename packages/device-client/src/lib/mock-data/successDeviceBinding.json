@@ -1,0 +1,81 @@
+{
+  "result": [
+    {
+      "_id": "c026fcf5-633e-4d06-894f-aa23ba32bc0b",
+      "_rev": "177719109",
+      "createdDate": 1726012192353,
+      "lastAccessDate": 1726012206459,
+      "deviceId": "e7705077f38022ab-6d25ef5a8578518bfa8894aaa6f8d1033aad9357",
+      "deviceName": "Test2",
+      "uuid": "c026fcf5-633e-4d06-894f-aa23ba32bc0b",
+      "key": {
+        "kty": "RSA",
+        "kid": "c026fcf5-633e-4d06-894f-aa23ba32bc0b",
+        "use": "sig",
+        "alg": "RS512",
+        "n": "sXr801I8V9-hzK0dGdreXRnUe7G6cbhbOPht_UZPNxxYOqRgIWk2IZgUn3PDpcidQmHM0Nb3KJDv4ATnv96huuL8BFEo8jziO9783xOauhYI29nNtQvYNIBHxIJW2KMbFiy_R9ZEnBH5PDg4RopFgjrqJ2lsqHz4AiAtf90axA4skNLOpZ_pgXAhx-fyFk-uAfh2tqGtWomhh1crzNdFVIBETE-429KdHXq_GgmOLVXz9osVF4onkDgBUaV-FdyyWvHZxs6PvUdTO59wc92OzSJ6jeViMyQkHlywGZX7tVYPFF3KHPc6lsdD9LFDgJhI2irSCi-gccjlam5D3DiESQ",
+        "e": "AQAB"
+      },
+      "deviceManagementStatus": false
+    },
+    {
+      "_id": "e102f8bf-ed79-4a2f-9b3c-d4e664184287",
+      "_rev": "677548451",
+      "createdDate": 1726072097794,
+      "lastAccessDate": 1726072097794,
+      "deviceId": "4aae3c3bfb029ca4-344f716833746fda5c88e6baca3db4c306f2c97c",
+      "deviceName": "Pixel 7 Pro",
+      "uuid": "e102f8bf-ed79-4a2f-9b3c-d4e664184287",
+      "key": {
+        "kty": "RSA",
+        "kid": "e102f8bf-ed79-4a2f-9b3c-d4e664184287",
+        "use": "sig",
+        "alg": "RS512",
+        "n": "iOsaqyYlD65d88prY8FF6OzuOFdP15byk9DHjbS2zPRID6S-ayGeU6F0uenDDiWgvgERxHeoKlxqj9GvnlGoGj3_gycP7NcPSsbb2b-swfJqWybNTscliib__NLj3yuD9G4UaVYd5qbdAz5yDZo2XWoOjlNyjojoviHKI-b0278KCtKFh4Fd9sZNa3B5aN5DFOYtEif1hSJ3CnR6wLBE9jtOMxlA1WiOXN5WjQqwA3Of9NdM4U3w83Itqp5fCFa-P143DMSQGNu6tTO2jMOr2EgEECqiD45OYUgqmHP9LI4_DJJpVQp6T4M-XeOjMOQLSHSa9nZSgnVFfMZucn9HAQ",
+        "e": "AQAB"
+      },
+      "deviceManagementStatus": false
+    },
+    {
+      "_id": "b512048f-4f34-428f-8a8b-783f314434a4",
+      "_rev": "756755725",
+      "createdDate": 1726007140372,
+      "lastAccessDate": 1726007140372,
+      "deviceId": "aaddfecd9b8b3e2a-49cdb4a4b7b8a657837006fc895299c8adca222d",
+      "deviceName": "Test1",
+      "uuid": "b512048f-4f34-428f-8a8b-783f314434a4",
+      "key": {
+        "kty": "RSA",
+        "kid": "b512048f-4f34-428f-8a8b-783f314434a4",
+        "use": "sig",
+        "alg": "RS512",
+        "n": "uVdbDe1X0D2Vj299DqPtR4FO5vAfoBNLBaOTYlMMePXps-4gQ7wdztDYPPOMLk4FcHdwl00NFauQdXp9p14B62H64jHDc90y1SgBXxTFLIBQHxNGteFOAiXI69emyhGgCVQvqQ8sM4io3gc897YyOmZFSUZd5inLb7PkrqFPt_SXXRn15mvpjdSSZRazv--UyXAfXawnUS-WlbAVzM9j-ubxUSwUhJGcSxy3m41_uJ1LducJlwI3S88LlA7keK6kBjh-vKwHWthNjChuy8YCl9ZHY0mdI3h2MnBwSM4UbdlNHXKhb0jmv85O-pbaVu5NHeHW9BUjkCSVb8b2bbfhNQ",
+        "e": "AQAB"
+      },
+      "deviceManagementStatus": false
+    },
+    {
+      "_id": "ed5382d6-3c5d-4519-a1e9-1db390e6d985",
+      "_rev": "1845755020",
+      "createdDate": 1716416930061,
+      "lastAccessDate": 1716416930061,
+      "deviceId": "17458bb8b066fbeb-c06a6dd17521ab8dc95ecc7748cba8338cac3dd5",
+      "deviceName": "sdk_gphone64_arm64",
+      "uuid": "ed5382d6-3c5d-4519-a1e9-1db390e6d985",
+      "key": {
+        "kty": "RSA",
+        "kid": "ed5382d6-3c5d-4519-a1e9-1db390e6d985",
+        "use": "sig",
+        "alg": "RS512",
+        "n": "outBGTMkjw2uOPN6YsK_Ymxsn0EEwo_rOyX5W2x45s3VOt7qa9m7s7fA_DdzZTdDms9AScqPnkEEV7pAXphwI7CWYvBZjlpIJkGbZVCh1KSH8J4ii5VebA-S_iuURdtd1tXb7ydCNQRIXjqO62hTnAuXJXTRcabpPCiLLDEv2AbRDptdYphzLXW1qMi4TxQwyxvxE7NCzlklrOcobbZ5f_AEX0i_-6bK30yE0SUQYQiyHS1nPVxilZtSACE1_bYcRpL8MLVFBiAR9Sf7feTHo6xe5eq1nwZ9U1y6npAk75Jk_S6Jg0NGexYHUA7LqckS9YuuoZ4atLTHiTI3bgYvnw",
+        "e": "AQAB"
+      },
+      "deviceManagementStatus": false
+    }
+  ],
+  "resultCount": 4,
+  "pagedResultsCookie": null,
+  "totalPagedResultsPolicy": "NONE",
+  "totalPagedResults": -1,
+  "remainingPagedResults": -1
+}

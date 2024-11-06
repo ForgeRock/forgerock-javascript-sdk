@@ -4,6 +4,7 @@
   "sourceRoot": "/e2e/token-vault-suites/src",
   "projectType": "application",
   "tags": ["scope:e2e"],
+  "implicitDependencies": ["token-vault-app", "token-vault-proxy"],
   "targets": {
     "e2e": {
       "options": {},

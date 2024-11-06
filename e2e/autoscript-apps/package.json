@@ -5,6 +5,7 @@
   "type": "module",
   "dependencies": {
     "@forgerock/javascript-sdk": "workspace:*",
+    "@forgerock/device-client": "workspace:*",
     "@forgerock/ping-protect": "workspace:*",
     "rxjs": "^7.4.0"
   },
