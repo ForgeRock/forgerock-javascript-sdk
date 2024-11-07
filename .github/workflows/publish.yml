@@ -91,6 +91,7 @@ jobs:
       - name: rebase develop with main on publish
         if: ${{ steps.changesets.outputs.published == 'true' }}
         run: |
+          git restore .
           git checkout master
           git fetch --all
           git pull origin master
