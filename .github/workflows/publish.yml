@@ -78,7 +78,7 @@ jobs:
         uses: changesets/action@v1
         id: changesets
         with:
-          publish: pnpm ci:publish
+          publish: pnpm ci:release
           title: Release PR
           branch: master
           setupGitUser: false
