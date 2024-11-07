@@ -1,5 +1,6 @@
 {
   "name": "@forgerock/davinci-client",
+  "private": true,
   "version": "0.0.1-davinci.1",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
