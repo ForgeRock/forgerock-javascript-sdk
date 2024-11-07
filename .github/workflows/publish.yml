@@ -74,6 +74,7 @@ jobs:
             ./dist/**
           retention-days: 30
 
+      - run: git status
       - name: publish
         uses: changesets/action@v1
         id: changesets
@@ -83,6 +84,8 @@ jobs:
           branch: master
           setupGitUser: false
         env:
+          # See https://github.com/changesets/action/issues/147
+          HOME: ${{ github.workspace }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_CONFIG_PROVENANCE: true
 
