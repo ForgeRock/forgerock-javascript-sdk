@@ -12,5 +12,16 @@
   "access": "public",
   "baseBranch": "master",
   "updateInternalDependencies": "patch",
-  "ignore": []
+  "ignore": [
+    "@forgerock/device-client",
+    "@forgerock/davinci-client",
+    "autoscript-apps",
+    "autoscript-suites",
+    "davinci-app",
+    "mock-api",
+    "token-vault-app",
+    "@forgerock/token-vault-interceptor",
+    "token-vault-proxy",
+    "token-vault-suites"
+  ]
 }

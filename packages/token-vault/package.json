@@ -22,8 +22,5 @@
   },
   "peerDependencies": {
     "@forgerock/javascript-sdk": "workspace:*"
-  },
-  "scripts": {
-    "release": "pnpm publish"
   }
 }
