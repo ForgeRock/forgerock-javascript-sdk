@@ -51,9 +51,6 @@
     }
   },
   "type": "module",
-  "scripts": {
-    "release": "pnpm publish"
-  },
   "devDependencies": {
     "vitest": "^1.4.0"
   }

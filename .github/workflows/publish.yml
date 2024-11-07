@@ -77,6 +77,7 @@ jobs:
         id: changesets
         with:
           publish: pnpm ci:release
+          version: pnpm ci:version
           title: Release PR
           branch: master
           setupGitUser: false
@@ -84,7 +85,7 @@ jobs:
           # See https://github.com/changesets/action/issues/147
           HOME: ${{ github.workspace }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_CONFIG_PROVENANCE: true
+          NPM_CONFIG_PROVENANCE: 'true'
           NPM_TOKEN: ${{ secrets.NPM_ACCESS_TOKEN }}
 
       - name: rebase develop with main on publish
@@ -100,3 +101,4 @@ jobs:
           git push -f
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_CONFIG_PROVENANCE: true
