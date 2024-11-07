@@ -1,4 +1,4 @@
-name: ForgeRock Pull Request CI
+name: Publish
 on:
   push:
     branches:
@@ -44,9 +44,6 @@ jobs:
       - run: git config --global user.email "${{ steps.import-gpg.outputs.email }}"
       - run: git config --global user.name "github-actions[bot]"
 
-      - name: Setup npmrc
-        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_ACCESS_TOKEN }}" > .npmrc
-
       - run: pnpm install --frozen-lockfile
 
       # This line enables distribution
@@ -88,6 +85,7 @@ jobs:
           HOME: ${{ github.workspace }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_CONFIG_PROVENANCE: true
+          NPM_TOKEN: ${{ secrets.NPM_ACCESS_TOKEN }}
 
       - name: rebase develop with main on publish
         if: ${{ steps.changesets.outputs.published == 'true' }}
@@ -102,4 +100,3 @@ jobs:
           git push -f
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_CONFIG_PROVENANCE: true
