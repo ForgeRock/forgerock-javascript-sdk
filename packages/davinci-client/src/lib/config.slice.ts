@@ -42,9 +42,20 @@ export const configSlice = createSlice({
       state.redirectUri = action.payload.redirectUri || `${location.origin}/handle-redirect`;
       state.responseType = action.payload.responseType || 'code';
       state.scope = action.payload.scope || 'openid';
-      state.serverConfig = {
-        baseUrl: action.payload.serverConfig?.baseUrl || '',
-      };
+
+      if (!action.payload.serverConfig?.baseUrl) {
+        state.serverConfig = {
+          baseUrl: '',
+        };
+      } else if (action.payload.serverConfig?.baseUrl.endsWith('/')) {
+        state.serverConfig = {
+          baseUrl: action.payload.serverConfig?.baseUrl,
+        };
+      } else {
+        state.serverConfig = {
+          baseUrl: action.payload.serverConfig?.baseUrl.concat('/'),
+        };
+      }
     },
   },
 });
