@@ -1,11 +1,11 @@
 /**
  * Import ConfigOptions type from the JavaScript SDK
  */
-import type { ConfigOptions } from '@forgerock/javascript-sdk';
+import { type AsyncConfigOptions } from '@forgerock/javascript-sdk/src/config/interfaces';
 
 /**
  * DaVinci configuration options that extends the Forgerock SDK configuration options
  */
-export interface DaVinciConfig extends ConfigOptions {
+export interface DaVinciConfig extends AsyncConfigOptions {
   responseType?: string;
 }

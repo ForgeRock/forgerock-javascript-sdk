@@ -16,7 +16,6 @@ const config = {
   redirectUri: window.location.href,
   scope: 'openid profile email name revoke',
   serverConfig: {
-    // baseUrl: 'https://auth.pingone.com/c2a669c0-c396-4544-994d-9c6eb3fb1602/',
     baseUrl: 'https://auth.pingone.ca/02fb4743-189a-4bc7-9d6c-a919edfe6447/', // Luis' tenant
     wellknown:
       'https://auth.pingone.ca/02fb4743-189a-4bc7-9d6c-a919edfe6447/as/.well-known/openid-configuration',
