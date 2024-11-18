@@ -1,7 +1,7 @@
 import './style.css';
 
 import { Config, FRUser, TokenManager } from '@forgerock/javascript-sdk';
-import davinci from '@forgerock/davinci-client';
+import { davinci } from '@forgerock/davinci-client';
 
 import usernameComponent from './components/text.js';
 import passwordComponent from './components/password.js';
@@ -11,12 +11,10 @@ import flowLinkComponent from './components/flow-link.js';
 import socialLoginButtonComponent from './components/social-login-button.js';
 
 const config = {
-  // clientId: '7544ef78-5c01-48c4-a9a5-6338c10c7f87',
-  clientId: '724ec718-c41c-4d51-98b0-84a583f450f9', // Luis' tenant
+  clientId: '724ec718-c41c-4d51-98b0-84a583f450f9',
   redirectUri: window.location.href,
   scope: 'openid profile email name revoke',
   serverConfig: {
-    baseUrl: 'https://auth.pingone.ca/02fb4743-189a-4bc7-9d6c-a919edfe6447/', // Luis' tenant
     wellknown:
       'https://auth.pingone.ca/02fb4743-189a-4bc7-9d6c-a919edfe6447/as/.well-known/openid-configuration',
   },
@@ -29,8 +27,8 @@ const config = {
   await Config.setAsync(config);
 
   function renderComplete() {
-    const clientInfo = davinciClient.getClientInfo();
-    const serverInfo = davinciClient.getServerInfo();
+    const clientInfo = davinciClient.getClient();
+    const serverInfo = davinciClient.getServer();
 
     let code = '';
     let session = '';
@@ -93,7 +91,7 @@ const config = {
   async function renderForm() {
     formEl.innerHTML = '';
 
-    const clientInfo = davinciClient.getClientInfo();
+    const clientInfo = davinciClient.getClient();
     // const clientInfo = node.client;
 
     let formName = '';
@@ -167,7 +165,7 @@ const config = {
    * It returns an unsubscribe function that you can call to stop listening
    */
   davinciClient.subscribe(() => {
-    const node = davinciClient.getClientInfo();
+    const node = davinciClient.getClient();
     console.log('Event emitted from store:', node);
   });
 

@@ -169,9 +169,11 @@ export const nodeSlice = createSlice({
         type: action.type,
         payload: action.payload.data?.form?.components?.fields,
       });
-      const submitCollector = collectors.find(
-        (collector) => collector.type === 'SubmitCollector',
-      ) as ActionCollector;
+
+      const submitCollector = collectors.filter(
+        (collector): collector is ActionCollector<'SubmitCollector'> =>
+          collector.type === 'SubmitCollector',
+      )[0];
 
       newState.cache = {
         key: action.payload.requestId,
@@ -253,7 +255,9 @@ export const nodeSlice = createSlice({
       // TODO: Improve type
       const newState = state as Draft<NextNode>;
 
-      newState.client.collectors = nodeCollectorReducer(newState.client.collectors, action);
+      const a = nodeCollectorReducer(newState.client.collectors, action);
+
+      newState.client.collectors = a;
 
       return newState;
     },

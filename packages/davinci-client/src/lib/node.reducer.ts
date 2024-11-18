@@ -16,11 +16,8 @@ import {
   returnTextCollector,
 } from './collector.utils.js';
 
-/**
- * Import the types
- */
-import type { SingleValueCollector, ActionCollector } from './collector.types';
 import type { DaVinciField } from './davinci.types';
+import { Collectors } from './node.types.js';
 
 /**
  * @const nextCollectorValues - Action for setting the next collector values
@@ -38,7 +35,7 @@ export const updateCollectorValues = createAction<{
 /**
  * @const initialCollectorValues - Initial state for the collector values
  */
-const initialCollectorValues: (SingleValueCollector | ActionCollector)[] = [];
+const initialCollectorValues: Collectors[] = [];
 
 /**
  * @const nodeCollectorReducer - Reducer for handling the collector values
@@ -72,10 +69,10 @@ export const nodeCollectorReducer = createReducer(initialCollectorValues, (build
 
         // Generic Collectors
         if (field.type.includes('BUTTON')) {
-          return returnActionCollector(field, idx);
+          return returnActionCollector(field, idx, 'ActionCollector');
         }
 
-        return returnSingleValueCollector(field, idx);
+        return returnSingleValueCollector(field, idx, 'SingleValueCollector');
       });
       return collectors || [];
     })

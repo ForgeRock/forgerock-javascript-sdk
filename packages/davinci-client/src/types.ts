@@ -12,8 +12,10 @@ export type SuccessNode = nodes.SuccessNode;
 export type Collectors = nodes.Collectors;
 export type DaVinciValidationError = nodes.DaVinciError;
 
-export type ActionCollector = collectors.ActionCollector;
-export type SingleValueCollector = collectors.SingleValueCollector;
+export type ActionCollector<T extends collectors.ActionCollectorTypes> =
+  collectors.ActionCollector<T>;
+export type SingleValueCollector<T extends collectors.SingleValueCollectorTypes> =
+  collectors.SingleValueCollector<T>;
 
 export type FlowCollector = collectors.FlowCollector;
 export type SocialLoginCollector = collectors.SocialLoginCollector;

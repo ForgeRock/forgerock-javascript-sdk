@@ -32,7 +32,7 @@ describe('returnActionCollector', () => {
 
   it('should default to "ActionCollector" type when collectorType is not provided', () => {
     const idx = 2;
-    const result = returnActionCollector(mockField, idx);
+    const result = returnActionCollector(mockField, idx, 'ActionCollector');
     expect(result.type).toEqual('ActionCollector');
   });
 
@@ -70,7 +70,7 @@ describe('returnSingleValueCollector', () => {
 
   it('should default to "SingleValueCollector" type when collectorType is not provided', () => {
     const idx = 2;
-    const result = returnSingleValueCollector(mockField, idx);
+    const result = returnSingleValueCollector(mockField, idx, 'SingleValueCollector');
     expect(result.type).toEqual('SingleValueCollector');
   });
 

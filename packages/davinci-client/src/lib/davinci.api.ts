@@ -202,14 +202,14 @@ export const davinciApi = createApi({
           };
         }
 
-        const baseUrl = state?.config?.serverConfig?.baseUrl;
+        const authorizeEndpoint = state.config.endpoints.authorize;
 
-        if (!baseUrl) {
-          return { error: { status: 400, data: 'Base URL must be set' } };
+        if (!authorizeEndpoint) {
+          return { error: { status: 400, data: 'authorizeEndpoint URL must be set' } };
         }
 
         try {
-          const authorizeUrl = await createAuthorizeUrl(baseUrl, {
+          const authorizeUrl = await createAuthorizeUrl(authorizeEndpoint, {
             clientId: state?.config?.clientId,
             login: 'redirect', // TODO: improve this in SDK to be more semantic
             redirectUri: state?.config?.redirectUri,

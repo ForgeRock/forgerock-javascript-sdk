@@ -8,19 +8,18 @@ import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
  * Import the types
  */
 import type { DaVinciConfig } from './config.types.js';
+import { Endpoints } from './wellknown.types.js';
 
 /**
  * @const initialState - The initial state of the configuration slice
  * NOTE: The clientId, redirectUri, responseType, and scope are set to empty strings
  */
 const initialState = {
+  endpoints: {} as Endpoints,
   clientId: '',
   redirectUri: '',
   responseType: '',
   scope: '',
-  serverConfig: {
-    baseUrl: '',
-  },
 };
 
 /**
@@ -30,6 +29,7 @@ const initialState = {
 export const configSlice = createSlice({
   name: 'config',
   initialState,
+  reducerPath: 'config',
   reducers: {
     /**
      * @method set - Set the configuration for the DaVinci client
@@ -40,22 +40,15 @@ export const configSlice = createSlice({
     set(state, action: PayloadAction<DaVinciConfig>) {
       state.clientId = action.payload.clientId || '';
       state.redirectUri = action.payload.redirectUri || `${location.origin}/handle-redirect`;
-      state.responseType = action.payload.responseType || 'code';
-      state.scope = action.payload.scope || 'openid';
-
-      if (!action.payload.serverConfig?.baseUrl) {
-        state.serverConfig = {
-          baseUrl: '',
-        };
-      } else if (action.payload.serverConfig?.baseUrl.endsWith('/')) {
-        state.serverConfig = {
-          baseUrl: action.payload.serverConfig?.baseUrl,
-        };
+      if ('responseType' in action.payload) {
+        state.responseType = action.payload.responseType;
       } else {
-        state.serverConfig = {
-          baseUrl: action.payload.serverConfig?.baseUrl.concat('/'),
-        };
+        state.responseType = 'code';
       }
+      state.scope = action.payload.scope || 'openid';
+    },
+    setEndpoints(state, action: PayloadAction<Endpoints>) {
+      state.endpoints = action.payload;
     },
   },
 });
