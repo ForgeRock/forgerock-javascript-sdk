@@ -1,9 +1,9 @@
-import { SingleValueCollector } from '@forgerock/davinci-client/types';
+import { TextCollector } from '@forgerock/davinci-client/types';
 
 export default function usernameComponent(
   formEl: HTMLFormElement,
-  collector: SingleValueCollector,
-  updater: (value: string, index?: number) => void,
+  collector: TextCollector,
+  updater: (value: string, index?: number) => void | { message: string },
 ) {
   const collectorKey = collector.output.key;
   const label = document.createElement('label');
@@ -19,6 +19,9 @@ export default function usernameComponent(
   formEl?.appendChild(input);
 
   formEl?.querySelector(`#${collectorKey}`)?.addEventListener('input', (event) => {
-    updater((event.target as HTMLInputElement).value);
+    const error = updater((event.target as HTMLInputElement).value);
+    if (error) {
+      console.error(error.message);
+    }
   });
 }

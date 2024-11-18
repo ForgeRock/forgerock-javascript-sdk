@@ -10,7 +10,7 @@
     "strict": true,
     "noUncheckedIndexedAccess": false,
     "noImplicitOverride": true,
-    "module": "NodeNext",
+    "module": "ES2020",
     "moduleResolution": "Bundler",
     "sourceMap": true,
     "declaration": true,

@@ -1,9 +1,9 @@
-import { SingleValueCollector } from '@forgerock/davinci-client/types';
+import { PasswordCollector } from '@forgerock/davinci-client/types';
 
 export default function passwordComponent(
   formEl: HTMLFormElement,
-  collector: SingleValueCollector,
-  updater: (value: string, index?: number) => void,
+  collector: PasswordCollector,
+  updater: (value: string, index?: number) => void | { message: string },
 ) {
   const label = document.createElement('label');
   const input = document.createElement('input');
@@ -18,6 +18,9 @@ export default function passwordComponent(
   formEl?.appendChild(input);
 
   formEl?.querySelector(`#${collector.output.key}`)?.addEventListener('blur', (event: Event) => {
-    updater((event.target as HTMLInputElement).value);
+    const error = updater((event.target as HTMLInputElement).value);
+    if (error) {
+      console.error(error.message);
+    }
   });
 }

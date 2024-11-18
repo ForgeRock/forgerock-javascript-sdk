@@ -13,11 +13,11 @@ import { nodeCollectorReducer, updateCollectorValues } from './node.reducer';
  */
 import type { Draft, PayloadAction } from '@reduxjs/toolkit';
 
-import type { ActionCollector } from './collector.types';
+import type { SubmitCollector } from './collector.types';
 import type {
   DavinciErrorResponse,
   DaVinciFailureResponse,
-  DavinciNextResponse,
+  DaVinciNextResponse,
   DaVinciSuccessResponse,
 } from './davinci.types';
 import type { NextNode, SuccessNode, ErrorNode, StartNode, FailureNode } from './node.types';
@@ -132,7 +132,8 @@ export const nodeSlice = createSlice({
         newState.error = {
           code: data['code'] || 'unknown',
           message: data['message'] || data['errorMessage'] || '',
-          internalHttpStatus: Number(data['httpResponseCode']),
+          internalHttpStatus:
+            typeof data['httpResponseCode'] === 'number' ? data['httpResponseCode'] : 0,
           status: FAILURE_STATUS,
         };
       } else {
@@ -156,12 +157,12 @@ export const nodeSlice = createSlice({
     /**
      * @method next - Method for creating a next node
      * @param {Object} state - The current state of the slice
-     * @param {PayloadAction<DavinciNextResponse>} action - The action to be dispatched
+     * @param {PayloadAction<DaVinciNextResponse>} action - The action to be dispatched
      * @returns {NextNode} - The next node
      */
     next(
       state,
-      action: PayloadAction<{ data: DavinciNextResponse; requestId: string; httpStatus: number }>,
+      action: PayloadAction<{ data: DaVinciNextResponse; requestId: string; httpStatus: number }>,
     ) {
       const newState = state as Draft<NextNode>;
 
@@ -171,8 +172,7 @@ export const nodeSlice = createSlice({
       });
 
       const submitCollector = collectors.filter(
-        (collector): collector is ActionCollector<'SubmitCollector'> =>
-          collector.type === 'SubmitCollector',
+        (collector): collector is SubmitCollector => collector.type === 'SubmitCollector',
       )[0];
 
       newState.cache = {
@@ -252,7 +252,6 @@ export const nodeSlice = createSlice({
      * @returns {NextNode} - The next node
      */
     update(state, action: ReturnType<typeof updateCollectorValues>) {
-      // TODO: Improve type
       const newState = state as Draft<NextNode>;
 
       newState.client.collectors = nodeCollectorReducer(newState.client.collectors, action);
@@ -271,6 +270,14 @@ export const nodeSlice = createSlice({
         return [];
       }
       return state.client.collectors || [];
+    },
+    selectCollector: (state, id: string) => {
+      // Let's check if the node has a client and collectors
+      if (state.status !== 'next') {
+        console.error('`collector` are only available on nodes with `status` of `next`');
+        return;
+      }
+      return state.client.collectors?.find((collector) => collector.id === id);
     },
     selectError: (state) => {
       return state.error;

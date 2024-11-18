@@ -58,7 +58,7 @@ export interface DaVinciField {
   // Optional properties
   links?: Links;
 }
-export interface DavinciNextResponse extends DaVinciBaseResponse {
+export interface DaVinciNextResponse extends DaVinciBaseResponse {
   // Optional properties
   _links?: Links;
   eventName?: string;

@@ -192,6 +192,40 @@ export const error1d = {
   isResponseCompatibleWithMobileAndWebSdks: true,
 };
 
+export const error1e = {
+  interactionId: '17c6a5d5-31d8-4416-b9cf-7b5e4d8ed5b1',
+  companyId: '02fb4743-189a-4bc7-9d6c-a919edfe6447',
+  connectionId: '94141bf2f1b9b59a5f5365ff135e02bb',
+  connectorId: 'pingOneSSOConnector',
+  id: 'agjdg5vxr2',
+  capabilityName: 'createUser',
+  errorCategory: 'InvalidData',
+  code: 400,
+  cause: null,
+  expected: true,
+  message: 'uniquenessViolation username: is unique but a non-unique value is provided',
+  httpResponseCode: 400,
+  details: [
+    {
+      rawResponse: {
+        id: '6a4b3730-348c-400c-ba38-e0d8e76621dc',
+        code: 'INVALID_DATA',
+        message:
+          'The request could not be completed. One or more validation errors were in the request.',
+        details: [
+          {
+            code: 'UNIQUENESS_VIOLATION',
+            target: 'username',
+            message: 'is unique but a non-unique value is provided',
+          },
+        ],
+      },
+      statusCode: 400,
+    },
+  ],
+  isResponseCompatibleWithMobileAndWebSdks: true,
+};
+
 export const error2a = {
   interactionId: '18bd524d-4afd-4f79-a0b5-a4f16b63bf48',
   code: 'requestTimedOut',

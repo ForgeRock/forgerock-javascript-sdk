@@ -1,4 +1,4 @@
-export interface OpenIdResponse {
+export interface WellknownResponse {
   issuer: string;
   authorization_endpoint: string;
   pushed_authorization_request_endpoint: string;

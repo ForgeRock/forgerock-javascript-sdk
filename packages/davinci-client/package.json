@@ -6,15 +6,15 @@
   "typings": "./dist/index.d.ts",
   "type": "module",
   "files": ["dist"],
-  "peerDependencies": {
-    "@forgerock/javascript-sdk": "workspace:*",
-    "vitest": "^1.4.0"
-  },
   "dependencies": {
-    "@reduxjs/toolkit": "2.3.0"
+    "@forgerock/javascript-sdk": "workspace:*",
+    "@reduxjs/toolkit": "2.3.0",
+    "vitest": "^1.4.0",
+    "immer": "10.1.1"
   },
   "devDependencies": {
-    "vitest": "^1.4.0"
+    "vitest": "^1.4.0",
+    "immer": "10.1.1"
   },
   "exports": {
     ".": {

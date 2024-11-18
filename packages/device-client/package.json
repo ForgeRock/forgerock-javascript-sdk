@@ -13,11 +13,9 @@
     "./types": "./dist/lib/types/index.d.ts"
   },
   "files": ["./dist"],
-  "peerDependencies": {
-    "@forgerock/javascript-sdk": "workspace:*"
-  },
   "dependencies": {
-    "@reduxjs/toolkit": "2.3.0"
+    "@reduxjs/toolkit": "2.3.0",
+    "@forgerock/javascript-sdk": "4.6.0"
   },
   "devDependencies": {
     "msw": "^2.5.1",

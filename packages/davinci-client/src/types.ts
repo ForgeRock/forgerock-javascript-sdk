@@ -1,3 +1,5 @@
+import 'immer'; // Side-effect needed only for getting types in workspace
+
 import type * as collectors from './lib/collector.types.js';
 import type * as config from './lib/config.types.js';
 import type * as nodes from './lib/node.types.js';
@@ -18,6 +20,7 @@ export type SingleValueCollector<T extends collectors.SingleValueCollectorTypes>
   collectors.SingleValueCollector<T>;
 
 export type FlowCollector = collectors.FlowCollector;
-export type SocialLoginCollector = collectors.SocialLoginCollector;
 export type PasswordCollector = collectors.PasswordCollector;
 export type TextCollector = collectors.TextCollector;
+export type SocialLoginCollector = collectors.SocialLoginCollector;
+export type SubmitCollector = collectors.SubmitCollector;

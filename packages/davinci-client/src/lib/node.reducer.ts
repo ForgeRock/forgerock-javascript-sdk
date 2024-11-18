@@ -84,11 +84,10 @@ export const nodeCollectorReducer = createReducer(initialCollectorValues, (build
     .addCase(updateCollectorValues, (state, action) => {
       const collector = state.find((collector) => collector.id === action.payload.id);
       if (!collector) {
-        // TODO: Handle error better
-        return console.error('Collector not found');
+        throw new Error('No collector found to update');
       }
       if (collector.category === 'ActionCollector') {
-        return console.error('ActionCollectors are read-only');
+        throw new Error('ActionCollectors are read-only');
       }
       collector.input.value = action.payload.value;
     });

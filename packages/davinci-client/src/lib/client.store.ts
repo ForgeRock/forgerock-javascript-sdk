@@ -37,7 +37,7 @@ export async function davinci({ config }: { config: DaVinciConfig }) {
     throw Error('error fetching wellknown response');
   }
 
-  store.dispatch(configSlice.actions.set({ ...config, endpoints: openIdResponse }));
+  store.dispatch(configSlice.actions.set({ ...config, wellknownResponse: openIdResponse }));
 
   return {
     // Pass store methods to the client
@@ -49,6 +49,13 @@ export async function davinci({ config }: { config: DaVinciConfig }) {
      * @returns {function} - an async function to call the flow
      */
     flow: (action: DaVinciAction) => {
+      if (!action.action) {
+        console.error('Missing `argument.action`');
+        return async function () {
+          return { message: 'Missing argument.action' };
+        };
+      }
+
       return async function () {
         await store.dispatch(davinciApi.endpoints.flow.initiate(action));
         const node = nodeSlice.selectSlice(store.getState());
@@ -62,6 +69,14 @@ export async function davinci({ config }: { config: DaVinciConfig }) {
      * @returns {Promise} - a promise that resolves to the next node
      */
     next: async (args?: DaVinciRequest) => {
+      const nodeCheck = nodeSlice.selectSlice(store.getState());
+      if (nodeCheck.status === 'start') {
+        return {
+          ...nodeCheck,
+          error: 'Please use `start` before calling `next`',
+        };
+      }
+
       await store.dispatch(davinciApi.endpoints.next.initiate(args));
       const node = nodeSlice.selectSlice(store.getState());
       return node;
@@ -79,12 +94,42 @@ export async function davinci({ config }: { config: DaVinciConfig }) {
     /**
      * @method update - Exclusive method for updating the current node with user provided values
      * @param {SingleValueCollector} collector - the collector to update
-     * @returns {function} - an async function to call for updating collector value
+     * @returns {function} - an function to call for updating collector value
      */
+    // TODO: expose return value for application layer
     update: (collector: SingleValueCollectors) => {
+      if (!collector.id) {
+        console.error('Argument for `collector` has no ID');
+        return function () {
+          return { message: 'Argument for `collector` has no ID' };
+        };
+      }
+
       const { id } = collector;
+      const collectorToUpdate = nodeSlice.selectors.selectCollector(store.getState(), id);
+
+      if (!collectorToUpdate) {
+        return function () {
+          console.error('Collector not found');
+          return { message: 'Collector not found' };
+        };
+      }
+
+      if (collectorToUpdate.category !== 'SingleValueCollector') {
+        console.error('Collector is not a SingleValueCollector and cannot be updated');
+        return function () {
+          return { message: 'Collector is not a SingleValueCollector and cannot be updated' };
+        };
+      }
+
       return function (value: string, index?: number) {
-        store.dispatch(nodeSlice.actions.update({ id, value, index }));
+        try {
+          store.dispatch(nodeSlice.actions.update({ id, value, index }));
+          return null;
+        } catch (err) {
+          const error = err as Error;
+          return { message: error.message };
+        }
       };
     },
 

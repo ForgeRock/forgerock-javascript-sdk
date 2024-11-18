@@ -7,18 +7,8 @@ import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 /**
  * Import the types
  */
-import type { DaVinciConfig } from './config.types.js';
-import { Endpoints, OpenIdResponse } from './wellknown.types.js';
-
-function transformOpenIdResponseToEndpoints(value: OpenIdResponse): Endpoints {
-  return {
-    authorize: value.authorization_endpoint,
-    issuer: value.issuer,
-    introspection: value.introspection_endpoint,
-    tokens: value.token_endpoint,
-    userinfo: value.userinfo_endpoint,
-  };
-}
+import type { InternalDaVinciConfig } from './config.types.js';
+import { Endpoints } from './wellknown.types.js';
 
 /**
  * @const initialState - The initial state of the configuration slice
@@ -44,10 +34,10 @@ export const configSlice = createSlice({
     /**
      * @method set - Set the configuration for the DaVinci client
      * @param {Object} state - The current state of the slice
-     * @param {PayloadAction<DaVinciConfig>} action - The action to be dispatched
+     * @param {PayloadAction<InternalDaVinciConfig>} action - The action to be dispatched
      * @returns {void}
      */
-    set(state, action: PayloadAction<DaVinciConfig>) {
+    set(state, action: PayloadAction<InternalDaVinciConfig>) {
       state.clientId = action.payload.clientId || '';
       state.redirectUri = action.payload.redirectUri || `${location.origin}/handle-redirect`;
       if ('responseType' in action.payload) {
@@ -55,11 +45,24 @@ export const configSlice = createSlice({
       } else {
         state.responseType = 'code';
       }
+
       state.scope = action.payload.scope || 'openid';
 
-      if ('openIdConfiguration' in action.payload) {
-        state.endpoints = transformOpenIdResponseToEndpoints(action.payload.openIdConfiguration);
-      }
+      const {
+        authorization_endpoint: authorize,
+        issuer: issuer,
+        introspection_endpoint: introspection,
+        token_endpoint: tokens,
+        userinfo_endpoint: userinfo,
+      } = action.payload.wellknownResponse;
+
+      state.endpoints = {
+        authorize,
+        issuer,
+        introspection,
+        tokens,
+        userinfo,
+      };
     },
   },
 });
