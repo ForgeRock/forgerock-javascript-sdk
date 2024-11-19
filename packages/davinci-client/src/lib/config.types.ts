@@ -2,6 +2,7 @@
  * Import ConfigOptions type from the JavaScript SDK
  */
 import type { AsyncConfigOptions } from '@forgerock/javascript-sdk/src/config/interfaces';
+import { OpenIdResponse } from './wellknown.types';
 
 export interface DavinciConfigWithResponseType extends AsyncConfigOptions {
   responseType: string;
@@ -10,4 +11,8 @@ export interface DavinciConfigWithResponseType extends AsyncConfigOptions {
 /**
  * DaVinci configuration options that extends the Forgerock SDK configuration options
  */
-export type DaVinciConfig = DavinciConfigWithResponseType | AsyncConfigOptions;
+export type DaVinciConfig =
+  | ((DavinciConfigWithResponseType | AsyncConfigOptions) & {
+      openIdConfiguration: OpenIdResponse;
+    })
+  | (DavinciConfigWithResponseType | AsyncConfigOptions);

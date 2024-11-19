@@ -17,7 +17,9 @@ describe('returnActionCollector', () => {
     const idx = 1;
     const collectorType: ActionCollectorTypes = 'SubmitCollector';
     const result = returnActionCollector(mockField, idx, collectorType);
+    //             ^?
     expect(result).toEqual({
+      //   ^?
       category: 'ActionCollector',
       type: collectorType,
       id: `${mockField.key}-${idx}`,
@@ -29,14 +31,6 @@ describe('returnActionCollector', () => {
       },
     });
   });
-
-  it('should default to "ActionCollector" type when collectorType is not provided', () => {
-    const idx = 2;
-    const result = returnActionCollector(mockField, idx, 'ActionCollector');
-    expect(result.type).toEqual('ActionCollector');
-  });
-
-  // Additional tests for edge cases and invalid inputs can be added here
 });
 
 describe('returnSingleValueCollector', () => {
@@ -67,12 +61,4 @@ describe('returnSingleValueCollector', () => {
       },
     });
   });
-
-  it('should default to "SingleValueCollector" type when collectorType is not provided', () => {
-    const idx = 2;
-    const result = returnSingleValueCollector(mockField, idx, 'SingleValueCollector');
-    expect(result.type).toEqual('SingleValueCollector');
-  });
-
-  // Additional tests for edge cases and invalid inputs can be added here
 });

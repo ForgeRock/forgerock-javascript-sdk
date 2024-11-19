@@ -11,7 +11,7 @@ export function createClientStore() {
     reducer: {
       config: configSlice.reducer,
       node: nodeSlice.reducer,
-      davinci: davinciApi.reducer,
+      [davinciApi.reducerPath]: davinciApi.reducer,
       [wellknownApi.reducerPath]: wellknownApi.reducer,
     },
     middleware: (getDefaultMiddleware) =>

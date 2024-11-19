@@ -29,16 +29,15 @@ export async function davinci({ config }: { config: DaVinciConfig }) {
     throw Error('wellknown endpoint required as part of the `config.serverOptions` ');
   }
 
-  const { data: endpoints } = await store.dispatch(
+  const { data: openIdResponse } = await store.dispatch(
     wellknownApi.endpoints.wellknown.initiate(config.serverConfig.wellknown),
   );
 
-  if (!endpoints) {
+  if (!openIdResponse) {
     throw Error('error fetching wellknown response');
   }
 
-  store.dispatch(configSlice.actions.setEndpoints(endpoints));
-  store.dispatch(configSlice.actions.set(config));
+  store.dispatch(configSlice.actions.set({ ...config, endpoints: openIdResponse }));
 
   return {
     // Pass store methods to the client

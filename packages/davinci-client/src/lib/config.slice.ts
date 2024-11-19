@@ -8,7 +8,17 @@ import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
  * Import the types
  */
 import type { DaVinciConfig } from './config.types.js';
-import { Endpoints } from './wellknown.types.js';
+import { Endpoints, OpenIdResponse } from './wellknown.types.js';
+
+function transformOpenIdResponseToEndpoints(value: OpenIdResponse): Endpoints {
+  return {
+    authorize: value.authorization_endpoint,
+    issuer: value.issuer,
+    introspection: value.introspection_endpoint,
+    tokens: value.token_endpoint,
+    userinfo: value.userinfo_endpoint,
+  };
+}
 
 /**
  * @const initialState - The initial state of the configuration slice
@@ -46,9 +56,10 @@ export const configSlice = createSlice({
         state.responseType = 'code';
       }
       state.scope = action.payload.scope || 'openid';
-    },
-    setEndpoints(state, action: PayloadAction<Endpoints>) {
-      state.endpoints = action.payload;
+
+      if ('openIdConfiguration' in action.payload) {
+        state.endpoints = transformOpenIdResponseToEndpoints(action.payload.openIdConfiguration);
+      }
     },
   },
 });

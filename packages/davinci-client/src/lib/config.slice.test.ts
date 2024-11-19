@@ -30,6 +30,13 @@ describe('configSlice', () => {
       serverConfig: {
         wellknown: 'wellknown',
       },
+      endpoints: {
+        authorize: '',
+        issuer: '',
+        tokens: '',
+        userinfo: '',
+        introspection: '',
+      },
     });
 
     const expectedState = {

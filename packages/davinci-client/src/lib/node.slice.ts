@@ -255,9 +255,7 @@ export const nodeSlice = createSlice({
       // TODO: Improve type
       const newState = state as Draft<NextNode>;
 
-      const a = nodeCollectorReducer(newState.client.collectors, action);
-
-      newState.client.collectors = a;
+      newState.client.collectors = nodeCollectorReducer(newState.client.collectors, action);
 
       return newState;
     },

@@ -12,11 +12,7 @@ interface SingleValueCollectorWithValue<T extends SingleValueCollectorTypes> {
   type: T;
   id: string;
   name: string;
-  input: {
-    key: string;
-    value: string | number | boolean;
-    type: string;
-  };
+  input: { key: string; value: string | number | boolean; type: string };
   output: {
     key: string;
     label: string;
