@@ -12,9 +12,9 @@ test('should login and logout with pingone', async ({ page }) => {
   await page.getByRole('textbox', { name: 'Username' }).click();
   await page.getByPlaceholder('Username').fill('sdk.user');
   await page.getByRole('textbox', { name: 'Password' }).click();
-  await page.getByRole('textbox', { name: 'Password' }).fill('kng4vck4VJN*mcf!qgw');
+  await page.getByRole('textbox', { name: 'Password' }).fill('XZY8gqn3gau*jmv1hwg');
   await page.getByRole('button', { name: 'Sign On' }).click();
-  await page.getByRole('button', { name: 'Continue' }).click();
+
   await expect(page.getByText('preferred_username')).toContainText('sdk.user');
   await page.getByRole('button', { name: 'Sign Out' }).click({ clickCount: 1, delay: 300 });
   await page.getByRole('button', { name: 'Login' }).click({ delay: 300 });
