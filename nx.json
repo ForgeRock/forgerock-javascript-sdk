@@ -32,6 +32,10 @@
       "outputs": ["{projectRoot}/.playwright"],
       "cache": true
     },
+    "lint": {
+      "inputs": ["noMarkdown", "^noMarkdown"],
+      "cache": true
+    },
     "build": {
       "dependsOn": ["^build"],
       "inputs": ["noMarkdown", "^noMarkdown"],
