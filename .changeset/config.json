@@ -14,14 +14,13 @@
   "updateInternalDependencies": "patch",
   "ignore": [
     "@forgerock/device-client",
-    "autoscript-apps",
-    "autoscript-suites",
-    "davinci-app",
-    "mock-api",
-    "token-vault-app",
+    "@forgerock/autoscript-apps",
+    "@forgerock/autoscript-suites",
+    "@forgerock/davinci-app",
+    "@forgerock/mock-api",
+    "@forgerock/token-vault-app",
     "@forgerock/token-vault-interceptor",
-    "token-vault-proxy",
-    "token-vault-suites",
-    "davinci-suites"
+    "@forgerock/token-vault-proxy",
+    "@forgerock/token-vault-suites"
   ]
 }
