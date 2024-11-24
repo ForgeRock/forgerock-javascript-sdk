@@ -9,6 +9,7 @@
  */
 
 import { parseDeviceNameText, parseDisplayRecoveryCodesText } from './script-parser';
+import { describe, expect, it } from 'vitest';
 import {
   displayRecoveryCodes,
   expectedRecoveryCodes,

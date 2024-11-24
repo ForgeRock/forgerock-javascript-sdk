@@ -2,8 +2,10 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "../../dist/e2e/javascript-sdk-app/",
+    "composite": true,
     "strict": false,
-    "noImplicitAny": false
+    "noImplicitAny": false,
+    "module": "NodeNext"
   },
   "include": [
     "playwright.config.ts",

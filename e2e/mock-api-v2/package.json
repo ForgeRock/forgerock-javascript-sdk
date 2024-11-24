@@ -1,13 +1,18 @@
 {
-  "name": "mock-api",
-  "version": "0.0.0",
-  "private": true,
+  "name": "@forgerock/mock-api-v2",
+  "version": "1.0.0",
   "description": "",
-  "main": "./dist/index.js",
-  "module": "./dist/index.js",
-  "exports": "./dist/index.js",
-  "keywords": [],
-  "author": "",
-  "type": "module",
-  "license": "ISC"
+  "main": "index.js",
+  "scripts": {
+    "build": "esbuild \"src/**/*.ts\" --platform=node --outdir=dist --format=cjs --sourcemap --bundle=false",
+    "build:watch": "esbuild \"src/**/*.ts\" --platform=node --outdir=dist --format=cjs --sourcemap --bundle=false --watch",
+    "build:prod": "esbuild \"src/**/*.ts\" --platform=node --outdir=dist --format=cjs --bundle=false",
+    "build:example": "esbuild \"src/**/*.ts\" --platform=node --outdir=dist --format=cjs --sourcemap --bundle=false",
+    "serve": "node dist/main.js",
+    "serve:dev": "nodemon dist/main.js",
+    "serve:example": "node dist/example-server.js",
+    "test": "vitest run --coverage --coverage.reportsDirectory=../../coverage/mock-api-v2",
+    "test:watch": "vitest watch --coverage --coverage.reportsDirectory=../../coverage/mock-api-v2",
+    "lint": "eslint --fix --ignore-path .eslintignore \"**/*.ts\""
+  }
 }

@@ -1,5 +1,5 @@
 {
-  "name": "token-vault-suites",
+  "name": "@forgerock/token-vault-suites",
   "description": "ForgeRock Token Vault E2E Suites",
   "private": true,
   "type": "module",
@@ -14,5 +14,17 @@
   "bugs": {
     "url": "https://github.com/ForgeRock/forgerock-javascript-sdk/issues"
   },
-  "homepage": "https://github.com/ForgeRock/forgerock-javascript-sdk#readme"
+  "homepage": "https://github.com/ForgeRock/forgerock-javascript-sdk#readme",
+  "scripts": {
+    "e2e": "playwright test",
+    "e2e:ui": "playwright test --ui",
+    "lint": "eslint --fix --ignore-path .eslintignore \"src/**/*.ts\""
+  },
+  "nx": {
+    "implicitDependencies": [
+      "@forgerock/token-vault-app",
+      "@forgerock/mock-api",
+      "@forgerock/mock-api-v2"
+    ]
+  }
 }

@@ -17,7 +17,9 @@
   "dependencies": {
     "@forgerock/javascript-sdk": "workspace:*",
     "@reduxjs/toolkit": "2.3.0",
-    "immer": "10.1.1",
+    "immer": "10.1.1"
+  },
+  "devDependencies": {
     "vitest": "^1.4.0"
   },
   "exports": {
@@ -26,5 +28,12 @@
       "require": "./dist/index.js"
     },
     "./types": "./dist/types.d.ts"
+  },
+  "scripts": {
+    "build": "vite build",
+    "test": "vitest",
+    "test:watch": "vitest --watch",
+    "test:coverage": "vitest --coverage",
+    "lint": "eslint **/*.ts --fix"
   }
 }

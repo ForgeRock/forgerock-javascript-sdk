@@ -8,5 +8,10 @@
   "module": "./dist/index.iife.js",
   "exports": "./dist/index.iife.js",
   "typings": "./dist/index.d.ts",
-  "private": true
+  "private": true,
+  "scripts": {
+    "build": "vite build --mode production --emptyOutDir false",
+    "build:dev": "vite build --mode development --emptyOutDir false",
+    "lint": "eslint --fix --ignore-path .eslintignore \"**/*.ts\""
+  }
 }

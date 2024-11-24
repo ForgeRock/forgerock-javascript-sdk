@@ -26,21 +26,21 @@ const config: PlaywrightTestConfig = {
   },
   webServer: [
     {
-      command: 'pnpm nx serve mock-api',
+      command: 'pnpm nx serve @forgerock/mock-api',
       url: 'http://localhost:9443/healthcheck',
       ignoreHTTPSErrors: true,
       reuseExistingServer: !process.env.CI,
       cwd: workspaceRoot,
     },
     {
-      command: 'pnpm nx serve token-vault-proxy',
+      command: 'pnpm nx serve @forgerock/token-vault-proxy',
       port: 5833,
       ignoreHTTPSErrors: true,
       reuseExistingServer: !process.env.CI,
       cwd: workspaceRoot,
     },
     {
-      command: 'pnpm nx serve token-vault-app',
+      command: 'pnpm nx serve @forgerock/token-vault-app',
       port: 5823,
       ignoreHTTPSErrors: true,
       reuseExistingServer: !process.env.CI,

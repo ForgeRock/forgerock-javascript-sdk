@@ -22,5 +22,11 @@
   },
   "dependencies": {
     "@forgerock/javascript-sdk": "workspace:*"
+  },
+  "scripts": {
+    "build": "vite build",
+    "test": "vitest",
+    "test:coverage": "vitest --coverage",
+    "lint": "eslint **/*.ts --fix"
   }
 }

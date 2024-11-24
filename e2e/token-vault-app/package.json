@@ -1,5 +1,5 @@
 {
-  "name": "token-vault-app",
+  "name": "@forgerock/token-vault-app",
   "description": "ForgeRock Token Vault Test App",
   "private": true,
   "type": "module",
@@ -8,5 +8,12 @@
     "@forgerock/token-vault": "workspace:*",
     "@forgerock/token-vault-interceptor": "workspace:*"
   },
-  "version": "0.0.0"
+  "version": "0.0.0",
+  "scripts": {
+    "build": "vite build --emptyOutDir false --watch false",
+    "build:dev": "vite build --mode development --emptyOutDir false",
+    "dev": "vite --host localhost --port 5823",
+    "preview": "vite preview --host localhost --port 5823",
+    "lint": "eslint --fix --ignore-path .eslintignore \"**/*.ts\""
+  }
 }

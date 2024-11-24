@@ -8,6 +8,7 @@
  * of the MIT license. See the LICENSE file for details.
  */
 
+import { describe, it, expect } from 'vitest';
 import { CallbackType } from '../../auth/enums';
 import type { Callback } from '../../auth/interfaces';
 import ValidatedCreatePasswordCallback from './validated-create-password-callback';

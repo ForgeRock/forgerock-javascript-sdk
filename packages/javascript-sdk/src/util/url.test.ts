@@ -8,6 +8,7 @@
  * of the MIT license. See the LICENSE file for details.
  */
 
+import { describe, it, expect } from 'vitest';
 import { getBaseUrl, parseQuery, resolve, stringify } from './url';
 
 describe('The URL utility', () => {

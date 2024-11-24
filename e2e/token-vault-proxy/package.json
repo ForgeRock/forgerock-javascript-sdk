@@ -1,5 +1,5 @@
 {
-  "name": "token-vault-proxy",
+  "name": "@forgerock/token-vault-proxy",
   "version": "0.0.0",
   "description": "ForgeRock Token Vault Test Proxy",
   "private": true,
@@ -8,5 +8,12 @@
     "@forgerock/javascript-sdk": "workspace:*",
     "@forgerock/token-vault": "workspace:*"
   },
-  "devDependencies": {}
+  "devDependencies": {},
+  "scripts": {
+    "build": "vite build --mode production",
+    "build:dev": "vite build --mode development",
+    "start": "vite --host localhost --port 5833",
+    "preview": "vite preview --host localhost --port 5833",
+    "lint": "eslint --fix --ignore-path .eslintignore \"src/**/*.ts\""
+  }
 }

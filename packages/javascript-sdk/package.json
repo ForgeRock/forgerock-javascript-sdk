@@ -50,5 +50,14 @@
       }
     }
   },
-  "type": "module"
+  "type": "module",
+  "devDependencies": {
+    "vitest": "^1.4.0"
+  },
+  "scripts": {
+    "build": "vite build",
+    "test": "vitest",
+    "test:coverage": "vitest --coverage",
+    "lint": "eslint **/*.ts --fix"
+  }
 }

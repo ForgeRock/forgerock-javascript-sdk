@@ -1,5 +1,5 @@
 {
-  "name": "autoscript-suites",
+  "name": "@forgerock/autoscript-suites",
   "version": "0.0.0",
   "private": true,
   "description": "ForgeRock JavaScript SDK E2E Suites",
@@ -15,5 +15,17 @@
     "url": "https://github.com/ForgeRock/forgerock-javascript-sdk/issues"
   },
   "homepage": "https://github.com/ForgeRock/forgerock-javascript-sdk#readme",
-  "dependencies": {}
+  "dependencies": {},
+  "scripts": {
+    "e2e": "playwright test",
+    "e2e:ui": "playwright test --ui",
+    "lint": "eslint **/*.ts"
+  },
+  "nx": {
+    "implicitDependencies": [
+      "@forgerock/autoscript-apps",
+      "@forgerock/mock-api",
+      "@forgerock/mock-api-v2"
+    ]
+  }
 }
