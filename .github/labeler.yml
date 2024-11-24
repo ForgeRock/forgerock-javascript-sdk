@@ -13,13 +13,20 @@ NX:
 root:
   - '*'
 
-samples:
-  - samples/**/*
+davinci-client:
+  - packages/davinci-client/*
 
-sdk:
+device-client:
+  - packages/device-client/*
+
+token-vault:
+  - packages/token-vault/*
+
+javascript-sdk:
   - packages/javascript-sdk/*
   - packages/javascript-sdk/**/*
 
+ping-protect: -packages/ping-protect/*
 test:
   - e2e/**/*
   - jest*

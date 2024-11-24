@@ -12,11 +12,6 @@
     "noMarkdown": ["!{projectRoot}/**/*.md"]
   },
   "targetDefaults": {
-    "nx-release-publish": {
-      "options": {
-        "packageRoot": "packages/{projectName}"
-      }
-    },
     "docs": {
       "dependsOn": ["build", "^build", "^docs"],
       "cache": true,
@@ -24,7 +19,7 @@
     },
     "serve": {
       "cache": false,
-      "dependsOn": ["^build"]
+      "dependsOn": ["build"]
     },
     "e2e": {
       "dependsOn": ["^build"],
@@ -33,10 +28,12 @@
       "cache": true
     },
     "lint": {
+      "dependsOn": ["^lint"],
       "inputs": ["noMarkdown", "^noMarkdown"],
       "cache": true
     },
     "test": {
+      "dependsOn": ["^build", "^test"],
       "inputs": ["noMarkdown", "^noMarkdown"],
       "cache": true
     },
@@ -46,73 +43,17 @@
       "cache": true,
       "outputs": ["{projectRoot}/dist"]
     },
-    "@nx/vite:test": {
-      "dependsOn": ["^test"],
-      "inputs": ["noMarkdown", "^noMarkdown"],
-      "outputs": ["{projectRoot}/coverage"],
-      "cache": true
-    },
-    "@nx/eslint:lint": {
-      "dependsOn": ["^build", "^lint"],
-      "inputs": ["noMarkdown", "^noMarkdown"],
-      "cache": true
-    },
-    "@nx/vite:build": {
-      "dependsOn": ["^build"],
-      "cache": true,
-      "inputs": ["noMarkdown", "^noMarkdown"],
-      "outputs": ["{projectRoot}/dist"]
-    },
-    "@nx/playwright:run": {
-      "dependsOn": ["^build"],
-      "inputs": ["noMarkdown", "^noMarkdown"],
-      "outputs": ["{projectRoot}/.playwright"],
-      "cache": true
-    },
-    "@nx/esbuild:esbuild": {
-      "dependsOn": ["^build"],
-      "cache": true,
-      "inputs": ["noMarkdown", "^noMarkdown"],
-      "outputs": ["{projectRoot}/dist"]
-    },
     "e2e-ci--**/*": {
       "dependsOn": ["^build"],
       "inputs": ["noMarkdown", "^noMarkdown"],
       "outputs": ["{projectRoot}/.playwright"],
       "cache": true
-    },
-    "@nx/js:tsc": {
-      "cache": true,
-      "dependsOn": ["^build"],
-      "inputs": ["production", "^production"],
-      "outputs": ["{projectRoot}/dist"]
     }
   },
   "parallel": 1,
   "workspaceLayout": {
     "appsDir": "",
     "libsDir": ""
-  },
-  "release": {
-    "projects": ["packages/*"],
-    "releaseTagPattern": "v{version}",
-    "version": {
-      "preVersionCommand": "npx nx run-many -t build",
-      "generatorOptions": {
-        "currentVersionResolver": "git-tag",
-        "specifierSource": "conventional-commits"
-      }
-    },
-    "changelog": {
-      "git": {
-        "commit": true,
-        "tag": true
-      },
-      "workspaceChangelog": {
-        "createRelease": "github"
-      },
-      "projectChangelogs": true
-    }
   },
   "plugins": [
     {
