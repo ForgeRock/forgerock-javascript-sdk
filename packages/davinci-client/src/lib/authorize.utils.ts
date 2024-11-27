@@ -26,12 +26,15 @@ export interface GetAuthorizationUrlOptions {
  * @returns {Promise<string>} - the authorization URL
  */
 export async function createAuthorizeUrl(
-  baseUrl: string,
+  authorizeUrl: string,
   options: GetAuthorizationUrlOptions,
 ): Promise<string> {
   /**
    * Generate state and verifier for PKCE
    */
+
+  const baseUrl = new URL(authorizeUrl).origin;
+
   const [authorizeUrlOptions, storeOptions] = generateAndStoreAuthUrlValues({
     clientId: options.clientId,
     login: options.login,
@@ -52,7 +55,7 @@ export async function createAuthorizeUrl(
     state: authorizeUrlOptions.state,
   });
 
-  const url = new URL(`${baseUrl}as/authorize?${requestParams.toString()}`);
+  const url = new URL(`${authorizeUrl}?${requestParams.toString()}`);
 
   storeOptions();
 

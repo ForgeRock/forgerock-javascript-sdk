@@ -8,19 +8,28 @@ import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
  * Import the types
  */
 import type { DaVinciConfig } from './config.types.js';
+import { Endpoints, OpenIdResponse } from './wellknown.types.js';
+
+function transformOpenIdResponseToEndpoints(value: OpenIdResponse): Endpoints {
+  return {
+    authorize: value.authorization_endpoint,
+    issuer: value.issuer,
+    introspection: value.introspection_endpoint,
+    tokens: value.token_endpoint,
+    userinfo: value.userinfo_endpoint,
+  };
+}
 
 /**
  * @const initialState - The initial state of the configuration slice
  * NOTE: The clientId, redirectUri, responseType, and scope are set to empty strings
  */
 const initialState = {
+  endpoints: {} as Endpoints,
   clientId: '',
   redirectUri: '',
   responseType: '',
   scope: '',
-  serverConfig: {
-    baseUrl: '',
-  },
 };
 
 /**
@@ -30,6 +39,7 @@ const initialState = {
 export const configSlice = createSlice({
   name: 'config',
   initialState,
+  reducerPath: 'config',
   reducers: {
     /**
      * @method set - Set the configuration for the DaVinci client
@@ -40,21 +50,15 @@ export const configSlice = createSlice({
     set(state, action: PayloadAction<DaVinciConfig>) {
       state.clientId = action.payload.clientId || '';
       state.redirectUri = action.payload.redirectUri || `${location.origin}/handle-redirect`;
-      state.responseType = action.payload.responseType || 'code';
+      if ('responseType' in action.payload) {
+        state.responseType = action.payload.responseType;
+      } else {
+        state.responseType = 'code';
+      }
       state.scope = action.payload.scope || 'openid';
 
-      if (!action.payload.serverConfig?.baseUrl) {
-        state.serverConfig = {
-          baseUrl: '',
-        };
-      } else if (action.payload.serverConfig?.baseUrl.endsWith('/')) {
-        state.serverConfig = {
-          baseUrl: action.payload.serverConfig?.baseUrl,
-        };
-      } else {
-        state.serverConfig = {
-          baseUrl: action.payload.serverConfig?.baseUrl.concat('/'),
-        };
+      if ('openIdConfiguration' in action.payload) {
+        state.endpoints = transformOpenIdResponseToEndpoints(action.payload.openIdConfiguration);
       }
     },
   },

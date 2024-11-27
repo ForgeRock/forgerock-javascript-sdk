@@ -20,11 +20,11 @@ import type { DaVinciField } from './davinci.types';
  * @param {ActionCollectorTypes} [collectorType] - Optional type of the ActionCollector.
  * @returns {ActionCollector} The constructed ActionCollector object.
  */
-export function returnActionCollector(
+export function returnActionCollector<CollectorType extends ActionCollectorTypes>(
   field: DaVinciField,
   idx: number,
-  collectorType?: ActionCollectorTypes,
-): ActionCollector {
+  collectorType: CollectorType,
+): ActionCollector<CollectorType> {
   return {
     category: 'ActionCollector',
     type: collectorType || 'ActionCollector',
@@ -66,7 +66,10 @@ export function returnSocialLoginCollector(field: DaVinciField, idx: number): So
  * @param {number} idx - The index of the field in the form
  * @returns {ActionCollector} - The submit collector object
  */
-export function returnSubmitCollector(field: DaVinciField, idx: number): ActionCollector {
+export function returnSubmitCollector(
+  field: DaVinciField,
+  idx: number,
+): ActionCollector<'SubmitCollector'> {
   return returnActionCollector(field, idx, 'SubmitCollector');
 }
 
@@ -77,14 +80,16 @@ export function returnSubmitCollector(field: DaVinciField, idx: number): ActionC
  * @param {SingleValueCollectorTypes} [collectorType] - Optional type of the SingleValueCollector.
  * @returns {SingleValueCollector} The constructed SingleValueCollector object.
  */
-export function returnSingleValueCollector(
+export function returnSingleValueCollector<
+  CollectorType extends SingleValueCollectorTypes = 'SingleValueCollector',
+>(
   field: DaVinciField,
   idx: number,
-  collectorType?: SingleValueCollectorTypes,
-): SingleValueCollector {
+  collectorType: CollectorType,
+): SingleValueCollector<CollectorType> {
   return {
     category: 'SingleValueCollector',
-    type: collectorType || 'SingleValueCollector',
+    type: collectorType,
     id: `${field.key}-${idx}`,
     name: field.key,
     input: {

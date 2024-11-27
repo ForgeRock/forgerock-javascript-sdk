@@ -4,6 +4,7 @@ import { configSlice } from './config.slice.js';
 import { nodeSlice } from './node.slice.js';
 import { davinciApi } from './davinci.api.js';
 import { ErrorNode, NextNode, StartNode, SuccessNode } from '../types.js';
+import { wellknownApi } from './wellknown.api.js';
 
 export function createClientStore() {
   return configureStore({
@@ -11,10 +12,10 @@ export function createClientStore() {
       config: configSlice.reducer,
       node: nodeSlice.reducer,
       [davinciApi.reducerPath]: davinciApi.reducer,
+      [wellknownApi.reducerPath]: wellknownApi.reducer,
     },
-    middleware: (getDefaultMiddleware) => {
-      return getDefaultMiddleware().concat(davinciApi.middleware);
-    },
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware().concat(davinciApi.middleware).concat(wellknownApi.middleware),
   });
 }
 

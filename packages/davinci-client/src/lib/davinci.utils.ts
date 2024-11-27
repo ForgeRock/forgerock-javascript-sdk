@@ -5,7 +5,6 @@ import type { Dispatch } from '@reduxjs/toolkit';
 
 import { nodeSlice } from './node.slice';
 
-import type { SingleValueCollector } from './collector.types';
 import type {
   DaVinciCacheEntry,
   DavinciErrorResponse,
@@ -25,7 +24,7 @@ export function transformSubmitRequest(node: NextNode): DaVinciRequest {
   // Filter out ActionCollectors as they are not used in form submissions
   const collectors = node.client?.collectors?.filter(
     (collector) => collector.category === 'SingleValueCollector',
-  ) as SingleValueCollector[];
+  );
 
   const formData = collectors?.reduce<{
     [key: string]: string | number | boolean;

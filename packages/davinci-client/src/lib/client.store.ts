@@ -11,7 +11,8 @@ import { configSlice } from './config.slice.js';
  */
 import type { DaVinciConfig } from './config.types.js';
 import type { DaVinciAction, DaVinciRequest } from './davinci.types.js';
-import type { SingleValueCollector } from './collector.types.js';
+import type { SingleValueCollectors } from './collector.types.js';
+import { wellknownApi } from './wellknown.api.js';
 
 /**
  * Create a client function that returns a set of methods
@@ -24,7 +25,19 @@ import type { SingleValueCollector } from './collector.types.js';
 export async function davinci({ config }: { config: DaVinciConfig }) {
   const store = createClientStore();
 
-  store.dispatch(configSlice.actions.set(config));
+  if (!config.serverConfig.wellknown) {
+    throw Error('wellknown endpoint required as part of the `config.serverOptions` ');
+  }
+
+  const { data: openIdResponse } = await store.dispatch(
+    wellknownApi.endpoints.wellknown.initiate(config.serverConfig.wellknown),
+  );
+
+  if (!openIdResponse) {
+    throw Error('error fetching wellknown response');
+  }
+
+  store.dispatch(configSlice.actions.set({ ...config, endpoints: openIdResponse }));
 
   return {
     // Pass store methods to the client
@@ -68,7 +81,7 @@ export async function davinci({ config }: { config: DaVinciConfig }) {
      * @param {SingleValueCollector} collector - the collector to update
      * @returns {function} - an async function to call for updating collector value
      */
-    update: (collector: SingleValueCollector) => {
+    update: (collector: SingleValueCollectors) => {
       const { id } = collector;
       return function (value: string, index?: number) {
         store.dispatch(nodeSlice.actions.update({ id, value, index }));

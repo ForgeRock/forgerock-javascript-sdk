@@ -9,7 +9,15 @@ export interface DaVinciError {
   status: 'error' | 'failure' | 'unknown';
 }
 
-export type Collectors = (SingleValueCollector | ActionCollector)[];
+export type Collectors =
+  | SingleValueCollector<'SingleValueCollector'>
+  | SingleValueCollector<'TextCollector'>
+  | SingleValueCollector<'PasswordCollector'>
+  | SingleValueCollector<'ListCollector'>
+  | ActionCollector<'ActionCollector'>
+  | ActionCollector<'SubmitCollector'>
+  | ActionCollector<'SocialLoginCollector'>
+  | ActionCollector<'FlowCollector'>;
 
 export interface ErrorNode {
   cache: {
@@ -59,7 +67,7 @@ export interface NextNode {
   };
   client: {
     action: string;
-    collectors: Collectors;
+    collectors: Collectors[];
     description?: string;
     name?: string;
     status: 'next';

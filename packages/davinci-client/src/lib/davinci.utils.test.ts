@@ -11,6 +11,7 @@ describe('transformNextRequest', () => {
         key: '123',
       },
       client: {
+        status: 'next',
         action: 'SIGNON',
         collectors: [
           {
@@ -32,7 +33,9 @@ describe('transformNextRequest', () => {
         ],
       },
       error: null,
+      httpStatus: 200,
       server: {
+        status: 'next',
         id: '123',
         eventName: 'login',
         interactionId: '456',
@@ -66,14 +69,17 @@ describe('transformNextRequest', () => {
         key: '123',
       },
       client: {
+        status: 'next' as const,
         action: 'SIGNON',
         collectors: [],
       },
+      httpStatus: 200,
       error: null,
       server: {
         id: '123',
         eventName: 'login',
         interactionId: '456',
+        status: 'next' as const,
       },
       status: 'next' as const,
     };
@@ -103,14 +109,17 @@ describe('transformActionRequest', () => {
         key: '123',
       },
       client: {
+        status: 'next' as const,
         action: 'SIGNON',
         collectors: [],
       },
       error: null,
+      httpStatus: 200,
       server: {
         id: '123',
         eventName: 'click',
         interactionId: '456',
+        status: 'next' as const,
       },
       status: 'next' as const,
     };
