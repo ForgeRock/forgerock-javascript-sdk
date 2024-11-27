@@ -14,7 +14,6 @@
   "updateInternalDependencies": "patch",
   "ignore": [
     "@forgerock/device-client",
-    "@forgerock/davinci-client",
     "autoscript-apps",
     "autoscript-suites",
     "davinci-app",
