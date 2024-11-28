@@ -47,15 +47,15 @@ const config = {
 
     formEl.innerHTML = `
       <h2>Complete</h2>
-      <pre>Session: ${session}</pre>
-      <pre>Authorization: ${code}</pre>
-      <pre>Access Token:</pre>
-      <pre
-        id="accessToken"
-        style="display: block; max-width: 400px; text-wrap: wrap; overflow-wrap: anywhere;"
-      >
-        --
-      </pre>
+      <span>Session:</span>
+      <pre id="sessionToken">${session}</pre>
+
+      <span>Authorization:</span>
+      <pre id="authCode">${code}</pre>
+
+      <span>Access Token:</span>
+      <span id="accessTokenContainer"></span>
+
       <button type="button" id="tokensButton">Get Tokens</button><br />
       <button type="button" id="logoutButton">Logout</button>
     `;
@@ -66,8 +66,13 @@ const config = {
 
       console.log(tokens);
 
-      const tokenPreEl = document.getElementById('accessToken') as HTMLPreElement;
-      tokenPreEl.innerText = tokens?.accessToken || '';
+      const tokenPreEl = document.getElementById('accessTokenContainer') as HTMLPreElement;
+      tokenPreEl.innerHTML = `
+        <pre
+          id="accessTokenValue"
+          style="display: block; max-width: 400px; text-wrap: wrap; overflow-wrap: anywhere;"
+        >${tokens?.accessToken}</pre>
+      `;
     });
 
     const loginBtn = document.getElementById('logoutButton') as HTMLButtonElement;

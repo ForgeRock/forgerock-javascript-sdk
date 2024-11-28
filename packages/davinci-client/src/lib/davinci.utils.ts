@@ -9,7 +9,7 @@ import type {
   DaVinciCacheEntry,
   DavinciErrorResponse,
   DaVinciFailureResponse,
-  DavinciNextResponse,
+  DaVinciNextResponse,
   DaVinciRequest,
   DaVinciSuccessResponse,
 } from './davinci.types';
@@ -160,7 +160,7 @@ export function handleResponse(cacheEntry: DaVinciCacheEntry, dispatch: Dispatch
     const requestId = cacheEntry.requestId;
 
     if ('eventName' in cacheEntry.data && cacheEntry.data.eventName === 'continue') {
-      const data = cacheEntry.data as DavinciNextResponse;
+      const data = cacheEntry.data as DaVinciNextResponse;
       dispatch(nodeSlice.actions.next({ data, requestId, httpStatus: status }));
     } else if ('session' in cacheEntry.data || 'authorizeResponse' in cacheEntry.data) {
       const data = cacheEntry.data as DaVinciSuccessResponse;

@@ -7,8 +7,9 @@ export type SingleValueCollectorTypes =
   | 'ListCollector'
   | 'SingleValueCollector';
 
-interface SingleValueCollectorWithValue<T extends SingleValueCollectorTypes> {
+export interface SingleValueCollectorWithValue<T extends SingleValueCollectorTypes> {
   category: 'SingleValueCollector';
+  error: string | null;
   type: T;
   id: string;
   name: string;
@@ -21,8 +22,9 @@ interface SingleValueCollectorWithValue<T extends SingleValueCollectorTypes> {
   };
 }
 
-interface SingleValueCollectorWithNoValue<T extends SingleValueCollectorTypes> {
+export interface SingleValueCollectorWithNoValue<T extends SingleValueCollectorTypes> {
   category: 'SingleValueCollector';
+  error: string | null;
   type: T;
   id: string;
   name: string;
@@ -61,8 +63,9 @@ export type ActionCollectorTypes =
   | 'SocialLoginCollector'
   | 'ActionCollector';
 
-interface ActionCollectorNoUrl<T extends ActionCollectorTypes> {
+export interface ActionCollectorNoUrl<T extends ActionCollectorTypes> {
   category: 'ActionCollector';
+  error: string | null;
   type: T;
   id: string;
   name: string;
@@ -70,12 +73,12 @@ interface ActionCollectorNoUrl<T extends ActionCollectorTypes> {
     key: string;
     label: string;
     type: string;
-    url?: string;
   };
 }
 
-interface ActionCollectorWithUrl<T extends ActionCollectorTypes> {
+export interface ActionCollectorWithUrl<T extends ActionCollectorTypes> {
   category: 'ActionCollector';
+  error: string | null;
   type: T;
   id: string;
   name: string;
@@ -83,7 +86,7 @@ interface ActionCollectorWithUrl<T extends ActionCollectorTypes> {
     key: string;
     label: string;
     type: string;
-    url: string;
+    url: string | null;
   };
 }
 
@@ -102,6 +105,7 @@ export type ActionCollectors =
   | ActionCollectorNoUrl<'SubmitCollector'>;
 
 export type FlowCollector = ActionCollector<'FlowCollector'>;
-export type SocialLoginCollector = ActionCollector<'SocialLoginCollector'>;
 export type PasswordCollector = SingleValueCollector<'PasswordCollector'>;
 export type TextCollector = SingleValueCollector<'TextCollector'>;
+export type SocialLoginCollector = ActionCollectorWithUrl<'SocialLoginCollector'>;
+export type SubmitCollector = ActionCollector<'SubmitCollector'>;

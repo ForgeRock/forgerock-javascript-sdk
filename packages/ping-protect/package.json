@@ -19,7 +19,7 @@
     }
   },
   "types": "./dist/index.ts.d.ts",
-  "peerDependencies": {
+  "dependencies": {
     "@forgerock/javascript-sdk": "workspace:*"
   }
 }

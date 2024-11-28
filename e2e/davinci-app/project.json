@@ -20,7 +20,7 @@
       "defaultConfiguration": "development",
       "options": {
         "host": "localhost",
-        "port": 5823
+        "port": 5829
       },
       "configurations": {
         "development": {},

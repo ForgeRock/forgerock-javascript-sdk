@@ -1,6 +1,9 @@
-import { ActionCollector } from '@forgerock/davinci-client/types';
+import { SocialLoginCollector } from '@forgerock/davinci-client/types';
 
-export default function submitButtonComponent(formEl: HTMLFormElement, collector: ActionCollector) {
+export default function submitButtonComponent(
+  formEl: HTMLFormElement,
+  collector: SocialLoginCollector,
+) {
   const link = document.createElement('a');
 
   link.innerText = collector.output.label;

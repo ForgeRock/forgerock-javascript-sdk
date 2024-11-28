@@ -25,8 +25,20 @@ export function returnActionCollector<CollectorType extends ActionCollectorTypes
   idx: number,
   collectorType: CollectorType,
 ): ActionCollector<CollectorType> {
+  let error = '';
+  if (!('key' in field)) {
+    error = `${error}Key is not found in the field object. `;
+  }
+  if (!('label' in field)) {
+    error = `${error}Label is not found in the field object. `;
+  }
+  if (!('type' in field)) {
+    error = `${error}Type is not found in the field object. `;
+  }
+
   return {
     category: 'ActionCollector',
+    error: error || null,
     type: collectorType || 'ActionCollector',
     id: `${field.key}-${idx}`,
     name: field.key,
@@ -34,7 +46,7 @@ export function returnActionCollector<CollectorType extends ActionCollectorTypes
       key: field.key,
       label: field.label,
       type: field.type,
-      url: field.links?.['authenticate']?.href,
+      url: field.links?.['authenticate']?.href || null,
     },
   };
 }
@@ -87,9 +99,21 @@ export function returnSingleValueCollector<
   idx: number,
   collectorType: CollectorType,
 ): SingleValueCollector<CollectorType> {
+  let error = '';
+  if (!('key' in field)) {
+    error = `${error}Key is not found in the field object. `;
+  }
+  if (!('label' in field)) {
+    error = `${error}Label is not found in the field object. `;
+  }
+  if (!('type' in field)) {
+    error = `${error}Type is not found in the field object. `;
+  }
+
   return {
     category: 'SingleValueCollector',
-    type: collectorType,
+    error: error || null,
+    type: collectorType || 'SingleValueCollector',
     id: `${field.key}-${idx}`,
     name: field.key,
     input: {

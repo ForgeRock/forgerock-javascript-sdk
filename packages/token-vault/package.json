@@ -20,7 +20,7 @@
       "default": "./dist/index.js"
     }
   },
-  "peerDependencies": {
+  "dependencies": {
     "@forgerock/javascript-sdk": "workspace:*"
   }
 }

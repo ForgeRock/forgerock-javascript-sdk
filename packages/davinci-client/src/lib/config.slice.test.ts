@@ -1,59 +1,65 @@
 import { describe, it, expect } from 'vitest';
 import { configSlice } from './config.slice.js';
-import { Endpoints } from './wellknown.types.js';
 
-// Assuming the initialState is as follows:
-const initialState = {
-  endpoints: {
-    authorize: '',
-    issuer: '',
-    tokens: '',
-    userinfo: '',
-    introspection: '',
-  } as Endpoints,
-  clientId: '',
-  redirectUri: '',
-  responseType: '',
-  scope: '',
-  baseUrl: '',
-};
-
-describe('configSlice', () => {
-  const { set } = configSlice.actions;
-
-  it('should set the configuration correctly with a complete action', () => {
-    const action = set({
-      clientId: 'test-client-id',
-      redirectUri: 'http://example.com/redirect',
-      scope: 'profile',
-      responseType: 'token',
-      serverConfig: {
-        wellknown: 'wellknown',
-      },
+describe('The config slice reducers', () => {
+  it('should return state with minimal config', () => {
+    expect(
+      configSlice.reducer(undefined, {
+        type: 'config/set',
+        payload: {
+          clientId: '123',
+          serverConfig: {
+            wellknown: 'https://base.example.com/as/.wellknown/openidconfiguration',
+          },
+          wellknownResponse: {
+            authorization_endpoint: 'https://base.example.com/as/authorize',
+          },
+        },
+      }),
+    ).toEqual({
+      redirectUri: 'http://localhost:3000/handle-redirect',
+      responseType: 'code',
+      scope: 'openid',
+      clientId: '123',
       endpoints: {
-        authorize: '',
-        issuer: '',
-        tokens: '',
-        userinfo: '',
-        introspection: '',
+        authorize: 'https://base.example.com/as/authorize',
+        introspection: undefined,
+        issuer: undefined,
+        tokens: undefined,
+        userinfo: undefined,
       },
     });
+  });
 
-    const expectedState = {
-      endpoints: {
-        authorize: '',
-        issuer: '',
-        tokens: '',
-        userinfo: '',
-        introspection: '',
+  it('should handle setting the configuration', () => {
+    const action = {
+      type: 'config/set',
+      payload: {
+        clientId: '1234',
+        redirectUri: 'https://example.com',
+        responseType: 'code',
+        scope: 'openid profile email',
+        serverConfig: {
+          wellknown: 'https://base.example.com/as/.wellknown/openidconfiguration',
+        },
+        wellknownResponse: {
+          authorization_endpoint: 'https://base.example.com/as/authorize',
+        },
       },
-      clientId: 'test-client-id',
-      redirectUri: 'http://example.com/redirect',
-      responseType: 'token',
-      scope: 'profile',
-      baseUrl: '',
     };
 
-    expect(configSlice.reducer(initialState, action)).toEqual(expectedState);
+    expect(configSlice.reducer(undefined, action)).toEqual({
+      clientId: '1234',
+      redirectUri: 'https://example.com',
+      responseType: 'code',
+      scope: 'openid profile email',
+      endpoints: {
+        authorize: 'https://base.example.com/as/authorize',
+        introspection: undefined,
+        issuer: undefined,
+        tokens: undefined,
+        userinfo: undefined,
+      },
+    });
   });
 });

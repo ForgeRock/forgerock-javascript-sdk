@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query';
-import { OpenIdResponse } from './wellknown.types';
+import { WellknownResponse } from './wellknown.types';
 
 export const wellknownApi = createApi({
   reducerPath: 'wellknown',
@@ -10,7 +10,7 @@ export const wellknownApi = createApi({
     },
   }),
   endpoints: (builder) => ({
-    wellknown: builder.query<OpenIdResponse, string>({
+    wellknown: builder.query<WellknownResponse, string>({
       query: (endpoint: string) => ({ url: endpoint }),
     }),
   }),
