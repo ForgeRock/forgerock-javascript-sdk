@@ -50,7 +50,7 @@ export async function createAuthorizeUrl(
     client_id: options.clientId,
     redirect_uri: options.redirectUri,
     response_mode: 'pi.flow',
-    response_type: 'code',
+    response_type: options.responseType,
     scope: options.scope,
     state: authorizeUrlOptions.state,
   });

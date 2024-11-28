@@ -31,7 +31,6 @@ export interface ErrorNode {
   server: {
     _links?: Links;
     eventName?: string;
-    href?: string;
     id?: string;
     interactionId?: string;
     interactionToken?: string;
