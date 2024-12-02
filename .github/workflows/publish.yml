@@ -32,16 +32,8 @@ jobs:
           node-version: '20.10.0'
           cache: 'pnpm'
 
-      - name: Import GPG key
-        id: import-gpg
-        uses: crazy-max/ghaction-import-gpg@v6
-        with:
-          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
-          git_user_signingkey: true
-          git_commit_gpgsign: true
-
-      - run: git config --global commit.gpgsign true
-      - run: git config --global user.email "${{ steps.import-gpg.outputs.email }}"
+      - run: git config --global commit.gpgsign false
+      - run: git config --global user.email "ryan.basmajian@forgerock.com"
       - run: git config --global user.name "github-actions[bot]"
 
       - run: pnpm install --frozen-lockfile
