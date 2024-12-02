@@ -80,7 +80,7 @@ jobs:
           version: pnpm ci:version
           title: Release PR
           branch: master
-          commit: 'chore: Version Packages'
+          commit: 'chore: version-packages'
           setupGitUser: false
         env:
           # See https://github.com/changesets/action/issues/147
