@@ -12,7 +12,7 @@ env:
   NPM_ACCESS_TOKEN: ${{ secrets.NPM_ACCESS_TOKEN }}
 
 jobs:
-  pr:
+  publish-or-pr:
     permissions:
       contents: write #  to create release (changesets/action)
       issues: write # to post issue comments (changesets/action)
@@ -80,6 +80,7 @@ jobs:
           version: pnpm ci:version
           title: Release PR
           branch: master
+          commit: 'chore: Version Packages'
           setupGitUser: false
         env:
           # See https://github.com/changesets/action/issues/147
