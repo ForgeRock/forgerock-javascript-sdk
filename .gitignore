@@ -69,3 +69,7 @@ docs/packages/javascript-sdk
 **/vite.config.ts.timestamp-*
 
 vite.config.*.timestamp*
+
+# File made by changesets
+.netrc
+
