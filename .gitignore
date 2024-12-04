@@ -74,8 +74,8 @@ vite.config.*.timestamp*
 .netrc
 # ignore this in CI please.
 # Nx stuff we get in CI that we dont want to commit
-./code
-./terminalOutput
-./outputs/*
+code
+terminalOutput
+outputs/*
 
 
