@@ -16,7 +16,7 @@
     "lint": "nx affected --target=lint",
     "nx": "nx",
     "preinstall": "npx only-allow pnpm",
-    "prepare": "husky install",
+    "prepare": "node .husky/install.mjs",
     "publish:local": "node ./tools/release/local.mjs",
     "publish:dev": "node ./tools/release/dev.mjs",
     "start:token-vault": "nx run-many --target=serve --projects=token-vault-app,token-vault-proxy,mock-api",
