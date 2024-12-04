@@ -74,18 +74,25 @@ export interface ActionCollectorNoUrl<T extends ActionCollectorTypes> {
   };
 }
 
+type ActionCollectorOutputTypes =
+  | {
+      key: string;
+      label: string;
+      type: string;
+      url: string;
+    }
+  | {
+      key: string;
+      label: string;
+      type: string;
+    };
 export interface ActionCollectorWithUrl<T extends ActionCollectorTypes> {
   category: 'ActionCollector';
   error: string | null;
   type: T;
   id: string;
   name: string;
-  output: {
-    key: string;
-    label: string;
-    type: string;
-    url?: string | null;
-  };
+  output: ActionCollectorOutputTypes;
 }
 
 export type ActionCollector<T extends ActionCollectorTypes> =
