@@ -61,19 +61,6 @@ export type ActionCollectorTypes =
   | 'SocialLoginCollector'
   | 'ActionCollector';
 
-export interface ActionCollectorNoUrl<T extends ActionCollectorTypes> {
-  category: 'ActionCollector';
-  error: string | null;
-  type: T;
-  id: string;
-  name: string;
-  output: {
-    key: string;
-    label: string;
-    type: string;
-  };
-}
-
 type ActionCollectorOutputTypes =
   | {
       key: string;
@@ -86,7 +73,8 @@ type ActionCollectorOutputTypes =
       label: string;
       type: string;
     };
-export interface ActionCollectorWithUrl<T extends ActionCollectorTypes> {
+
+export interface ActionCollector<T extends ActionCollectorTypes> {
   category: 'ActionCollector';
   error: string | null;
   type: T;
@@ -95,18 +83,14 @@ export interface ActionCollectorWithUrl<T extends ActionCollectorTypes> {
   output: ActionCollectorOutputTypes;
 }
 
-export type ActionCollector<T extends ActionCollectorTypes> =
-  | ActionCollectorNoUrl<T>
-  | ActionCollectorWithUrl<T>;
-
 export type ActionCollectors =
-  | ActionCollectorWithUrl<'SocialLoginCollector'>
-  | ActionCollectorNoUrl<'ActionCollector'>
-  | ActionCollectorNoUrl<'FlowCollector'>
-  | ActionCollectorNoUrl<'SubmitCollector'>;
+  | ActionCollector<'SocialLoginCollector'>
+  | ActionCollector<'ActionCollector'>
+  | ActionCollector<'FlowCollector'>
+  | ActionCollector<'SubmitCollector'>;
 
-export type FlowCollector = ActionCollectorNoUrl<'FlowCollector'>;
+export type FlowCollector = ActionCollector<'FlowCollector'>;
 export type PasswordCollector = SingleValueCollectorNoValue<'PasswordCollector'>;
 export type TextCollector = SingleValueCollectorWithValue<'TextCollector'>;
-export type SocialLoginCollector = ActionCollectorWithUrl<'SocialLoginCollector'>;
-export type SubmitCollector = ActionCollectorNoUrl<'SubmitCollector'>;
+export type SocialLoginCollector = ActionCollector<'SocialLoginCollector'>;
+export type SubmitCollector = ActionCollector<'SubmitCollector'>;
