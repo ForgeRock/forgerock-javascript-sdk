@@ -4,7 +4,6 @@
 export type SingleValueCollectorTypes =
   | 'TextCollector'
   | 'PasswordCollector'
-  | 'ListCollector'
   | 'SingleValueCollector';
 
 export interface SingleValueCollectorWithValue<T extends SingleValueCollectorTypes> {
@@ -13,7 +12,11 @@ export interface SingleValueCollectorWithValue<T extends SingleValueCollectorTyp
   type: T;
   id: string;
   name: string;
-  input: { key: string; value: string | number | boolean; type: string };
+  input: {
+    key: string;
+    value: string | number | boolean;
+    type: string;
+  };
   output: {
     key: string;
     label: string;
@@ -22,7 +25,7 @@ export interface SingleValueCollectorWithValue<T extends SingleValueCollectorTyp
   };
 }
 
-export interface SingleValueCollectorWithNoValue<T extends SingleValueCollectorTypes> {
+export interface SingleValueCollectorNoValue<T extends SingleValueCollectorTypes> {
   category: 'SingleValueCollector';
   error: string | null;
   type: T;
@@ -42,17 +45,12 @@ export interface SingleValueCollectorWithNoValue<T extends SingleValueCollectorT
 
 export type SingleValueCollectors =
   | SingleValueCollectorWithValue<'SingleValueCollector'>
-  | SingleValueCollectorWithValue<'ListCollector'>
-  | SingleValueCollectorWithValue<'PasswordCollector'>
   | SingleValueCollectorWithValue<'TextCollector'>
-  | SingleValueCollectorWithNoValue<'SingleValueCollector'>
-  | SingleValueCollectorWithNoValue<'ListCollector'>
-  | SingleValueCollectorWithNoValue<'PasswordCollector'>
-  | SingleValueCollectorWithNoValue<'TextCollector'>;
+  | SingleValueCollectorNoValue<'PasswordCollector'>;
 
 export type SingleValueCollector<T extends SingleValueCollectorTypes> =
   | SingleValueCollectorWithValue<T>
-  | SingleValueCollectorWithNoValue<T>;
+  | SingleValueCollectorNoValue<T>;
 
 /**
  * @interface ActionCollector - Represents a user option to perform an action, like submitting a form or choosing another flow.
@@ -86,7 +84,7 @@ export interface ActionCollectorWithUrl<T extends ActionCollectorTypes> {
     key: string;
     label: string;
     type: string;
-    url: string | null;
+    url?: string | null;
   };
 }
 
@@ -95,17 +93,13 @@ export type ActionCollector<T extends ActionCollectorTypes> =
   | ActionCollectorWithUrl<T>;
 
 export type ActionCollectors =
-  | ActionCollectorWithUrl<'ActionCollector'>
-  | ActionCollectorWithUrl<'FlowCollector'>
   | ActionCollectorWithUrl<'SocialLoginCollector'>
-  | ActionCollectorWithUrl<'SubmitCollector'>
   | ActionCollectorNoUrl<'ActionCollector'>
   | ActionCollectorNoUrl<'FlowCollector'>
-  | ActionCollectorNoUrl<'SocialLoginCollector'>
   | ActionCollectorNoUrl<'SubmitCollector'>;
 
-export type FlowCollector = ActionCollector<'FlowCollector'>;
-export type PasswordCollector = SingleValueCollector<'PasswordCollector'>;
-export type TextCollector = SingleValueCollector<'TextCollector'>;
+export type FlowCollector = ActionCollectorNoUrl<'FlowCollector'>;
+export type PasswordCollector = SingleValueCollectorNoValue<'PasswordCollector'>;
+export type TextCollector = SingleValueCollectorWithValue<'TextCollector'>;
 export type SocialLoginCollector = ActionCollectorWithUrl<'SocialLoginCollector'>;
-export type SubmitCollector = ActionCollector<'SubmitCollector'>;
+export type SubmitCollector = ActionCollectorNoUrl<'SubmitCollector'>;

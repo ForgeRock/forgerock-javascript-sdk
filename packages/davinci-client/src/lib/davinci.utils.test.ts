@@ -2,7 +2,7 @@ import { describe, it, expect, vi } from 'vitest';
 
 import { handleResponse, transformSubmitRequest, transformActionRequest } from './davinci.utils.js';
 
-import type { NextNode } from './node.types.d.ts';
+import type { ContinueNode } from './node.types.d.ts';
 import { next0 } from './mock-data/davinci.next.mock.js';
 import { DaVinciCacheEntry } from './davinci.types.js';
 import { error0a, error3 } from './mock-data/davinci.error.mock.js';
@@ -10,7 +10,7 @@ import { success0 } from './mock-data/davinci.success.mock.js';
 
 describe('transformSubmitRequest', () => {
   it('should transform node state to DaVinciRequest for next request', () => {
-    const node: NextNode = {
+    const node: ContinueNode = {
       cache: {
         key: '123',
       },
@@ -21,7 +21,7 @@ describe('transformSubmitRequest', () => {
             category: 'SingleValueCollector',
             error: null,
             input: { key: 'username', value: 'john', type: 'TEXT' },
-            output: { key: 'username', label: 'Username', type: 'TEXT' },
+            output: { key: 'username', label: 'Username', type: 'TEXT', value: '' },
             type: 'TextCollector',
             id: 'abc',
             name: 'username',
@@ -36,7 +36,7 @@ describe('transformSubmitRequest', () => {
             name: 'password',
           },
         ],
-        status: 'next' as const,
+        status: 'continue' as const,
       },
       error: null,
       httpStatus: 200,
@@ -44,9 +44,9 @@ describe('transformSubmitRequest', () => {
         id: '123',
         eventName: 'login',
         interactionId: '456',
-        status: 'next' as const,
+        status: 'continue' as const,
       },
-      status: 'next',
+      status: 'continue',
     };
 
     const expectedRequest = {
@@ -70,14 +70,14 @@ describe('transformSubmitRequest', () => {
   });
 
   it('should return empty formData when there are no action collectors', () => {
-    const node: NextNode = {
+    const node: ContinueNode = {
       cache: {
         key: '123',
       },
       client: {
         action: 'SIGNON',
         collectors: [],
-        status: 'next' as const,
+        status: 'continue' as const,
       },
       error: null,
       httpStatus: 200,
@@ -85,9 +85,9 @@ describe('transformSubmitRequest', () => {
         id: '123',
         eventName: 'login',
         interactionId: '456',
-        status: 'next' as const,
+        status: 'continue' as const,
       },
-      status: 'next' as const,
+      status: 'continue' as const,
     };
 
     const expectedRequest = {
@@ -110,14 +110,14 @@ describe('transformSubmitRequest', () => {
 
 describe('transformActionRequest', () => {
   it('should transform node state to DaVinciRequest for action request', () => {
-    const node: NextNode = {
+    const node: ContinueNode = {
       cache: {
         key: '123',
       },
       client: {
         action: 'SIGNON',
         collectors: [],
-        status: 'next' as const,
+        status: 'continue' as const,
       },
       error: null,
       httpStatus: 200,
@@ -125,9 +125,9 @@ describe('transformActionRequest', () => {
         id: '123',
         eventName: 'click',
         interactionId: '456',
-        status: 'next' as const,
+        status: 'continue' as const,
       },
-      status: 'next' as const,
+      status: 'continue' as const,
     };
     const action = 'TEST_ACTION';
 

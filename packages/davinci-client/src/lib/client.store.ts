@@ -5,6 +5,7 @@ import { createClientStore } from './client.store.utils.js';
 import { nodeSlice } from './node.slice.js';
 import { davinciApi } from './davinci.api.js';
 import { configSlice } from './config.slice.js';
+import { wellknownApi } from './wellknown.api.js';
 
 /**
  * Import the DaVinciRequest types
@@ -12,7 +13,7 @@ import { configSlice } from './config.slice.js';
 import type { DaVinciConfig } from './config.types.js';
 import type { DaVinciAction, DaVinciRequest } from './davinci.types.js';
 import type { SingleValueCollectors } from './collector.types.js';
-import { wellknownApi } from './wellknown.api.js';
+import type { InitFlow, Updater } from './client.types.js';
 
 /**
  * Create a client function that returns a set of methods
@@ -26,7 +27,11 @@ export async function davinci({ config }: { config: DaVinciConfig }) {
   const store = createClientStore();
 
   if (!config.serverConfig.wellknown) {
-    throw Error('wellknown endpoint required as part of the `config.serverOptions` ');
+    throw new Error('`wellknown` property is a required as part of the `config.serverOptions`');
+  }
+
+  if (!config.clientId) {
+    throw new Error('`clientId` property is a required as part of the `config`');
   }
 
   const { data: openIdResponse } = await store.dispatch(
@@ -34,7 +39,7 @@ export async function davinci({ config }: { config: DaVinciConfig }) {
   );
 
   if (!openIdResponse) {
-    throw Error('error fetching wellknown response');
+    throw new Error('error fetching `wellknown` response for OpenId Configuration');
   }
 
   store.dispatch(configSlice.actions.set({ ...config, wellknownResponse: openIdResponse }));
@@ -48,11 +53,11 @@ export async function davinci({ config }: { config: DaVinciConfig }) {
      * @param {DaVinciAction} action - the action to initiate the flow
      * @returns {function} - an async function to call the flow
      */
-    flow: (action: DaVinciAction) => {
+    flow: (action: DaVinciAction): InitFlow => {
       if (!action.action) {
         console.error('Missing `argument.action`');
         return async function () {
-          return { message: 'Missing argument.action' };
+          return { error: { message: 'Missing argument.action', type: 'argument_error' } };
         };
       }
 
@@ -96,12 +101,13 @@ export async function davinci({ config }: { config: DaVinciConfig }) {
      * @param {SingleValueCollector} collector - the collector to update
      * @returns {function} - an function to call for updating collector value
      */
-    // TODO: expose return value for application layer
-    update: (collector: SingleValueCollectors) => {
+    update: (collector: SingleValueCollectors): Updater => {
       if (!collector.id) {
         console.error('Argument for `collector` has no ID');
         return function () {
-          return { message: 'Argument for `collector` has no ID' };
+          return {
+            error: { message: 'Argument for `collector` has no ID', type: 'argument_error' },
+          };
         };
       }
 
@@ -111,14 +117,21 @@ export async function davinci({ config }: { config: DaVinciConfig }) {
       if (!collectorToUpdate) {
         return function () {
           console.error('Collector not found');
-          return { message: 'Collector not found' };
+          return {
+            error: { message: 'Collector not found', type: 'state_error' },
+          };
         };
       }
 
       if (collectorToUpdate.category !== 'SingleValueCollector') {
         console.error('Collector is not a SingleValueCollector and cannot be updated');
         return function () {
-          return { message: 'Collector is not a SingleValueCollector and cannot be updated' };
+          return {
+            error: {
+              message: 'Collector is not a SingleValueCollector and cannot be updated',
+              type: 'state_error',
+            },
+          };
         };
       }
 
@@ -128,7 +141,7 @@ export async function davinci({ config }: { config: DaVinciConfig }) {
           return null;
         } catch (err) {
           const error = err as Error;
-          return { message: error.message };
+          return { error: { message: error.message, type: 'internal_error' } };
         }
       };
     },
@@ -185,7 +198,7 @@ export async function davinci({ config }: { config: DaVinciConfig }) {
 
         if (!node.cache?.key) {
           console.error(`Cannot find current node's cache key or no current node`);
-          return null;
+          return { error: { message: 'Cannot find current node', type: 'state_error' } };
         }
 
         const flowItem = davinciApi.endpoints.flow.select(node.cache.key);
@@ -197,7 +210,7 @@ export async function davinci({ config }: { config: DaVinciConfig }) {
       getResponseWithId: (requestId: string) => {
         if (!requestId) {
           console.error('Please provide the cache key');
-          return null;
+          return { error: { message: 'Please provide the cache key', type: 'argument_error' } };
         }
 
         const flowItem = davinciApi.endpoints.flow.select(requestId);

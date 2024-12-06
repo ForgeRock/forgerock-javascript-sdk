@@ -1,9 +1,9 @@
-import { FlowCollector } from '@forgerock/davinci-client/types';
+import { FlowCollector, InitFlow } from '@forgerock/davinci-client/types';
 
 export default function flowLinkComponent(
   formEl: HTMLFormElement,
   collector: FlowCollector,
-  flow: (action: string) => void | { message: string },
+  flow: InitFlow,
   renderForm: () => void,
 ) {
   const button = document.createElement('button');
@@ -15,9 +15,9 @@ export default function flowLinkComponent(
   formEl?.appendChild(button);
 
   button.addEventListener('click', async () => {
-    const error = await flow(collector.output.key);
-    if (error) {
-      console.error(error.message);
+    const node = await flow();
+    if (node.error) {
+      console.error(node.error.message);
     }
     renderForm();
   });

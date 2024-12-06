@@ -1,9 +1,9 @@
-import { TextCollector } from '@forgerock/davinci-client/types';
+import { TextCollector, Updater } from '@forgerock/davinci-client/types';
 
 export default function usernameComponent(
   formEl: HTMLFormElement,
   collector: TextCollector,
-  updater: (value: string, index?: number) => void | { message: string },
+  updater: Updater,
 ) {
   const collectorKey = collector.output.key;
   const label = document.createElement('label');
@@ -20,8 +20,8 @@ export default function usernameComponent(
 
   formEl?.querySelector(`#${collectorKey}`)?.addEventListener('input', (event) => {
     const error = updater((event.target as HTMLInputElement).value);
-    if (error) {
-      console.error(error.message);
+    if (error && 'error' in error) {
+      console.error(error.error.message);
     }
   });
 }

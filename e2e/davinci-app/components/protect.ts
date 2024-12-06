@@ -1,10 +1,6 @@
-import { TextCollector } from '@forgerock/davinci-client/types';
+import { TextCollector, Updater } from '@forgerock/davinci-client/types';
 
-export default function (
-  formEl: HTMLFormElement,
-  collector: TextCollector,
-  updater: (value: string, index?: number) => void | { message: string },
-) {
+export default function (formEl: HTMLFormElement, collector: TextCollector, updater: Updater) {
   // create paragraph element with text of "Loading ... "
   const p = document.createElement('p');
 
@@ -12,7 +8,7 @@ export default function (
   formEl?.appendChild(p);
 
   const error = updater('fakeprofile');
-  if (error) {
-    console.error(error.message);
+  if (error && 'error' in error) {
+    console.error(error.error.message);
   }
 }

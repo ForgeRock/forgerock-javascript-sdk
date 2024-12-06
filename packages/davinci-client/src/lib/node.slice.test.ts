@@ -83,6 +83,7 @@ describe('The node slice reducers', () => {
         message: ' Invalid username and/or password',
         internalHttpStatus: 400,
         status: 'error',
+        type: 'davinci_error',
       },
       httpStatus: 400,
       server: {
@@ -117,6 +118,7 @@ describe('The node slice reducers', () => {
         message: '',
         internalHttpStatus: 0,
         status: 'failure',
+        type: 'davinci_error',
       },
       httpStatus: 400,
       server: {
@@ -148,6 +150,7 @@ describe('The node slice reducers', () => {
         message: 'Unauthorized!',
         internalHttpStatus: 401,
         status: 'failure',
+        type: 'davinci_error',
       },
       httpStatus: 400,
       server: {

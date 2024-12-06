@@ -11,7 +11,7 @@ export const nodeNext0 = {
         id: 'username-0',
         name: 'username',
         input: { key: 'username', value: '', type: 'TEXT' },
-        output: { key: 'username', label: 'Username', type: 'TEXT' },
+        output: { key: 'username', label: 'Username', type: 'TEXT', value: '' },
       },
       {
         category: 'SingleValueCollector',
@@ -32,7 +32,6 @@ export const nodeNext0 = {
           key: 'SIGNON',
           label: 'Sign On',
           type: 'SUBMIT_BUTTON',
-          url: null,
         },
       },
       {
@@ -45,7 +44,6 @@ export const nodeNext0 = {
           key: 'TROUBLE',
           label: 'Having trouble signing on?',
           type: 'SUBMIT_BUTTON',
-          url: null,
         },
       },
       {
@@ -58,12 +56,11 @@ export const nodeNext0 = {
           key: 'REGISTER',
           label: 'No account? Register now!',
           type: 'SUBMIT_BUTTON',
-          url: null,
         },
       },
     ],
     name: 'Username/Password Form',
-    status: 'next',
+    status: 'continue',
   },
   error: null,
   server: {
@@ -77,8 +74,8 @@ export const nodeNext0 = {
     interactionToken:
       '222f461a945b158b3ad63d75d24d3d1a6122938c600d6681bb33fc4b07abf59c69d65e2c1aadf00958df463aaf2ac483b63250d301a6ea92f07423ab39bbde8fb9ba5bc2e4dfbc9e3d03525a4ba954a119f11de0d614b090e7a5798fb3330194af6d967c1456d2c9429d8c72dee86f4ba5fd5bafc954df0d53b54a7ceb8ef404',
     eventName: 'continue',
-    status: 'next',
+    status: 'continue',
   },
-  status: 'next',
+  status: 'continue',
   httpStatus: 200,
 };

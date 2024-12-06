@@ -15,7 +15,7 @@ import { handleResponse, transformActionRequest, transformSubmitRequest } from '
  */
 import type { RootStateWithNode } from './client.store.utils.js';
 import type { DaVinciCacheEntry, ThrownQueryError } from './davinci.types';
-import type { NextNode } from './node.types.js';
+import type { ContinueNode } from './node.types.js';
 import type { StartNode } from '../types.js';
 
 /**
@@ -27,7 +27,7 @@ export const davinciApi = createApi({
   baseQuery: fetchBaseQuery({
     prepareHeaders: (headers) => {
       headers.set('Accept', 'application/json');
-      headers.set('x-requested-with', 'forgerock-sdk');
+      headers.set('x-requested-with', 'ping-sdk');
       headers.set('x-requested-platform', 'javascript');
       return headers;
     },
@@ -41,7 +41,7 @@ export const davinciApi = createApi({
        * @method queryFn - This is just a wrapper around the fetch call
        */
       async queryFn(params, api, __, baseQuery) {
-        const state = api.getState() as RootStateWithNode<NextNode>;
+        const state = api.getState() as RootStateWithNode<ContinueNode>;
         const links = state.node.server._links;
         const requestBody = transformActionRequest(state.node, params.action);
 
@@ -113,7 +113,7 @@ export const davinciApi = createApi({
        * @method queryFn - This is just a wrapper around the fetch call
        */
       async queryFn(body, api, __, baseQuery) {
-        const state = api.getState() as RootStateWithNode<NextNode>;
+        const state = api.getState() as RootStateWithNode<ContinueNode>;
         const links = state.node.server._links;
 
         let requestBody;

@@ -2,14 +2,10 @@
  * Import the required types
  */
 import type {
-  ActionCollector,
+  ActionCollectors,
   ActionCollectorTypes,
-  FlowCollector,
-  PasswordCollector,
-  SingleValueCollector,
+  SingleValueCollectors,
   SingleValueCollectorTypes,
-  SocialLoginCollector,
-  TextCollector,
 } from './collector.types';
 import type { DaVinciField } from './davinci.types';
 
@@ -24,7 +20,7 @@ export function returnActionCollector<CollectorType extends ActionCollectorTypes
   field: DaVinciField,
   idx: number,
   collectorType: CollectorType,
-): ActionCollector<CollectorType> {
+): ActionCollectors {
   let error = '';
   if (!('key' in field)) {
     error = `${error}Key is not found in the field object. `;
@@ -36,19 +32,34 @@ export function returnActionCollector<CollectorType extends ActionCollectorTypes
     error = `${error}Type is not found in the field object. `;
   }
 
-  return {
-    category: 'ActionCollector',
-    error: error || null,
-    type: collectorType || 'ActionCollector',
-    id: `${field.key}-${idx}`,
-    name: field.key,
-    output: {
-      key: field.key,
-      label: field.label,
-      type: field.type,
-      url: field.links?.['authenticate']?.href || null,
-    },
-  };
+  if (collectorType === 'SocialLoginCollector') {
+    return {
+      category: 'ActionCollector',
+      error: error || null,
+      type: collectorType,
+      id: `${field.key}-${idx}`,
+      name: field.key,
+      output: {
+        key: field.key,
+        label: field.label,
+        type: field.type,
+        url: field.links?.['authenticate']?.href || null,
+      },
+    };
+  } else {
+    return {
+      category: 'ActionCollector',
+      error: error || null,
+      type: collectorType || 'ActionCollector',
+      id: `${field.key}-${idx}`,
+      name: field.key,
+      output: {
+        key: field.key,
+        label: field.label,
+        type: field.type,
+      },
+    };
+  }
 }
 
 /**
@@ -58,7 +69,7 @@ export function returnActionCollector<CollectorType extends ActionCollectorTypes
  * @returns {FlowCollector} - The flow collector object
  */
 
-export function returnFlowCollector(field: DaVinciField, idx: number): FlowCollector {
+export function returnFlowCollector(field: DaVinciField, idx: number) {
   return returnActionCollector(field, idx, 'FlowCollector');
 }
 
@@ -68,7 +79,7 @@ export function returnFlowCollector(field: DaVinciField, idx: number): FlowColle
  * @param {number} idx - The index of the field in the form
  * @returns {SocialLoginCollector} - The social login collector object
  */
-export function returnSocialLoginCollector(field: DaVinciField, idx: number): SocialLoginCollector {
+export function returnSocialLoginCollector(field: DaVinciField, idx: number) {
   return returnActionCollector(field, idx, 'SocialLoginCollector');
 }
 
@@ -78,10 +89,7 @@ export function returnSocialLoginCollector(field: DaVinciField, idx: number): So
  * @param {number} idx - The index of the field in the form
  * @returns {ActionCollector} - The submit collector object
  */
-export function returnSubmitCollector(
-  field: DaVinciField,
-  idx: number,
-): ActionCollector<'SubmitCollector'> {
+export function returnSubmitCollector(field: DaVinciField, idx: number) {
   return returnActionCollector(field, idx, 'SubmitCollector');
 }
 
@@ -94,11 +102,7 @@ export function returnSubmitCollector(
  */
 export function returnSingleValueCollector<
   CollectorType extends SingleValueCollectorTypes = 'SingleValueCollector',
->(
-  field: DaVinciField,
-  idx: number,
-  collectorType: CollectorType,
-): SingleValueCollector<CollectorType> {
+>(field: DaVinciField, idx: number, collectorType: CollectorType): SingleValueCollectors {
   let error = '';
   if (!('key' in field)) {
     error = `${error}Key is not found in the field object. `;
@@ -110,23 +114,44 @@ export function returnSingleValueCollector<
     error = `${error}Type is not found in the field object. `;
   }
 
-  return {
-    category: 'SingleValueCollector',
-    error: error || null,
-    type: collectorType || 'SingleValueCollector',
-    id: `${field.key}-${idx}`,
-    name: field.key,
-    input: {
-      key: field.key,
-      value: '',
-      type: field.type,
-    },
-    output: {
-      key: field.key,
-      label: field.label,
-      type: field.type,
-    },
-  };
+  if (collectorType === 'PasswordCollector') {
+    return {
+      category: 'SingleValueCollector',
+      error: error || null,
+      type: collectorType,
+      id: `${field.key}-${idx}`,
+      name: field.key,
+      input: {
+        key: field.key,
+        value: '',
+        type: field.type,
+      },
+      output: {
+        key: field.key,
+        label: field.label,
+        type: field.type,
+      },
+    };
+  } else {
+    return {
+      category: 'SingleValueCollector',
+      error: error || null,
+      type: collectorType || 'SingleValueCollector',
+      id: `${field.key}-${idx}`,
+      name: field.key,
+      input: {
+        key: field.key,
+        value: '',
+        type: field.type,
+      },
+      output: {
+        key: field.key,
+        label: field.label,
+        type: field.type,
+        value: '',
+      },
+    };
+  }
 }
 
 /**
@@ -135,7 +160,7 @@ export function returnSingleValueCollector<
  * @param {number} idx - The index to be used in the id of the PasswordCollector.
  * @returns {PasswordCollector} The constructed PasswordCollector object.
  */
-export function returnPasswordCollector(field: DaVinciField, idx: number): PasswordCollector {
+export function returnPasswordCollector(field: DaVinciField, idx: number) {
   return returnSingleValueCollector(field, idx, 'PasswordCollector');
 }
 
@@ -145,6 +170,6 @@ export function returnPasswordCollector(field: DaVinciField, idx: number): Passw
  * @param {number} idx - The index to be used in the id of the TextCollector.
  * @returns {TextCollector} The constructed TextCollector object.
  */
-export function returnTextCollector(field: DaVinciField, idx: number): TextCollector {
+export function returnTextCollector(field: DaVinciField, idx: number) {
   return returnSingleValueCollector(field, idx, 'TextCollector');
 }

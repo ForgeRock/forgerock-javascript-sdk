@@ -13,14 +13,14 @@ import type {
   DaVinciRequest,
   DaVinciSuccessResponse,
 } from './davinci.types';
-import type { NextNode } from './node.types';
+import type { ContinueNode } from './node.types';
 
 /**
  * @function transformSubmitRequest - Transforms a NextNode into a DaVinciRequest for form submissions
- * @param {NextNode} node - The node to transform into a DaVinciRequest
+ * @param {ContinueNode} node - The node to transform into a DaVinciRequest
  * @returns {DaVinciRequest} - The transformed request object
  */
-export function transformSubmitRequest(node: NextNode): DaVinciRequest {
+export function transformSubmitRequest(node: ContinueNode): DaVinciRequest {
   // Filter out ActionCollectors as they are not used in form submissions
   const collectors = node.client?.collectors?.filter(
     (collector) => collector.category === 'SingleValueCollector',
@@ -49,11 +49,11 @@ export function transformSubmitRequest(node: NextNode): DaVinciRequest {
 
 /**
  * @function transformActionRequest - Transforms a NextNode into a DaVinciRequest for action requests
- * @param {NextNode} node - The node to transform into a DaVinciRequest
+ * @param {ContinueNode} node - The node to transform into a DaVinciRequest
  * @param {string} action - The action to transform into a DaVinciRequest
  * @returns {DaVinciRequest} - The transformed request object
  */
-export function transformActionRequest(node: NextNode, action: string): DaVinciRequest {
+export function transformActionRequest(node: ContinueNode, action: string): DaVinciRequest {
   return {
     id: node.server.id || '',
     eventName: node.server.eventName || '',

@@ -22,6 +22,7 @@ const config = {
 
 (async () => {
   const davinciClient = await davinci({ config });
+
   const formEl = document.getElementById('form') as HTMLFormElement;
 
   await Config.setAsync(config);
@@ -101,7 +102,7 @@ const config = {
 
     let formName = '';
 
-    if (clientInfo?.status === 'next') {
+    if (clientInfo?.status === 'continue') {
       formName = clientInfo.name || '';
     }
 
@@ -112,6 +113,7 @@ const config = {
     const collectors = davinciClient.getCollectors();
     collectors.forEach((collector) => {
       if (collector.type === 'TextCollector' && collector.name === 'protectsdk') {
+        collector;
         protect(
           formEl, // You can ignore this; it's just for rendering
           collector, // This is the plain object of the collector
@@ -124,6 +126,7 @@ const config = {
           davinciClient.update(collector), // Returns an update function for this collector
         );
       } else if (collector.type === 'PasswordCollector') {
+        collector;
         passwordComponent(
           formEl, // You can ignore this; it's just for rendering
           collector, // This is the plain object of the collector
@@ -135,6 +138,7 @@ const config = {
           collector, // This is the plain object of the collector
         );
       } else if (collector.type === 'SocialLoginCollector') {
+        collector;
         socialLoginButtonComponent(formEl, collector);
       } else if (collector.type === 'FlowCollector') {
         flowLinkComponent(
@@ -152,7 +156,7 @@ const config = {
     if (davinciClient.getCollectors().find((collector) => collector.name === 'protectsdk')) {
       const newNode = await davinciClient.next();
 
-      if (newNode.status === 'next') {
+      if (newNode.status === 'continue') {
         renderForm();
       } else if (newNode.status === 'success') {
         renderComplete();
@@ -187,7 +191,7 @@ const config = {
     /**
      * Recursively render the form with the new state
      */
-    if (newNode.status === 'next') {
+    if (newNode.status === 'continue') {
       renderForm();
     } else if (newNode.status === 'success') {
       renderComplete();

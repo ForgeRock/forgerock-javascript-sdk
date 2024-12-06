@@ -12,7 +12,6 @@ import { nodeCollectorReducer, updateCollectorValues } from './node.reducer';
  * Import the types
  */
 import type { Draft, PayloadAction } from '@reduxjs/toolkit';
-
 import type { SubmitCollector } from './collector.types';
 import type {
   DavinciErrorResponse,
@@ -20,12 +19,12 @@ import type {
   DaVinciNextResponse,
   DaVinciSuccessResponse,
 } from './davinci.types';
-import type { NextNode, SuccessNode, ErrorNode, StartNode, FailureNode } from './node.types';
+import type { ContinueNode, SuccessNode, ErrorNode, StartNode, FailureNode } from './node.types';
 
 /**
  * The possible statuses for the four types of nodes
  */
-const NEXT_STATUS = 'next';
+const CONTINUE_STATUS = 'continue';
 const ERROR_STATUS = 'error';
 const FAILURE_STATUS = 'failure';
 const SUCCESS_STATUS = 'success';
@@ -46,7 +45,7 @@ export const initialNodeState = {
   status: START_STATUS,
 };
 
-type NodeStates = ErrorNode | FailureNode | NextNode | SuccessNode | StartNode;
+type NodeStates = ErrorNode | FailureNode | ContinueNode | SuccessNode | StartNode;
 
 /**
  * @const nodeSlice - Slice for handling the node state
@@ -84,6 +83,7 @@ export const nodeSlice = createSlice({
         message: action.payload.data.message,
         internalHttpStatus: action.payload.data.httpResponseCode,
         status: 'error',
+        type: 'davinci_error',
       };
 
       newState.httpStatus = action.payload.httpStatus;
@@ -135,11 +135,14 @@ export const nodeSlice = createSlice({
           internalHttpStatus:
             typeof data['httpResponseCode'] === 'number' ? data['httpResponseCode'] : 0,
           status: FAILURE_STATUS,
+          type: 'davinci_error',
         };
       } else {
         newState.error = {
           code: 'unknown',
+          message: 'An unknown error occurred',
           status: FAILURE_STATUS,
+          type: 'network_error',
         };
       }
 
@@ -158,13 +161,13 @@ export const nodeSlice = createSlice({
      * @method next - Method for creating a next node
      * @param {Object} state - The current state of the slice
      * @param {PayloadAction<DaVinciNextResponse>} action - The action to be dispatched
-     * @returns {NextNode} - The next node
+     * @returns {ContinueNode} - The next node
      */
     next(
       state,
       action: PayloadAction<{ data: DaVinciNextResponse; requestId: string; httpStatus: number }>,
     ) {
-      const newState = state as Draft<NextNode>;
+      const newState = state as Draft<ContinueNode>;
 
       const collectors = nodeCollectorReducer([], {
         type: action.type,
@@ -184,7 +187,7 @@ export const nodeSlice = createSlice({
         description: action.payload.data?.form?.description,
         collectors,
         name: action.payload.data.form?.name,
-        status: NEXT_STATUS,
+        status: CONTINUE_STATUS,
       };
 
       newState.httpStatus = action.payload.httpStatus;
@@ -195,11 +198,11 @@ export const nodeSlice = createSlice({
         interactionId: action.payload.data.interactionId,
         interactionToken: action.payload.data.interactionToken,
         eventName: action.payload.data.eventName,
-        status: NEXT_STATUS,
+        status: CONTINUE_STATUS,
       };
 
       // Used to help detect the node type
-      newState.status = NEXT_STATUS;
+      newState.status = CONTINUE_STATUS;
 
       return newState;
     },
@@ -249,10 +252,10 @@ export const nodeSlice = createSlice({
      * @method update - Method for updating collector values with the node
      * @param {Object} state - The current state of the slice
      * @param {PayloadAction<unknown>} action - The action to be dispatched
-     * @returns {NextNode} - The next node
+     * @returns {ContinueNode} - The next node
      */
     update(state, action: ReturnType<typeof updateCollectorValues>) {
-      const newState = state as Draft<NextNode>;
+      const newState = state as Draft<ContinueNode>;
 
       newState.client.collectors = nodeCollectorReducer(newState.client.collectors, action);
 
@@ -265,16 +268,20 @@ export const nodeSlice = createSlice({
     },
     selectCollectors: (state) => {
       // Let's check if the node has a client and collectors
-      if (state.status !== 'next') {
-        console.error('`collectors` are only available on nodes with `status` of `next`');
+      if (state.status !== CONTINUE_STATUS) {
+        console.error(
+          `\`collectors are only available on nodes with \`status\` of ${CONTINUE_STATUS}`,
+        );
         return [];
       }
       return state.client.collectors || [];
     },
     selectCollector: (state, id: string) => {
       // Let's check if the node has a client and collectors
-      if (state.status !== 'next') {
-        console.error('`collector` are only available on nodes with `status` of `next`');
+      if (state.status !== CONTINUE_STATUS) {
+        console.error(
+          `\`collectors are only available on nodes with \`status\` of ${CONTINUE_STATUS}`,
+        );
         return;
       }
       return state.client.collectors?.find((collector) => collector.id === id);

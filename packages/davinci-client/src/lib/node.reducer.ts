@@ -17,7 +17,15 @@ import {
 } from './collector.utils.js';
 
 import type { DaVinciField } from './davinci.types';
-import { Collectors } from './node.types.js';
+import {
+  ActionCollector,
+  FlowCollector,
+  PasswordCollector,
+  SingleValueCollector,
+  SocialLoginCollector,
+  SubmitCollector,
+  TextCollector,
+} from './collector.types.js';
 
 /**
  * @const nextCollectorValues - Action for setting the next collector values
@@ -35,7 +43,15 @@ export const updateCollectorValues = createAction<{
 /**
  * @const initialCollectorValues - Initial state for the collector values
  */
-const initialCollectorValues: Collectors[] = [];
+const initialCollectorValues: (
+  | FlowCollector
+  | PasswordCollector
+  | TextCollector
+  | SocialLoginCollector
+  | SubmitCollector
+  | ActionCollector<'ActionCollector'>
+  | SingleValueCollector<'SingleValueCollector'>
+)[] = [];
 
 /**
  * @const nodeCollectorReducer - Reducer for handling the collector values
