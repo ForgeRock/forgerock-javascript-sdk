@@ -40,7 +40,7 @@ export const configSlice = createSlice({
     set(state, action: PayloadAction<InternalDaVinciConfig>) {
       state.clientId = action.payload.clientId || '';
       state.redirectUri = action.payload.redirectUri || `${location.origin}/handle-redirect`;
-      if ('responseType' in action.payload) {
+      if ('responseType' in action.payload && action.payload.responseType) {
         state.responseType = action.payload.responseType;
       } else {
         state.responseType = 'code';

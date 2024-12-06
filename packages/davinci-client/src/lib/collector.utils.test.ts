@@ -17,8 +17,6 @@ describe('The returnActionCollector function', () => {
     const collectorType = 'SubmitCollector';
     const result = returnActionCollector(mockField, idx, collectorType);
 
-    console.log(result);
-
     expect(result).toEqual({
       category: 'ActionCollector',
       error: null,
@@ -29,7 +27,6 @@ describe('The returnActionCollector function', () => {
         key: mockField.key,
         label: mockField.label,
         type: mockField.type,
-        url: null,
       },
     });
   });
@@ -49,7 +46,6 @@ describe('The returnActionCollector function', () => {
         key: mockField.key,
         label: mockField.label,
         type: mockField.type,
-        url: null,
       },
     });
   });
@@ -124,6 +120,7 @@ describe('The returnSingleValueCollector function', () => {
         key: mockField.key,
         label: mockField.label,
         type: mockField.type,
+        value: '',
       },
     });
   });

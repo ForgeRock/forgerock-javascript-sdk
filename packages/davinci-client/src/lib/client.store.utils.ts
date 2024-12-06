@@ -3,7 +3,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import { configSlice } from './config.slice.js';
 import { nodeSlice } from './node.slice.js';
 import { davinciApi } from './davinci.api.js';
-import { ErrorNode, NextNode, StartNode, SuccessNode } from '../types.js';
+import { ErrorNode, ContinueNode, StartNode, SuccessNode } from '../types.js';
 import { wellknownApi } from './wellknown.api.js';
 
 export function createClientStore() {
@@ -23,7 +23,7 @@ type ClientStore = typeof createClientStore;
 
 export type RootState = ReturnType<ReturnType<ClientStore>['getState']>;
 
-export interface RootStateWithNode<T extends ErrorNode | NextNode | StartNode | SuccessNode>
+export interface RootStateWithNode<T extends ErrorNode | ContinueNode | StartNode | SuccessNode>
   extends RootState {
   node: T;
 }

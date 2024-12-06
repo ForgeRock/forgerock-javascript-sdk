@@ -1,23 +1,54 @@
-import type { SingleValueCollector, ActionCollector } from './collector.types.js';
+import type {
+  FlowCollector,
+  PasswordCollector,
+  TextCollector,
+  SocialLoginCollector,
+  SubmitCollector,
+  ActionCollector,
+  SingleValueCollector,
+} from './collector.types.js';
 import type { ErrorDetail, Links } from './davinci.types.js';
+import { GenericError } from './error.types.js';
 
-export interface DaVinciError {
-  code: string | number;
+export interface DaVinciError extends GenericError {
   details?: ErrorDetail[];
   internalHttpStatus?: number;
-  message?: string;
   status: 'error' | 'failure' | 'unknown';
 }
 
 export type Collectors =
-  | SingleValueCollector<'SingleValueCollector'>
-  | SingleValueCollector<'TextCollector'>
-  | SingleValueCollector<'PasswordCollector'>
-  | SingleValueCollector<'ListCollector'>
+  | FlowCollector
+  | PasswordCollector
+  | TextCollector
+  | SocialLoginCollector
+  | SubmitCollector
   | ActionCollector<'ActionCollector'>
-  | ActionCollector<'SubmitCollector'>
-  | ActionCollector<'SocialLoginCollector'>
-  | ActionCollector<'FlowCollector'>;
+  | SingleValueCollector<'SingleValueCollector'>;
+
+export interface ContinueNode {
+  cache: {
+    key: string;
+  };
+  client: {
+    action: string;
+    collectors: Collectors[];
+    description?: string;
+    name?: string;
+    status: 'continue';
+  };
+  error: null;
+  httpStatus: number;
+  server: {
+    _links?: Links;
+    id?: string;
+    interactionId?: string;
+    interactionToken?: string;
+    href?: string;
+    eventName?: string;
+    status: 'continue';
+  };
+  status: 'continue';
+}
 
 export interface ErrorNode {
   cache: {
@@ -58,31 +89,6 @@ export interface FailureNode {
     status: 'failure';
   } | null;
   status: 'failure';
-}
-
-export interface NextNode {
-  cache: {
-    key: string;
-  };
-  client: {
-    action: string;
-    collectors: Collectors[];
-    description?: string;
-    name?: string;
-    status: 'next';
-  };
-  error: null;
-  httpStatus: number;
-  server: {
-    _links?: Links;
-    id?: string;
-    interactionId?: string;
-    interactionToken?: string;
-    href?: string;
-    eventName?: string;
-    status: 'next';
-  };
-  status: 'next';
 }
 
 export interface StartNode {

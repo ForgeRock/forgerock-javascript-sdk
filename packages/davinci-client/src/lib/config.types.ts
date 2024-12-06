@@ -5,7 +5,7 @@ import type { AsyncConfigOptions } from '@forgerock/javascript-sdk/src/config/in
 import { WellknownResponse } from './wellknown.types';
 
 export interface DaVinciConfig extends AsyncConfigOptions {
-  responseType: string;
+  responseType?: string;
 }
 
 export interface InternalDaVinciConfig extends DaVinciConfig {

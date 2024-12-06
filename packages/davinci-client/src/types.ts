@@ -3,11 +3,15 @@ import 'immer'; // Side-effect needed only for getting types in workspace
 import type * as collectors from './lib/collector.types.js';
 import type * as config from './lib/config.types.js';
 import type * as nodes from './lib/node.types.js';
+import type * as client from './lib/client.types.js';
 
 export type DaVinciConfig = config.DaVinciConfig;
 
+export type Updater = client.Updater;
+export type InitFlow = client.InitFlow;
+
 export type StartNode = nodes.StartNode;
-export type NextNode = nodes.NextNode;
+export type ContinueNode = nodes.ContinueNode;
 export type ErrorNode = nodes.ErrorNode;
 export type SuccessNode = nodes.SuccessNode;
 

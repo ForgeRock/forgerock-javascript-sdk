@@ -36,6 +36,7 @@ describe('The node collector reducer', () => {
           key: 'username',
           label: 'Username',
           type: 'TEXT',
+          value: '',
         },
       },
     ]);
@@ -78,6 +79,7 @@ describe('The node collector reducer', () => {
           key: 'username',
           label: 'Username',
           type: 'TEXT',
+          value: '',
         },
       },
       {
@@ -107,7 +109,6 @@ describe('The node collector reducer', () => {
           key: 'submit',
           label: 'Submit',
           type: 'SUBMIT_BUTTON',
-          url: null,
         },
       },
     ]);
@@ -137,6 +138,7 @@ describe('The node collector reducer', () => {
           key: 'username',
           label: 'First Name',
           type: 'TEXT',
+          value: '',
         },
       },
     ];
@@ -156,6 +158,7 @@ describe('The node collector reducer', () => {
           key: 'username',
           label: 'First Name',
           type: 'TEXT',
+          value: '',
         },
       },
     ]);
@@ -185,6 +188,7 @@ describe('The node collector reducer', () => {
           key: 'username',
           label: 'First Name',
           type: 'TEXT',
+          value: '',
         },
       },
     ];
@@ -215,6 +219,7 @@ describe('The node collector reducer', () => {
           key: 'username',
           label: 'First Name',
           type: 'TEXT',
+          value: '',
         },
       },
       {
@@ -227,7 +232,6 @@ describe('The node collector reducer', () => {
           key: 'submit',
           label: 'Submit',
           type: 'SUBMIT_BUTTON',
-          url: null,
         },
       },
     ];
