@@ -111,6 +111,20 @@ export function handleResponse(cacheEntry: DaVinciCacheEntry, dispatch: Dispatch
   }
 
   /**
+   * Check for 3XX errors that result in CORS errors, reported as FETCH_ERROR
+   */
+  if (cacheEntry.isError && cacheEntry.error.status === 'FETCH_ERROR') {
+    const data = {
+      code: cacheEntry.error.status,
+      message: 'Fetch Error: Please ensure a correct Client ID for your OAuth application.',
+    };
+    const requestId = cacheEntry.requestId;
+    dispatch(nodeSlice.actions.failure({ data, requestId, httpStatus: cacheEntry.error.status }));
+
+    return;
+  }
+
+  /**
    * If the response's HTTP status is a success (2XX), but the DaVinci API has returned an error,
    * we need to handle this as a failure or return as unknown.
    */

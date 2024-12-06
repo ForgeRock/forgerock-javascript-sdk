@@ -16,7 +16,6 @@
       }
     },
     "serve": {
-      "dependsOn": ["davinci-app:build"],
       "defaultConfiguration": "development",
       "options": {
         "host": "localhost",
