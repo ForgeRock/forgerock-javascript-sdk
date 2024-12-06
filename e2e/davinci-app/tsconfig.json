@@ -4,9 +4,7 @@
   "compilerOptions": {
     "target": "ESNext",
     "useDefineForClassFields": true,
-    "module": "ESNext",
     "lib": ["ESNext", "DOM"],
-    "moduleResolution": "Node16",
     "strict": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
@@ -16,6 +14,8 @@
     "noImplicitReturns": true,
     "skipLibCheck": true
   },
-  "include": ["src"],
-  "references": []
+  "references": [
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.spec.json" }
+  ]
 }

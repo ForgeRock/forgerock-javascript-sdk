@@ -16,7 +16,7 @@ export interface InternalDaVinciConfig extends DaVinciConfig {
  * DaVinci configuration options that extends the Forgerock SDK configuration options
  */
 // export type InternalDaVinciConfig =
-//   | ((DavinciConfigWithResponseType | AsyncConfigOptions) & {
+//   | ((DaVinciConfigWithResponseType | AsyncConfigOptions) & {
 //       openIdConfiguration: OpenIdResponse;
 //     })
-//   | (DavinciConfigWithResponseType | AsyncConfigOptions);
+//   | (DaVinciConfigWithResponseType | AsyncConfigOptions);
