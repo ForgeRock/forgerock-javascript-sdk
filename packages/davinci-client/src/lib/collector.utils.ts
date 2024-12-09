@@ -43,7 +43,7 @@ export function returnActionCollector<CollectorType extends ActionCollectorTypes
         key: field.key,
         label: field.label,
         type: field.type,
-        url: field.links?.['authenticate']?.href || '',
+        url: field.links?.['authenticate']?.href || null,
       },
     };
   } else {

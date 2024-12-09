@@ -61,36 +61,45 @@ export type ActionCollectorTypes =
   | 'SocialLoginCollector'
   | 'ActionCollector';
 
-type ActionCollectorOutputTypes =
-  | {
-      key: string;
-      label: string;
-      type: string;
-      url: string;
-    }
-  | {
-      key: string;
-      label: string;
-      type: string;
-    };
-
-export interface ActionCollector<T extends ActionCollectorTypes> {
+export interface ActionCollectorNoUrl<T extends ActionCollectorTypes> {
   category: 'ActionCollector';
   error: string | null;
   type: T;
   id: string;
   name: string;
-  output: ActionCollectorOutputTypes;
+  output: {
+    key: string;
+    label: string;
+    type: string;
+  };
 }
 
-export type ActionCollectors =
-  | ActionCollector<'SocialLoginCollector'>
-  | ActionCollector<'ActionCollector'>
-  | ActionCollector<'FlowCollector'>
-  | ActionCollector<'SubmitCollector'>;
+export interface ActionCollectorWithUrl<T extends ActionCollectorTypes> {
+  category: 'ActionCollector';
+  error: string | null;
+  type: T;
+  id: string;
+  name: string;
+  output: {
+    key: string;
+    label: string;
+    type: string;
+    url?: string | null;
+  };
+}
 
-export type FlowCollector = ActionCollector<'FlowCollector'>;
+export type ActionCollector<T extends ActionCollectorTypes> =
+  | ActionCollectorNoUrl<T>
+  | ActionCollectorWithUrl<T>;
+
+export type ActionCollectors =
+  | ActionCollectorWithUrl<'SocialLoginCollector'>
+  | ActionCollectorNoUrl<'ActionCollector'>
+  | ActionCollectorNoUrl<'FlowCollector'>
+  | ActionCollectorNoUrl<'SubmitCollector'>;
+
+export type FlowCollector = ActionCollectorNoUrl<'FlowCollector'>;
 export type PasswordCollector = SingleValueCollectorNoValue<'PasswordCollector'>;
 export type TextCollector = SingleValueCollectorWithValue<'TextCollector'>;
-export type SocialLoginCollector = ActionCollector<'SocialLoginCollector'>;
-export type SubmitCollector = ActionCollector<'SubmitCollector'>;
+export type SocialLoginCollector = ActionCollectorWithUrl<'SocialLoginCollector'>;
+export type SubmitCollector = ActionCollectorNoUrl<'SubmitCollector'>;
