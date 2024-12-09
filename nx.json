@@ -32,7 +32,8 @@
     "build": {
       "dependsOn": ["^build"],
       "inputs": ["noMarkdown", "^noMarkdown"],
-      "cache": true
+      "cache": true,
+      "outputs": ["{projectRoot/dist}"]
     },
     "@nx/vite:test": {
       "dependsOn": ["^test"],
