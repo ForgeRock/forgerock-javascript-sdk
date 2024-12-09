@@ -14,6 +14,9 @@ export type StartNode = nodes.StartNode;
 export type ContinueNode = nodes.ContinueNode;
 export type ErrorNode = nodes.ErrorNode;
 export type SuccessNode = nodes.SuccessNode;
+export type FailureNode = nodes.FailureNode;
+
+export type NodeStates = StartNode | ContinueNode | ErrorNode | SuccessNode | FailureNode;
 
 export type Collectors = nodes.Collectors;
 export type DaVinciValidationError = nodes.DaVinciError;
