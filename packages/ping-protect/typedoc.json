@@ -20,7 +20,7 @@
   "excludeProtected": false,
   "excludeNotDocumented": false,
   "externalSymbolLinkMappings": {},
-  "out": "../../docs/packages/ping-protect",
+  "out": "./docs",
   "emit": "docs",
   "theme": "hierarchy",
   "name": "ping-protect",

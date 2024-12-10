@@ -23,7 +23,7 @@
   "out": "./docs",
   "emit": "docs",
   "theme": "hierarchy",
-  "name": "javascript-sdk",
+  "name": "token-vault",
   "includeVersion": true,
   "readme": "./README.md",
   "disableSources": false,

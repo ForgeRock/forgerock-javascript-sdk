@@ -61,6 +61,7 @@ todos/*
 users/*
 #Project Docs
 docs/packages/javascript-sdk
+packages/*/docs
 **/playwright-report
 **/playwright/.cache
 

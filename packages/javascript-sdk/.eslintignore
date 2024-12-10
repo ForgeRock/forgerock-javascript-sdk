@@ -5,3 +5,4 @@ LICENSE
 .env*
 .bin
 dist
+docs

@@ -23,7 +23,7 @@
   "out": "./docs",
   "emit": "docs",
   "theme": "hierarchy",
-  "name": "javascript-sdk",
+  "name": "davinci-client",
   "includeVersion": true,
   "readme": "./README.md",
   "disableSources": false,
