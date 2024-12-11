@@ -10,7 +10,7 @@
     "build": "nx affected --target=build",
     "clean": "shx rm -rf ./{coverage,dist,docs,node_modules,tmp}/ ./{packages,e2e}/*/{dist,node_modules}/ && git clean -fX -e \"!.env*,nx-cloud.env\"",
     "ci:release": "pnpm publish -r --no-git-checks && changeset tag",
-    "ci:version": "changeset version && pnpm install --no-frozen-lockfile",
+    "ci:version": "changeset version && pnpm install --no-frozen-lockfile && pnpm format:staged",
     "changeset": "changeset",
     "commit": "git cz",
     "docs": "nx affected --target=typedoc",

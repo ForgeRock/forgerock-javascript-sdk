@@ -1,5 +1,11 @@
 # @forgerock/davinci-client
 
+## 0.1.1
+
+### Patch Changes
+
+- [#514](https://github.com/ForgeRock/forgerock-javascript-sdk/pull/514) [`dee377f`](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/dee377fdbba7c7be9ea7c5bc3e3739eb75b9c02c) Thanks [@ryanbas21](https://github.com/ryanbas21)! - fix-versioning-format
+
 ## 0.1.0
 
 ### Minor Changes
