@@ -2,4 +2,4 @@
 '@forgerock/davinci-client': patch
 ---
 
-fix-versioning-format
+chore: fix-version-formatting
