@@ -5,9 +5,7 @@
   "module": "./dist/index.js",
   "typings": "./dist/index.d.ts",
   "type": "module",
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "dependencies": {
     "@forgerock/javascript-sdk": "workspace:*",
     "@reduxjs/toolkit": "2.3.0",
