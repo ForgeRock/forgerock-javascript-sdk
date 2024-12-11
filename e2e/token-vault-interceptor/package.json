@@ -2,7 +2,7 @@
   "name": "@forgerock/token-vault-interceptor",
   "version": "0.0.1",
   "dependencies": {
-    "@forgerock/token-vault": "4.2.0"
+    "@forgerock/token-vault": "workspace:*"
   },
   "main": "./dist/index.iife.js",
   "module": "./dist/index.iife.js",

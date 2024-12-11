@@ -6,7 +6,6 @@
     "moduleResolution": "Bundler",
     "target": "ESNext",
     "module": "ESNext",
-    "types": ["vite/client"],
     "moduleDetection": "force"
   },
   "exclude": ["src/**/*.spec.ts", "src/**/*.test.ts"],

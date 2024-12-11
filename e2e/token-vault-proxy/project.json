@@ -6,7 +6,6 @@
   "tags": ["scope:app"],
   "targets": {
     "build": {
-      "dependsOn": ["^build"],
       "inputs": ["default", "^default"],
       "outputs": ["{projectRoot}/dist"],
       "defaultConfiguration": "production",
