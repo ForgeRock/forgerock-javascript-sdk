@@ -1,0 +1,18 @@
+{
+  "result": [
+    {
+      "_id": "76c0337a-0d61-4e67-bf59-d87417403a91",
+      "_rev": "2140652294",
+      "createdDate": 1728415537308,
+      "lastAccessDate": 1728415537308,
+      "deviceName": "OATH Device",
+      "uuid": "76c0337a-0d61-4e67-bf59-d87417403a91",
+      "deviceManagementStatus": false
+    }
+  ],
+  "resultCount": 1,
+  "pagedResultsCookie": null,
+  "totalPagedResultsPolicy": "NONE",
+  "totalPagedResults": -1,
+  "remainingPagedResults": -1
+}

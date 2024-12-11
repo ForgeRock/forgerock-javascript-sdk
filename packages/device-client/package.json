@@ -1,0 +1,24 @@
+{
+  "name": "@forgerock/device-client",
+  "version": "0.0.1",
+  "private": true,
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "typings": "./dist/index.d.ts",
+  "sideEffects": false,
+  "type": "module",
+  "exports": {
+    ".": "./dist/index.js",
+    "./package.json": "./package.json",
+    "./types": "./dist/lib/types/index.d.ts"
+  },
+  "files": ["./dist"],
+  "dependencies": {
+    "@reduxjs/toolkit": "2.3.0",
+    "@forgerock/javascript-sdk": "4.6.0"
+  },
+  "devDependencies": {
+    "msw": "^2.5.1",
+    "vitest": "^1.4.0"
+  }
+}

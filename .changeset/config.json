@@ -1,0 +1,26 @@
+{
+  "$schema": "https://unpkg.com/@changesets/config@3.0.3/schema.json",
+  "changelog": [
+    "@changesets/changelog-github",
+    {
+      "repo": "forgerock/forgerock-javascript-sdk"
+    }
+  ],
+  "commit": false,
+  "fixed": [["@forgerock/javascript-sdk", "@forgerock/ping-protect"]],
+  "linked": [],
+  "access": "public",
+  "baseBranch": "master",
+  "updateInternalDependencies": "patch",
+  "ignore": [
+    "@forgerock/device-client",
+    "autoscript-apps",
+    "autoscript-suites",
+    "davinci-app",
+    "mock-api",
+    "token-vault-app",
+    "@forgerock/token-vault-interceptor",
+    "token-vault-proxy",
+    "token-vault-suites"
+  ]
+}

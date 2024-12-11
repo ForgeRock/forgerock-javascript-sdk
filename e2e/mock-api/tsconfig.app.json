@@ -9,6 +9,6 @@
     "allowJs": true,
     "types": ["node", "express"]
   },
-  "exclude": ["**/*.spec.ts", "**/*.test.ts", "jest.config.ts", "dist"],
+  "exclude": ["**/*.spec.ts", "**/*.test.ts", "dist"],
   "include": ["**/*.ts", "**/*.js"]
 }

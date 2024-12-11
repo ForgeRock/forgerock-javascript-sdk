@@ -6,43 +6,15 @@
   "tags": ["scope:app"],
   "targets": {
     "build": {
-      "dependsOn": [
-        "javascript-sdk:build",
-        "token-vault:build",
-        "build-interceptor"
-      ],
       "inputs": ["default", "^default"],
       "outputs": ["{projectRoot}/dist"],
-      "defaultConfiguration": "production",
       "options": {
         "emptyOutDir": false
       },
       "configurations": {
         "development": {
           "mode": "development"
-        },
-        "production": {
-          "mode": "production"
         }
-      }
-    },
-    "build-interceptor": {
-      "dependsOn": ["token-vault:build"],
-      "inputs": [
-        "default",
-        "^default",
-        {
-          "externalDependencies": ["vite"]
-        }
-      ],
-      "outputs": [
-        "{projectRoot}/{options.outDir}",
-        "{workspaceRoot}/dist/e2e/token-vault-app"
-      ],
-      "options": {
-        "emptyOutDir": false,
-        "config": "./vite.interceptor.config.ts",
-        "outDir": "./public"
       }
     },
     "serve": {

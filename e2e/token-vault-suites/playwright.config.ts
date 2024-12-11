@@ -1,6 +1,10 @@
 import { PlaywrightTestConfig } from '@playwright/test';
 import { nxE2EPreset } from '@nx/playwright/preset';
 import { workspaceRoot } from '@nx/devkit';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+
 // For CI, you may want to set BASE_URL to the deployed application.
 const baseURL = process.env['BASE_URL'] || 'http://localhost:5823';
 
@@ -11,6 +15,7 @@ const baseConfig = nxE2EPreset(__filename, {
 const config: PlaywrightTestConfig = {
   ...baseConfig,
   reporter: process.env.CI ? 'github' : 'list',
+  timeout: 30000,
   use: {
     baseURL,
     ignoreHTTPSErrors: true,
@@ -27,16 +32,14 @@ const config: PlaywrightTestConfig = {
       cwd: workspaceRoot,
     },
     {
-      command:
-        'pnpm nx build javascript-sdk && pnpm nx build token-vault  && pnpm nx serve token-vault-proxy',
+      command: 'pnpm nx serve token-vault-proxy',
       port: 5833,
       ignoreHTTPSErrors: true,
       reuseExistingServer: !process.env.CI,
       cwd: workspaceRoot,
     },
     {
-      command:
-        'pnpm nx build javascript-sdk && pnpm nx build token-vault && pnpm nx serve token-vault-app',
+      command: 'pnpm nx serve token-vault-app',
       port: 5823,
       ignoreHTTPSErrors: true,
       reuseExistingServer: !process.env.CI,

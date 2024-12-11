@@ -17,6 +17,7 @@ const oauth = {
   client: 'WebOAuthClient',
   scope: 'openid profile me.read',
 };
+
 const origins = {
   // Ensure all domains are added to the security cert creation
   app: process.env.LIVE ? 'https://sdkapp.petrov.ca' : 'http://localhost',
@@ -24,9 +25,11 @@ const origins = {
   mock: 'http://localhost',
   resource: 'http://localhost',
 };
+
 const paths = {
   am: '/am',
 };
+
 const ports = {
   app: '8443',
   forgeops: '443',

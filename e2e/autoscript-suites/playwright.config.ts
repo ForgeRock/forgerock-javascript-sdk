@@ -1,6 +1,10 @@
+import * as os from 'os';
 import { PlaywrightTestConfig } from '@playwright/test';
 import { nxE2EPreset } from '@nx/playwright/preset';
 import { workspaceRoot } from '@nx/devkit';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
 
 // For CI, you may want to set BASE_URL to the deployed application.
 const baseURL = process.env['BASE_URL'] || 'http://localhost:8443';
@@ -20,6 +24,19 @@ const config: PlaywrightTestConfig = {
     bypassCSP: true,
     trace: process.env.CI ? 'retry-with-trace' : 'retain-on-failure',
   },
+  projects: [
+    {
+      name: 'Chromium',
+    },
+    {
+      name: 'Firefox',
+    },
+    os.type() === 'Darwin'
+      ? {
+          name: 'Safari',
+        }
+      : undefined,
+  ].filter(Boolean),
   webServer: [
     {
       command: 'pnpm nx serve mock-api',
@@ -36,8 +53,7 @@ const config: PlaywrightTestConfig = {
       cwd: workspaceRoot,
     },
     {
-      command:
-        'pnpm nx build javascript-sdk && pnpm nx build ping-protect && pnpm nx serve autoscript-apps',
+      command: 'pnpm nx serve autoscript-apps',
       url: 'http://localhost:8443',
       ignoreHTTPSErrors: true,
       reuseExistingServer: !process.env.CI,

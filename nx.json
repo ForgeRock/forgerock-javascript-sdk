@@ -5,7 +5,9 @@
     "production": [
       "default",
       "!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap)",
-      "!{projectRoot}/tsconfig.spec.json"
+      "!{projectRoot}/tsconfig.spec.json",
+      "!{projectRoot}/src/test-setup.[jt]s",
+      "!{projectRoot}/test-setup.[jt]s"
     ],
     "noMarkdown": ["!{projectRoot}/**/*.md"]
   },
@@ -18,42 +20,56 @@
     "docs": {
       "cache": true
     },
+    "serve": {
+      "cache": false,
+      "dependsOn": ["^build"]
+    },
     "e2e": {
+      "dependsOn": ["^build"],
       "inputs": ["noMarkdown", "^noMarkdown"],
       "cache": true
     },
     "build": {
+      "dependsOn": ["^build"],
       "inputs": ["noMarkdown", "^noMarkdown"],
-      "cache": true
-    },
-    "build-interceptor": {
       "cache": true,
-      "inputs": ["noMarkdown", "^noMarkdown"]
+      "outputs": ["{projectRoot}/dist"]
     },
     "@nx/vite:test": {
+      "dependsOn": ["^test"],
       "inputs": ["noMarkdown", "^noMarkdown"],
       "cache": true
     },
     "@nx/eslint:lint": {
+      "dependsOn": ["^build", "^lint"],
       "inputs": ["noMarkdown", "^noMarkdown"],
       "cache": true
     },
     "@nx/vite:build": {
+      "dependsOn": ["^build"],
       "cache": true,
-      "inputs": ["noMarkdown", "^noMarkdown"]
+      "inputs": ["noMarkdown", "^noMarkdown"],
+      "outputs": ["{projectRoot}/dist"]
+    },
+    "@nx/playwright:run": {
+      "dependsOn": ["^build"],
+      "inputs": ["noMarkdown", "^noMarkdown"],
+      "cache": true
     },
     "@nx/esbuild:esbuild": {
+      "dependsOn": ["^build"],
       "cache": true,
       "inputs": ["noMarkdown", "^noMarkdown"]
     },
     "e2e-ci--**/*": {
+      "dependsOn": ["^build"],
       "inputs": ["noMarkdown", "^noMarkdown"],
-      "dependsOn": [
-        "javascript-sdk:build",
-        "ping-protect:build",
-        "token-vault:build"
-      ],
       "cache": true
+    },
+    "@nx/js:tsc": {
+      "cache": true,
+      "dependsOn": ["^build"],
+      "inputs": ["production", "^production"]
     }
   },
   "parallel": 1,
@@ -65,6 +81,7 @@
     "projects": ["packages/*"],
     "releaseTagPattern": "v{version}",
     "version": {
+      "preVersionCommand": "npx nx run-many -t build",
       "generatorOptions": {
         "currentVersionResolver": "git-tag",
         "specifierSource": "conventional-commits"
@@ -118,11 +135,22 @@
         "typecheckTargetName": "typecheck"
       },
       "include": ["e2e/token-vault-app/**/*"]
+    },
+    {
+      "plugin": "@nx/vite/plugin",
+      "options": {
+        "buildTargetName": "vite:build",
+        "testTargetName": "vite:test",
+        "serveTargetName": "vite:serve",
+        "previewTargetName": "vite:preview",
+        "serveStaticTargetName": "vite:serve-static",
+        "typecheckTargetName": "vite:typecheck"
+      }
     }
   ],
   "defaultProject": "javascript-sdk",
   "useDaemonProcess": true,
-
   "useInferencePlugins": true,
-  "defaultBase": "develop"
+  "defaultBase": "develop",
+  "useLegacyCache": true
 }

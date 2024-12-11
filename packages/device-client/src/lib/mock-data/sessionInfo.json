@@ -1,0 +1,11 @@
+{
+  "username": "c49e9f78-0193-402e-b8d1-be70da3c3d17",
+  "universalId": "id=c49e9f78-0193-402e-b8d1-be70da3c3d17,ou=user,o=alpha,ou=services,ou=am-config",
+  "realm": "/alpha",
+  "latestAccessTime": "2024-10-08T19:46:20Z",
+  "maxIdleExpirationTime": "2024-10-08T20:16:20Z",
+  "maxSessionExpirationTime": "2024-10-08T21:39:44Z",
+  "properties": {
+    "AMCtxId": "b7f52b24-d680-4778-8302-f82ab09d8184-434294"
+  }
+}

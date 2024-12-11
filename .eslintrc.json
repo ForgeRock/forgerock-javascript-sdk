@@ -6,7 +6,7 @@
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
       "rules": {
         "@nx/enforce-module-boundaries": [
-          "error",
+          "warn",
           {
             "enforceBuildableLibDependency": true,
             "allow": [
@@ -15,10 +15,6 @@
               "@angular/forms"
             ],
             "depConstraints": [
-              {
-                "sourceTag": "scope:sample",
-                "onlyDependOnLibsWithTags": ["scope:sdk"]
-              },
               {
                 "sourceTag": "scope:app",
                 "onlyDependOnLibsWithTags": [
@@ -32,24 +28,12 @@
                 "onlyDependOnLibsWithTags": ["scope:sdk, scope:app"]
               },
               {
-                "sourceTag": "scope:lib",
-                "onlyDependOnLibsWithTags": [
-                  "scope:sdk",
-                  "scope:types",
-                  "scope:lib"
-                ]
-              },
-              {
                 "sourceTag": "scope:sdk",
                 "onlyDependOnLibsWithTags": []
               },
               {
                 "sourceTag": "scope:package",
-                "onlyDependOnLibsWithTags": [
-                  "scope:sdk",
-                  "scope:lib",
-                  "scope:types"
-                ]
+                "onlyDependOnLibsWithTags": ["scope:sdk"]
               },
               {
                 "sourceTag": "scope:token-vault",

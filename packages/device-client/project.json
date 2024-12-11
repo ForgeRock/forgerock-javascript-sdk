@@ -1,0 +1,40 @@
+{
+  "name": "device-client",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "packages/self-service/src",
+  "projectType": "library",
+  "tags": ["scope:package"],
+  "targets": {
+    "build": {
+      "outputs": ["{projectRoot}/{options.outDir}", "{projectRoot}/dist"],
+      "options": {
+        "assets": ["packages/self-service/*.md"]
+      }
+    },
+    "lint": {
+      "options": {
+        "fix": true,
+        "ignore-path": ".eslintignore",
+        "args": ["**/*.ts"]
+      }
+    },
+    "test": {
+      "inputs": [
+        "default",
+        "^default",
+        {
+          "externalDependencies": ["vitest"]
+        }
+      ],
+      "options": {
+        "testPathPattern": ["packages/javascript-sdk/src"]
+      },
+      "configurations": {
+        "watch": {
+          "watch": true,
+          "mode": "ui"
+        }
+      }
+    }
+  }
+}

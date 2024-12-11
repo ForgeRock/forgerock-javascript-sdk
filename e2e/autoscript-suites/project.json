@@ -4,6 +4,7 @@
   "sourceRoot": "e2e/autoscript-suites/src",
   "projectType": "application",
   "tags": [],
+  "implicitDependencies": ["autoscript-apps", "mock-api", "mock-api-v2"],
   "targets": {
     "e2e": {
       "options": {},

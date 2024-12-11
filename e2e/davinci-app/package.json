@@ -1,0 +1,12 @@
+{
+  "name": "davinci-app",
+  "description": "Ping DaVinci Client Test App",
+  "type": "module",
+  "private": true,
+  "dependencies": {
+    "@forgerock/davinci-client": "workspace:*",
+    "@forgerock/javascript-sdk": "workspace:*"
+  },
+  "devDependencies": {},
+  "version": "0.0.0"
+}

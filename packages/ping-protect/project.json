@@ -9,7 +9,6 @@
       "command": "npx typedoc --options ./packages/ping-protect/typedoc.json"
     },
     "build": {
-      "dependsOn": ["javascript-sdk:build"],
       "inputs": [
         "default",
         "^default",
@@ -20,13 +19,11 @@
       "outputs": ["{projectRoot}/dist"]
     },
     "lint": {
-      "dependsOn": ["javascript-sdk:build"],
       "options": {
         "args": ["**/*.ts"]
       }
     },
     "test": {
-      "dependsOn": ["javascript-sdk:build"],
       "inputs": [
         "default",
         "^default",
