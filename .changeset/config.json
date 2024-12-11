@@ -21,6 +21,7 @@
     "token-vault-app",
     "@forgerock/token-vault-interceptor",
     "token-vault-proxy",
-    "token-vault-suites"
+    "token-vault-suites",
+    "davinci-suites"
   ]
 }
