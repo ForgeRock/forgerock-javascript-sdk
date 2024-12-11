@@ -2,4 +2,4 @@
 '@forgerock/davinci-client': patch
 ---
 
-chore: fix-version-formatting
+explicitly add access public
