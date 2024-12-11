@@ -48,7 +48,13 @@
     "@nx/vite:build": {
       "dependsOn": ["^build"],
       "cache": true,
-      "inputs": ["noMarkdown", "^noMarkdown"]
+      "inputs": ["noMarkdown", "^noMarkdown"],
+      "outputs": ["{projectRoot}/dist"]
+    },
+    "@nx/playwright:run": {
+      "dependsOn": ["^build"],
+      "inputs": ["noMarkdown", "^noMarkdown"],
+      "cache": true
     },
     "@nx/esbuild:esbuild": {
       "dependsOn": ["^build"],
