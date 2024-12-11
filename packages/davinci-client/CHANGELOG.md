@@ -1,5 +1,13 @@
 # @forgerock/davinci-client
 
+## 0.1.3
+
+### Patch Changes
+
+- [#518](https://github.com/ForgeRock/forgerock-javascript-sdk/pull/518) [`03e4e84`](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/03e4e849b7889124f3fca59a844d54c82cc47367) Thanks [@ryanbas21](https://github.com/ryanbas21)! - remove the format check for ci
+
+- [#520](https://github.com/ForgeRock/forgerock-javascript-sdk/pull/520) [`3563b77`](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/3563b77855a8d5e140e6de1f9801e53fb6504ba3) Thanks [@ryanbas21](https://github.com/ryanbas21)! - explicitly add access public
+
 ## 0.1.2
 
 ### Patch Changes
