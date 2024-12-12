@@ -5,3 +5,5 @@
 [ForgeRock Token Vault package](./packages/token-vault/CHANGELOG.md)
 
 [ForgeRock Ping Protect package](./packages/ping-protect/CHANGELOG.md)
+
+[ForgeRock DaVinci Client package](./packages/davinci-client/CHANGELOG.md)
