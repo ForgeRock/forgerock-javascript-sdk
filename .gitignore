@@ -18,6 +18,7 @@ e2e/token-vault-app/public/assets/
 bundles/
 docs/
 coverage/
+packages/**/coverage/
 node_modules/
 samples/_static/js/*.js*
 tests/**/app/index.js*

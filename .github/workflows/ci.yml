@@ -34,7 +34,12 @@ jobs:
       - run: git branch --track develop origin/develop
 
       - run: pnpm exec nx-cloud record -- nx format:check --verbose
-      - run: pnpm exec nx affected -t build lint test e2e-ci --verbose
+      - run: pnpm exec nx affected -t build lint test docs e2e-ci --verbose
+
+      - uses: codecov/codecov-action@v5
+        with:
+          files: ./packages/**/coverage/*.xml
+          token: ${{ secrets.CODECOV_TOKEN }}
 
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}

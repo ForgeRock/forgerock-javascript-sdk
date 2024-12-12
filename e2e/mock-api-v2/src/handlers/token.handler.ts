@@ -1,7 +1,7 @@
 import { Effect } from 'effect';
 import { RouterBuilder } from 'effect-http';
-import { apiSpec } from '../spec';
-import { Tokens } from '../services/tokens.service';
+import { apiSpec } from '../spec.js';
+import { Tokens } from '../services/tokens.service.js';
 
 const tokenHandler = RouterBuilder.handler(apiSpec, 'PingOneToken', () =>
   Effect.gen(function* () {

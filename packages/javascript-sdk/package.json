@@ -50,8 +50,5 @@
       }
     }
   },
-  "type": "module",
-  "devDependencies": {
-    "vitest": "^1.4.0"
-  }
+  "type": "module"
 }

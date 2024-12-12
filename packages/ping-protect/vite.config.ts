@@ -34,8 +34,10 @@ export default defineConfig({
     setupFiles: ['./vitest.setup.ts'],
     watch: !process.env['CI'],
     coverage: {
+      reporter: ['text', 'json', 'html'],
+      enabled: Boolean(process.env['CI']),
+      reportsDirectory: './coverage',
       provider: 'v8',
-      reportsDirectory: '../../coverage/packages/ping-protect',
     },
     deps: {
       optimizer: {

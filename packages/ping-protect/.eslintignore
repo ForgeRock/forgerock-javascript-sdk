@@ -8,3 +8,4 @@ dist
 src/lib/ping-signals-sdk.js
 .eslintignore
 docs
+coverage

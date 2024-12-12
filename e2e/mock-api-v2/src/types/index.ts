@@ -1,11 +1,11 @@
 import { Schema } from '@effect/schema';
-import { DavinciAuthorizeHeaders, DavinciAuthorizeQuery } from '../schemas/authorize.schema';
+import { DavinciAuthorizeHeaders, DavinciAuthorizeQuery } from '../schemas/authorize.schema.js';
 import {
   PingOneCustomHtmlRequestBody,
   PingOneRequestQuery,
-} from '../schemas/custom-html-template/custom-html-template-request.schema';
-import { PingOneCustomHtmlResponseBody } from '../schemas/custom-html-template/custom-html-template-response.schema';
-import { SuccessResponseRedirect } from '../schemas/return-success-response-redirect.schema';
+} from '../schemas/custom-html-template/custom-html-template-request.schema.js';
+import { PingOneCustomHtmlResponseBody } from '../schemas/custom-html-template/custom-html-template-response.schema.js';
+import { SuccessResponseRedirect } from '../schemas/return-success-response-redirect.schema.js';
 
 type QueryTypes =
   | Schema.Schema.Type<typeof DavinciAuthorizeQuery>

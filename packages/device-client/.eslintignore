@@ -7,3 +7,4 @@ LICENSE
 dist
 .eslintignore
 docs
+coverage

@@ -1,8 +1,8 @@
 import { it, expect } from '@effect/vitest';
 import { Effect, Layer } from 'effect';
-import { Authorize, authorizeMock } from '../authorize.service';
-import { mockRequest } from '../request.service';
-import { PingProtectNode } from '../../responses/custom-html-template/ping-protect-node';
+import { Authorize, authorizeMock } from '../authorize.service.js';
+import { mockRequest } from '../request.service.js';
+import { PingProtectNode } from '../../responses/custom-html-template/ping-protect-node.js';
 
 const queryParams = {
   response_mode: 'pi.flow',

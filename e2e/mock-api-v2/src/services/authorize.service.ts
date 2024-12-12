@@ -2,11 +2,11 @@ import { Schema } from '@effect/schema';
 import { Context, Effect, Layer, pipe } from 'effect';
 import { HttpError } from 'effect-http';
 
-import { getFirstElementAndRespond } from './mock-env-helpers';
-import { Request } from './request.service';
-import { PingOneCustomHtmlResponseBody } from '../schemas/custom-html-template/custom-html-template-response.schema';
+import { getFirstElementAndRespond } from './mock-env-helpers/index.js';
+import { Request } from './request.service.js';
+import { PingOneCustomHtmlResponseBody } from '../schemas/custom-html-template/custom-html-template-response.schema.js';
 
-import { HeaderTypes, QueryTypes } from '../types';
+import { HeaderTypes, QueryTypes } from '../types/index.js';
 
 type AuthorizeResponseBody = Schema.Schema.Type<typeof PingOneCustomHtmlResponseBody>;
 

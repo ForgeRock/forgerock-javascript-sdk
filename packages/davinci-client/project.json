@@ -25,14 +25,7 @@
         {
           "externalDependencies": ["vitest"]
         }
-      ],
-      "outputs": [
-        "{projectRoot}/{options.coverage.reportsDirectory}",
-        "{workspaceRoot}/coverage/packages/davinci-client"
-      ],
-      "options": {
-        "coverage.reportsDirectory": "../../coverage/packages/davinci-client"
-      }
+      ]
     },
     "lint": {
       "inputs": [

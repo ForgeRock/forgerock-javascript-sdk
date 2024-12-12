@@ -35,9 +35,12 @@ export default defineConfig(() => ({
     passWithNoTests: true,
     watch: !process.env['CI'],
     coverage: {
+      enabled: Boolean(process.env['CI']),
+      reporter: ['text', 'json', 'html'],
+      reportsDirectory: './coverage',
       provider: 'v8',
-      reportsDirectory: '../../coverage/packages/self-service',
     },
+
     deps: {
       optimizer: {
         web: {

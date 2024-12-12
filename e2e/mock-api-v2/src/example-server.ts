@@ -1,7 +1,7 @@
 import { RouterBuilder, Middlewares, ExampleServer } from 'effect-http';
 import { NodeRuntime } from '@effect/platform-node';
 import { NodeServer } from 'effect-http-node';
-import { apiSpec } from './spec';
+import { apiSpec } from './spec.js';
 
 const app = ExampleServer.make(apiSpec).pipe(RouterBuilder.build, Middlewares.errorLog);
 

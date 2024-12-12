@@ -1,5 +1,5 @@
 import { it, expect } from '@effect/vitest';
-import { PingRequestData, validator } from '../match';
+import { PingRequestData, validator } from '../match.js';
 import { Effect, Exit } from 'effect';
 
 it.effect('match validation function passes username password validation', () =>

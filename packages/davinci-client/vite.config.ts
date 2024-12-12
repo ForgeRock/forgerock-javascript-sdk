@@ -46,7 +46,6 @@ export default defineConfig({
     reportCompressedSize: true,
     commonjsOptions: { transformMixedEsModules: true },
   },
-
   test: {
     cache: {
       dir: '../../node_modules/.vitest',
@@ -55,6 +54,11 @@ export default defineConfig({
     environment: 'jsdom',
     include: ['src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
     reporters: ['default'],
-    coverage: { reportsDirectory: '../../coverage/packages/davinci-client', provider: 'v8' },
+    coverage: {
+      reporter: ['text', 'json', 'html'],
+      enabled: Boolean(process.env['CI']),
+      reportsDirectory: './coverage',
+      provider: 'v8',
+    },
   },
 });

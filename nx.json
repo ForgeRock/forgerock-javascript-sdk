@@ -18,7 +18,9 @@
       }
     },
     "docs": {
-      "cache": true
+      "dependsOn": ["^build", "^docs"],
+      "cache": true,
+      "outputs": ["{projectRoot}/docs"]
     },
     "serve": {
       "cache": false,
@@ -38,6 +40,7 @@
     "@nx/vite:test": {
       "dependsOn": ["^test"],
       "inputs": ["noMarkdown", "^noMarkdown"],
+      "outputs": ["{projectRoot}/coverage"],
       "cache": true
     },
     "@nx/eslint:lint": {
@@ -69,7 +72,8 @@
     "@nx/js:tsc": {
       "cache": true,
       "dependsOn": ["^build"],
-      "inputs": ["production", "^production"]
+      "inputs": ["production", "^production"],
+      "outputs": ["{projectRoot}/dist"]
     }
   },
   "parallel": 1,
