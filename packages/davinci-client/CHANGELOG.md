@@ -1,5 +1,11 @@
 # @forgerock/davinci-client
 
+## 1.0.0
+
+### Major Changes
+
+- [#522](https://github.com/ForgeRock/forgerock-javascript-sdk/pull/522) [`6b007a6`](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/6b007a638901af05104e92bc78c11a088afb34f1) Thanks [@ryanbas21](https://github.com/ryanbas21)! - 1.0 Release of davinci-client
+
 ## 0.1.3
 
 ### Patch Changes
