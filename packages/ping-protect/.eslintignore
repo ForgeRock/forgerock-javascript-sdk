@@ -9,3 +9,4 @@ src/lib/ping-signals-sdk.js
 .eslintignore
 docs
 coverage
+vite.config.*.timestamp*

@@ -22,7 +22,7 @@
   "externalSymbolLinkMappings": {},
   "out": "./docs",
   "emit": "docs",
-  "theme": "hierarchy",
+  "theme": "typedoc-github-theme",
   "name": "device-client",
   "includeVersion": true,
   "readme": "./README.md",
@@ -64,5 +64,5 @@
   "treatWarningsAsErrors": false,
   "intentionallyNotExported": [],
   "logLevel": "Verbose",
-  "plugin": ["typedoc-plugin-rename-defaults"]
+  "plugin": ["typedoc-plugin-rename-defaults", "typedoc-github-theme"]
 }
