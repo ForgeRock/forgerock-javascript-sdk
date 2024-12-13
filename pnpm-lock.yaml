@@ -236,9 +236,6 @@ importers:
       typedoc-plugin-rename-defaults:
         specifier: ^0.7.2
         version: 0.7.2(typedoc@0.27.4(typescript@5.6.3))
-      typedoc-theme-hierarchy:
-        specifier: ^5.0.3
-        version: 5.0.3(typedoc@0.27.4(typescript@5.6.3))
       typescript:
         specifier: 5.6.3
         version: 5.6.3
@@ -7588,13 +7585,6 @@ packages:
       }
     engines: { node: '>=12' }
 
-  fs-extra@11.1.1:
-    resolution:
-      {
-        integrity: sha512-MGIE4HOvQCeUCzmlHs0vXpih4ysz4wg9qiSAu6cd42lVwPbTM1TjV7RusoyQqMmk/95gdQZX72u+YW+c3eEpFQ==,
-      }
-    engines: { node: '>=14.14' }
-
   fs-extra@11.2.0:
     resolution:
       {
@@ -13545,14 +13535,6 @@ packages:
       }
     peerDependencies:
       typedoc: '>=0.22.x <0.28.x'
-
-  typedoc-theme-hierarchy@5.0.3:
-    resolution:
-      {
-        integrity: sha512-88ItQMqVCb/QstNsP3i18tNp7NvQb1fTCFcHmte56pm6FCeMHzemP9AilRu3MYqfu1FM9FX8QsLl6gDzUxKTDg==,
-      }
-    peerDependencies:
-      typedoc: ^0.26.0
 
   typedoc@0.27.4:
     resolution:
@@ -19769,12 +19751,6 @@ snapshots:
       jsonfile: 6.1.0
       universalify: 2.0.1
 
-  fs-extra@11.1.1:
-    dependencies:
-      graceful-fs: 4.2.11
-      jsonfile: 6.1.0
-      universalify: 2.0.1
-
   fs-extra@11.2.0:
     dependencies:
       graceful-fs: 4.2.11
@@ -23558,11 +23534,6 @@ snapshots:
   typedoc-plugin-rename-defaults@0.7.2(typedoc@0.27.4(typescript@5.6.3)):
     dependencies:
       camelcase: 8.0.0
-      typedoc: 0.27.4(typescript@5.6.3)
-
-  typedoc-theme-hierarchy@5.0.3(typedoc@0.27.4(typescript@5.6.3)):
-    dependencies:
-      fs-extra: 11.1.1
       typedoc: 0.27.4(typescript@5.6.3)
 
   typedoc@0.27.4(typescript@5.6.3):

@@ -64,5 +64,5 @@
   "treatWarningsAsErrors": false,
   "intentionallyNotExported": [],
   "logLevel": "Verbose",
-  "plugin": ["typedoc-plugin-rename-defaults", "typedoc-theme-hierarchy"]
+  "plugin": ["typedoc-plugin-rename-defaults"]
 }
