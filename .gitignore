@@ -81,3 +81,4 @@ terminalOutput
 outputs/*
 
 
+e2e/mock-api-v2/html/*
