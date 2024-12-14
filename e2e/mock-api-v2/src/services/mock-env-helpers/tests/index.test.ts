@@ -6,10 +6,10 @@ import {
   getNextStep,
   mapDataToValue,
   validateCustomHtmlRequest,
-} from '..';
-import { CustomHtmlRequestBody, QueryTypes } from '../../../types';
-import { PingProtectNode } from '../../../responses/custom-html-template/ping-protect-node';
-import { UsernamePassword } from '../../../responses/username-password';
+} from '../index.js';
+import { CustomHtmlRequestBody, QueryTypes } from '../../../types/index.js';
+import { PingProtectNode } from '../../../responses/custom-html-template/ping-protect-node.js';
+import { UsernamePassword } from '../../../responses/username-password.js';
 
 it('should map data to value in a DavinciFormData', () => {
   const data = Option.some({

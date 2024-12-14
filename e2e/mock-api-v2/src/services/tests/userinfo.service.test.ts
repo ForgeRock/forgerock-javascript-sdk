@@ -1,6 +1,6 @@
 import { expect, it } from '@effect/vitest';
-import { UserInfo, userInfoMock } from '../userinfo.service';
-import { userInfoResponse } from '../../responses/userinfo/userinfo';
+import { UserInfo, userInfoMock } from '../userinfo.service.js';
+import { userInfoResponse } from '../../responses/userinfo/userinfo.js';
 import { Effect } from 'effect';
 
 it.effect('should get userinfo', () =>

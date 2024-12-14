@@ -1,8 +1,8 @@
 import { it, expect } from '@effect/vitest';
-import { Request, mockRequest } from '../request.service';
+import { Request, mockRequest } from '../request.service.js';
 import { Effect } from 'effect';
-import { CustomHtmlResponseBody } from '../custom-html-template.service';
-import { UsernamePassword } from '../../responses/username-password';
+import { CustomHtmlResponseBody } from '../custom-html-template.service.js';
+import { UsernamePassword } from '../../responses/username-password.js';
 
 it('should make a get request', () =>
   Effect.gen(function* () {

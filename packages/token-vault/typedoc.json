@@ -23,7 +23,7 @@
   "out": "./docs",
   "emit": "docs",
   "theme": "typedoc-github-theme",
-  "name": "javascript-sdk",
+  "name": "token-vault",
   "includeVersion": true,
   "readme": "./README.md",
   "disableSources": false,

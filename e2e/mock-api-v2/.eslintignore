@@ -6,3 +6,5 @@ LICENSE
 .bin
 dist
 .eslintignore
+coverage
+html/*

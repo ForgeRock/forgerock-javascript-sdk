@@ -1,4 +1,3 @@
-/// <reference types='vitest' />
 import { defineConfig } from 'vite';
 import dts from 'vite-plugin-dts';
 import { copyFileSync } from 'fs';
@@ -43,13 +42,15 @@ export default defineConfig({
   test: {
     globals: true,
     environment: 'jsdom',
-    include: ['src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
+    include: ['src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}', 'tests/**/*.test.ts'],
     watch: !process.env['CI'],
     reporters: ['default'],
     setupFiles: ['./vitest.setup.ts'],
     coverage: {
+      enabled: Boolean(process.env['CI']),
+      reporter: ['text', 'json', 'html'],
+      reportsDirectory: './coverage',
       provider: 'v8',
-      reportsDirectory: '../../coverage/packages/javascript-sdk',
     },
     deps: {
       optimizer: {

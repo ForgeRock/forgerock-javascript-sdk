@@ -92,3 +92,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_CONFIG_PROVENANCE: true
+
+      - uses: codecov/codecov-action@v5
+        with:
+          files: ./packages/**/coverage/*.xml
+          token: ${{ secrets.CODECOV_TOKEN }}
