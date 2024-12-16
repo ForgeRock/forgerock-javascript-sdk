@@ -17,7 +17,6 @@
     "@effect/platform": "^0.58.27",
     "@effect/platform-node": "^0.53.26",
     "effect-http": "^0.73.0",
-    "effect-http-node": "^0.16.1",
-    "esbuild": "^0.14.10"
+    "effect-http-node": "^0.16.1"
   }
 }

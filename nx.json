@@ -55,44 +55,6 @@
     "appsDir": "",
     "libsDir": ""
   },
-  "plugins": [
-    {
-      "plugin": "@nx/playwright/plugin",
-      "options": {
-        "ciTargetName": "e2e-ci",
-        "targetName": "e2e"
-      }
-    },
-    {
-      "plugin": "@nx/eslint/plugin",
-      "options": {
-        "targetName": "lint"
-      }
-    },
-    {
-      "plugin": "@nx/vite/plugin",
-      "options": {
-        "buildTargetName": "build",
-        "serveTargetName": "serve",
-        "previewTargetName": "preview",
-        "testTargetName": "test",
-        "serveStaticTargetName": "serve-static",
-        "typecheckTargetName": "typecheck"
-      },
-      "include": ["e2e/**/*", "packages/**/*"]
-    },
-    {
-      "plugin": "@nx/vite/plugin",
-      "options": {
-        "buildTargetName": "vite:build",
-        "testTargetName": "vite:test",
-        "serveTargetName": "vite:serve",
-        "previewTargetName": "vite:preview",
-        "serveStaticTargetName": "vite:serve-static",
-        "typecheckTargetName": "vite:typecheck"
-      }
-    }
-  ],
   "useDaemonProcess": true,
   "useInferencePlugins": true,
   "defaultBase": "develop",

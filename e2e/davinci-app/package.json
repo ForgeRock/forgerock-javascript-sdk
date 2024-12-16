@@ -12,6 +12,7 @@
   "scripts": {
     "build": "vite build --watch false",
     "dev": "vite dev",
+    "serve": "vite preview",
     "preview": "vite preview",
     "lint": "eslint **/*.ts --fix"
   }
