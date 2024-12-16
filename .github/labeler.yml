@@ -19,10 +19,6 @@ davinci-client:
 device-client:
   - packages/device-client/*
 
-javascript-sdk:
-  - packages/javascript-sdk/*
-  - packages/javascript-sdk/**/*
-
 ping-protect: -packages/ping-protect/*
 test:
   - e2e/**/*

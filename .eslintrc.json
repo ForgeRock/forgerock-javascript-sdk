@@ -17,23 +17,19 @@
             "depConstraints": [
               {
                 "sourceTag": "scope:app",
-                "onlyDependOnLibsWithTags": ["scope:sdk", "scope:package"]
+                "onlyDependOnLibsWithTags": ["scope:package"]
               },
               {
                 "sourceTag": "scope:e2e",
-                "onlyDependOnLibsWithTags": ["scope:sdk, scope:app"]
-              },
-              {
-                "sourceTag": "scope:sdk",
-                "onlyDependOnLibsWithTags": []
+                "onlyDependOnLibsWithTags": ["scope:app"]
               },
               {
                 "sourceTag": "scope:package",
-                "onlyDependOnLibsWithTags": ["scope:sdk"]
+                "onlyDependOnLibsWithTags": []
               },
               {
                 "sourceTag": "scope:types",
-                "onlyDependOnLibsWithTags": ["scope:sdk"]
+                "onlyDependOnLibsWithTags": []
               }
             ]
           }

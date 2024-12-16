@@ -9,9 +9,6 @@ e2e/**/dist
 */dist/*
 dist/*
 packages/*/dist/
-packages/javascript-sdk/lib-esm
-packages/javascript-sdk/lib
-packages/javascript-sdk/bundle/
 bundles/
 docs/
 coverage/

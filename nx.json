@@ -93,7 +93,6 @@
       }
     }
   ],
-  "defaultProject": "javascript-sdk",
   "useDaemonProcess": true,
   "useInferencePlugins": true,
   "defaultBase": "develop",
