@@ -5,12 +5,8 @@ import { workspaceRoot } from '@nx/devkit';
 const baseURL = process.env['BASE_URL'] || 'http://localhost:5829';
 
 const config: PlaywrightTestConfig = {
-<<<<<<< HEAD
-  ...baseConfig,
   outputDir: './.playwright',
-=======
   testDir: './src',
->>>>>>> c9c7c19 (chore: remove-ping-protect-and-e2es)
   reporter: process.env.CI ? 'github' : 'list',
   timeout: 30000,
   use: {

@@ -35,6 +35,7 @@
     "test": {
       "dependsOn": ["^build", "^test"],
       "inputs": ["noMarkdown", "^noMarkdown"],
+      "outputs": ["{projectRoot}/coverage"],
       "cache": true
     },
     "build": {
