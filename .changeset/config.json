@@ -7,16 +7,14 @@
     }
   ],
   "commit": false,
-  "fixed": [["@forgerock/ping-protect"]],
+  "fixed": [],
   "linked": [],
   "access": "public",
   "baseBranch": "master",
   "updateInternalDependencies": "patch",
   "ignore": [
-    "@forgerock/device-client",
-    "@forgerock/autoscript-apps",
-    "@forgerock/autoscript-suites",
     "@forgerock/davinci-app",
-    "@forgerock/mock-api"
+    "@forgerock/davinci-suites",
+    "@forgerock/mock-api-v2"
   ]
 }
