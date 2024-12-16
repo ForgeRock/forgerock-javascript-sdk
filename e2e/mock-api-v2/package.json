@@ -2,17 +2,22 @@
   "name": "@forgerock/mock-api-v2",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "./dist/index.js",
+  "type": "commonjs",
   "scripts": {
-    "build": "esbuild \"src/**/*.ts\" --platform=node --outdir=dist --format=cjs --sourcemap --bundle=false",
-    "build:watch": "esbuild \"src/**/*.ts\" --platform=node --outdir=dist --format=cjs --sourcemap --bundle=false --watch",
-    "build:prod": "esbuild \"src/**/*.ts\" --platform=node --outdir=dist --format=cjs --bundle=false",
-    "build:example": "esbuild \"src/**/*.ts\" --platform=node --outdir=dist --format=cjs --sourcemap --bundle=false",
-    "serve": "node dist/main.js",
-    "serve:dev": "nodemon dist/main.js",
-    "serve:example": "node dist/example-server.js",
+    "build": "tsc --project tsconfig.app.json",
+    "build:watch": "tsc --project tsconfig.app.json --watch",
+    "serve": "node dist/e2e/mock-api-v2/src/main.js",
+    "serve:dev": "nodemon dist/e2e/mock-api-v2/src/main.js",
     "test": "vitest run --coverage --coverage.reportsDirectory=../../coverage/mock-api-v2",
     "test:watch": "vitest watch --coverage --coverage.reportsDirectory=../../coverage/mock-api-v2",
     "lint": "eslint --fix --ignore-path .eslintignore \"**/*.ts\""
+  },
+  "dependencies": {
+    "@effect/platform": "^0.58.27",
+    "@effect/platform-node": "^0.53.26",
+    "effect-http": "^0.73.0",
+    "effect-http-node": "^0.16.1",
+    "esbuild": "^0.14.10"
   }
 }

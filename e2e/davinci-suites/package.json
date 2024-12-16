@@ -1,5 +1,5 @@
 {
-  "name": "davinci-suites",
+  "name": "@forgerock/davinci-suites",
   "description": "DaVinci Client E2E Suites",
   "private": true,
   "type": "module",
