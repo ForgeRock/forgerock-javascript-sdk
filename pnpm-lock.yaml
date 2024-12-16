@@ -276,8 +276,8 @@ importers:
         specifier: workspace:*
         version: link:../../packages/device-client
       '@forgerock/javascript-sdk':
-        specifier: workspace:*
-        version: link:../../packages/javascript-sdk
+        specifier: 4.6.0
+        version: 4.6.0
       '@forgerock/ping-protect':
         specifier: workspace:*
         version: link:../../packages/ping-protect
@@ -293,8 +293,8 @@ importers:
         specifier: workspace:*
         version: link:../../packages/davinci-client
       '@forgerock/javascript-sdk':
-        specifier: workspace:*
-        version: link:../../packages/javascript-sdk
+        specifier: 4.6.0
+        version: 4.6.0
 
   e2e/davinci-suites: {}
 
@@ -321,8 +321,8 @@ importers:
   e2e/token-vault-app:
     dependencies:
       '@forgerock/javascript-sdk':
-        specifier: workspace:*
-        version: link:../../packages/javascript-sdk
+        specifier: 4.6.0
+        version: 4.6.0
       '@forgerock/token-vault':
         specifier: workspace:*
         version: link:../../packages/token-vault
@@ -339,8 +339,8 @@ importers:
   e2e/token-vault-proxy:
     dependencies:
       '@forgerock/javascript-sdk':
-        specifier: workspace:*
-        version: link:../../packages/javascript-sdk
+        specifier: 4.6.0
+        version: 4.6.0
       '@forgerock/token-vault':
         specifier: workspace:*
         version: link:../../packages/token-vault
@@ -350,8 +350,8 @@ importers:
   packages/davinci-client:
     dependencies:
       '@forgerock/javascript-sdk':
-        specifier: workspace:*
-        version: link:../javascript-sdk
+        specifier: 4.6.0
+        version: 4.6.0
       '@reduxjs/toolkit':
         specifier: 2.3.0
         version: 2.3.0(react@18.3.1)
@@ -367,7 +367,7 @@ importers:
     dependencies:
       '@forgerock/javascript-sdk':
         specifier: 4.6.0
-        version: link:../javascript-sdk
+        version: 4.6.0
       '@reduxjs/toolkit':
         specifier: 2.3.0
         version: 2.3.0(react@18.3.1)
@@ -382,23 +382,17 @@ importers:
         specifier: ^1.4.0
         version: 1.5.0(@types/node@22.10.2)(@vitest/ui@1.5.0)(jsdom@22.1.0)(less@4.1.3)(sass@1.75.0)(stylus@0.64.0)(terser@5.33.0)
 
-  packages/javascript-sdk:
-    devDependencies:
-      vitest:
-        specifier: ^1.4.0
-        version: 1.5.0(@types/node@22.10.2)(@vitest/ui@1.5.0)(jsdom@22.1.0)(less@4.1.3)(sass@1.75.0)(stylus@0.64.0)(terser@5.33.0)
-
   packages/ping-protect:
     dependencies:
       '@forgerock/javascript-sdk':
-        specifier: workspace:*
-        version: link:../javascript-sdk
+        specifier: 4.6.0
+        version: 4.6.0
 
   packages/token-vault:
     dependencies:
       '@forgerock/javascript-sdk':
-        specifier: workspace:*
-        version: link:../javascript-sdk
+        specifier: 4.6.0
+        version: 4.6.0
 
 packages:
   '@aashutoshrathi/word-wrap@1.2.6':
@@ -2211,6 +2205,12 @@ packages:
         integrity: sha512-Ys+3g2TaW7gADOJzPt83SJtCDhMjndcDMFVQ/Tj9iA1BfJzFKD9mAUXT3OenpuPHbI6P/myECxRJrofUsDx/5g==,
       }
     engines: { node: ^12.22.0 || ^14.17.0 || >=16.0.0 }
+
+  '@forgerock/javascript-sdk@4.6.0':
+    resolution:
+      {
+        integrity: sha512-4Ss/CIz3pc0LVuAl1iKVwdqX13zznmqw/bRaGH0jafv8WPnP3Mcl4K2lGdp9UoI3cVrCZMqbcjjgv1Ofs1VrQg==,
+      }
 
   '@gerrit0/mini-shiki@1.24.4':
     resolution:
@@ -15969,6 +15969,8 @@ snapshots:
       - supports-color
 
   '@eslint/js@8.57.0': {}
+
+  '@forgerock/javascript-sdk@4.6.0': {}
 
   '@gerrit0/mini-shiki@1.24.4':
     dependencies:

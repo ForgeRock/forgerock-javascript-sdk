@@ -5,7 +5,7 @@
   "private": true,
   "dependencies": {
     "@forgerock/davinci-client": "workspace:*",
-    "@forgerock/javascript-sdk": "workspace:*"
+    "@forgerock/javascript-sdk": "4.6.0"
   },
   "devDependencies": {},
   "version": "0.0.0",

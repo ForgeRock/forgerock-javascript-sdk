@@ -15,7 +15,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@forgerock/javascript-sdk": "workspace:*",
+    "@forgerock/javascript-sdk": "4.6.0",
     "@reduxjs/toolkit": "2.3.0",
     "immer": "10.1.1"
   },

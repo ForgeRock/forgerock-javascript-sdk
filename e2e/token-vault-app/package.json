@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "dependencies": {
-    "@forgerock/javascript-sdk": "workspace:*",
+    "@forgerock/javascript-sdk": "4.6.0",
     "@forgerock/token-vault": "workspace:*",
     "@forgerock/token-vault-interceptor": "workspace:*"
   },

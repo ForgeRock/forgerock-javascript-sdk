@@ -21,7 +21,7 @@
     }
   },
   "dependencies": {
-    "@forgerock/javascript-sdk": "workspace:*"
+    "@forgerock/javascript-sdk": "4.6.0"
   },
   "scripts": {
     "build": "vite build",
