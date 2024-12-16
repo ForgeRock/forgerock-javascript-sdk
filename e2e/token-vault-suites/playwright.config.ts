@@ -14,6 +14,7 @@ const baseConfig = nxE2EPreset(__filename, {
 
 const config: PlaywrightTestConfig = {
   ...baseConfig,
+  outputDir: './.playwright',
   reporter: process.env.CI ? 'github' : 'list',
   timeout: 30000,
   use: {

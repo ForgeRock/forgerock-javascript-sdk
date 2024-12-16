@@ -29,6 +29,7 @@
     "e2e": {
       "dependsOn": ["^build"],
       "inputs": ["noMarkdown", "^noMarkdown"],
+      "outputs": ["{projectRoot}/.playwright"],
       "cache": true
     },
     "build": {
@@ -57,16 +58,19 @@
     "@nx/playwright:run": {
       "dependsOn": ["^build"],
       "inputs": ["noMarkdown", "^noMarkdown"],
+      "outputs": ["{projectRoot}/.playwright"],
       "cache": true
     },
     "@nx/esbuild:esbuild": {
       "dependsOn": ["^build"],
       "cache": true,
-      "inputs": ["noMarkdown", "^noMarkdown"]
+      "inputs": ["noMarkdown", "^noMarkdown"],
+      "outputs": ["{projectRoot}/dist"]
     },
     "e2e-ci--**/*": {
       "dependsOn": ["^build"],
       "inputs": ["noMarkdown", "^noMarkdown"],
+      "outputs": ["{projectRoot}/.playwright"],
       "cache": true
     },
     "@nx/js:tsc": {
