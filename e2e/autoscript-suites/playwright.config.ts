@@ -1,5 +1,4 @@
 import * as os from 'os';
-import { PlaywrightTestConfig } from '@playwright/test';
 import { nxE2EPreset } from '@nx/playwright/preset';
 import { workspaceRoot } from '@nx/devkit';
 import { fileURLToPath } from 'url';
@@ -13,8 +12,9 @@ const baseConfig = nxE2EPreset(__filename, {
   testDir: './src/suites',
 });
 
-const config: PlaywrightTestConfig = {
+const config = {
   ...baseConfig,
+  outputDir: './.playwright',
   reporter: process.env.CI ? 'github' : 'list',
   testIgnore: '**/authz-txn*',
   use: {
