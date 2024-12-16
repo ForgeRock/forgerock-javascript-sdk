@@ -17,11 +17,7 @@
             "depConstraints": [
               {
                 "sourceTag": "scope:app",
-                "onlyDependOnLibsWithTags": [
-                  "scope:sdk",
-                  "scope:package",
-                  "scope:token-vault"
-                ]
+                "onlyDependOnLibsWithTags": ["scope:sdk", "scope:package"]
               },
               {
                 "sourceTag": "scope:e2e",
@@ -34,14 +30,6 @@
               {
                 "sourceTag": "scope:package",
                 "onlyDependOnLibsWithTags": ["scope:sdk"]
-              },
-              {
-                "sourceTag": "scope:token-vault",
-                "onlyDependOnLibsWithTags": [
-                  "scope:sdk",
-                  "scope:lib",
-                  "scope:types"
-                ]
               },
               {
                 "sourceTag": "scope:types",

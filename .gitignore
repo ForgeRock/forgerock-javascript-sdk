@@ -12,9 +12,6 @@ packages/*/dist/
 packages/javascript-sdk/lib-esm
 packages/javascript-sdk/lib
 packages/javascript-sdk/bundle/
-e2e/token-vault-app/public/*.js
-e2e/token-vault-app/public/*.json
-e2e/token-vault-app/public/assets/
 bundles/
 docs/
 coverage/

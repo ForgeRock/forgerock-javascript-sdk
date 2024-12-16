@@ -84,18 +84,6 @@
     {
       "plugin": "@nx/vite/plugin",
       "options": {
-        "buildTargetName": "build-interceptor",
-        "serveTargetName": "serve",
-        "previewTargetName": "preview",
-        "testTargetName": "test",
-        "serveStaticTargetName": "serve-static",
-        "typecheckTargetName": "typecheck"
-      },
-      "include": ["e2e/token-vault-app/**/*"]
-    },
-    {
-      "plugin": "@nx/vite/plugin",
-      "options": {
         "buildTargetName": "vite:build",
         "testTargetName": "vite:test",
         "serveTargetName": "vite:serve",

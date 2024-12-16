@@ -17,10 +17,6 @@
     "@forgerock/autoscript-apps",
     "@forgerock/autoscript-suites",
     "@forgerock/davinci-app",
-    "@forgerock/mock-api",
-    "@forgerock/token-vault-app",
-    "@forgerock/token-vault-interceptor",
-    "@forgerock/token-vault-proxy",
-    "@forgerock/token-vault-suites"
+    "@forgerock/mock-api"
   ]
 }

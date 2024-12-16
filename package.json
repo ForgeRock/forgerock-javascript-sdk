@@ -22,7 +22,6 @@
     "prepare": "node .husky/install.mjs",
     "publish:local": "node ./tools/release/local.mjs",
     "publish:dev": "node ./tools/release/dev.mjs",
-    "start:token-vault": "nx run-many --target=serve --projects=token-vault-app,token-vault-proxy,mock-api",
     "test": "CI=true nx affected:test",
     "verdaccio": "nx local-registry",
     "commitlint": "commitlint --edit"

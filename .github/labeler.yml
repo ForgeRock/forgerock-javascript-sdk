@@ -19,9 +19,6 @@ davinci-client:
 device-client:
   - packages/device-client/*
 
-token-vault:
-  - packages/token-vault/*
-
 javascript-sdk:
   - packages/javascript-sdk/*
   - packages/javascript-sdk/**/*
