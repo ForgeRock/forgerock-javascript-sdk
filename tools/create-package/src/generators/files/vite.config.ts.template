@@ -1,0 +1,26 @@
+import { defineConfig } from 'vite';
+
+export default defineConfig(() => ({
+  cacheDir: '../../node_modules/.vite/<%= name %>',
+  test: {
+    reporters: ['default'],
+    globals: true,
+    passWithNoTests: true,
+    watch: !process.env['CI'],
+    coverage: {
+      enabled: Boolean(process.env['CI']),
+      reporter: ['text', 'json', 'html'],
+      reportsDirectory: './coverage',
+      provider: 'v8',
+    },
+    deps: {
+      optimizer: {
+        web: {
+          include: ['vitest-canvas-mock'],
+        },
+      },
+    },
+    environment: 'jsdom',
+    include: ['src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
+  },
+}));

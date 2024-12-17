@@ -49,6 +49,11 @@
       "inputs": ["noMarkdown", "^noMarkdown"],
       "outputs": ["{projectRoot}/.playwright"],
       "cache": true
+    },
+    "@nx/js:tsc": {
+      "cache": true,
+      "dependsOn": ["^build"],
+      "inputs": ["production", "^production"]
     }
   },
   "parallel": 1,

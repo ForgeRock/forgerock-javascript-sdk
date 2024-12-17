@@ -1,0 +1,48 @@
+{
+  "name": "@forgerock/create-package",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "tools/create-package/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "tools/create-package/dist",
+        "main": "tools/create-package/src/index.ts",
+        "tsConfig": "tools/create-package/tsconfig.lib.json",
+        "assets": [
+          "tools/create-package/*.md",
+          {
+            "input": "./tools/create-package/src",
+            "glob": "**/!(*.ts)",
+            "output": "./src"
+          },
+          {
+            "input": "./tools/create-package/src",
+            "glob": "**/*.d.ts",
+            "output": "./src"
+          },
+          {
+            "input": "./tools/create-package",
+            "glob": "generators.json",
+            "output": "."
+          },
+          {
+            "input": "./tools/create-package",
+            "glob": "executors.json",
+            "output": "."
+          }
+        ]
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "options": {
+        "lintFilePatterns": ["tools/create-package/**/*.ts"],
+        "ignorePath": ".eslintignore"
+      }
+    }
+  }
+}

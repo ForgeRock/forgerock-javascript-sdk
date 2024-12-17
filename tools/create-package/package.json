@@ -1,0 +1,13 @@
+{
+  "name": "@forgerock/create-package",
+  "version": "0.0.1",
+  "dependencies": {
+    "@nx/devkit": "20.2.2",
+    "vitest": "^1.4.0"
+  },
+  "type": "commonjs",
+  "main": "./src/index.js",
+  "typings": "./src/index.d.ts",
+  "private": true,
+  "generators": "./generators.json"
+}

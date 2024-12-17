@@ -1,0 +1,26 @@
+{
+  "name": "@<%= packageScope %>/<%= name %>",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "typings": "./dist/index.d.ts",
+  "sideEffects": <%= sideEffects %>,
+  "exports": {
+    ".": "./dist/index.js",
+    "./package.json": "./package.json",
+    "./types": "./dist/index.d.ts"
+  },
+  "files": ["<%= outputDir %>"],
+  "dependencies": {},
+  "devDependencies": {},
+  "scripts": {
+    "build": "tsc --project ./tsconfig.lib.json ",
+    "docs": "typedoc --options packages/<%= name %>/typedoc.json",
+    "lint": "eslint **/*.ts --fix",
+    "test": "vitest",
+    "test:watch": "vitest --watch",
+    "test:coverage": "vitest --coverage"
+  }
+}
