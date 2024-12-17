@@ -4,7 +4,7 @@ import { defineConfig } from 'vite';
 export default defineConfig({
   root: __dirname,
   build: {
-    outDir: '../../dist/e2e/davinci-app',
+    outDir: './dist',
     reportCompressedSize: true,
     target: 'esnext',
     minify: false,
@@ -18,10 +18,10 @@ export default defineConfig({
     },
   },
   preview: {
-    port: 5823,
+    port: 5829,
   },
   server: {
-    port: 5823,
+    port: 5829,
     headers: {
       'Service-Worker-Allowed': '/',
       'Service-Worker': 'script',

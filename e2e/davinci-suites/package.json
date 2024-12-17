@@ -1,5 +1,5 @@
 {
-  "name": "davinci-suites",
+  "name": "@forgerock/davinci-suites",
   "description": "DaVinci Client E2E Suites",
   "private": true,
   "type": "module",
@@ -14,5 +14,8 @@
   "bugs": {
     "url": "https://github.com/ForgeRock/forgerock-javascript-sdk/issues"
   },
-  "homepage": "https://github.com/ForgeRock/forgerock-javascript-sdk#readme"
+  "homepage": "https://github.com/ForgeRock/forgerock-javascript-sdk#readme",
+  "scripts": {
+    "e2e": "playwright test -c ./playwright.config.ts"
+  }
 }

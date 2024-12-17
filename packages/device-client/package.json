@@ -15,10 +15,18 @@
   "files": ["./dist"],
   "dependencies": {
     "@reduxjs/toolkit": "2.3.0",
-    "@forgerock/javascript-sdk": "4.6.0"
+    "@forgerock/javascript-sdk": "4.6.0",
+    "immer": "10.1.1"
   },
   "devDependencies": {
     "msw": "^2.5.1",
     "vitest": "^1.4.0"
+  },
+  "scripts": {
+    "build": "vite build",
+    "test": "vitest",
+    "test:watch": "vitest --watch",
+    "test:coverage": "vitest --coverage",
+    "lint": "eslint **/*.ts --fix"
   }
 }

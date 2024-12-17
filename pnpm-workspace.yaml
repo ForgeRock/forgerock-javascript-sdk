@@ -2,6 +2,7 @@ packages:
   - 'packages/*'
   - '!**/test/**'
   - 'e2e/*'
+  - tools/create-package/dist
 
 catalog:
   '@reduxjs/toolkit': ^2.2.5

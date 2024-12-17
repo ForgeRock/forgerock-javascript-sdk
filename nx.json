@@ -12,11 +12,6 @@
     "noMarkdown": ["!{projectRoot}/**/*.md"]
   },
   "targetDefaults": {
-    "nx-release-publish": {
-      "options": {
-        "packageRoot": "packages/{projectName}"
-      }
-    },
     "docs": {
       "dependsOn": ["build", "^build", "^docs"],
       "cache": true,
@@ -24,11 +19,23 @@
     },
     "serve": {
       "cache": false,
-      "dependsOn": ["^build"]
+      "dependsOn": ["build"]
     },
     "e2e": {
       "dependsOn": ["^build"],
       "inputs": ["noMarkdown", "^noMarkdown"],
+      "outputs": ["{projectRoot}/.playwright"],
+      "cache": true
+    },
+    "lint": {
+      "dependsOn": ["^lint"],
+      "inputs": ["noMarkdown", "^noMarkdown"],
+      "cache": true
+    },
+    "test": {
+      "dependsOn": ["^build", "^test"],
+      "inputs": ["noMarkdown", "^noMarkdown"],
+      "outputs": ["{projectRoot}/coverage"],
       "cache": true
     },
     "build": {
@@ -37,43 +44,16 @@
       "cache": true,
       "outputs": ["{projectRoot}/dist"]
     },
-    "@nx/vite:test": {
-      "dependsOn": ["^test"],
-      "inputs": ["noMarkdown", "^noMarkdown"],
-      "outputs": ["{projectRoot}/coverage"],
-      "cache": true
-    },
-    "@nx/eslint:lint": {
-      "dependsOn": ["^build", "^lint"],
-      "inputs": ["noMarkdown", "^noMarkdown"],
-      "cache": true
-    },
-    "@nx/vite:build": {
-      "dependsOn": ["^build"],
-      "cache": true,
-      "inputs": ["noMarkdown", "^noMarkdown"],
-      "outputs": ["{projectRoot}/dist"]
-    },
-    "@nx/playwright:run": {
-      "dependsOn": ["^build"],
-      "inputs": ["noMarkdown", "^noMarkdown"],
-      "cache": true
-    },
-    "@nx/esbuild:esbuild": {
-      "dependsOn": ["^build"],
-      "cache": true,
-      "inputs": ["noMarkdown", "^noMarkdown"]
-    },
     "e2e-ci--**/*": {
       "dependsOn": ["^build"],
       "inputs": ["noMarkdown", "^noMarkdown"],
+      "outputs": ["{projectRoot}/.playwright"],
       "cache": true
     },
     "@nx/js:tsc": {
       "cache": true,
       "dependsOn": ["^build"],
-      "inputs": ["production", "^production"],
-      "outputs": ["{projectRoot}/dist"]
+      "inputs": ["production", "^production"]
     }
   },
   "parallel": 1,
@@ -81,78 +61,6 @@
     "appsDir": "",
     "libsDir": ""
   },
-  "release": {
-    "projects": ["packages/*"],
-    "releaseTagPattern": "v{version}",
-    "version": {
-      "preVersionCommand": "npx nx run-many -t build",
-      "generatorOptions": {
-        "currentVersionResolver": "git-tag",
-        "specifierSource": "conventional-commits"
-      }
-    },
-    "changelog": {
-      "git": {
-        "commit": true,
-        "tag": true
-      },
-      "workspaceChangelog": {
-        "createRelease": "github"
-      },
-      "projectChangelogs": true
-    }
-  },
-  "plugins": [
-    {
-      "plugin": "@nx/playwright/plugin",
-      "options": {
-        "ciTargetName": "e2e-ci",
-        "targetName": "e2e"
-      }
-    },
-    {
-      "plugin": "@nx/eslint/plugin",
-      "options": {
-        "targetName": "lint"
-      }
-    },
-    {
-      "plugin": "@nx/vite/plugin",
-      "options": {
-        "buildTargetName": "build",
-        "serveTargetName": "serve",
-        "previewTargetName": "preview",
-        "testTargetName": "test",
-        "serveStaticTargetName": "serve-static",
-        "typecheckTargetName": "typecheck"
-      },
-      "include": ["e2e/**/*", "packages/**/*"]
-    },
-    {
-      "plugin": "@nx/vite/plugin",
-      "options": {
-        "buildTargetName": "build-interceptor",
-        "serveTargetName": "serve",
-        "previewTargetName": "preview",
-        "testTargetName": "test",
-        "serveStaticTargetName": "serve-static",
-        "typecheckTargetName": "typecheck"
-      },
-      "include": ["e2e/token-vault-app/**/*"]
-    },
-    {
-      "plugin": "@nx/vite/plugin",
-      "options": {
-        "buildTargetName": "vite:build",
-        "testTargetName": "vite:test",
-        "serveTargetName": "vite:serve",
-        "previewTargetName": "vite:preview",
-        "serveStaticTargetName": "vite:serve-static",
-        "typecheckTargetName": "vite:typecheck"
-      }
-    }
-  ],
-  "defaultProject": "javascript-sdk",
   "useDaemonProcess": true,
   "useInferencePlugins": true,
   "defaultBase": "develop",

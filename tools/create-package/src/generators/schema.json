@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/schema",
+  "$id": "CreatePackageGenerator",
+  "title": "Creating a package in the repository",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "The name of the package",
+      "$default": {
+        "$source": "argv",
+        "index": 0
+      },
+      "x-prompt": "Name of package: "
+    },
+    "packageScope": {
+      "type": "string",
+      "description": "Scope of the package [defaults to '@pingidentity']",
+      "$default": "pingidentity",
+      "x-prompt": "Scope of the package [defaults to '@pingidentity']: ",
+      "optional": true
+    },
+    "description": {
+      "type": "string",
+      "description": "description of package [put in description field of package.json, defaults to empty string], include the npm scope in the name.",
+      "$default": "",
+      "x-prompt": "Description: ",
+      "optional": true
+    },
+    "sideEffects": {
+      "type": "boolean",
+      "description": "Will this package have side effects? [tree-shaking], false means no side effects",
+      "$default": false,
+      "x-prompt": "Does the package have side effects? [tree-shaking], false means no side effects [defaults to false]",
+      "optional": true
+    },
+    "outputDir": {
+      "type": "string",
+      "description": "Output directory for the package",
+      "$default": "./dist",
+      "x-prompt": "Output directory for the package [defaults to './dist']: ",
+      "optional": true
+    },
+    "moduleType": {
+      "type": "string",
+      "description": "Type of module to list in package.json (module or commonjs)",
+      "$default": "module",
+      "x-prompt": "Type of module [defaults to 'module']: ",
+      "optional": true
+    }
+  },
+  "required": ["name"]
+}

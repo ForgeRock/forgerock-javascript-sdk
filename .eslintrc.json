@@ -17,35 +17,19 @@
             "depConstraints": [
               {
                 "sourceTag": "scope:app",
-                "onlyDependOnLibsWithTags": [
-                  "scope:sdk",
-                  "scope:package",
-                  "scope:token-vault"
-                ]
+                "onlyDependOnLibsWithTags": ["scope:package"]
               },
               {
                 "sourceTag": "scope:e2e",
-                "onlyDependOnLibsWithTags": ["scope:sdk, scope:app"]
-              },
-              {
-                "sourceTag": "scope:sdk",
-                "onlyDependOnLibsWithTags": []
+                "onlyDependOnLibsWithTags": ["scope:app"]
               },
               {
                 "sourceTag": "scope:package",
-                "onlyDependOnLibsWithTags": ["scope:sdk"]
-              },
-              {
-                "sourceTag": "scope:token-vault",
-                "onlyDependOnLibsWithTags": [
-                  "scope:sdk",
-                  "scope:lib",
-                  "scope:types"
-                ]
+                "onlyDependOnLibsWithTags": []
               },
               {
                 "sourceTag": "scope:types",
-                "onlyDependOnLibsWithTags": ["scope:sdk"]
+                "onlyDependOnLibsWithTags": []
               }
             ]
           }
@@ -85,6 +69,13 @@
       "files": "*.json",
       "parser": "jsonc-eslint-parser",
       "rules": {}
+    },
+    {
+      "files": ["./package.json", "./generators.json"],
+      "parser": "jsonc-eslint-parser",
+      "rules": {
+        "@nx/nx-plugin-checks": "error"
+      }
     }
   ],
   "parser": "@typescript-eslint/parser",

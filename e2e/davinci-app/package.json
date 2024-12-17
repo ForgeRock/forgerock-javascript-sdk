@@ -1,12 +1,19 @@
 {
-  "name": "davinci-app",
+  "name": "@forgerock/davinci-app",
   "description": "Ping DaVinci Client Test App",
   "type": "module",
   "private": true,
   "dependencies": {
     "@forgerock/davinci-client": "workspace:*",
-    "@forgerock/javascript-sdk": "workspace:*"
+    "@forgerock/javascript-sdk": "4.6.0"
   },
   "devDependencies": {},
-  "version": "0.0.0"
+  "version": "0.0.0",
+  "scripts": {
+    "build": "vite build --watch false",
+    "dev": "vite dev",
+    "serve": "vite preview",
+    "preview": "vite preview",
+    "lint": "eslint **/*.ts --fix"
+  }
 }
