@@ -12,10 +12,12 @@
     "./package.json": "./package.json",
     "./types": "./dist/lib/types/index.d.ts"
   },
-  "files": ["./dist"],
+  "files": [
+    "./dist"
+  ],
   "dependencies": {
     "@reduxjs/toolkit": "2.3.0",
-    "@forgerock/javascript-sdk": "4.6.0"
+    "@forgerock/javascript-sdk": "4.6.1"
   },
   "devDependencies": {
     "msw": "^2.5.1",

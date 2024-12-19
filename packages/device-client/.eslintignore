@@ -6,3 +6,6 @@ LICENSE
 .bin
 dist
 .eslintignore
+docs
+coverage
+vite.config.*.timestamp*

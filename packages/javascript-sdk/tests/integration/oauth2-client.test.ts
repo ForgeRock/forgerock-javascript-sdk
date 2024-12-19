@@ -1,42 +1,49 @@
 import { vi, afterAll, describe, it, expect } from 'vitest';
-import OAuth2Client from '../../src/oauth2-client';
+import OAuth2Client from '../../src/oauth2-client/index';
 import PKCE from '../../src/util/pkce';
-import { ResponseType } from '../../src/oauth2-client';
+import { ResponseType } from '../../src/oauth2-client/index';
 import { FRLogger } from '../../src/util/logger';
 
-vi.mock('../../src/config', () => {
+vi.mock('../../src/config/index', () => {
   return {
-    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-    get() {
-      return {
-        redirectUrl: 'https://sdkapp.example.com/',
-        clientId: 'OAuth2ClientID',
-        scope: 'openid email profile',
-        serverConfig: {
-          baseUrl: 'https://openam.example.com/am/',
-          timeout: '3000',
-        },
-        realmPath: '/alpha',
-      };
+    default: {
+      // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+      get() {
+        return {
+          redirectUrl: 'https://sdkapp.example.com/',
+          clientId: 'OAuth2ClientID',
+          scope: 'openid email profile',
+          serverConfig: {
+            baseUrl: 'https://openam.example.com/am/',
+            timeout: '3000',
+          },
+          realmPath: '/alpha',
+        };
+      },
     },
   };
 });
+
 vi.mock('../../src/util/pkce', () => {
   return {
-    createVerifier(): string {
-      return 'abcd';
-    },
-    createState(): string {
-      return '1234';
-    },
-    createChallenge(): string {
-      return 'wxyz';
+    default: {
+      createVerifier(): string {
+        return 'abcd';
+      },
+      createState(): string {
+        return '1234';
+      },
+      createChallenge(): string {
+        return 'wxyz';
+      },
     },
   };
 });
+
 afterAll(() => {
   vi.clearAllMocks();
 });
+
 describe('Test OAuth2Client methods', () => {
   it('should construct proper authorization URL', async () => {
     const verifier = PKCE.createVerifier();

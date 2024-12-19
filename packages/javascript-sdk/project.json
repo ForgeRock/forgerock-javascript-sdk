@@ -6,7 +6,7 @@
   "tags": ["scope:sdk"],
   "targets": {
     "docs": {
-      "command": "npx typedoc --options packages/javascript-sdk/typedoc.json"
+      "command": "pnpm typedoc --options {projectRoot}/typedoc.json"
     },
     "build": {
       "inputs": [

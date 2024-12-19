@@ -12,8 +12,8 @@
       "options": {
         "platform": "node",
         "outputPath": "e2e/mock-api-v2/dist",
-        "format": ["cjs"],
-        "bundle": false,
+        "format": ["esm"],
+        "bundle": true,
         "main": "e2e/mock-api-v2/src/main.ts",
         "tsConfig": "e2e/mock-api-v2/tsconfig.app.json",
         "assets": ["e2e/mock-api-v2/src/assets"],
@@ -69,9 +69,6 @@
         "{projectRoot}/{options.coverage.reportsDirectory}",
         "{workspaceRoot}/coverage/e2e/mock-api-v2"
       ],
-      "options": {
-        "coverage.reportsDirectory": "../../coverage/e2e/mock-api-v2"
-      },
       "configurations": {
         "watch": {
           "watch": true

@@ -1,5 +1,11 @@
 # Changelog
 
+## 4.6.1
+
+### Patch Changes
+
+- [#527](https://github.com/ForgeRock/forgerock-javascript-sdk/pull/527) [`5119dc0`](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/5119dc0a983afd2fe7f986d18a7b6296df9984bd) Thanks [@cerebrl](https://github.com/cerebrl)! - In order to display a more user-friendly name when saving a WebAuthn/Passkey device to an account, we prioritized displayName over userName for assignment to the `name` property of the WebAuthn options object. This avoids the display of UUIDs for saved credentials.
+
 ## [4.6.0] - 2024-08-15
 
 ### 🚀 Features

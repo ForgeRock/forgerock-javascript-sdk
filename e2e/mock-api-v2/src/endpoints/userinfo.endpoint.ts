@@ -2,7 +2,7 @@ import { Schema } from '@effect/schema';
 import { pipe } from 'effect';
 import { Api, ApiResponse, Security } from 'effect-http';
 
-import { UserInfoSchema } from '../schemas/userinfo/userinfo.schema';
+import { UserInfoSchema } from '../schemas/userinfo/userinfo.schema.js';
 
 const userInfo = Api.addEndpoint(
   pipe(

@@ -1,9 +1,13 @@
 import { it, expect } from '@effect/vitest';
-import { getElementFromCookie, incrementCookieHeader, parseCookieHeaderForIndex } from '../cookie';
-import { HeaderTypes } from '../../types';
+import {
+  getElementFromCookie,
+  incrementCookieHeader,
+  parseCookieHeaderForIndex,
+} from '../cookie.js';
+import { HeaderTypes } from '../../types/index.js';
 import { Effect, Exit } from 'effect';
-import { responseMap } from '../../responses';
-import { returnSuccessResponseRedirect } from '../../responses/return-success-redirect';
+import { responseMap } from '../../responses/index.js';
+import { returnSuccessResponseRedirect } from '../../responses/return-success-redirect.js';
 
 it.effect('should parse a cookie header for an index value', () =>
   Effect.gen(function* () {

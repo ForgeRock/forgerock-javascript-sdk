@@ -1,9 +1,14 @@
 import { Context, Effect, Layer } from 'effect';
 import { HttpError } from 'effect-http';
-import { Request } from './request.service';
+import { Request } from './request.service.js';
 
-import { CustomHtmlRequestBody, CustomHtmlResponseBody, HeaderTypes, QueryTypes } from '../types';
-import { validateCustomHtmlRequest } from './mock-env-helpers';
+import {
+  CustomHtmlRequestBody,
+  CustomHtmlResponseBody,
+  HeaderTypes,
+  QueryTypes,
+} from '../types/index.js';
+import { validateCustomHtmlRequest } from './mock-env-helpers/index.js';
 
 class CustomHtmlTemplate extends Context.Tag('@services/CustomHtmlTemplate')<
   CustomHtmlTemplate,

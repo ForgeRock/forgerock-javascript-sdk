@@ -16,4 +16,4 @@ interface UserInfo extends Schema.Schema.Type<typeof _UserInfoSchema> {}
 
 const UserInfoSchema: Schema.Schema<UserInfo, UserInfo> = _UserInfoSchema;
 
-export { UserInfoSchema };
+export { UserInfoSchema, UserInfo };

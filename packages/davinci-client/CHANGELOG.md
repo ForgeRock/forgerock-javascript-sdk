@@ -1,5 +1,12 @@
 # @forgerock/davinci-client
 
+## 1.0.1
+
+### Patch Changes
+
+- Updated dependencies [[`5119dc0`](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/5119dc0a983afd2fe7f986d18a7b6296df9984bd)]:
+  - @forgerock/javascript-sdk@4.6.1
+
 ## 1.0.0
 
 ### Major Changes

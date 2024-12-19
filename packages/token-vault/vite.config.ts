@@ -39,7 +39,9 @@ export default defineConfig({
     reporters: ['default'],
     watch: !process.env['CI'],
     coverage: {
-      reportsDirectory: '../../coverage/packages/token-vault',
+      enabled: Boolean(process.env['CI']),
+      reporter: ['text', 'json', 'html'],
+      reportsDirectory: './coverage',
       provider: 'v8',
     },
   },

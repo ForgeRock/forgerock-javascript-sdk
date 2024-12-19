@@ -9,7 +9,7 @@
  */
 import { vi, expect, describe, it, afterAll, beforeEach } from 'vitest';
 import HttpClient from '../../src/http-client/index';
-import TokenStorage from '../../src/token-storage';
+import TokenStorage from '../../src/token-storage/index';
 import {
   authzByTreeReqOptionsForREST,
   authzByTreeReqOptionsForIG,
@@ -32,23 +32,25 @@ import {
 
 // TODO: figure out how to move these mock functions in separate file
 // Because Jest hoists mocks above the imports, importing doesn't work :(
-vi.mock('../../src/token-storage');
-vi.mock('../../src/config', () => {
+vi.mock('../../src/token-storage/index');
+vi.mock('../../src/config/index', () => {
   return {
-    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-    get() {
-      return {
-        serverConfig: {
-          baseUrl: 'https://openam.example.com/am/',
-          timeout: 0,
-        },
-      };
+    default: {
+      // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+      get() {
+        return {
+          serverConfig: {
+            baseUrl: 'https://openam.example.com/am/',
+            timeout: 0,
+          },
+        };
+      },
     },
   };
 });
 
-vi.mock('../../src/http-client/index', () => {
-  const originalHttpClient = vi.requireActual('../../src/http-client/index');
+vi.mock('../../src/http-client/index', async () => {
+  const originalHttpClient = await vi.importActual('../../src/http-client/index');
   const mockResponse = vi.fn(function (options: any): Promise<Response> {
     if (options.url === 'https://request-auth-by-tree.com/ig') {
       return Promise.resolve(mockAuthzByTreeResFromIG);
@@ -64,10 +66,12 @@ vi.mock('../../src/http-client/index', () => {
     }
   });
   return {
-    request: originalHttpClient.default.request,
-    stepIterator: vi.fn().mockResolvedValue({}),
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    _request: mockResponse,
+    default: {
+      request: (originalHttpClient.default as typeof HttpClient).request,
+      stepIterator: vi.fn().mockResolvedValue({}),
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      _request: mockResponse,
+    },
   };
 });
 

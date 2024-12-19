@@ -7,7 +7,7 @@
       "vitest/importMeta",
       "vite/client",
       "node",
-      "vitest"
+      "vitest/vitest"
     ]
   },
   "include": [

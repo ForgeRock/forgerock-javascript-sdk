@@ -1,10 +1,10 @@
 import { Effect, Context, pipe, Layer } from 'effect';
 import { HttpError } from 'effect-http';
 
-import { getElementFromCookie } from '../helpers/cookie';
-import { getNextStep } from './mock-env-helpers';
+import { getElementFromCookie } from '../helpers/cookie.js';
+import { getNextStep } from './mock-env-helpers/index.js';
 
-import { HeaderTypes, QueryTypes } from '../types';
+import { HeaderTypes, QueryTypes } from '../types/index.js';
 
 type Init<Headers extends HeaderTypes, Query extends QueryTypes, Body = null> = {
   headers: Headers;

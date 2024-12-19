@@ -7,9 +7,9 @@ import {
   DavinciAuthorizeHeaders,
   DavinciAuthorizeQuery,
   DavinciAuthorizeResponseHeaders,
-} from '../schemas/authorize.schema';
-import { PingOneCustomHtmlResponseBody } from '../schemas/custom-html-template/custom-html-template-response.schema';
-import { SuccessResponseRedirect } from '../schemas/return-success-response-redirect.schema';
+} from '../schemas/authorize.schema.js';
+import { PingOneCustomHtmlResponseBody } from '../schemas/custom-html-template/custom-html-template-response.schema.js';
+import { SuccessResponseRedirect } from '../schemas/return-success-response-redirect.schema.js';
 
 const davinciAuthorize = Api.addEndpoint(
   pipe(

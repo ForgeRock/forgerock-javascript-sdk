@@ -1,12 +1,12 @@
 import { Schema } from '@effect/schema';
 import { Array, Effect, Option, pipe } from 'effect';
 
-import { UnableToFindNextStep } from '../../errors';
-import { PingOneCustomHtmlRequestBody } from '../../schemas/custom-html-template/custom-html-template-request.schema';
-import { ResponseMapKeys, responseMap } from '../../responses';
+import { UnableToFindNextStep } from '../../errors/index.js';
+import { PingOneCustomHtmlRequestBody } from '../../schemas/custom-html-template/custom-html-template-request.schema.js';
+import { ResponseMapKeys, responseMap } from '../../responses/index.js';
 
-import { CustomHtmlRequestBody, QueryTypes } from '../../types';
-import { validator } from '../../helpers/match';
+import { CustomHtmlRequestBody, QueryTypes } from '../../types/index.js';
+import { validator } from '../../helpers/match.js';
 
 type DavinciFormData = Schema.Schema.Type<
   typeof PingOneCustomHtmlRequestBody

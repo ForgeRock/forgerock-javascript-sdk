@@ -8,8 +8,8 @@ import { BindingDeviceQuery } from './types/binding-device.types.js';
 
 export const deviceClient = (config: ConfigOptions) => {
   const { middleware, reducerPath, reducer, endpoints } = deviceService({
-    baseUrl: config.serverConfig.baseUrl,
-    realmPath: config.realmPath,
+    baseUrl: config.serverConfig?.baseUrl ?? '',
+    realmPath: config?.realmPath ?? '',
   });
 
   const store = configureStore({

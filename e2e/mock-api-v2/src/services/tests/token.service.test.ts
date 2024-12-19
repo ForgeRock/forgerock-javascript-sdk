@@ -1,8 +1,8 @@
 import { it, expect } from '@effect/vitest';
-import { Tokens, mockTokens } from '../tokens.service';
+import { Tokens, mockTokens } from '../tokens.service.js';
 import { Effect, Exit, Layer } from 'effect';
-import { mockRequest } from '../request.service';
-import { tokenResponseBody } from '../../responses/token/token';
+import { mockRequest } from '../request.service.js';
+import { tokenResponseBody } from '../../responses/token/token.js';
 
 it.effect('should return tokens', () =>
   Effect.gen(function* () {

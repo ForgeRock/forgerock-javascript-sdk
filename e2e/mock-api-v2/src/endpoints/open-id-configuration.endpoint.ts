@@ -1,7 +1,7 @@
 import { Schema } from '@effect/schema';
 import { pipe } from 'effect';
 import { Api } from 'effect-http';
-import { openIdConfigurationResponseSchema } from '../schemas/open-id-configuration/open-id-configuration-response.schema';
+import { openIdConfigurationResponseSchema } from '../schemas/open-id-configuration/open-id-configuration-response.schema.js';
 
 const openidConfiguration = Api.addEndpoint(
   pipe(

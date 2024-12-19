@@ -33,9 +33,9 @@ export default defineConfig({
     passWithNoTests: true,
     include: ['src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
 
-    reporters: ['default'],
+    reporters: ['default', 'json', 'html'],
     coverage: {
-      reportsDirectory: '../../coverage/e2e/token-vault-interceptor',
+      reportsDirectory: './coverage',
       provider: 'v8',
     },
   },

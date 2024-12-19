@@ -2,9 +2,9 @@ import { toCookieHeader } from '@effect/platform/Cookies';
 import { Effect } from 'effect';
 import { RouterBuilder } from 'effect-http';
 
-import { Authorize } from '../services/authorize.service';
-import { CookieService } from '../services/cookie.service';
-import { apiSpec } from '../spec';
+import { Authorize } from '../services/authorize.service.js';
+import { CookieService } from '../services/cookie.service.js';
+import { apiSpec } from '../spec.js';
 
 const authorizeHandler = RouterBuilder.handler(apiSpec, 'DavinciAuthorize', ({ headers, query }) =>
   Effect.gen(function* () {

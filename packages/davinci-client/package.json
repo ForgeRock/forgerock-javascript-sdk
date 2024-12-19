@@ -1,11 +1,13 @@
 {
   "name": "@forgerock/davinci-client",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "typings": "./dist/index.d.ts",
   "type": "module",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com:ForgeRock/forgerock-javascript-sdk.git",

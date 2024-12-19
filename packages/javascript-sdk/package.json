@@ -1,6 +1,6 @@
 {
   "name": "@forgerock/javascript-sdk",
-  "version": "4.6.0",
+  "version": "4.6.1",
   "description": "ForgeRock JavaScript SDK",
   "author": "ForgeRock",
   "license": "MIT",
@@ -50,8 +50,5 @@
       }
     }
   },
-  "type": "module",
-  "devDependencies": {
-    "vitest": "^1.4.0"
-  }
+  "type": "module"
 }

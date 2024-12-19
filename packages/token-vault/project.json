@@ -5,6 +5,9 @@
   "projectType": "library",
   "tags": ["scope:package"],
   "targets": {
+    "docs": {
+      "command": "pnpm typedoc --options {projectRoot}/typedoc.json"
+    },
     "build": {
       "inputs": [
         "default",

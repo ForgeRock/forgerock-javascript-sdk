@@ -1,8 +1,8 @@
 import { it, expect } from '@effect/vitest';
-import { CustomHtmlTemplate, mockCustomHtmlTemplate } from '../custom-html-template.service';
+import { CustomHtmlTemplate, mockCustomHtmlTemplate } from '../custom-html-template.service.js';
 import { Effect, Exit, Layer } from 'effect';
-import { mockRequest } from '../request.service';
-import { UsernamePassword } from '../../responses/username-password';
+import { mockRequest } from '../request.service.js';
+import { UsernamePassword } from '../../responses/username-password.js';
 
 const queryParams = {
   response_mode: 'pi.flow',

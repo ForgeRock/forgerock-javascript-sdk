@@ -20,9 +20,9 @@
   "excludeProtected": false,
   "excludeNotDocumented": false,
   "externalSymbolLinkMappings": {},
-  "out": "../../docs/packages/javascript-sdk",
+  "out": "./docs",
   "emit": "docs",
-  "theme": "hierarchy",
+  "theme": "typedoc-github-theme",
   "name": "javascript-sdk",
   "includeVersion": true,
   "readme": "./README.md",
@@ -64,5 +64,5 @@
   "treatWarningsAsErrors": false,
   "intentionallyNotExported": [],
   "logLevel": "Verbose",
-  "plugin": ["typedoc-plugin-rename-defaults", "typedoc-theme-hierarchy"]
+  "plugin": ["typedoc-plugin-rename-defaults", "typedoc-github-theme"]
 }

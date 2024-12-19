@@ -6,3 +6,6 @@ LICENSE
 .env*
 .bin
 dist
+docs
+coverage
+vite.config.*.timestamp*

@@ -1,5 +1,5 @@
 import { it, expect } from '@effect/vitest';
-import { CookieService, cookieServiceTest } from '../cookie.service';
+import { CookieService, cookieServiceTest } from '../cookie.service.js';
 import { Effect, Either } from 'effect';
 import { Cookies } from '@effect/platform';
 
