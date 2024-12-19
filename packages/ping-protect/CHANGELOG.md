@@ -1,5 +1,12 @@
 # Changelog
 
+## 4.6.1
+
+### Patch Changes
+
+- Updated dependencies [[`5119dc0`](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/5119dc0a983afd2fe7f986d18a7b6296df9984bd)]:
+  - @forgerock/javascript-sdk@4.6.1
+
 ## v4.6.0 (2024-08-15)
 
 ### 🚀 Features

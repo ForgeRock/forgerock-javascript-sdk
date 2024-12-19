@@ -1,5 +1,12 @@
 ### [4.2.0] - 2023-09-11
 
+## 4.2.1
+
+### Patch Changes
+
+- Updated dependencies [[`5119dc0`](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/5119dc0a983afd2fe7f986d18a7b6296df9984bd)]:
+  - @forgerock/javascript-sdk@4.6.1
+
 Security: - Proxy config declaring URLs is now required and will be used to generate an allow list of origins to check again prior to fowarding a request.
 
 ## [4.1.2] - 2023-07-24
