@@ -19,6 +19,7 @@ import AttributeInputCallback from './fr-auth/callbacks/attribute-input-callback
 import ChoiceCallback from './fr-auth/callbacks/choice-callback';
 import ConfirmationCallback from './fr-auth/callbacks/confirmation-callback';
 import DeviceProfileCallback from './fr-auth/callbacks/device-profile-callback';
+import { deviceClient } from './device-client';
 import type { FRCallbackFactory } from './fr-auth/callbacks/factory';
 import HiddenValueCallback from './fr-auth/callbacks/hidden-value-callback';
 import KbaCreateCallback from './fr-auth/callbacks/kba-create-callback';
@@ -114,6 +115,7 @@ export {
   Config,
   ConfirmationCallback,
   Deferred,
+  deviceClient,
   DeviceProfileCallback,
   ErrorCode,
   FRAuth,

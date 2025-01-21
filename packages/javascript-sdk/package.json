@@ -29,6 +29,10 @@
         "default": "./dist/index.cjs"
       }
     },
+    "./device-client": {
+      "types": "./dist/device-client/index.d.ts",
+      "default": "./dist/device-client/index.js"
+    },
     "./src/*": {
       "import": {
         "types": "./dist/*.d.ts",
@@ -50,5 +54,14 @@
       }
     }
   },
-  "type": "module"
+  "type": "module",
+  "dependencies": {
+    "@reduxjs/toolkit": "catalog:",
+    "immer": "catalog:"
+  },
+  "devDependencies": {
+    "@testing-library/react": "16.1.0",
+    "msw": "2.7.0",
+    "vitest": "^1.4.0"
+  }
 }

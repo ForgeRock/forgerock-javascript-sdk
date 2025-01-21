@@ -9,7 +9,7 @@
  */
 // @ts-nocheck
 import * as forgerock from '@forgerock/javascript-sdk';
-import { deviceClient } from '@forgerock/device-client';
+import { deviceClient } from '@forgerock/javascript-sdk/device-client';
 import { delay as rxDelay, map, mergeMap } from 'rxjs/operators';
 import { from } from 'rxjs';
 

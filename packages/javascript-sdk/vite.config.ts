@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite';
 import dts from 'vite-plugin-dts';
 import { copyFileSync } from 'fs';
+import pkg from './package.json';
 
 export default defineConfig({
   root: __dirname,
@@ -13,6 +14,7 @@ export default defineConfig({
       name: 'javascript-sdk',
       formats: ['es', 'cjs'],
       fileName: (format, fileName) => {
+        console.log(fileName);
         const extension = format === 'es' ? 'js' : 'cjs';
         return `${fileName}.${extension}`;
       },
@@ -23,6 +25,10 @@ export default defineConfig({
         preserveModulesRoot: './src',
         preserveModules: true,
       },
+      external: Array.from(Object.keys(pkg.dependencies) || []).concat([
+        './**/mock-data/*',
+        '@reduxjs/toolkit/query',
+      ]),
     },
   },
   plugins: [

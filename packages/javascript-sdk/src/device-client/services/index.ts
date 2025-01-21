@@ -22,6 +22,7 @@ import {
   WebAuthnQuery,
   WebAuthnQueryWithUUID,
 } from '../types/webauthn.types.js';
+import { ProfileDeviceQuery, ProfileDeviceResponse } from '../types/profile-device.types.js';
 
 export const deviceService = ({ baseUrl, realmPath }: { baseUrl: string; realmPath: string }) =>
   createApi({
@@ -107,6 +108,27 @@ export const deviceService = ({ baseUrl, realmPath }: { baseUrl: string; realmPa
           url: `/json/realms/root/realms/${realm}/users/${userId}/devices/2fa/binding/${device.uuid}`,
           method: 'DELETE',
           body: device satisfies Device,
+        }),
+      }),
+      getDeviceProfile: builder.query<ProfileDeviceResponse, ProfileDeviceQuery>({
+        query: ({ realm = realmPath, userId }) =>
+          `json/realms/${realm}/users/${userId}/devices/profile?queryFilter=true`,
+      }),
+      updateDeviceProfile: builder.mutation<
+        ProfileDeviceResponse,
+        Omit<ProfileDeviceQuery, 'uuid'>
+      >({
+        query: ({ realm = realmPath, userId, device }) => ({
+          url: `json/realms/${realm}/users/${userId}/devices/profile?queryFilter=true`,
+          method: 'PUT',
+          body: device,
+        }),
+      }),
+      deleteDeviceProfile: builder.mutation<ProfileDeviceResponse, ProfileDeviceQuery>({
+        query: ({ realm = realmPath, userId, uuid, device }) => ({
+          url: `json/realms/${realm}/users/${userId}/devices/profile/${uuid}`,
+          method: 'DELETE',
+          body: device,
         }),
       }),
     }),
