@@ -14,7 +14,6 @@ export default defineConfig({
       name: 'javascript-sdk',
       formats: ['es', 'cjs'],
       fileName: (format, fileName) => {
-        console.log(fileName);
         const extension = format === 'es' ? 'js' : 'cjs';
         return `${fileName}.${extension}`;
       },

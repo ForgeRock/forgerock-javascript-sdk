@@ -2,7 +2,7 @@ import { type ConfigOptions } from '../config/interfaces';
 
 import { configureStore } from '@reduxjs/toolkit';
 import { deviceService } from './services/index.js';
-import type { DeletedOAthDevice, OathDevice, RetrieveOathQuery } from './types/oath.types.js';
+import type { DeletedOathDevice, OathDevice, RetrieveOathQuery } from './types/oath.types.js';
 import type {
   DeleteDeviceQuery,
   DeletedPushDevice,
@@ -14,11 +14,7 @@ import type {
   WebAuthnDevice,
   WebAuthnQuery,
 } from './types/webauthn.types.js';
-import type {
-  BindingDeviceQuery,
-  Device,
-  GetBoundDevicesQuery,
-} from './types/binding-device.types.js';
+import type { BoundDeviceQuery, Device, GetBoundDevicesQuery } from './types/bound-device.types.js';
 import type {
   GetProfileDevices,
   ProfileDevice,
@@ -78,11 +74,11 @@ export const deviceClient = (config: ConfigOptions) => {
        * @async
        * @function delete
        * @param {DeleteOathQuery & OathDevice} query - The query and device information used to delete the Oath device.
-       * @returns {Promise<DeletedOAthDevice | { error: unknown }>} - A promise that resolves to the response data or an error object if the response is not valid.
+       * @returns {Promise<DeletedOathDevice | { error: unknown }>} - A promise that resolves to the response data or an error object if the response is not valid.
        */
       delete: async function (
         query: RetrieveOathQuery & { device: OathDevice },
-      ): Promise<DeletedOAthDevice | { error: unknown }> {
+      ): Promise<DeletedOathDevice | { error: unknown }> {
         try {
           const response = await store.dispatch(endpoints.deleteOathDevice.initiate(query));
 
@@ -238,7 +234,7 @@ export const deviceClient = (config: ConfigOptions) => {
        *
        * @async
        * @function get
-       * @param {BindingDeviceQuery} query - The query used to retrieve bound devices.
+       * @param {BoundDeviceQuery} query - The query used to retrieve bound devices.
        * @returns {Promise<Device[] | { error: unknown }>} - A promise that resolves to the retrieved data or an error object if the response is not valid.
        */
       get: async function (query: GetBoundDevicesQuery): Promise<Device[] | { error: unknown }> {
@@ -260,12 +256,12 @@ export const deviceClient = (config: ConfigOptions) => {
        *
        * @async
        * @function delete
-       * @param {BindingDeviceQuery} query - The query used to delete the bound device.
+       * @param {BoundDeviceQuery} query - The query used to delete the bound device.
        * @returns {Promise<Device | { error: unknown }>} - A promise that resolves to the response data or an error object if the response is not valid.
        */
-      delete: async function (query: BindingDeviceQuery): Promise<Device | { error: unknown }> {
+      delete: async function (query: BoundDeviceQuery): Promise<Device | { error: unknown }> {
         try {
-          const response = await store.dispatch(endpoints.deleteBindingDevice.initiate(query));
+          const response = await store.dispatch(endpoints.deleteBoundDevice.initiate(query));
 
           if (!response || !response.data || !response.data.result) {
             throw new Error('response did not contain data');
@@ -282,12 +278,12 @@ export const deviceClient = (config: ConfigOptions) => {
        *
        * @async
        * @function update
-       * @param {BindingDeviceQuery} query - The query used to update the bound device name.
+       * @param {BoundDeviceQuery} query - The query used to update the bound device name.
        * @returns {Promise<Device | { error: unknown }>} - A promise that resolves to the response data or an error object if the response is not valid.
        */
-      update: async function (query: BindingDeviceQuery): Promise<Device | { error: unknown }> {
+      update: async function (query: BoundDeviceQuery): Promise<Device | { error: unknown }> {
         try {
-          const response = await store.dispatch(endpoints.updateBindingDeviceName.initiate(query));
+          const response = await store.dispatch(endpoints.updateBoundDevice.initiate(query));
 
           if (!response || !response.data) {
             throw new Error('response did not contain data');
@@ -312,7 +308,7 @@ export const deviceClient = (config: ConfigOptions) => {
         query: GetProfileDevices,
       ): Promise<ProfileDevice[] | { error: unknown }> {
         try {
-          const response = await store.dispatch(endpoints.getDeviceProfile.initiate(query));
+          const response = await store.dispatch(endpoints.getDeviceProfiles.initiate(query));
 
           if (!response || !response.data || !response.data.result) {
             throw new Error('response did not contain data');

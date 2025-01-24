@@ -11,12 +11,6 @@ import * as forgerock from '@forgerock/javascript-sdk';
 import { deviceClient } from '@forgerock/javascript-sdk/device-client';
 import { delay as rxDelay, map, mergeMap } from 'rxjs/operators';
 import { from } from 'rxjs';
-import type {
-  Device,
-  DeviceResponse,
-  OAthResponse,
-  WebAuthnDevicesResponse,
-} from '@forgerock/javascript-sdk/device-client/types';
 
 function autoscript() {
   const delay = 0;
@@ -24,7 +18,12 @@ function autoscript() {
   const url = new URL(window.location.href);
   const amUrl = url.searchParams.get('amUrl') || 'https://openam-sdks.forgeblocks.com/am';
   const realmPath = url.searchParams.get('realmPath') || 'alpha';
-  const un = url.searchParams.get('un') || 'spetrov';
+  /**
+   * Make sure this `un` is a real user
+   * this is a manual test and requires a real tenant and a real user
+   * that has devices.
+   */
+  const un = url.searchParams.get('un') || 'demouser';
   const platformHeader = url.searchParams.get('platformHeader') === 'true' ? true : false;
   const pw = url.searchParams.get('pw') || '1111';
   const tree = url.searchParams.get('tree') || 'selfservice';

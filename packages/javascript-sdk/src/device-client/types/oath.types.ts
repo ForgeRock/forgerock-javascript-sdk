@@ -19,7 +19,7 @@ export type RetrieveOathQuery = {
   userId: string;
 };
 
-export type OAthResponse = {
+export type OathResponse = {
   pagedResultsCookie: string | null;
   remainingPagedResults: number;
   resultCount: number;
@@ -28,7 +28,7 @@ export type OAthResponse = {
   result: OathDevice[];
 };
 
-export type DeletedOAthDevice = {
+export type DeletedOathDevice = {
   _id: string;
   _rev: string;
   uuid: string;

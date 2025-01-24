@@ -1,8 +1,8 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query';
 import {
-  DeletedOAthDevice,
+  DeletedOathDevice,
   OathDevice,
-  OAthResponse,
+  OathResponse,
   RetrieveOathQuery,
 } from '../types/oath.types.js';
 import {
@@ -11,7 +11,7 @@ import {
   PushDevice,
   PushDeviceQuery,
 } from '../types/push-device.types.js';
-import { BindingDeviceQuery, Device, GetBoundDevicesQuery } from '../types/binding-device.types.js';
+import { BoundDeviceQuery, Device, GetBoundDevicesQuery } from '../types/bound-device.types.js';
 
 import { UpdatedWebAuthnDevice, WebAuthnDevice, WebAuthnQuery } from '../types/webauthn.types.js';
 import {
@@ -46,13 +46,13 @@ export const deviceService = ({ baseUrl, realmPath }: { baseUrl: string; realmPa
     }),
     endpoints: (builder) => ({
       // oath endpoints
-      getOAthDevices: builder.query<OAthResponse, RetrieveOathQuery>({
+      getOAthDevices: builder.query<OathResponse, RetrieveOathQuery>({
         query: ({ realm = realmPath, userId }) =>
           `json/realms/${realm}/users/${userId}/devices/2fa/oath?_queryFilter=true`,
       }),
 
       deleteOathDevice: builder.mutation<
-        DeletedOAthDevice,
+        DeletedOathDevice,
         RetrieveOathQuery & { device: OathDevice }
       >({
         query: ({ realm = realmPath, userId, device }) => ({
@@ -105,21 +105,21 @@ export const deviceService = ({ baseUrl, realmPath }: { baseUrl: string; realmPa
         query: ({ realm = realmPath, userId }) =>
           `/json/realms/${realm}/users/${userId}/devices/2fa/binding?_queryFilter=true`,
       }),
-      updateBindingDeviceName: builder.mutation<Device, BindingDeviceQuery>({
+      updateBoundDevice: builder.mutation<Device, BoundDeviceQuery>({
         query: ({ realm = realmPath, userId, device }) => ({
           url: `/json/realms/root/realms/${realm}/users/${userId}/devices/2fa/binding/${device.uuid}`,
           method: 'PUT',
           body: device,
         }),
       }),
-      deleteBindingDevice: builder.mutation<GeneralResponse<Device>, BindingDeviceQuery>({
+      deleteBoundDevice: builder.mutation<GeneralResponse<Device>, BoundDeviceQuery>({
         query: ({ realm = realmPath, userId, device }) => ({
           url: `/json/realms/root/realms/${realm}/users/${userId}/devices/2fa/binding/${device.uuid}`,
           method: 'DELETE',
           body: device satisfies Device,
         }),
       }),
-      getDeviceProfile: builder.query<GeneralResponse<ProfileDevice[]>, GetProfileDevices>({
+      getDeviceProfiles: builder.query<GeneralResponse<ProfileDevice[]>, GetProfileDevices>({
         query: ({ realm = realmPath, userId }) =>
           `json/realms/${realm}/users/${userId}/devices/profile?_queryFilter=true`,
       }),

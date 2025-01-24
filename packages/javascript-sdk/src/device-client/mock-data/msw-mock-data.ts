@@ -1,6 +1,6 @@
 import { GeneralResponse } from '../services/index.js';
 import type {
-  OAthResponse,
+  OathResponse,
   DeletedOAthDevice,
   DeviceResponse,
   PushDevice,
@@ -9,7 +9,7 @@ import type {
 import { ProfileDevice } from '../types/profile-device.types.js';
 
 // Mock data
-export const MOCK_OATH_DEVICES: OAthResponse = {
+export const MOCK_OATH_DEVICES: OathResponse = {
   pagedResultsCookie: 'cookie',
   remainingPagedResults: -1,
   resultCount: 2,

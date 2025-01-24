@@ -3,12 +3,11 @@
   "compilerOptions": {
     "outDir": "dist",
     "composite": true,
-    "moduleResolution": "node16",
-    "module": "node16",
-    "moduleDetection": "force",
+    "moduleResolution": "Bundler",
     "target": "ES2020",
+    "module": "ES2020",
     "allowUmdGlobalAccess": true
   },
   "exclude": ["**/*.spec.ts"],
-  "include": ["src/**/*.ts"]
+  "include": ["**/*.ts"]
 }

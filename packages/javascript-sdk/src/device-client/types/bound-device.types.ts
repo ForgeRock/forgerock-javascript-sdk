@@ -2,7 +2,7 @@ export type GetBoundDevicesQuery = {
   userId: string;
   realm?: string;
 };
-export type BindingDeviceQuery = GetBoundDevicesQuery & { device: Device };
+export type BoundDeviceQuery = GetBoundDevicesQuery & { device: Device };
 
 export type DeviceResponse = {
   result: Device[];
