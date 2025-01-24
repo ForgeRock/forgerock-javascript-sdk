@@ -1,9 +1,11 @@
 export type OathDevice = {
-  id: string;
+  _id: string;
+  deviceManagementStatus: boolean;
   deviceName: string;
   uuid: string;
-  createdDate: Date;
-  lastAccessDate: Date;
+  createdDate: number;
+  lastAccessDate: number;
+  _rev: string;
 };
 
 export type DeleteOathQuery = {
@@ -18,14 +20,13 @@ export type RetrieveOathQuery = {
 };
 
 export type OAthResponse = {
-  _id: string;
-  _rev: string;
-  createdDate: number;
-  lastAccessDate: number;
-  deviceName: string;
-  uuid: string;
-  deviceManagementStatus: boolean;
-}[];
+  pagedResultsCookie: string | null;
+  remainingPagedResults: number;
+  resultCount: number;
+  totalPagedResults: number;
+  totalPagedResultsPolicy: string;
+  result: OathDevice[];
+};
 
 export type DeletedOAthDevice = {
   _id: string;

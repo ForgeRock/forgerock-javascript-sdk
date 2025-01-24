@@ -14,7 +14,7 @@ export type PushDeviceBody = {
 export type DeleteDeviceQuery = {
   realm?: string;
   userId: string;
-  uuid: string;
+  device: PushDevice;
 };
 
 export type DeviceInfoResponse = {
@@ -75,9 +75,6 @@ export type DeviceInfo = {
   alias: string;
   recoveryCodes: string[];
 };
-
-export type PushDevicesResponse = PushDevice[];
-
 export type PushDevice = {
   _id: string;
   _rev: string;
@@ -87,3 +84,20 @@ export type PushDevice = {
   uuid: string;
   deviceManagementStatus: boolean;
 };
+
+export interface DeletedPushDevice {
+  communicationId: string;
+  communicationType: string;
+  createdDate: number;
+  deviceId: string;
+  deviceMechanismUID: string;
+  deviceName: string;
+  deviceType: string;
+  issuer: string;
+  lastAccessDate: number;
+  recoveryCodes: string[];
+  sharedSecret: string;
+  uuid: string;
+  _id: string;
+  _rev: string;
+}

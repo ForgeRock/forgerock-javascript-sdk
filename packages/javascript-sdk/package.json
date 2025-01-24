@@ -1,6 +1,6 @@
 {
   "name": "@forgerock/javascript-sdk",
-  "version": "4.6.0",
+  "version": "4.7.0-beta.2",
   "description": "ForgeRock JavaScript SDK",
   "author": "ForgeRock",
   "license": "MIT",
@@ -30,8 +30,12 @@
       }
     },
     "./device-client": {
-      "types": "./dist/device-client/index.d.ts",
-      "default": "./dist/device-client/index.js"
+      "types": "./dist/device-client/device.store.d.ts",
+      "default": "./dist/device-client/device.store.js"
+    },
+    "./device-client/types": {
+      "types": "./dist/device-client/types/index.d.ts",
+      "default": "./dist/device-client/types/index.d.ts"
     },
     "./src/*": {
       "import": {

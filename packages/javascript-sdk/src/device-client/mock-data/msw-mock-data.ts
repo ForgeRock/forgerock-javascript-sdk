@@ -1,24 +1,32 @@
+import { GeneralResponse } from '../services/index.js';
 import type {
   OAthResponse,
   DeletedOAthDevice,
-  PushDevicesResponse,
   DeviceResponse,
-  WebAuthnDevicesResponse,
+  PushDevice,
+  WebAuthnDevice,
 } from '../types/index.js';
-import { ProfileDeviceResponse } from '../types/profile-device.types.js';
+import { ProfileDevice } from '../types/profile-device.types.js';
 
 // Mock data
-export const MOCK_OATH_DEVICES: OAthResponse = [
-  {
-    _id: 'oath-1',
-    _rev: '1-oath',
-    createdDate: 1705555555555,
-    lastAccessDate: 1705555555555,
-    deviceName: 'Test OATH Device',
-    uuid: 'oath-uuid-1',
-    deviceManagementStatus: true,
-  },
-];
+export const MOCK_OATH_DEVICES: OAthResponse = {
+  pagedResultsCookie: 'cookie',
+  remainingPagedResults: -1,
+  resultCount: 2,
+  totalPagedResults: 2,
+  totalPagedResultsPolicy: 'string',
+  result: [
+    {
+      _id: 'oath-1',
+      _rev: '1-oath',
+      createdDate: 1705555555555,
+      lastAccessDate: 1705555555555,
+      deviceName: 'Test OATH Device',
+      uuid: 'oath-uuid-1',
+      deviceManagementStatus: true,
+    },
+  ],
+};
 
 export const MOCK_DELETED_OATH_DEVICE: DeletedOAthDevice = {
   _id: 'oath-1',
@@ -36,7 +44,7 @@ export const MOCK_DELETED_OATH_DEVICE: DeletedOAthDevice = {
   clockDriftSeconds: 0,
 };
 
-export const MOCK_PUSH_DEVICES: PushDevicesResponse = [
+export const MOCK_PUSH_DEVICES: PushDevice[] = [
   {
     _id: 'push-1',
     _rev: '1-push',
@@ -48,7 +56,7 @@ export const MOCK_PUSH_DEVICES: PushDevicesResponse = [
   },
 ];
 
-export const MOCK_WEBAUTHN_DEVICES: WebAuthnDevicesResponse = {
+export const MOCK_WEBAUTHN_DEVICES: GeneralResponse<WebAuthnDevice[]> = {
   result: [
     {
       _id: 'webauthn-1',
@@ -96,7 +104,7 @@ export const MOCK_BINDING_DEVICES: DeviceResponse = {
   remainingPagedResults: -1,
 };
 
-export const MOCK_DEVICE_PROFILE_SUCCESS: ProfileDeviceResponse = {
+export const MOCK_DEVICE_PROFILE_SUCCESS: GeneralResponse<ProfileDevice[]> = {
   result: [
     {
       _id: 'ce0677ca57da8b38-5bfaa23e9a8ddc7899638da7cccbfe6a8879b6cf',

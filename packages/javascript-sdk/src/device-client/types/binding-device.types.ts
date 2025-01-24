@@ -1,7 +1,8 @@
-export type BindingDeviceQuery = {
+export type GetBoundDevicesQuery = {
   userId: string;
   realm?: string;
-} & Device;
+};
+export type BindingDeviceQuery = GetBoundDevicesQuery & { device: Device };
 
 export type DeviceResponse = {
   result: Device[];
@@ -20,6 +21,7 @@ export type Device = {
   deviceId: string;
   deviceName: string;
   uuid: string;
+  recoveryCodes: string[];
   key: {
     kty: string;
     kid: string;
