@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite';
 import dts from 'vite-plugin-dts';
 import { copyFileSync } from 'fs';
+import pkg from './package.json';
 
 export default defineConfig({
   root: __dirname,
@@ -23,6 +24,10 @@ export default defineConfig({
         preserveModulesRoot: './src',
         preserveModules: true,
       },
+      external: Array.from(Object.keys(pkg.dependencies) || []).concat([
+        './**/mock-data/*',
+        '@reduxjs/toolkit/query',
+      ]),
     },
   },
   plugins: [

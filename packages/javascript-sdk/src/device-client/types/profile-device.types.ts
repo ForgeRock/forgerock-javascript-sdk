@@ -1,32 +1,13 @@
-export type PushDeviceQuery = {
-  realm?: string;
+export interface GetProfileDevices {
+  realm: string;
   userId: string;
-};
+}
 
-export type PushDeviceBody = {
-  id: string;
-  deviceName: string;
-  uuid: string;
-  createdDate: string;
-  lastAccessDate: string;
-};
+export interface ProfileDevicesQuery extends GetProfileDevices {
+  device: ProfileDevice;
+}
 
-export type DeleteDeviceQuery = {
-  realm?: string;
-  userId: string;
-  uuid: string;
-};
-
-export type DeviceInfoResponse = {
-  result: DeviceInfo[];
-  resultCount: number;
-  pagedResultsCookie: null;
-  totalPagedResultsPolicy: string;
-  totalPagedResults: -1;
-  remainingPagedResults: -1;
-};
-
-export type DeviceInfo = {
+export type ProfileDevice = {
   _id: string;
   _rev: string;
   identifier: string;
@@ -74,16 +55,4 @@ export type DeviceInfo = {
   lastSelectedDate: number;
   alias: string;
   recoveryCodes: string[];
-};
-
-export type PushDevicesResponse = PushDevice[];
-
-export type PushDevice = {
-  _id: string;
-  _rev: string;
-  createdDate: number;
-  lastAccessDate: number;
-  deviceName: string;
-  uuid: string;
-  deviceManagementStatus: boolean;
 };
