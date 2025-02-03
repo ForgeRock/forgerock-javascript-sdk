@@ -4,8 +4,7 @@
     "composite": true,
     "outDir": "../../dist/out-tsc",
     "types": ["vitest/globals", "vitest/importMeta", "vite/client", "node"],
-    "moduleResolution": "Node16",
-    "module": "Node16"
+    "moduleResolution": "Bundler"
   },
   "include": [
     "vite.config.ts",
