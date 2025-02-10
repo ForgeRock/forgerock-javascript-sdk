@@ -7,9 +7,8 @@
  * This software may be modified and distributed under the terms
  * of the MIT license. See the LICENSE file for details.
  */
-// @ts-nocheck
 import * as forgerock from '@forgerock/javascript-sdk';
-import { deviceClient } from '@forgerock/device-client';
+import { deviceClient } from '@forgerock/javascript-sdk/device-client';
 import { delay as rxDelay, map, mergeMap } from 'rxjs/operators';
 import { from } from 'rxjs';
 
@@ -19,9 +18,14 @@ function autoscript() {
   const url = new URL(window.location.href);
   const amUrl = url.searchParams.get('amUrl') || 'https://openam-sdks.forgeblocks.com/am';
   const realmPath = url.searchParams.get('realmPath') || 'alpha';
-  const un = url.searchParams.get('un') || 'demo';
+  /**
+   * Make sure this `un` is a real user
+   * this is a manual test and requires a real tenant and a real user
+   * that has devices.
+   */
+  const un = url.searchParams.get('un') || 'demouser';
   const platformHeader = url.searchParams.get('platformHeader') === 'true' ? true : false;
-  const pw = url.searchParams.get('pw') || 'Demo1234!';
+  const pw = url.searchParams.get('pw') || '1111';
   const tree = url.searchParams.get('tree') || 'selfservice';
 
   console.log('Configure the SDK');
@@ -100,65 +104,27 @@ function autoscript() {
           try {
             const user = await forgerock.UserManager.getCurrentUser();
 
-            //const { result: deviceArr } = await client.oath.get({
-            //  userId: user.sub,
-            //  realm: 'alpha',
-            //});
-            //
-            //console.log('retrieveOathDevices', deviceArr);
-            //
-            //const [{ _id: id, _rev, deviceManagementStatus, ...device }] = deviceArr;
+            const query = { userId: user.sub, realm: 'alpha' };
 
-            //const oathDeviceDeleted = await client.oath.delete({ userId: user.sub, id, ...device });
+            const boundArr = await client.bound.get(query);
+            console.log('BOUND GET', boundArr);
+            if (Array.isArray(boundArr)) {
+              const [bound] = boundArr;
+              console.log('updated bound', bound);
+              const updatedBound = await client.bound.update({
+                ...query,
+                device: { ...bound, deviceName: 'BoundDeviceRyan' },
+              });
+              console.log('updated', updatedBound);
 
-            //console.log(oathDeviceDeleted);
+              if ('error' in updatedBound) return;
 
-            //const { result: pushDevices } = await client.push.get({
-            //  userId: user.sub,
-            //  realm: 'alpha',
-            //});
-            //
-            const bindingDevices = await client.boundDevices.get({
-              userId: user.sub,
-              realm: 'alpha',
-            });
-            //console.log('bindingDevices', bindingDevices);
-            //
-            //const webauthnDevices = await client.webauthn.get({
-            //  userId: user.sub,
-            //  realm: 'alpha',
-            //});
-            //console.log('webauthn devices', webauthnDevices);
-            //const {
-            //  _id: userId,
-            //  _rev: ignoreThis,
-            //  deviceManagementStatus: ignoreDeviceManagementStatus,
-            //  ...rest
-            //} = webauthnDevices.result[0];
-            //
-            //const updatedDevice = await client.webauthn.update({
-            //  userId: user.sub,
-            //  realm: 'alpha',
-            //  ...rest,
-            //  deviceName: 'RyansDeviceUpdated!!',
-            //});
-            //console.log('updatedDevice', updatedDevice);
-            //
-            const bindingDeviceNameUpdated = await client.boundDevices.update({
-              userId: user.sub,
-              realm: 'alpha',
-              ...bindingDevices.result[0],
-              deviceName: 'RyanDevice',
-            });
-
-            console.log('bindingDeviceNameUpdated', bindingDeviceNameUpdated);
-
-            const removedDevice = await client.boundDevices.delete({
-              realm: 'alpha',
-              userId: user.sub,
-              ...bindingDeviceNameUpdated,
-            });
-            //console.log('removeDevice', removedDevice);
+              const deletedBound = await client.bound.delete({
+                ...query,
+                device: updatedBound,
+              });
+              console.log(updatedBound);
+            }
           } catch (err) {
             console.log('failed', err);
           }

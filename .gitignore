@@ -18,6 +18,7 @@ e2e/token-vault-app/public/assets/
 bundles/
 docs/
 coverage/
+packages/**/coverage/
 node_modules/
 samples/_static/js/*.js*
 tests/**/app/index.js*
@@ -61,6 +62,7 @@ todos/*
 users/*
 #Project Docs
 docs/packages/javascript-sdk
+packages/*/docs
 **/playwright-report
 **/playwright/.cache
 
@@ -79,3 +81,6 @@ terminalOutput
 outputs/*
 
 
+e2e/mock-api-v2/html/*
+
+vitest.config.*.timestamp*

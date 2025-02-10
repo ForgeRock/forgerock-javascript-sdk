@@ -5,8 +5,8 @@
   "type": "module",
   "dependencies": {
     "@forgerock/javascript-sdk": "workspace:*",
-    "@forgerock/device-client": "workspace:*",
     "@forgerock/ping-protect": "workspace:*",
+    "@reduxjs/toolkit": "catalog:",
     "rxjs": "^7.4.0"
   },
   "description": "apps for e2e on js sdk",

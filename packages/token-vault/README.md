@@ -1,6 +1,6 @@
 # Token Vault
 
-Token Vault is a feature by ForgeRock that provides an additional layer of security for storing OAuth/OIDC tokens in a JavaScript application (SPA). This is useful for applications that need a higher level of security or have third-party code execution in their application that is not fully trusted. Once configured and setup, you can build your app, [use the ForgeRock SDK](https://backstage.forgerock.com/docs/sdks/latest/whatsnew/index.html), and interact with protected resources as you normally would. Token Vault is entirely framework and library agnostic.
+Token Vault is a feature by ForgeRock that provides an additional layer of security for storing OAuth/OIDC tokens in a JavaScript application (SPA). This is useful for applications that need a higher level of security or have third-party code execution in their application that is not fully trusted. Once configured and setup, you can build your app, [use the Ping SDKs](https://docs.pingidentity.com/sdks/latest/sdks/index.html), and interact with protected resources as you normally would. Token Vault is entirely framework and library agnostic.
 
 Token Vault is a plugin to our [JavaScript SDK](https://www.npmjs.com/package/@forgerock/javascript-sdk). It is developed around the idea of "Origin Isolation", which you can [read more about in this article](https://github.com/ForgeRock/appAuthHelper/blob/master/origin_isolation.md). To accomplish this, it uses both a Service Worker to intercept allowlisted URLs from emitted `fetch` requests (what we will call an Interceptor) and an `iframe` hosted on a different origin that acts as a proxy and OAuth/OIDC token management layer (what we'll call the Proxy.
 
@@ -32,7 +32,7 @@ We won't go into too much detail here, so let's start with the basics. The end r
 
 ### Browser Storage
 
-Whether it's Web Storage API or IndexedDB, any data stored within the browser is restricted by the web app's origin (aka. scheme, domain and port), which is [known as the Same-Origin Policy](https://www.w3.org/Security/wiki/Same_Origin_Policy). We will be leveraging this "same-origin" restriction to store the OAuth/OIDC Tokens (just "tokens" from here on out) we collect using the [Authorization Code Flow](https://backstage.forgerock.com/docs/am/7/oauth2-guide/oauth2-authz-grant-pkce.html) and keep them out of reach from malicious actors.
+Whether it's Web Storage API or IndexedDB, any data stored within the browser is restricted by the web app's origin (aka. scheme, domain and port), which is [known as the Same-Origin Policy](https://www.w3.org/Security/wiki/Same_Origin_Policy). We will be leveraging this "same-origin" restriction to store the OAuth/OIDC Tokens (just "tokens" from here on out) we collect using the [Authorization Code Flow](https://docs.pingidentity.com/pingam/7.5/oauth2-guide/oauth2-authz-grant-pkce.html) and keep them out of reach from malicious actors.
 
 ### Iframe (aka the Proxy)
 
@@ -48,19 +48,19 @@ This restricted list of URLs are the configured endpoints that need _interceptio
 
 ### The Sequence, Simplified
 
-When your application requests tokens from the ForgeRock server (Authorization Server) using the SDK, it will use the [Authorization Code Flow with PKCE](https://backstage.forgerock.com/docs/am/7/oauth2-guide/oauth2-authz-grant-pkce.html). The last request in this flow is a call to the `/access_token` endpoint. This request is intercepted and forwarded to the Proxy. When the Proxy receives the tokens in the response, it will store them within its origin, which should be different than the main app.
+When your application requests tokens from the ForgeRock server (Authorization Server) using the SDK, it will use the [Authorization Code Flow with PKCE](https://docs.pingidentity.com/pingam/7.5/oauth2-guide/oauth2-authz-grant-pkce.html). The last request in this flow is a call to the `/access_token` endpoint. This request is intercepted and forwarded to the Proxy. When the Proxy receives the tokens in the response, it will store them within its origin, which should be different than the main app.
 
 Before it returns the response to the main app, it redacts the token values from the response body. This ensures the main app never receives or stores the tokens. The Proxy then stores the tokens on behalf of the main app and will be available as a proxy to be used for any future "protected calls" that require the Access Token to be attached to the request.
 
 When any request is made by the main app that is configured for authorization the Interceptor will forward it to the Proxy. This includes the usual requests made from the SDK, like requesting user info or revoking tokens. The Proxy will attach the Access Token to the outbound request, and then return the response to the main app with it resolves. If the tokens have expired or become invalid, the main app will receive a 400 response from the proxy.
 
-## ForgeRock Server Setup
+## Server Setup
 
 Configuration is the key to success with this setup, so take extra care to ensure it's correct and consistent throughout your setup.
 
 ### CORS
 
-First, configure your [ForgeRock server's CORS settings](https://backstage.forgerock.com/docs/idcloud/latest/tenants/configure-cors.html) (if using ForgeRock's Identity Cloud product, there's a [preset JavaScript SDK CORS configuration](https://backstage.forgerock.com/docs/sdks/latest/serverconfiguration/cloud/allow-am-resource-requests-trusted-domains.html) that can be used as a starter):
+First, configure your [server's CORS settings](https://docs.pingidentity.com/sdks/latest/sdks/tutorials/javascript/00_before-you-begin.html#server_configuration) (if using ForgeRock's Identity Cloud product, there's a [preset JavaScript SDK CORS configuration](https://docs.pingidentity.com/pingoneaic/latest/tenants/configure-cors.html) that can be used as a starter):
 
 1. **Accepted origins**: these should be the origins (scheme, domain and port) for your app AND proxy
 2. **Accepted methods**: `GET` and `POST` are enough
@@ -71,7 +71,7 @@ An example or your origins can be `http://localhost:5173` and `http://localhost:
 
 ### OAuth
 
-Configure your [OAuth client within the ForgeRock server](https://backstage.forgerock.com/docs/sdks/latest/serverconfiguration/cloud/create-oauth2-client.html):
+Configure your [OAuth client](https://docs.pingidentity.com/sdks/latest/sdks/tutorials/javascript/00_before-you-begin.html#server_configuration):
 
 1. **Client ID**: Any alphanumeric string can be used here to identity this client
 2. **Client secret**: keep this blank
@@ -149,7 +149,7 @@ Let's take a look at some of the more important files.
 First, `app/src/index.html`:
 
 ```html
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head></head>
 
@@ -367,7 +367,7 @@ Note: for Vite users, we've had the best results with bundling into an IIFE. Web
 
 ## Using the Token Vault
 
-Once the Token Vault is properly setup, you can use the JavaScript SDK and any HTTP/fetch library to request protected resources. With the exception of using Refresh Tokens and the token storage mechanism, the remainder of the [documentation for the ForgeRock JavaScript SDK](https://backstage.forgerock.com/docs/sdks/latest/whatsnew/index.html) will remain consistent. The Token Vault will manage your token's lifecycle automatically and, if Refresh Token is enabled in your OAuth client, automatic Access Token refreshing will be handled by the Token Vault as well.
+Once the Token Vault is properly setup, you can use the JavaScript SDK and any HTTP/fetch library to request protected resources. With the exception of using Refresh Tokens and the token storage mechanism, the remainder of the [documentation for the Ping SDK for JavaScript](https://docs.pingidentity.com/sdks/latest/sdks/index.html) will remain consistent. The Token Vault will manage your token's lifecycle automatically and, if Refresh Token is enabled in your OAuth client, automatic Access Token refreshing will be handled by the Token Vault as well.
 
 ### Requesting & Using Tokens
 

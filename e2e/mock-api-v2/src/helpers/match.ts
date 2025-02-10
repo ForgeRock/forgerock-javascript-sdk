@@ -1,8 +1,8 @@
 import { Schema } from '@effect/schema';
 import { Effect, Match } from 'effect';
 
-import { InvalidUsernamePassword, InvalidProtectNode } from '../errors';
-import { PingOneCustomHtmlRequestBody } from '../schemas/custom-html-template/custom-html-template-request.schema';
+import { InvalidUsernamePassword, InvalidProtectNode } from '../errors/index.js';
+import { PingOneCustomHtmlRequestBody } from '../schemas/custom-html-template/custom-html-template-request.schema.js';
 
 type PingRequestData = Schema.Schema.Type<
   typeof PingOneCustomHtmlRequestBody

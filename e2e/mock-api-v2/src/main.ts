@@ -2,20 +2,20 @@ import { Config, Effect, Layer, pipe } from 'effect';
 import { RouterBuilder, Middlewares } from 'effect-http';
 import { NodeRuntime } from '@effect/platform-node';
 import { NodeServer } from 'effect-http-node';
-import { apiSpec } from './spec';
+import { apiSpec } from './spec.js';
 
-import { authorizeHandler } from './handlers/authorize.handler';
-import { customHtmlHandler } from './handlers/custom-html-template.handler';
-import { openidConfiguration } from './handlers/open-id-configuration.handler';
-import { tokenHandler } from './handlers/token.handler';
-import { userInfoHandler } from './handlers/userinfo.handler';
+import { authorizeHandler } from './handlers/authorize.handler.js';
+import { customHtmlHandler } from './handlers/custom-html-template.handler.js';
+import { openidConfiguration } from './handlers/open-id-configuration.handler.js';
+import { tokenHandler } from './handlers/token.handler.js';
+import { userInfoHandler } from './handlers/userinfo.handler.js';
 
-import { authorizeMock } from './services/authorize.service';
-import { CookieService, cookieServiceTest } from './services/cookie.service';
-import { mockCustomHtmlTemplate } from './services/custom-html-template.service';
-import { mockRequest } from './services/request.service';
-import { mockTokens } from './services/tokens.service';
-import { UserInfo, userInfoMock } from './services/userinfo.service';
+import { authorizeMock } from './services/authorize.service.js';
+import { CookieService, cookieServiceTest } from './services/cookie.service.js';
+import { mockCustomHtmlTemplate } from './services/custom-html-template.service.js';
+import { mockRequest } from './services/request.service.js';
+import { mockTokens } from './services/tokens.service.js';
+import { UserInfo, userInfoMock } from './services/userinfo.service.js';
 
 const app = RouterBuilder.make(apiSpec).pipe(
   RouterBuilder.handle('HealthCheck', () => Effect.succeed('Healthy!')),

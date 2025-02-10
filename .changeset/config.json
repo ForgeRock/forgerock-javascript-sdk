@@ -7,21 +7,20 @@
     }
   ],
   "commit": false,
-  "fixed": [["@forgerock/javascript-sdk", "@forgerock/ping-protect"]],
+  "fixed": [["@forgerock/javascript-sdk"]],
   "linked": [],
   "access": "public",
   "baseBranch": "master",
   "updateInternalDependencies": "patch",
   "ignore": [
-    "@forgerock/device-client",
+    "@forgerock/ping-protect",
+    "@forgerock/token-vault",
     "autoscript-apps",
     "autoscript-suites",
-    "davinci-app",
     "mock-api",
     "token-vault-app",
     "@forgerock/token-vault-interceptor",
     "token-vault-proxy",
-    "token-vault-suites",
-    "davinci-suites"
+    "token-vault-suites"
   ]
 }

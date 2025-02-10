@@ -6,7 +6,7 @@
   "tags": ["scope:package"],
   "targets": {
     "docs": {
-      "command": "npx typedoc --options ./packages/ping-protect/typedoc.json"
+      "command": "pnpm typedoc --options {projectRoot}/typedoc.json"
     },
     "build": {
       "inputs": [

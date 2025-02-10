@@ -1,8 +1,8 @@
 import * as Cookies from '@effect/platform/Cookies';
 import { Effect, Context, Either } from 'effect';
 
-import { incrementCookieHeader } from '../helpers/cookie';
-import { HeaderTypes } from '../types';
+import { incrementCookieHeader } from '../helpers/cookie.js';
+import { HeaderTypes } from '../types/index.js';
 
 /*
  * Define the interface for the Cookie Service

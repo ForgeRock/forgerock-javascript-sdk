@@ -3,7 +3,8 @@
  *
  * autoscript.ts
  *
- * Copyright (c) 2020 ForgeRock. All rights reserved.
+ * Copyright (c) 2024 Ping Identity. All rights reserved.
+ *
  * This software may be modified and distributed under the terms
  * of the MIT license. See the LICENSE file for details.
  */
@@ -61,8 +62,8 @@ function autoscript() {
       rxDelay(delay),
       mergeMap((step) => {
         console.log('Choose Passwordless login');
-        const cb = step.getCallbackOfType('ChoiceCallback');
-        cb.setChoiceIndex(0);
+        const cb = step.getCallbackOfType('ConfirmationCallback');
+        cb.setOptionIndex(0);
         return forgerock.FRAuth.next(step);
       }),
       rxDelay(delay),
@@ -128,7 +129,7 @@ function autoscript() {
         // Needed for testing WebAuthn on Safari due to user event needed
         console.log('Click the continue button!');
         const continueBtn = document.querySelector('.continue-btn');
-        return rxjs.fromEvent(continueBtn, 'click');
+        return fromEvent(continueBtn, 'click');
       }),
       mergeMap(() => {
         console.log('Log back in with WebAuthn');
