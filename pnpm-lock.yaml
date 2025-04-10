@@ -40,9 +40,6 @@ importers:
       browserstack-node-sdk:
         specifier: 1.34.17
         version: 1.34.17
-      nx-cloud:
-        specifier: 19.1.0
-        version: 19.1.0
     devDependencies:
       '@commitlint/cli':
         specifier: ^19.1.0
@@ -2566,12 +2563,6 @@ packages:
         integrity: sha512-oGB+UxlgWcgQkgwo8GcEGwemoTFt3FIO9ababBmaGwXIoBKZ+GTy0pP185beGg7Llih/NSHSV2XAs1lnznocSg==,
       }
     engines: { node: '>= 8' }
-
-  '@nrwl/nx-cloud@19.1.0':
-    resolution:
-      {
-        integrity: sha512-krngXVPfX0Zf6+zJDtcI59/Pt3JfcMPMZ9C/+/x6rvz4WGgyv1s0MI4crEUM0Lx5ZpS4QI0WNDCFVQSfGEBXUg==,
-      }
 
   '@nx/devkit@20.3.3':
     resolution:
@@ -6593,13 +6584,6 @@ packages:
       }
     engines: { node: '>=12' }
 
-  dotenv@10.0.0:
-    resolution:
-      {
-        integrity: sha512-rlBi9d8jpv9Sf1klPjNfFAuWDjKLwTIJJ/VxtoTwIR6hnZxcEOQCZg2oIL3MWBYw5GpUDKOEnND7LXTbIpQ03Q==,
-      }
-    engines: { node: '>=10' }
-
   dotenv@16.4.5:
     resolution:
       {
@@ -8525,13 +8509,6 @@ packages:
     resolution:
       {
         integrity: sha512-QQnnxNyfvmHFIsj7gkPcYymR8Jdw/o7mp5ZFihxn6h8Ci6fh3Dx4E1gPjpQEpIuPo9XVNY/ZUwh4BPMjGyL01g==,
-      }
-    engines: { node: ^14.17.0 || ^16.13.0 || >=18.0.0 }
-
-  ini@4.1.3:
-    resolution:
-      {
-        integrity: sha512-X7rqawQBvfdjS10YU1y1YVreA3SsLrW9dX2CewP2EbBJM4ypVNLDkO5y04gejPwKIY9lR+7r9gn3rFPt/kmWFg==,
       }
     engines: { node: ^14.17.0 || ^16.13.0 || >=18.0.0 }
 
@@ -10603,13 +10580,6 @@ packages:
       {
         integrity: sha512-ub5E4+FBPKwAZx0UwIQOjYWGHTEq5sPqHQNRN8Z9e4A7u3Tj1weLJsL59yH9vmvqEtBHaOmT6cYQKIZOxp35FQ==,
       }
-
-  nx-cloud@19.1.0:
-    resolution:
-      {
-        integrity: sha512-f24vd5/57/MFSXNMfkerdDiK0EvScGOKO71iOWgJNgI1xVweDRmOA/EfjnPMRd5m+pnoPs/4A7DzuwSW0jZVyw==,
-      }
-    hasBin: true
 
   nx@20.3.3:
     resolution:
@@ -16199,12 +16169,6 @@ snapshots:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.17.1
 
-  '@nrwl/nx-cloud@19.1.0':
-    dependencies:
-      nx-cloud: 19.1.0
-    transitivePeerDependencies:
-      - debug
-
   '@nx/devkit@20.3.3(nx@20.3.3(@swc-node/register@1.9.2(@swc/core@1.5.7(@swc/helpers@0.5.12))(@swc/types@0.1.7)(typescript@5.6.3))(@swc/core@1.5.7(@swc/helpers@0.5.12)))':
     dependencies:
       ejs: 3.1.10
@@ -19096,8 +19060,6 @@ snapshots:
     dependencies:
       dotenv: 16.4.5
 
-  dotenv@10.0.0: {}
-
   dotenv@16.4.5: {}
 
   dotenv@8.6.0: {}
@@ -20461,8 +20423,6 @@ snapshots:
 
   ini@4.1.1: {}
 
-  ini@4.1.3: {}
-
   inquirer@8.2.5:
     dependencies:
       ansi-escapes: 4.3.2
@@ -21792,21 +21752,6 @@ snapshots:
     optional: true
 
   nwsapi@2.2.7: {}
-
-  nx-cloud@19.1.0:
-    dependencies:
-      '@nrwl/nx-cloud': 19.1.0
-      axios: 1.7.7
-      chalk: 4.1.2
-      dotenv: 10.0.0
-      fs-extra: 11.2.0
-      ini: 4.1.3
-      node-machine-id: 1.1.12
-      open: 8.4.2
-      tar: 6.2.1
-      yargs-parser: 21.1.1
-    transitivePeerDependencies:
-      - debug
 
   nx@20.3.3(@swc-node/register@1.9.2(@swc/core@1.5.7(@swc/helpers@0.5.12))(@swc/types@0.1.7)(typescript@5.6.3))(@swc/core@1.5.7(@swc/helpers@0.5.12)):
     dependencies:
