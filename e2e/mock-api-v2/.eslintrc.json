@@ -1,6 +1,12 @@
 {
   "extends": ["../../.eslintrc.json"],
-  "ignorePatterns": ["!**/*", "README.md", ".DS_Store"],
+  "ignorePatterns": [
+    "!**/*",
+    "README.md",
+    ".DS_Store",
+    "**/vite.config.*.timestamp*",
+    "**/vitest.config.*.timestamp*"
+  ],
   "overrides": [
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],

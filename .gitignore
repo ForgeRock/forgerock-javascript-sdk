@@ -32,7 +32,7 @@ packages/javascript-sdk/lib/
 .env.serve.development
 
 # Certificates
-# *.pem
+*.pem
 
 # IDEs
 .vscode
