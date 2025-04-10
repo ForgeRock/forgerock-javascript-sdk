@@ -131,6 +131,7 @@ interface WellKnownResponse {
   token_endpoint: string;
   userinfo_endpoint: string;
   end_session_endpoint: string;
+  ping_end_idp_session_endpoint?: string;
   introspection_endpoint: string;
   revocation_endpoint: string;
   jwks_uri?: string;
