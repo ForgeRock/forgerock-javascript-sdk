@@ -35,6 +35,7 @@ test.describe('Test OAuth login flow with .wellknown config', () => {
     expect(messageArray.includes('Test script complete')).toBe(true);
 
     // Test network requests
+    expect(networkArray.includes('/am/json/realms/root/sessions, fetch')).toBe(true);
     expect(networkArray.includes('/am/oauth2/realms/root/connect/endSession, fetch')).toBe(true);
   });
 
@@ -61,6 +62,7 @@ test.describe('Test OAuth login flow with .wellknown config', () => {
     expect(messageArray.includes('Test script complete')).toBe(true);
 
     // Test network requests
+    expect(networkArray.includes('/am/json/realms/root/sessions, fetch')).toBe(false);
     expect(networkArray.includes('/am/oauth2/realms/root/connect/idpEndSession, fetch')).toBe(true);
   });
 });
