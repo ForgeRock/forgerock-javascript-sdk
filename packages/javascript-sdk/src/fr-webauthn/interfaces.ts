@@ -73,6 +73,7 @@ interface WebAuthnRegistrationMetadata {
   userId: string;
   userName: string;
   displayName?: string;
+  supportsJsonResponse?: boolean;
 }
 
 interface WebAuthnAuthenticationMetadata {
@@ -82,6 +83,7 @@ interface WebAuthnAuthenticationMetadata {
   relyingPartyId: string;
   timeout: number;
   userVerification: UserVerificationType;
+  supportsJsonResponse?: boolean;
 }
 
 interface WebAuthnCallbacks {
