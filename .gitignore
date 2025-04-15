@@ -3,6 +3,7 @@
 */DS_Store
 **/*.DS_Store
 .pnpm-store/*
+
 # Generated code
 tmp/
 e2e/**/dist
@@ -30,6 +31,7 @@ packages/javascript-sdk/lib/
 .swc
 .vite
 .env.serve.development
+package-lock.json
 
 # Certificates
 *.pem

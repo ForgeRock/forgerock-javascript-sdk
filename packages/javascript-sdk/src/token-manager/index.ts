@@ -26,12 +26,24 @@ interface GetTokensOptions extends ConfigOptions {
   query?: StringDict<string>;
 }
 
+/**
+ * Token Manager class that provides high-level abstraction for Authorization Code flow,
+ * PKCE value generation, token exchange and token storage.
+ *
+ * Supports both embedded authentication as well as external authentication via redirects
+ */
 abstract class TokenManager {
   /**
-   * Token Manager class that provides high-level abstraction for Authorization Code flow,
-   * PKCE value generation, token exchange and token storage.
-   *
-   * Supports both embedded authentication as well as external authentication via redirects
+   * @function getTokens - Retrieves OAuth2 tokens from the server or local storage.
+   * @param {Object} options - Options for retrieving tokens.
+   * @param {boolean} [options.forceRenew] - If true, forces a new token request even if tokens are already stored.
+   * @param {string} [options.login] - Specifies the type of login: 'embedded' or 'redirect'.
+   * @param {boolean} [options.skipBackgroundRequest] - If true, skips the background request to get tokens without redirect.
+   * @param {Object} [options.query] - Query key-value pairs to convert to URL parameters for the /authorize request.
+   * @param {string} [options.query.code] - Authorization code from the redirect URL.
+   * @param {string} [options.query.state] - State parameter from the redirect URL.
+   * @returns {Promise<OAuth2Tokens | void>} - Returns a promise that resolves to the retrieved tokens or void.
+   * @throws {Error} - Throws an error if the client ID is not provided, if tokens cannot be exchanged, or if there is a state mismatch.
    *
    Example 1:
 
@@ -69,11 +81,7 @@ abstract class TokenManager {
 
    ```js
    const tokens = forgerock.TokenManager.getTokens({
-     skipBackgroundRequest: true, // this will skip the iframe request to get tokens w/o redirect
-     query: {
-       code: 'lFJQYdoQG1u7nUm8 ... ', // Authorization code from redirect URL
-       state: 'MTY2NDkxNTQ2Nde3D ... ', // State from redirect URL
-     },
+     skipBackgroundRequest: true, // OPTIONAL; this will skip the iframe request to silently get tokens w/o redirect
    });
    ```
    */
@@ -149,7 +157,7 @@ abstract class TokenManager {
       options = {};
     }
 
-    if (!options?.skipBackgroundRequest) {
+    if (options.skipBackgroundRequest !== true) {
       /**
        * Attempt to call the authorize URL to retrieve authorization code
        */
@@ -194,7 +202,22 @@ abstract class TokenManager {
           // as that is a normal response and just requires a redirect
           throw err;
         }
+
+        const authorizeUrl = await OAuth2Client.createAuthorizeUrl(pkceValues);
+
+        // Before redirecting, store PKCE values
+        storePkceValues();
+
+        return location.assign(authorizeUrl);
       }
+
+      /**
+       * Exchange authorization code for tokens
+       */
+      return await this.tokenExchange(options, {
+        state: pkceValues.state,
+        verifier: pkceValues.verifier,
+      });
     }
 
     const authorizeUrl = await OAuth2Client.createAuthorizeUrl(pkceValues);

@@ -12,10 +12,11 @@ import * as forgerock from '@forgerock/javascript-sdk';
 import { delay as rxDelay, map, mergeMap } from 'rxjs/operators';
 import { from } from 'rxjs';
 
-async function autoscript() {
+function autoscript() {
   const delay = 0;
 
   const url = new URL(window.location.href);
+  const amUrl = url.searchParams.get('amUrl') || 'http://localhost:9443/am';
   const preAuthenticated = url.searchParams.get('preAuthenticated') || 'false';
   const code = url.searchParams.get('code') || '';
   const clientId = url.searchParams.get('clientId');
@@ -24,12 +25,10 @@ async function autoscript() {
   const realmPath = url.searchParams.get('realmPath') || 'root';
   const scope = url.searchParams.get('scope') || 'openid profile me.read';
   const state = url.searchParams.get('state') || '';
-  const acr_values = url.searchParams.get('acr') || 'SpecificTree';
+  const acr_values = url.searchParams.get('acr') || 'skipBackgroundRequest';
   // in central login we use an auth query param for the return of our mock 401 request
   // this is to prevent the evaluation of the page before we have technically authenticated
   const auth = url.searchParams.get('auth') || false;
-  let wellknown =
-    url.searchParams.get('wellknown') || 'http://localhost:9443/am/.well-known/oidc-configuration';
 
   let tokenStore = url.searchParams.get('tokenStore') || 'localStorage';
 
@@ -41,7 +40,7 @@ async function autoscript() {
   }
 
   console.log('Configure the SDK');
-  forgerock.Config.setAsync({
+  forgerock.Config.set({
     clientId: clientId || client_id || 'CentralLoginOAuthClient',
     realmPath,
     redirectUri: `${url.origin}/src/${
@@ -49,7 +48,7 @@ async function autoscript() {
     }/`,
     scope,
     serverConfig: {
-      wellknown,
+      baseUrl: amUrl,
     },
     tokenStore,
   });
@@ -74,7 +73,7 @@ async function autoscript() {
             document.cookie = 'iPlanetDirectoryPro=abcd1234; domain=localhost; path=/';
             if (code && state) {
               window.sessionStorage.setItem(
-                `FR-SDK-authflow-${clientId}`,
+                `FR-SDK-${clientId}`,
                 JSON.stringify({ responseType: 'code', state, verifier: '1234' }),
               );
             }
@@ -84,16 +83,16 @@ async function autoscript() {
         rxDelay(delay),
         mergeMap((step) => {
           let tokens;
-          if (error) {
-            // Do nothing
-            return;
+          // detect when in iframe, throw as error if so
+          if (window.self !== window.top) {
+            throw new Error('Loaded_In_Iframe');
           } else if (code && state) {
             tokens = forgerock.TokenManager.getTokens({
-              login: 'redirect',
               query: { code, state, acr_values },
             });
           } else {
             tokens = forgerock.TokenManager.getTokens({
+              skipBackgroundRequest: true,
               login: 'redirect',
               query: { acr_values },
             });
@@ -135,6 +134,7 @@ async function autoscript() {
         complete: () => {
           console.log('Test script complete');
           document.body.innerHTML = `<p class="Test_Complete">Test script complete</p>`;
+          history.replaceState(null, null, window.location.origin + window.location.pathname);
           localStorage.clear();
         },
       });

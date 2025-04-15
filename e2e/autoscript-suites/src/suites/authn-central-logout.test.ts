@@ -9,13 +9,11 @@ test('should login and logout with pingone', async ({ page }) => {
   await expect(btn).toBeVisible();
   await btn.click({ delay: 1000 });
   await page.waitForURL(/ping/);
-  await page.getByRole('textbox', { name: 'Username' }).click();
-  await page.getByPlaceholder('Username').fill('sdk.user');
-  await page.getByRole('textbox', { name: 'Password' }).click();
-  await page.getByRole('textbox', { name: 'Password' }).fill('XZY8gqn3gau*jmv1hwg');
+  await page.getByPlaceholder('Username').fill('reactdavinci@user.com');
+  await page.getByRole('textbox', { name: 'Password' }).fill('abc123!ABC');
   await page.getByRole('button', { name: 'Sign On' }).click();
 
-  await expect(page.getByText('preferred_username')).toContainText('sdk.user');
+  await expect(page.getByText('preferred_username')).toContainText('reactdavinci@user.com');
   await page.getByRole('button', { name: 'Sign Out' }).click({ clickCount: 1, delay: 300 });
   await page.getByRole('button', { name: 'Login' }).click({ delay: 300 });
   await page.waitForRequest(/pingone/);
