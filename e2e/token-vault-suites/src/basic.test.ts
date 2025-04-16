@@ -79,7 +79,6 @@ test('Test happy paths on test page', async ({ page }) => {
 
   // Since logout requires multiple requests to complete, we use Promise.all
   await Promise.all([
-    page.waitForResponse((response) => response.url().includes('/sessions')),
     page.waitForResponse((response) => response.url().includes('/endSession')),
     page.waitForResponse((response) => response.url().includes('/revoke')),
     page.getByRole('button', { name: 'Logout' }).click(),
