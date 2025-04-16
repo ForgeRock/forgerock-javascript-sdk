@@ -44,7 +44,7 @@ function autoscript() {
         next();
       },
     ],
-    redirectUri: `${url.origin}/_callback/`,
+    redirectUri: `${url.origin}/src/_callback/`,
     realmPath,
     scope,
     tree,

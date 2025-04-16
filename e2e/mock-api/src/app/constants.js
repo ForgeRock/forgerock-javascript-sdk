@@ -36,6 +36,7 @@ export const authPaths = {
   endSession: [
     '/am/auth/endSession',
     '/am/oauth2/realms/root/connect/endSession',
+    '/am/oauth2/realms/root/connect/idpEndSession',
     '/am/oauth2/realms/root/realms/middleware/connect/endSession',
     '/am/oauth2/realms/root/realms/tokens-expiring-soon/connect/endSession',
     '/am/oauth2/realms/root/realms/tokens-expired/connect/endSession',

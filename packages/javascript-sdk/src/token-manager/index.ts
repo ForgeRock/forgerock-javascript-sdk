@@ -22,15 +22,28 @@ import { tokensWillExpireWithinThreshold } from './helpers';
 interface GetTokensOptions extends ConfigOptions {
   forceRenew?: boolean;
   login?: 'embedded' | 'redirect' | undefined;
+  skipBackgroundRequest?: boolean;
   query?: StringDict<string>;
 }
 
+/**
+ * Token Manager class that provides high-level abstraction for Authorization Code flow,
+ * PKCE value generation, token exchange and token storage.
+ *
+ * Supports both embedded authentication as well as external authentication via redirects
+ */
 abstract class TokenManager {
   /**
-   * Token Manager class that provides high-level abstraction for Authorization Code flow,
-   * PKCE value generation, token exchange and token storage.
-   *
-   * Supports both embedded authentication as well as external authentication via redirects
+   * @function getTokens - Retrieves OAuth2 tokens from the server or local storage.
+   * @param {Object} options - Options for retrieving tokens.
+   * @param {boolean} [options.forceRenew] - If true, forces a new token request even if tokens are already stored.
+   * @param {string} [options.login] - Specifies the type of login: 'embedded' or 'redirect'.
+   * @param {boolean} [options.skipBackgroundRequest] - If true, skips the background request to get tokens without redirect.
+   * @param {Object} [options.query] - Query key-value pairs to convert to URL parameters for the /authorize request.
+   * @param {string} [options.query.code] - Authorization code from the redirect URL.
+   * @param {string} [options.query.state] - State parameter from the redirect URL.
+   * @returns {Promise<OAuth2Tokens | void>} - Returns a promise that resolves to the retrieved tokens or void.
+   * @throws {Error} - Throws an error if the client ID is not provided, if tokens cannot be exchanged, or if there is a state mismatch.
    *
    Example 1:
 
@@ -61,6 +74,14 @@ abstract class TokenManager {
        code: 'lFJQYdoQG1u7nUm8 ... ', // Authorization code from redirect URL
        state: 'MTY2NDkxNTQ2Nde3D ... ', // State from redirect URL
      },
+   });
+   ```
+
+   Example 4:
+
+   ```js
+   const tokens = forgerock.TokenManager.getTokens({
+     skipBackgroundRequest: true, // OPTIONAL; this will skip the iframe request to silently get tokens w/o redirect
    });
    ```
    */
@@ -132,68 +153,79 @@ abstract class TokenManager {
       responseType: ResponseType.Code,
     });
 
-    /**
-     * Attempt to call the authorize URL to retrieve authorization code
-     */
-    try {
-      // Check expected browser support
-      // To support legacy browsers, iframe works best with short timeout
-      const parsedUrl = new URL(await OAuth2Client.getAuthCodeByIframe(pkceValues));
-
-      // Throw if we have an error param or have no authorization code
-      if (parsedUrl.searchParams.get('error')) {
-        throw Error(`${parsedUrl.searchParams.get('error_description')}`);
-      } else if (!parsedUrl.searchParams.get('code')) {
-        throw Error(allowedErrors.AuthenticationConsentRequired);
-      }
-
-      const parsedQuery = parseQuery(parsedUrl.toString());
-
-      if (!options) {
-        options = {};
-      }
-      options.query = parsedQuery;
-    } catch (err) {
-      // If authorize request fails, handle according to `login` type
-      if (!(err instanceof Error) || options?.login !== 'redirect') {
-        // Throw for any error if login is NOT of type "redirect"
-        throw err;
-      }
-
-      // Check if error is not one of our allowed errors
-      if (
-        allowedErrors.AuthenticationIsRequired !== err.message &&
-        allowedErrors.AuthenticationConsentRequired !== err.message &&
-        allowedErrors.AuthorizationTimeout !== err.message &&
-        allowedErrors.FailedToFetch !== err.message &&
-        allowedErrors.NetworkError !== err.message &&
-        allowedErrors.InteractionNotAllowed !== err.message &&
-        allowedErrors.RequestRequiresConsent !== err.message &&
-        // Check for Ping Identity Login Required error
-        // Long message, so just check substring
-        !err.message.includes(allowedErrors.LoginRequired) &&
-        // Safari has a very long error message, so we check for a substring
-        !err.message.includes(allowedErrors.CORSError)
-      ) {
-        // Throw if the error is NOT an explicitly allowed error along with redirect of true
-        // as that is a normal response and just requires a redirect
-        throw err;
-      }
-
-      const authorizeUrl = await OAuth2Client.createAuthorizeUrl(pkceValues);
-
-      // Before redirecting, store PKCE values
-      storePkceValues();
-
-      return location.assign(authorizeUrl);
+    if (!options) {
+      options = {};
     }
-    /**
-     * Exchange authorization code for tokens
-     */
-    return await this.tokenExchange(options, {
-      state: pkceValues.state,
-      verifier: pkceValues.verifier,
-    });
+
+    if (options.skipBackgroundRequest !== true) {
+      /**
+       * Attempt to call the authorize URL to retrieve authorization code
+       */
+      try {
+        // Check expected browser support
+        // To support legacy browsers, iframe works best with short timeout
+        const parsedUrl = new URL(await OAuth2Client.getAuthCodeByIframe(pkceValues));
+
+        // Throw if we have an error param or have no authorization code
+        if (parsedUrl.searchParams.get('error')) {
+          throw Error(`${parsedUrl.searchParams.get('error_description')}`);
+        } else if (!parsedUrl.searchParams.get('code')) {
+          throw Error(allowedErrors.AuthenticationConsentRequired);
+        }
+
+        const parsedQuery = parseQuery(parsedUrl.toString());
+
+        options.query = parsedQuery;
+      } catch (err) {
+        // If authorize request fails, handle according to `login` type
+        if (!(err instanceof Error) || options?.login !== 'redirect') {
+          // Throw for any error if login is NOT of type "redirect"
+          throw err;
+        }
+
+        // Check if error is not one of our allowed errors
+        if (
+          allowedErrors.AuthenticationIsRequired !== err.message &&
+          allowedErrors.AuthenticationConsentRequired !== err.message &&
+          allowedErrors.AuthorizationTimeout !== err.message &&
+          allowedErrors.FailedToFetch !== err.message &&
+          allowedErrors.NetworkError !== err.message &&
+          allowedErrors.InteractionNotAllowed !== err.message &&
+          allowedErrors.RequestRequiresConsent !== err.message &&
+          // Check for Ping Identity Login Required error
+          // Long message, so just check substring
+          !err.message.includes(allowedErrors.LoginRequired) &&
+          // Safari has a very long error message, so we check for a substring
+          !err.message.includes(allowedErrors.CORSError)
+        ) {
+          // Throw if the error is NOT an explicitly allowed error along with redirect of true
+          // as that is a normal response and just requires a redirect
+          throw err;
+        }
+
+        const authorizeUrl = await OAuth2Client.createAuthorizeUrl(pkceValues);
+
+        // Before redirecting, store PKCE values
+        storePkceValues();
+
+        return location.assign(authorizeUrl);
+      }
+
+      /**
+       * Exchange authorization code for tokens
+       */
+      return await this.tokenExchange(options, {
+        state: pkceValues.state,
+        verifier: pkceValues.verifier,
+      });
+    }
+
+    const authorizeUrl = await OAuth2Client.createAuthorizeUrl(pkceValues);
+
+    // Before redirecting, store PKCE values
+    storePkceValues();
+
+    return location.assign(authorizeUrl);
   }
 
   public static async deleteTokens(): Promise<void> {

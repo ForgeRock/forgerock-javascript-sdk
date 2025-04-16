@@ -309,12 +309,13 @@ abstract class OAuth2Client {
     };
 
     init = init || ({} as RequestInit);
+    init.headers = (init.headers || new Headers()) as Headers;
+    init.headers.set('Accept', 'application/json');
 
     if (includeToken) {
       const tokens = await TokenStorage.get();
       const accessToken = tokens && tokens.accessToken;
       init.credentials = 'include';
-      init.headers = (init.headers || new Headers()) as Headers;
       init.headers.set('Authorization', `Bearer ${accessToken}`);
     }
     const runMiddleware = middlewareWrapper(

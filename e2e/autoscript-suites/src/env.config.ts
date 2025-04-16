@@ -64,6 +64,7 @@ export const APP_PORT = ports.app;
 export const AM_PORT = amPort;
 export const MOCK_PORT = ports.mock;
 
+export const ACR = '';
 export const AM_URL = `${amUrl}:${amPort}${paths.am}`;
 export const BASE_URL = `${origins.app}:${ports.app}`;
 export const CLIENT_ID = oauth.client;
