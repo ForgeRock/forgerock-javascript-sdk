@@ -1,3 +1,12 @@
+/**
+ *
+ * Copyright (c) 2023 - 2025 Ping Identity Corporation. All right reserved.
+ *
+ * This software may be modified and distributed under the terms
+ * of the MIT license. See the LICENSE file for details.
+ *
+ **/
+
 import type { GetOAuth2TokensOptions } from '@forgerock/javascript-sdk';
 
 export type RefreshOAuth2TokensOptionsInit = Omit<GetOAuth2TokensOptions, 'authorizationCode'>;

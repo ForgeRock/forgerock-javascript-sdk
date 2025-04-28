@@ -1,3 +1,13 @@
+/*
+ * @forgerock/javascript-sdk
+ *
+ * ping-protect-evaluation-callback.test.ts
+ *
+ * Copyright (c) 2024 - 2025 Ping Identity Corporation. All rights reserved.
+ * This software may be modified and distributed under the terms
+ * of the MIT license. See the LICENSE file for details.
+ */
+
 import { vi, describe, it, expect } from 'vitest';
 import { CallbackType } from '../../auth/enums';
 import PingOneProtectEvaluationCallback from './ping-protect-evaluation-callback';
