@@ -1,3 +1,13 @@
+/*
+ * @forgerock/javascript-sdk
+ *
+ * oauth2-client.test.ts
+ *
+ * Copyright (c) 2020 - 2025 Ping Identity Corporation. All rights reserved.
+ * This software may be modified and distributed under the terms
+ * of the MIT license. See the LICENSE file for details.
+ */
+
 import { vi, afterAll, describe, it, expect } from 'vitest';
 import OAuth2Client from '../../src/oauth2-client/index';
 import PKCE from '../../src/util/pkce';
