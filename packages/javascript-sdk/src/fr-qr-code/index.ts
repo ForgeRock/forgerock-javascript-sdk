@@ -1,3 +1,13 @@
+/*
+ * @forgerock/javascript-sdk
+ *
+ * index.ts
+ *
+ * Copyright (c) 2024 - 2025 Ping Identity Corporation. All rights reserved.
+ * This software may be modified and distributed under the terms
+ * of the MIT license. See the LICENSE file for details.
+ */
+
 import { CallbackType } from '../auth/enums';
 import HiddenValueCallback from '../fr-auth/callbacks/hidden-value-callback';
 import TextOutputCallback from '../fr-auth/callbacks/text-output-callback';

@@ -1,3 +1,12 @@
+/**
+ *
+ * Copyright (c) 2025 Ping Identity Corporation. All right reserved.
+ *
+ * This software may be modified and distributed under the terms
+ * of the MIT license. See the LICENSE file for details.
+ *
+ **/
+
 import { expect, it } from '@effect/vitest';
 import { UserInfo, userInfoMock } from '../userinfo.service.js';
 import { userInfoResponse } from '../../responses/userinfo/userinfo.js';

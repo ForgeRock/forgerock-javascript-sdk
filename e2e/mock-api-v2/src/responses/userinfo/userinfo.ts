@@ -1,3 +1,12 @@
+/**
+ *
+ * Copyright (c) 2025 Ping Identity Corporation. All right reserved.
+ *
+ * This software may be modified and distributed under the terms
+ * of the MIT license. See the LICENSE file for details.
+ *
+ **/
+
 const userInfoResponse = {
   sub: '6f00a1ba-1d86-4b87-afb0-0ea1a952bc2e',
   preferred_username: 'demouser',

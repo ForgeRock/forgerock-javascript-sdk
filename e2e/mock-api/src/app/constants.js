@@ -3,7 +3,7 @@
  *
  * constants.js
  *
- * Copyright (c) 2020 ForgeRock. All rights reserved.
+ * Copyright (c) 2020 - 2025 Ping Identity Corporation. All rights reserved.
  * This software may be modified and distributed under the terms
  * of the MIT license. See the LICENSE file for details.
  */
@@ -36,6 +36,7 @@ export const authPaths = {
   endSession: [
     '/am/auth/endSession',
     '/am/oauth2/realms/root/connect/endSession',
+    '/am/oauth2/realms/root/connect/idpEndSession',
     '/am/oauth2/realms/root/realms/middleware/connect/endSession',
     '/am/oauth2/realms/root/realms/tokens-expiring-soon/connect/endSession',
     '/am/oauth2/realms/root/realms/tokens-expired/connect/endSession',

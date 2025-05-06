@@ -1,3 +1,12 @@
+/**
+ *
+ * Copyright (c) 2025 Ping Identity Corporation. All right reserved.
+ *
+ * This software may be modified and distributed under the terms
+ * of the MIT license. See the LICENSE file for details.
+ *
+ **/
+
 const tokenRequestBody = {
   client_id: '724ec718-c41c-4d51-98b0-84a583f450f9',
   code: '17a4a4fd-61b4-46c6-a185-3bbb4e3f297e',
