@@ -1,13 +1,5 @@
 # Changelog
 
-## 4.8.0
-
-### Minor Changes
-
-- [#535](https://github.com/ForgeRock/forgerock-javascript-sdk/pull/535) [`a5daf4c`](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/a5daf4cbb4ae9039eaf34d8369e5c92c488e17dd) Thanks [@cerebrl](https://github.com/cerebrl)! - Add new PingOne signoff, remove unneeded /session call, add flag for iframe
-
-- [#537](https://github.com/ForgeRock/forgerock-javascript-sdk/pull/537) [`fc00259`](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/fc0025941348a90994bd3931194b13a694964619) Thanks [@cerebrl](https://github.com/cerebrl)! - Add feature to provide JSON outcome response to callback if requested
-
 ## 4.7.0
 
 ### Minor Changes

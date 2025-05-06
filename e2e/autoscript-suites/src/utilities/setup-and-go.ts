@@ -3,29 +3,19 @@
  *
  * setup-and-go.ts
  *
- * Copyright (c) 2020 - 2025 Ping Identity Corporation. All rights reserved.
+ * Copyright (c) 2020 ForgeRock. All rights reserved.
  * This software may be modified and distributed under the terms
  * of the MIT license. See the LICENSE file for details.
  */
 
 import type { Page } from '@playwright/test';
-import {
-  ACR,
-  AM_URL,
-  BASE_URL,
-  CLIENT_ID,
-  RESOURCE_URL,
-  SCOPE,
-  REALM_PATH,
-  USERS,
-} from '../env.config';
+import { AM_URL, BASE_URL, CLIENT_ID, RESOURCE_URL, SCOPE, REALM_PATH, USERS } from '../env.config';
 
 export async function setupAndGo(
   page: Page,
   browserType: string,
   path: string,
   config?: {
-    acr?: string;
     allowGeo?: boolean;
     amUrl?: string;
     pauseBehaviorData?: string; // for protect behavioral data collection
@@ -62,7 +52,6 @@ export async function setupAndGo(
   // If anything fails, ensure we close the browser to end the process
   const url = new URL(`${BASE_URL}/src/${path}`);
 
-  url.searchParams.set('acr', (config && config.acr) || ACR);
   url.searchParams.set('amUrl', (config && config.amUrl) || AM_URL);
   url.searchParams.set('pauseBehaviorData', (config && config.pauseBehaviorData) || '');
   url.searchParams.set('clientId', (config && config.clientId) || CLIENT_ID);

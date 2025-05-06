@@ -3,7 +3,7 @@
  *
  * index.ts
  *
- * Copyright (c) 2024 - 2025 Ping Identity Corporation. All rights reserved.
+ * Copyright (c) 2024 Ping Identity. All rights reserved.
  *
  * This software may be modified and distributed under the terms
  * of the MIT license. See the LICENSE file for details.
@@ -104,28 +104,20 @@ abstract class FRWebAuthn {
     const { hiddenCallback, metadataCallback, textOutputCallback } = this.getCallbacks(step);
     if (hiddenCallback && (metadataCallback || textOutputCallback)) {
       let outcome: ReturnType<typeof this.getAuthenticationOutcome>;
-      let credential: PublicKeyCredential | null = null;
 
       try {
         let publicKey: PublicKeyCredentialRequestOptions;
         if (metadataCallback) {
           const meta = metadataCallback.getOutputValue('data') as WebAuthnAuthenticationMetadata;
           publicKey = this.createAuthenticationPublicKey(meta);
-
-          credential = await this.getAuthenticationCredential(
-            publicKey as PublicKeyCredentialRequestOptions,
-          );
-          outcome = this.getAuthenticationOutcome(credential);
         } else if (textOutputCallback) {
           publicKey = parseWebAuthnAuthenticateText(textOutputCallback.getMessage());
-
-          credential = await this.getAuthenticationCredential(
-            publicKey as PublicKeyCredentialRequestOptions,
-          );
-          outcome = this.getAuthenticationOutcome(credential);
-        } else {
-          throw new Error('No Credential found from Public Key');
         }
+        // TypeScript doesn't like `publicKey` being assigned in conditionals above
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        const credential = await this.getAuthenticationCredential(publicKey);
+        outcome = this.getAuthenticationOutcome(credential);
       } catch (error) {
         if (!(error instanceof Error)) throw error;
         // NotSupportedError is a special case
@@ -137,18 +129,6 @@ abstract class FRWebAuthn {
         throw error;
       }
 
-      if (metadataCallback) {
-        const meta = metadataCallback.getOutputValue('data') as WebAuthnAuthenticationMetadata;
-        if (meta?.supportsJsonResponse && credential && 'authenticatorAttachment' in credential) {
-          hiddenCallback.setInputValue(
-            JSON.stringify({
-              authenticatorAttachment: credential.authenticatorAttachment,
-              legacyData: outcome,
-            }),
-          );
-          return step;
-        }
-      }
       hiddenCallback.setInputValue(outcome);
       return step;
     } else {
@@ -174,20 +154,19 @@ abstract class FRWebAuthn {
     const { hiddenCallback, metadataCallback, textOutputCallback } = this.getCallbacks(step);
     if (hiddenCallback && (metadataCallback || textOutputCallback)) {
       let outcome: OutcomeWithName<string, AttestationType, PublicKeyCredential>;
-      let credential: PublicKeyCredential | null = null;
 
       try {
         let publicKey: PublicKeyCredentialRequestOptions;
         if (metadataCallback) {
           const meta = metadataCallback.getOutputValue('data') as WebAuthnRegistrationMetadata;
           publicKey = this.createRegistrationPublicKey(meta);
-          credential = await this.getRegistrationCredential(
+          const credential = await this.getRegistrationCredential(
             publicKey as PublicKeyCredentialCreationOptions,
           );
           outcome = this.getRegistrationOutcome(credential);
         } else if (textOutputCallback) {
           publicKey = parseWebAuthnRegisterText(textOutputCallback.getMessage());
-          credential = await this.getRegistrationCredential(
+          const credential = await this.getRegistrationCredential(
             publicKey as PublicKeyCredentialCreationOptions,
           );
           outcome = this.getRegistrationOutcome(credential);
@@ -204,21 +183,6 @@ abstract class FRWebAuthn {
         hiddenCallback.setInputValue(`${WebAuthnOutcome.Error}::${error.name}:${error.message}`);
         throw error;
       }
-
-      if (metadataCallback) {
-        const meta = metadataCallback.getOutputValue('data') as WebAuthnAuthenticationMetadata;
-        if (meta?.supportsJsonResponse && credential && 'authenticatorAttachment' in credential) {
-          hiddenCallback.setInputValue(
-            JSON.stringify({
-              authenticatorAttachment: credential.authenticatorAttachment,
-              legacyData:
-                deviceName && deviceName.length > 0 ? `${outcome}::${deviceName}` : outcome,
-            }),
-          );
-          return step;
-        }
-      }
-
       hiddenCallback.setInputValue(
         deviceName && deviceName.length > 0 ? `${outcome}::${deviceName}` : outcome,
       );

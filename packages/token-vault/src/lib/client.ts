@@ -1,12 +1,3 @@
-/**
- *
- * Copyright (c) 2023 - 2025 Ping Identity Corporation. All right reserved.
- *
- * This software may be modified and distributed under the terms
- * of the MIT license. See the LICENSE file for details.
- *
- **/
-
 import type { Tokens } from '@forgerock/javascript-sdk';
 import type { BaseConfig } from './types/index.js';
 import { ClientInit } from './types/client.types.js';

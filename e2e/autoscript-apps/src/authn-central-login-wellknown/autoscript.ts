@@ -3,7 +3,7 @@
  *
  * autoscript.ts
  *
- * Copyright (c) 2020 - 2025 Ping Identity Corporation. All rights reserved.
+ * Copyright (c) 2020 ForgeRock. All rights reserved.
  * This software may be modified and distributed under the terms
  * of the MIT license. See the LICENSE file for details.
  */
@@ -16,50 +16,49 @@ async function autoscript() {
   const delay = 0;
 
   const url = new URL(window.location.href);
-  const preAuthenticated = url.searchParams.get('preAuthenticated') || 'false';
   const code = url.searchParams.get('code') || '';
-  const clientId = url.searchParams.get('clientId');
-  const client_id = url.searchParams.get('client_id');
-  const error = url.searchParams.get('error_description') || false;
-  const realmPath = url.searchParams.get('realmPath') || 'root';
-  const scope = url.searchParams.get('scope') || 'openid profile me.read';
+  const error = url.searchParams.get('error') || '';
   const state = url.searchParams.get('state') || '';
-  const acr_values = url.searchParams.get('acr') || 'SpecificTree';
   // in central login we use an auth query param for the return of our mock 401 request
   // this is to prevent the evaluation of the page before we have technically authenticated
   const auth = url.searchParams.get('auth') || false;
-  let wellknown =
-    url.searchParams.get('wellknown') || 'http://localhost:9443/am/.well-known/oidc-configuration';
+  const acr_values = url.searchParams.get('acr') || 'SpecificTree';
 
-  let tokenStore = url.searchParams.get('tokenStore') || 'localStorage';
-
-  // Support full redirects by setting storage, rather than rely purely on URL
-  if (!localStorage.getItem('tokenStore')) {
-    localStorage.setItem('tokenStore', tokenStore);
-  } else {
-    tokenStore = localStorage.getItem('tokenStore');
-  }
+  let clientId = url.searchParams.get('clientId') || 'CentralLoginOAuthClient';
+  let realmPath = url.searchParams.get('realmPath') || 'root';
+  // The `revoke` scope is required for PingOne support
+  let scope = url.searchParams.get('scope') || 'openid profile me.read revoke';
+  let wellKnownUrl =
+    url.searchParams.get('wellKnownUrl') ||
+    'http://localhost:9443/am/.well-known/oidc-configuration';
 
   console.log('Configure the SDK');
-  forgerock.Config.setAsync({
-    clientId: clientId || client_id || 'CentralLoginOAuthClient',
+
+  if (wellKnownUrl) {
+    localStorage.setItem('wellknown', wellKnownUrl);
+    localStorage.setItem('clientId', clientId);
+    localStorage.setItem('realmPath', realmPath);
+    localStorage.setItem('scope', scope);
+  } else {
+    wellKnownUrl = localStorage.getItem('wellknown');
+    clientId = localStorage.getItem('clientId');
+    realmPath = localStorage.getItem('realmPath');
+    scope = localStorage.getItem('scope');
+  }
+  await forgerock.Config.setAsync({
+    clientId,
     realmPath,
-    redirectUri: `${url.origin}/src/${
-      preAuthenticated === 'false' ? 'authn-central-login' : '_callback'
-    }/`,
+    redirectUri: `${url.origin}/src/authn-central-login-wellknown/`,
     scope,
     serverConfig: {
-      wellknown,
+      wellknown: wellKnownUrl,
     },
-    tokenStore,
   });
 
-  if (!code && !state) {
-    try {
-      forgerock.SessionManager.logout();
-    } catch (err) {
-      // Do nothing
-    }
+  try {
+    forgerock.SessionManager.logout();
+  } catch (err) {
+    // Do nothing
   }
 
   console.log('Initiate first step with `undefined`');
@@ -68,29 +67,15 @@ async function autoscript() {
   setTimeout(() => {
     from([1])
       .pipe(
-        map(() => {
-          if (preAuthenticated === 'true') {
-            console.log('Set mock cookie to represent existing session');
-            document.cookie = 'iPlanetDirectoryPro=abcd1234; domain=localhost; path=/';
-            if (code && state) {
-              window.sessionStorage.setItem(
-                `FR-SDK-authflow-${clientId}`,
-                JSON.stringify({ responseType: 'code', state, verifier: '1234' }),
-              );
-            }
-          }
-          return;
-        }),
-        rxDelay(delay),
-        mergeMap((step) => {
+        mergeMap(() => {
           let tokens;
-          if (error) {
-            // Do nothing
+          // detect when in iframe as to not call `/authorize` needlessly
+          if (window.self !== window.top) {
             return;
           } else if (code && state) {
             tokens = forgerock.TokenManager.getTokens({
               login: 'redirect',
-              query: { code, state, acr_values },
+              query: { code, state },
             });
           } else {
             tokens = forgerock.TokenManager.getTokens({
@@ -113,6 +98,7 @@ async function autoscript() {
           console.log('Remove cookie');
           document.cookie = '';
           console.log('Initiate logout');
+          // You have to allow specific origins to CORS for OAuth client
           return forgerock.FRUser.logout();
         }),
       )
@@ -130,12 +116,14 @@ async function autoscript() {
           }
           console.log(`Error: ${err.message}`);
           document.body.innerHTML = `<p class="Test_Complete">${err.message}</p>`;
-          localStorage.clear();
         },
         complete: () => {
           console.log('Test script complete');
           document.body.innerHTML = `<p class="Test_Complete">Test script complete</p>`;
-          localStorage.clear();
+          localStorage.removeItem('wellknown');
+          localStorage.removeItem('clientId');
+          localStorage.removeItem('realmPath');
+          localStorage.removeItem('scope');
         },
       });
   }, 250);

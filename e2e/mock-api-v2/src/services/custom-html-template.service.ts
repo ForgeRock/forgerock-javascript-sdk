@@ -1,12 +1,3 @@
-/**
- *
- * Copyright (c) 2025 Ping Identity Corporation. All right reserved.
- *
- * This software may be modified and distributed under the terms
- * of the MIT license. See the LICENSE file for details.
- *
- **/
-
 import { Context, Effect, Layer } from 'effect';
 import { HttpError } from 'effect-http';
 import { Request } from './request.service.js';

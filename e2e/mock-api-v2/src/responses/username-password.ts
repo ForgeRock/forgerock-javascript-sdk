@@ -1,12 +1,3 @@
-/**
- *
- * Copyright (c) 2025 Ping Identity Corporation. All right reserved.
- *
- * This software may be modified and distributed under the terms
- * of the MIT license. See the LICENSE file for details.
- *
- **/
-
 const UsernamePassword = {
   interactionId: '1857e57f-aaad-43a5-9054-259683ae6e36',
   interactionToken:

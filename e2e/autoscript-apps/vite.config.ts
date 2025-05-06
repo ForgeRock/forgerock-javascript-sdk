@@ -10,6 +10,7 @@ const pages = [
   'authn-email-suspend',
   'authn-no-session',
   'authn-oauth',
+  'authn-wellknown',
   'authn-platform',
   'authn-saml',
   'authn-second-factor',

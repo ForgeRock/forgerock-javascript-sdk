@@ -12,12 +12,11 @@ import * as forgerock from '@forgerock/javascript-sdk';
 import { delay as rxDelay, map, mergeMap } from 'rxjs/operators';
 import { from } from 'rxjs';
 
-function autoscript() {
+async function autoscript() {
   const delay = 0;
   const tokenExpiredDelay = 2000;
 
   const url = new URL(window.location.href);
-  const amUrl = url.searchParams.get('amUrl') || 'http://localhost:9443/am';
   const clientId = url.searchParams.get('clientId') || 'WebOAuthClient';
   const realmPath = url.searchParams.get('realmPath') || 'root';
   const scope = url.searchParams.get('scope') || 'openid profile me.read';
@@ -27,9 +26,12 @@ function autoscript() {
   const oauthThreshold = url.searchParams.get('oauthThreshold');
   const resourceOrigin = url.searchParams.get('resourceOrigin') || 'http://localhost:9443/resource';
   const igUrl = url.searchParams.get('igUrl'); // only use when testing against IG on different host
+  const wellKnownUrl =
+    url.searchParams.get('wellKnownUrl') ||
+    'http://localhost:9443/am/.well-known/oidc-configuration';
 
   console.log('Configure the SDK');
-  forgerock.Config.set({
+  await forgerock.Config.setAsync({
     clientId,
     middleware: [
       (req, action, next) => {
@@ -49,7 +51,7 @@ function autoscript() {
     scope,
     tree,
     serverConfig: {
-      baseUrl: amUrl,
+      wellknown: wellKnownUrl,
     },
     oauthThreshold: oauthThreshold,
   });

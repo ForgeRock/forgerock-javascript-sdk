@@ -3,7 +3,7 @@
  *
  * index.ts
  *
- * Copyright (c) 2020 - 2025 Ping Identity Corporation. All rights reserved.
+ * Copyright (c) 2020 ForgeRock. All rights reserved.
  * This software may be modified and distributed under the terms
  * of the MIT license. See the LICENSE file for details.
  */
@@ -16,9 +16,7 @@ import OAuth2Client from '../oauth2-client';
 import SessionManager from '../session-manager';
 import TokenManager from '../token-manager';
 import type { LogoutOptions } from '../oauth2-client/interfaces';
-import Config from '../config';
 import TokenStorage from '../token-storage';
-import { getEndpointPath } from '../util/url';
 
 /**
  * High-level API for logging a user in/out and getting profile information.
@@ -49,25 +47,13 @@ abstract class FRUser {
     // Shallow copy options to delete redirect prop
     const configOptions = { ...options };
     delete configOptions.redirect;
-    const { realmPath, serverConfig } = Config.get(configOptions);
 
-    if (getEndpointPath('sessions', realmPath, serverConfig.paths)) {
-      // Just log any exceptions that are thrown, but don't abandon the flow
-      try {
-        // Both invalidates the session on the server AND removes browser cookie
-        await SessionManager.logout(configOptions);
-      } catch (error) {
-        FRLogger.warn('Session logout was not successful');
-      }
-    }
-
-    if (options?.redirect === false) {
-      try {
-        // Invalidates session on the server tied to the ID Token
-        await OAuth2Client.endSession({ ...options });
-      } catch (error) {
-        FRLogger.warn('OAuth endSession was not successful');
-      }
+    // Just log any exceptions that are thrown, but don't abandon the flow
+    try {
+      // Both invalidates the session on the server AND removes browser cookie
+      await SessionManager.logout(configOptions);
+    } catch (error) {
+      FRLogger.warn('Session logout was not successful');
     }
 
     try {
@@ -83,13 +69,14 @@ abstract class FRUser {
     // Remove tokens locally
     await TokenManager.deleteTokens();
 
-    if (options?.redirect !== false) {
-      try {
-        // Pass in the original `options` as it's needed for redirect control
-        await OAuth2Client.endSession({ ...options, idToken });
-      } catch (error) {
-        FRLogger.warn('OAuth endSession was not successful');
-      }
+    // Do this last as it can result in a redirect if using PingOne
+    try {
+      // Invalidates session on the server tied to the ID Token
+      // Needed for Express environment as session logout is unavailable
+      // Pass in the original `options` as it's needed for redirect control
+      await OAuth2Client.endSession({ ...options, idToken });
+    } catch (error) {
+      FRLogger.warn('OAuth endSession was not successful');
     }
   }
 }

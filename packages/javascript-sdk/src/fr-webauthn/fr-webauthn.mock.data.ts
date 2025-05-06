@@ -3,7 +3,7 @@
  *
  * fr-webauthn.mock.data.ts
  *
- * Copyright (c) 2020 - 2025 Ping Identity Corporation. All rights reserved.
+ * Copyright (c) 2020 ForgeRock. All rights reserved.
  * This software may be modified and distributed under the terms
  * of the MIT license. See the LICENSE file for details.
  */
@@ -370,122 +370,6 @@ export const webAuthnAuthMetaCallback70StoredUsername = {
         { name: 'id', value: 'webAuthnOutcome' },
       ],
       input: [{ name: 'IDToken2', value: 'webAuthnOutcome' }],
-    },
-  ],
-};
-
-export const webAuthnAuthMetaCallbackJsonResponse = {
-  authId:
-    'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdXRoSW5kZXhWYWx1ZSI6IndlYmF1dGhuIiwib3RrIjoicXN1dTA0anNxZ2hmcGpubjFiM2IxdDh0NTQiLCJhdXRoSW5kZXhUeXBlIjoic2VydmljZSIsInJlYWxtIjoiLyIsInNlc3Npb25JZCI6IipBQUpUU1FBQ01ERUFCSFI1Y0dVQUNFcFhWRjlCVlZSSUFBSlRNUUFBKmV5SjBlWEFpT2lKS1YxUWlMQ0pqZEhraU9pSktWMVFpTENKaGJHY2lPaUpJVXpJMU5pSjkuWlhsS01HVllRV2xQYVVwTFZqRlJhVXhEU214aWJVMXBUMmxLUWsxVVNUUlJNRXBFVEZWb1ZFMXFWVEpKYVhkcFdWZDRia2xxYjJsYVIyeDVTVzR3TGk0M01qbDZSRXhsU0hwM1pXbFVPRll6VDB4cFgycEJMbGxpV1Y5WVl6WTJPVWxJU0MxT01VTk5Va05MZVROdFZFaHliVlJSVDJoV2VVSTBUVUUzYUVoRmFISjFTRU5SVWpWeWVsQnRZVzFpYlRNeFFqQlhSMlZxVEU5allUWllWMEUwTVROSlozRnVXV2gwV0hadlRHaE9VMkpDYUdkUlJFaGFSV1pLVmxaeWNsOTBTRUpJU1Y5elIyMVhNMEZYWm5wTk9WZElXblJMTm10ZmFITm9hemRNUTBkSVkwbzVhVGQ2Wnpob2FUbFROVm8wTVVkbk1rZFpXSFJJTnpoWlRGOVVaVTl5VWtOc1ozTlBkbDlWTWpGRFJ6STBReTFMWVRJNVMxRm9ibFYwTTNCVlozWldiamRCVUhWdWRFdEdaR2h6VERselJ6QlBTVnAwYzNoV1NqTXRPVmc1TmpSM2VrVldSV2w2Vnprek9XNTRlVm94VjNWVVgzWmpTRzFFV2t4eE0yWTJXamswVlVWTU5VNDJjMjVMTWs5U01XeDBOR3BrVld3eWVVMVRaVXR6YzJkb2VIRmlNMnhoZW1WQlVtMDBWM3BUVld4c1JFUTRVVVJuWDNoSFozSktlVmhQZWxCa1RWUnZYeTB0U1c0MFkxVjBTeloxTVdWSVkxOWhZbkZLTlhsRVpWcEpaM04yYkU5eE5qVTJkVU5KV0dzNU9GbElWMHBEWkhSR1MzcGtWV1k1ZG0xNlJIWk9iMmxXTlZnd2RXd3hiRzlTV0dOaFZtTkhVMDlaTlVGNFdITkJkSGd5UVhkVlVXUnViR0pmYTJodWN5MUhXblowZUVOM1lYRldlR2h1T1RsdVVWY3ljWFphUjNCTk1raFVPRzFMYUU5SVIyOVJOQzFWVkZrNVVWbDBNbGcwZGpaZlQzSk5kemxUZEdwSVl6RnRjMTkxVTI1VWVtVmpUR2RYUkVZdFVFNXNVM0J1Ymkxc1EyRlljRXREVmxsS1FVeDVUbWhoWDBJeGQwNTRSRzV0WW5vNVdYVjFXakZMYzFWTkxVZHJjVlJZYkY5c2JqUlBMVEpXVUhoTVFYSjFVblZOZW0xaVgxQndRMjlqY1d4T1Z6Sm1jWHBPV25seVlteE9RVEZXUkdaM04yYzJNMnhmTkhvd05UWkhlRXhOVjBOck5rOTZVQzFMY1RJMVlXTmxSa0ZQWWpGd1JtMXBkVGgzWW5kUGVITmtZa0ZLVW0xSWMxVlJWVzlQWm5aQlpURldORmcyUW5veGNFeG9SV3d0UzNGblkwMDBjMjluYTFab1YyRkhZWFpyVFUxSVFTNVlWRVpOV1d4R2F6bHFSV1V5VG5CamFIZDVZVzVuLmYyS2t1RlhnM05MUU1NbGNnMU1HU2Y2YTZQVmdJalhtUC1wcmJhQTNtTnciLCJleHAiOjE2MTM0OTc0OTksImlhdCI6MTYxMzQ5NzE5OX0.EuDmsY3C6I6vc_x7KlkW4rSQJY1FWevbGGmxkSu4HVU',
-  callbacks: [
-    {
-      type: 'MetadataCallback',
-      output: [
-        {
-          name: 'data',
-          value: {
-            _action: 'webauthn_authentication',
-            challenge: 'qnMsxgya8h6mUc6OyRu8jJ6Oq16tHV3cgE7juXGMDbg=',
-            allowCredentials: '',
-            _allowCredentials: [],
-            timeout: '60000',
-            userVerification: 'preferred',
-            relyingPartyId: 'rpId: "humorous-cuddly-carrot.glitch.me",',
-            _relyingPartyId: 'humorous-cuddly-carrot.glitch.me',
-            _type: 'WebAuthn',
-            supportsJsonResponse: true,
-          },
-        },
-      ],
-    },
-    {
-      type: 'HiddenValueCallback',
-      output: [
-        {
-          name: 'value',
-          value: 'false',
-        },
-        {
-          name: 'id',
-          value: 'webAuthnOutcome',
-        },
-      ],
-      input: [
-        {
-          name: 'IDToken2',
-          value: 'webAuthnOutcome',
-        },
-      ],
-    },
-  ],
-};
-
-export const webAuthnRegMetaCallbackJsonResponse = {
-  authId:
-    'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ3aGl0ZWxpc3Qtc3RhdGUiOiJjMjMzNDRkMC04ZTlhLTRhM2QtODZkMS1mNTIwNTExZmM3NjciLCJhdXRoSW5kZXhWYWx1ZSI6IkFuZHlXZWJBdXRobiIsIm90ayI6ImFzdTNjMmo4YThta2w0aWQyN3FndGFuaTVqIiwiYXV0aEluZGV4VHlwZSI6InNlcnZpY2UiLCJyZWFsbSI6Ii9hbHBoYSIsInNlc3Npb25JZCI6IipBQUpUU1FBQ01ESUFCSFI1Y0dVQUNFcFhWRjlCVlZSSUFBSlRNUUFDTURFLipleUowZVhBaU9pSktWMVFpTENKamRIa2lPaUpLVjFRaUxDSmhiR2NpT2lKSVV6STFOaUo5LlpYbEtNR1ZZUVdsUGFVcExWakZSYVV4RFNteGliVTFwVDJsS1FrMVVTVFJSTUVwRVRGVm9WRTFxVlRKSmFYZHBXVmQ0YmtscWIybGFSMng1U1c0d0xpNVJkVXBMWTBnNGIwUjViemxZV0ZKcE0wNDJjQzFCTG0xRU0xOWFOVlZrZURGeVYxUk9lR2MwVUVWNFNHMW1OMGN5TkdoSU1YRXpPV0ZhVDNoaWREbFlUa000VEZscU1VRm1la1pXUzBkME1ubEJVMmxvT1hCNmJIRjNOVTQ0Y0ZsblZXRnplV2g1VEdWUFdtWldaVkpqVldNMmNGRjJOVmxhZEROdGNHWnZOMWRuV1hsWVNrRnZRWGQxZEhka2NYVlhaVXBYWkRScVl6TlBkRTFOTlVOV1NWaGtTRFZqVURGTVlrRjVTblJHWVd4NlIyWkplVGRtWW0xQll6SkZTbGxLUVdGNFZqTTRSa0l0TjFWVFFWZEVaMWxsUW14elYzQXRjWEZSYlRSdFIyUnBkRlpwYzBFdGNWRTFUbEpaU0cxQlJXSnpVVXBtWVdoRVQzSllUMFo1ZVZNM2VUUnVaV3BHUjNaWExVaFFRV054YjJ0TGNFMWZhVFkyWVRrdFZrbE9UMWxaY0RoWFQxaFFiR2hVTWt4YVIwVk1SVEpuVUhsWFkzcDJNV2xCVjBwcU4zVlVjVWx2UjFCTllVNUxSSEJKZGpaTk4wdFphVnA2YzJoUE9IRmxTMWw1VjJ3emNWWk9Tek4wWjJOamNGbERZVkJmT0ZGcGNuZG9iMkV3UjNOSWRIRk9SR04yYlhCUldIbE1ZM1Z3VGpkdmJGbDNhREV5WlVsTU9HaEZla0pLUldkMlVFaGpTM0JDYmxKVVYwOWlkemhJUlZobFJFZzRNbGxDWmxJdGVXMXpYMjlZT0c1dFpURldhbFJvUVZnMlRHZGtkbkUwVTJ4MmJYVjFYMTlzZVZack9GQnVZV3RDTldvMWVHOUtkVkUwTjFwRlZERnBUbGsxVkhCQlVHNUNOMjVuVVhaeWExRnlWR1ZHZFZKdU1EUlFPV1E0TTJ0MFVXcEhaMlpyUVdkbVNrNWpiek54YUZOR1dGb3dWM2swWldkUlpHdGhUVFU0ZGxSVVJtRlhlRjl1VERkdk9XdGFha3hXUjA4eFh6Sk9Oa0ZGVW5SVWFpMU9MVll6UmxwMlJYTnpRbnBTV1V0V2VGUm5UMTlRUTNWVmMxaDJjVzFVU1ZkcFNUQnhYekE0ZFhSVlVXcGpRMHhWUjNCVlZHRnVhR0pCVldKV1R6SnZVWHBVVTJ4bkxUTTJhakJWZVMxdlYxQTVNblo0ZVhvMWRUSkZkRVpwWkRaRGMxWmFMVVl3TFdkbWNFTnBkUzFGVlVzNFJITklhelZCUXpFNVp6VnRNMkY0Tmw5TFZuTlBkMmxIWDIxMU5tcHhOVzlsTlhkbFFtVm9iRE5RV0ZCTmFERTRTRWRrTTFOVVRHUmphVjl0VXpKTFJuYzJTM2xvWVd0a1dIcElXREZSTFdwRVIzWkRlRzF4YzJGcFZuUllhVlJSTXpSM1pVdGFhRk15VEVSVVpITklWM0JZTFdReFREa3lSMlJrVFc1UGJWRkhlV3A0WkRScU16TlFPVW96TVdGNGMyVXhZbDlFY1MxeWFXZHZZM2huTG1wR2VXWmxRVTlRVjBwMldUaHNaV3B1Wm1RemIyYy43YmdYcE5RNGRLSEpTeGpmUEVZZm44MGxZc3owaXBwNngyaURtRXlqd1JjIiwiZXhwIjoxNzQyODQzMDQ4LCJpYXQiOjE3NDI4NDI3NDh9.3zuPwPZVeFSwezhmzSZe-HW-22zo1HXwEPJO5jGl0Cg',
-  callbacks: [
-    {
-      type: 'MetadataCallback',
-      output: [
-        {
-          name: 'data',
-          value: {
-            _action: 'webauthn_registration',
-            challenge: 'QMmVc2lSU6G+jx6IYNOd6EaPz6X8jBzkxI9TMdVyWTw=',
-            attestationPreference: 'none',
-            userName: 'demo',
-            userId: 'NzcyNTI2NmMtYmZiZi00ZGFiLWFhYzEtNjY3NjUyMGIzNmZl',
-            relyingPartyName: 'ForgeRock',
-            authenticatorSelection:
-              '{"userVerification":"preferred","residentKey":"required","requireResidentKey":true}',
-            _authenticatorSelection: {
-              userVerification: 'preferred',
-              residentKey: 'required',
-              requireResidentKey: true,
-            },
-            pubKeyCredParams:
-              '[ { "type": "public-key", "alg": -257 }, { "type": "public-key", "alg": -7 } ]',
-            _pubKeyCredParams: [
-              {
-                type: 'public-key',
-                alg: -257,
-              },
-              {
-                type: 'public-key',
-                alg: -7,
-              },
-            ],
-            timeout: '60000',
-            excludeCredentials: '',
-            _excludeCredentials: [],
-            displayName: 'demo',
-            relyingPartyId: 'id: "idc.petrov.ca",',
-            _relyingPartyId: 'idc.petrov.ca',
-            extensions: {},
-            _type: 'WebAuthn',
-            supportsJsonResponse: true,
-          },
-        },
-      ],
-    },
-    {
-      type: 'HiddenValueCallback',
-      output: [
-        {
-          name: 'value',
-          value: 'false',
-        },
-        {
-          name: 'id',
-          value: 'webAuthnOutcome',
-        },
-      ],
-      input: [
-        {
-          name: 'IDToken2',
-          value: 'webAuthnOutcome',
-        },
-      ],
     },
   ],
 };

@@ -1,12 +1,3 @@
-/**
- *
- * Copyright (c) 2025 Ping Identity Corporation. All right reserved.
- *
- * This software may be modified and distributed under the terms
- * of the MIT license. See the LICENSE file for details.
- *
- **/
-
 const PingProtectNode = {
   interactionId: '1894775c-ba76-4989-a303-320f0547c66e',
   connectorId: 'api',
