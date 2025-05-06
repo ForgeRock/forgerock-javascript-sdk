@@ -3,7 +3,7 @@
  *
  * helpers.ts
  *
- * Copyright (c) 2024 ForgeRock. All rights reserved.
+ * Copyright (c) 2024 - 2025 Ping Identity Corporation. All rights reserved.
  * This software may be modified and distributed under the terms
  * of the MIT license. See the LICENSE file for details.
  */
@@ -46,7 +46,7 @@ export function convertWellKnown(data: WellKnownResponse, options?: ServerConfig
     ...(authenticateUrl ? { authenticate: new URL(authenticateUrl).pathname } : {}),
     authorize: new URL(data.authorization_endpoint).pathname,
     accessToken: new URL(data.token_endpoint).pathname,
-    endSession: new URL(data.end_session_endpoint).pathname,
+    endSession: new URL(data.ping_end_idp_session_endpoint || data.end_session_endpoint).pathname,
     userInfo: new URL(data.userinfo_endpoint).pathname,
     revoke: new URL(data.revocation_endpoint).pathname,
     ...(sessionsUrl ? { sessions: new URL(sessionsUrl).pathname } : {}),

@@ -3,7 +3,7 @@
  *
  * routes.auth.js
  *
- * Copyright (c) 2020-2024 ForgeRock. All rights reserved.
+ * Copyright (c) 2020 - 2025 Ping Identity Corporation. All rights reserved.
  * This software may be modified and distributed under the terms
  * of the MIT license. See the LICENSE file for details.
  */
@@ -44,10 +44,10 @@ import {
   txnAuthz,
   otpQRCodeCallbacks,
   wellKnownForgeRock,
-  wellKnownPing,
   recaptchaEnterpriseCallback,
   MetadataMarketPlaceInitialize,
   MetadataMarketPlacePingOneEvaluation,
+  newPiWellKnown,
 } from './responses.js';
 import initialRegResponse from './response.registration.js';
 import wait from './wait.js';
@@ -520,7 +520,10 @@ export default function (app) {
         redirectUrl.searchParams.set('state', req.query.state);
 
         res.redirect(redirectUrl);
-      } else if (req.cookies.redirected === 'true') {
+      } else if (
+        req.cookies.redirected === 'true' ||
+        req.query['acr_values'] === 'skipBackgroundRequest'
+      ) {
         res.redirect(loginUrl);
       } else {
         res.cookie('redirected', 'true');
@@ -635,7 +638,7 @@ export default function (app) {
     res.send(wellKnownForgeRock);
   });
 
-  app.get('/as/.well-known/oidc-configuration', (req, res) => {
-    res.send(wellKnownPing);
+  app.get('/as/.well-known/new-oidc-configuration', (req, res) => {
+    res.send(newPiWellKnown);
   });
 }

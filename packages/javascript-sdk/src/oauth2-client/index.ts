@@ -3,7 +3,7 @@
  *
  * index.ts
  *
- * Copyright (c) 2020-2021 ForgeRock. All rights reserved.
+ * Copyright (c) 2020 - 2025 Ping Identity Corporation. All rights reserved.
  * This software may be modified and distributed under the terms
  * of the MIT license. See the LICENSE file for details.
  */
@@ -309,12 +309,13 @@ abstract class OAuth2Client {
     };
 
     init = init || ({} as RequestInit);
+    init.headers = (init.headers || new Headers()) as Headers;
+    init.headers.set('Accept', 'application/json');
 
     if (includeToken) {
       const tokens = await TokenStorage.get();
       const accessToken = tokens && tokens.accessToken;
       init.credentials = 'include';
-      init.headers = (init.headers || new Headers()) as Headers;
       init.headers.set('Authorization', `Bearer ${accessToken}`);
     }
     const runMiddleware = middlewareWrapper(

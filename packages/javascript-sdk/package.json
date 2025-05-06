@@ -1,10 +1,12 @@
 {
   "name": "@forgerock/javascript-sdk",
-  "version": "4.7.0",
+  "version": "4.8.0",
   "description": "ForgeRock JavaScript SDK",
   "author": "ForgeRock",
   "license": "MIT",
-  "files": ["dist/*"],
+  "files": [
+    "dist/*"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com:ForgeRock/forgerock-javascript-sdk.git",

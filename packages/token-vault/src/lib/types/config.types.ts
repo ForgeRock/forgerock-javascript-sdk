@@ -1,3 +1,12 @@
+/**
+ *
+ * Copyright (c) 2023 - 2025 Ping Identity Corporation. All right reserved.
+ *
+ * This software may be modified and distributed under the terms
+ * of the MIT license. See the LICENSE file for details.
+ *
+ **/
+
 /** ****************************************************************
  * This contains a few types pulled from the JavaScript SDK
  * TODO: Refactor the SDK to use these shared types instead of the internal ones

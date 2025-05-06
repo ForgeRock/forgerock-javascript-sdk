@@ -3,7 +3,9 @@
   "version": "4.6.0",
   "private": false,
   "type": "module",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "module": "./dist/index.js",
   "main": "./dist/index.js",
   "repository": {
@@ -11,7 +13,9 @@
     "url": "git+https://github.com:ForgeRock/forgerock-javascript-sdk.git",
     "directory": "packages/ping-protect"
   },
-  "sideEffects": ["./dist/lib/ping-signals-sdk.js"],
+  "sideEffects": [
+    "./dist/lib/ping-signals-sdk.js"
+  ],
   "exports": {
     ".": {
       "types": "./dist/index.ts.d.ts",
