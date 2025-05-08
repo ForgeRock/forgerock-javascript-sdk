@@ -15,14 +15,28 @@ test.describe('Test OAuth login flow', () => {
   test(`should login successfully and then log out with`, async ({ page, browserName }) => {
     const { messageArray, networkArray } = await setupAndGo(page, browserName, 'authn-oauth/');
 
+    let rawResponse = '';
+
     // Test assertions
     // Test log messages
-    expect(messageArray.includes('OAuth login successful')).toBe(true);
-    expect(messageArray.includes('Logout successful')).toBe(true);
-    expect(messageArray.includes('Calling authorize endpoint')).toBe(true);
-    expect(messageArray.includes('Calling access token exchange endpoint')).toBe(true);
-    expect(messageArray.includes('Get user info from OAuth endpoint')).toBe(true);
-    expect(messageArray.includes('New OAuth tokens retrieved')).toBe(true);
+    expect(messageArray.includes('OAuth login successful'), 'oauth success').toBe(true);
+    expect(messageArray.includes('Logout successful'), 'logout success').toBe(true);
+    expect(messageArray.includes('Calling authorize endpoint'), 'call /authorize').toBe(true);
+    expect(
+      messageArray.includes('Calling access token exchange endpoint'),
+      'call /access_token',
+    ).toBe(true);
+    expect(messageArray.includes('Get user info from OAuth endpoint'), 'call /userinfo').toBe(true);
+    expect(messageArray.includes('New OAuth tokens retrieved'), 'tokens received').toBe(true);
+
+    // Test rawResponse on token object
+    messageArray.forEach((message) => {
+      if (message.includes('access_token')) {
+        rawResponse = message;
+      }
+    });
+
+    expect(rawResponse.includes('access_token')).toBe(true);
 
     // Test network requests
     // Make sure revoke request is made twice, one for force renew and one for logout
