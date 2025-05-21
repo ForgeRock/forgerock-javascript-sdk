@@ -19,7 +19,8 @@ The Ping SDK for JavaScript enables you to quickly integrate Ping products into 
 
 Use the SDKs to leverage _[Intelligent Access](https://www.pingidentity.com/en/platform/capabilities/intelligent-access.html)_ to easily step through each stage of an authentication tree by using callbacks.
 
- <!------------------------------------------------------------------------------------------------------------------------------------>
+<!------------------------------------------------------------------------------------------------------------------------------------>
+
 <!-- REQUIREMENTS - Supported AM versions, API versions, any other requirements. -->
 
 ## Requirements
@@ -38,9 +39,11 @@ Use the SDKs to leverage _[Intelligent Access](https://www.pingidentity.com/en/p
   - Edge 44 (Legacy): requires one polyfill for TextEncoder, [`fast-text-encoding` is recommended](https://www.npmjs.com/package/fast-text-encoding)
 
 - npm
+
   - npm 7+ is required to use this project and the sample apps, since npm workspaces are used to install dependencies in sub-projects such as the sample apps
 
 <!------------------------------------------------------------------------------------------------------------------------------------>
+
 <!-- INSTALLATION -->
 
 ## Installation
@@ -48,6 +51,10 @@ Use the SDKs to leverage _[Intelligent Access](https://www.pingidentity.com/en/p
 ```
 npm install @forgerock/javascript-sdk
 ```
+
+## Contributing
+
+Please see the [Contributing](./CONTRIBUTING.md) file linked here.
 
 ## Samples
 
@@ -64,6 +71,7 @@ To try out the Ping SDK for JavaScript please look at one of our samples:
 - [**Angular Todo - `samples/angular-todo`**](https://github.com/ForgeRock/sdk-sample-apps/blob/main/angular-todo/README.md)
 
 <!------------------------------------------------------------------------------------------------------------------------------------>
+
 <!-- DOCS - Link off to the AM-centric documentation at sdks.forgerock.com. -->
 
 ## Documentation
@@ -75,6 +83,7 @@ Documentation for the SDKs is provided at **<https://docs.pingidentity.com/sdks>
 - API Reference documentation
 
 <!------------------------------------------------------------------------------------------------------------------------------------>
+
 <!-- SUPPORT -->
 
 ## Support
@@ -95,13 +104,9 @@ The support portal shows all currently open support tickets and allows you to ra
 [Our version history can be viewed by visiting our CHANGELOG.md](https://github.com/ForgeRock/forgerock-javascript-sdk/blob/master/CHANGELOG.md).
 
 <!------------------------------------------------------------------------------------------------------------------------------------>
-<!-- COLLABORATION -->
-
-## Contributing
-
-If you would like to contribute to this project you can fork the repository, clone it to your machine and get started.
 
 <!------------------------------------------------------------------------------------------------------------------------------------>
+
 <!-- LEGAL -->
 
 ## Disclaimer
@@ -112,6 +117,7 @@ If you would like to contribute to this project you can fork the repository, clo
 > Any action or suit relating to the use of the code may be brought only in the courts of a jurisdiction wherein Ping Identity Corporation resides or in which Ping Identity Corporation conducts its primary business, and under the laws of that jurisdiction excluding its conflict-of-law provisions.**
 
 <!------------------------------------------------------------------------------------------------------------------------------------>
+
 <!-- LICENSE - Links to the MIT LICENSE file in each repo. -->
 
 ## License
@@ -120,4 +126,4 @@ This project is licensed under the MIT License - see the [LICENSE](./packages/ja
 
 ---
 
-&copy; Copyright 2020-2025 Ping Identity. All Rights Reserved
+© Copyright 2020-2025 Ping Identity. All Rights Reserved
