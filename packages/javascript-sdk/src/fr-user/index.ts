@@ -18,7 +18,6 @@ import TokenManager from '../token-manager';
 import type { LogoutOptions } from '../oauth2-client/interfaces';
 import Config from '../config';
 import TokenStorage from '../token-storage';
-import { getEndpointPath } from '../util/url';
 
 /**
  * High-level API for logging a user in/out and getting profile information.
@@ -49,9 +48,9 @@ abstract class FRUser {
     // Shallow copy options to delete redirect prop
     const configOptions = { ...options };
     delete configOptions.redirect;
-    const { realmPath, serverConfig } = Config.get(configOptions);
+    const { serverConfig } = Config.get(configOptions);
 
-    if (getEndpointPath('sessions', realmPath, serverConfig.paths)) {
+    if (!serverConfig.paths || (serverConfig.paths && 'sessions' in serverConfig.paths)) {
       // Just log any exceptions that are thrown, but don't abandon the flow
       try {
         // Both invalidates the session on the server AND removes browser cookie
