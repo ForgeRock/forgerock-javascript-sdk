@@ -1,5 +1,11 @@
 # Changelog
 
+## 4.8.1
+
+### Patch Changes
+
+- [#544](https://github.com/ForgeRock/forgerock-javascript-sdk/pull/544) [`58360de`](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/58360de68ed248961cb9b7c6433594faa781c7ec) Thanks [@ryanbas21](https://github.com/ryanbas21)! - Fix condition for determining session endpoint request for terminating session in AIC/AM
+
 ## 4.8.0
 
 ### Minor Changes

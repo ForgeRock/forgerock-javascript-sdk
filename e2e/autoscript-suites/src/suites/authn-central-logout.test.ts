@@ -20,7 +20,7 @@ test('should login and logout with pingone', async ({ page }) => {
   await btn.click({ delay: 1000 });
   await page.waitForURL(/ping/);
   await page.getByPlaceholder('Username').fill('reactdavinci@user.com');
-  await page.getByRole('textbox', { name: 'Password' }).fill('abc123!ABC');
+  await page.getByRole('textbox', { name: 'Password' }).fill('bae0fzc-mzg3krg5FQB');
   await page.getByRole('button', { name: 'Sign On' }).click();
 
   await expect(page.getByText('preferred_username')).toContainText('reactdavinci@user.com');
