@@ -59,6 +59,11 @@ jobs:
             ./dist/**
           retention-days: 30
 
+      # make sure we have a build.
+      - run: pnpm exec nx run-many -t build
+        env:
+          NX_CLOUD_DISTRIBUTED_EXECUTION: false
+
       - run: git status
       - name: publish
         uses: changesets/action@v1
