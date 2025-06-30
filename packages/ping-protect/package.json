@@ -20,6 +20,6 @@
   },
   "types": "./dist/index.ts.d.ts",
   "dependencies": {
-    "@forgerock/javascript-sdk": "workspace:*"
+    "@forgerock/javascript-sdk": "workspace:^"
   }
 }

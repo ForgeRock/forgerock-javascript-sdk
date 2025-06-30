@@ -7,13 +7,12 @@
     }
   ],
   "commit": false,
-  "fixed": [["@forgerock/javascript-sdk"]],
+  "fixed": [["@forgerock/javascript-sdk"], ["@forgerock/ping-protect"]],
   "linked": [],
   "access": "public",
   "baseBranch": "master",
   "updateInternalDependencies": "patch",
   "ignore": [
-    "@forgerock/ping-protect",
     "@forgerock/token-vault",
     "autoscript-apps",
     "autoscript-suites",
