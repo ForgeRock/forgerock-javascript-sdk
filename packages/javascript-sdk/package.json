@@ -46,16 +46,6 @@
         "types": "./dist/*.d.cts",
         "default": "./dist/*.cjs"
       }
-    },
-    "./src/": {
-      "import": {
-        "types": "./dist/*.d.ts",
-        "default": "./dist/*.js"
-      },
-      "require": {
-        "types": "./dist/*.d.cts",
-        "default": "./dist/*.cjs"
-      }
     }
   },
   "type": "module",
