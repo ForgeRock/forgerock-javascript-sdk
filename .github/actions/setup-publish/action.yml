@@ -1,19 +1,9 @@
 name: Setup publish
 description: Setup steps for publishing packages
 
-inputs:
-  branch:
-    required: true
-
 runs:
   using: 'composite'
   steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
-        ref: ${{ inputs.branch }}
-
     - name: Install pnpm
       uses: pnpm/action-setup@v4
       with:
