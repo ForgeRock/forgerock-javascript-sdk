@@ -27,6 +27,10 @@ on:
 env:
   NX_CLOUD_ENCRYPTION_KEY: ${{ secrets.NX_CLOUD_ENCRYPTION_KEY }}
   NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
+  CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+  GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+  SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+  SLACK_WEBHOOK_URL_BETA: ${{ secrets.SLACK_WEBHOOK_URL_BETA }}
   HUSKY: 0
   CI: true
 
@@ -42,6 +46,10 @@ jobs:
       id-token: write # OIDC for provenance if npm publish happens here
     runs-on: ubuntu-latest
     steps:
+      - name: Branch name
+        run: |
+          echo "Checking out branch: ${{ github.ref_name }}"
+
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
@@ -49,6 +57,8 @@ jobs:
 
       - name: Setup publish
         uses: ./.github/actions/setup-publish
+        with:
+          CODECOV_TOKEN: ${{ env.CODECOV_TOKEN }}
 
       # This action creates a release pull request with all of
       # the package versions and changelogs updated. When there
@@ -67,9 +77,8 @@ jobs:
           setupGitUser: true
         env:
           HOME: ${{ github.workspace }} # See https://github.com/changesets/action/issues/147
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ env.GITHUB_TOKEN }}
           NPM_CONFIG_PROVENANCE: 'true'
-          NPM_TOKEN: ${{ secrets.NPM_ACCESS_TOKEN }}
 
       - name: Publish previews to Stackblitz on PR
         if: steps.changesets.outputs.published == 'false'
@@ -88,23 +97,23 @@ jobs:
           git rebase master
           git push -f
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          GITHUB_TOKEN: ${{ env.GITHUB_TOKEN }}
 
       - name: Send GitHub Action data to a Slack workflow
         if: steps.changesets.outputs.published == 'true'
         uses: slackapi/slack-github-action@v2.1.1
         with:
           payload-delimiter: '_'
-          webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
+          webhook: ${{ env.SLACK_WEBHOOK_URL }}
           webhook-type: webhook-trigger
           payload: |
-            text: ${{ steps.changesets.outputs.publishedPackages }}
+            publishedPackages: steps.changesets.outputs.publishedPackages
 
       - name: Run code coverage
         uses: codecov/codecov-action@v5
         with:
           files: ./packages/**/coverage/*.xml
-          token: ${{ secrets.CODECOV_TOKEN }}
+          token: ${{ env.CODECOV_TOKEN }}
 
   snapshot:
     # On manual trigger of GH action, publish a snapshot release to npm
@@ -115,6 +124,10 @@ jobs:
       id-token: write # OIDC for provenance when npm publish happens
     runs-on: ubuntu-latest
     steps:
+      - name: Branch name
+        run: |
+          echo "Checking out branch: ${{ github.ref_name }}"
+
       # Checkout the branch selected when triggering the workflow
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -123,21 +136,25 @@ jobs:
 
       - name: Setup publish
         uses: ./.github/actions/setup-publish
+        with:
+          CODECOV_TOKEN: ${{ env.CODECOV_TOKEN }}
 
       - name: Version packages for snapshot
         run: pnpm changeset version --snapshot ${{ inputs.snapshot_tag }}
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          GITHUB_TOKEN: ${{ env.GITHUB_TOKEN }}
 
       - name: Publish packages snapshot with npm_tag
+        id: npmpublish
         run: pnpm publish -r --tag ${{ inputs.npm_tag }} --no-git-checks --access ${{ inputs.npm_access }}
 
       - name: Send GitHub Action data to a Slack workflow
-        if: steps.changesets.outputs.published == 'true'
+        if: steps.npmpublish.outcome == 'success'
         uses: slackapi/slack-github-action@v2.1.1
         with:
           payload-delimiter: '_'
-          webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
+          webhook: ${{ env.SLACK_WEBHOOK_URL_BETA }}
           webhook-type: webhook-trigger
           payload: |
-            text: ${{ steps.changesets.outputs.publishedPackages }}
+            npmTag: "${{ inputs.npm_tag }}"
+            publishedPackages: ""
