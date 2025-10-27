@@ -42,10 +42,13 @@ jobs:
       id-token: write # OIDC for provenance if npm publish happens here
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
       - name: Setup publish
         uses: ./.github/actions/setup-publish
-        with:
-          branch: ${{ github.ref_name }}
 
       # This action creates a release pull request with all of
       # the package versions and changelogs updated. When there
@@ -112,10 +115,14 @@ jobs:
       id-token: write # OIDC for provenance when npm publish happens
     runs-on: ubuntu-latest
     steps:
+      # Checkout the branch selected when triggering the workflow
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
       - name: Setup publish
         uses: ./.github/actions/setup-publish
-        with:
-          branch: ${{ github.ref_name }}
 
       - name: Version packages for snapshot
         run: pnpm changeset version --snapshot ${{ inputs.snapshot_tag }}
