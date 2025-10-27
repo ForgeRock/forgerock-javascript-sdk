@@ -4,86 +4,76 @@ on:
     branches:
       - master
       - develop
+  workflow_dispatch:
+    inputs:
+      snapshot_tag:
+        description: 'changesets snapshot tag (beta/canary)'
+        required: false
+        default: 'beta'
+        type: string
+      npm_tag:
+        description: 'npm tag for publishing snapshot'
+        required: false
+        default: 'beta'
+        type: string
+      npm_access:
+        description: 'access level for publishing snapshot to npm'
+        required: false
+        default: 'public'
+        type: choice
+        options:
+          - public
+          - restricted
 env:
   NX_CLOUD_ENCRYPTION_KEY: ${{ secrets.NX_CLOUD_ENCRYPTION_KEY }}
   NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
-  NX_CLOUD_DISTRIBUTED_EXECUTION: true
-  PNPM_CACHE_FOLDER: .pnpm-store
-  NPM_ACCESS_TOKEN: ${{ secrets.NPM_ACCESS_TOKEN }}
   HUSKY: 0
+  CI: true
 
 jobs:
+  # On push to develop/master, create or update release PR or publish to npm
   publish-or-pr:
+    if: github.event_name == 'push'
+    name: Create/update release PR or publish to npm
     permissions:
       contents: write #  to create release (changesets/action)
       issues: write # to post issue comments (changesets/action)
       pull-requests: write #  to create pull request (changesets/action)
-      id-token: write # give id token write for provenance
+      id-token: write # OIDC for provenance if npm publish happens here
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Setup publish
+        uses: ./.github/actions/setup-publish
         with:
-          fetch-depth: 0
-      - uses: pnpm/action-setup@v4
-        with:
-          run_install: false
-      - uses: actions/setup-node@v4
-        id: cache
-        with:
-          node-version: '20.10.0'
-          cache: 'pnpm'
+          branch: ${{ github.ref_name }}
 
-      - run: pnpm install --frozen-lockfile
-
-      # This line enables distribution
-      # The "--stop-agents-after" is optional, but allows idle agents to shut down once the "e2e-ci" targets have been requested
-      - run: pnpm dlx nx-cloud start-ci-run --distribute-on="5 linux-medium-js" --stop-agents-after="e2e-ci" --verbose
-
-      - run: pnpm exec playwright install
-
-      - uses: nrwl/nx-set-shas@v4
-        with:
-          main-branch-name: master
-
-      - name: setup pnpm config
-        run: pnpm config set store-dir $PNPM_CACHE_FOLDER
-
-      - run: pnpm exec nx affected -t build lint test e2e-ci --verbose
-
-      - uses: actions/upload-artifact@v4
-        if: ${{ !cancelled() }}
-        with:
-          name: playwright-report
-          path: |
-            ./dist/.playwright/**
-            ./dist/**
-          retention-days: 30
-
-      # make sure we have a build.
-      - run: pnpm exec nx run-many -t build
-        env:
-          NX_CLOUD_DISTRIBUTED_EXECUTION: false
-
-      - run: git status
-      - name: publish
+      # This action creates a release pull request with all of
+      # the package versions and changelogs updated. When there
+      # are new changesets on your configured baseBranch, the PR will
+      # be updated. When you're ready, you can merge the release PR
+      # and the action will publish to npm for you.
+      # https://github.com/changesets/action
+      - name: Create/update release PR or publish to npm
         uses: changesets/action@v1
         id: changesets
         with:
-          publish: pnpm ci:release
-          version: pnpm ci:version
-          title: Release PR
-          branch: master
-          commit: 'chore: version-packages'
+          publish: pnpm ci:release # command to tag and publish packages
+          version: pnpm ci:version # command to update version, edit changelog, read and delete changesets
+          title: Release PR # title for the release PR
+          commit: 'chore: version-packages' # the commit message to use
           setupGitUser: true
         env:
-          # See https://github.com/changesets/action/issues/147
-          HOME: ${{ github.workspace }}
+          HOME: ${{ github.workspace }} # See https://github.com/changesets/action/issues/147
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_CONFIG_PROVENANCE: 'true'
           NPM_TOKEN: ${{ secrets.NPM_ACCESS_TOKEN }}
 
-      - name: rebase develop with main on publish
-        if: ${{ steps.changesets.outputs.published == 'true' }}
+      - name: Publish previews to Stackblitz on PR
+        if: steps.changesets.outputs.published == 'false'
+        run: pnpm pkg-pr-new publish './packages/*' --packageManager=pnpm --comment=off
+
+      - name: Rebase develop with master on publish
+        if: steps.changesets.outputs.published == 'true'
         run: |
           git restore .
           git checkout master
@@ -95,10 +85,52 @@ jobs:
           git rebase master
           git push -f
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_CONFIG_PROVENANCE: true
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
 
-      - uses: codecov/codecov-action@v5
+      - name: Send GitHub Action data to a Slack workflow
+        if: steps.changesets.outputs.published == 'true'
+        uses: slackapi/slack-github-action@v2.1.1
+        with:
+          payload-delimiter: '_'
+          webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
+          webhook-type: webhook-trigger
+          payload: |
+            text: ${{ steps.changesets.outputs.publishedPackages }}
+
+      - name: Run code coverage
+        uses: codecov/codecov-action@v5
         with:
           files: ./packages/**/coverage/*.xml
           token: ${{ secrets.CODECOV_TOKEN }}
+
+  snapshot:
+    # On manual trigger of GH action, publish a snapshot release to npm
+    if: github.event_name == 'workflow_dispatch'
+    name: Publish snapshot/beta release to npm
+    permissions:
+      contents: read
+      id-token: write # OIDC for provenance when npm publish happens
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup publish
+        uses: ./.github/actions/setup-publish
+        with:
+          branch: ${{ github.ref_name }}
+
+      - name: Version packages for snapshot
+        run: pnpm changeset version --snapshot ${{ inputs.snapshot_tag }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+
+      - name: Publish packages snapshot with npm_tag
+        run: pnpm publish -r --tag ${{ inputs.npm_tag }} --no-git-checks --access ${{ inputs.npm_access }}
+
+      - name: Send GitHub Action data to a Slack workflow
+        if: steps.changesets.outputs.published == 'true'
+        uses: slackapi/slack-github-action@v2.1.1
+        with:
+          payload-delimiter: '_'
+          webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
+          webhook-type: webhook-trigger
+          payload: |
+            text: ${{ steps.changesets.outputs.publishedPackages }}
