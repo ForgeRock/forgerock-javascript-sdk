@@ -11,6 +11,9 @@
     ]
   },
   "targetDefaults": {
+    "e2e-ci": {
+      "dependsOn": ["^build"]
+    },
     "nx-release-publish": {
       "options": {
         "packageRoot": "packages/{projectName}"
@@ -27,8 +30,10 @@
     },
     "e2e": {
       "dependsOn": ["^build"],
-      "inputs": ["noMarkdown", "^noMarkdown"],
       "cache": true
+    },
+    "test": {
+      "dependsOn": ["^build"]
     },
     "build": {
       "dependsOn": ["^build"],
@@ -37,18 +42,17 @@
       "outputs": ["{projectRoot}/dist"]
     },
     "@nx/vite:test": {
-      "dependsOn": ["^test"],
-      "inputs": ["noMarkdown", "^noMarkdown"],
+      "dependsOn": ["build", "^test"],
       "outputs": ["{projectRoot}/coverage"],
       "cache": true
     },
     "@nx/eslint:lint": {
       "dependsOn": ["^build", "^lint"],
-      "inputs": ["noMarkdown", "^noMarkdown"],
       "cache": true
     },
     "@nx/vite:build": {
       "dependsOn": ["^build"],
+      "inputs": ["production", "^production"],
       "cache": true,
       "outputs": ["{projectRoot}/dist"]
     },
@@ -57,10 +61,12 @@
       "cache": true
     },
     "@nx/esbuild:esbuild": {
+      "inputs": ["production", "^production"],
       "dependsOn": ["^build"],
       "cache": true
     },
     "e2e-ci--**/*": {
+      "inputs": ["default", "^default"],
       "dependsOn": ["^build"],
       "cache": true
     },
@@ -103,7 +109,8 @@
       "options": {
         "ciTargetName": "e2e-ci",
         "targetName": "e2e"
-      }
+      },
+      "include": ["e2e/**/**/*"]
     },
     {
       "plugin": "@nx/eslint/plugin",
@@ -144,7 +151,8 @@
         "previewTargetName": "vite:preview",
         "serveStaticTargetName": "vite:serve-static",
         "typecheckTargetName": "vite:typecheck"
-      }
+      },
+      "include": ["packages/**/*", "e2e/**/*"]
     }
   ],
   "defaultProject": "javascript-sdk",
