@@ -1,6 +1,6 @@
+import { copyFileSync } from 'fs';
 import { defineConfig } from 'vite';
 import dts from 'vite-plugin-dts';
-import { copyFileSync } from 'fs';
 import pkg from './package.json';
 
 export default defineConfig({
@@ -48,7 +48,7 @@ export default defineConfig({
     globals: true,
     environment: 'jsdom',
     include: ['src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}', 'tests/**/*.test.ts'],
-    watch: !process.env['CI'],
+    watch: false,
     reporters: ['default'],
     setupFiles: ['./vitest.setup.ts'],
     coverage: {

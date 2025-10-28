@@ -37,7 +37,7 @@ export default defineConfig({
     include: ['src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
     pool: 'forks',
     reporters: ['default'],
-    watch: !process.env['CI'],
+    watch: false,
     coverage: {
       enabled: Boolean(process.env['CI']),
       reporter: ['text', 'json', 'html'],
