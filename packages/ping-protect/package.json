@@ -3,7 +3,7 @@
   "version": "4.6.0",
   "private": false,
   "type": "module",
-  "files": ["dist"],
+  "files": ["./dist/*"],
   "module": "./dist/index.js",
   "main": "./dist/index.js",
   "repository": {
