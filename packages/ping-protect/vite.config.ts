@@ -32,7 +32,7 @@ export default defineConfig({
     reporters: ['default'],
     globals: true,
     setupFiles: ['./vitest.setup.ts'],
-    watch: !process.env['CI'],
+    watch: false,
     coverage: {
       reporter: ['text', 'json', 'html'],
       enabled: Boolean(process.env['CI']),
