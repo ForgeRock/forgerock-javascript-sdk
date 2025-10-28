@@ -72,6 +72,7 @@ jobs:
         with:
           publish: pnpm ci:release # command to tag and publish packages
           version: pnpm ci:version # command to update version, edit changelog, read and delete changesets
+          branch: master # the branch to base the release PR against
           title: Release PR # title for the release PR
           commit: 'chore: version-packages' # the commit message to use
           setupGitUser: true
