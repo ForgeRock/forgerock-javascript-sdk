@@ -20,6 +20,10 @@ Install both modules and their latest versions:
 npm install @forgerock/javascript-sdk @forgerock/ping-protect
 ```
 
+```sh
+pnpm install @forgerock/javascript-sdk @forgerock/ping-protect
+```
+
 The two main responsibilities of the Ping Protect module is the initialization of the profiling and data collection and the completion and preparation of the collected data for the server. You can find the two methods on the `PIProtect` module found within the `@forgerock/ping-protect` module.
 
 - `PIProtect.start()`
