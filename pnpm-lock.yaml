@@ -217,7 +217,7 @@ importers:
         version: 0.0.60
       playwright:
         specifier: ^1.47.2
-        version: 1.47.2
+        version: 1.56.1
       prettier:
         specifier: ^3.2.5
         version: 3.2.5
@@ -354,7 +354,7 @@ importers:
   packages/ping-protect:
     dependencies:
       '@forgerock/javascript-sdk':
-        specifier: workspace:^
+        specifier: ^4.8.2
         version: link:../javascript-sdk
 
   packages/token-vault:
@@ -11441,10 +11441,26 @@ packages:
     engines: { node: '>=18' }
     hasBin: true
 
+  playwright-core@1.56.1:
+    resolution:
+      {
+        integrity: sha512-hutraynyn31F+Bifme+Ps9Vq59hKuUCz7H1kDOcBs+2oGguKkWTU50bBWrtz34OUWmIwpBTWDxaRPXrIXkgvmQ==,
+      }
+    engines: { node: '>=18' }
+    hasBin: true
+
   playwright@1.47.2:
     resolution:
       {
         integrity: sha512-nx1cLMmQWqmA3UsnjaaokyoUpdVaaDhJhMoxX2qj3McpjnsqFHs516QAKYhqHAgOP+oCFTEOCOAaD1RgD/RQfA==,
+      }
+    engines: { node: '>=18' }
+    hasBin: true
+
+  playwright@1.56.1:
+    resolution:
+      {
+        integrity: sha512-aFi5B0WovBHTEvpM3DzXTUaeN6eN0qWnTkKx4NQaH4Wvcmc153PdaY2UBdSYKaGYw+UyWXSVyxDUg5DoPEttjw==,
       }
     engines: { node: '>=18' }
     hasBin: true
@@ -22619,9 +22635,17 @@ snapshots:
 
   playwright-core@1.47.2: {}
 
+  playwright-core@1.56.1: {}
+
   playwright@1.47.2:
     dependencies:
       playwright-core: 1.47.2
+    optionalDependencies:
+      fsevents: 2.3.2
+
+  playwright@1.56.1:
+    dependencies:
+      playwright-core: 1.56.1
     optionalDependencies:
       fsevents: 2.3.2
 
