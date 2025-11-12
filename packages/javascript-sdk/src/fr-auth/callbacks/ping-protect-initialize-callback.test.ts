@@ -16,7 +16,85 @@ describe('PingOneProtectInitializeCallback', () => {
   it('should exist', () => {
     expect(PingOneProtectInitializeCallback).toBeDefined();
   });
-  it('should test the getConfig method', () => {
+
+  it('should test the getConfig method with no "agent" parameters', () => {
+    const callback = new PingOneProtectInitializeCallback({
+      type: 'PingOneProtectInitializeCallback' as CallbackType,
+      input: [
+        {
+          name: 'IDToken1signals',
+          value: '',
+        },
+        {
+          name: 'IDToken1clientError',
+          value: '',
+        },
+      ],
+      output: [
+        {
+          name: 'envId',
+          value: '02fb4743-189a-4bc7-9d6c-a919edfe6447',
+        },
+        {
+          name: 'consoleLogEnabled',
+          value: false,
+        },
+        {
+          name: 'deviceAttributesToIgnore',
+          value: [],
+        },
+        {
+          name: 'customHost',
+          value: '',
+        },
+        {
+          name: 'lazyMetadata',
+          value: false,
+        },
+        {
+          name: 'behavioralDataCollection',
+          value: true,
+        },
+        {
+          name: 'deviceKeyRsyncIntervals',
+          value: 14,
+        },
+        {
+          name: 'enableTrust',
+          value: false,
+        },
+        {
+          name: 'disableTags',
+          value: false,
+        },
+        {
+          name: 'disableHub',
+          value: false,
+        },
+        {
+          name: 'universalDeviceIdentification',
+          value: false,
+        },
+      ],
+    });
+    const mock = vi.spyOn(callback, 'getConfig');
+    const config = callback.getConfig();
+    expect(mock).toHaveBeenCalled();
+    expect(config).toMatchObject({
+      envId: '02fb4743-189a-4bc7-9d6c-a919edfe6447',
+      consoleLogEnabled: false,
+      deviceAttributesToIgnore: [],
+      customHost: '',
+      lazyMetadata: false,
+      behavioralDataCollection: true,
+      deviceKeyRsyncIntervals: 14,
+      enableTrust: false,
+      disableTags: false,
+      disableHub: false,
+    });
+  });
+
+  it('should test the getConfig method with "agent" parameters', () => {
     const callback = new PingOneProtectInitializeCallback({
       type: 'PingOneProtectInitializeCallback' as CallbackType,
       input: [
@@ -107,6 +185,7 @@ describe('PingOneProtectInitializeCallback', () => {
       disableHub: false,
     });
   });
+
   it('should test the setClientError method', () => {
     const callback = new PingOneProtectInitializeCallback({
       type: 'PingOneProtectInitializeCallback' as CallbackType,
