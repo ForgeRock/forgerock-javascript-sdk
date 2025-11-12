@@ -27,15 +27,27 @@ class PingOneProtectInitializeCallback extends FRCallback {
    */
   public getConfig() {
     const config = {
+      // Required parameter
       envId: this.getOutputByName<string>('envId', ''),
+
+      // Optional parameters
+      agentIdentification: this.getOutputByName<boolean>('agentIdentification', false),
+      agentTimeout: this.getOutputByName<number>('agentTimeout', 0),
+      agentPort: this.getOutputByName<number>('agentPort', 0),
+      behavioralDataCollection: this.getOutputByName<boolean>('behavioralDataCollection', true),
+      disableTags: this.getOutputByName<boolean>('disableTags', false),
+      universalDeviceIdentification: this.getOutputByName<boolean>(
+        'universalDeviceIdentification',
+        false,
+      ),
+
+      // Deprecated parameters
       consoleLogEnabled: this.getOutputByName<boolean>('consoleLogEnabled', false),
       deviceAttributesToIgnore: this.getOutputByName<string[]>('deviceAttributesToIgnore', []),
       customHost: this.getOutputByName<string>('customHost', ''),
       lazyMetadata: this.getOutputByName<boolean>('lazyMetadata', false),
-      behavioralDataCollection: this.getOutputByName<boolean>('behavioralDataCollection', true),
       deviceKeyRsyncIntervals: this.getOutputByName<number>('deviceKeyRsyncIntervals', 14),
       enableTrust: this.getOutputByName<boolean>('enableTrust', false),
-      disableTags: this.getOutputByName<boolean>('disableTags', false),
       disableHub: this.getOutputByName<boolean>('disableHub', false),
     };
     return config;
