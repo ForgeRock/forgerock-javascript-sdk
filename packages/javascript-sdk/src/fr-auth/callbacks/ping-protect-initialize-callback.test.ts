@@ -31,6 +31,18 @@ describe('PingOneProtectInitializeCallback', () => {
       ],
       output: [
         {
+          name: 'agentIdentification',
+          value: true,
+        },
+        {
+          name: 'agentTimeout',
+          value: 1,
+        },
+        {
+          name: 'agentPort',
+          value: 1,
+        },
+        {
           name: 'envId',
           value: '02fb4743-189a-4bc7-9d6c-a919edfe6447',
         },
@@ -70,12 +82,19 @@ describe('PingOneProtectInitializeCallback', () => {
           name: 'disableHub',
           value: false,
         },
+        {
+          name: 'universalDeviceIdentification',
+          value: false,
+        },
       ],
     });
     const mock = vi.spyOn(callback, 'getConfig');
     const config = callback.getConfig();
     expect(mock).toHaveBeenCalled();
     expect(config).toMatchObject({
+      agentIdentification: true,
+      agentTimeout: 1,
+      agentPort: 1,
       envId: '02fb4743-189a-4bc7-9d6c-a919edfe6447',
       consoleLogEnabled: false,
       deviceAttributesToIgnore: [],
@@ -103,6 +122,18 @@ describe('PingOneProtectInitializeCallback', () => {
       ],
       output: [
         {
+          name: 'agentIdentification',
+          value: false,
+        },
+        {
+          name: 'agentTimeout',
+          value: 0,
+        },
+        {
+          name: 'agentPort',
+          value: 0,
+        },
+        {
           name: 'envId',
           value: '02fb4743-189a-4bc7-9d6c-a919edfe6447',
         },
@@ -142,11 +173,15 @@ describe('PingOneProtectInitializeCallback', () => {
           name: 'disableHub',
           value: false,
         },
+        {
+          name: 'universalDeviceIdentification',
+          value: false,
+        },
       ],
     });
     const mock = vi.spyOn(callback, 'setClientError');
-    callback.setClientError('error i just set');
+    callback.setClientError('Error I set');
     expect(mock).toHaveBeenCalled();
-    expect(callback.getInputValue('IDToken1clientError')).toBe('error i just set');
+    expect(callback.getInputValue('IDToken1clientError')).toBe('Error I set');
   });
 });
