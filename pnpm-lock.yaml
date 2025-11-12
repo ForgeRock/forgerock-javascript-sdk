@@ -102,7 +102,7 @@ importers:
         specifier: 20.3.3
         version: 20.3.3(@swc-node/register@1.9.2(@swc/core@1.5.7(@swc/helpers@0.5.12))(@swc/types@0.1.7)(typescript@5.6.3))(@swc/core@1.5.7(@swc/helpers@0.5.12))
       '@playwright/test':
-        specifier: ^1.47.2
+        specifier: 1.47.2
         version: 1.47.2
       '@swc-node/register':
         specifier: 1.9.2
@@ -216,8 +216,8 @@ importers:
         specifier: ^0.0.60
         version: 0.0.60
       playwright:
-        specifier: ^1.47.2
-        version: 1.56.1
+        specifier: 1.47.2
+        version: 1.47.2
       prettier:
         specifier: ^3.2.5
         version: 3.2.5
@@ -354,7 +354,7 @@ importers:
   packages/ping-protect:
     dependencies:
       '@forgerock/javascript-sdk':
-        specifier: ^4.8.2
+        specifier: workspace:^
         version: link:../javascript-sdk
 
   packages/token-vault:
@@ -11441,26 +11441,10 @@ packages:
     engines: { node: '>=18' }
     hasBin: true
 
-  playwright-core@1.56.1:
-    resolution:
-      {
-        integrity: sha512-hutraynyn31F+Bifme+Ps9Vq59hKuUCz7H1kDOcBs+2oGguKkWTU50bBWrtz34OUWmIwpBTWDxaRPXrIXkgvmQ==,
-      }
-    engines: { node: '>=18' }
-    hasBin: true
-
   playwright@1.47.2:
     resolution:
       {
         integrity: sha512-nx1cLMmQWqmA3UsnjaaokyoUpdVaaDhJhMoxX2qj3McpjnsqFHs516QAKYhqHAgOP+oCFTEOCOAaD1RgD/RQfA==,
-      }
-    engines: { node: '>=18' }
-    hasBin: true
-
-  playwright@1.56.1:
-    resolution:
-      {
-        integrity: sha512-aFi5B0WovBHTEvpM3DzXTUaeN6eN0qWnTkKx4NQaH4Wvcmc153PdaY2UBdSYKaGYw+UyWXSVyxDUg5DoPEttjw==,
       }
     engines: { node: '>=18' }
     hasBin: true
@@ -22635,17 +22619,9 @@ snapshots:
 
   playwright-core@1.47.2: {}
 
-  playwright-core@1.56.1: {}
-
   playwright@1.47.2:
     dependencies:
       playwright-core: 1.47.2
-    optionalDependencies:
-      fsevents: 2.3.2
-
-  playwright@1.56.1:
-    dependencies:
-      playwright-core: 1.56.1
     optionalDependencies:
       fsevents: 2.3.2
 

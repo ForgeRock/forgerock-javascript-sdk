@@ -26,14 +26,21 @@ class PingOneProtectInitializeCallback extends FRCallback {
    * Get callback's initialization config settings
    */
   public getConfig() {
+    const agentIdentification = this.getOutputByName<boolean | undefined>(
+      'agentIdentification',
+      undefined,
+    );
+    const agentTimeout = this.getOutputByName<number | undefined>('agentTimeout', undefined);
+    const agentPort = this.getOutputByName<number | undefined>('agentPort', undefined);
+
     const config = {
       // Required parameter
       envId: this.getOutputByName<string>('envId', ''),
 
       // Optional parameters
-      agentIdentification: this.getOutputByName<boolean>('agentIdentification', false),
-      agentTimeout: this.getOutputByName<number>('agentTimeout', 0),
-      agentPort: this.getOutputByName<number>('agentPort', 0),
+      ...(agentIdentification !== undefined ? { agentIdentification } : {}),
+      ...(agentTimeout !== undefined ? { agentTimeout } : {}),
+      ...(agentPort !== undefined ? { agentPort } : {}),
       behavioralDataCollection: this.getOutputByName<boolean>('behavioralDataCollection', true),
       disableTags: this.getOutputByName<boolean>('disableTags', false),
       universalDeviceIdentification: this.getOutputByName<boolean>(
