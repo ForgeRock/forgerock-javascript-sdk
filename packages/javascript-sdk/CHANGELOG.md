@@ -1,5 +1,11 @@
 # Changelog
 
+## 4.8.3
+
+### Patch Changes
+
+- [#558](https://github.com/ForgeRock/forgerock-javascript-sdk/pull/558) [`4be5aa6`](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/4be5aa67cbaa777818f532609dd62d2eb6145a44) Thanks [@ryanbas21](https://github.com/ryanbas21)! - fixes a bad export syntax in package.json
+
 ## 4.8.1
 
 ### Patch Changes

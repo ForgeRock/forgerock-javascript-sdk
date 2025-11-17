@@ -6,6 +6,9 @@
 
 - [#546](https://github.com/ForgeRock/forgerock-javascript-sdk/pull/546) [`a87b517`](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/a87b517c2a2cada9ec07ecdb279cb9b7a4edc35e) Thanks [@ryanbas21](https://github.com/ryanbas21)! - fix the protect-package versioning. no functional changes to protect package, but allow more loose versioning on javascript-sdk
 
+- Updated dependencies [[`4be5aa6`](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/4be5aa67cbaa777818f532609dd62d2eb6145a44)]:
+  - @forgerock/javascript-sdk@4.8.3
+
 ## v4.6.0 (2024-08-15)
 
 ### 🚀 Features
