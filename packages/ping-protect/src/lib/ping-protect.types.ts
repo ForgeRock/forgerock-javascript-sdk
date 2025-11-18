@@ -10,16 +10,27 @@
 export interface ProtectInitializeConfig {
   _type: 'PingOneProtect';
   _action: 'protect_initialize';
-  envId?: string;
+  envId: string;
+
+  // Optional parameters
+  agentIdentification?: boolean;
+  agentTimeout?: number;
+  agentPort?: number;
+  behavioralDataCollection?: boolean;
+  universalDeviceIdentification?: boolean;
+  disableTags?: boolean;
+
+  // Deprecated parameters
   consoleLogEnabled?: boolean;
   deviceAttributesToIgnore?: string[];
   customHost?: string;
+  externalIdentifiers?: string;
+  hubUrl?: string;
   lazyMetadata?: boolean;
-  behavioralDataCollection?: boolean;
   deviceKeyRsyncIntervals?: number;
   enableTrust?: boolean;
-  disableTags?: boolean;
   disableHub?: boolean;
+  waitForWindowLoad?: boolean;
 }
 
 export interface ProtectEvaluationConfig {
