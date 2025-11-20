@@ -95,7 +95,7 @@ interface WebAuthnCallbacks {
 type WebAuthnTextOutputRegistration = string;
 
 interface ParsedCredential {
-  id: ArrayBuffer | SharedArrayBuffer;
+  id: ArrayBuffer;
   type: 'public-key';
 }
 
