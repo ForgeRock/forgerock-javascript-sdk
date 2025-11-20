@@ -4,5 +4,9 @@
     {
       "files": ["*.ts", "*.js"]
     }
+  ],
+  "ignorePatterns": [
+    "**/vite.config.*.timestamp*",
+    "**/vitest.config.*.timestamp*"
   ]
 }

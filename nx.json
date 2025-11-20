@@ -84,13 +84,11 @@
   },
   "release": {
     "projects": ["packages/*"],
-    "releaseTagPattern": "v{version}",
     "version": {
       "preVersionCommand": "npx nx run-many -t build",
-      "generatorOptions": {
-        "currentVersionResolver": "git-tag",
-        "specifierSource": "conventional-commits"
-      }
+      "specifierSource": "conventional-commits",
+      "currentVersionResolver": "git-tag",
+      "preserveLocalDependencyProtocols": false
     },
     "changelog": {
       "git": {
@@ -101,6 +99,9 @@
         "createRelease": "github"
       },
       "projectChangelogs": true
+    },
+    "releaseTag": {
+      "pattern": "v{version}"
     }
   },
   "plugins": [
@@ -159,5 +160,5 @@
   "useDaemonProcess": true,
   "useInferencePlugins": true,
   "defaultBase": "develop",
-  "useLegacyCache": true
+  "nxCloudId": "691f768cc413573260509d11"
 }

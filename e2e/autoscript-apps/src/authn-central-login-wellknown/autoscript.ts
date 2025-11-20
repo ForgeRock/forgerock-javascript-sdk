@@ -28,7 +28,7 @@ async function autoscript() {
   // in central login we use an auth query param for the return of our mock 401 request
   // this is to prevent the evaluation of the page before we have technically authenticated
   const auth = url.searchParams.get('auth') || false;
-  let wellknown =
+  const wellknown =
     url.searchParams.get('wellknown') || 'http://localhost:9443/am/.well-known/oidc-configuration';
 
   let tokenStore = url.searchParams.get('tokenStore') || 'localStorage';

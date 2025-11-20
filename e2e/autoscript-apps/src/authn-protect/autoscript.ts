@@ -93,7 +93,7 @@ function autoscript() {
         ),
         mergeMap(({ step, data }) => {
           const cb = step.getCallbackOfType('PingOneProtectEvaluationCallback');
-          let pauseFlag = pauseBehaviorData === 'true' ? true : false;
+          const pauseFlag = pauseBehaviorData === 'true' ? true : false;
           let shouldPause = false;
 
           if (pauseFlag) {
