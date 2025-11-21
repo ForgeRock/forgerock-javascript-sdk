@@ -89,11 +89,19 @@ function autoscript() {
           console.log(`Predefined Question1: ${pdq1}`);
           console.log(`Predefined Question 2: ${pdq2}`);
 
-          kbCb1.setQuestion('What is your favorite color?');
+          const isAllowedUserDefinedQuestions1 = kbCb1.isAllowedUserDefinedQuestions();
+          const isAllowedUserDefinedQuestions2 = kbCb2.isAllowedUserDefinedQuestions();
+          console.log(`kbCb1 is allowed user defined questions: ${isAllowedUserDefinedQuestions1}`);
+          console.log(`kbCb2 is allowed user defined questions: ${isAllowedUserDefinedQuestions2}`);
+
+          kbCb1.setQuestion(pdq1);
           kbCb1.setAnswer('Red');
 
-          kbCb2.setQuestion('Who was your first employer?');
-          kbCb2.setAnswer('AAA Engineering');
+          kbCb2.setQuestion('Who was your first pet?');
+          kbCb2.setAnswer('Fluffy');
+
+          const customQuestion = kbCb2.getInputValue();
+          console.log(`Custom Question from kbCb2: ${customQuestion}`);
 
           console.log('Handle TermsAndConditionsCallback');
           const tcCb = step.getCallbackOfType('TermsAndConditionsCallback');
