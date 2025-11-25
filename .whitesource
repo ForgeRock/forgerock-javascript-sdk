@@ -1,10 +1,30 @@
+
 {
   "scanSettings": {
     "configMode": "AUTO",
+    "enableCST": true,
+    "enableScan": true,
+    "enableVulnerabilityScanning": true,
     "configExternalURL": "",
     "projectToken": "",
-    "baseBranches": ["develop"],
+    "baseBranches": [
+      "develop", "master"
+    ],
     "enableLicenseViolations": true
+  },
+  "scanSettingsSAST": {
+    "enableScan": true,
+    "scanPullRequests": true,
+    "incrementalScan": false,
+    "baseBranches": ["develop", "master"]
+  },
+  "checkRunSettingsSAST": {
+    "checkRunConclusionLevel": "failure",
+    "severityThreshold": "high"
+  },
+  "issueSettingsSAST": {
+    "issueType": "repo",
+    "minSeverityLevel": "high"
   },
   "checkRunSettings": {
     "vulnerableCheckRunConclusionLevel": "failure",
@@ -19,5 +39,14 @@
     "workflowRules": {
       "enabled": true
     }
+  },
+  "sca": {
+    "enableLicenseScanning": true,
+    "enableVulnerabilityScanning": true,
+    "severityLevels": [
+      "high",
+      "medium",
+      "low"
+    ]
   }
 }
