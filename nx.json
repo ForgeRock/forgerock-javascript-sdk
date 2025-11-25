@@ -129,5 +129,6 @@
   "defaultProject": "javascript-sdk",
   "useDaemonProcess": true,
   "useInferencePlugins": true,
-  "defaultBase": "develop"
+  "defaultBase": "develop",
+  "nxCloudId": "691f768cc413573260509d11"
 }
