@@ -78,9 +78,7 @@ jobs:
           commit: 'chore: version-packages' # the commit message to use
           setupGitUser: true
         env:
-          HOME: ${{ github.workspace }} # See https://github.com/changesets/action/issues/147
           GITHUB_TOKEN: ${{ env.GITHUB_TOKEN }}
-          NPM_CONFIG_PROVENANCE: 'true'
 
       - name: Publish previews to Stackblitz on PR
         if: steps.changesets.outputs.published == 'false'
@@ -101,6 +99,15 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ env.GITHUB_TOKEN }}
 
+      - name: Format published packages for Slack
+        if: steps.changesets.outputs.published == 'true'
+        id: format-packages
+        run: |
+          PACKAGES=$(echo '${{ steps.changesets.outputs.publishedPackages }}' | jq -r '.[] | ":package: *\(.name)* `\(.version)`"')
+          echo "formatted<<EOF" >> $GITHUB_OUTPUT
+          echo "$PACKAGES" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
       - name: Send GitHub Action data to a Slack workflow
         if: steps.changesets.outputs.published == 'true'
         uses: slackapi/slack-github-action@v2.1.1
@@ -109,7 +116,7 @@ jobs:
           webhook: ${{ env.SLACK_WEBHOOK_URL }}
           webhook-type: webhook-trigger
           payload: |
-            publishedPackages: steps.changesets.outputs.publishedPackages
+            publishedPackages: ${{ steps.format-packages.outputs.formatted }}
 
       - name: Run code coverage
         uses: codecov/codecov-action@v5
