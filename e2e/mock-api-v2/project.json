@@ -8,7 +8,6 @@
     "build": {
       "executor": "@nx/esbuild:esbuild",
       "outputs": ["{projectRoot}/dist"],
-      "defaultConfiguration": "production",
       "options": {
         "platform": "node",
         "outputPath": "e2e/mock-api-v2/dist",
