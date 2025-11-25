@@ -3,7 +3,10 @@
   "version": "0.0.1",
   "dependencies": {
     "@forgerock/token-vault": "workspace:*",
-    "vitest": "^1.4.0"
+    "vitest": "^4.0.14"
+  },
+  "devDependencies": {
+    "vitest": "4.0.14"
   },
   "main": "./dist/index.iife.js",
   "module": "./dist/index.iife.js",
