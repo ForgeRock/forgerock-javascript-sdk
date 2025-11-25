@@ -10,11 +10,6 @@
       "outputs": ["{projectRoot}/dist"],
       "options": {
         "emptyOutDir": false
-      },
-      "configurations": {
-        "development": {
-          "mode": "development"
-        }
       }
     },
     "serve": {

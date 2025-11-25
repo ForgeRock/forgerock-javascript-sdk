@@ -14,22 +14,6 @@
         "clean": true,
         "tsConfig": "e2e/mock-api/tsconfig.app.json",
         "assets": ["e2e/mock-api/src/assets", "e2e/mock-api/package.json"]
-      },
-      "configurations": {
-        "development": {
-          "watch": true
-        },
-        "production": {
-          "optimization": true,
-          "extractLicenses": true,
-          "inspect": false,
-          "fileReplacements": [
-            {
-              "replace": "e2e/mock-api/src/environments/environment.ts",
-              "with": "e2e/mock-api/src/environments/environment.prod.ts"
-            }
-          ]
-        }
       }
     },
     "serve": {

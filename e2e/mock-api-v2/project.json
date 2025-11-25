@@ -23,22 +23,6 @@
             ".js": ".js"
           }
         }
-      },
-      "configurations": {
-        "development": {
-          "watch": true
-        },
-        "example-server": {
-          "main": "e2e/mock-api-v2/src/example-server.ts"
-        },
-        "production": {
-          "esbuildOptions": {
-            "sourcemap": false,
-            "outExtension": {
-              ".js": ".js"
-            }
-          }
-        }
       }
     },
     "serve": {

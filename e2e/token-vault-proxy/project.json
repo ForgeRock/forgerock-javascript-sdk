@@ -7,16 +7,7 @@
   "targets": {
     "build": {
       "inputs": ["default", "^default"],
-      "outputs": ["{projectRoot}/dist"],
-      "defaultConfiguration": "production",
-      "configurations": {
-        "development": {
-          "mode": "development"
-        },
-        "production": {
-          "mode": "production"
-        }
-      }
+      "outputs": ["{projectRoot}/dist"]
     },
     "serve": {
       "defaultConfiguration": "development",
