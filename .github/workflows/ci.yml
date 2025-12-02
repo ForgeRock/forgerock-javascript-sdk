@@ -4,9 +4,9 @@ on:
 env:
   NX_CLOUD_ENCRYPTION_KEY: ${{ secrets.NX_CLOUD_ENCRYPTION_KEY }}
   NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
-  NX_CLOUD_DISTRIBUTED_EXECUTION: true
 jobs:
   pr:
+    if: ${{github.event.pull_request.head.repo.full_name == github.repository}}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -25,7 +25,7 @@ jobs:
 
       # This line enables distribution
       # The "--stop-agents-after" is optional, but allows idle agents to shut down once the "e2e-ci" targets have been requested
-      - run: pnpm dlx nx-cloud start-ci-run --distribute-on="5 linux-medium-js" --stop-agents-after="e2e-ci" --verbose
+      - run: pnpm dlx nx-cloud start-ci-run --distribute-on="5 linux-medium-js" --stop-agents-after="e2e-ci"
 
       - run: pnpm exec playwright install
 
@@ -34,7 +34,7 @@ jobs:
       - run: git branch --track develop origin/develop
 
       - run: pnpm exec nx-cloud record -- nx format:check --verbose
-      - run: pnpm exec nx affected -t build lint test docs e2e-ci --verbose
+      - run: pnpm exec nx affected -t build lint test docs e2e-ci
 
       - uses: codecov/codecov-action@v5
         with:

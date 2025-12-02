@@ -1,5 +1,17 @@
 # Changelog
 
+## 4.8.3
+
+### Patch Changes
+
+- [#565](https://github.com/ForgeRock/forgerock-javascript-sdk/pull/565) [`0795917`](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/0795917321dbee1b148bdb581a1743d197eb81fb) Thanks [@ryanbas21](https://github.com/ryanbas21)! - remove shared array buffer type from webauthn ParsedCredentials.
+
+- [`f35d9b2`](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/f35d9b25c93641acb1d96b643eda59e367931af2) Thanks [@ryanbas21](https://github.com/ryanbas21)! - fixes a bad export syntax in package.json
+
+- [`90099e5`](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/90099e51031fc2672f73eda4388a368a0d54a89f) Thanks [@cerebrl](https://github.com/cerebrl)! - This aligns ping-protect and protect initialize callbacks to the new Journey Nodes
+
+- [#564](https://github.com/ForgeRock/forgerock-javascript-sdk/pull/564) [`0ddd28f`](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/0ddd28f8404401dbe4d379154cfb01c4a1314fbe) Thanks [@ancheetah](https://github.com/ancheetah)! - Add support for KBA `allowUserDefinedQuestions` flag
+
 ## 4.8.1
 
 ### Patch Changes

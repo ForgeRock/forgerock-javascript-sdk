@@ -16,7 +16,7 @@ test.describe('Test basic registration flow', () => {
   const un = v4();
   const email = `${un}@me.com`;
 
-  test(`should register user successfully and then log ou`, async ({ page, browserName }) => {
+  test(`should register user successfully and then log out`, async ({ page, browserName }) => {
     const { messageArray } = await setupAndGo(page, browserName, 'register-basic/', {
       un,
       email,
@@ -33,6 +33,8 @@ test.describe('Test basic registration flow', () => {
     // expect(messageArray.includes('Prompt 6: Age')).toBe(true);
     expect(messageArray.includes('Prompt 7: Select a security question')).toBe(true);
     expect(messageArray.includes(`Predefined Question1: What's your favorite color?`)).toBe(true);
+    expect(messageArray.includes(`kbCb2 is allowed user defined questions: true`)).toBe(true);
+    expect(messageArray.includes(`Custom Question from kbCb2: Who was your first pet?`)).toBe(true);
     expect(messageArray.includes('Terms version: 0.0')).toBe(true);
     expect(
       messageArray.includes(

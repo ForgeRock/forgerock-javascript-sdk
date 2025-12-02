@@ -1,9 +1,9 @@
 {
   "name": "@forgerock/ping-protect",
-  "version": "4.6.1",
+  "version": "4.6.2",
   "private": false,
   "type": "module",
-  "files": ["dist"],
+  "files": ["./dist/*"],
   "module": "./dist/index.js",
   "main": "./dist/index.js",
   "repository": {

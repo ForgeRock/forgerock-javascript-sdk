@@ -8,6 +8,7 @@
  * of the MIT license. See the LICENSE file for details.
  */
 import * as forgerock from '@forgerock/javascript-sdk';
+import { CallbackType } from '@forgerock/javascript-sdk';
 import { deviceClient } from '@forgerock/javascript-sdk/device-client';
 import { delay as rxDelay, map, mergeMap } from 'rxjs/operators';
 import { from } from 'rxjs';
@@ -73,8 +74,17 @@ function autoscript() {
       .pipe(
         mergeMap((step) => {
           console.log('Set values on auth tree callbacks');
-          step.getCallbackOfType('NameCallback').setName(un);
-          step.getCallbackOfType('PasswordCallback').setPassword(pw);
+          if (step.type !== 'Step') {
+            throw new Error('Expected FRStep but got ' + step.type);
+          }
+          const nameCallback = step.getCallbackOfType(
+            CallbackType.NameCallback,
+          ) as forgerock.NameCallback;
+          const passwordCallback = step.getCallbackOfType(
+            CallbackType.PasswordCallback,
+          ) as forgerock.PasswordCallback;
+          nameCallback.setName(un);
+          passwordCallback.setPassword(pw);
           return forgerock.FRAuth.next(step);
         }),
         rxDelay(delay),
@@ -102,7 +112,7 @@ function autoscript() {
           });
 
           try {
-            const user = await forgerock.UserManager.getCurrentUser();
+            const user = (await forgerock.UserManager.getCurrentUser()) as { sub: string };
 
             const query = { userId: user.sub, realm: 'alpha' };
 

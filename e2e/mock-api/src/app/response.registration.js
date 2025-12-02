@@ -181,6 +181,10 @@ export default {
           name: 'predefinedQuestions',
           value: [`What's your favorite color?`, 'Who was your first employer?'],
         },
+        {
+          name: 'allowUserDefinedQuestions',
+          value: true,
+        },
       ],
       input: [
         { name: 'IDToken8question', value: '' },
@@ -195,6 +199,10 @@ export default {
         {
           name: 'predefinedQuestions',
           value: [`What's your favorite color?`, 'Who was your first employer?'],
+        },
+        {
+          name: 'allowUserDefinedQuestions',
+          value: true,
         },
       ],
       input: [

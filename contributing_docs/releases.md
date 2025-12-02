@@ -95,3 +95,7 @@ We provide verdaccio two ways:
   topological graph.
 
 - Publishing to a hosted private registry: Please message @ryanbas21 on slack.
+
+## Publishing a beta
+
+You can trigger a beta publish manually via the `publish.yml` GitHub action. In GitHub, select the `Actions` tab then the `Publish` workflow. Then select the `Run workflow` dropdown on the right-hand side. Select the branch you want to release in the `Use workflow from` dropdown, then fill out the beta release options. Click `Run workflow` and the action will automatically release the changeset snapshot to npm.

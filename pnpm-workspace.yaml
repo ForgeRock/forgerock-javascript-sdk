@@ -6,3 +6,8 @@ packages:
 catalog:
   '@reduxjs/toolkit': ^2.2.5
   immer: ^10.1.1
+
+link-workspace-packages: true
+strict-peer-dependencies: false
+save-workspace-protocol: rolling
+save-prefix: ''
