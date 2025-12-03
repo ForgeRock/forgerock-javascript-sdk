@@ -60,6 +60,24 @@ type WebAuthnTextOutput = WebAuthnTextOutputRegistration;
  *   await FRWebAuthn.authenticate(step);
  * }
  * ```
+ *
+ * Conditional UI (Autofill) Support:
+ *
+ * ```js
+ * // Check if browser supports conditional UI
+ * const supportsConditionalUI = await FRWebAuthn.isConditionalUISupported();
+ *
+ * if (supportsConditionalUI) {
+ *   // The authenticate() method automatically handles conditional UI
+ *   // when the server indicates support via conditionalWebAuthn: true
+ *   // in the metadata. No additional code changes needed.
+ *   await FRWebAuthn.authenticate(step);
+ *
+ *   // For conditional UI to work in the browser, add autocomplete="webauthn"
+ *   // to your username input field:
+ *   // <input type="text" name="username" autocomplete="webauthn" />
+ * }
+ * ```
  */
 abstract class FRWebAuthn {
   /**
@@ -95,7 +113,26 @@ abstract class FRWebAuthn {
   }
 
   /**
+   * Checks if the browser supports conditional UI (autofill) for WebAuthn.
+   *
+   * @return Promise<boolean> indicating if conditional mediation is available
+   */
+  public static async isConditionalUISupported(): Promise<boolean> {
+    if (!window.PublicKeyCredential) {
+      return false;
+    }
+
+    // Check if the browser supports conditional mediation
+    if (typeof PublicKeyCredential.isConditionalMediationAvailable === 'function') {
+      return await PublicKeyCredential.isConditionalMediationAvailable();
+    }
+
+    return false;
+  }
+
+  /**
    * Populates the step with the necessary authentication outcome.
+   * Automatically handles conditional UI if indicated by the server metadata.
    *
    * @param step The step that contains WebAuthn authentication data
    * @return The populated step
@@ -108,12 +145,19 @@ abstract class FRWebAuthn {
 
       try {
         let publicKey: PublicKeyCredentialRequestOptions;
+        let useConditionalUI = false;
+
         if (metadataCallback) {
           const meta = metadataCallback.getOutputValue('data') as WebAuthnAuthenticationMetadata;
+
+          // Check if server indicates conditional UI should be used
+          useConditionalUI = meta.conditionalWebAuthn === true;
+
           publicKey = this.createAuthenticationPublicKey(meta);
 
           credential = await this.getAuthenticationCredential(
             publicKey as PublicKeyCredentialRequestOptions,
+            useConditionalUI,
           );
           outcome = this.getAuthenticationOutcome(credential);
         } else if (textOutputCallback) {
@@ -121,6 +165,7 @@ abstract class FRWebAuthn {
 
           credential = await this.getAuthenticationCredential(
             publicKey as PublicKeyCredentialRequestOptions,
+            false, // Script-based callbacks don't support conditional UI
           );
           outcome = this.getAuthenticationOutcome(credential);
         } else {
@@ -300,18 +345,34 @@ abstract class FRWebAuthn {
    * Retrieves the credential from the browser Web Authentication API.
    *
    * @param options The public key options associated with the request
+   * @param useConditionalUI Whether to use conditional UI (autofill)
    * @return The credential
    */
   public static async getAuthenticationCredential(
     options: PublicKeyCredentialRequestOptions,
+    useConditionalUI: boolean = false,
   ): Promise<PublicKeyCredential | null> {
-    // Feature check before we attempt registering a device
+    // Feature check before we attempt authenticating
     if (!window.PublicKeyCredential) {
       const e = new Error('PublicKeyCredential not supported by this browser');
       e.name = WebAuthnOutcomeType.NotSupportedError;
       throw e;
     }
-    const credential = await navigator.credentials.get({ publicKey: options });
+
+    // Build the credential request options
+    const credentialRequestOptions: CredentialRequestOptions = {
+      publicKey: options,
+    };
+
+    // Add conditional mediation if requested and supported
+    if (useConditionalUI) {
+      const isConditionalSupported = await this.isConditionalUISupported();
+      if (isConditionalSupported) {
+        credentialRequestOptions.mediation = 'conditional' as CredentialMediationRequirement;
+      }
+    }
+
+    const credential = await navigator.credentials.get(credentialRequestOptions);
     return credential as PublicKeyCredential;
   }
 
@@ -433,22 +494,51 @@ abstract class FRWebAuthn {
     const {
       acceptableCredentials,
       allowCredentials,
+      _allowCredentials,
       challenge,
       relyingPartyId,
+      _relyingPartyId,
       timeout,
       userVerification,
+      extensions,
     } = metadata;
-    const rpId = parseRelyingPartyId(relyingPartyId);
-    const allowCredentialsValue = parseCredentials(allowCredentials || acceptableCredentials || '');
 
-    return {
+    // Use the structured _allowCredentials if available, otherwise parse the string format
+    let allowCredentialsValue: PublicKeyCredentialDescriptor[] | undefined;
+    if (_allowCredentials && Array.isArray(_allowCredentials)) {
+      allowCredentialsValue = _allowCredentials;
+    } else {
+      allowCredentialsValue = parseCredentials(allowCredentials || acceptableCredentials || '');
+    }
+
+    // Use _relyingPartyId if available, otherwise parse the old format
+    const rpId = _relyingPartyId || parseRelyingPartyId(relyingPartyId);
+
+    const options: PublicKeyCredentialRequestOptions = {
       challenge: Uint8Array.from(atob(challenge), (c) => c.charCodeAt(0)).buffer,
       timeout,
-      // only add key-value pair if proper value is provided
-      ...(allowCredentialsValue && { allowCredentials: allowCredentialsValue }),
-      ...(userVerification && { userVerification }),
-      ...(rpId && { rpId }),
     };
+
+    // For conditional UI, allowCredentials should be an empty array or omitted
+    // Only add if there are actual credentials AND not empty
+    if (allowCredentialsValue && allowCredentialsValue.length > 0) {
+      options.allowCredentials = allowCredentialsValue;
+    }
+
+    // Add optional properties only if they have values
+    if (userVerification) {
+      options.userVerification = userVerification;
+    }
+
+    if (rpId) {
+      options.rpId = rpId;
+    }
+
+    if (extensions && Object.keys(extensions).length > 0) {
+      options.extensions = extensions;
+    }
+
+    return options;
   }
 
   /**

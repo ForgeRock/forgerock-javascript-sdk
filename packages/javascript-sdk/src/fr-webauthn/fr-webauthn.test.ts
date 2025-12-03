@@ -21,6 +21,7 @@ import {
   webAuthnAuthJSCallback70StoredUsername,
   webAuthnRegMetaCallback70StoredUsername,
   webAuthnAuthMetaCallback70StoredUsername,
+  webAuthnAuthConditionalMetaCallback,
 } from './fr-webauthn.mock.data';
 import FRStep from '../fr-auth/fr-step';
 
@@ -102,5 +103,43 @@ describe('Test FRWebAuthn class with 7.0 "Usernameless"', () => {
     const step = new FRStep(webAuthnAuthMetaCallback70StoredUsername as any);
     const stepType = FRWebAuthn.getWebAuthnStepType(step);
     expect(stepType).toBe(WebAuthnStepType.Authentication);
+  });
+});
+
+describe('Test FRWebAuthn class with Conditional UI', () => {
+  it('should detect if conditional UI is supported', async () => {
+    const isSupported = await FRWebAuthn.isConditionalUISupported();
+    expect(typeof isSupported).toBe('boolean');
+  });
+
+  it('should return Authentication type with conditional UI metadata callback', () => {
+    const step = new FRStep(webAuthnAuthConditionalMetaCallback as any);
+    const stepType = FRWebAuthn.getWebAuthnStepType(step);
+    expect(stepType).toBe(WebAuthnStepType.Authentication);
+  });
+
+  it('should create authentication public key with empty allowCredentials for conditional UI', () => {
+    const metadata: any = {
+      _action: 'webauthn_authentication',
+      challenge: 'JEisuqkVMhI490jM0/iEgrRz+j94OoGc7gdY4gYicSk=',
+      allowCredentials: '',
+      _allowCredentials: [],
+      timeout: 60000,
+      userVerification: 'preferred',
+      conditionalWebAuthn: true,
+      relyingPartyId: '',
+      _relyingPartyId: 'example.com',
+      extensions: {},
+      supportsJsonResponse: true,
+    };
+
+    const publicKey = FRWebAuthn.createAuthenticationPublicKey(metadata);
+
+    expect(publicKey.challenge).toBeDefined();
+    expect(publicKey.timeout).toBe(60000);
+    expect(publicKey.userVerification).toBe('preferred');
+    expect(publicKey.rpId).toBe('example.com');
+    // allowCredentials should not be present for conditional UI with empty credentials
+    expect(publicKey.allowCredentials).toBeUndefined();
   });
 });

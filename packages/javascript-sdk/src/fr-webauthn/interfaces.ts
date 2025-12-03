@@ -77,12 +77,18 @@ interface WebAuthnRegistrationMetadata {
 }
 
 interface WebAuthnAuthenticationMetadata {
+  _action?: string;
   acceptableCredentials?: string;
   allowCredentials?: string;
+  _allowCredentials?: PublicKeyCredentialDescriptor[];
   challenge: string;
   relyingPartyId: string;
+  _relyingPartyId?: string;
   timeout: number;
   userVerification: UserVerificationType;
+  conditionalWebAuthn?: boolean;
+  extensions?: Record<string, unknown>;
+  _type?: string;
   supportsJsonResponse?: boolean;
 }
 
