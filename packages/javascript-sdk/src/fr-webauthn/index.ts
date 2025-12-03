@@ -350,7 +350,7 @@ abstract class FRWebAuthn {
    */
   public static async getAuthenticationCredential(
     options: PublicKeyCredentialRequestOptions,
-    useConditionalUI: boolean = false,
+    useConditionalUI = false,
   ): Promise<PublicKeyCredential | null> {
     // Feature check before we attempt authenticating
     if (!window.PublicKeyCredential) {
