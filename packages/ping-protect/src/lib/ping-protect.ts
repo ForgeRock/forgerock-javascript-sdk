@@ -27,7 +27,7 @@ export type InitParams = Omit<ProtectInitializeConfig, '_type' | '_action'>;
 declare global {
   interface Window {
     _pingOneSignals: {
-      init: (initParams?: ProtectInitializeConfig) => Promise<void>;
+      init: (initParams?: InitParams) => Promise<void>;
       getData: () => Promise<string>;
       pauseBehavioralData: () => void;
       resumeBehavioralData: () => void;
@@ -56,7 +56,7 @@ export abstract class PIProtect {
    * @param {InitParams} options - The init parameters
    * @returns {Promise<void>} - Returns a promise
    */
-  public static async start(options: ProtectInitializeConfig): Promise<void> {
+  public static async start(options: InitParams): Promise<void> {
     try {
       /*
        * Load the Ping Signals SDK
