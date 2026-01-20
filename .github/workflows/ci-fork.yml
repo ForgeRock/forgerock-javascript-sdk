@@ -54,4 +54,4 @@ jobs:
       - run: git branch --track main origin/main || true
 
       - run: pnpm nx format:check
-      - run: pnpm nx affected -t build typecheck lint test e2e-ci
+      - run: pnpm nx affected -t build typecheck lint test e2e
