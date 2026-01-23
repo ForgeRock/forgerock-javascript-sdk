@@ -24,6 +24,7 @@ import {
   webAuthnAuthConditionalMetaCallback,
 } from './fr-webauthn.mock.data';
 import FRStep from '../fr-auth/fr-step';
+import Config from '../config';
 
 describe('Test FRWebAuthn class with 6.5.3 "Passwordless"', () => {
   it('should return Registration type with register text-output callbacks', () => {
@@ -165,7 +166,16 @@ describe('Test FRWebAuthn class with Conditional UI', () => {
     expect(publicKey.allowCredentials).toBeUndefined();
   });
 
-  it('should warn and fallback if conditional UI is requested but not supported', async () => {
+  it('should warn and return false if conditional UI is requested but not supported', async () => {
+    Config.set({
+      serverConfig: {
+        baseUrl: 'http://localhost:8080',
+      },
+      clientId: 'test',
+      realmPath: 'alpha',
+      logLevel: 'warn',
+    });
+
     // Mock browser support for conditional UI to be false
     vi.spyOn(window.PublicKeyCredential, 'isConditionalMediationAvailable').mockResolvedValue(
       false,
