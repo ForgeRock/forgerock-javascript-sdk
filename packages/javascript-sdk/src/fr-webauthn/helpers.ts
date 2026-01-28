@@ -36,6 +36,11 @@ function getIndexOne(arr: RegExpMatchArray | null): string {
 
 // TODO: Remove this once AM is providing fully-serialized JSON
 function parseCredentials(value: string): ParsedCredential[] {
+  // Handle empty string or missing value
+  if (!value || value === '' || value === '[]') {
+    return [];
+  }
+
   try {
     const creds = value
       .split('}')

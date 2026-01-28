@@ -489,3 +489,40 @@ export const webAuthnRegMetaCallbackJsonResponse = {
     },
   ],
 };
+
+export const webAuthnAuthConditionalMetaCallback = {
+  authId: 'test-auth-id-conditional',
+  callbacks: [
+    {
+      type: CallbackType.MetadataCallback,
+      output: [
+        {
+          name: 'data',
+          value: {
+            _action: 'webauthn_authentication',
+            challenge: 'JEisuqkVMhI490jM0/iEgrRz+j94OoGc7gdY4gYicSk=',
+            allowCredentials: '',
+            _allowCredentials: [],
+            timeout: 60000,
+            userVerification: 'preferred',
+            conditionalWebAuthn: true,
+            relyingPartyId: '',
+            _relyingPartyId: 'example.com',
+            extensions: {},
+            _type: 'WebAuthn',
+            supportsJsonResponse: true,
+          },
+        },
+      ],
+      _id: 0,
+    },
+    {
+      type: CallbackType.HiddenValueCallback,
+      output: [
+        { name: 'value', value: 'false' },
+        { name: 'id', value: 'webAuthnOutcome' },
+      ],
+      input: [{ name: 'IDToken1', value: 'webAuthnOutcome' }],
+    },
+  ],
+};
