@@ -86,7 +86,7 @@ interface WebAuthnAuthenticationMetadata {
   _relyingPartyId?: string;
   timeout: number;
   userVerification: UserVerificationType;
-  conditional?: string;
+  mediation?: string;
   extensions?: Record<string, unknown>;
   _type?: 'WebAuthn';
   supportsJsonResponse?: boolean;
