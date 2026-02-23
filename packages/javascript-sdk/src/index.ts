@@ -61,7 +61,7 @@ import type {
   WebAuthnCallbacks,
   WebAuthnRegistrationMetadata,
 } from './fr-webauthn';
-import FRWebAuthn, { WebAuthnOutcome, WebAuthnStepType } from './fr-webauthn';
+import FRWebAuthn, { WebAuthnOutcome, WebAuthnOutcomeType, WebAuthnStepType } from './fr-webauthn';
 import HttpClient from './http-client';
 import type {
   GetAuthorizationUrlOptions,
@@ -160,5 +160,6 @@ export {
   ValidatedCreatePasswordCallback,
   ValidatedCreateUsernameCallback,
   WebAuthnOutcome,
+  WebAuthnOutcomeType,
   WebAuthnStepType,
 };

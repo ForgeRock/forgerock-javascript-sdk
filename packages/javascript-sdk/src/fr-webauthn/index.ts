@@ -48,6 +48,12 @@ type WebAuthnMetadata = WebAuthnAuthenticationMetadata | WebAuthnRegistrationMet
 type WebAuthnTextOutput = WebAuthnTextOutputRegistration;
 const TWO_SECOND = 2000;
 
+declare global {
+  interface Window {
+    PingWebAuthnAbortController: AbortController;
+  }
+}
+
 /**
  * Utility for integrating a web browser's WebAuthn API.
  *
@@ -151,27 +157,30 @@ abstract class FRWebAuthn {
 
       try {
         let publicKey: PublicKeyCredentialRequestOptions;
-        let useConditionalUI = false;
 
         if (metadataCallback) {
           const meta = metadataCallback.getOutputValue('data') as WebAuthnAuthenticationMetadata;
+          const mediation = meta.mediation as CredentialMediationRequirement;
 
-          // Check if server indicates conditional UI should be used
-          useConditionalUI = meta.conditional === 'true';
+          if (mediation === 'conditional') {
+            const isConditionalSupported = await this.isConditionalUISupported();
+            if (!isConditionalSupported) {
+              const e = new Error(
+                'Conditional UI was requested, but is not supported by this browser.',
+              );
+              e.name = WebAuthnOutcomeType.NotSupportedError;
+              throw e;
+            }
+          }
+
           publicKey = this.createAuthenticationPublicKey(meta);
 
-          credential = await this.getAuthenticationCredential(
-            publicKey as PublicKeyCredentialRequestOptions,
-            useConditionalUI,
-          );
+          credential = await this.getAuthenticationCredential({ publicKey, mediation });
           outcome = this.getAuthenticationOutcome(credential);
         } else if (textOutputCallback) {
           publicKey = parseWebAuthnAuthenticateText(textOutputCallback.getMessage());
 
-          credential = await this.getAuthenticationCredential(
-            publicKey as PublicKeyCredentialRequestOptions,
-            false, // Script-based callbacks don't support conditional UI
-          );
+          credential = await this.getAuthenticationCredential({ publicKey });
           outcome = this.getAuthenticationOutcome(credential);
         } else {
           throw new Error('No Credential found from Public Key');
@@ -349,13 +358,11 @@ abstract class FRWebAuthn {
   /**
    * Retrieves the credential from the browser Web Authentication API.
    *
-   * @param options The public key options associated with the request
-   * @param useConditionalUI Whether to use conditional UI (autofill)
+   * @param options The options associated with the request
    * @return The credential
    */
   public static async getAuthenticationCredential(
-    options: PublicKeyCredentialRequestOptions,
-    useConditionalUI = false,
+    options: CredentialRequestOptions,
   ): Promise<PublicKeyCredential | null> {
     // Feature check before we attempt authenticating
     if (!window.PublicKeyCredential) {
@@ -363,23 +370,11 @@ abstract class FRWebAuthn {
       e.name = WebAuthnOutcomeType.NotSupportedError;
       throw e;
     }
-    // Build the credential request options
-    const credentialRequestOptions: CredentialRequestOptions = {
-      publicKey: options,
-    };
 
-    // Add conditional mediation if requested and supported
-    if (useConditionalUI) {
-      const isConditionalSupported = await this.isConditionalUISupported();
-      if (isConditionalSupported) {
-        credentialRequestOptions.mediation = 'conditional' as CredentialMediationRequirement;
-      } else {
-        // eslint-disable-next-line no-console
-        FRLogger.warn('Conditional UI was requested, but is not supported by this browser.');
-      }
-    }
-
-    const credential = await navigator.credentials.get(credentialRequestOptions);
+    const credential = await navigator.credentials.get({
+      ...options,
+      signal: this.createAbortController().signal,
+    });
     return credential as PublicKeyCredential;
   }
 
@@ -599,6 +594,14 @@ abstract class FRWebAuthn {
       },
     };
   }
+
+  private static createAbortController() {
+    window.PingWebAuthnAbortController?.abort();
+
+    const abortController = new AbortController();
+    window.PingWebAuthnAbortController = abortController;
+    return abortController;
+  }
 }
 
 export default FRWebAuthn;
@@ -608,4 +611,4 @@ export type {
   WebAuthnCallbacks,
   WebAuthnRegistrationMetadata,
 };
-export { WebAuthnOutcome, WebAuthnStepType };
+export { WebAuthnOutcome, WebAuthnOutcomeType, WebAuthnStepType };
