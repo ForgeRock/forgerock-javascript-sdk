@@ -505,7 +505,7 @@ export const webAuthnAuthConditionalMetaCallback = {
             _allowCredentials: [],
             timeout: 60000,
             userVerification: 'preferred',
-            conditionalWebAuthn: true,
+            mediation: 'conditional',
             relyingPartyId: '',
             _relyingPartyId: 'example.com',
             extensions: {},
