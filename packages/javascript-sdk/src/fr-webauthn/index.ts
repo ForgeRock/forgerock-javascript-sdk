@@ -178,7 +178,15 @@ abstract class FRWebAuthn {
           credential = await this.getAuthenticationCredential({ publicKey, mediation });
           outcome = this.getAuthenticationOutcome(credential);
         } else if (textOutputCallback) {
-          publicKey = parseWebAuthnAuthenticateText(textOutputCallback.getMessage());
+          const metadata = this.extractMetadata(textOutputCallback.getMessage());
+
+          if (metadata) {
+            publicKey = this.createAuthenticationPublicKey(
+              metadata as WebAuthnAuthenticationMetadata,
+            );
+          } else {
+            publicKey = parseWebAuthnAuthenticateText(textOutputCallback.getMessage());
+          }
 
           credential = await this.getAuthenticationCredential({ publicKey });
           outcome = this.getAuthenticationOutcome(credential);
@@ -245,7 +253,13 @@ abstract class FRWebAuthn {
           );
           outcome = this.getRegistrationOutcome(credential);
         } else if (textOutputCallback) {
-          publicKey = parseWebAuthnRegisterText(textOutputCallback.getMessage());
+          const metadata = this.extractMetadata(textOutputCallback.getMessage());
+
+          if (metadata) {
+            publicKey = this.createRegistrationPublicKey(metadata as WebAuthnRegistrationMetadata);
+          } else {
+            publicKey = parseWebAuthnRegisterText(textOutputCallback.getMessage());
+          }
           credential = await this.getRegistrationCredential(
             publicKey as PublicKeyCredentialCreationOptions,
           );
@@ -601,6 +615,17 @@ abstract class FRWebAuthn {
     const abortController = new AbortController();
     window.PingWebAuthnAbortController = abortController;
     return abortController;
+  }
+
+  private static extractMetadata(message: string): object | null {
+    const contextMatch = message.match(/^var scriptContext = (.*);*$/m);
+    const jsonString = contextMatch?.[1];
+
+    if (jsonString) {
+      return JSON.parse(jsonString);
+    }
+
+    return null;
   }
 }
 
