@@ -170,8 +170,9 @@ jobs:
         id: format-packages
         env:
           NPM_TAG: ${{ inputs.npm_tag }}
+          SNAPSHOT_TAG: ${{ inputs.snapshot_tag }}
         run: |
-          FORMATTED=$(jq -rs '.[] | ":package: *\(.name)* `\(.version)`"' packages/*/package.json)
+          FORMATTED=$(jq -rs --arg tag "$SNAPSHOT_TAG" '[.[] | select(.version | contains($tag))] | .[] | ":package: *\(.name)* `\(.version)`"' packages/*/package.json)
           PAYLOAD=$(jq -n --arg packages "$FORMATTED" --arg npmTag "$NPM_TAG" '{"npmTag": $npmTag, "publishedPackages": $packages}')
           echo "payload<<EOF" >> $GITHUB_OUTPUT
           echo "$PAYLOAD" >> $GITHUB_OUTPUT
