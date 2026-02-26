@@ -37,7 +37,7 @@ jobs:
       - run: pnpm exec nx affected -t build lint test docs e2e-ci
 
       - name: Publish previews to Stackblitz on PR
-        run: pnpm pkg-pr-new publish './packages/*' --packageManager=pnpm
+        run: pnpm pkg-pr-new publish './packages/*' --packageManager=pnpm  --pnpm
 
       - uses: codecov/codecov-action@v5
         with:

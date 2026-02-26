@@ -113,12 +113,18 @@ jobs:
 
       - name: Send GitHub Action data to a Slack workflow
         if: steps.changesets.outputs.published == 'true'
+        id: slack-notify
         continue-on-error: true
         uses: slackapi/slack-github-action@v2.1.1
         with:
           webhook: ${{ env.SLACK_WEBHOOK_URL }}
           webhook-type: webhook-trigger
           payload: ${{ steps.format-packages.outputs.payload }}
+
+      - name: Warn if Slack notification failed
+        if: steps.slack-notify.outcome == 'failure'
+        run: |
+          echo "::warning::Slack notification failed. Check the webhook URL and payload format."
 
       - name: Run code coverage
         uses: codecov/codecov-action@v5
@@ -159,14 +165,29 @@ jobs:
         id: npmpublish
         run: pnpm publish -r --tag ${{ inputs.npm_tag }} --no-git-checks --access ${{ inputs.npm_access }}
 
+      - name: Format published packages for Slack
+        if: steps.npmpublish.outcome == 'success'
+        id: format-packages
+        env:
+          NPM_TAG: ${{ inputs.npm_tag }}
+        run: |
+          FORMATTED=$(jq -rs '.[] | ":package: *\(.name)* `\(.version)`"' packages/*/package.json)
+          PAYLOAD=$(jq -n --arg packages "$FORMATTED" --arg npmTag "$NPM_TAG" '{"npmTag": $npmTag, "publishedPackages": $packages}')
+          echo "payload<<EOF" >> $GITHUB_OUTPUT
+          echo "$PAYLOAD" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
       - name: Send GitHub Action data to a Slack workflow
         if: steps.npmpublish.outcome == 'success'
+        id: slack-notify-beta
         continue-on-error: true
         uses: slackapi/slack-github-action@v2.1.1
         with:
-          payload-delimiter: '_'
           webhook: ${{ env.SLACK_WEBHOOK_URL_BETA }}
           webhook-type: webhook-trigger
-          payload: |
-            npmTag: "${{ inputs.npm_tag }}"
-            publishedPackages: ""
+          payload: ${{ steps.format-packages.outputs.payload }}
+
+      - name: Warn if Slack notification failed
+        if: steps.slack-notify-beta.outcome == 'failure'
+        run: |
+          echo "::warning::Slack beta notification failed. Check the webhook URL and payload format."
