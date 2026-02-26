@@ -102,21 +102,23 @@ jobs:
       - name: Format published packages for Slack
         if: steps.changesets.outputs.published == 'true'
         id: format-packages
+        env:
+          PUBLISHED_PACKAGES: ${{ steps.changesets.outputs.publishedPackages }}
         run: |
-          PACKAGES=$(echo '${{ steps.changesets.outputs.publishedPackages }}' | jq -r '.[] | ":package: *\(.name)* `\(.version)`"')
-          echo "formatted<<EOF" >> $GITHUB_OUTPUT
-          echo "$PACKAGES" >> $GITHUB_OUTPUT
+          FORMATTED=$(echo "$PUBLISHED_PACKAGES" | jq -r '.[] | ":package: *\(.name)* `\(.version)`"')
+          PAYLOAD=$(jq -n --arg packages "$FORMATTED" '{"publishedPackages": $packages}')
+          echo "payload<<EOF" >> $GITHUB_OUTPUT
+          echo "$PAYLOAD" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Send GitHub Action data to a Slack workflow
         if: steps.changesets.outputs.published == 'true'
+        continue-on-error: true
         uses: slackapi/slack-github-action@v2.1.1
         with:
-          payload-delimiter: '_'
           webhook: ${{ env.SLACK_WEBHOOK_URL }}
           webhook-type: webhook-trigger
-          payload: |
-            publishedPackages: ${{ steps.format-packages.outputs.formatted }}
+          payload: ${{ steps.format-packages.outputs.payload }}
 
       - name: Run code coverage
         uses: codecov/codecov-action@v5
@@ -159,6 +161,7 @@ jobs:
 
       - name: Send GitHub Action data to a Slack workflow
         if: steps.npmpublish.outcome == 'success'
+        continue-on-error: true
         uses: slackapi/slack-github-action@v2.1.1
         with:
           payload-delimiter: '_'
