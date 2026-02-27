@@ -186,6 +186,80 @@ describe('PingOneProtectInitializeCallback', () => {
     });
   });
 
+  it('should return signalsInitializationOptions directly when valid', () => {
+    const signalsInitializationOptions = {
+      agentIdentification: 'false',
+      htmlGeoLocation: 'true',
+      behavioralDataCollection: 'true',
+      universalDeviceIdentification: 'false',
+      option1: 'value1',
+      disableTags: 'false',
+    };
+
+    const callback = new PingOneProtectInitializeCallback({
+      type: 'PingOneProtectInitializeCallback' as CallbackType,
+      input: [],
+      output: [
+        {
+          name: 'signalsInitializationOptions',
+          value: signalsInitializationOptions,
+        },
+        {
+          name: 'envId',
+          value: 'legacy-env-id-that-should-be-ignored',
+        },
+      ],
+    });
+
+    const config = callback.getConfig();
+    expect(config).toEqual(signalsInitializationOptions);
+    expect(config).not.toHaveProperty('envId');
+  });
+
+  it('should fallback to legacy config when signalsInitializationOptions is invalid', () => {
+    const callback = new PingOneProtectInitializeCallback({
+      type: 'PingOneProtectInitializeCallback' as CallbackType,
+      input: [],
+      output: [
+        {
+          name: 'signalsInitializationOptions',
+          value: [],
+        },
+        {
+          name: 'envId',
+          value: '02fb4743-189a-4bc7-9d6c-a919edfe6447',
+        },
+      ],
+    });
+
+    const config = callback.getConfig();
+    expect(config).toMatchObject({
+      envId: '02fb4743-189a-4bc7-9d6c-a919edfe6447',
+      behavioralDataCollection: true,
+      disableTags: false,
+    });
+  });
+
+  it('should fallback to legacy config when signalsInitializationOptions is missing', () => {
+    const callback = new PingOneProtectInitializeCallback({
+      type: 'PingOneProtectInitializeCallback' as CallbackType,
+      input: [],
+      output: [
+        {
+          name: 'envId',
+          value: '02fb4743-189a-4bc7-9d6c-a919edfe6447',
+        },
+      ],
+    });
+
+    const config = callback.getConfig();
+    expect(config).toMatchObject({
+      envId: '02fb4743-189a-4bc7-9d6c-a919edfe6447',
+      behavioralDataCollection: true,
+      disableTags: false,
+    });
+  });
+
   it('should test the setClientError method', () => {
     const callback = new PingOneProtectInitializeCallback({
       type: 'PingOneProtectInitializeCallback' as CallbackType,

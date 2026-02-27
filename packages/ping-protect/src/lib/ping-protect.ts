@@ -15,13 +15,20 @@ import {
   PingOneProtectEvaluationCallback,
   PingOneProtectInitializeCallback,
 } from '@forgerock/javascript-sdk';
-import { ProtectEvaluationConfig, ProtectInitializeConfig } from './ping-protect.types';
+import {
+  ProtectEvaluationConfig,
+  ProtectInitializeConfig,
+  ProtectNodeInitializeConfig,
+  SignalsInitializationOptions,
+} from './ping-protect.types';
 
 export interface Identifiers {
   [key: string]: string;
 }
 
-export type InitParams = Omit<ProtectInitializeConfig, '_type' | '_action'>;
+export type InitParams =
+  | Omit<ProtectInitializeConfig, '_type' | '_action'>
+  | SignalsInitializationOptions;
 
 // Add Signals SDK namespace to the window object
 declare global {
@@ -137,14 +144,14 @@ export abstract class PIProtect {
     }
   }
 
-  public static getNodeConfig(step: FRStep): ProtectInitializeConfig | undefined {
+  public static getNodeConfig(step: FRStep): ProtectNodeInitializeConfig | undefined {
     // Check for native callback first
     try {
       const nativeCallback = step.getCallbackOfType<PingOneProtectInitializeCallback>(
         CallbackType.PingOneProtectInitializeCallback,
       );
 
-      const config = nativeCallback?.getConfig() as ProtectInitializeConfig;
+      const config = nativeCallback?.getConfig() as ProtectNodeInitializeConfig;
       return config;
     } catch (err) {
       // Do nothing

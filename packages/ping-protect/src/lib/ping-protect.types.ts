@@ -33,6 +33,9 @@ export interface ProtectInitializeConfig {
   waitForWindowLoad?: boolean;
 }
 
+export type SignalsInitializationOptions = Record<string, unknown>;
+export type ProtectNodeInitializeConfig = ProtectInitializeConfig | SignalsInitializationOptions;
+
 export interface ProtectEvaluationConfig {
   _type: 'PingOneProtect';
   _action: 'protect_risk_evaluation';

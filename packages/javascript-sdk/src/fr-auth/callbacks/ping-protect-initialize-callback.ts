@@ -26,6 +26,18 @@ class PingOneProtectInitializeCallback extends FRCallback {
    * Get callback's initialization config settings
    */
   public getConfig() {
+    const signalsInitializationOptions = this.getOutputByName<Record<string, unknown> | undefined>(
+      'signalsInitializationOptions',
+      undefined,
+    );
+    if (
+      signalsInitializationOptions !== null &&
+      typeof signalsInitializationOptions === 'object' &&
+      !Array.isArray(signalsInitializationOptions)
+    ) {
+      return signalsInitializationOptions;
+    }
+
     const agentIdentification = this.getOutputByName<boolean | undefined>(
       'agentIdentification',
       undefined,
