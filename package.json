@@ -95,7 +95,7 @@
     "mkcert": "^3.2.0",
     "npm-cli-login": "^1.0.0",
     "nx": "20.3.3",
-    "pkg-pr-new": "^0.0.60",
+    "pkg-pr-new": "^0.0.63",
     "playwright": "1.47.2",
     "prettier": "^3.2.5",
     "pretty-quick": "^4.0.0",
