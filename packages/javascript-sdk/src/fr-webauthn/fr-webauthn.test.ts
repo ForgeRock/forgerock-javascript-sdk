@@ -131,7 +131,7 @@ describe('Test FRWebAuthn class with Conditional UI', () => {
 
   it('should detect if conditional UI is supported', async () => {
     vi.spyOn(window.PublicKeyCredential, 'isConditionalMediationAvailable').mockResolvedValue(true);
-    const isSupported = await FRWebAuthn.isConditionalUISupported();
+    const isSupported = await FRWebAuthn.isConditionalMediationSupported();
     expect(isSupported).toBe(true);
   });
 
