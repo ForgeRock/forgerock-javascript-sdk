@@ -13,6 +13,8 @@
     "ci:version": "changeset version && pnpm install --no-frozen-lockfile && pnpm nx format:write --uncommitted",
     "changeset": "changeset",
     "commit": "git cz",
+    "copyright:check": "node ./tools/copyright/sync-header-years.mjs --check",
+    "copyright:sync": "node ./tools/copyright/sync-header-years.mjs",
     "docs": "nx affected --target=typedoc",
     "e2e": "CI=true nx affected:e2e",
     "format:staged": "pretty-quick --staged",
