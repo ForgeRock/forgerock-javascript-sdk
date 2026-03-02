@@ -35,11 +35,11 @@ describe('Test network utility functions', () => {
     expect(evaluateUrlForInterception(url, urls)).toBe(false);
   });
 
-  // Test evaluateUrlForInterception with matching URL containing blob
-  it('evaluateUrlForInterception should return true for matching URLs with blob', () => {
-    const urls = ['https://example.com', 'https://example.com/*'];
-    const url = 'blob:https://example.com/1234';
-    expect(evaluateUrlForInterception(url, urls)).toBe(true);
+  // Test evaluateUrlForInterception rejects URLs containing a valid URL as a query parameter
+  it('evaluateUrlForInterception should return false when valid URL appears as query parameter', () => {
+    const urls = ['https://valid.com'];
+    const url = 'https://evil.com?https://valid.com';
+    expect(evaluateUrlForInterception(url, urls)).toBe(false);
   });
 
   // Test extractOrigins

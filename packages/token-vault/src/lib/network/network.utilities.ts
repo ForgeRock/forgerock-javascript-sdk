@@ -109,7 +109,7 @@ export function evaluateUrlForInterception(url: string, urls: string[]) {
       }
     }
     // Do full URL matching
-    if (url.includes(u)) {
+    if (url === u) {
       return true;
     }
   }
