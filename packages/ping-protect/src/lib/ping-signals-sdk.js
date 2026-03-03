@@ -16989,6 +16989,3 @@ ${btoa(i)}
 // Ping Identity INC.
 // Â© ALL RIGHTS RESERVED
 //Wed Dec 24 2025 13:39:16 GMT+0000 (Coordinated Universal Time)
-// Ping Identity INC.
-// ï¿½ ALL RIGHTS RESERVED
-//Build: 25 (5.6.4)  Tue Sep 16 2025 12:56:52 GMT+0000 (Coordinated Universal Time)
