@@ -77,7 +77,7 @@ export abstract class PIProtect {
     await window._pingOneSignals.init(options);
 
     if (options.behavioralDataCollection === true || options.behavioralDataCollection === 'true') {
-      window._pingOneSignals.resumeBehavioralData();
+      PIProtect.resumeBehavioralData();
     }
   }
 
