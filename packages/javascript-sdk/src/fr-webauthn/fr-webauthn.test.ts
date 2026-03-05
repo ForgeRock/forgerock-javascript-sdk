@@ -131,7 +131,7 @@ describe('Test FRWebAuthn class with Conditional UI', () => {
 
   it('should detect if conditional UI is supported', async () => {
     vi.spyOn(window.PublicKeyCredential, 'isConditionalMediationAvailable').mockResolvedValue(true);
-    const isSupported = await FRWebAuthn.isConditionalUISupported();
+    const isSupported = await FRWebAuthn.isConditionalMediationSupported();
     expect(isSupported).toBe(true);
   });
 
@@ -149,7 +149,7 @@ describe('Test FRWebAuthn class with Conditional UI', () => {
       _allowCredentials: [],
       timeout: 60000,
       userVerification: 'preferred',
-      conditionalWebAuthn: true,
+      mediation: 'conditional',
       relyingPartyId: '',
       _relyingPartyId: 'example.com',
       extensions: {},
@@ -180,19 +180,10 @@ describe('Test FRWebAuthn class with Conditional UI', () => {
     vi.spyOn(window.PublicKeyCredential, 'isConditionalMediationAvailable').mockResolvedValue(
       false,
     );
-    // FIX APPLIED HERE: Added block comment to empty function
-    const consoleSpy = vi.spyOn(console, 'warn').mockImplementation(() => {
-      /* empty */
-    });
     const getSpy = vi.spyOn(navigator.credentials, 'get');
 
     // Attempt to authenticate with conditional UI requested
-    await FRWebAuthn.getAuthenticationCredential({}, true);
-
-    // Expect a warning to be logged
-    expect(consoleSpy).toHaveBeenCalledWith(
-      'Conditional UI was requested, but is not supported by this browser.',
-    );
+    await FRWebAuthn.getAuthenticationCredential({});
 
     // Expect the call to navigator.credentials.get to NOT have the mediation property
     expect(getSpy).toHaveBeenCalledWith(
@@ -208,7 +199,9 @@ describe('Test FRWebAuthn class with Conditional UI', () => {
     const getSpy = vi.spyOn(navigator.credentials, 'get');
 
     // Attempt to authenticate with conditional UI requested
-    await FRWebAuthn.getAuthenticationCredential({}, true);
+    await FRWebAuthn.getAuthenticationCredential({
+      mediation: 'conditional',
+    });
 
     // Expect the call to navigator.credentials.get to have the mediation property
     expect(getSpy).toHaveBeenCalledWith(

@@ -48,6 +48,12 @@ type WebAuthnMetadata = WebAuthnAuthenticationMetadata | WebAuthnRegistrationMet
 type WebAuthnTextOutput = WebAuthnTextOutputRegistration;
 const TWO_SECOND = 2000;
 
+declare global {
+  interface Window {
+    PingWebAuthnAbortController: AbortController;
+  }
+}
+
 /**
  * Utility for integrating a web browser's WebAuthn API.
  *
@@ -65,19 +71,19 @@ const TWO_SECOND = 2000;
  * }
  * ```
  *
- * Conditional UI (Autofill) Support:
+ * Conditional mediation (Autofill) Support:
  *
  * ```js
- * // Check if browser supports conditional UI
+ * // Check if browser supports conditional mediation
  * const supportsConditionalUI = await FRWebAuthn.isConditionalUISupported();
  *
  * if (supportsConditionalUI) {
- *   // The authenticate() method automatically handles conditional UI
+ *   // The authenticate() method automatically handles conditional mediation
  *   // when the server indicates support via conditionalWebAuthn: true
  *   // in the metadata. No additional code changes needed.
  *   await FRWebAuthn.authenticate(step);
  *
- *   // For conditional UI to work in the browser, add autocomplete="webauthn"
+ *   // For conditional mediation to work in the browser, add autocomplete="webauthn"
  *   // to your username input field:
  *   // <input type="text" name="username" autocomplete="webauthn" />
  * }
@@ -117,12 +123,21 @@ abstract class FRWebAuthn {
   }
 
   /**
-   * Checks if the browser supports conditional UI (autofill) for WebAuthn.
+   * Checks if the browser supports WebAuthn.
+   *
+   * @return boolean indicating if WebAuthn is available
+   */
+  public static isWebAuthnSupported(): boolean {
+    return !!window.PublicKeyCredential;
+  }
+
+  /**
+   * Checks if the browser supports conditional mediation (autofill) for WebAuthn.
    *
    * @return Promise<boolean> indicating if conditional mediation is available
    */
-  public static async isConditionalUISupported(): Promise<boolean> {
-    if (!window.PublicKeyCredential) {
+  public static async isConditionalMediationSupported(): Promise<boolean> {
+    if (!this.isWebAuthnSupported()) {
       return false;
     }
 
@@ -138,41 +153,49 @@ abstract class FRWebAuthn {
 
   /**
    * Populates the step with the necessary authentication outcome.
-   * Automatically handles conditional UI if indicated by the server metadata.
+   * Automatically handles conditional mediation if indicated by the server metadata.
    *
    * @param step The step that contains WebAuthn authentication data
+   * @param optionsTransformer Augments the derived options with custom behaviour
    * @return The populated step
    */
-  public static async authenticate(step: FRStep): Promise<FRStep> {
+  public static async authenticate(
+    step: FRStep,
+    optionsTransformer: (options: CredentialRequestOptions) => CredentialRequestOptions = (
+      options,
+    ) => options,
+  ): Promise<FRStep> {
     const { hiddenCallback, metadataCallback, textOutputCallback } = this.getCallbacks(step);
     if (hiddenCallback && (metadataCallback || textOutputCallback)) {
-      let outcome: ReturnType<typeof this.getAuthenticationOutcome>;
-      let credential: PublicKeyCredential | null = null;
+      const options: CredentialRequestOptions = {};
 
       try {
-        let publicKey: PublicKeyCredentialRequestOptions;
-        let useConditionalUI = false;
-
         if (metadataCallback) {
           const meta = metadataCallback.getOutputValue('data') as WebAuthnAuthenticationMetadata;
+          const mediation = meta.mediation as CredentialMediationRequirement;
 
-          // Check if server indicates conditional UI should be used
-          useConditionalUI = meta.conditional === 'true';
-          publicKey = this.createAuthenticationPublicKey(meta);
+          if (mediation === 'conditional') {
+            const isConditionalMediationSupported = await this.isConditionalMediationSupported();
+            if (!isConditionalMediationSupported) {
+              const e = new Error(
+                'Conditional mediation was requested, but is not supported by this browser.',
+              );
+              e.name = WebAuthnOutcomeType.NotSupportedError;
+              throw e;
+            }
+          }
 
-          credential = await this.getAuthenticationCredential(
-            publicKey as PublicKeyCredentialRequestOptions,
-            useConditionalUI,
-          );
-          outcome = this.getAuthenticationOutcome(credential);
+          options.publicKey = this.createAuthenticationPublicKey(meta);
+          options.mediation = mediation;
         } else if (textOutputCallback) {
-          publicKey = parseWebAuthnAuthenticateText(textOutputCallback.getMessage());
-
-          credential = await this.getAuthenticationCredential(
-            publicKey as PublicKeyCredentialRequestOptions,
-            false, // Script-based callbacks don't support conditional UI
-          );
-          outcome = this.getAuthenticationOutcome(credential);
+          const metadata = this.extractMetadata(textOutputCallback.getMessage());
+          if (metadata) {
+            options.publicKey = this.createAuthenticationPublicKey(
+              metadata as WebAuthnAuthenticationMetadata,
+            );
+          } else {
+            options.publicKey = parseWebAuthnAuthenticateText(textOutputCallback.getMessage());
+          }
         } else {
           throw new Error('No Credential found from Public Key');
         }
@@ -186,6 +209,12 @@ abstract class FRWebAuthn {
         hiddenCallback.setInputValue(`${WebAuthnOutcome.Error}::${error.name}:${error.message}`);
         throw error;
       }
+
+      const credential: PublicKeyCredential | null = await this.getAuthenticationCredential(
+        optionsTransformer(options),
+      );
+      const outcome: ReturnType<typeof this.getAuthenticationOutcome> =
+        this.getAuthenticationOutcome(credential);
 
       if (metadataCallback) {
         const meta = metadataCallback.getOutputValue('data') as WebAuthnAuthenticationMetadata;
@@ -236,7 +265,13 @@ abstract class FRWebAuthn {
           );
           outcome = this.getRegistrationOutcome(credential);
         } else if (textOutputCallback) {
-          publicKey = parseWebAuthnRegisterText(textOutputCallback.getMessage());
+          const metadata = this.extractMetadata(textOutputCallback.getMessage());
+
+          if (metadata) {
+            publicKey = this.createRegistrationPublicKey(metadata as WebAuthnRegistrationMetadata);
+          } else {
+            publicKey = parseWebAuthnRegisterText(textOutputCallback.getMessage());
+          }
           credential = await this.getRegistrationCredential(
             publicKey as PublicKeyCredentialCreationOptions,
           );
@@ -349,37 +384,23 @@ abstract class FRWebAuthn {
   /**
    * Retrieves the credential from the browser Web Authentication API.
    *
-   * @param options The public key options associated with the request
-   * @param useConditionalUI Whether to use conditional UI (autofill)
+   * @param options The options associated with the request
    * @return The credential
    */
   public static async getAuthenticationCredential(
-    options: PublicKeyCredentialRequestOptions,
-    useConditionalUI = false,
+    options: CredentialRequestOptions,
   ): Promise<PublicKeyCredential | null> {
     // Feature check before we attempt authenticating
-    if (!window.PublicKeyCredential) {
+    if (!this.isWebAuthnSupported()) {
       const e = new Error('PublicKeyCredential not supported by this browser');
       e.name = WebAuthnOutcomeType.NotSupportedError;
       throw e;
     }
-    // Build the credential request options
-    const credentialRequestOptions: CredentialRequestOptions = {
-      publicKey: options,
-    };
 
-    // Add conditional mediation if requested and supported
-    if (useConditionalUI) {
-      const isConditionalSupported = await this.isConditionalUISupported();
-      if (isConditionalSupported) {
-        credentialRequestOptions.mediation = 'conditional' as CredentialMediationRequirement;
-      } else {
-        // eslint-disable-next-line no-console
-        FRLogger.warn('Conditional UI was requested, but is not supported by this browser.');
-      }
-    }
-
-    const credential = await navigator.credentials.get(credentialRequestOptions);
+    const credential = await navigator.credentials.get({
+      ...options,
+      signal: this.createAbortController().signal,
+    });
     return credential as PublicKeyCredential;
   }
 
@@ -448,7 +469,7 @@ abstract class FRWebAuthn {
     options: PublicKeyCredentialCreationOptions,
   ): Promise<PublicKeyCredential | null> {
     // Feature check before we attempt registering a device
-    if (!window.PublicKeyCredential) {
+    if (this.isWebAuthnSupported()) {
       const e = new Error('PublicKeyCredential not supported by this browser');
       e.name = WebAuthnOutcomeType.NotSupportedError;
       throw e;
@@ -525,7 +546,7 @@ abstract class FRWebAuthn {
       challenge: Uint8Array.from(atob(challenge), (c) => c.charCodeAt(0)).buffer,
       timeout,
     };
-    // For conditional UI, allowCredentials can be omitted.
+    // For conditional mediation, allowCredentials can be omitted.
     // For standard WebAuthn, it may or may not be present.
     // Only add the property if the array is not empty.
     if (allowCredentialsValue && allowCredentialsValue.length > 0) {
@@ -599,6 +620,25 @@ abstract class FRWebAuthn {
       },
     };
   }
+
+  private static createAbortController() {
+    window.PingWebAuthnAbortController?.abort();
+
+    const abortController = new AbortController();
+    window.PingWebAuthnAbortController = abortController;
+    return abortController;
+  }
+
+  private static extractMetadata(message: string): object | null {
+    const contextMatch = message.match(/^var scriptContext = (.*);*$/m);
+    const jsonString = contextMatch?.[1];
+
+    if (jsonString) {
+      return JSON.parse(jsonString);
+    }
+
+    return null;
+  }
 }
 
 export default FRWebAuthn;
@@ -608,4 +648,4 @@ export type {
   WebAuthnCallbacks,
   WebAuthnRegistrationMetadata,
 };
-export { WebAuthnOutcome, WebAuthnStepType };
+export { WebAuthnOutcome, WebAuthnOutcomeType, WebAuthnStepType };
