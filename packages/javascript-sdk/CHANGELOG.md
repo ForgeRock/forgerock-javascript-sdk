@@ -1,5 +1,22 @@
 # Changelog
 
+## 4.9.0
+
+### Minor Changes
+
+- [#571](https://github.com/ForgeRock/forgerock-javascript-sdk/pull/571) [`03135cf`](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/03135cf543e3f694d48e6b9e0b9116ccf42737d1) Thanks [@cameronwhitworthforgerock](https://github.com/cameronwhitworthforgerock)! - Added support for Conditional UI elements with WebAuthN
+
+- [#581](https://github.com/ForgeRock/forgerock-javascript-sdk/pull/581) [`1253482`](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/1253482a3c517ba470f4dd8c6e43b89d380d6944) Thanks [@SteinGabriel](https://github.com/SteinGabriel)! - fix(protect): update Protect callback with new Signals SDK config
+
+### Patch Changes
+
+- [#577](https://github.com/ForgeRock/forgerock-javascript-sdk/pull/577) [`1fb1e57`](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/1fb1e574a6583b00cecb909534e005da3b7d247e) Thanks [@thomas-schofield-fr](https://github.com/thomas-schofield-fr)! - WebAuthn improvements
+
+  - Fix parsing of WebAuthn scripts when `asScript` is true
+  - Improve handling when conditional mediation is not supported
+  - Enable re-invocation of WebAuthn requests
+  - Enable modification of options passed to navigator.credentials.get()
+
 ## 4.8.3
 
 ### Patch Changes
