@@ -469,7 +469,7 @@ abstract class FRWebAuthn {
     options: PublicKeyCredentialCreationOptions,
   ): Promise<PublicKeyCredential | null> {
     // Feature check before we attempt registering a device
-    if (this.isWebAuthnSupported()) {
+    if (!this.isWebAuthnSupported()) {
       const e = new Error('PublicKeyCredential not supported by this browser');
       e.name = WebAuthnOutcomeType.NotSupportedError;
       throw e;
@@ -534,7 +534,14 @@ abstract class FRWebAuthn {
     // Use the structured _allowCredentials if available, otherwise parse the string format
     let allowCredentialsValue: PublicKeyCredentialDescriptor[] | undefined;
     if (_allowCredentials && Array.isArray(_allowCredentials)) {
-      allowCredentialsValue = _allowCredentials;
+      // The incoming _allowCredentials entries have an `id` property of type `Array`, which is rejected by `navigator.credentials.get()`.
+      // Converting it to a TypedArray here to meet the spec (https://developer.mozilla.org/en-US/docs/Web/API/PublicKeyCredentialRequestOptions#id).
+      allowCredentialsValue = _allowCredentials.map((cred) => {
+        return {
+          ...cred,
+          id: new Int8Array(cred.id as unknown as number[]),
+        };
+      });
     } else {
       allowCredentialsValue = parseCredentials(allowCredentials || acceptableCredentials || '');
     }

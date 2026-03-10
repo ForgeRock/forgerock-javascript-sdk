@@ -210,4 +210,38 @@ describe('Test FRWebAuthn class with Conditional UI', () => {
       }),
     );
   });
+
+  it('should throw NotSupportedError if WebAuthn is not supported', async () => {
+    // Mock WebAuthn not supported
+    const spy = vi.spyOn(FRWebAuthn, 'isWebAuthnSupported').mockReturnValue(false);
+
+    await expect(FRWebAuthn.getRegistrationCredential({} as any)).rejects.toThrow(
+      'PublicKeyCredential not supported by this browser',
+    );
+
+    spy.mockRestore();
+  });
+
+  it('should correctly convert _allowCredentials id to Int8Array', () => {
+    const metadata: any = {
+      _action: 'webauthn_authentication',
+      challenge: 'JEisuqkVMhI490jM0/iEgrRz+j94OoGc7gdY4gYicSk=',
+      relyingPartyId: '',
+      _allowCredentials: [
+        {
+          type: 'public-key',
+          id: [1, 2, 3, 4],
+          transports: ['usb'],
+        },
+      ],
+      timeout: 60000,
+    };
+
+    const publicKey = FRWebAuthn.createAuthenticationPublicKey(metadata);
+
+    expect(publicKey.allowCredentials).toBeDefined();
+    expect(publicKey.allowCredentials![0].id).toBeInstanceOf(Int8Array);
+    const idArray = publicKey.allowCredentials![0].id as Int8Array;
+    expect(Array.from(idArray)).toEqual([1, 2, 3, 4]);
+  });
 });
