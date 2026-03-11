@@ -1,6 +1,6 @@
 /**
  *
- * Copyright (c) 2024 - 2025 Ping Identity Corporation. All right reserved.
+ * Copyright (c) 2024 - 2026 Ping Identity Corporation. All right reserved.
  *
  * This software may be modified and distributed under the terms
  * of the MIT license. See the LICENSE file for details.
@@ -32,6 +32,9 @@ export interface ProtectInitializeConfig {
   disableHub?: boolean;
   waitForWindowLoad?: boolean;
 }
+
+export type SignalsInitializationOptions = Record<string, unknown>;
+export type ProtectNodeInitializeConfig = ProtectInitializeConfig | SignalsInitializationOptions;
 
 export interface ProtectEvaluationConfig {
   _type: 'PingOneProtect';

@@ -13,6 +13,7 @@ import { CallbackType } from '../auth/enums';
 import type HiddenValueCallback from '../fr-auth/callbacks/hidden-value-callback';
 import type MetadataCallback from '../fr-auth/callbacks/metadata-callback';
 import type FRStep from '../fr-auth/fr-step';
+import { FRLogger } from '../util/logger';
 import { WebAuthnOutcome, WebAuthnOutcomeType, WebAuthnStepType } from './enums';
 import {
   arrayBufferToString,
@@ -30,6 +31,7 @@ import type {
 } from './interfaces';
 import type TextOutputCallback from '../fr-auth/callbacks/text-output-callback';
 import { parseWebAuthnAuthenticateText, parseWebAuthnRegisterText } from './script-parser';
+import { withTimeout } from '../util/timeout';
 
 // <clientdata>::<attestation>::<publickeyCredential>::<DeviceName>
 type OutcomeWithName<
@@ -44,6 +46,14 @@ type OutcomeWithName<
 type WebAuthnMetadata = WebAuthnAuthenticationMetadata | WebAuthnRegistrationMetadata;
 // Script-based WebAuthn
 type WebAuthnTextOutput = WebAuthnTextOutputRegistration;
+const TWO_SECOND = 2000;
+
+declare global {
+  interface Window {
+    PingWebAuthnAbortController: AbortController;
+  }
+}
+
 /**
  * Utility for integrating a web browser's WebAuthn API.
  *
@@ -58,6 +68,24 @@ type WebAuthnTextOutput = WebAuthnTextOutputRegistration;
  * } else if (stepType === WebAuthnStepType.Authentication) {
  *   // Authenticate with a registered device
  *   await FRWebAuthn.authenticate(step);
+ * }
+ * ```
+ *
+ * Conditional mediation (Autofill) Support:
+ *
+ * ```js
+ * // Check if browser supports conditional mediation
+ * const supportsConditionalUI = await FRWebAuthn.isConditionalUISupported();
+ *
+ * if (supportsConditionalUI) {
+ *   // The authenticate() method automatically handles conditional mediation
+ *   // when the server indicates support via conditionalWebAuthn: true
+ *   // in the metadata. No additional code changes needed.
+ *   await FRWebAuthn.authenticate(step);
+ *
+ *   // For conditional mediation to work in the browser, add autocomplete="webauthn"
+ *   // to your username input field:
+ *   // <input type="text" name="username" autocomplete="webauthn" />
  * }
  * ```
  */
@@ -95,34 +123,79 @@ abstract class FRWebAuthn {
   }
 
   /**
+   * Checks if the browser supports WebAuthn.
+   *
+   * @return boolean indicating if WebAuthn is available
+   */
+  public static isWebAuthnSupported(): boolean {
+    return !!window.PublicKeyCredential;
+  }
+
+  /**
+   * Checks if the browser supports conditional mediation (autofill) for WebAuthn.
+   *
+   * @return Promise<boolean> indicating if conditional mediation is available
+   */
+  public static async isConditionalMediationSupported(): Promise<boolean> {
+    if (!this.isWebAuthnSupported()) {
+      return false;
+    }
+
+    // Check if the browser supports conditional mediation
+    try {
+      return withTimeout(PublicKeyCredential.isConditionalMediationAvailable(), TWO_SECOND);
+    } catch {
+      FRLogger.warn('Conditional mediation check timed out');
+    }
+
+    return false;
+  }
+
+  /**
    * Populates the step with the necessary authentication outcome.
+   * Automatically handles conditional mediation if indicated by the server metadata.
    *
    * @param step The step that contains WebAuthn authentication data
+   * @param optionsTransformer Augments the derived options with custom behaviour
    * @return The populated step
    */
-  public static async authenticate(step: FRStep): Promise<FRStep> {
+  public static async authenticate(
+    step: FRStep,
+    optionsTransformer: (options: CredentialRequestOptions) => CredentialRequestOptions = (
+      options,
+    ) => options,
+  ): Promise<FRStep> {
     const { hiddenCallback, metadataCallback, textOutputCallback } = this.getCallbacks(step);
     if (hiddenCallback && (metadataCallback || textOutputCallback)) {
-      let outcome: ReturnType<typeof this.getAuthenticationOutcome>;
-      let credential: PublicKeyCredential | null = null;
+      const options: CredentialRequestOptions = {};
 
       try {
-        let publicKey: PublicKeyCredentialRequestOptions;
         if (metadataCallback) {
           const meta = metadataCallback.getOutputValue('data') as WebAuthnAuthenticationMetadata;
-          publicKey = this.createAuthenticationPublicKey(meta);
+          const mediation = meta.mediation as CredentialMediationRequirement;
 
-          credential = await this.getAuthenticationCredential(
-            publicKey as PublicKeyCredentialRequestOptions,
-          );
-          outcome = this.getAuthenticationOutcome(credential);
+          if (mediation === 'conditional') {
+            const isConditionalMediationSupported = await this.isConditionalMediationSupported();
+            if (!isConditionalMediationSupported) {
+              const e = new Error(
+                'Conditional mediation was requested, but is not supported by this browser.',
+              );
+              e.name = WebAuthnOutcomeType.NotSupportedError;
+              throw e;
+            }
+          }
+
+          options.publicKey = this.createAuthenticationPublicKey(meta);
+          options.mediation = mediation;
         } else if (textOutputCallback) {
-          publicKey = parseWebAuthnAuthenticateText(textOutputCallback.getMessage());
-
-          credential = await this.getAuthenticationCredential(
-            publicKey as PublicKeyCredentialRequestOptions,
-          );
-          outcome = this.getAuthenticationOutcome(credential);
+          const metadata = this.extractMetadata(textOutputCallback.getMessage());
+          if (metadata) {
+            options.publicKey = this.createAuthenticationPublicKey(
+              metadata as WebAuthnAuthenticationMetadata,
+            );
+          } else {
+            options.publicKey = parseWebAuthnAuthenticateText(textOutputCallback.getMessage());
+          }
         } else {
           throw new Error('No Credential found from Public Key');
         }
@@ -136,6 +209,12 @@ abstract class FRWebAuthn {
         hiddenCallback.setInputValue(`${WebAuthnOutcome.Error}::${error.name}:${error.message}`);
         throw error;
       }
+
+      const credential: PublicKeyCredential | null = await this.getAuthenticationCredential(
+        optionsTransformer(options),
+      );
+      const outcome: ReturnType<typeof this.getAuthenticationOutcome> =
+        this.getAuthenticationOutcome(credential);
 
       if (metadataCallback) {
         const meta = metadataCallback.getOutputValue('data') as WebAuthnAuthenticationMetadata;
@@ -186,7 +265,13 @@ abstract class FRWebAuthn {
           );
           outcome = this.getRegistrationOutcome(credential);
         } else if (textOutputCallback) {
-          publicKey = parseWebAuthnRegisterText(textOutputCallback.getMessage());
+          const metadata = this.extractMetadata(textOutputCallback.getMessage());
+
+          if (metadata) {
+            publicKey = this.createRegistrationPublicKey(metadata as WebAuthnRegistrationMetadata);
+          } else {
+            publicKey = parseWebAuthnRegisterText(textOutputCallback.getMessage());
+          }
           credential = await this.getRegistrationCredential(
             publicKey as PublicKeyCredentialCreationOptions,
           );
@@ -299,19 +384,23 @@ abstract class FRWebAuthn {
   /**
    * Retrieves the credential from the browser Web Authentication API.
    *
-   * @param options The public key options associated with the request
+   * @param options The options associated with the request
    * @return The credential
    */
   public static async getAuthenticationCredential(
-    options: PublicKeyCredentialRequestOptions,
+    options: CredentialRequestOptions,
   ): Promise<PublicKeyCredential | null> {
-    // Feature check before we attempt registering a device
-    if (!window.PublicKeyCredential) {
+    // Feature check before we attempt authenticating
+    if (!this.isWebAuthnSupported()) {
       const e = new Error('PublicKeyCredential not supported by this browser');
       e.name = WebAuthnOutcomeType.NotSupportedError;
       throw e;
     }
-    const credential = await navigator.credentials.get({ publicKey: options });
+
+    const credential = await navigator.credentials.get({
+      ...options,
+      signal: this.createAbortController().signal,
+    });
     return credential as PublicKeyCredential;
   }
 
@@ -380,7 +469,7 @@ abstract class FRWebAuthn {
     options: PublicKeyCredentialCreationOptions,
   ): Promise<PublicKeyCredential | null> {
     // Feature check before we attempt registering a device
-    if (!window.PublicKeyCredential) {
+    if (!this.isWebAuthnSupported()) {
       const e = new Error('PublicKeyCredential not supported by this browser');
       e.name = WebAuthnOutcomeType.NotSupportedError;
       throw e;
@@ -433,22 +522,58 @@ abstract class FRWebAuthn {
     const {
       acceptableCredentials,
       allowCredentials,
+      _allowCredentials,
       challenge,
       relyingPartyId,
+      _relyingPartyId,
       timeout,
       userVerification,
+      extensions,
     } = metadata;
-    const rpId = parseRelyingPartyId(relyingPartyId);
-    const allowCredentialsValue = parseCredentials(allowCredentials || acceptableCredentials || '');
 
-    return {
+    // Use the structured _allowCredentials if available, otherwise parse the string format
+    let allowCredentialsValue: PublicKeyCredentialDescriptor[] | undefined;
+    if (_allowCredentials && Array.isArray(_allowCredentials)) {
+      // The incoming _allowCredentials entries have an `id` property of type `Array`, which is rejected by `navigator.credentials.get()`.
+      // Converting it to a TypedArray here to meet the spec (https://developer.mozilla.org/en-US/docs/Web/API/PublicKeyCredentialRequestOptions#id).
+      allowCredentialsValue = _allowCredentials.map((cred) => {
+        return {
+          ...cred,
+          id: new Int8Array(cred.id as unknown as number[]),
+        };
+      });
+    } else {
+      allowCredentialsValue = parseCredentials(allowCredentials || acceptableCredentials || '');
+    }
+
+    // Use _relyingPartyId if available, otherwise parse the old format
+    const rpId = _relyingPartyId || parseRelyingPartyId(relyingPartyId);
+
+    const options: PublicKeyCredentialRequestOptions = {
       challenge: Uint8Array.from(atob(challenge), (c) => c.charCodeAt(0)).buffer,
       timeout,
-      // only add key-value pair if proper value is provided
-      ...(allowCredentialsValue && { allowCredentials: allowCredentialsValue }),
-      ...(userVerification && { userVerification }),
-      ...(rpId && { rpId }),
     };
+    // For conditional mediation, allowCredentials can be omitted.
+    // For standard WebAuthn, it may or may not be present.
+    // Only add the property if the array is not empty.
+    if (allowCredentialsValue && allowCredentialsValue.length > 0) {
+      options.allowCredentials = allowCredentialsValue;
+    }
+
+    // Add optional properties only if they have values
+    if (userVerification) {
+      options.userVerification = userVerification;
+    }
+
+    if (rpId) {
+      options.rpId = rpId;
+    }
+
+    if (extensions && Object.keys(extensions).length > 0) {
+      options.extensions = extensions;
+    }
+
+    return options;
   }
 
   /**
@@ -502,6 +627,25 @@ abstract class FRWebAuthn {
       },
     };
   }
+
+  private static createAbortController() {
+    window.PingWebAuthnAbortController?.abort();
+
+    const abortController = new AbortController();
+    window.PingWebAuthnAbortController = abortController;
+    return abortController;
+  }
+
+  private static extractMetadata(message: string): object | null {
+    const contextMatch = message.match(/^var scriptContext = (.*);*$/m);
+    const jsonString = contextMatch?.[1];
+
+    if (jsonString) {
+      return JSON.parse(jsonString);
+    }
+
+    return null;
+  }
 }
 
 export default FRWebAuthn;
@@ -511,4 +655,4 @@ export type {
   WebAuthnCallbacks,
   WebAuthnRegistrationMetadata,
 };
-export { WebAuthnOutcome, WebAuthnStepType };
+export { WebAuthnOutcome, WebAuthnOutcomeType, WebAuthnStepType };

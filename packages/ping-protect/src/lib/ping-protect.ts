@@ -1,6 +1,6 @@
 /**
  *
- * Copyright (c) 2024 - 2025 Ping Identity Corporation. All right reserved.
+ * Copyright (c) 2024 - 2026 Ping Identity Corporation. All right reserved.
  *
  * This software may be modified and distributed under the terms
  * of the MIT license. See the LICENSE file for details.
@@ -15,19 +15,26 @@ import {
   PingOneProtectEvaluationCallback,
   PingOneProtectInitializeCallback,
 } from '@forgerock/javascript-sdk';
-import { ProtectEvaluationConfig, ProtectInitializeConfig } from './ping-protect.types';
+import {
+  ProtectEvaluationConfig,
+  ProtectInitializeConfig,
+  ProtectNodeInitializeConfig,
+  SignalsInitializationOptions,
+} from './ping-protect.types';
 
 export interface Identifiers {
   [key: string]: string;
 }
 
-export type InitParams = Omit<ProtectInitializeConfig, '_type' | '_action'>;
+export type InitParams =
+  | Omit<ProtectInitializeConfig, '_type' | '_action'>
+  | SignalsInitializationOptions;
 
 // Add Signals SDK namespace to the window object
 declare global {
   interface Window {
     _pingOneSignals: {
-      init: (initParams?: ProtectInitializeConfig) => Promise<void>;
+      init: (initParams?: InitParams) => Promise<void>;
       getData: () => Promise<string>;
       pauseBehavioralData: () => void;
       resumeBehavioralData: () => void;
@@ -56,7 +63,7 @@ export abstract class PIProtect {
    * @param {InitParams} options - The init parameters
    * @returns {Promise<void>} - Returns a promise
    */
-  public static async start(options: ProtectInitializeConfig): Promise<void> {
+  public static async start(options: InitParams): Promise<void> {
     try {
       /*
        * Load the Ping Signals SDK
@@ -69,8 +76,8 @@ export abstract class PIProtect {
     }
     await window._pingOneSignals.init(options);
 
-    if (options.behavioralDataCollection === true) {
-      window._pingOneSignals.resumeBehavioralData();
+    if (options.behavioralDataCollection === true || options.behavioralDataCollection === 'true') {
+      PIProtect.resumeBehavioralData();
     }
   }
 
@@ -137,14 +144,14 @@ export abstract class PIProtect {
     }
   }
 
-  public static getNodeConfig(step: FRStep): ProtectInitializeConfig | undefined {
+  public static getNodeConfig(step: FRStep): ProtectNodeInitializeConfig | undefined {
     // Check for native callback first
     try {
       const nativeCallback = step.getCallbackOfType<PingOneProtectInitializeCallback>(
         CallbackType.PingOneProtectInitializeCallback,
       );
 
-      const config = nativeCallback?.getConfig() as ProtectInitializeConfig;
+      const config = nativeCallback?.getConfig() as ProtectNodeInitializeConfig;
       return config;
     } catch (err) {
       // Do nothing

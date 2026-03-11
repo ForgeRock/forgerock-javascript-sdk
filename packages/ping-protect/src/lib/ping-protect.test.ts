@@ -1,6 +1,6 @@
 /**
  *
- * Copyright (c) 2024 - 2025 Ping Identity Corporation. All right reserved.
+ * Copyright (c) 2024 - 2026 Ping Identity Corporation. All right reserved.
  *
  * This software may be modified and distributed under the terms
  * of the MIT license. See the LICENSE file for details.
@@ -40,6 +40,22 @@ describe('PIProtect', () => {
     };
     await PIProtect.start(config);
     expect(protectMock).toHaveBeenCalledWith(config);
+  });
+  it('should resume behavioralData when behavioralDataCollection is string true', async () => {
+    await PIProtect.start({ envId: '12345', behavioralDataCollection: false });
+    const resumeSpy = vi.spyOn(window._pingOneSignals, 'resumeBehavioralData');
+
+    await PIProtect.start({ envId: '12345', behavioralDataCollection: 'true' });
+
+    expect(resumeSpy).toHaveBeenCalledTimes(1);
+  });
+  it('should not resume behavioralData when behavioralDataCollection is string false', async () => {
+    await PIProtect.start({ envId: '12345', behavioralDataCollection: false });
+    const resumeSpy = vi.spyOn(window._pingOneSignals, 'resumeBehavioralData');
+
+    await PIProtect.start({ envId: '12345', behavioralDataCollection: 'false' });
+
+    expect(resumeSpy).not.toHaveBeenCalled();
   });
   it('should call pause behavioralData', () => {
     const protectMock = vi.spyOn(PIProtect, 'pauseBehavioralData');

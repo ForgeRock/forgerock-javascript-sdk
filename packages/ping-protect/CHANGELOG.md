@@ -1,5 +1,18 @@
 # Changelog
 
+## 4.7.0
+
+### Minor Changes
+
+- [#581](https://github.com/ForgeRock/forgerock-javascript-sdk/pull/581) [`1253482`](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/1253482a3c517ba470f4dd8c6e43b89d380d6944) Thanks [@SteinGabriel](https://github.com/SteinGabriel)! - fix(protect): update Protect callback with new Signals SDK config
+
+### Patch Changes
+
+- [#575](https://github.com/ForgeRock/forgerock-javascript-sdk/pull/575) [`8ccfef4`](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/8ccfef4532f219960f66e0d283cd6f8585a849f8) Thanks [@ryanbas21](https://github.com/ryanbas21)! - fixes the type of the options param in `PIProtect.start` so it better aligns with output from `PingOneProtectInitializeCallback.getConfig()` as defined in `javascript-sdk` (importantly it no longer expects `_type` and `_action` fields)
+
+- Updated dependencies [[`03135cf`](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/03135cf543e3f694d48e6b9e0b9116ccf42737d1), [`1fb1e57`](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/1fb1e574a6583b00cecb909534e005da3b7d247e), [`1253482`](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/1253482a3c517ba470f4dd8c6e43b89d380d6944)]:
+  - @forgerock/javascript-sdk@4.9.0
+
 ## 4.6.2
 
 ### Patch Changes
