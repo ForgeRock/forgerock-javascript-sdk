@@ -4,28 +4,40 @@ import test from 'node:test';
 import { hasInvalidPingCopyrightHeader, updateCopyrightYears } from './sync-header-years.mjs';
 
 test('updates stale range end year and keeps start year', () => {
-  const input = '/* Copyright 2020-2026 Ping Identity. All Rights Reserved */';
+  const input = '/* Copyright 2020 - 2026 Ping Identity. All Rights Reserved */';
   const actual = updateCopyrightYears(input, 2026);
-  assert.equal(actual, '/* Copyright 2020-2026 Ping Identity. All Rights Reserved */');
+  assert.equal(actual, '/* Copyright 2020 - 2026 Ping Identity. All Rights Reserved */');
 });
 
-test('updates stale single year to a range preserving start year', () => {
+test('normalizes separator on an already-current range', () => {
+  const input = '/* Copyright 2020 - 2026 Ping Identity. All Rights Reserved */';
+  const actual = updateCopyrightYears(input, 2026);
+  assert.equal(actual, '/* Copyright 2020 - 2026 Ping Identity. All Rights Reserved */');
+});
+
+test('expands stale single year to a range preserving start year', () => {
+  const input = '/* Copyright 2020 - 2026 Ping Identity. All Rights Reserved */';
+  const actual = updateCopyrightYears(input, 2026);
+  assert.equal(actual, '/* Copyright 2020 - 2026 Ping Identity. All Rights Reserved */');
+});
+
+test('does not change an already-current spaced range', () => {
   const input = '/* Copyright 2025 - 2026 Ping Identity. All Rights Reserved */';
   const actual = updateCopyrightYears(input, 2026);
-  assert.equal(actual, '/* Copyright 2025 - 2026 Ping Identity. All Rights Reserved */');
+  assert.equal(actual, input);
 });
 
 test('supports © and &copy; variants', () => {
   const input = [
-    '/* © Copyright 2020-2026 Ping Identity. */',
-    '<!-- &copy; Copyright 2020-2026 Ping Identity. -->',
+    '/* © Copyright 2020 - 2026 Ping Identity. */',
+    '<!-- &copy; Copyright 2020 - 2026 Ping Identity. -->',
   ].join('\n');
   const actual = updateCopyrightYears(input, 2026);
   assert.equal(
     actual,
     [
-      '/* © Copyright 2020-2026 Ping Identity. */',
-      '<!-- &copy; Copyright 2020-2026 Ping Identity. -->',
+      '/* © Copyright 2020 - 2026 Ping Identity. */',
+      '<!-- &copy; Copyright 2020 - 2026 Ping Identity. -->',
     ].join('\n'),
   );
 });
@@ -45,12 +57,12 @@ test('updates Ping Identity Corporation ranges with spaces and (c)', () => {
   );
 });
 
-test('updates Ping Identity Corporation stale single year with (c) to range', () => {
-  const input = '/* Copyright (c) 2025 - 2026 Ping Identity Corporation. All right reserved. */';
+test('expands stale single year with (c) to a range for Ping Identity Corporation', () => {
+  const input = '/* Copyright (c) 2023 - 2026 Ping Identity Corporation. All right reserved. */';
   const actual = updateCopyrightYears(input, 2026);
   assert.equal(
     actual,
-    '/* Copyright (c) 2025 - 2026 Ping Identity Corporation. All right reserved. */',
+    '/* Copyright (c) 2023 - 2026 Ping Identity Corporation. All right reserved. */',
   );
 });
 

@@ -101,13 +101,22 @@ export function updateCopyrightYears(content, year) {
     const start = Number.parseInt(startYear, 10);
     const end = endYear ? Number.parseInt(endYear, 10) : start;
 
-    if (Number.isNaN(start) || Number.isNaN(end) || end >= year) {
+    if (Number.isNaN(start) || Number.isNaN(end)) {
       return `${prefix}${startYear}${endYear ? `${separator}${endYear}` : ''}${suffix}`;
     }
+
+    const resolvedEnd = end >= year ? end : year;
+
     if (!endYear) {
-      return `${prefix}${startYear} - ${year}${suffix}`;
+      // Single year already current — no range needed
+      if (resolvedEnd === start) {
+        return `${prefix}${startYear}${suffix}`;
+      }
+      return `${prefix}${startYear} - ${resolvedEnd}${suffix}`;
     }
-    return `${prefix}${startYear}${separator}${year}${suffix}`;
+
+    // Always normalize separator to ' - ' and bump end year when stale
+    return `${prefix}${startYear} - ${resolvedEnd}${suffix}`;
   });
 }
 
