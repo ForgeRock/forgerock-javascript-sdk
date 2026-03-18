@@ -20,7 +20,7 @@ function run() {
   const changedFiles = [];
 
   for (const file of stagedFiles) {
-    if (!isFile(file)) {
+    if (!isFile(file) || isExcluded(file)) {
       continue;
     }
     const absolutePath = resolve(process.cwd(), file);
@@ -76,6 +76,18 @@ function getStagedFiles() {
   }
   return output.split('\n').filter(Boolean);
 }
+
+export function isExcluded(filePath) {
+  return EXCLUDE_PATTERNS.some((pattern) => pattern.test(filePath));
+}
+
+const EXCLUDE_PATTERNS = [
+  /\.test\.[cm]?[jt]sx?$/i,
+  /\.spec\.[cm]?[jt]sx?$/i,
+  /(^|[/\\])dist[/\\]/,
+  /(^|[/\\])vendor[/\\]/,
+  /(^|[/\\])node_modules[/\\]/,
+];
 
 function isFile(filePath) {
   try {
