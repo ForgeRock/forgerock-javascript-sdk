@@ -4,6 +4,15 @@ We use changesets to handle publishing of all packages in the repository.
 Please see the changesets repository for documentation on how to use
 changesets. Below will be a brief summary.
 
+## Table of Contents
+
+- [Adding a changeset](#adding-a-changeset)
+- [Versioning](#versioning)
+- [Adding a package to the repository](#adding-a-package-to-the-repository)
+- [Testing a package publish](#testing-a-package-publish)
+- [First time releasing a package](#first-time-releasing-a-package)
+- [Publishing a beta](#publishing-a-beta)
+
 ## Adding a changeset
 
 You can run `pnpm changeset` in order to add a changeset. You then
@@ -55,46 +64,72 @@ This is common for `e2e` related applications. We don't version or care
 about publishing them. You will see in the `.changesets/config.json` these are listed
 in the `ignore` field, and they will all have `private:true` in the package.json
 
-## First time releasing a package
-
-If your package is ready to be released, and has never been released before,
-(the package.json `name` field does not exist on `npm`), then it is critical that
-your `{packageRoot}/package.json` has the following:
-
-```
-"publishConfig": {
-  "access": true
-}
-```
-
-If your package does not contain this information, your package publishing **WILL**
-break the publish pipeline.
-
-This is because all packages in this repository are published with `npm provenance`.
-You can read about the requirements [here](https://docs.npmjs.com/generating-provenance-statements#prerequisites).
-
 ## Testing a package publish
 
 In order to test a package publish, you should use `verdaccio`.
 
 We provide verdaccio two ways:
 
-- `pnpm nx run local-registry`. This command will spawn a private npm registry.
-  It also _should_ update your local `.npmrc` file to point here.
+1. `pnpm nx run local-registry`. This command will spawn a private npm registry. It also _should_ update your local `.npmrc` file to point here.
 
-  You can then publish your package like so:
+   You can then publish your package like so:
 
-  ```bash
-    pnpm publish packages/{your_package} --dry-run --registry=http://localhost:4873
-  ```
+   ```bash
+     pnpm changeset version
+     pnpm publish packages/{your_package} --dry-run --no-git-checks --registry=http://localhost:4873
+   ```
 
-  Notes: - I am including the `dry-run` flag here so if you copy paste it,
-  you will "dry-run" the publish. - I also like to add the `registry` flag, as a secondary check to
-  make sure i publish to this registry. - The `-r` flag is necessary if your package requires other workspace packages
-  to be published. This command runs `publish` recursively via pnpm's
-  topological graph.
+   **Notes**:
 
-- Publishing to a hosted private registry: Please message @ryanbas21 on slack.
+   - The `changeset` command will version your packages before the test release. To version them as a beta add `--snapshot beta` to the changeset command
+   - I am including the `dry-run` flag here so if you copy paste it, you will "dry-run" the publish.
+   - I also like to add the `registry` flag, as a secondary check to make sure I publish to this registry.
+   - The `-r` flag is necessary if your package requires other workspace packages to be published. This command runs `publish` recursively via pnpm's topological graph. To publish all packages, include the `-r` flag and remove `packages/{yourpackage}` from the publish command.
+   - Include the `--no-git-checks` flag to ignore the changes made by the versioning command
+   - To test publish a beta, add `--tag beta`
+   - If you are publishing from a branch other than `main`, add `--publish-branch {branch-name}`
+
+2. Publishing to a hosted private registry: Please message `@ryan.basmajian` on Slack.
+
+## First time releasing a package
+
+If your package is ready to be released, and has never been released before, (the package.json `name` field does not exist on `npm`), then it is critical that the package be published manually as a beta first.
+
+First ensure that the `{packageRoot}/package.json` has the following:
+
+```json
+"publishConfig": {
+  "access": "public"
+}
+```
+
+When the package is officially ready for release, you should also delete the `private: true` from the `{projectRoot}/package.json`.
+
+Then publish the package to npm:
+
+```bash
+# Version packages for beta
+pnpm changeset version --snapshot beta
+# Check that the beta tag is correct in a dry run
+pnpm publish <package-name> --tag beta --no-git-checks --access public --dry-run
+# Publish beta for the first time
+pnpm publish <package-name> --tag beta --no-git-checks --access public
+```
+
+If you do not do this, your package publishing **WILL** break the publish pipeline. Publishing manually first prevents the package being published as the default private.
+
+Next set up provenance and trusted publishing. With trusted publishing enabled, provenance attestations will be generated automatically. Learn more [here](https://docs.npmjs.com/trusted-publishers#automatic-provenance-generation).
+
+To set up trusted publishing, follow the instructions [here](https://docs.npmjs.com/trusted-publishers#for-github-actions). Configure the following fields:
+
+- **Publisher**: GitHub Actions
+- **Organization**: ForgeRock
+- **Repository**: ping-javascript-sdk
+- **Workflow filename**: publish.yml
+
+Additionally, set the publishing access to `Require two-factor authentication and disallow tokens`.
+
+You should now be able to publish with provenance from GitHub Actions. To learn how to publish a beta from GitHub Actions see the next section [Publishing a beta](#publishing-a-beta) below.
 
 ## Publishing a beta
 
