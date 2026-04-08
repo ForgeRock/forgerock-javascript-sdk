@@ -1,7 +1,39 @@
 {
   "root": true,
-  "plugins": ["@typescript-eslint", "@nx"],
+  "plugins": ["@typescript-eslint", "@nx", "header"],
   "overrides": [
+    {
+      "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
+      "excludedFiles": [
+        "**/*.spec.ts",
+        "**/*.spec.tsx",
+        "**/*.test.ts",
+        "**/*.test.tsx",
+        "**/*.spec.js",
+        "**/*.spec.jsx",
+        "**/*.test.js",
+        "**/*.test.jsx",
+        "**/*.test.mjs",
+        "**/*.spec.mjs",
+        "**/vite*.config.ts",
+        "**/vitest.setup.ts",
+        "**/playwright.config.ts",
+        "**/_polyfills/**",
+        "tools/**"
+      ],
+      "rules": {
+        "header/header": [
+          "warn",
+          "block",
+          [
+            {
+              "pattern": "[\\s\\S]*Copyright[\\s\\S]*Ping Identity[\\s\\S]*",
+              "template": "\n * Copyright (c) <current_year> Ping Identity Corporation. All rights reserved.\n * This software may be modified and distributed under the terms\n * of the MIT license. See the LICENSE file for details.\n "
+            }
+          ]
+        ]
+      }
+    },
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
       "rules": {

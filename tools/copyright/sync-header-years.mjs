@@ -42,6 +42,21 @@ function run() {
     process.exit(1);
   }
 
+  const missingHeaderFiles = [];
+  for (const { file, original } of stagedFileData) {
+    if (SOURCE_FILE_PATTERN.test(file) && !hasPingCopyrightHeader(original)) {
+      missingHeaderFiles.push(file);
+    }
+  }
+
+  if (missingHeaderFiles.length > 0) {
+    console.error('Missing Ping copyright header in staged files:');
+    for (const file of missingHeaderFiles) {
+      console.error(`- ${file}`);
+    }
+    process.exit(1);
+  }
+
   for (const { file, absolutePath, original } of stagedFileData) {
     const updated = updateCopyrightYears(original, currentYear);
     if (updated === original) {
@@ -87,6 +102,11 @@ const EXCLUDE_PATTERNS = [
   /(^|[/\\])dist[/\\]/,
   /(^|[/\\])vendor[/\\]/,
   /(^|[/\\])node_modules[/\\]/,
+  /(^|[/\\])tools[/\\]/,
+  /(^|[/\\])_polyfills[/\\]/,
+  /(^|[/\\])vite[^/\\]*\.config\.[cm]?[jt]sx?$/i,
+  /(^|[/\\])vitest\.setup\.[cm]?[jt]sx?$/i,
+  /(^|[/\\])playwright\.config\.[cm]?[jt]sx?$/i,
 ];
 
 function isFile(filePath) {
@@ -147,6 +167,18 @@ export function hasInvalidPingCopyrightHeader(content) {
   }
   return false;
 }
+
+export function hasPingCopyrightHeader(content) {
+  const lines = content.split(/\r?\n/);
+  for (const line of lines) {
+    if (MAYBE_PING_COPYRIGHT_LINE_REGEX.test(line) && HEADER_COMMENT_LINE_REGEX.test(line)) {
+      return true;
+    }
+  }
+  return false;
+}
+
+const SOURCE_FILE_PATTERN = /\.[cm]?[jt]sx?$/i;
 
 const MAYBE_PING_COPYRIGHT_LINE_REGEX =
   /(?:©\s*|&copy;\s*)?Copyright(?:\s*\(c\))?.*Ping Identity(?: Corporation)?/i;
