@@ -1,13 +1,13 @@
-/* eslint-disable no-useless-escape */
 /*
  * @forgerock/javascript-sdk
  *
  * script-parser.ts
  *
- * Copyright (c) 2020 - 2025 Ping Identity Corporation. All rights reserved.
+ * Copyright (c) 2020 - 2026 Ping Identity Corporation. All rights reserved.
  * This software may be modified and distributed under the terms
  * of the MIT license. See the LICENSE file for details.
  */
+/* eslint-disable no-useless-escape */
 
 import { WebAuthnOutcomeType } from './enums';
 import { ensureArray, getIndexOne, parsePubKeyArray, parseCredentials } from './helpers';
