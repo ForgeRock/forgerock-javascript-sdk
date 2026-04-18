@@ -1,7 +1,7 @@
 [![npm (scoped)](https://img.shields.io/npm/v/@forgerock/javascript-sdk?color=%23f46200&label=Version&style=flat-square)](CHANGELOG.md)
 [![ForgeRock CI](https://github.com/ForgeRock/forgerock-javascript-sdk/actions/workflows/ci.yml/badge.svg)](https://github.com/ForgeRock/forgerock-javascript-sdk/actions/workflows/ci.yml)
 
-[![Ping Identity](https://www.pingidentity.com/content/dam/picr/nav/Ping-Logo-2.svg)](https://github.com/ForgeRock/forgerock-android-sdk)
+[![Ping Identity](https://www.pingidentity.com/content/dam/picr/nav/Ping-Logo-2.svg)](https://github.com/ForgeRock/forgerock-javascript-sdk)
 
 > [!IMPORTANT] > **In alignment with our maintenance policy, the **ForgeRock SDKs v4.x** will enter maintenance mode on April 15, 2026, and reach end-of-support on April 15, 2028.**
 >
