@@ -3,7 +3,8 @@
 
 [![Ping Identity](https://www.pingidentity.com/content/dam/picr/nav/Ping-Logo-2.svg)](https://github.com/ForgeRock/forgerock-javascript-sdk)
 
-> [!IMPORTANT] > **In alignment with our maintenance policy, the **ForgeRock SDKs v4.x** will enter maintenance mode on April 15, 2026, and reach end-of-support on April 15, 2028.**
+> [!IMPORTANT] 
+> **In alignment with our maintenance policy, the **ForgeRock SDKs v4.x** will enter maintenance mode on April 15, 2026, and reach end-of-support on April 15, 2028.**
 >
 > **Existing applications that use ForgeRock SDKs v4.x will continue to function as intended. Between April 15, 2026, and end-of-support on April 15, 2028, the ForgeRock SDKs v4.x will only receive critical bug fixes and security updates. The SDK will not be updated to support new PingAM, Ping AIC, or PingOne services, new service features, or changes to existing services.**
 >
@@ -52,7 +53,7 @@ Please see the [Contributing](./CONTRIBUTING.md) file linked here.
 
 ## Samples
 
-ForgeRock provides these samples to help demonstrate SDK functionality/implementation. They are provided "as is" and are not official products of Ping Identity Corporation and are not officially supported.
+Ping provides these samples to help demonstrate SDK functionality/implementation. They are provided "as is" and are not official products of Ping Identity Corporation and are not officially supported.
 
 To try out the Ping SDK for JavaScript please look at one of our samples:
 
@@ -66,7 +67,7 @@ To try out the Ping SDK for JavaScript please look at one of our samples:
 
 <!------------------------------------------------------------------------------------------------------------------------------------>
 
-<!-- DOCS - Link off to the AM-centric documentation at sdks.forgerock.com. -->
+<!-- DOCS -->
 
 ## Documentation
 
