@@ -1,12 +1,13 @@
 [![npm (scoped)](https://img.shields.io/npm/v/@forgerock/javascript-sdk?color=%23f46200&label=Version&style=flat-square)](CHANGELOG.md)
-[![ForgeRock CI](https://github.com/ForgeRock/forgerock-javascript-sdk/actions/workflows/ci.yml/badge.svg)](https://github.com/ForgeRock/forgerock-javascript-sdk/actions/workflows/ci.yml)
+[![Ping Identity CI](https://github.com/ForgeRock/forgerock-javascript-sdk/actions/workflows/ci.yml/badge.svg)](https://github.com/ForgeRock/forgerock-javascript-sdk/actions/workflows/ci.yml)
 
 [![Ping Identity](https://www.pingidentity.com/content/dam/picr/nav/Ping-Logo-2.svg)](https://github.com/ForgeRock/forgerock-javascript-sdk)
 
-> [!IMPORTANT] 
-> **In alignment with our maintenance policy, the **ForgeRock SDKs v4.x** will enter maintenance mode on April 15, 2026, and reach end-of-support on April 15, 2028.**
+> [!IMPORTANT]
 >
-> **Existing applications that use ForgeRock SDKs v4.x will continue to function as intended. Between April 15, 2026, and end-of-support on April 15, 2028, the ForgeRock SDKs v4.x will only receive critical bug fixes and security updates. The SDK will not be updated to support new PingAM, Ping AIC, or PingOne services, new service features, or changes to existing services.**
+> **In alignment with our maintenance policy, the Ping Identity SDKs v4.x will enter maintenance mode on April 15, 2026, and reach end-of-support on April 15, 2028.**
+>
+> **Existing applications that use Ping Identity SDKs v4.x will continue to function as intended. Between April 15, 2026, and end-of-support on April 15, 2028, the Ping Identity SDKs v4.x will only receive critical bug fixes and security updates. The SDK will not be updated to support new PingAM, Ping AIC, or PingOne services, new service features, or changes to existing services.**
 >
 > **We recommend that you migrate to [Ping Orchestration SDK v2.x](https://github.com/ForgeRock/ping-javascript-sdk). The new SDK provides improved features, enhanced performance, and continued support from Ping. By adopting the latest version of the SDK, developers can ensure the security, compatibility, and stability of their solutions. Migration guides are available in the new SDK repository.**
 
@@ -87,7 +88,7 @@ If you encounter any issues, be sure to check our **[Troubleshooting](https://su
 
 Support tickets can be raised whenever you need our assistance; here are some examples of when it is appropriate to open a ticket (but not limited to):
 
-- Suspected bugs or problems with ForgeRock software.
+- Suspected bugs or problems with Ping Identity software.
 - Requests for assistance - please look at the **[Documentation](https://docs.pingidentity.com/sdks)** and **[Knowledge Base](https://support.pingidentity.com/s/knowledge-base)** first.
 
 You can raise a ticket using the **[Ping Identity Support Portal](https://support.pingidentity.com/s/)** that provides one stop access to support services.
