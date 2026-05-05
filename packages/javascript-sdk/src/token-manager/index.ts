@@ -128,7 +128,7 @@ abstract class TokenManager {
      * and return acquired tokens
      */
     if (options?.query?.code && options?.query?.state) {
-      const { state, verifier } = getStoredAuthUrlValues(clientId, prefix);
+      const { state, verifier } = getStoredAuthUrlValues(clientId, prefix) ?? {};
 
       if (state === undefined || verifier === undefined) {
         throw new Error(

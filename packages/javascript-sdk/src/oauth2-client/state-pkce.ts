@@ -46,13 +46,14 @@ export function generateAndStoreAuthUrlValues(options: GenerateAndStoreAuthUrlVa
 
 /**
  * @function getStoredAuthUrlValues - Retrieve stored authorization options from sessionStorage
- * @param { string } storageKey - Key to retrieve stored values from sessionStorage
- * @returns { GetAuthorizationUrlOptions }
+ * @param { string } clientId - Client ID
+ * @param { string } [prefix] - Prefix for storage key
+ * @returns { GetAuthorizationUrlOptions | null }
  */
 export function getStoredAuthUrlValues(
   clientId: string,
   prefix?: string,
-): GetAuthorizationUrlOptions {
+): GetAuthorizationUrlOptions | null {
   const storageKey = getStorageKey(clientId, prefix);
   const storedString = sessionStorage.getItem(storageKey);
   sessionStorage.removeItem(storageKey);
