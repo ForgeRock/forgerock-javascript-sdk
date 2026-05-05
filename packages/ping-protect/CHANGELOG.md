@@ -1,5 +1,12 @@
 # Changelog
 
+## 4.7.1
+
+### Patch Changes
+
+- Updated dependencies [[`d14d301`](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/d14d301349bb08040363be5dafc01e100fb5862d)]:
+  - @forgerock/javascript-sdk@4.9.1
+
 ## 4.7.0
 
 ### Minor Changes
