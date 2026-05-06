@@ -199,6 +199,26 @@ abstract class FRWebAuthn {
         } else {
           throw new Error('No Credential found from Public Key');
         }
+        const credential: PublicKeyCredential | null = await this.getAuthenticationCredential(
+          optionsTransformer(options),
+        );
+        const outcome: ReturnType<typeof this.getAuthenticationOutcome> =
+          this.getAuthenticationOutcome(credential);
+
+        if (metadataCallback) {
+          const meta = metadataCallback.getOutputValue('data') as WebAuthnAuthenticationMetadata;
+          if (meta?.supportsJsonResponse && credential && 'authenticatorAttachment' in credential) {
+            hiddenCallback.setInputValue(
+              JSON.stringify({
+                authenticatorAttachment: credential.authenticatorAttachment,
+                legacyData: outcome,
+              }),
+            );
+            return step;
+          }
+        }
+        hiddenCallback.setInputValue(outcome);
+        return step;
       } catch (error) {
         if (!(error instanceof Error)) throw error;
         // NotSupportedError is a special case
@@ -209,27 +229,6 @@ abstract class FRWebAuthn {
         hiddenCallback.setInputValue(`${WebAuthnOutcome.Error}::${error.name}:${error.message}`);
         throw error;
       }
-
-      const credential: PublicKeyCredential | null = await this.getAuthenticationCredential(
-        optionsTransformer(options),
-      );
-      const outcome: ReturnType<typeof this.getAuthenticationOutcome> =
-        this.getAuthenticationOutcome(credential);
-
-      if (metadataCallback) {
-        const meta = metadataCallback.getOutputValue('data') as WebAuthnAuthenticationMetadata;
-        if (meta?.supportsJsonResponse && credential && 'authenticatorAttachment' in credential) {
-          hiddenCallback.setInputValue(
-            JSON.stringify({
-              authenticatorAttachment: credential.authenticatorAttachment,
-              legacyData: outcome,
-            }),
-          );
-          return step;
-        }
-      }
-      hiddenCallback.setInputValue(outcome);
-      return step;
     } else {
       const e = new Error('Incorrect callbacks for WebAuthn authentication');
       e.name = WebAuthnOutcomeType.DataError;

@@ -1,4 +1,4 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-npx lint-staged && npx nx affected:lint && npx nx affected:build 
+node tools/copyright/sync-header-years.mjs && npx lint-staged && npx nx affected:lint && npx nx affected:build

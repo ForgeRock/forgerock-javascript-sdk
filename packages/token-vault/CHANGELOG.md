@@ -1,5 +1,12 @@
 ### [4.2.0] - 2023-09-11
 
+## 4.2.2
+
+### Patch Changes
+
+- Updated dependencies [[`d14d301`](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/d14d301349bb08040363be5dafc01e100fb5862d)]:
+  - @forgerock/javascript-sdk@4.9.1
+
 ## 4.2.1
 
 ### Patch Changes

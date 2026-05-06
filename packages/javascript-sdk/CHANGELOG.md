@@ -1,5 +1,11 @@
 # Changelog
 
+## 4.9.1
+
+### Patch Changes
+
+- [#587](https://github.com/ForgeRock/forgerock-javascript-sdk/pull/587) [`d14d301`](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/d14d301349bb08040363be5dafc01e100fb5862d) Thanks [@ForgeRockEmma](https://github.com/ForgeRockEmma)! - fix: move getAuthenticationCredential back inside try/catch so that WebAuthn cancellation errors (e.g. NotAllowedError) are written to the HiddenValueCallback before re-throwing
+
 ## 4.9.0
 
 ### Minor Changes

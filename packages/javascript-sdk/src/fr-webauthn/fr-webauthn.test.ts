@@ -8,7 +8,7 @@
  * of the MIT license. See the LICENSE file for details.
  */
 
-import { WebAuthnStepType } from './enums';
+import { WebAuthnOutcome, WebAuthnStepType } from './enums';
 import FRWebAuthn from './index';
 import {
   webAuthnRegJSCallback653,
@@ -23,6 +23,7 @@ import {
   webAuthnAuthMetaCallback70StoredUsername,
   webAuthnAuthConditionalMetaCallback,
 } from './fr-webauthn.mock.data';
+import { CallbackType } from '../auth/enums';
 import FRStep from '../fr-auth/fr-step';
 import Config from '../config';
 
@@ -243,5 +244,64 @@ describe('Test FRWebAuthn class with Conditional UI', () => {
     expect(publicKey.allowCredentials![0].id).toBeInstanceOf(Int8Array);
     const idArray = publicKey.allowCredentials![0].id as Int8Array;
     expect(Array.from(idArray)).toEqual([1, 2, 3, 4]);
+  });
+});
+
+describe('Test FRWebAuthn class with cancellation error handling', () => {
+  beforeEach(() => {
+    Object.defineProperty(global.navigator, 'credentials', {
+      value: {
+        get: vi.fn(),
+        create: vi.fn(),
+      },
+      writable: true,
+    });
+    Object.defineProperty(window, 'PublicKeyCredential', {
+      value: {
+        // Mocked as supported so conditional mediation checks pass through to the credential call
+        isConditionalMediationAvailable: vi.fn().mockResolvedValue(true),
+      },
+      writable: true,
+    });
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  it('should write NotAllowedError to HiddenValueCallback when user cancels conditional authentication', async () => {
+    const cancelError = new Error('The operation either timed out or was not allowed.');
+    cancelError.name = 'NotAllowedError';
+    vi.spyOn(navigator.credentials, 'get').mockRejectedValue(cancelError);
+
+    const step = new FRStep(webAuthnAuthConditionalMetaCallback as any);
+
+    await expect(FRWebAuthn.authenticate(step)).rejects.toMatchObject({
+      name: 'NotAllowedError',
+    });
+
+    const hiddenCallback = step.getCallbacksOfType(CallbackType.HiddenValueCallback)[0];
+    expect(hiddenCallback).toBeDefined();
+    expect(hiddenCallback.getInputValue()).toBe(
+      `${WebAuthnOutcome.Error}::NotAllowedError:The operation either timed out or was not allowed.`,
+    );
+  });
+
+  it('should write NotAllowedError to HiddenValueCallback when user cancels standard authentication', async () => {
+    const cancelError = new Error('The operation either timed out or was not allowed.');
+    cancelError.name = 'NotAllowedError';
+    vi.spyOn(navigator.credentials, 'get').mockRejectedValue(cancelError);
+
+    const step = new FRStep(webAuthnAuthMetaCallback70 as any);
+
+    await expect(FRWebAuthn.authenticate(step)).rejects.toMatchObject({
+      name: 'NotAllowedError',
+    });
+
+    const hiddenCallback = step.getCallbacksOfType(CallbackType.HiddenValueCallback)[0];
+    expect(hiddenCallback).toBeDefined();
+    expect(hiddenCallback.getInputValue()).toBe(
+      `${WebAuthnOutcome.Error}::NotAllowedError:The operation either timed out or was not allowed.`,
+    );
   });
 });
