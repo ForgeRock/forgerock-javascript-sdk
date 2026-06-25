@@ -56,7 +56,7 @@ To try out the Ping SDK for JavaScript, perform these steps:
 
    See [Server configuration](https://docs.pingidentity.com/sdks/latest/sdks/tutorials/javascript/00_before-you-begin.html#server_configuration) in the Documentation.
 
-2. Clone this repo:
+2. Clone the sample apps repo:
 
    ```
    git clone https://github.com/ForgeRock/sdk-sample-apps.git
@@ -68,7 +68,7 @@ To try out the Ping SDK for JavaScript, perform these steps:
    npm install
    ```
 
-4. Open `javascript/embedded-login/.env.example` and edit the configuration values to match your server.
+4. Open `archived/javascript/embedded-login/.env.example` and edit the configuration values to match your server.
 
 5. Save the file as `.env` in the same folder.
 
