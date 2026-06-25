@@ -53,6 +53,9 @@ samples/*/users
 !samples/angular-todo/*/todos
 !samples/reactjs-todo/*/todos
 
+# Personal AI instructions (local only — not for commit)
+CLAUDE.local.md
+
 # Environment files
 .env
 nx-cloud.env
