@@ -21,9 +21,9 @@ runs:
         cache: 'pnpm' # package manager for caching
         registry-url: 'https://registry.npmjs.org'
 
-    # Update npm to latest for provenance
+    # Update npm to latest release compatible with our pinned Node version, for provenance
     - name: Update npm
-      run: npm install -g npm@latest
+      run: npm install -g npm@10
       shell: bash
 
     - name: Install dependencies from lockfile
