@@ -18,7 +18,7 @@ jobs:
       - uses: actions/setup-node@v4
         id: cache
         with:
-          node-version: '20.10.0'
+          node-version-file: '.node-version'
           cache: 'pnpm'
 
       - run: pnpm install --frozen-lockfile

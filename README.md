@@ -1,19 +1,15 @@
 [![npm (scoped)](https://img.shields.io/npm/v/@forgerock/javascript-sdk?color=%23f46200&label=Version&style=flat-square)](CHANGELOG.md)
-[![ForgeRock CI](https://github.com/ForgeRock/forgerock-javascript-sdk/actions/workflows/ci.yml/badge.svg)](https://github.com/ForgeRock/forgerock-javascript-sdk/actions/workflows/ci.yml)
+[![Ping Identity CI](https://github.com/ForgeRock/forgerock-javascript-sdk/actions/workflows/ci.yml/badge.svg)](https://github.com/ForgeRock/forgerock-javascript-sdk/actions/workflows/ci.yml)
 
-<p align="center">
-  <a href="https://github.com/ForgeRock">
-    <img src="https://cdn-docs.pingidentity.com/navbar/ping-logo-horizontal.svg" alt="Logo">
-  </a>
-  <h2 align="center">Ping SDK for JavaScript</h2>
-  <p align="center">
-    <a href="https://github.com/ForgeRock/forgerock-javascript-sdk/blob/master/CHANGELOG.md">Change Log</a>
-    ·
-    <a href="#support">Support</a>
-    ·
-    <a href="#documentation" target="_blank">Docs</a>
-  </p>
-<hr/></p>
+[![Ping Identity](https://www.pingidentity.com/content/dam/picr/nav/Ping-Logo-2.svg)](https://github.com/ForgeRock/forgerock-javascript-sdk)
+
+> [!IMPORTANT]
+>
+> **In alignment with our maintenance policy, the Ping Identity SDKs v4.x will enter maintenance mode on April 15, 2026, and reach end-of-support on April 15, 2028.**
+>
+> **Existing applications that use Ping Identity SDKs v4.x will continue to function as intended. Between April 15, 2026, and end-of-support on April 15, 2028, the Ping Identity SDKs v4.x will only receive critical bug fixes and security updates. The SDK will not be updated to support new PingAM, Ping AIC, or PingOne services, new service features, or changes to existing services.**
+>
+> **We recommend that you migrate to [Ping Orchestration SDK v2.x](https://github.com/ForgeRock/ping-javascript-sdk). The new SDK provides improved features, enhanced performance, and continued support from Ping. By adopting the latest version of the SDK, developers can ensure the security, compatibility, and stability of their solutions. Migration guides are available in the new SDK repository.**
 
 The Ping SDK for JavaScript enables you to quickly integrate Ping products into your JavaScript apps.
 
@@ -25,7 +21,7 @@ Use the SDKs to leverage _[Intelligent Access](https://www.pingidentity.com/en/p
 
 ## Requirements
 
-- ForgeRock Identity Platform
+- Ping Identity Platform
 
   - Ping Advanced Identity Cloud
   - PingAM 6.5.2+
@@ -58,7 +54,7 @@ Please see the [Contributing](./CONTRIBUTING.md) file linked here.
 
 ## Samples
 
-ForgeRock provides these samples to help demonstrate SDK functionality/implementation. They are provided "as is" and are not official products of Ping Identity Corporation and are not officially supported.
+Ping provides these samples to help demonstrate SDK functionality/implementation. They are provided "as is" and are not official products of Ping Identity Corporation and are not officially supported.
 
 To try out the Ping SDK for JavaScript please look at one of our samples:
 
@@ -72,7 +68,7 @@ To try out the Ping SDK for JavaScript please look at one of our samples:
 
 <!------------------------------------------------------------------------------------------------------------------------------------>
 
-<!-- DOCS - Link off to the AM-centric documentation at sdks.forgerock.com. -->
+<!-- DOCS -->
 
 ## Documentation
 
@@ -92,7 +88,7 @@ If you encounter any issues, be sure to check our **[Troubleshooting](https://su
 
 Support tickets can be raised whenever you need our assistance; here are some examples of when it is appropriate to open a ticket (but not limited to):
 
-- Suspected bugs or problems with ForgeRock software.
+- Suspected bugs or problems with Ping Identity software.
 - Requests for assistance - please look at the **[Documentation](https://docs.pingidentity.com/sdks)** and **[Knowledge Base](https://support.pingidentity.com/s/knowledge-base)** first.
 
 You can raise a ticket using the **[Ping Identity Support Portal](https://support.pingidentity.com/s/)** that provides one stop access to support services.
@@ -126,4 +122,4 @@ This project is licensed under the MIT License - see the [LICENSE](./packages/ja
 
 ---
 
-© Copyright 2020-2025 Ping Identity. All Rights Reserved
+© Copyright 2020 - 2026 Ping Identity. All Rights Reserved.
