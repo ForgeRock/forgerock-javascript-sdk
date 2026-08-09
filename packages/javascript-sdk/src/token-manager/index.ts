@@ -98,8 +98,8 @@ abstract class TokenManager {
     const tokens = await TokenStorage.get();
 
     /**
-     * If tokens are stored, no option for `forceRenew` or `query` object with `code`, and do not expire within the configured threshold,
-     * immediately return the stored tokens
+     * If tokens are stored, no option for `forceRenew` or `query` object with `code`,
+     * and do not expire within the configured threshold, immediately return the stored tokens
      */
     if (
       tokens &&
@@ -111,8 +111,9 @@ abstract class TokenManager {
     }
 
     /**
-     * If we are still here because of forceRenew or we have an authorization code, or the tokens expire within the configured threshold,
-     * revoke and delete existing tokens to prepare for the new ones
+     * If we are still here because of forceRenew or we have an authorization code,
+     * or the tokens expire within the configured threshold, revoke and delete existing
+     * tokens to prepare for the new ones
      */
     if (tokens) {
       try {

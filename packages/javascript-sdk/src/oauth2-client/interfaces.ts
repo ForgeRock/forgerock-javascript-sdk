@@ -18,6 +18,7 @@ import type { ResponseType } from './enums';
 interface OAuth2Tokens {
   accessToken: string;
   idToken?: string;
+  rawResponse: unknown;
   refreshToken?: string;
   tokenExpiry?: number;
 }

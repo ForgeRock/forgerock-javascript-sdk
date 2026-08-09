@@ -16,9 +16,21 @@ test.describe('Test Transaction Authorization flow using JSON response', () => {
     const { messageArray } = await setupAndGo(page, browserName, 'authz-txn-basic-json/');
 
     // Test assertions
-    expect(messageArray.includes('IG resource requires additional authorization')).toBe(true);
-    expect(messageArray.includes('Request to IG resource successfully responded')).toBe(true);
-    expect(messageArray.includes('Starting authentication with composite advice')).toBe(true);
-    expect(messageArray.includes('Continuing authentication with composite advice')).toBe(true);
+    expect(
+      messageArray.includes('IG resource requires additional authorization'),
+      'add. auth required',
+    ).toBe(true);
+    expect(
+      messageArray.includes('Request to IG resource successfully responded'),
+      'successful response',
+    ).toBe(true);
+    expect(
+      messageArray.includes('Starting authentication with composite advice'),
+      'start auth with advice',
+    ).toBe(true);
+    expect(
+      messageArray.includes('Continuing authentication with composite advice'),
+      'continue with advice',
+    ).toBe(true);
   });
 });

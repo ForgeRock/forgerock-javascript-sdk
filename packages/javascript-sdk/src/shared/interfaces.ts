@@ -15,6 +15,7 @@ interface StringDict<T> {
 interface Tokens {
   accessToken: string;
   idToken?: string;
+  rawResponse: unknown;
   refreshToken?: string;
   tokenExpiry?: number;
 }
