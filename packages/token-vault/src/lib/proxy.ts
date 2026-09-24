@@ -1,6 +1,6 @@
 /**
  *
- * Copyright (c) 2023 - 2025 Ping Identity Corporation. All right reserved.
+ * Copyright (c) 2023 - 2026 Ping Identity Corporation. All right reserved.
  *
  * This software may be modified and distributed under the terms
  * of the MIT license. See the LICENSE file for details.
@@ -8,10 +8,13 @@
  **/
 
 import {
+  buildTokenBody,
   cloneResponse,
   createErrorResponse,
   extractOrigins,
   generateAmUrls,
+  maskTokenValues,
+  urlMatchesAmEndpoint,
 } from './network/index.js';
 import { EventsConfig, ProxyConfig, ServerTokens } from './types/index.js';
 import {
@@ -230,7 +233,7 @@ export function proxy(config: ProxyConfig) {
     /** ****************************************************
      * ACCESS TOKEN ENDPOINT
      */
-    if (request.url?.includes('access_token')) {
+    if (urlMatchesAmEndpoint(requestUrl, amUrlObj.accessToken)) {
       let response;
       try {
         response = await fetch(request.url, {
@@ -246,18 +249,8 @@ export function proxy(config: ProxyConfig) {
       }
 
       const clonedResponse = await cloneResponse(response);
-      // Redact configured tokens from response body
-      if (clonedResponse.body) {
-        const body = clonedResponse.body as ServerTokens;
-        clonedResponse.body = redactedTokens.reduce<ServerTokens>((acc, token) => {
-          if (body[token]) {
-            acc[token] = 'REDACTED';
-          } else {
-            acc[token] = body[token];
-          }
-          return acc;
-        }, {} as ServerTokens);
-      }
+      // Rebuild the body from the redact list, dropping unlisted keys
+      clonedResponse.body = buildTokenBody(clonedResponse.body, redactedTokens);
 
       // Store tokens in local storage
       storeTokens(response, clientId);
@@ -280,7 +273,7 @@ export function proxy(config: ProxyConfig) {
      * TOKEN REVOCATION ENDPOINT
      * Requires the token to be sent in the body
      */
-    if (request.url?.includes('token/revoke')) {
+    if (urlMatchesAmEndpoint(requestUrl, amUrlObj.revoke)) {
       const bodyString = await request.options?.body?.text();
       const body = new URLSearchParams(bodyString);
       body.append('token', tokens.accessToken);
@@ -298,6 +291,7 @@ export function proxy(config: ProxyConfig) {
       }
 
       const clonedResponse = await cloneResponse(response);
+      maskTokenValues(clonedResponse.body, redactedTokens);
       responseChannel.postMessage(clonedResponse);
       return;
     }
@@ -306,7 +300,7 @@ export function proxy(config: ProxyConfig) {
      * END SESSION ENDPOINT
      * requires the id_token_hint to be sent as a query parameter
      */
-    if (request.url?.includes('connect/endSession')) {
+    if (urlMatchesAmEndpoint(requestUrl, amUrlObj.session)) {
       const url = new URL(request.url);
       url.searchParams.append('id_token_hint', tokens?.idToken);
       console.log(url.toString());
@@ -321,6 +315,7 @@ export function proxy(config: ProxyConfig) {
       }
 
       const clonedResponse = await cloneResponse(response);
+      maskTokenValues(clonedResponse.body, redactedTokens);
       responseChannel.postMessage(clonedResponse);
       return;
     }
@@ -358,6 +353,7 @@ export function proxy(config: ProxyConfig) {
        */
       if (response.ok) {
         const clonedResponse = await cloneResponse(response);
+        maskTokenValues(clonedResponse.body, redactedTokens);
         responseChannel.postMessage(clonedResponse);
         return;
       }
@@ -368,6 +364,7 @@ export function proxy(config: ProxyConfig) {
        */
       if (response.status !== 401) {
         const clonedResponse = await cloneResponse(response);
+        maskTokenValues(clonedResponse.body, redactedTokens);
         responseChannel.postMessage(clonedResponse);
         return;
       }
@@ -396,11 +393,11 @@ export function proxy(config: ProxyConfig) {
        * Clone the original response if it exists
        * Otherwise, create a new error response
        */
-      const errorResponse = response
+      const clonedResponse = response
         ? await cloneResponse(response)
         : createErrorResponse('refresh_error', error);
 
-      const clonedResponse = errorResponse;
+      maskTokenValues(clonedResponse.body, redactedTokens);
       responseChannel.postMessage(clonedResponse);
       return;
     }
@@ -417,11 +414,11 @@ export function proxy(config: ProxyConfig) {
        * Clone the original response if it exists
        * Otherwise, create a new error response
        */
-      const errorResponse = response
+      const clonedResponse = response
         ? await cloneResponse(response)
         : createErrorResponse('fetch_error', new Error('Unable to refresh token'));
 
-      const clonedResponse = errorResponse;
+      maskTokenValues(clonedResponse.body, redactedTokens);
       responseChannel.postMessage(clonedResponse);
       return;
     }
@@ -448,10 +445,11 @@ export function proxy(config: ProxyConfig) {
        * Clone the original response if it exists
        * Otherwise, create a new error response
        */
-      const errorResponse = response
+      const clonedResponse = response
         ? await cloneResponse(response)
         : createErrorResponse('fetch_error', new Error('Unable to refresh token'));
-      responseChannel.postMessage(errorResponse);
+      maskTokenValues(clonedResponse.body, redactedTokens);
+      responseChannel.postMessage(clonedResponse);
       return;
     }
 
@@ -498,6 +496,7 @@ export function proxy(config: ProxyConfig) {
      * At this point, regardless of the response status, return the it.
      */
     const clonedResponse = await cloneResponse(newResponse);
+    maskTokenValues(clonedResponse.body, redactedTokens);
     responseChannel.postMessage(clonedResponse);
     return;
   });

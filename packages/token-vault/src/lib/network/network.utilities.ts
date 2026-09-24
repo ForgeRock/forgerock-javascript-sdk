@@ -1,6 +1,6 @@
 /**
  *
- * Copyright (c) 2023 - 2025 Ping Identity Corporation. All right reserved.
+ * Copyright (c) 2023 - 2026 Ping Identity Corporation. All right reserved.
  *
  * This software may be modified and distributed under the terms
  * of the MIT license. See the LICENSE file for details.
@@ -234,6 +234,77 @@ export async function getBodyJsonOrText(response: Response) {
     return await response.json();
   }
   return await response.text();
+}
+
+/** ****************************************************************
+ * @function urlMatchesAmEndpoint - Compare a request URL against an AM
+ * endpoint URL using scheme, host and percent-decoded path only.
+ * Query strings and hash fragments are ignored. Path decoding falls
+ * back to the raw value on malformed percent-encoding.
+ * @param {string} requestUrl - The URL of the outgoing request
+ * @param {string} endpointUrl - The AM endpoint URL to compare against
+ * @returns {boolean} - True if the URLs identify the same endpoint
+ */
+export function urlMatchesAmEndpoint(requestUrl: string, endpointUrl: string): boolean {
+  const request = new URL(requestUrl);
+  const endpoint = new URL(endpointUrl);
+  const safeDecode = (pathname: string) => {
+    try {
+      return decodeURIComponent(pathname);
+    } catch {
+      return pathname;
+    }
+  };
+
+  return (
+    request.origin === endpoint.origin &&
+    safeDecode(request.pathname) === safeDecode(endpoint.pathname)
+  );
+}
+
+/** ****************************************************************
+ * @function buildTokenBody - Build a response body containing only the
+ * configured token keys, with their values replaced by a placeholder.
+ * Any key not in the list is dropped. Non-object bodies are returned
+ * unchanged.
+ * @param {unknown} body - The parsed response body
+ * @param {string[]} redactedTokens - The token keys to include and redact
+ * @returns {unknown} - The rebuilt body
+ */
+export function buildTokenBody(body: unknown, redactedTokens: string[]): unknown {
+  if (!body || typeof body !== 'object') {
+    return body;
+  }
+  const record = body as Record<string, unknown>;
+  return redactedTokens.reduce<Record<string, unknown>>((acc, token) => {
+    if (record[token]) {
+      acc[token] = 'REDACTED';
+    } else {
+      acc[token] = record[token];
+    }
+    return acc;
+  }, {});
+}
+
+/** ****************************************************************
+ * @function maskTokenValues - Replace configured token values in a parsed
+ * response body with a placeholder, in place. All other fields are
+ * preserved. Non-object bodies are returned unchanged.
+ * @param {unknown} body - The parsed response body
+ * @param {string[]} redactedTokens - The token keys to mask
+ * @returns {unknown} - The same body, with token values masked
+ */
+export function maskTokenValues(body: unknown, redactedTokens: string[]): unknown {
+  if (!body || typeof body !== 'object') {
+    return body;
+  }
+  const record = body as Record<string, unknown>;
+  redactedTokens.forEach((token) => {
+    if (record[token]) {
+      record[token] = 'REDACTED';
+    }
+  });
+  return record;
 }
 
 /** ****************************************************************

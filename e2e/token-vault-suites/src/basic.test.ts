@@ -10,6 +10,43 @@
 import { expect, test } from '@playwright/test';
 import { asyncEvents } from './utils/async-events';
 
+const PROXY_ORIGIN = 'http://localhost:5833';
+const AM_ORIGIN = 'http://localhost:9443';
+const API_ORIGIN = 'https://jsonplaceholder.typicode.com';
+const CLIENT_ID = 'CentralLoginOAuthClient';
+
+/**
+ * Send a TVP_FETCH_RESOURCE message to the vault iframe from the app origin
+ * and capture the reply on window.__e2eReply
+ */
+function sendResourceRequest(page: import('@playwright/test').Page, url: string, body?: string) {
+  return page.evaluate(
+    ([url, body]) => {
+      const channel = new MessageChannel();
+      (
+        document.getElementById('token-vault-iframe') as HTMLIFrameElement
+      ).contentWindow?.postMessage(
+        {
+          type: 'TVP_FETCH_RESOURCE',
+          request: {
+            url,
+            options: {
+              method: 'POST',
+              ...(body ? { body: new Blob([body]) } : {}),
+            },
+          },
+        },
+        'http://localhost:5833',
+        [channel.port2],
+      );
+      channel.port1.onmessage = (event) => {
+        (window as unknown as { __e2eReply?: unknown }).__e2eReply = event.data;
+      };
+    },
+    [url, body],
+  );
+}
+
 test('Test happy paths on test page', async ({ page }) => {
   const { clickButton, getTokens, navigate } = asyncEvents(page);
   await navigate('/');
@@ -121,4 +158,110 @@ test('Ensure someone cannot try to call their own url!', async ({ page }) => {
       '{error: unrecognized_origin, message: Unrecognized origin: https://reqres.in. Please configure URLs in Proxy.}',
     ),
   ).toBe(true);
+});
+
+/*
+ * Edge case: a request whose URL merely mentions an endpoint name in its
+ * query string must be treated as an ordinary resource request — tokens
+ * travel only in the Authorization header, never in a request body, and
+ * the reply contains no token values.
+ */
+test('Edge case: endpoint name in a query string is treated as a resource request', async ({
+  page,
+}) => {
+  const { navigate, getTokens } = asyncEvents(page);
+  await navigate('/');
+
+  await Promise.all([
+    page.waitForURL('http://localhost:5823'),
+    page.getByRole('button', { name: 'Login' }).click(),
+  ]);
+  await page.waitForSelector('#loggedInDef:has-text("true")');
+
+  const storedTokens = await getTokens(PROXY_ORIGIN, CLIENT_ID);
+  expect(storedTokens?.accessToken).toBeTruthy();
+
+  const outboundBodies: string[] = [];
+  page.on('request', (request) => {
+    if (request.url().includes('jsonplaceholder.typicode.com')) {
+      outboundBodies.push(request.postData() || '');
+    }
+  });
+
+  await sendResourceRequest(
+    page,
+    `${API_ORIGIN}/comments?cb=token/revoke`,
+    'comment=e2e-edge-case',
+  );
+  await page.waitForTimeout(1500);
+
+  // No token value left the browser in any request body
+  const tokenValue = String(storedTokens?.accessToken);
+  for (const body of outboundBodies) {
+    expect(body).not.toContain(tokenValue);
+    expect(body).not.toContain('token=');
+  }
+
+  // The reply to the page must not contain the token value
+  const reply = await page.evaluate(
+    () => (window as unknown as { __e2eReply?: { body?: unknown } }).__e2eReply,
+  );
+  expect(JSON.stringify(reply)).not.toContain(tokenValue);
+});
+
+/*
+ * Edge case: a request spelling an endpoint path with percent-encoding
+ * must receive the same treatment as any other page-facing reply — no
+ * readable token values, no JWT-shaped material.
+ */
+test('Edge case: percent-encoded token endpoint reply never exposes token values', async ({
+  page,
+}) => {
+  const { navigate, getTokens } = asyncEvents(page);
+  await navigate('/');
+
+  await Promise.all([
+    page.waitForURL('http://localhost:5823'),
+    page.getByRole('button', { name: 'Login' }).click(),
+  ]);
+  await page.waitForSelector('#loggedInDef:has-text("true")');
+
+  const storedTokens = await getTokens(PROXY_ORIGIN, CLIENT_ID);
+  expect(storedTokens?.accessToken).toBeTruthy();
+
+  await sendResourceRequest(
+    page,
+    `${AM_ORIGIN}/am/oauth2/realms/root/%61ccess_token`,
+    'grant_type=authorization_code&code=e2e-case&code_verifier=e2e-case&client_id=CentralLoginOAuthClient&redirect_uri=http://localhost:5823',
+  );
+  await page.waitForTimeout(1500);
+
+  // The reply to the page must contain no readable token values
+  const reply = await page.evaluate(
+    () => (window as unknown as { __e2eReply?: { body?: unknown } }).__e2eReply,
+  );
+  const replyString = JSON.stringify(reply) || '';
+  expect(replyString).not.toContain(String(storedTokens?.accessToken));
+  expect(replyString).not.toContain('eyJ');
+});
+
+/*
+ * Edge case: ordinary allow-listed resource requests keep working end to
+ * end alongside the cases above.
+ */
+test('Edge case: ordinary resource request keeps working end to end', async ({ page }) => {
+  const { navigate } = asyncEvents(page);
+  await navigate('/');
+
+  await Promise.all([
+    page.waitForURL('http://localhost:5823'),
+    page.getByRole('button', { name: 'Login' }).click(),
+  ]);
+  await page.waitForSelector('#loggedInDef:has-text("true")');
+
+  const [todoResponse] = await Promise.all([
+    page.waitForResponse((response) => response.url().includes('/todos')),
+    page.getByRole('button', { name: 'Fetch Protected Mock Todos' }).click(),
+  ]);
+  expect(todoResponse.status()).toBe(200);
 });
