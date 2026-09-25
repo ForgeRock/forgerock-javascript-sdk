@@ -1,6 +1,6 @@
 /**
  *
- * Copyright (c) 2023 - 2025 Ping Identity Corporation. All right reserved.
+ * Copyright (c) 2023 - 2026 Ping Identity Corporation. All right reserved.
  *
  * This software may be modified and distributed under the terms
  * of the MIT license. See the LICENSE file for details.
@@ -83,6 +83,7 @@ export function proxy(config: ProxyConfig) {
     throw new Error('Config: `config.proxy.urls` is required');
   }
   const allowedOrigins = extractOrigins([...config.proxy.urls, ...amUrlArray]);
+  const amOrigin = new URL(amUrlObj.accessToken).origin;
 
   /**
    * Create the proxy iframe
@@ -233,7 +234,7 @@ export function proxy(config: ProxyConfig) {
     if (request.url?.includes('access_token')) {
       let response;
       try {
-        response = await fetch(request.url, {
+        response = await fetch(amUrlObj.accessToken, {
           ...request.options,
           headers: new Headers({
             ...request.options.headers,
@@ -287,7 +288,7 @@ export function proxy(config: ProxyConfig) {
 
       let response;
       try {
-        response = await fetch(request.url, {
+        response = await fetch(amUrlObj.revoke, {
           ...request.options,
           body,
         });
@@ -307,7 +308,7 @@ export function proxy(config: ProxyConfig) {
      * requires the id_token_hint to be sent as a query parameter
      */
     if (request.url?.includes('connect/endSession')) {
-      const url = new URL(request.url);
+      const url = new URL(amUrlObj.session);
       url.searchParams.append('id_token_hint', tokens?.idToken);
       console.log(url.toString());
 
@@ -322,6 +323,43 @@ export function proxy(config: ProxyConfig) {
 
       const clonedResponse = await cloneResponse(response);
       responseChannel.postMessage(clonedResponse);
+      return;
+    }
+
+    /** ****************************************************
+     * USER INFO ENDPOINT
+     * An ordinary authorized AM call: Bearer header, reply masked
+     */
+    if (request.url?.includes('userinfo')) {
+      let response;
+      try {
+        response = await fetch(amUrlObj.userInfo, {
+          ...request.options,
+          headers: new Headers({
+            ...request.options.headers,
+            authorization: `Bearer ${tokens ? tokens?.accessToken : ''}`,
+          }),
+        });
+      } catch (error) {
+        const errorResponse = createErrorResponse('fetch_error', error);
+        responseChannel.postMessage(errorResponse);
+        return;
+      }
+
+      const clonedResponse = await cloneResponse(response);
+      responseChannel.postMessage(clonedResponse);
+      return;
+    }
+
+    /** ****************************************************
+     * AM-ORIGIN REQUESTS ARE NOT PROXIED
+     * Any other request to AM is served by the vault's dedicated
+     * flows, not the generic resource proxy
+     */
+    if (requestOrigin === amOrigin) {
+      responseChannel.postMessage(
+        createErrorResponse('fetch_error', new Error('AM-origin requests are not proxied')),
+      );
       return;
     }
 
