@@ -1,6 +1,6 @@
 /**
  *
- * Copyright (c) 2023 - 2025 Ping Identity Corporation. All right reserved.
+ * Copyright (c) 2023 - 2026 Ping Identity Corporation. All right reserved.
  *
  * This software may be modified and distributed under the terms
  * of the MIT license. See the LICENSE file for details.
@@ -83,6 +83,7 @@ export function proxy(config: ProxyConfig) {
     throw new Error('Config: `config.proxy.urls` is required');
   }
   const allowedOrigins = extractOrigins([...config.proxy.urls, ...amUrlArray]);
+  const amOrigin = new URL(amUrlObj.accessToken).origin;
 
   /**
    * Create the proxy iframe
@@ -231,9 +232,12 @@ export function proxy(config: ProxyConfig) {
      * ACCESS TOKEN ENDPOINT
      */
     if (request.url?.includes('access_token')) {
+      const url = new URL(amUrlObj.accessToken);
+      url.search = new URL(requestUrl).search;
+
       let response;
       try {
-        response = await fetch(request.url, {
+        response = await fetch(url.toString(), {
           ...request.options,
           headers: new Headers({
             ...request.options.headers,
@@ -285,9 +289,12 @@ export function proxy(config: ProxyConfig) {
       const body = new URLSearchParams(bodyString);
       body.append('token', tokens.accessToken);
 
+      const url = new URL(amUrlObj.revoke);
+      url.search = new URL(requestUrl).search;
+
       let response;
       try {
-        response = await fetch(request.url, {
+        response = await fetch(url.toString(), {
           ...request.options,
           body,
         });
@@ -307,8 +314,10 @@ export function proxy(config: ProxyConfig) {
      * requires the id_token_hint to be sent as a query parameter
      */
     if (request.url?.includes('connect/endSession')) {
-      const url = new URL(request.url);
-      url.searchParams.append('id_token_hint', tokens?.idToken);
+      const url = new URL(amUrlObj.session);
+      url.search = new URL(requestUrl).search;
+      // `set` so the vault-owned hint replaces any incoming `id_token_hint`
+      url.searchParams.set('id_token_hint', tokens?.idToken);
       console.log(url.toString());
 
       let response;
@@ -322,6 +331,46 @@ export function proxy(config: ProxyConfig) {
 
       const clonedResponse = await cloneResponse(response);
       responseChannel.postMessage(clonedResponse);
+      return;
+    }
+
+    /** ****************************************************
+     * USER INFO ENDPOINT
+     * An ordinary authorized AM call: Bearer header, reply masked
+     */
+    if (request.url?.includes('userinfo')) {
+      const url = new URL(amUrlObj.userInfo);
+      url.search = new URL(requestUrl).search;
+
+      let response;
+      try {
+        response = await fetch(url.toString(), {
+          ...request.options,
+          headers: new Headers({
+            ...request.options.headers,
+            authorization: `Bearer ${tokens ? tokens?.accessToken : ''}`,
+          }),
+        });
+      } catch (error) {
+        const errorResponse = createErrorResponse('fetch_error', error);
+        responseChannel.postMessage(errorResponse);
+        return;
+      }
+
+      const clonedResponse = await cloneResponse(response);
+      responseChannel.postMessage(clonedResponse);
+      return;
+    }
+
+    /** ****************************************************
+     * AM-ORIGIN REQUESTS ARE NOT PROXIED
+     * Any other request to AM is served by the vault's dedicated
+     * flows, not the generic resource proxy
+     */
+    if (requestOrigin === amOrigin) {
+      responseChannel.postMessage(
+        createErrorResponse('fetch_error', new Error('Unknown AM-origin requests are not proxied')),
+      );
       return;
     }
 

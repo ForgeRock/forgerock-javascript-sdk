@@ -62,12 +62,12 @@ Configuration is the key to success with this setup, so take extra care to ensur
 
 First, configure your [server's CORS settings](https://docs.pingidentity.com/sdks/latest/sdks/tutorials/javascript/00_before-you-begin.html#server_configuration) (if using ForgeRock's Identity Cloud product, there's a [preset JavaScript SDK CORS configuration](https://docs.pingidentity.com/pingoneaic/latest/tenants/configure-cors.html) that can be used as a starter):
 
-1. **Accepted origins**: these should be the origins (scheme, domain and port) for your app AND proxy
+1. **Accepted origins**: the origin (scheme, domain and port) of your Token Vault Proxy. Do not add your main application's origin here or in the OAuth client's JavaScript Origins property — the server collects JavaScript Origins into the CORS allowlist, and any origin in either list can read token responses from the authorization server
 2. **Accepted methods**: `GET` and `POST` are enough
 3. **Accepted headers**: `authorization` `accept-api-version` `x-requested-with` `content-type` `accept`
 4. **Allow credentials**: checked/enabled
 
-An example or your origins can be `http://localhost:5173` and `http://localhost:5174` for your local development computer or `https://app.example.com` and `https://proxy.example.com` for production.
+An example of your proxy origin can be `http://localhost:5174` for your local development computer or `https://proxy.example.com` for production.
 
 ### OAuth
 
@@ -446,7 +446,7 @@ You are free to use the native `fetch` API or any any HTTP request library that 
 
 ### Q: How Do I Fix CORS Errors?
 
-Make sure your CORS configuration in your ForgeRock server allows/accepts origins from both the origin of your app, but also your Token Vault Proxy. These two origins should be unique from one another, and there both need to be configured in your ForgeRock server.
+The Token Vault Proxy's origin must be accepted in your server's CORS configuration. Your main application's origin should not be — not in the CORS configuration and not in the OAuth client's JavaScript Origins property, which the server also collects into the CORS allowlist. See the CORS section above.
 
 ### Q: Why Am I Getting an Iframe Error?
 
