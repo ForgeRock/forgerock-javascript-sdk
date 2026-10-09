@@ -8,7 +8,7 @@
  **/
 
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Config, FRUser, TokenManager, UserManager } from '@forgerock/javascript-sdk';
+import { Config, OAuth2Client, TokenManager, UserManager } from '@forgerock/javascript-sdk';
 import { client } from '@forgerock/token-vault';
 
 /** ****************************************************
@@ -197,8 +197,11 @@ loginBtn.addEventListener('click', async (event) => {
 });
 
 logoutBtn.addEventListener('click', async (event) => {
-  // Not all endpoints are supported and will fail
-  await FRUser.logout();
+  // Order matters: endSession must fire before anything empties the vault's
+  // storage, or the vault has no idToken left to staple as id_token_hint.
+  await OAuth2Client.endSession();
+  await OAuth2Client.revokeToken();
+  await TokenManager.deleteTokens();
 
   loggedInEl.innerText = 'false';
   hasTokensEl.innerText = 'false';
