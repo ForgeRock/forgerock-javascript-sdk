@@ -41,11 +41,6 @@
       "cache": true,
       "outputs": ["{projectRoot}/dist"]
     },
-    "@nx/vite:test": {
-      "dependsOn": ["build", "^test"],
-      "outputs": ["{projectRoot}/coverage"],
-      "cache": true
-    },
     "@nx/eslint:lint": {
       "dependsOn": ["^build", "^lint"],
       "cache": true
@@ -75,6 +70,11 @@
       "dependsOn": ["^build"],
       "inputs": ["production", "^production"],
       "outputs": ["{projectRoot}/dist"]
+    },
+    "@nx/vitest:test": {
+      "dependsOn": ["build", "^test"],
+      "outputs": ["{projectRoot}/coverage"],
+      "cache": true
     }
   },
   "parallel": 1,
@@ -84,13 +84,11 @@
   },
   "release": {
     "projects": ["packages/*"],
-    "releaseTagPattern": "v{version}",
     "version": {
       "preVersionCommand": "npx nx run-many -t build",
-      "generatorOptions": {
-        "currentVersionResolver": "git-tag",
-        "specifierSource": "conventional-commits"
-      }
+      "specifierSource": "conventional-commits",
+      "currentVersionResolver": "git-tag",
+      "preserveLocalDependencyProtocols": false
     },
     "changelog": {
       "git": {
@@ -101,6 +99,9 @@
         "createRelease": "github"
       },
       "projectChangelogs": true
+    },
+    "releaseTag": {
+      "pattern": "v{version}"
     }
   },
   "plugins": [
@@ -124,7 +125,6 @@
         "buildTargetName": "build",
         "serveTargetName": "serve",
         "previewTargetName": "preview",
-        "testTargetName": "test",
         "serveStaticTargetName": "serve-static",
         "typecheckTargetName": "typecheck"
       },
@@ -136,7 +136,6 @@
         "buildTargetName": "build-interceptor",
         "serveTargetName": "serve",
         "previewTargetName": "preview",
-        "testTargetName": "test",
         "serveStaticTargetName": "serve-static",
         "typecheckTargetName": "typecheck"
       },
@@ -146,11 +145,31 @@
       "plugin": "@nx/vite/plugin",
       "options": {
         "buildTargetName": "vite:build",
-        "testTargetName": "vite:test",
         "serveTargetName": "vite:serve",
         "previewTargetName": "vite:preview",
         "serveStaticTargetName": "vite:serve-static",
         "typecheckTargetName": "vite:typecheck"
+      },
+      "include": ["packages/**/*", "e2e/**/*"]
+    },
+    {
+      "plugin": "@nx/vitest",
+      "options": {
+        "testTargetName": "test"
+      },
+      "include": ["e2e/**/*", "packages/**/*"]
+    },
+    {
+      "plugin": "@nx/vitest",
+      "options": {
+        "testTargetName": "test"
+      },
+      "include": ["e2e/token-vault-app/**/*"]
+    },
+    {
+      "plugin": "@nx/vitest",
+      "options": {
+        "testTargetName": "vite:test"
       },
       "include": ["packages/**/*", "e2e/**/*"]
     }
@@ -159,5 +178,6 @@
   "useDaemonProcess": true,
   "useInferencePlugins": true,
   "defaultBase": "develop",
-  "useLegacyCache": true
+  "useLegacyCache": true,
+  "analytics": false
 }
