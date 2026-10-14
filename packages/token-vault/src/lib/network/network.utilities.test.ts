@@ -108,6 +108,7 @@ describe('Test network utility functions', () => {
       accessToken: 'https://example.com/am/oauth2/realms/root/access_token',
       revoke: 'https://example.com/am/oauth2/realms/root/token/revoke',
       session: 'https://example.com/am/oauth2/realms/root/connect/endSession?',
+      sessions: 'https://example.com/am/json/realms/root/sessions',
       userInfo: 'https://example.com/am/oauth2/realms/root/userinfo',
     });
   });
@@ -124,6 +125,7 @@ describe('Test network utility functions', () => {
       accessToken: 'https://example.com/am/oauth2/realms/root/realms/alpha/access_token',
       revoke: 'https://example.com/am/oauth2/realms/root/realms/alpha/token/revoke',
       session: 'https://example.com/am/oauth2/realms/root/realms/alpha/connect/endSession?',
+      sessions: 'https://example.com/am/json/realms/root/realms/alpha/sessions',
       userInfo: 'https://example.com/am/oauth2/realms/root/realms/alpha/userinfo',
     });
   });

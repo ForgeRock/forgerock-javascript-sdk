@@ -270,6 +270,32 @@ export function proxy(config: ProxyConfig) {
       return;
     }
 
+    /** ****************************************************
+     * SESSIONS ENDPOINT
+     * Authenticated by the AM session cookie, not a Bearer
+     * token, and must run even when tokens are absent
+     */
+    if (request.url?.includes('/sessions')) {
+      const url = new URL(amUrlObj.sessions);
+      url.search = new URL(requestUrl).search;
+
+      let response;
+      try {
+        response = await fetch(url.toString(), {
+          ...request.options,
+          credentials: 'include',
+        });
+      } catch (error) {
+        const errorResponse = createErrorResponse('fetch_error', error);
+        responseChannel.postMessage(errorResponse);
+        return;
+      }
+
+      const clonedResponse = await cloneResponse(response);
+      responseChannel.postMessage(clonedResponse);
+      return;
+    }
+
     // The remainder of events require tokens to be present
     if (!tokens) {
       const errorResponse = createErrorResponse(
