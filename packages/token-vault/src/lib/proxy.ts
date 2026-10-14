@@ -229,171 +229,177 @@ export function proxy(config: ProxyConfig) {
     }
 
     /** ****************************************************
-     * ACCESS TOKEN ENDPOINT
-     */
-    if (request.url?.includes('access_token')) {
-      const url = new URL(amUrlObj.accessToken);
-      url.search = new URL(requestUrl).search;
-
-      let response;
-      try {
-        response = await fetch(url.toString(), {
-          ...request.options,
-          headers: new Headers({
-            ...request.options.headers,
-          }),
-        });
-      } catch (error) {
-        const errorResponse = createErrorResponse('fetch_error', error);
-        responseChannel.postMessage(errorResponse);
-        return;
-      }
-
-      const clonedResponse = await cloneResponse(response);
-      // Redact configured tokens from response body
-      if (clonedResponse.body) {
-        const body = clonedResponse.body as ServerTokens;
-        clonedResponse.body = redactedTokens.reduce<ServerTokens>((acc, token) => {
-          if (body[token]) {
-            acc[token] = 'REDACTED';
-          } else {
-            acc[token] = body[token];
-          }
-          return acc;
-        }, {} as ServerTokens);
-      }
-
-      // Store tokens in local storage
-      storeTokens(response, clientId);
-      responseChannel.postMessage(clonedResponse);
-
-      return;
-    }
-
-    /** ****************************************************
-     * SESSIONS ENDPOINT
-     * Authenticated by the AM session cookie, not a Bearer
-     * token, and must run even when tokens are absent
-     */
-    if (request.url?.includes('/sessions')) {
-      const url = new URL(amUrlObj.sessions);
-      url.search = new URL(requestUrl).search;
-
-      let response;
-      try {
-        response = await fetch(url.toString(), {
-          ...request.options,
-          credentials: 'include',
-        });
-      } catch (error) {
-        const errorResponse = createErrorResponse('fetch_error', error);
-        responseChannel.postMessage(errorResponse);
-        return;
-      }
-
-      const clonedResponse = await cloneResponse(response);
-      responseChannel.postMessage(clonedResponse);
-      return;
-    }
-
-    // The remainder of events require tokens to be present
-    if (!tokens) {
-      const errorResponse = createErrorResponse(
-        'no_tokens',
-        new Error('No OAuth/OIDC tokens found'),
-      );
-      responseChannel.postMessage(errorResponse);
-      return;
-    }
-
-    /** ****************************************************
-     * TOKEN REVOCATION ENDPOINT
-     * Requires the token to be sent in the body
-     */
-    if (request.url?.includes('token/revoke')) {
-      const bodyString = await request.options?.body?.text();
-      const body = new URLSearchParams(bodyString);
-      body.append('token', tokens.accessToken);
-
-      const url = new URL(amUrlObj.revoke);
-      url.search = new URL(requestUrl).search;
-
-      let response;
-      try {
-        response = await fetch(url.toString(), {
-          ...request.options,
-          body,
-        });
-      } catch (error) {
-        const errorResponse = createErrorResponse('fetch_error', error);
-        responseChannel.postMessage(errorResponse);
-        return;
-      }
-
-      const clonedResponse = await cloneResponse(response);
-      responseChannel.postMessage(clonedResponse);
-      return;
-    }
-
-    /** ****************************************************
-     * END SESSION ENDPOINT
-     * requires the id_token_hint to be sent as a query parameter
-     */
-    if (request.url?.includes('connect/endSession')) {
-      const url = new URL(amUrlObj.session);
-      url.search = new URL(requestUrl).search;
-      // `set` so the vault-owned hint replaces any incoming `id_token_hint`
-      url.searchParams.set('id_token_hint', tokens?.idToken);
-      console.log(url.toString());
-
-      let response;
-      try {
-        response = await fetch(url.toString(), request.options);
-      } catch (error) {
-        const errorResponse = createErrorResponse('fetch_error', error);
-        responseChannel.postMessage(errorResponse);
-        return;
-      }
-
-      const clonedResponse = await cloneResponse(response);
-      responseChannel.postMessage(clonedResponse);
-      return;
-    }
-
-    /** ****************************************************
-     * USER INFO ENDPOINT
-     * An ordinary authorized AM call: Bearer header, reply masked
-     */
-    if (request.url?.includes('userinfo')) {
-      const url = new URL(amUrlObj.userInfo);
-      url.search = new URL(requestUrl).search;
-
-      let response;
-      try {
-        response = await fetch(url.toString(), {
-          ...request.options,
-          headers: new Headers({
-            ...request.options.headers,
-            authorization: `Bearer ${tokens ? tokens?.accessToken : ''}`,
-          }),
-        });
-      } catch (error) {
-        const errorResponse = createErrorResponse('fetch_error', error);
-        responseChannel.postMessage(errorResponse);
-        return;
-      }
-
-      const clonedResponse = await cloneResponse(response);
-      responseChannel.postMessage(clonedResponse);
-      return;
-    }
-
-    /** ****************************************************
-     * AM-ORIGIN REQUESTS ARE NOT PROXIED
-     * Any other request to AM is served by the vault's dedicated
-     * flows, not the generic resource proxy
+     * AM-ORIGIN REQUESTS ARE PROXIED FOR SOME ENDPOINTS
+     * Token Vault will proxy AM requests to /access_token,
+     * /sessions, /token/revoke, /connect/endSession, and
+     * /userinfo
      */
     if (requestOrigin === amOrigin) {
+      /** ****************************************************
+       * ACCESS TOKEN ENDPOINT
+       */
+      if (request.url?.includes('access_token')) {
+        const url = new URL(amUrlObj.accessToken);
+        url.search = new URL(requestUrl).search;
+
+        let response;
+        try {
+          response = await fetch(url.toString(), {
+            ...request.options,
+            headers: new Headers({
+              ...request.options.headers,
+            }),
+          });
+        } catch (error) {
+          const errorResponse = createErrorResponse('fetch_error', error);
+          responseChannel.postMessage(errorResponse);
+          return;
+        }
+
+        const clonedResponse = await cloneResponse(response);
+        // Redact configured tokens from response body
+        if (clonedResponse.body) {
+          const body = clonedResponse.body as ServerTokens;
+          clonedResponse.body = redactedTokens.reduce<ServerTokens>((acc, token) => {
+            if (body[token]) {
+              acc[token] = 'REDACTED';
+            } else {
+              acc[token] = body[token];
+            }
+            return acc;
+          }, {} as ServerTokens);
+        }
+
+        // Store tokens in local storage
+        storeTokens(response, clientId);
+        responseChannel.postMessage(clonedResponse);
+
+        return;
+      }
+
+      /** ****************************************************
+       * SESSIONS ENDPOINT
+       * Authenticated by the AM session cookie, not a Bearer
+       * token, and must run even when tokens are absent
+       */
+      if (request.url?.includes('/sessions')) {
+        const url = new URL(amUrlObj.sessions);
+        url.search = new URL(requestUrl).search;
+
+        let response;
+        try {
+          response = await fetch(url.toString(), {
+            ...request.options,
+            credentials: 'include',
+          });
+        } catch (error) {
+          const errorResponse = createErrorResponse('fetch_error', error);
+          responseChannel.postMessage(errorResponse);
+          return;
+        }
+
+        const clonedResponse = await cloneResponse(response);
+        responseChannel.postMessage(clonedResponse);
+        return;
+      }
+
+      // The remainder of events require tokens to be present
+      if (!tokens) {
+        const errorResponse = createErrorResponse(
+          'no_tokens',
+          new Error('No OAuth/OIDC tokens found'),
+        );
+        responseChannel.postMessage(errorResponse);
+        return;
+      }
+
+      /** ****************************************************
+       * TOKEN REVOCATION ENDPOINT
+       * Requires the token to be sent in the body
+       */
+      if (request.url?.includes('token/revoke')) {
+        const bodyString = await request.options?.body?.text();
+        const body = new URLSearchParams(bodyString);
+        body.append('token', tokens.accessToken);
+
+        const url = new URL(amUrlObj.revoke);
+        url.search = new URL(requestUrl).search;
+
+        let response;
+        try {
+          response = await fetch(url.toString(), {
+            ...request.options,
+            body,
+          });
+        } catch (error) {
+          const errorResponse = createErrorResponse('fetch_error', error);
+          responseChannel.postMessage(errorResponse);
+          return;
+        }
+
+        const clonedResponse = await cloneResponse(response);
+        responseChannel.postMessage(clonedResponse);
+        return;
+      }
+
+      /** ****************************************************
+       * END SESSION ENDPOINT
+       * requires the id_token_hint to be sent as a query parameter
+       */
+      if (request.url?.includes('connect/endSession')) {
+        const url = new URL(amUrlObj.session);
+        url.search = new URL(requestUrl).search;
+        // `set` so the vault-owned hint replaces any incoming `id_token_hint`
+        url.searchParams.set('id_token_hint', tokens?.idToken);
+        console.log(url.toString());
+
+        let response;
+        try {
+          response = await fetch(url.toString(), request.options);
+        } catch (error) {
+          const errorResponse = createErrorResponse('fetch_error', error);
+          responseChannel.postMessage(errorResponse);
+          return;
+        }
+
+        const clonedResponse = await cloneResponse(response);
+        responseChannel.postMessage(clonedResponse);
+        return;
+      }
+
+      /** ****************************************************
+       * USER INFO ENDPOINT
+       * An ordinary authorized AM call: Bearer header, reply masked
+       */
+      if (request.url?.includes('userinfo')) {
+        const url = new URL(amUrlObj.userInfo);
+        url.search = new URL(requestUrl).search;
+
+        let response;
+        try {
+          response = await fetch(url.toString(), {
+            ...request.options,
+            headers: new Headers({
+              ...request.options.headers,
+              authorization: `Bearer ${tokens ? tokens?.accessToken : ''}`,
+            }),
+          });
+        } catch (error) {
+          const errorResponse = createErrorResponse('fetch_error', error);
+          responseChannel.postMessage(errorResponse);
+          return;
+        }
+
+        const clonedResponse = await cloneResponse(response);
+        responseChannel.postMessage(clonedResponse);
+        return;
+      }
+
+      /** ****************************************************
+       * UNSUPPORTED AM ENDPOINT ERROR
+       * If the request origin was an AM origin but endpoint
+       * was unrecognized return error.
+       */
       responseChannel.postMessage(
         createErrorResponse('fetch_error', new Error('Unknown AM-origin requests are not proxied')),
       );
@@ -406,6 +412,15 @@ export function proxy(config: ProxyConfig) {
      * in the Authorization header
      */
     let response;
+
+    if (!tokens) {
+      const errorResponse = createErrorResponse(
+        'no_tokens',
+        new Error('No OAuth/OIDC tokens found'),
+      );
+      responseChannel.postMessage(errorResponse);
+      return;
+    }
 
     /**
      * CHECK ACCESS TOKEN THRESHOLD

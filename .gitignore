@@ -91,5 +91,6 @@ e2e/mock-api-v2/html/*
 vitest.config.*.timestamp*
 
 .claude/worktrees
-
 .claude/settings.local.json
+
+.playwright-mcp
