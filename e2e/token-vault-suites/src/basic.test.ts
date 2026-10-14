@@ -7,8 +7,8 @@
  *
  **/
 
-import { expect, test } from '@playwright/test';
-import { asyncEvents } from './utils/async-events';
+import { expect, test, type Page } from '@playwright/test';
+import { asyncEvents } from './utils/async-events.js';
 
 const PROXY_ORIGIN = 'http://localhost:5833';
 const AM_ORIGIN = 'http://localhost:9443';
@@ -17,32 +17,35 @@ const CLIENT_ID = 'CentralLoginOAuthClient';
 
 /**
  * Send a TVP_FETCH_RESOURCE message to the vault iframe from the app origin
- * and capture the reply on window.__e2eReply
+ * and return the response
  */
-function sendResourceRequest(page: import('@playwright/test').Page, url: string, body?: string) {
+function sendResourceRequest(page: Page, url: string, body?: string) {
   return page.evaluate(
-    ([url, body]) => {
-      const channel = new MessageChannel();
-      (
-        document.getElementById('token-vault-iframe') as HTMLIFrameElement
-      ).contentWindow?.postMessage(
-        {
-          type: 'TVP_FETCH_RESOURCE',
-          request: {
-            url,
-            options: {
-              method: 'POST',
-              ...(body ? { body: new Blob([body]) } : {}),
+    ([url, body]) =>
+      new Promise((resolve) => {
+        const channel = new MessageChannel();
+
+        // Send message to proxy iframe
+        (
+          document.getElementById('token-vault-iframe') as HTMLIFrameElement
+        ).contentWindow?.postMessage(
+          {
+            type: 'TVP_FETCH_RESOURCE',
+            request: {
+              url,
+              options: {
+                method: 'POST',
+                ...(body ? { body: new Blob([body]) } : {}),
+              },
             },
           },
-        },
-        'http://localhost:5833',
-        [channel.port2],
-      );
-      channel.port1.onmessage = (event) => {
-        (window as unknown as { __e2eReply?: unknown }).__e2eReply = event.data;
-      };
-    },
+          'http://localhost:5833',
+          [channel.port2],
+        );
+
+        // Resolve promise with proxy reply
+        channel.port1.onmessage = (event) => resolve(event.data);
+      }),
     [url, body],
   );
 }
@@ -54,7 +57,7 @@ test('Test happy paths on test page', async ({ page }) => {
   expect(page.url()).toBe('http://localhost:5823/');
 
   const userLoggedIn = await page.$('#loggedInDef');
-  expect(await userLoggedIn.innerText()).toBe('false');
+  expect(await userLoggedIn?.innerText()).toBe('false');
 
   // Click the login button, but wait for a FULL page load of the app
   // That's why we aren't using the `navigate` function from 'async-events.ts'
@@ -67,7 +70,7 @@ test('Test happy paths on test page', async ({ page }) => {
   // But, it takes a bit for the app to make the call to the iframe to check
   await page.waitForSelector('#loggedInDef:has-text("true")');
   const loggedInDef = await page.$('#loggedInDef');
-  expect(await loggedInDef.innerText()).toBe('true');
+  expect(await loggedInDef?.innerText()).toBe('true');
 
   // Check if tokens are stored in the main app's local storage
   // There should be no tokens as they are in the proxy app's local storage
@@ -81,14 +84,14 @@ test('Test happy paths on test page', async ({ page }) => {
 
   // Before we click the "Check for Tokens" button, the app should say "false"
   const hasTokensDef = await page.$('#hasTokensDef');
-  expect(await hasTokensDef.innerText()).toBe('false');
+  expect(await hasTokensDef?.innerText()).toBe('false');
 
   // Click the "Check for Tokens" button and wait a bit for the proxy to respond
   // Unfortunately, I don't know how to wait for an iframe to respond on a MessageChannel
   await page.getByRole('button', { name: 'Check for Tokens' }).click();
   await page.waitForTimeout(500);
 
-  expect(await hasTokensDef.innerText()).toBe('true');
+  expect(await hasTokensDef?.innerText()).toBe('true');
 
   await clickButton('Refresh Tokens', '/access_token');
 
@@ -101,7 +104,7 @@ test('Test happy paths on test page', async ({ page }) => {
   await clickButton('Fetch Real User', '/userinfo');
 
   const userInfoDef = await page.$('#userInfoDef');
-  expect(await userInfoDef.innerText()).toBe('Bob Tester');
+  expect(await userInfoDef?.innerText()).toBe('Bob Tester');
 
   let authorizationHeader = '';
   page.on('request', (request) => {
@@ -145,7 +148,7 @@ test('Ensure someone cannot try to call their own url!', async ({ page }) => {
 
   expect(page.url()).toBe('http://localhost:5823/');
 
-  const messageArray = [];
+  const messageArray: string[] = [];
   page.on('console', (message) => messageArray.push(message.text()));
 
   await page.click('#hacker');
@@ -181,32 +184,48 @@ test('Edge case: endpoint name in a query string is treated as a resource reques
   const storedTokens = await getTokens(PROXY_ORIGIN, CLIENT_ID);
   expect(storedTokens?.accessToken).toBeTruthy();
 
-  const outboundBodies: string[] = [];
+  // Capture the token/revoke request
+  const revokeRequest: string[] = [];
   page.on('request', (request) => {
-    if (request.url().includes('jsonplaceholder.typicode.com')) {
-      outboundBodies.push(request.postData() || '');
+    if (request.url().includes('token/revoke')) {
+      revokeRequest.push(request.url());
     }
   });
 
-  await sendResourceRequest(
+  // Capture the outbound request body the proxy sends by intercepting the request
+  const bodies: string[] = [];
+  await page.route('https://jsonplaceholder.typicode.com/**', async (route) => {
+    bodies.push(route.request().postData() ?? '');
+    await route.continue();
+  });
+
+  // Make the request by interacting directly with the proxy through postMessage
+  const reply = await sendResourceRequest(
     page,
     `${API_ORIGIN}/comments?cb=token/revoke`,
     'comment=e2e-edge-case',
   );
-  await page.waitForTimeout(1500);
 
-  // No token value left the browser in any request body
+  // The request should be made to the resource server instead of AM
+  expect(revokeRequest.length).toBeGreaterThan(0);
+  for (const url of revokeRequest) {
+    expect(url).toContain('https://jsonplaceholder.typicode.com/comments?cb=token/revoke');
+  }
+
   const tokenValue = String(storedTokens?.accessToken);
-  for (const body of outboundBodies) {
+  expect(tokenValue).toBeTruthy();
+
+  // No token value should leave the browser in any request body
+  expect(bodies.length).toBeGreaterThan(0);
+  for (const body of bodies) {
+    expect(body).toBeTruthy();
     expect(body).not.toContain(tokenValue);
     expect(body).not.toContain('token=');
   }
 
-  // The reply to the page must not contain the token value
-  const reply = await page.evaluate(
-    () => (window as unknown as { __e2eReply?: { body?: unknown } }).__e2eReply,
-  );
-  expect(JSON.stringify(reply)).not.toContain(tokenValue);
+  // The reply to the page (the proxy response) must not contain the token value
+  const replyString = JSON.stringify(reply) ?? '';
+  expect(replyString).not.toContain(tokenValue);
 });
 
 /*
@@ -229,20 +248,18 @@ test('Edge case: percent-encoded token endpoint reply never exposes token values
   const storedTokens = await getTokens(PROXY_ORIGIN, CLIENT_ID);
   expect(storedTokens?.accessToken).toBeTruthy();
 
-  await sendResourceRequest(
+  const reply = await sendResourceRequest(
     page,
     `${AM_ORIGIN}/am/oauth2/realms/root/%61ccess_token`,
     'grant_type=authorization_code&code=e2e-case&code_verifier=e2e-case&client_id=CentralLoginOAuthClient&redirect_uri=http://localhost:5823',
   );
-  await page.waitForTimeout(1500);
 
-  // The reply to the page must contain no readable token values
-  const reply = await page.evaluate(
-    () => (window as unknown as { __e2eReply?: { body?: unknown } }).__e2eReply,
-  );
   const replyString = JSON.stringify(reply) || '';
+
   expect(replyString).not.toContain(String(storedTokens?.accessToken));
   expect(replyString).not.toContain('eyJ');
+
+  expect(replyString).toContain('Unknown AM-origin requests are not proxied');
 });
 
 /*
