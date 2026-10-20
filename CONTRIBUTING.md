@@ -13,7 +13,7 @@ Before you can contribute to the Ping SDK for Javascript, you'll need to set up 
 - GitHub account.
 - Git installed.
 - (pnpm)[https://pnpm.io/installation]
-- Node 20
+- Node 24
 - Setup an Advanced Identity Cloud tenant or PingAM instance, as described in the Documentation.
 
 ## Fork and Clone the Repository

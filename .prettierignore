@@ -6,3 +6,4 @@ package-lock.json
 */*/package-lock.json
 .husky/*
 /.nx/workspace-data
+.nx/self-healing
