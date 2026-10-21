@@ -1,0 +1,43 @@
+name: 'Mend Scan Setup'
+description: 'Setup a Mend scan'
+
+runs:
+  using: 'composite'
+  steps:
+    # Fetch just the checksum first (a few bytes) so the cache key reflects the
+    # CLI version Mend is currently serving.
+    - name: Fetch Mend CLI checksum
+      shell: bash
+      run: curl -fsSL https://downloads.mend.io/cli/linux_amd64/mend.sha256 -o mend.sha256
+
+    - name: Restore Cached Mend CLI
+      id: mend-cache
+      uses: actions/cache@v6
+      env:
+        mend-cache-name: mend-cli
+      with:
+        path: ${{ github.workspace }}/bin/mend
+        key: ${{ runner.os }}-${{ env.mend-cache-name }}-${{ hashFiles('mend.sha256') }}
+
+    - if: ${{ steps.mend-cache.outputs.cache-hit != 'true' }}
+      name: Download Mend CLI executable (cache miss...)
+      shell: bash
+      # Download Mend CLI if it passes integrity check
+      run: |
+        mkdir -p ${{ github.workspace }}/bin
+        curl -fsSL https://downloads.mend.io/cli/linux_amd64/mend -o ${{ github.workspace }}/bin/mend
+        expected="$(awk '{print $1}' mend.sha256)"
+        actual="$(sha256sum "${{ github.workspace }}/bin/mend" | awk '{print $1}')"
+        if [ "${actual}" != "${expected}" ]; then
+          echo "::error::Mend CLI checksum mismatch: expected ${expected}, got ${actual}"
+          exit 1
+        fi
+        chmod +x ${{ github.workspace }}/bin/mend
+
+    - name: Add Mend CLI to Path
+      shell: bash
+      run: echo "${{ github.workspace }}/bin" >> $GITHUB_PATH
+
+    - name: Test Mend CLI
+      shell: bash
+      run: mend version
