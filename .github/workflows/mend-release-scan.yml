@@ -1,0 +1,85 @@
+# Copyright (c) 2026 Ping Identity Corporation. All rights reserved.
+#
+# This software may be modified and distributed under the terms
+# of the MIT license. See the LICENSE file for details.
+#
+
+name: Mend Scans for Release
+on:
+  workflow_dispatch:
+    inputs:
+      scan_dir:
+        description: 'Directory to scan'
+        required: false
+        default: 'packages/'
+        type: string
+      full_scan:
+        description: 'Scan full repo if true'
+        required: false
+        type: boolean
+        default: false
+      sast_report_name:
+        description: 'Mend SAST scan report name'
+        required: false
+        default: 'Legacy_JS_SAST_Scan_Report'
+        type: string
+      sca_report_name:
+        description: 'Mend SCA scan report name'
+        required: false
+        default: 'Legacy_JS_SCA_Scan_Report'
+        type: string
+env:
+  MEND_EMAIL: ${{ secrets.MEND_EMAIL }}
+  MEND_USER_KEY: ${{ secrets.MEND_USER_KEY }}
+  MEND_SERVER_URL: ${{ vars.MEND_SERVER_URL }}
+  GH_TOKEN: ${{ secrets.GH_TOKEN }}
+
+jobs:
+  mend-sast-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone the repository
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          token: ${{ env.GH_TOKEN }}
+
+      - name: Setup Mend
+        uses: ./.github/actions/mend-setup
+
+      - name: Mend SAST scan
+        uses: ./.github/actions/mend-sast
+        timeout-minutes: 10
+        with:
+          scan_dir: ${{ inputs.scan_dir }}
+          full_scan: ${{ inputs.full_scan }}
+          MEND_SAST_REPORT_NAME: ${{ inputs.sast_report_name }}
+          MEND_EMAIL: ${{ env.MEND_EMAIL }}
+          MEND_USER_KEY: ${{ env.MEND_USER_KEY }}
+          MEND_SERVER_URL: ${{ env.MEND_SERVER_URL }}
+
+  mend-sca-scan:
+    runs-on: ubuntu-latest
+    # Force the Mend SCA scan to always run. It is run sequentially after the SAST scan instead of in parallel.
+    needs: mend-sast-scan
+    if: always()
+    steps:
+      - name: Clone the repository
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          token: ${{ env.GH_TOKEN }}
+
+      - name: Setup Mend
+        uses: ./.github/actions/mend-setup
+
+      - name: Mend SCA scan
+        uses: ./.github/actions/mend-sca
+        timeout-minutes: 10
+        with:
+          scan_dir: ${{ inputs.scan_dir }}
+          full_scan: ${{ inputs.full_scan }}
+          MEND_SCA_REPORT_NAME: ${{ inputs.sca_report_name }}
+          MEND_EMAIL: ${{ env.MEND_EMAIL }}
+          MEND_USER_KEY: ${{ env.MEND_USER_KEY }}
+          MEND_SERVER_URL: ${{ env.MEND_SERVER_URL }}

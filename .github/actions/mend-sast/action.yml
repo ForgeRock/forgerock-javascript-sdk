@@ -1,0 +1,185 @@
+name: 'Mend SAST Scan'
+description: 'SAST scan packages for release'
+inputs:
+  scan_dir:
+    description: 'Directory to scan'
+    required: false
+    default: 'packages/'
+  full_scan:
+    description: 'Scan full repo if true'
+    required: false
+    default: 'false'
+  MEND_SAST_REPORT_NAME:
+    description: 'Filename for the output of the scan'
+    required: false
+    default: 'Legacy_JS_SAST_Scan_Report'
+  MEND_EMAIL:
+    required: true
+  MEND_USER_KEY:
+    required: true
+  MEND_SERVER_URL:
+    required: true
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Mend SAST scan
+      env:
+        SCAN_DIR: ${{ inputs.scan_dir }}
+        FULL_SCAN: ${{ inputs.full_scan }}
+        REPORT_NAME: ${{ inputs.MEND_SAST_REPORT_NAME }}
+        MEND_EMAIL: ${{ inputs.MEND_EMAIL }}
+        MEND_USER_KEY: ${{ inputs.MEND_USER_KEY }}
+        MEND_URL: ${{ inputs.MEND_SERVER_URL }}
+        MEND_SAST_PATH_EXCLUSIONS: '/node_modules/,/dist/,/coverage/,/out-tsc/,/temp/'
+      shell: bash
+      run: |
+        args=(--scope 'Mobile//forgerock-sdk-javascript' --retries 2 --non-interactive --report --filename "$REPORT_NAME" --formats json --name "${REPORT_NAME}_$(date +%s)")
+        # Omit `--dir` on a full scan so Mend scans the whole repo.
+        if [ "$FULL_SCAN" != "true" ]; then
+          args+=(--dir "$SCAN_DIR")
+        fi
+        mend code "${args[@]}" > "$REPORT_NAME.txt"
+
+    - name: Extract Scan Results
+      shell: bash
+      run: |
+        export MEND_SAST_TOTAL_VULNERABILITIES_COUNT=$(jq '.[0].stats.totalVulnerabilities' ${{ inputs.MEND_SAST_REPORT_NAME }}.json)
+        export MEND_SAST_CRITICAL_COUNT=$(jq '.[0].stats.critical' ${{ inputs.MEND_SAST_REPORT_NAME }}.json)
+        export MEND_SAST_HIGH_COUNT=$(jq '.[0].stats.high' ${{ inputs.MEND_SAST_REPORT_NAME }}.json)
+        export MEND_SAST_MEDIUM_COUNT=$(jq '.[0].stats.medium' ${{ inputs.MEND_SAST_REPORT_NAME }}.json)
+        export MEND_SAST_LOW_COUNT=$(jq '.[0].stats.low' ${{ inputs.MEND_SAST_REPORT_NAME }}.json)
+        export MEND_SAST_SCAN_URL=$(grep -Eo '(http|https)://saas\.whitesourcesoftware\.com[^ ]+' ${{ inputs.MEND_SAST_REPORT_NAME }}.txt | head -n 1)
+        echo "MEND_SAST_TOTAL_VULNERABILITIES_COUNT=$MEND_SAST_TOTAL_VULNERABILITIES_COUNT" >> $GITHUB_ENV
+        echo "MEND_SAST_CRITICAL_COUNT=$MEND_SAST_CRITICAL_COUNT" >> $GITHUB_ENV
+        echo "MEND_SAST_HIGH_COUNT=$MEND_SAST_HIGH_COUNT" >> $GITHUB_ENV
+        echo "MEND_SAST_MEDIUM_COUNT=$MEND_SAST_MEDIUM_COUNT" >> $GITHUB_ENV
+        echo "MEND_SAST_LOW_COUNT=$MEND_SAST_LOW_COUNT" >> $GITHUB_ENV
+        echo "MEND_SAST_SCAN_URL=$MEND_SAST_SCAN_URL" >> $GITHUB_ENV
+
+    - name: Show the SAST Report in Step Summary
+      shell: bash
+      run: |
+        # Determine badge color based on severity
+        if [ "$MEND_SAST_CRITICAL_COUNT" -gt 0 ]; then
+          BADGE_COLOR="red"
+          BADGE_TEXT="${MEND_SAST_CRITICAL_COUNT}_critical"
+        elif [ "$MEND_SAST_HIGH_COUNT" -gt 0 ]; then
+          BADGE_COLOR="orange"
+          BADGE_TEXT="${MEND_SAST_HIGH_COUNT}_high"
+        elif [ "$MEND_SAST_MEDIUM_COUNT" -gt 0 ]; then
+          BADGE_COLOR="yellow"
+          BADGE_TEXT="${MEND_SAST_MEDIUM_COUNT}_medium"
+        elif [ "$MEND_SAST_LOW_COUNT" -gt 0 ]; then
+          BADGE_COLOR="blue"
+          BADGE_TEXT="${MEND_SAST_LOW_COUNT}_low"
+        else
+          BADGE_COLOR="brightgreen"
+          BADGE_TEXT="clean"
+        fi
+
+        BADGE_URL="https://img.shields.io/badge/SAST-${BADGE_TEXT}-${BADGE_COLOR}"
+
+        echo "## Mend SAST Report ![SAST Badge](${BADGE_URL})" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+
+        # Add a table summarizing results
+        echo "| Severity | Count |" >> $GITHUB_STEP_SUMMARY
+        echo "|----------|-------|" >> $GITHUB_STEP_SUMMARY
+        echo "| 🔴 Critical | $MEND_SAST_CRITICAL_COUNT |" >> $GITHUB_STEP_SUMMARY
+        echo "| 🟠 High     | $MEND_SAST_HIGH_COUNT |" >> $GITHUB_STEP_SUMMARY
+        echo "| 🟡 Medium   | $MEND_SAST_MEDIUM_COUNT |" >> $GITHUB_STEP_SUMMARY
+        echo "| 🔵 Low      | $MEND_SAST_LOW_COUNT |" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+
+        # Add Mend report link if available
+        if [ -n "$MEND_SAST_SCAN_URL" ]; then
+          echo "**🔗 [View Full Mend SAST Report]($MEND_SAST_SCAN_URL)**" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+        fi
+
+        # Add expandable section with raw scan output
+        echo "<details><summary>Expand for details</summary>" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo '```' >> $GITHUB_STEP_SUMMARY
+        cat ${{ inputs.MEND_SAST_REPORT_NAME }}.txt >> $GITHUB_STEP_SUMMARY
+        echo '```' >> $GITHUB_STEP_SUMMARY
+        echo "</details>" >> $GITHUB_STEP_SUMMARY
+
+    # Step 1: Decide Check Conclusion
+    # - name: Determine Mend SAST Check Conclusion
+    #   id: sast_conclusion
+    #   shell: bash
+    #   run: |
+    #     if [ "$MEND_SAST_CRITICAL_COUNT" -gt 0 ] || [ "$MEND_SAST_HIGH_COUNT" -gt 0 ]; then
+    #       echo "conclusion=failure" >> $GITHUB_OUTPUT
+    #     else
+    #       echo "conclusion=success" >> $GITHUB_OUTPUT
+    #     fi
+
+    # Step 2: Publish Mend SAST Check
+    # - name: Publish Mend SAST Check
+    #   uses: actions/github-script@v9
+    #   env:
+    #     REPORT_NAME: ${{ inputs.MEND_SAST_REPORT_NAME }}
+    #   with:
+    #     script: |
+    #       const fs = require('fs');
+    #       const body = fs.readFileSync(process.env.REPORT_NAME + '.txt', 'utf8');
+
+    #       await github.rest.checks.create({
+    #         owner: context.repo.owner,
+    #         repo: context.repo.repo,
+    #         name: "Mend SAST Report",
+    #         head_sha: '${{ inputs.head_sha || github.event.pull_request.head.sha || github.sha }}',
+    #         status: "completed",
+    #         conclusion: "${{ steps.sast_conclusion.outputs.conclusion }}",
+    #         output: {
+    #           title: "Mend SAST Report",
+    #           summary: `Critical: ${process.env.MEND_SAST_CRITICAL_COUNT}, High: ${process.env.MEND_SAST_HIGH_COUNT}`,
+    #           text: "```\n" + body + "\n```"
+    #         }
+    #       });
+
+    - name: Upload SAST scan report
+      uses: actions/upload-artifact@v7
+      with:
+        name: mend-sast-report
+        path: |
+          ${{ inputs.MEND_SAST_REPORT_NAME }}.txt
+          ${{ inputs.MEND_SAST_REPORT_NAME }}.json
+
+    # - name: Send slack notification
+    #   uses: 8398a7/action-slack@v3
+    #   if: always()
+    #   with:
+    #     status: custom
+    #     fields: all
+    #     custom_payload: |
+    #       {
+    #         "text": "*Mend SAST Scan Results*",
+    #         "attachments": [
+    #           {
+    #             "color": "${{ (env.MEND_SAST_CRITICAL_COUNT == '0' && env.MEND_SAST_HIGH_COUNT == '0') && 'good' || 'danger' }}",
+    #             "fields": [
+    #               {
+    #                 "title": "SAST scan",
+    #                 "value": "Total: ${{ env.MEND_SAST_TOTAL_VULNERABILITIES_COUNT }} | Critical: ${{ env.MEND_SAST_CRITICAL_COUNT }} | High: ${{ env.MEND_SAST_HIGH_COUNT }} | Medium: ${{ env.MEND_SAST_MEDIUM_COUNT }} | Low: ${{ env.MEND_SAST_LOW_COUNT }}\n<${{ env.MEND_SAST_SCAN_URL }}|View full SAST report>",
+    #                 "short": false
+    #               }
+    #             ]
+    #           }
+    #         ]
+    #       }
+    #   env:
+    #     SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+
+    # Fail the job on Critical/High findings
+    - name: Fail on Critical/High severity vulnerabilities
+      shell: bash
+      run: |
+        if [ "$MEND_SAST_CRITICAL_COUNT" -gt 0 ] || [ "$MEND_SAST_HIGH_COUNT" -gt 0 ]; then
+          echo "::error::Mend SAST scan found ${MEND_SAST_CRITICAL_COUNT} critical and ${MEND_SAST_HIGH_COUNT} high severity vulnerabilities. See the Mend SAST Report step summary for details."
+          exit 1
+        fi
+        echo "No critical or high severity vulnerabilities found."
