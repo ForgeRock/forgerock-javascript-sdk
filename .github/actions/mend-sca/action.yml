@@ -1,14 +1,14 @@
 name: 'Mend SCA Scan'
 description: 'SCA scan packages for release'
 inputs:
-  scan_dir:
-    description: 'Directory to scan'
-    required: false
-    default: 'packages/'
   full_scan:
-    description: 'Scan full repo if true'
+    description: 'Scan full repo'
     required: false
     default: 'false'
+  temp_dir:
+    description: 'Directory for staging manifests'
+    required: false
+    default: 'mend-scan-dir'
   MEND_SCA_REPORT_NAME:
     description: 'Filename for the output of the scan'
     required: false
@@ -23,7 +23,26 @@ inputs:
 runs:
   using: 'composite'
   steps:
-    - uses: pnpm/action-setup@v4
+    - name: Isolate package manifests in a temporary directory
+      if: inputs.full_scan != 'true'
+      shell: bash
+      env:
+        MEND_TEMP_DIR: ${{ inputs.temp_dir }}
+      # Mend SCA scans need a matching lockfile, so stage it and package manifests
+      # in a temporary directory
+      run: |
+        mkdir -p "$MEND_TEMP_DIR"/packages
+        cp package.json pnpm-workspace.yaml pnpm-lock.yaml .npmrc "$MEND_TEMP_DIR/"
+
+        # Copy only manifests, preserving relative paths
+        for d in packages/*/; do
+          # Skip directories which aren't npm packages
+          [ -f "$d/package.json" ] || continue
+          mkdir -p "$MEND_TEMP_DIR/$d" && cp "$d/package.json" "$MEND_TEMP_DIR/$d"
+        done
+
+    - name: Install pnpm
+      uses: pnpm/action-setup@v4
       with:
         run_install: false
 
@@ -38,13 +57,26 @@ runs:
         registry-url: 'https://registry.npmjs.org'
 
     - name: Install dependencies
-      run: pnpm install --frozen-lockfile
+      env:
+        FULL_SCAN: ${{ inputs.full_scan }}
+        MEND_TEMP_DIR: ${{ inputs.temp_dir }}
       shell: bash
+      run: |
+        if [ "$FULL_SCAN" = "false" ]; then
+          if [ ! -d "$MEND_TEMP_DIR" ]; then
+            echo "::error::Staging directory $MEND_TEMP_DIR does not exist."
+            exit 1
+          fi
+          cd "$MEND_TEMP_DIR"
+        fi
+
+        # Install deps with --prod flag to skip devDependencies
+        pnpm install --frozen-lockfile --ignore-scripts --prod
 
     - name: Mend SCA scan
       env:
-        SCAN_DIR: ${{ inputs.scan_dir }}
         FULL_SCAN: ${{ inputs.full_scan }}
+        MEND_TEMP_DIR: ${{ inputs.temp_dir }}
         REPORT_NAME: ${{ inputs.MEND_SCA_REPORT_NAME }}
         MEND_EMAIL: ${{ inputs.MEND_EMAIL }}
         MEND_USER_KEY: ${{ inputs.MEND_USER_KEY }}
@@ -52,11 +84,12 @@ runs:
       shell: bash
       # Mend SCA scan does not generate a report so tee output to both console and file
       # --update flag syncs the results to the Mend portal and overwrites any pre-existing vulnerabilities
+      # --no-default-exclusions flag is necessary to scan `packages/` directory
       run: |
-        args=(--non-interactive --update --scope 'Mobile//forgerock-sdk-javascript')
+        args=(--non-interactive --update --no-default-exclusions --scope 'Mobile//forgerock-sdk-javascript')
         # Omit `--dir` on a full scan so Mend scans the whole repo.
-        if [ "$FULL_SCAN" != "true" ]; then
-          args+=(--dir "$SCAN_DIR")
+        if [ "$FULL_SCAN" = "false" ]; then
+          args+=(--dir "$MEND_TEMP_DIR")
         fi
         mend dep "${args[@]}" 2>&1 | tee "$REPORT_NAME.txt"
 

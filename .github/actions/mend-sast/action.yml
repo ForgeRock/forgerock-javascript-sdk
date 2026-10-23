@@ -1,12 +1,8 @@
 name: 'Mend SAST Scan'
 description: 'SAST scan packages for release'
 inputs:
-  scan_dir:
-    description: 'Directory to scan'
-    required: false
-    default: 'packages/'
   full_scan:
-    description: 'Scan full repo if true'
+    description: 'Scan full repo'
     required: false
     default: 'false'
   MEND_SAST_REPORT_NAME:
@@ -25,7 +21,6 @@ runs:
   steps:
     - name: Mend SAST scan
       env:
-        SCAN_DIR: ${{ inputs.scan_dir }}
         FULL_SCAN: ${{ inputs.full_scan }}
         REPORT_NAME: ${{ inputs.MEND_SAST_REPORT_NAME }}
         MEND_EMAIL: ${{ inputs.MEND_EMAIL }}
@@ -36,8 +31,8 @@ runs:
       run: |
         args=(--scope 'Mobile//forgerock-sdk-javascript' --retries 2 --non-interactive --report --filename "$REPORT_NAME" --formats json --name "${REPORT_NAME}_$(date +%s)")
         # Omit `--dir` on a full scan so Mend scans the whole repo.
-        if [ "$FULL_SCAN" != "true" ]; then
-          args+=(--dir "$SCAN_DIR")
+        if [ "$FULL_SCAN" = "false" ]; then
+          args+=(--dir packages)
         fi
         mend code "${args[@]}" > "$REPORT_NAME.txt"
 

@@ -94,3 +94,6 @@ vitest.config.*.timestamp*
 .claude/settings.local.json
 
 .playwright-mcp
+
+# Mend
+mend-scan-dir/

@@ -8,13 +8,9 @@ name: Mend Scans for Release
 on:
   workflow_dispatch:
     inputs:
-      scan_dir:
-        description: 'Directory to scan'
-        required: false
-        default: 'packages/'
-        type: string
+      # When full_scan is off, only `packages/` are scanned by default
       full_scan:
-        description: 'Scan full repo if true'
+        description: 'Scan full repo (optional)'
         required: false
         type: boolean
         default: false
@@ -51,7 +47,6 @@ jobs:
         uses: ./.github/actions/mend-sast
         timeout-minutes: 10
         with:
-          scan_dir: ${{ inputs.scan_dir }}
           full_scan: ${{ inputs.full_scan }}
           MEND_SAST_REPORT_NAME: ${{ inputs.sast_report_name }}
           MEND_EMAIL: ${{ env.MEND_EMAIL }}
@@ -77,7 +72,6 @@ jobs:
         uses: ./.github/actions/mend-sca
         timeout-minutes: 10
         with:
-          scan_dir: ${{ inputs.scan_dir }}
           full_scan: ${{ inputs.full_scan }}
           MEND_SCA_REPORT_NAME: ${{ inputs.sca_report_name }}
           MEND_EMAIL: ${{ env.MEND_EMAIL }}
