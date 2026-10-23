@@ -53,6 +53,9 @@ samples/*/users
 !samples/angular-todo/*/todos
 !samples/reactjs-todo/*/todos
 
+# Personal AI instructions (local only — not for commit)
+CLAUDE.local.md
+
 # Environment files
 .env
 nx-cloud.env
@@ -86,3 +89,11 @@ outputs/*
 e2e/mock-api-v2/html/*
 
 vitest.config.*.timestamp*
+
+.claude/worktrees
+.claude/settings.local.json
+
+.playwright-mcp
+
+# Mend
+mend-scan-dir/

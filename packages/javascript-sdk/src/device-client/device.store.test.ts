@@ -1,3 +1,5 @@
+// @vitest-environment node
+
 /*
  * @forgerock/javascript-sdk
  *

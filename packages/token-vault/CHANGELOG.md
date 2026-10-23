@@ -1,5 +1,15 @@
 ### [4.2.0] - 2023-09-11
 
+## 4.2.3
+
+### Patch Changes
+
+- [#598](https://github.com/ForgeRock/forgerock-javascript-sdk/pull/598) [`de96cf6`](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/de96cf6c00b637eea5ea2f7277a72b0c736e4064) Thanks [@ancheetah](https://github.com/ancheetah)! - Allow requests to resource server endpoints similar to AM endpoints to preserve backwards compatibility
+
+- [#595](https://github.com/ForgeRock/forgerock-javascript-sdk/pull/595) [`11ac633`](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/11ac633d9854b72cc72ea976df2f9dfe63e908aa) Thanks [@vatsalparikh](https://github.com/vatsalparikh)! - Add sessions/ endpoint to fully complete logout
+
+- [#597](https://github.com/ForgeRock/forgerock-javascript-sdk/pull/597) [`85e2cc9`](https://github.com/ForgeRock/forgerock-javascript-sdk/commit/85e2cc90b8f697b86617580a434eaa1df4ee8e9d) Thanks [@ancheetah](https://github.com/ancheetah)! - Compose AM request URLs from config to prevent attacker-supplied request URLs
+
 ## 4.2.2
 
 ### Patch Changes
