@@ -62,13 +62,13 @@ ForgeRock provides these samples to help demonstrate SDK functionality/implement
 
 To try out the Ping SDK for JavaScript please look at one of our samples:
 
-- [**Embedded login - `samples/embedded-login`**](https://github.com/ForgeRock/sdk-sample-apps/blob/main/embedded-login/README.md)
+- [**Embedded login - `archived/javascript/embedded-login`**](https://github.com/ForgeRock/sdk-sample-apps/tree/main/archived/javascript/embedded-login)
 
-- [**Central login - `samples/central-login`**](https://github.com/ForgeRock/sdk-sample-apps/blob/main/central-login/README.md)
+- [**Central login - `archived/javascript/central-login-oidc`**](https://github.com/ForgeRock/sdk-sample-apps/tree/main/archived/javascript/central-login-oidc)
 
-- [**React Todo - `samples/reactjs-todo`**](https://github.com/ForgeRock/sdk-sample-apps/blob/main/reactjs-todo/README.md)
+- [**React Todo - `archived/javascript/reactjs-todo-journey-legacy`**](https://github.com/ForgeRock/sdk-sample-apps/tree/main/archived/javascript/reactjs-todo-journey-legacy)
 
-- [**Angular Todo - `samples/angular-todo`**](https://github.com/ForgeRock/sdk-sample-apps/blob/main/angular-todo/README.md)
+- [**Angular Todo - `archived/javascript/angular-todo`**](https://github.com/ForgeRock/sdk-sample-apps/tree/main/archived/javascript/angular-todo)
 
 <!------------------------------------------------------------------------------------------------------------------------------------>
 

@@ -1,0 +1,258 @@
+name: 'Mend SCA Scan'
+description: 'SCA scan packages for release'
+inputs:
+  full_scan:
+    description: 'Scan full repo'
+    required: false
+    default: 'false'
+  temp_dir:
+    description: 'Directory for staging manifests'
+    required: false
+    default: 'mend-scan-dir'
+  MEND_SCA_REPORT_NAME:
+    description: 'Filename for the output of the scan'
+    required: false
+    default: 'Legacy_JS_SCA_Scan_Report'
+  MEND_EMAIL:
+    required: true
+  MEND_USER_KEY:
+    required: true
+  MEND_SERVER_URL:
+    required: true
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Isolate package manifests in a temporary directory
+      if: inputs.full_scan != 'true'
+      shell: bash
+      env:
+        MEND_TEMP_DIR: ${{ inputs.temp_dir }}
+      # Mend SCA scans need a matching lockfile, so stage it and package manifests
+      # in a temporary directory
+      run: |
+        mkdir -p "$MEND_TEMP_DIR"/packages
+        cp package.json pnpm-workspace.yaml pnpm-lock.yaml .npmrc "$MEND_TEMP_DIR/"
+
+        # Copy only manifests, preserving relative paths
+        for d in packages/*/; do
+          # Skip directories which aren't npm packages
+          [ -f "$d/package.json" ] || continue
+          mkdir -p "$MEND_TEMP_DIR/$d" && cp "$d/package.json" "$MEND_TEMP_DIR/$d"
+        done
+
+    - name: Install pnpm
+      uses: pnpm/action-setup@v4
+      with:
+        run_install: false
+
+    - name: Setup pnpm config
+      run: pnpm config set store-dir '.pnpm-store' --global
+      shell: bash
+
+    - uses: actions/setup-node@v6
+      with:
+        node-version-file: '.node-version'
+        cache: 'pnpm'
+        registry-url: 'https://registry.npmjs.org'
+
+    - name: Install dependencies
+      env:
+        FULL_SCAN: ${{ inputs.full_scan }}
+        MEND_TEMP_DIR: ${{ inputs.temp_dir }}
+      shell: bash
+      run: |
+        if [ "$FULL_SCAN" = "false" ]; then
+          if [ ! -d "$MEND_TEMP_DIR" ]; then
+            echo "::error::Staging directory $MEND_TEMP_DIR does not exist."
+            exit 1
+          fi
+          cd "$MEND_TEMP_DIR"
+        fi
+
+        # Install deps with --prod flag to skip devDependencies
+        pnpm install --frozen-lockfile --ignore-scripts --prod
+
+    - name: Mend SCA scan
+      env:
+        FULL_SCAN: ${{ inputs.full_scan }}
+        MEND_TEMP_DIR: ${{ inputs.temp_dir }}
+        REPORT_NAME: ${{ inputs.MEND_SCA_REPORT_NAME }}
+        MEND_EMAIL: ${{ inputs.MEND_EMAIL }}
+        MEND_USER_KEY: ${{ inputs.MEND_USER_KEY }}
+        MEND_URL: ${{ inputs.MEND_SERVER_URL }}
+      shell: bash
+      # Mend SCA scan does not generate a report so tee output to both console and file
+      # --update flag syncs the results to the Mend portal and overwrites any pre-existing vulnerabilities
+      # --no-default-exclusions flag is necessary to scan `packages/` directory
+      run: |
+        args=(--non-interactive --update --no-default-exclusions --scope 'Mobile//forgerock-sdk-javascript')
+        # Omit `--dir` on a full scan so Mend scans the whole repo.
+        if [ "$FULL_SCAN" = "false" ]; then
+          args+=(--dir "$MEND_TEMP_DIR")
+        fi
+        mend dep "${args[@]}" 2>&1 | tee "$REPORT_NAME.txt"
+
+    - name: Extract Scan Results
+      shell: bash
+      run: |
+        # Extract scan results with more robust parsing
+        MEND_SCA_SCAN_URL=$(grep -Eo '(http|https)://saas\.whitesourcesoftware\.com[^ ]+' ${{ inputs.MEND_SCA_REPORT_NAME }}.txt | head -n 1)
+        MEND_SCA_SCAN_SUMMARY=$(grep -E "Detected.*vulnerabilities" ${{ inputs.MEND_SCA_REPORT_NAME }}.txt || echo 'No vulnerabilities detected')
+
+        # Initialize counts with default value of 0
+        MEND_SCA_CRITICAL_COUNT=0
+        MEND_SCA_HIGH_COUNT=0
+        MEND_SCA_MEDIUM_COUNT=0
+        MEND_SCA_LOW_COUNT=0
+
+        # Extract vulnerability counts with error handling
+        if grep -q "Critical" ${{ inputs.MEND_SCA_REPORT_NAME }}.txt; then
+          MEND_SCA_CRITICAL_COUNT=$(grep -Eo '[0-9]+ Critical' ${{ inputs.MEND_SCA_REPORT_NAME }}.txt | awk '{print $1}')
+        fi
+        if grep -q "High" ${{ inputs.MEND_SCA_REPORT_NAME }}.txt; then
+          MEND_SCA_HIGH_COUNT=$(grep -Eo '[0-9]+ High' ${{ inputs.MEND_SCA_REPORT_NAME }}.txt | awk '{print $1}')
+        fi
+        if grep -q "Medium" ${{ inputs.MEND_SCA_REPORT_NAME }}.txt; then
+          MEND_SCA_MEDIUM_COUNT=$(grep -Eo '[0-9]+ Medium' ${{ inputs.MEND_SCA_REPORT_NAME }}.txt | awk '{print $1}')
+        fi
+        if grep -q "Low" ${{ inputs.MEND_SCA_REPORT_NAME }}.txt; then
+          MEND_SCA_LOW_COUNT=$(grep -Eo '[0-9]+ Low' ${{ inputs.MEND_SCA_REPORT_NAME }}.txt | awk '{print $1}')
+        fi
+
+        # Set environment variables with error checking
+        if [ ! -z "$MEND_SCA_SCAN_URL" ]; then
+          echo "MEND_SCA_SCAN_URL=$MEND_SCA_SCAN_URL" >> $GITHUB_ENV
+        fi
+        echo "MEND_SCA_SCAN_SUMMARY=$MEND_SCA_SCAN_SUMMARY" >> $GITHUB_ENV
+        echo "MEND_SCA_CRITICAL_COUNT=$MEND_SCA_CRITICAL_COUNT" >> $GITHUB_ENV
+        echo "MEND_SCA_HIGH_COUNT=$MEND_SCA_HIGH_COUNT" >> $GITHUB_ENV
+        echo "MEND_SCA_MEDIUM_COUNT=$MEND_SCA_MEDIUM_COUNT" >> $GITHUB_ENV
+        echo "MEND_SCA_LOW_COUNT=$MEND_SCA_LOW_COUNT" >> $GITHUB_ENV
+
+    - name: Show the SCA Report in Step Summary
+      shell: bash
+      run: |
+        # Pick badge color based on severity counts
+        if [ "$MEND_SCA_CRITICAL_COUNT" -gt 0 ]; then
+          BADGE_COLOR="red"
+          BADGE_TEXT="${MEND_SCA_CRITICAL_COUNT}_critical"
+        elif [ "$MEND_SCA_HIGH_COUNT" -gt 0 ]; then
+          BADGE_COLOR="orange"
+          BADGE_TEXT="${MEND_SCA_HIGH_COUNT}_high"
+        elif [ "$MEND_SCA_MEDIUM_COUNT" -gt 0 ]; then
+          BADGE_COLOR="yellow"
+          BADGE_TEXT="${MEND_SCA_MEDIUM_COUNT}_medium"
+        elif [ "$MEND_SCA_LOW_COUNT" -gt 0 ]; then
+          BADGE_COLOR="blue"
+          BADGE_TEXT="${MEND_SCA_LOW_COUNT}_low"
+        else
+          BADGE_COLOR="brightgreen"
+          BADGE_TEXT="clean"
+        fi
+
+        BADGE_URL="https://img.shields.io/badge/SCA-${BADGE_TEXT}-${BADGE_COLOR}"
+
+        echo "## Mend SCA Report ![SCA Badge](${BADGE_URL})" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+
+        # Show counts in a table
+        echo "| Severity | Count |" >> $GITHUB_STEP_SUMMARY
+        echo "|----------|-------|" >> $GITHUB_STEP_SUMMARY
+        echo "| 🔴 Critical | $MEND_SCA_CRITICAL_COUNT |" >> $GITHUB_STEP_SUMMARY
+        echo "| 🟠 High     | $MEND_SCA_HIGH_COUNT |" >> $GITHUB_STEP_SUMMARY
+        echo "| 🟡 Medium   | $MEND_SCA_MEDIUM_COUNT |" >> $GITHUB_STEP_SUMMARY
+        echo "| 🔵 Low      | $MEND_SCA_LOW_COUNT |" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+
+        # Add Mend report link if available
+        if [ -n "$MEND_SCA_SCAN_URL" ]; then
+          echo "**🔗 [View Full Mend SCA Report]($MEND_SCA_SCAN_URL)**" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+        fi
+
+        # Expandable section for full output
+        echo "<details><summary>Expand for details</summary>" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo '```' >> $GITHUB_STEP_SUMMARY
+        cat ${{ inputs.MEND_SCA_REPORT_NAME }}.txt >> $GITHUB_STEP_SUMMARY
+        echo '```' >> $GITHUB_STEP_SUMMARY
+        echo "</details>" >> $GITHUB_STEP_SUMMARY
+
+    # # Step 1: Decide Check Conclusion
+    # - name: Determine Mend SCA Check Conclusion
+    #   id: sca_conclusion
+    #   shell: bash
+    #   run: |
+    #     if [ "$MEND_SCA_CRITICAL_COUNT" -gt 0 ] || [ "$MEND_SCA_HIGH_COUNT" -gt 0 ]; then
+    #       echo "conclusion=failure" >> $GITHUB_OUTPUT
+    #     else
+    #       echo "conclusion=success" >> $GITHUB_OUTPUT
+    #     fi
+
+    # # Step 2: Publish Mend SCA Check
+    # - name: Publish Mend SCA Check
+    #   uses: actions/github-script@v9
+    #   env:
+    #     REPORT_NAME: ${{ inputs.MEND_SCA_REPORT_NAME }}
+    #   with:
+    #     script: |
+    #       const fs = require('fs');
+    #       const body = fs.readFileSync(process.env.REPORT_NAME + '.txt', 'utf8');
+
+    #       await github.rest.checks.create({
+    #         owner: context.repo.owner,
+    #         repo: context.repo.repo,
+    #         name: "Mend SCA Report",
+    #         head_sha: '${{ inputs.head_sha || github.event.pull_request.head.sha || github.sha }}',
+    #         status: "completed",
+    #         conclusion: "${{ steps.sca_conclusion.outputs.conclusion }}",
+    #         output: {
+    #           title: "Mend SCA Report",
+    #           summary: `Critical: ${process.env.MEND_SCA_CRITICAL_COUNT}, High: ${process.env.MEND_SCA_HIGH_COUNT}`,
+    #           text: "```\n" + body + "\n```"
+    #         }
+    #       });
+
+    - name: Upload SCA scan report
+      uses: actions/upload-artifact@v7
+      with:
+        name: mend-sca-report
+        path: ${{ inputs.MEND_SCA_REPORT_NAME }}.txt
+
+    # - name: Send slack notification
+    #   uses: 8398a7/action-slack@v3
+    #   if: always()
+    #   with:
+    #     status: custom
+    #     fields: all
+    #     custom_payload: |
+    #       {
+    #         "text": "*Mend SCA Scan Results*",
+    #         "attachments": [
+    #           {
+    #             "color": "${{ (env.MEND_SCA_CRITICAL_COUNT == '0' && env.MEND_SCA_HIGH_COUNT == '0') && 'good' || 'danger' }}",
+    #             "fields": [
+    #               {
+    #                 "title": "SCA scan",
+    #                 "value": "${{ env.MEND_SCA_SCAN_SUMMARY }}\n<${{ env.MEND_SCA_SCAN_URL }}|View full SCA report>",
+    #                 "short": false
+    #               }
+    #             ]
+    #           }
+    #         ]
+    #       }
+    #   env:
+    #     SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+
+    # Fail the job (not just the informational Check above) so that
+    # ci.yaml's `needs:` gating and branch protection actually block on
+    # Critical/High findings instead of showing green.
+    - name: Fail on Critical/High severity vulnerabilities
+      shell: bash
+      run: |
+        if [ "$MEND_SCA_CRITICAL_COUNT" -gt 0 ] || [ "$MEND_SCA_HIGH_COUNT" -gt 0 ]; then
+          echo "::error::Mend SCA scan found ${MEND_SCA_CRITICAL_COUNT} critical and ${MEND_SCA_HIGH_COUNT} high severity vulnerabilities. See the Mend SCA Report step summary for details."
+          exit 1
+        fi
+        echo "No critical or high severity vulnerabilities found."
